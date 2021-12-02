@@ -1,37 +1,37 @@
-# XueYi-MultiSaas
+<h1 align="center">XueYi-MultiSaas</h1>
 
-#### 介绍
-基于SpringBoot | Mybatis-Plus | Vue3| vite | TypeScript |  Ant Design UI的微服务多租户SaaS管理快速开发框架。
+<p align="center">
+    <a>
+       <img src="https://img.shields.io/badge/XueYi--MultiSaas-v1.0.0-brightgreen" alt="xueYi-MultiSaas">
+    </a>
+    <a>
+       <img src="https://img.shields.io/badge/SpringBoot-2.5.6-brightgreen" alt="xueYi-MultiSaas">
+    </a>
+    <a>
+       <img src="https://img.shields.io/badge/Spring%20Cloud%20%26%20Alibaba-2021.1-brightgreen" alt="xueYi-MultiSaas">
+    </a>
+    <a>
+       <img src="https://img.shields.io/badge/Vue3-Ant--Design--Vue-green" alt="xueYi-MultiSaas">
+    </a>
+    <a>
+       <img src="https://img.shields.io/badge/vite2-TypeScript-green" alt="xueYi-MultiSaas">
+    </a>
+    <a>
+       <img src="https://img.shields.io/badge/Mybatis--Plus-3.4.0%2B-brightgreen" alt="xueYi-MultiSaas">
+    </a>
+</p>
 
-#### 软件架构
-软件架构说明
+## 简介
+基于SpringBoot | Spring Cloud & Alibaba | Mybatis-Plus | Vue3 | vite2 | TypeScript | Ant-Design-Vue UI的多租户SaaS开发框架，为企业级多租户Saas及集团化应用提供快速开发解决方案。
 
+## 待发布
+mybatis | vue2 版本请移步 [XueYi-Cloud](https://gitee.com/xueyitiantang/XueYi-Cloud)
 
-#### 安装教程
+提前关注，star 别忘点上 :kissing_heart:
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+## 交流
+- 请移步右上角  **一键三连** :kissing_heart:
+- QQ群：[![加入QQ群](https://img.shields.io/badge/779343138-blue.svg)](https://jq.qq.com/?_wv=1027&k=zw11JJhj)
+- 若发现bug，群内滴或Issues，提供复现路径。
 
-#### 使用说明
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 参与贡献
-
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
-
-
-#### 特技
-
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+## 计划

@@ -1,36 +1,37 @@
-# XueYi-MultiSaas
+<h1 align="center">XueYi-MultiSaas</h1>
 
-#### Description
-基于SpringBoot | Mybatis-Plus | Vue3| vite | TypeScript |  Ant Design UI的微服务多租户SaaS管理快速开发框架。
+<p align="center">
+    <a>
+       <img src="https://img.shields.io/badge/XueYi--MultiSaas-v1.0.0-brightgreen" alt="xueYi-MultiSaas">
+    </a>
+    <a>
+       <img src="https://img.shields.io/badge/SpringBoot-2.5.6-brightgreen" alt="xueYi-MultiSaas">
+    </a>
+    <a>
+       <img src="https://img.shields.io/badge/Spring%20Cloud%20%26%20Alibaba-2021.1-brightgreen" alt="xueYi-MultiSaas">
+    </a>
+    <a>
+       <img src="https://img.shields.io/badge/Vue3-Ant--Design--Vue-green" alt="xueYi-MultiSaas">
+    </a>
+    <a>
+       <img src="https://img.shields.io/badge/vite2-TypeScript-green" alt="xueYi-MultiSaas">
+    </a>
+    <a>
+       <img src="https://img.shields.io/badge/Mybatis--Plus-3.4.0%2B-brightgreen" alt="xueYi-MultiSaas">
+    </a>
+</p>
 
-#### Software Architecture
-Software architecture description
+## 简介
+基于SpringBoot | Spring Cloud & Alibaba | Mybatis-Plus | Vue3 | vite2 | TypeScript | Ant-Design-Vue UI的多租户SaaS开发框架，为企业级多租户Saas及集团化应用提供快速开发解决方案。
 
-#### Installation
+## 待发布
+mybatis | vue2 版本请移步 [XueYi-Cloud](https://gitee.com/xueyitiantang/XueYi-Cloud)
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+提前关注，star 别忘点上 :kissing_heart:
 
-#### Instructions
+## 交流
+- 请移步右上角  **一键三连** :kissing_heart:
+- QQ群：[![加入QQ群](https://img.shields.io/badge/779343138-blue.svg)](https://jq.qq.com/?_wv=1027&k=zw11JJhj)
+- 若发现bug，群内滴或Issues，提供复现路径。
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### Contribution
-
-1.  Fork the repository
-2.  Create Feat_xxx branch
-3.  Commit your code
-4.  Create Pull Request
-
-
-#### Gitee Feature
-
-1.  You can use Readme\_XXX.md to support different languages, such as Readme\_en.md, Readme\_zh.md
-2.  Gitee blog [blog.gitee.com](https://blog.gitee.com)
-3.  Explore open source project [https://gitee.com/explore](https://gitee.com/explore)
-4.  The most valuable open source project [GVP](https://gitee.com/gvp)
-5.  The manual of Gitee [https://gitee.com/help](https://gitee.com/help)
-6.  The most popular members  [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+## 计划
