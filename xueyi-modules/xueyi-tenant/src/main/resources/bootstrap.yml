@@ -1,0 +1,33 @@
+# Tomcat
+server:
+  port: 9700
+
+# Spring
+spring: 
+  application:
+    # 应用名称
+    name: xueyi-tenant
+  main:
+    allow-bean-definition-overriding: true #当遇到同样名字的时候，是否允许覆盖注册
+  profiles:
+    # 环境配置
+    active: dev
+  servlet:
+    multipart:
+      max-request-size: 20MB
+      max-file-size: 100MB
+  cloud:
+    nacos:
+      discovery:
+        # 服务注册地址
+        server-addr: localhost:8848
+      config:
+        # 配置中心地址
+        server-addr: localhost:8848
+        # 配置文件格式
+        file-extension: yml
+        # 共享配置
+        shared-configs:
+          - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+          - application-secret-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+          - application-datasource-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}

@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.xueyi.common.web.config.XueYiMyBatisPlusConfig
+  

@@ -19,6 +19,12 @@
     <a>
        <img src="https://img.shields.io/badge/Mybatis--Plus-3.4.0%2B-brightgreen" alt="xueYi-MultiSaas">
     </a>
+    <a>
+       <img src="https://gitee.com/xueyitiantang/XueYi-MultiSaas/badge/star.svg?theme=dark" alt="xueYi-MultiSaas">
+    </a>
+    <a>
+       <img src="https://gitee.com/xueyitiantang/XueYi-MultiSaas/badge/fork.svg?theme=dark" alt="xueYi-MultiSaas">
+    </a>
 </p>
 
 ## 简介

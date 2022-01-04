@@ -1,0 +1,183 @@
+import { BasicColumn, FormSchema } from '/@/components/Table';
+#if($dictMap)
+import { dicDictList, dictConversion } from '/@/utils/xueyi';
+#end
+import { DescItem } from '/@/components/Description';
+#foreach ($column in $columns)
+#if($column.htmlType == 'InputNumber')
+import { SortEnum } from '/@/enums/BaseEnum';
+#break
+#end
+#end
+
+/** ${functionName}主页路由 */
+export const ${BusinessName}IndexGo = '/tool/generate/';
+
+/** ${functionName}详情页路由 */
+export const ${BusinessName}DetailGo = '/tool/generate/';
+
+#if($dictMap)
+/** 字典查询 */
+export const dictMap = await dicDictList([
+#foreach($item in $dictMap.entrySet())
+    '${item.key}',
+#end
+]);
+
+/** 字典表 */
+export const dict: any = {
+#foreach($item in ${dictMap.entrySet()})
+    ${item.value}: dictMap['${item.key}'],
+#end
+};
+
+#end
+/** 表格数据 */
+export const columns: BasicColumn[] = [
+#foreach ($column in $columns)
+#set($hide = true)
+#foreach($item in $mustHideField)
+#if($column.javaField == $item)
+#set($hide = false)
+#break
+#end
+#end
+#if($column.isList() == false)
+#set($hide = false)
+#end
+#if($hide)
+    {
+        title: '${column.readNameNoSuffix()}',
+        dataIndex: '${column.javaField}',
+        width: 220,
+#if($table.tree && $column.javaField == $nameColumn.javaField)
+        align: 'left',
+#end
+#if($column.dictType && $column.dictName)
+        editComponent: 'Select',
+        editComponentProps: {
+            options: dict.${column.dictName},
+        },
+#end
+    },
+#end
+#end
+];
+
+/** 查询数据 */
+export const searchFormSchema: FormSchema[] = [
+#foreach ($column in $columns)
+#set($hide = true)
+#foreach($item in $mustHideField)
+#if($column.javaField == $item)
+#set($hide = false)
+#break
+#end
+#end
+#if($column.isQuery() == false)
+#set($hide = false)
+#end
+#if($hide)
+    {
+        label: '${column.readNameNoSuffix()}',
+        field: '${column.javaField}',
+        component: '${column.htmlType}',
+#if($column.dictType && $column.dictName)
+        componentProps: {
+            options: dict.${column.dictName},
+        },
+#end
+        colProps: { span: 6 },
+    },
+#end
+#end
+];
+
+/** 表单数据 */
+export const formSchema: FormSchema[] = [
+#foreach ($column in $columns)
+#if(($table.tree || $table.subTree) && $column.javaField == $treeMap.parentIdColumn.javaField)
+    {
+        label: '${treeMap.parentIdColumn.readNameNoSuffix()}',
+        field: '${treeMap.parentIdColumn.javaField}',
+        component: 'TreeSelect',
+        componentProps: {
+            showSearch: true,
+            treeNodeFilterProp: 'title',
+            fieldNames: {
+                label: '${treeMap.nameColumn.javaField}',
+                key: '${treeMap.idColumn.javaField}',
+                value: '${treeMap.idColumn.javaField}',
+            },
+            getPopupContainer: () => document.body,
+        },
+        required: true,
+        colProps: { span: 24 },
+    },
+#else
+#set($hide = true)
+#foreach($item in $mustHideField)
+#if($column.javaField == $item)
+#set($hide = false)
+#break
+#end
+#end
+#if($column.isInsert() == false)
+#set($hide = false)
+#end
+#if($hide)
+    {
+        label: '${column.readNameNoSuffix()}',
+        field: '${column.javaField}',
+        component: '${column.htmlType}',
+#if($column.htmlType == 'InputNumber')
+        defaultValue: SortEnum.ZERO,
+#end
+#if($column.dictType && $column.dictName)
+        componentProps: {
+            options: dict.${column.dictName},
+#if($column.htmlType == 'Select')
+            showSearch: true,
+            treeNodeFilterProp: 'title',
+#end
+        },
+#end
+#if($column.isPk())
+        show: false,
+#if($column.isRequired())
+        required: true,
+#end
+        colProps: { span: 12 },
+#end
+    },
+#end
+#end
+#end
+];
+
+/** 详情数据 */
+export const detailSchema: DescItem[] = [
+#foreach ($column in $columns)
+#set($hide = true)
+#foreach($item in $mustHideField)
+#if($column.javaField == $item)
+#set($hide = false)
+#break
+#end
+#end
+#if($column.isView() == false)
+#set($hide = false)
+#end
+#if($hide)
+    {
+        label: '${column.readNameNoSuffix()}',
+        field: '${column.javaField}',
+#if($column.dictType && $column.dictName)
+        render: (val) => {
+            return dictConversion(dict.${column.dictName}, val);
+        },
+#end
+    },
+#end
+#end
+];

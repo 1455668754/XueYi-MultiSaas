@@ -1,0 +1,140 @@
+package com.xueyi.common.web.entity.manager;
+
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.xueyi.common.core.constant.BaseConstants;
+import com.xueyi.common.core.constant.SqlConstants;
+import com.xueyi.common.core.web.entity.TreeEntity;
+import com.xueyi.common.web.entity.manager.handle.TreeHandleManager;
+import com.xueyi.common.web.entity.mapper.TreeMapper;
+
+import java.io.Serializable;
+
+/**
+ * 数据封装层 树型通用数据处理
+ *
+ * @param <D>  Dto
+ * @param <DM> DtoMapper
+ * @author xueyi
+ */
+public class TreeManager<D extends TreeEntity<D>, DM extends TreeMapper<D>> extends TreeHandleManager<D, DM> {
+
+    /**
+     * 根据Id修改其子节点的状态
+     *
+     * @param id     Id
+     * @param status 状态
+     * @return 结果
+     */
+    public int updateChildrenStatus(Serializable id, String status) {
+        return baseMapper.update(null,
+                Wrappers.<D>update().lambda()
+                        .set(D::getStatus, status)
+                        .apply("find_in_set({0},{1})", id, SqlConstants.Entity.ANCESTORS.getCode()));
+    }
+
+    /**
+     * 根据Id修改其子节点的祖籍
+     *
+     * @param id           Id
+     * @param newAncestors 新祖籍
+     * @param oldAncestors 旧祖籍
+     * @return 结果
+     */
+    public int updateChildrenAncestors(Serializable id, String newAncestors, String oldAncestors) {
+        return baseMapper.update(null,
+                Wrappers.<D>update().lambda()
+                        .setSql(StrUtil.format("{} = insert({},{},{},{})", SqlConstants.Entity.ANCESTORS.getCode(), SqlConstants.Entity.ANCESTORS.getCode(), 1, oldAncestors.length(), newAncestors))
+                        .apply("find_in_set({0},{1})", id, SqlConstants.Entity.ANCESTORS.getCode()));
+    }
+
+    /**
+     * 根据Id修改其子节点的祖籍和状态
+     *
+     * @param id           Id
+     * @param status       状态
+     * @param newAncestors 新祖籍
+     * @param oldAncestors 旧祖籍
+     * @return 结果
+     */
+    public int updateChildren(Serializable id, String status, String newAncestors, String oldAncestors) {
+        return baseMapper.update(null,
+                Wrappers.<D>update().lambda()
+                        .set(D::getStatus, status)
+                        .setSql(StrUtil.format("{} = insert({},{},{},{})", SqlConstants.Entity.ANCESTORS.getCode(), SqlConstants.Entity.ANCESTORS.getCode(), 1, oldAncestors.length(), newAncestors))
+                        .apply("find_in_set({0},{1})", id, SqlConstants.Entity.ANCESTORS.getCode()));
+    }
+
+    /**
+     * 根据Id删除其子节点
+     *
+     * @param id Id
+     * @return 结果
+     */
+    public int deleteChildren(Serializable id) {
+        return baseMapper.delete(
+                Wrappers.<D>update().lambda()
+                        .eq(D::getId, id)
+                        .apply("find_in_set({0},{1})", id, SqlConstants.Entity.ANCESTORS.getCode()));
+    }
+
+    /**
+     * 校验是否为父级的子级
+     *
+     * @param id       Id
+     * @param parentId 父级Id
+     * @return 结果 | true/false 是/否
+     */
+    public D checkIsChild(Serializable id, Serializable parentId) {
+        return baseMapper.selectOne(
+                Wrappers.<D>query().lambda()
+                        .eq(D::getId, id)
+                        .apply("find_in_set({0},{1})", parentId, SqlConstants.Entity.ANCESTORS.getCode())
+                        .last(SqlConstants.LIMIT_ONE));
+    }
+
+    /**
+     * 校验是否存在子节点
+     *
+     * @param id Id
+     * @return 结果 | true/false 有/无
+     */
+    public D checkHasChild(Serializable id) {
+        return baseMapper.selectOne(
+                Wrappers.<D>query().lambda()
+                        .apply("find_in_set({0},{1})", id, SqlConstants.Entity.ANCESTORS.getCode())
+                        .last(SqlConstants.LIMIT_ONE));
+    }
+
+    /**
+     * 校验是否有启用(正常状态)的子节点
+     *
+     * @param id Id
+     * @return 结果 | true/false 有/无
+     */
+    public D checkHasNormalChild(Serializable id) {
+        return baseMapper.selectOne(
+                Wrappers.<D>query().lambda()
+                        .ne(D::getStatus, BaseConstants.Status.NORMAL.getCode())
+                        .apply("find_in_set({0},{1})", id, SqlConstants.Entity.ANCESTORS.getCode())
+                        .last(SqlConstants.LIMIT_ONE));
+    }
+
+    /**
+     * 校验名称是否唯一
+     *
+     * @param id       Id
+     * @param parentId 父级Id
+     * @param name     名称
+     * @return 数据对象
+     */
+    public D checkNameUnique(Serializable id, Serializable parentId, String name) {
+        return baseMapper.selectOne(
+                Wrappers.<D>query().lambda()
+                .ne(D::getId, id)
+                .eq(D::getParentId, parentId)
+                .eq(D::getName, name)
+                .last(SqlConstants.LIMIT_ONE));
+    }
+}

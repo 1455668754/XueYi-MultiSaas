@@ -1,0 +1,67 @@
+package ${packageName}.service.impl;
+
+#if($table.base)
+#set($Entity="Base")
+#set($generics = "<"+${ClassName}+"Dto, "+${ClassName}+"Manager, "+${ClassName}+"Mapper>")
+#elseif($table.tree)
+#set($Entity="Tree")
+#set($generics = "<"+${ClassName}+"Dto, "+${ClassName}+"Manager, "+${ClassName}+"Mapper>")
+#elseif($table.subBase)
+#set($Entity="SubBase")
+#set($generics = "<"+${ClassName}+"Dto, "+${ClassName}+"Manager, "+${ClassName}+"Mapper, "+${subClassName}+"Dto, I"+${subClassName}+"Service, "+${subClassName}+"Mapper>")
+#elseif($table.subTree)
+#set($Entity="SubTree")
+#set($generics = "<"+${ClassName}+"Dto, "+${ClassName}+"Manager, "+${ClassName}+"Mapper, "+${subClassName}+"Dto, I"+${subClassName}+"Service, "+${subClassName}+"Mapper>")
+#end
+import ${packageName}.domain.dto.${ClassName}Dto;
+import ${packageName}.service.I${ClassName}Service;
+import ${packageName}.manager.${ClassName}Manager;
+import ${packageName}.mapper.${ClassName}Mapper;
+#if($table.subBase || $table.subTree)
+import ${subPackageName}.domain.dto.${subClassName}Dto;
+import ${subPackageName}.service.I${subClassName}Service;
+import ${subPackageName}.mapper.${subClassName}Mapper;
+import cn.hutool.core.util.ObjectUtil;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
+#end
+import com.xueyi.common.web.entity.service.impl.${Entity}ServiceImpl;
+import com.baomidou.dynamic.datasource.annotation.DS;
+import org.springframework.stereotype.Service;
+
+/**
+ * ${functionName}管理 服务层处理
+ *
+ * @author ${author}
+ */
+@Service
+@DS("#${sourceMode}")
+public class ${ClassName}ServiceImpl extends ${Entity}ServiceImpl${generics} implements I${ClassName}Service {
+#if($table.subBase || $table.subTree)
+#set($AttrName = $foreignColumn.javaField)
+#if($AttrName.length() > 2 && $AttrName.substring(1,2).matches("[A-Z]"))
+#set($field=$AttrName)
+#else
+#set($field=$AttrName.substring(0,1).toUpperCase() + ${AttrName.substring(1)})
+#end
+#set($subAttrName = $subForeignColumn.javaField)
+#if($subAttrName.length() > 2 && $subAttrName.substring(1,2).matches("[A-Z]"))
+#set($subField=$subAttrName)
+#else
+#set($subField=$subAttrName.substring(0,1).toUpperCase() + ${subAttrName.substring(1)})
+#end
+
+    /**
+     * 设置子数据的外键值
+     */
+    @Override
+    protected void setForeignKey(Collection<${subClassName}Dto> ${subclassNameNoPrefix}List, ${subClassName}Dto ${subclassNameNoPrefix}, ${ClassName}Dto ${classNameNoPrefix}, Serializable key) {
+        ${subForeignColumn.javaType} ${subForeignColumn.javaField} = ObjectUtil.isNotNull(${classNameNoPrefix}) ? ${classNameNoPrefix}.get${field}() : (${subForeignColumn.javaType}) key;
+        if (ObjectUtil.isNotNull(${subclassNameNoPrefix}))
+            ${subclassNameNoPrefix}.set${subField}(${subForeignColumn.javaField});
+        else
+            ${subclassNameNoPrefix}List.forEach(sub -> sub.set${subField}(${subForeignColumn.javaField}));
+    }
+#end
+}

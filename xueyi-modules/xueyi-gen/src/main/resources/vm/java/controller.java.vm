@@ -1,0 +1,46 @@
+package ${packageName}.controller;
+
+#if($table.base)
+#set($Entity="Base")
+#set($generics = "<"+${ClassName}+"Dto, I"+${ClassName}+"Service>")
+#elseif($table.tree)
+#set($Entity="Tree")
+#set($generics = "<"+${ClassName}+"Dto, I"+${ClassName}+"Service>")
+#elseif($table.subBase)
+#set($Entity="SubBase")
+#set($generics = "<"+${ClassName}+"Dto, I"+${ClassName}+"Service, "+${subClassName}+"Dto, I"+${subClassName}+"Service>")
+#elseif($table.subTree)
+#set($Entity="SubTree")
+#set($generics = "<"+${ClassName}+"Dto, I"+${ClassName}+"Service, "+${subClassName}+"Dto, I"+${subClassName}+"Service>")
+#end
+import ${packageName}.domain.dto.${ClassName}Dto;
+import ${packageName}.service.I${ClassName}Service;
+#if($table.subBase || $table.subTree)
+import ${subPackageName}.domain.dto.${subClassName}Dto;
+import ${subPackageName}.service.I${subClassName}Service;
+#end
+import com.xueyi.common.web.entity.controller.${Entity}Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+/**
+ * ${functionName}管理 业务处理
+ *
+ * @author ${author}
+ */
+@RestController
+@RequestMapping("/${businessName}")
+public class ${ClassName}Controller extends ${Entity}Controller${generics} {
+
+    /** 定义节点名称 */
+    protected String getNodeName() {
+        return "${functionName}";
+    }
+#if($table.subBase || $table.subTree)
+
+    /** 定义子数据名称 */
+    protected String getSubName() {
+        return "${subFunctionName}";
+    }
+#end
+}

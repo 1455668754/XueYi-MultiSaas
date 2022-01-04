@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xueyi.gen.mapper.GenTableColumnMapper">
+    
+    <resultMap type="com.xueyi.gen.domain.dto.GenTableColumnDto" id="GenTableColumnResult">
+        <id     property="id"               column="id"             />
+        <result property="name"             column="name"           />
+        <result property="comment"          column="comment"        />
+        <result property="type"             column="type"           />
+        <result property="isPk"             column="is_pk"          />
+        <result property="isIncrement"      column="is_increment"   />
+        <result property="isRequired"       column="is_required"    />
+        <result property="isUnique"         column="is_unique"      />
+        <result property="sort"             column="sort"           />
+    </resultMap>
+	
+    <select id="selectDbTableColumnsByName" parameterType="String" resultMap="GenTableColumnResult">
+		select column_name as name, column_comment as comment, data_type as type,
+		       (case when column_key = 'PRI' then 1 else 0 end) as is_pk,
+		       (case when extra = 'auto_increment' then 1 else 0 end) as is_increment,
+		       (case when (is_nullable = 'no' <![CDATA[ && ]]> column_key != 'PRI' <![CDATA[ && ]]> column_default is null) then 1 else 0 end) as is_required,
+		       (case when column_key = 'UNI' then 1 else 0 end) as is_unique,
+		       ordinal_position as sort
+		from information_schema.columns
+		where table_schema = (select database()) and table_name = (#{tableName})
+		order by ordinal_position
+	</select>
+
+</mapper>
