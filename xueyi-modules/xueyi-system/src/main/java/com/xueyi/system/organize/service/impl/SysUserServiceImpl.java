@@ -10,13 +10,15 @@ import com.xueyi.system.organize.mapper.SysUserMapper;
 import com.xueyi.system.organize.service.ISysUserService;
 import org.springframework.stereotype.Service;
 
+import static com.xueyi.common.core.constant.TenantConstants.ISOLATE;
+
 /**
  * 用户管理 服务层处理
  *
  * @author xueyi
  */
 @Service
-@DS("#isolate")
+@DS(ISOLATE)
 public class SysUserServiceImpl extends BaseServiceImpl<SysUserDto, SysUserManager, SysUserMapper> implements ISysUserService {
 
     /**
@@ -30,7 +32,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDto, SysUserManag
      */
     @Override
     @DS("#sourceName")
-    public SysUserDto userLogin(String userName, String password, Long enterpriseId, String sourceName){
+    public SysUserDto userLogin(String userName, String password, Long enterpriseId, String sourceName) {
         return baseManager.userLogin(userName, password, enterpriseId);
     }
 

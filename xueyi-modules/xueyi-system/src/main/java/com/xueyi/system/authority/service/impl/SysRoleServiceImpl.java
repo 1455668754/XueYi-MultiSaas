@@ -10,13 +10,15 @@ import com.xueyi.system.authority.mapper.SysRoleMapper;
 import com.xueyi.system.authority.service.ISysRoleService;
 import org.springframework.stereotype.Service;
 
+import static com.xueyi.common.core.constant.TenantConstants.ISOLATE;
+
 /**
  * 角色管理 服务层处理
  *
  * @author xueyi
  */
 @Service
-@DS("#isolate")
+@DS(ISOLATE)
 public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleDto, SysRoleManager, SysRoleMapper> implements ISysRoleService {
 
 

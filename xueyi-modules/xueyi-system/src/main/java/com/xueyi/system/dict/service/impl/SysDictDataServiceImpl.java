@@ -17,13 +17,15 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.xueyi.common.core.constant.TenantConstants.MASTER;
+
 /**
  * 字典数据管理 业务层处理
  *
  * @author xueyi
  */
 @Service
-@DS("#main")
+@DS(MASTER)
 public class SysDictDataServiceImpl extends BaseServiceImpl<SysDictDataDto, SysDictDataManager, SysDictDataMapper> implements ISysDictDataService {
 
     @Autowired

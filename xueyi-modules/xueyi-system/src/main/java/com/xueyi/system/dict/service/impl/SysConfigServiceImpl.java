@@ -20,13 +20,15 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.xueyi.common.core.constant.TenantConstants.MASTER;
+
 /**
  * 参数配置管理 服务层实现
  *
  * @author xueyi
  */
 @Service
-@DS("#main")
+@DS(MASTER)
 public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigDto, SysConfigManager, SysConfigMapper> implements ISysConfigService {
 
     @Autowired

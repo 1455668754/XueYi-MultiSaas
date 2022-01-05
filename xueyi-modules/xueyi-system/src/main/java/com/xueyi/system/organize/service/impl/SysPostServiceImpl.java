@@ -14,13 +14,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.xueyi.common.core.constant.TenantConstants.ISOLATE;
+
 /**
  * 岗位管理 服务层处理
  *
  * @author xueyi
  */
 @Service
-@DS("#isolate")
+@DS(ISOLATE)
 public class SysPostServiceImpl extends BaseServiceImpl<SysPostDto, SysPostManager, SysPostMapper> implements ISysPostService {
 
     /**

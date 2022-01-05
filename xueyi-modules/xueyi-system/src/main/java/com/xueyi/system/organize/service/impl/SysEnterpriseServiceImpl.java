@@ -8,13 +8,15 @@ import com.xueyi.system.organize.mapper.SysEnterpriseMapper;
 import com.xueyi.system.organize.service.ISysEnterpriseService;
 import org.springframework.stereotype.Service;
 
+import static com.xueyi.common.core.constant.TenantConstants.ISOLATE;
+
 /**
  * 企业管理 服务层处理
  *
  * @author xueyi
  */
 @Service
-@DS("#isolate")
+@DS(ISOLATE)
 public class SysEnterpriseServiceImpl extends BaseServiceImpl<SysEnterpriseDto, SysEnterpriseManager, SysEnterpriseMapper> implements ISysEnterpriseService {
 
     /**
@@ -24,7 +26,7 @@ public class SysEnterpriseServiceImpl extends BaseServiceImpl<SysEnterpriseDto, 
      * @return 企业对象
      */
     @Override
-    public SysEnterpriseDto selectByName(String name){
+    public SysEnterpriseDto selectByName(String name) {
         return baseManager.selectByName(name);
     }
 }

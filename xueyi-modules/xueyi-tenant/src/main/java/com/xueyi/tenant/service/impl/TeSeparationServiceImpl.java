@@ -6,13 +6,15 @@ import com.xueyi.tenant.service.ITeSeparationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import static com.xueyi.common.core.constant.TenantConstants.MASTER;
+
 /**
  * 数据源 业务层处理
  *
  * @author xueyi
  */
 @Service
-@DS("#main")
+@DS(MASTER)
 public class TeSeparationServiceImpl implements ITeSeparationService {
 
     @Autowired

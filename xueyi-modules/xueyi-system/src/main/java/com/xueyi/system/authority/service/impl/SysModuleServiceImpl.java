@@ -16,26 +16,15 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
-//import com.xueyi.system.domain.dto.SysModule;55
-//import com.xueyi.system.service.ISysModuleService;66
-//import com.xueyi.system.manager.SysModuleManager;66
-//import com.xueyi.system.mapper.SysModuleMapper;77
-//import com.xueyi.system.domain.dto.SysMenu;44
-//import com.xueyi.system.service.ISysMenuService;77
-//import com.xueyi.system.mapper.SysMenuMapper;77
-//import cn.hutool.core.util.ObjectUtil;11
-//import java.io.Serializable;76
-//import java.util.Collection;67
-//import com.xueyi.common.web.entity.service.impl.SubBaseServiceImpl;33
-//import com.baomidou.dynamic.datasource.annotation.DS;22
-//import org.springframework.stereotype.Service;4565
+import static com.xueyi.common.core.constant.TenantConstants.ISOLATE;
+
 /**
  * 模块管理 服务层处理
  *
  * @author xueyi
  */
 @Service
-@DS("#isolate")
+@DS(ISOLATE)
 public class SysModuleServiceImpl extends SubBaseServiceImpl<SysModuleDto, SysModuleManager, SysModuleMapper, SysMenuDto, ISysMenuService, SysMenuMapper> implements ISysModuleService {
 
     /**

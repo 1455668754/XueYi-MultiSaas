@@ -17,13 +17,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.xueyi.common.core.constant.TenantConstants.MASTER;
+
 /**
  * 策略组管理 服务层处理
  *
  * @author xueyi
  */
 @Service
-@DS("#main")
+@DS(MASTER)
 public class SysSourceServiceImpl extends BaseServiceImpl<Source, SysSourceManager, SysSourceMapper> implements ISysSourceService {
 
     @Autowired

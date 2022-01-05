@@ -9,13 +9,15 @@ import com.xueyi.tenant.service.ITeSourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import static com.xueyi.common.core.constant.TenantConstants.MASTER;
+
 /**
  * 数据源管理 服务层处理
  *
  * @author xueyi
  */
 @Service
-@DS("#main")
+@DS(MASTER)
 public class TeSourceServiceImpl extends BaseServiceImpl<TeSourceDto, TeSourceManager, TeSourceMapper> implements ITeSourceService {
 
     @Autowired

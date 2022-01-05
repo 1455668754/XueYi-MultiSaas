@@ -14,13 +14,15 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Set;
 
+import static com.xueyi.common.core.constant.TenantConstants.MASTER;
+
 /**
  * 菜单管理 服务层处理
  *
  * @author xueyi
  */
 @Service
-@DS("#main")
+@DS(MASTER)
 public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuDto, SysMenuManager, SysMenuMapper> implements ISysMenuService {
 
     /**
@@ -69,7 +71,7 @@ public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuDto, SysMenuManag
      * @return 菜单列表
      */
     @Override
-    public List<SysMenuDto> getMenuByMenuType(Long moduleId, String menuType){
+    public List<SysMenuDto> getMenuByMenuType(Long moduleId, String menuType) {
         return baseManager.getMenuByMenuType(moduleId, menuType);
     }
 
@@ -79,7 +81,7 @@ public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuDto, SysMenuManag
      * @param id 菜单Id
      * @return 结果 | true/false 有/无
      */
-    public boolean checkMenuExistTenant(Long id){
+    public boolean checkMenuExistTenant(Long id) {
         return ObjectUtil.isNotNull(baseManager.checkMenuExistTenant(id));
     }
 
@@ -89,7 +91,7 @@ public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuDto, SysMenuManag
      * @param id 菜单Id
      * @return 结果 | true/false 有/无
      */
-    public boolean checkMenuExistRole(Long id){
+    public boolean checkMenuExistRole(Long id) {
         return ObjectUtil.isNotNull(baseManager.checkMenuExistRole(id));
     }
 

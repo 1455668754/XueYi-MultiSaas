@@ -16,13 +16,15 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.xueyi.common.core.constant.TenantConstants.ISOLATE;
+
 /**
  * 登录管理 服务层处理
  *
  * @author xueyi
  */
 @Service
-@DS("#isolate")
+@DS(ISOLATE)
 public class SysLoginServiceImpl implements ISysLoginService {
 
     @Autowired

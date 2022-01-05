@@ -24,13 +24,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.xueyi.common.core.constant.TenantConstants.MASTER;
+
 /**
  * 字典类型管理 业务层处理
  *
  * @author xueyi
  */
 @Service
-@DS("#main")
+@DS(MASTER)
 public class SysDictTypeServiceImpl extends SubBaseServiceImpl<SysDictTypeDto, SysDictTypeManager, SysDictTypeMapper, SysDictDataDto, ISysDictDataService, SysDictDataMapper> implements ISysDictTypeService {
 
     @Autowired
@@ -135,7 +137,7 @@ public class SysDictTypeServiceImpl extends SubBaseServiceImpl<SysDictTypeDto, S
      * 根据编码删除字典缓存
      */
     private void deleteDictCache(String code) {
-        redisService.deleteCacheMapHKey(CacheConstants.SYS_DICT_KEY,code);
+        redisService.deleteCacheMapHKey(CacheConstants.SYS_DICT_KEY, code);
     }
 
     /**

@@ -9,13 +9,15 @@ import com.xueyi.system.monitor.mapper.SysOperationLogMapper;
 import com.xueyi.system.monitor.service.ISysOperationLogService;
 import org.springframework.stereotype.Service;
 
+import static com.xueyi.common.core.constant.TenantConstants.ISOLATE;
+
 /**
  * 操作日志管理 服务层处理
  *
  * @author xueyi
  */
 @Service
-@DS("#isolate")
+@DS(ISOLATE)
 public class SysOperationLogServiceImpl extends BaseServiceImpl<SysOperationLogDto, SysOperationLogManager, SysOperationLogMapper> implements ISysOperationLogService {
 
     /**

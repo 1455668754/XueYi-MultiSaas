@@ -4,13 +4,15 @@ import com.baomidou.dynamic.datasource.annotation.DS;
 import com.xueyi.system.authority.service.ISysAuthorityService;
 import org.springframework.stereotype.Service;
 
+import static com.xueyi.common.core.constant.TenantConstants.ISOLATE;
+
 /**
  * 权限管理 服务层处理
  *
  * @author xueyi
  */
 @Service
-@DS("#isolate")
+@DS(ISOLATE)
 public class SysAuthorityServiceImpl implements ISysAuthorityService {
 //
 //

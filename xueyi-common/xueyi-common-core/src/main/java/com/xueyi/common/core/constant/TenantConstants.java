@@ -14,16 +14,22 @@ public class TenantConstants {
     public static final Long COMMON_TENANT_ID = 0L;
 
     /** 具备公共数据的表名 */
-    public static final String[] COMMON_TENANT_TABLE = {"sys_menu","sys_module"};
+    public static final String[] COMMON_TENANT_TABLE = {"sys_menu", "sys_module"};
 
     /** 不进行租户控制的表名 */
-    public static final String[] EXCLUDE_TENANT_TABLE = {"te_tenant", "te_strategy","te_strategy_source_merge",
-            "te_source","te_source_separation_merge","sys_dict_type","sys_dict_data","sys_config","gen_table","gen_table_column"};
+    public static final String[] EXCLUDE_TENANT_TABLE = {"te_tenant", "te_strategy", "te_strategy_source_merge",
+            "te_source", "te_source_separation_merge", "sys_dict_type", "sys_dict_data", "sys_config", "gen_table", "gen_table_column"};
+
+    /** 策略源标识 */
+    public static final String ISOLATE = "#isolute";
+
+    /** 主数据源标识 */
+    public static final String MASTER = "#master";
 
     /** 数据源 */
     public enum Source {
 
-        MAIN("master", "默认数据源"), SLAVE("slave", "从数据源"), REGISTER("slave", "注册数据源");
+        MASTER("master", "默认数据源"), SLAVE("slave", "从数据源"), REGISTER("slave", "注册数据源");
 
         private final String code;
         private final String info;

@@ -30,13 +30,15 @@ import com.xueyi.common.web.entity.service.impl.${Entity}ServiceImpl;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import org.springframework.stereotype.Service;
 
+import static com.xueyi.common.core.constant.TenantConstants.${sourceMode};
+
 /**
  * ${functionName}管理 服务层处理
  *
  * @author ${author}
  */
 @Service
-@DS("#${sourceMode}")
+@DS(${sourceMode})
 public class ${ClassName}ServiceImpl extends ${Entity}ServiceImpl${generics} implements I${ClassName}Service {
 #if($table.subBase || $table.subTree)
 #set($AttrName = $foreignColumn.javaField)

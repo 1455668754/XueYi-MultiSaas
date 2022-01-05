@@ -10,6 +10,7 @@ import com.xueyi.tenant.service.ITeTenantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import static com.xueyi.common.core.constant.TenantConstants.MASTER;
 
 /**
  * 租户管理 服务层处理
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Service;
  * @author xueyi
  */
 @Service
-@DS("#main")
+@DS(MASTER)
 public class TeTenantServiceImpl extends BaseServiceImpl<TeTenantDto, TeTenantManager, TeTenantMapper> implements ITeTenantService {
 
     @Autowired

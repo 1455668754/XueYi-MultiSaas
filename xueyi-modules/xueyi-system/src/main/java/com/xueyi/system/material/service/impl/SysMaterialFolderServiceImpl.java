@@ -15,13 +15,15 @@ import org.springframework.stereotype.Service;
 import java.io.Serializable;
 import java.util.Collection;
 
+import static com.xueyi.common.core.constant.TenantConstants.ISOLATE;
+
 /**
  * 素材分类管理 服务层处理
  *
  * @author xueyi
  */
 @Service
-@DS("#isolate")
+@DS(ISOLATE)
 public class SysMaterialFolderServiceImpl extends SubTreeServiceImpl<SysMaterialFolderDto, SysMaterialFolderManager, SysMaterialFolderMapper, SysMaterialDto, ISysMaterialService, SysMaterialMapper> implements ISysMaterialFolderService {
 
     /**
