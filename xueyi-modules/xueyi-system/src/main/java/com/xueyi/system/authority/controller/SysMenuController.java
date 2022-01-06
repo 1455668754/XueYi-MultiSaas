@@ -12,10 +12,7 @@ import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.entity.controller.TreeController;
 import com.xueyi.system.api.domain.authority.dto.SysMenuDto;
 import com.xueyi.system.authority.service.ISysMenuService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -45,13 +42,11 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
     /**
      * 根据菜单类型获取指定模块的可配菜单集
      */
-    @GetMapping("/routeList/{moduleId}/{menuType}")
-    public AjaxResult getMenuByMenuType( @PathVariable("moduleId") Long moduleId, @PathVariable("menuType") String menuType) {
-        if(ObjectUtil.isNotNull(moduleId))
-            throw new ServiceException("请传入有效的模块Id");
-        else if(ObjectUtil.isNotNull(AuthorityConstants.MenuType.getValue(menuType)))
-            throw new ServiceException("请传入有效的菜单类型");
-        List<SysMenuDto> menus = baseService.getMenuByMenuType(moduleId, menuType);
+    @PostMapping("/routeList")
+    public AjaxResult getMenuByMenuType( @RequestBody SysMenuDto menu) {
+        if(ObjectUtil.isNull(menu) || ObjectUtil.isNull(menu.getModuleId()) || ObjectUtil.isNull(menu.getMenuType()))
+            throw new ServiceException("请传入有效参数");
+        List<SysMenuDto> menus = baseService.getMenuByMenuType(menu.getModuleId(), menu.getMenuType());
         return AjaxResult.success(TreeUtils.buildTree((menus)));
     }
 

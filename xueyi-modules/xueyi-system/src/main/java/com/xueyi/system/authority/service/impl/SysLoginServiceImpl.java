@@ -96,7 +96,6 @@ public class SysLoginServiceImpl implements ISysLoginService {
     @Override
     public Set<String> getMenuPermission(List<SysRoleDto> roleList, String isLessor, String userType, Long enterpriseId, String sourceName) {
         Set<String> perms = new HashSet<>();
-        System.out.println(sourceName);
         // 租管租户的超管用户拥有所有权限
         if (SysEnterpriseDto.isAdmin(isLessor) && SysUserDto.isAdmin(userType))
             perms.add("*:*:*");

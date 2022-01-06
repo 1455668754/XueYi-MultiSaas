@@ -153,13 +153,11 @@ public class SysMenuManager extends TreeManager<SysMenuDto, SysMenuMapper> {
                         .eq(SysMenuDto::getModuleId, moduleId);
                 break;
             case MENU:
+            case DIR:
                 queryWrapper
-                        .or().eq(SysMenuDto::getMenuType, AuthorityConstants.MenuType.DIR.getCode())
+                        .eq(SysMenuDto::getMenuType, AuthorityConstants.MenuType.DIR.getCode())
                         .or().eq(SysMenuDto::getId, AuthorityConstants.MENU_TOP_NODE)
                         .eq(SysMenuDto::getModuleId, moduleId);
-                break;
-            case DIR:
-                queryWrapper.eq(SysMenuDto::getId, AuthorityConstants.MENU_TOP_NODE);
                 break;
             default:
                 return new ArrayList<>();
