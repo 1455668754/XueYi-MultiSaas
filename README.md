@@ -30,14 +30,14 @@
 ## 简介
 基于SpringBoot | Spring Cloud & Alibaba | Mybatis-Plus | Vue3 | vite2 | TypeScript | Ant-Design-Vue UI的多租户SaaS开发框架，为企业级多租户Saas及集团化应用提供快速开发解决方案。
 
-## 待发布
-mybatis | vue2 版本请移步 [XueYi-Cloud](https://gitee.com/xueyitiantang/XueYi-Cloud)
+## UI
+前端地址： [MultiSaas-UI](https://gitee.com/xueyitiantang/MultiSaas-UI)
 
-提前关注，star 别忘点上 :kissing_heart:
+## mybatis版本
+mybatis | vue2 版本请移步 [XueYi-Cloud](https://gitee.com/xueyitiantang/XueYi-Cloud)
 
 ## 交流
 - 请移步右上角  **一键三连** :kissing_heart:
 - QQ群：[![加入QQ群](https://img.shields.io/badge/779343138-blue.svg)](https://jq.qq.com/?_wv=1027&k=zw11JJhj)
 - 若发现bug，群内滴或Issues，提供复现路径。
 
-## 计划
