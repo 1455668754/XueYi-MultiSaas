@@ -55,8 +55,8 @@
 </template>
 
 <script lang="ts">
-  import { ${BusinessName}Auth } from '/@/enums/auth/${frontModuleName}/${businessName}Auth.auth';
-  import { del${BusinessName}Api, list${BusinessName}Api } from '/@/api/${frontModuleName}/${businessName}';
+  import { ${BusinessName}Auth } from '@xueyi/tokens/auth/${frontModuleName}/${businessName}Auth.auth';
+  import { del${BusinessName}Api, list${BusinessName}Api } from '@service/${frontModuleName}/${businessName}';
   import { ${BusinessName}DetailGo, columns, searchFormSchema } from './${businessName}.data';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import ${BusinessName}Modal from './${BusinessName}Modal.vue';
@@ -64,7 +64,7 @@
   import { defineComponent, reactive } from 'vue';
   import { useModal } from '/@/components/Modal';
   import { useGo } from '/@/hooks/web/usePage';
-  import { IconEnum } from '/@/enums/appEnum';
+  import { IconEnum } from '@xueyi/tokens/enums/basic';
 
   export default defineComponent({
     name: '${BusinessName}Management',

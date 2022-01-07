@@ -5,7 +5,7 @@ import { dicDictList, dictConversion } from '/@/utils/xueyi';
 import { DescItem } from '/@/components/Description';
 #foreach ($column in $columns)
 #if($column.htmlType == 'InputNumber')
-import { SortEnum } from '/@/enums/BaseEnum';
+import { SortEnum } from '@xueyi/tokens/enums/basic';
 #break
 #end
 #end

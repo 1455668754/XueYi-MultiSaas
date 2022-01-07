@@ -24,16 +24,19 @@ import java.util.*;
 public class VelocityUtils {
 
     /** 项目空间路径 */
-    private static final String PROJECT_PATH = "main/java" ;
+    private static final String PROJECT_PATH = "main/java";
 
     /** mybatis空间路径 */
-    private static final String MYBATIS_PATH = "main/resources/mapper" ;
+    private static final String MYBATIS_PATH = "main/resources/mapper";
 
     /** 隐藏字段数组 */
-    private static final String HIDE = "hide" ;
+    private static final String HIDE = "hide";
 
     /** 覆写字段数组 */
-    private static final String COVER = "cover" ;
+    private static final String COVER = "cover";
+
+    /** 前端路径区分标识 */
+    private static final String FRONT_DEPTH_IDENTIFICATION = ".";
 
     /**
      * 设置模板变量信息
@@ -80,6 +83,8 @@ public class VelocityUtils {
         velocityContext.put("packageName", packageName);
         // 生成前端包路径
         velocityContext.put("frontModuleName", frontModuleName);
+        // 生成前端包路径深度
+        velocityContext.put("frontModuleDepth", searchCount(FRONT_DEPTH_IDENTIFICATION, frontModuleName) + 1);
         // 作者
         velocityContext.put("author", genTable.getFunctionAuthor());
         // 当前日期
@@ -232,10 +237,10 @@ public class VelocityUtils {
      */
     public static List<String> getTemplateList(String tplCategory) {
         List<String> templates = new ArrayList<>();
-        if(StrUtil.equals(tplCategory, GenConstants.TemplateType.MERGE.getCode())){
+        if (StrUtil.equals(tplCategory, GenConstants.TemplateType.MERGE.getCode())) {
             templates.add("vm/java/merge/merge.java.vm");
             templates.add("vm/java/merge/mergeMapper.java.vm");
-        }else {
+        } else {
             templates.add("vm/java/dto.java.vm");
             templates.add("vm/java/po.java.vm");
             templates.add("vm/java/controller.java.vm");
@@ -246,9 +251,9 @@ public class VelocityUtils {
             templates.add("vm/sql/sql.sql.vm");
             templates.add("vm/ts/api.ts.vm");
             templates.add("vm/ts/data.ts.vm");
-            templates.add("vm/ts/authEnum.auth.ts.vm");
+            templates.add("vm/ts/authauth.ts.vm");
             templates.add("vm/ts/infoModel.ts.vm");
-            templates.add("vm/ts/typeInfo.d.ts.vm");
+            templates.add("vm/ts/model.ts.vm");
             switch (Objects.requireNonNull(GenConstants.TemplateType.getValue(tplCategory))) {
                 case BASE:
                     templates.add("vm/vue/detail.vue.vm");
@@ -275,7 +280,7 @@ public class VelocityUtils {
      */
     public static String getFileName(String template, GenTableDto genTable) {
         // 文件名称
-        String fileName = "" ;
+        String fileName = "";
         // 包路径
         String packageName = genTable.getPackageName();
         // 模块名
@@ -287,7 +292,7 @@ public class VelocityUtils {
 
         String javaPath = PROJECT_PATH + "/" + StringUtils.replace(packageName, ".", "/");
         String mybatisPath = MYBATIS_PATH + "/" + moduleName;
-        String vuePath = "vue" ;
+        String vuePath = "vue";
 
         if (template.contains("dto.java.vm")) {
             fileName = StringUtils.format("{}/domain/{}.java", javaPath, className);
@@ -305,7 +310,7 @@ public class VelocityUtils {
         } else if (template.contains("mapper.xml.vm")) {
             fileName = StringUtils.format("{}/{}Mapper.xml", mybatisPath, className);
         } else if (template.contains("sql.sql.vm")) {
-            fileName = businessName + "Menu.sql" ;
+            fileName = businessName + "Menu.sql";
         } else if (template.contains("api.js.vm")) {
             fileName = StringUtils.format("{}/api/{}/{}.js", vuePath, moduleName, businessName);
         } else if (template.contains("index.vue.vm")) {
@@ -590,5 +595,21 @@ public class VelocityUtils {
             return paramsObj.getLong(GenConstants.OptionField.PARENT_MENU_ID.getCode());
         }
         return AuthorityConstants.MENU_TOP_NODE;
+    }
+
+    /**
+     * 获取指定字符出现次数
+     *
+     * @param shortStr 计重字符串
+     * @param longStr  字符串
+     * @return 计重字符串出现次数
+     */
+    public static int searchCount(String shortStr, String longStr) {
+        int count = 0;
+        while (longStr.contains(shortStr)) {
+            count++;
+            longStr = longStr.substring(longStr.indexOf(shortStr) + shortStr.length());
+        }
+        return count;
     }
 }

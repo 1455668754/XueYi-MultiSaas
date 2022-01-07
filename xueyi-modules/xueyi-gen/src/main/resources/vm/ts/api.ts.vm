@@ -1,5 +1,9 @@
-import { ${BusinessName}IM,#if($table.tree || $table.subTree) ${BusinessName}PM#else ${BusinessName}PPM#end,#if($table.tree || $table.subTree) ${BusinessName}LM#else ${BusinessName}LRM#end } from '/@/api/${frontModuleName}/model/${businessName}IM';
-import { defHttp } from '/@/utils/http/axios';
+#set($frontDepth = "")
+#foreach($item in $frontModuleDepth)
+#set($frontDepth = $frontDepth + "../")
+#end
+import { ${BusinessName}IM,#if($table.tree || $table.subTree) ${BusinessName}PM#else ${BusinessName}PPM#end,#if($table.tree || $table.subTree) ${BusinessName}LM#else ${BusinessName}LRM#end } from '@xueyi/types'
+import { defaultRequest } from '${frontDepth}request'
 
 enum Api {
     LIST_${BUSINESSName} = '/${moduleName}/${businessName}/list',
@@ -27,26 +31,26 @@ enum Api {
 
 /** 查询${functionName}列表 */
 export const list${BusinessName}Api = (params?: #if($table.tree || $table.subTree)${BusinessName}PM#else${BusinessName}PPM#end) =>
-    defHttp.get<#if($table.tree || $table.subTree)${BusinessName}LM#else${BusinessName}LRM#end>({ url: Api.LIST_${BUSINESSName}, params });
+    defaultRequest.get<#if($table.tree || $table.subTree)${BusinessName}LM#else${BusinessName}LRM#end>({ url: Api.LIST_${BUSINESSName}, params })
 
 #if($table.tree || $table.subTree)
 /** 查询${functionName}列表（排除节点） */
 export const list${BusinessName}ExcludeChildApi = (${IdName}: ${IdType} | undefined) =>
-    defHttp.get<${BusinessName}LM>({
+    defaultRequest.get<${BusinessName}LM>({
         url: Api.LIST_${BUSINESSName}_EXCLUDE_CHILD,
         params: { ${IdName}: ${IdName} },
-    });
+    })
 
 #end
 /** 查询${functionName}详细 */
 export const get${BusinessName}Api = (${IdName}: ${IdType}) =>
-    defHttp.get<${BusinessName}IM>({ url: Api.GET_${BUSINESSName}, params: ${IdName} });
+    defaultRequest.get<${BusinessName}IM>({ url: Api.GET_${BUSINESSName}, params: ${IdName} })
 
 /** 新增${functionName} */
-export const add${BusinessName}Api = (params: ${BusinessName}IM) => defHttp.post({ url: Api.ADD_${BUSINESSName}, params });
+export const add${BusinessName}Api = (params: ${BusinessName}IM) => defaultRequest.post({ url: Api.ADD_${BUSINESSName}, params })
 
 /** 修改${functionName} */
-export const edit${BusinessName}Api = (params: ${BusinessName}IM) => defHttp.put({ url: Api.EDIT_${BUSINESSName}, params });
+export const edit${BusinessName}Api = (params: ${BusinessName}IM) => defaultRequest.put({ url: Api.EDIT_${BUSINESSName}, params })
 #if($statusColumn)
 #set($StatusName = $statusColumn.javaField)
 #if($statusColumn.javaType == 'Long')
@@ -60,11 +64,11 @@ export const edit${BusinessName}Api = (params: ${BusinessName}IM) => defHttp.put
 #end
 
 /** 修改${functionName}状态 */
-export const editStatus${BusinessName}Api = (${IdName}: ${IdType}, ${StatusName}: ${StatusType}) => defHttp.put({ url: Api.EDIT_STATUS_${BUSINESSName}, params: {${IdName}: ${IdName}, ${StatusName}: ${StatusName}} });
+export const editStatus${BusinessName}Api = (${IdName}: ${IdType}, ${StatusName}: ${StatusType}) => defaultRequest.put({ url: Api.EDIT_STATUS_${BUSINESSName}, params: {${IdName}: ${IdName}, ${StatusName}: ${StatusName}} })
 #end
 #if($IdType)
 #end
 
 /** 删除${functionName} */
 export const del${BusinessName}Api = (${IdName}s: #if($IdType == 'string | number')(${IdType}) | (${IdType})[]#else${IdType} | ${IdType}[]#end) =>
-    defHttp.delete({ url: Api.DEL_BATCH_${BUSINESSName}, params: ${IdName}s.toString() });
+    defaultRequest.delete({ url: Api.DEL_BATCH_${BUSINESSName}, params: ${IdName}s.toString() })

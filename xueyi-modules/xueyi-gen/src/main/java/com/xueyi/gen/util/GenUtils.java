@@ -201,25 +201,6 @@ public class GenUtils {
         return StringUtils.substring(tableName, lastIndex + 1, nameLength);
     }
 
-
-    /**
-     * 轮询返回符合的替换前缀
-     *
-     * @param replacement 替换值
-     * @param searchList  替换列表
-     * @return 字符串
-     */
-    public static String replaceFirst(String replacement, String[] searchList) {
-        String text = "" ;
-        for (String searchString : searchList) {
-            if (replacement.startsWith(searchString)) {
-                text = searchString;
-                break;
-            }
-        }
-        return text;
-    }
-
     /**
      * 关键字替换
      *
