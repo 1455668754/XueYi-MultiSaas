@@ -1,5 +1,6 @@
 package com.xueyi.job.util;
 
+import com.xueyi.common.core.utils.StringUtils;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.CronTrigger;
 import org.quartz.Job;
@@ -101,5 +102,17 @@ public class ScheduleUtils {
                 throw new TaskException("The task misfire policy '" + job.getMisfirePolicy()
                         + "' cannot be used in cron schedule tasks", Code.CONFIG_ERROR);
         }
+    }
+
+    /**
+     * 检查包名是否为白名单配置
+     *
+     * @param invokeTarget 目标字符串
+     * @return 结果
+     */
+    public static boolean whiteList(String invokeTarget) {
+        String packageName = StringUtils.substringBefore(invokeTarget, ")");
+        int count = StringUtils.countMatches(packageName, ".");
+        return count < 1 || StringUtils.containsAnyIgnoreCase(invokeTarget, ScheduleConstants.JOB_WHITELIST_STR);
     }
 }
