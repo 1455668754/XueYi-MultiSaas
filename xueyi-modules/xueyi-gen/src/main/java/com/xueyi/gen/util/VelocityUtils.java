@@ -8,7 +8,6 @@ import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.xueyi.common.core.constant.AuthorityConstants;
 import com.xueyi.common.core.constant.GenConstants;
-import com.xueyi.common.core.utils.DateUtils;
 import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.gen.domain.dto.GenTableColumnDto;
 import com.xueyi.gen.domain.dto.GenTableDto;
@@ -49,6 +48,7 @@ public class VelocityUtils {
         String packageName = genTable.getPackageName();
         String tplCategory = genTable.getTplCategory();
         String functionName = genTable.getFunctionName();
+        JSONObject optionsObj = JSONObject.parseObject(genTable.getOptions());
         Map<String, Set<String>> domainMap = getCoverMap(genTable);
 
         VelocityContext velocityContext = new VelocityContext();
@@ -82,14 +82,12 @@ public class VelocityUtils {
         velocityContext.put("packageName", packageName);
         // 作者
         velocityContext.put("author", genTable.getFunctionAuthor());
-        // 当前日期
-        velocityContext.put("datetime", DateUtils.getDate());
+//        // 当前日期
+//        velocityContext.put("datetime", DateUtils.getDate());
         // 主键字段
         velocityContext.put("pkColumn", genTable.getPkColumn());
         // 导入包集合
         velocityContext.put("importList", getImportList(genTable, domainMap.get(HIDE)));
-        // 权限前缀
-        velocityContext.put("permissionPrefix", getPermissionPrefix(moduleName, businessName));
         // 字段集合
         velocityContext.put("columns", genTable.getSubList());
         // 数据表排除字段
@@ -115,13 +113,13 @@ public class VelocityUtils {
         // 获取其他重要参数（名称、状态...）
         getOtherMainColum(velocityContext, genTable);
         // sql模板设置
-        setMenuVelocityContext(velocityContext, genTable);
+        setMenuVelocityContext(velocityContext, genTable, optionsObj);
         switch (Objects.requireNonNull(GenConstants.TemplateType.getValue(tplCategory))) {
             case TREE:
-                setTreeVelocityContext(velocityContext, genTable);
+                setTreeVelocityContext(velocityContext, genTable, optionsObj);
                 break;
             case SUB_TREE:
-                setTreeVelocityContext(velocityContext, genTable);
+                setTreeVelocityContext(velocityContext, genTable, optionsObj);
             case SUB_BASE:
                 setSubVelocityContext(velocityContext, genTable);
         }
@@ -145,11 +143,12 @@ public class VelocityUtils {
     /**
      * 设置sql模板变量信息
      */
-    public static void setMenuVelocityContext(VelocityContext context, GenTableDto genTable) {
-        String options = genTable.getOptions();
-        JSONObject paramsObj = JSONObject.parseObject(options);
-        context.put("parentModuleId", getParentModuleId(paramsObj));
-        context.put("parentMenuId", getParentMenuId(paramsObj));
+    public static void setMenuVelocityContext(VelocityContext context, GenTableDto genTable, JSONObject optionsObj) {
+        context.put("parentModuleId", getParentModuleId(optionsObj));
+        context.put("parentMenuId", getParentMenuId(optionsObj));
+        context.put("parentMenuPath", optionsObj.getString(GenConstants.OptionField.PARENT_MENU_PATH.getCode()));
+        context.put("parentMenuAncestors", optionsObj.getString(GenConstants.OptionField.PARENT_MENU_ANCESTORS.getCode()));
+
         context.put("menuId0", IdUtil.getSnowflake(0, 0).nextId());
         context.put("menuId1", IdUtil.getSnowflake(0, 0).nextId());
         context.put("menuId2", IdUtil.getSnowflake(0, 0).nextId());
@@ -159,8 +158,8 @@ public class VelocityUtils {
         context.put("menuId6", IdUtil.getSnowflake(0, 0).nextId());
     }
 
-    public static void setTreeVelocityContext(VelocityContext context, GenTableDto genTable) {
-        JSONObject optionsObj = JSONObject.parseObject(genTable.getOptions());
+    public static void setTreeVelocityContext(VelocityContext context, GenTableDto genTable, JSONObject optionsObj) {
+
         Map<String, GenTableColumnDto> treeMap = new HashMap<>();
         for (GenTableColumnDto column : genTable.getSubList()) {
             if (StrUtil.equals(optionsObj.getString(GenConstants.OptionField.COVER_TREE_ID.getCode()), GenConstants.Status.TRUE.getCode())
@@ -553,40 +552,27 @@ public class VelocityUtils {
     }
 
     /**
-     * 获取权限前缀
-     *
-     * @param moduleName   模块名称
-     * @param businessName 业务名称
-     * @return 返回权限前缀
-     */
-    public static String getPermissionPrefix(String moduleName, String businessName) {
-        return StringUtils.format("{}:{}", moduleName, businessName);
-    }
-
-    /**
      * 获取归属模块Id字段
      *
-     * @param paramsObj 生成其他选项
+     * @param optionsObj 生成其他选项
      * @return 归属模块Id字段
      */
-    public static Long getParentModuleId(JSONObject paramsObj) {
-        if (StringUtils.isNotEmpty(paramsObj) && paramsObj.containsKey(GenConstants.OptionField.PARENT_MODULE_ID.getCode())) {
-            return paramsObj.getLong(GenConstants.OptionField.PARENT_MODULE_ID.getCode());
-        }
-        return AuthorityConstants.MODULE_DEFAULT_NODE;
+    public static Long getParentModuleId(JSONObject optionsObj) {
+        return optionsObj.containsKey(GenConstants.OptionField.PARENT_MODULE_ID.getCode())
+                ? optionsObj.getLong(GenConstants.OptionField.PARENT_MODULE_ID.getCode())
+                : AuthorityConstants.MODULE_DEFAULT_NODE;
     }
 
     /**
      * 获取上级菜单Id字段
      *
-     * @param paramsObj 生成其他选项
+     * @param optionsObj 生成其他选项
      * @return 上级菜单Id字段
      */
-    public static Long getParentMenuId(JSONObject paramsObj) {
-        if (StringUtils.isNotEmpty(paramsObj) && paramsObj.containsKey(GenConstants.OptionField.PARENT_MENU_ID.getCode())) {
-            return paramsObj.getLong(GenConstants.OptionField.PARENT_MENU_ID.getCode());
-        }
-        return AuthorityConstants.MENU_TOP_NODE;
+    public static Long getParentMenuId(JSONObject optionsObj) {
+        return optionsObj.containsKey(GenConstants.OptionField.PARENT_MENU_ID.getCode())
+                ? optionsObj.getLong(GenConstants.OptionField.PARENT_MENU_ID.getCode())
+                : AuthorityConstants.MENU_TOP_NODE;
     }
 
 }

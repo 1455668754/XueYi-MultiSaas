@@ -1,14 +1,18 @@
 package com.xueyi.gen.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.xueyi.common.core.constant.GenConstants;
 import com.xueyi.common.core.constant.HttpConstants;
+import com.xueyi.common.core.constant.SecurityConstants;
+import com.xueyi.common.core.domain.R;
 import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.text.CharsetKit;
 import com.xueyi.common.core.utils.StringUtils;
+import com.xueyi.common.core.utils.TreeUtils;
 import com.xueyi.common.web.entity.service.impl.SubBaseServiceImpl;
 import com.xueyi.gen.domain.dto.GenTableColumnDto;
 import com.xueyi.gen.domain.dto.GenTableDto;
@@ -20,6 +24,8 @@ import com.xueyi.gen.service.IGenTableService;
 import com.xueyi.gen.util.GenUtils;
 import com.xueyi.gen.util.VelocityInitializer;
 import com.xueyi.gen.util.VelocityUtils;
+import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
+import com.xueyi.system.api.authority.feign.RemoteMenuService;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.velocity.Template;
@@ -27,13 +33,11 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -48,6 +52,8 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
 
     private static final Logger log = LoggerFactory.getLogger(GenTableServiceImpl.class);
 
+    @Autowired
+    private RemoteMenuService remoteMenuService;
     /**
      * 获取代码生成地址
      *
@@ -439,6 +445,7 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
             case BASE:
                 setBaseTable(table, optionsObj);
         }
+        setMenuOptions(table, optionsObj);
         return table;
     }
 
@@ -498,6 +505,51 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
             case TREE:
                 setTreeTable(table, optionsObj);
                 break;
+        }
+    }
+
+    /**
+     * 设置菜单信息
+     *
+     * @param table      业务表信息
+     * @param optionsObj 其它生成选项信息
+     */
+    private void setMenuOptions(GenTableDto table, JSONObject optionsObj) {
+        Long menuId = optionsObj.getLong(GenConstants.OptionField.PARENT_MENU_ID.getCode());
+        R<List<SysMenuDto>> result =  remoteMenuService.getAncestorsList(menuId, SecurityConstants.INNER);
+        if (result.isFail())
+            throw new ServiceException("菜单服务异常，请联系管理员！");
+        if (CollUtil.isNotEmpty(result.getResult())){
+            List<SysMenuDto> menuTree = TreeUtils.buildTree(result.getResult());
+            StringBuffer buffer = new StringBuffer();
+            // 节点祖籍一定为线性单链,且从顶级节点开始
+            recursionMenuFn(buffer, menuTree.get(0).getChildren().get(0));
+            optionsObj.put(GenConstants.OptionField.PARENT_MENU_PATH.getCode(), buffer.toString());
+        }
+        getParentMenuAncestors(menuId, result.getResult(),optionsObj);
+        table.setOptions(optionsObj.toString());
+    }
+
+    /**
+     * 获取父级菜单祖籍
+     */
+    private void getParentMenuAncestors(Long menuId, List<SysMenuDto> menus, JSONObject optionsObj) {
+        if(CollUtil.isNotEmpty(menus)){
+            Optional<SysMenuDto> menu = menus.stream().filter(e -> ObjectUtil.equals(e.getId(), menuId)).findFirst();
+            menu.ifPresent(sysMenuDto -> optionsObj.put(GenConstants.OptionField.PARENT_MENU_ANCESTORS.getCode(), sysMenuDto.getAncestors()));
+        }
+        if(optionsObj.containsKey(GenConstants.OptionField.PARENT_MENU_ANCESTORS.getCode()))
+            optionsObj.put(GenConstants.OptionField.PARENT_MENU_ANCESTORS.getCode(), "0");
+    }
+
+    /**
+     * 递归生成菜单父路径
+     */
+    private void recursionMenuFn(StringBuffer buffer, SysMenuDto menu) {
+        if(ObjectUtil.isNotNull(menu)) {
+            buffer.append("/").append(menu.getPath());
+            if (CollUtil.isNotEmpty(menu.getChildren()))
+                recursionMenuFn(buffer, menu.getChildren().get(0));
         }
     }
 

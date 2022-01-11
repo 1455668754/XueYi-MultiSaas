@@ -3,7 +3,6 @@ package com.xueyi.common.web.entity.manager;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.xueyi.common.core.constant.AuthorityConstants;
 import com.xueyi.common.core.constant.BaseConstants;
 import com.xueyi.common.core.constant.SqlConstants;
 import com.xueyi.common.core.web.entity.TreeEntity;
@@ -30,13 +29,12 @@ public class TreeManager<D extends TreeEntity<D>, DM extends TreeMapper<D>> exte
      */
     public List<D> selectAncestorsListById(Serializable id) {
         D d = baseMapper.selectById(id);
-        if (ObjectUtil.isNull(d))
+        if (ObjectUtil.isNull(d) || StrUtil.isBlank(d.getAncestors()))
             return null;
         return baseMapper.selectList(
                 Wrappers.<D>query().lambda()
                         .eq(D::getId, id)
-                        .or().in(D::getId, StrUtil.splitTrim(d.getAncestors(), ","))
-                        .ne(D::getId, AuthorityConstants.MENU_TOP_NODE));
+                        .or().in(D::getId, StrUtil.splitTrim(d.getAncestors(), ",")));
     }
 
     /**

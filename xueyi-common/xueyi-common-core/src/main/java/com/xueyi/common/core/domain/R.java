@@ -11,14 +11,11 @@ import java.io.Serializable;
  */
 public class R<T> implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
     /** 成功 */
     public static final int SUCCESS = Constants.SUCCESS;
-
     /** 失败 */
     public static final int FAIL = Constants.FAIL;
-
+    private static final long serialVersionUID = 1L;
     private int code;
 
     private String message;
@@ -87,5 +84,13 @@ public class R<T> implements Serializable {
 
     public void setResult(T result) {
         this.result = result;
+    }
+
+    public boolean isOk() {
+        return this.code == SUCCESS;
+    }
+
+    public boolean isFail() {
+        return this.code == FAIL;
     }
 }

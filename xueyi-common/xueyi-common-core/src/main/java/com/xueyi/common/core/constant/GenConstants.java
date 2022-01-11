@@ -146,6 +146,8 @@ public class GenConstants {
         ANCESTORS("ancestors", "祖籍列表Id字段"),
         PARENT_MODULE_ID("parentModuleId", "归属模块Id字段"),
         PARENT_MENU_ID("parentMenuId", "归属菜单Id字段"),
+        PARENT_MENU_PATH("parentMenuPath", "归属菜单路径字段"),
+        PARENT_MENU_ANCESTORS("parentMenuAncestors", "归属菜单祖籍字段"),
         COVER_ID("isCoverId", "覆写Id（Y是 N否）"),
         ID("id", "主键Id字段"),
         COVER_NAME("isCoverName", "覆写name（Y是 N否）"),

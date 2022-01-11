@@ -26,10 +26,6 @@ public class GenTableDto extends GenTablePo<GenTableColumnDto> {
     @TableField(exist = false)
     private GenTableDto subTable;
 
-    /** 模块 | 菜单信息 */
-    @TableField(exist = false)
-    private String menuOptions;
-
     public GenTableColumnDto getPkColumn() {
         return pkColumn;
     }
@@ -44,14 +40,6 @@ public class GenTableDto extends GenTablePo<GenTableColumnDto> {
 
     public void setSubTable(GenTableDto subTable) {
         this.subTable = subTable;
-    }
-
-    public String getMenuOptions() {
-        return menuOptions;
-    }
-
-    public void setMenuOptions(String menuOptions) {
-        this.menuOptions = menuOptions;
     }
 
     public boolean isBase() {

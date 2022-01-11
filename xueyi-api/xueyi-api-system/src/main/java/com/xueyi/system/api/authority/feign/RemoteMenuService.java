@@ -27,5 +27,5 @@ public interface RemoteMenuService {
      * @return 本节点及其所有祖籍节点数据对象集合
      */
     @GetMapping("/menu/getAncestorsList/{id}")
-    public R<List<SysMenuDto>> getAncestorsList(@PathVariable("id") Long id, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+    R<List<SysMenuDto>> getAncestorsList(@PathVariable("id") Long id, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
 }
