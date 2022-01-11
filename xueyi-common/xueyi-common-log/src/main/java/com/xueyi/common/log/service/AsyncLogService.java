@@ -3,8 +3,8 @@ package com.xueyi.common.log.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import com.xueyi.system.api.feign.RemoteLogService;
-import com.xueyi.system.api.domain.monitor.dto.SysOperationLogDto;
+import com.xueyi.system.api.log.feign.RemoteLogService;
+import com.xueyi.system.api.log.domain.dto.SysOperationLogDto;
 import com.xueyi.common.core.constant.SecurityConstants;
 
 /**

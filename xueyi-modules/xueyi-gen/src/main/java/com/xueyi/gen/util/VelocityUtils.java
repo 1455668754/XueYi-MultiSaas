@@ -45,7 +45,6 @@ public class VelocityUtils {
      */
     public static VelocityContext prepareContext(GenTableDto genTable) {
         String moduleName = genTable.getModuleName();
-        String frontModuleName = StrUtil.replace(genTable.getFrontPackageName(), ".", "/");
         String businessName = genTable.getBusinessName();
         String packageName = genTable.getPackageName();
         String tplCategory = genTable.getTplCategory();
@@ -81,10 +80,6 @@ public class VelocityUtils {
         velocityContext.put("basePackage", getPackagePrefix(packageName));
         // 生成包路径
         velocityContext.put("packageName", packageName);
-        // 生成前端包路径
-        velocityContext.put("frontModuleName", frontModuleName);
-        // 生成前端包路径深度
-        velocityContext.put("frontModuleDepth", searchCount(FRONT_DEPTH_IDENTIFICATION, frontModuleName) + 1);
         // 作者
         velocityContext.put("author", genTable.getFunctionAuthor());
         // 当前日期
@@ -218,8 +213,6 @@ public class VelocityUtils {
         context.put("subclassNameNoPrefix", StringUtils.uncapitalize(subTable.getClassName().replaceFirst(subTable.getPrefix(), "")));
         // 生成包路径
         context.put("subPackageName", subTable.getPackageName());
-        // 生成前端包路径
-        context.put("subFrontModuleName", StrUtil.replace(subTable.getFrontPackageName(), ".", "/"));
         // 生成功能名
         context.put("subFunctionName", StringUtils.isNotEmpty(functionName) ? functionName : "【请填写功能名称】");
         // 生成业务名(首字母大写)
@@ -251,9 +244,8 @@ public class VelocityUtils {
             templates.add("vm/sql/sql.sql.vm");
             templates.add("vm/ts/api.ts.vm");
             templates.add("vm/ts/data.ts.vm");
-            templates.add("vm/ts/authauth.ts.vm");
+            templates.add("vm/ts/auth.auth.ts.vm");
             templates.add("vm/ts/infoModel.ts.vm");
-            templates.add("vm/ts/model.ts.vm");
             switch (Objects.requireNonNull(GenConstants.TemplateType.getValue(tplCategory))) {
                 case BASE:
                     templates.add("vm/vue/detail.vue.vm");
@@ -597,19 +589,4 @@ public class VelocityUtils {
         return AuthorityConstants.MENU_TOP_NODE;
     }
 
-    /**
-     * 获取指定字符出现次数
-     *
-     * @param shortStr 计重字符串
-     * @param longStr  字符串
-     * @return 计重字符串出现次数
-     */
-    public static int searchCount(String shortStr, String longStr) {
-        int count = 0;
-        while (longStr.contains(shortStr)) {
-            count++;
-            longStr = longStr.substring(longStr.indexOf(shortStr) + shortStr.length());
-        }
-        return count;
-    }
 }

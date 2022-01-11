@@ -1,7 +1,7 @@
 package com.xueyi.system.organize.service;
 
 import com.xueyi.common.web.entity.service.IBaseService;
-import com.xueyi.system.api.domain.organize.dto.SysPostDto;
+import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 import com.xueyi.system.utils.vo.OrganizeTree;
 
 import java.util.List;

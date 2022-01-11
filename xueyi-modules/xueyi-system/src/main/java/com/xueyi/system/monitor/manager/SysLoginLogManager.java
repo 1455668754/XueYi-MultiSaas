@@ -1,9 +1,8 @@
 package com.xueyi.system.monitor.manager;
 
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.web.entity.manager.BaseManager;
-import com.xueyi.system.api.domain.monitor.dto.SysLoginLogDto;
+import com.xueyi.system.api.log.domain.dto.SysLoginLogDto;
 import com.xueyi.system.monitor.mapper.SysLoginLogMapper;
 import org.springframework.stereotype.Component;
 

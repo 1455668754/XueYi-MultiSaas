@@ -1,8 +1,8 @@
 package com.xueyi.system.authority.service;
 
-import com.xueyi.system.api.domain.authority.dto.SysRoleDto;
-import com.xueyi.system.api.domain.organize.dto.SysEnterpriseDto;
-import com.xueyi.system.api.domain.organize.dto.SysUserDto;
+import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
+import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
+import com.xueyi.system.api.organize.domain.dto.SysUserDto;
 
 import java.util.List;
 import java.util.Set;

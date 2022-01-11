@@ -3,7 +3,7 @@ package com.xueyi.system.authority.service.impl;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.xueyi.common.web.entity.service.impl.TreeServiceImpl;
-import com.xueyi.system.api.domain.authority.dto.SysMenuDto;
+import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.authority.manager.SysMenuManager;
 import com.xueyi.system.authority.mapper.SysMenuMapper;
 import com.xueyi.system.authority.service.ISysMenuService;

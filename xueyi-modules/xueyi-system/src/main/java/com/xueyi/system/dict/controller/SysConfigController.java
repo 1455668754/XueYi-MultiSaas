@@ -10,7 +10,7 @@ import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.web.entity.controller.BaseController;
-import com.xueyi.system.api.domain.dict.dto.SysConfigDto;
+import com.xueyi.system.api.dict.domain.dto.SysConfigDto;
 import com.xueyi.system.dict.service.ISysConfigService;
 import org.springframework.web.bind.annotation.*;
 

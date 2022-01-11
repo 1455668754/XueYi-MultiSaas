@@ -1,8 +1,8 @@
 package com.xueyi.system.api.model;
 
-import com.xueyi.system.api.domain.organize.dto.SysEnterpriseDto;
-import com.xueyi.system.api.domain.organize.dto.SysUserDto;
-import com.xueyi.system.api.domain.source.Source;
+import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
+import com.xueyi.system.api.organize.domain.dto.SysUserDto;
+import com.xueyi.system.api.source.domain.Source;
 
 import java.io.Serializable;
 import java.util.Set;

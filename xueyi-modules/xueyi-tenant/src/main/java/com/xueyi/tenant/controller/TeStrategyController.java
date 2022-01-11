@@ -1,7 +1,7 @@
 package com.xueyi.tenant.controller;
 
 import com.xueyi.common.web.entity.controller.BaseController;
-import com.xueyi.system.api.feign.RemoteSourceService;
+import com.xueyi.system.api.source.feign.RemoteSourceService;
 import com.xueyi.tenant.api.domain.source.dto.TeStrategyDto;
 import com.xueyi.tenant.service.ITeStrategyService;
 import org.springframework.beans.factory.annotation.Autowired;

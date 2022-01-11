@@ -3,7 +3,7 @@ package com.xueyi.common.security.utils;
 import com.xueyi.common.core.constant.CacheConstants;
 import com.xueyi.common.core.utils.SpringUtils;
 import com.xueyi.common.redis.service.RedisService;
-import com.xueyi.system.api.domain.source.Source;
+import com.xueyi.system.api.source.domain.Source;
 
 import java.io.Serializable;
 

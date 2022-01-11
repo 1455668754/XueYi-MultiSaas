@@ -4,7 +4,7 @@ import com.baomidou.dynamic.datasource.annotation.DS;
 import com.xueyi.common.core.constant.CacheConstants;
 import com.xueyi.common.redis.service.RedisService;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
-import com.xueyi.system.api.domain.dict.dto.SysDictDataDto;
+import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
 import com.xueyi.system.dict.manager.SysDictDataManager;
 import com.xueyi.system.dict.mapper.SysDictDataMapper;
 import com.xueyi.system.dict.service.ISysDictDataService;

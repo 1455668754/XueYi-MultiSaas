@@ -1,7 +1,7 @@
 package com.xueyi.system.dict.service;
 
 import com.xueyi.common.web.entity.service.IBaseService;
-import com.xueyi.system.api.domain.dict.dto.SysConfigDto;
+import com.xueyi.system.api.dict.domain.dto.SysConfigDto;
 
 /**
  * 参数配置管理 服务层

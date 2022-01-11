@@ -1,8 +1,8 @@
 package com.xueyi.system.organize.service;
 
 import com.xueyi.common.web.entity.service.ISubTreeService;
-import com.xueyi.system.api.domain.organize.dto.SysDeptDto;
-import com.xueyi.system.api.domain.organize.dto.SysPostDto;
+import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
+import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 
 /**
  * 部门管理 服务层

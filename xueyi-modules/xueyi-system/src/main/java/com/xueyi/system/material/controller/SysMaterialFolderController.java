@@ -1,8 +1,8 @@
 package com.xueyi.system.material.controller;
 
 import com.xueyi.common.web.entity.controller.SubTreeController;
-import com.xueyi.system.api.domain.material.dto.SysMaterialDto;
-import com.xueyi.system.api.domain.material.dto.SysMaterialFolderDto;
+import com.xueyi.system.api.file.domain.dto.SysMaterialDto;
+import com.xueyi.system.api.file.domain.dto.SysMaterialFolderDto;
 import com.xueyi.system.material.service.ISysMaterialFolderService;
 import com.xueyi.system.material.service.ISysMaterialService;
 import org.springframework.web.bind.annotation.RequestMapping;

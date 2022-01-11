@@ -6,7 +6,7 @@ import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.web.entity.controller.BaseController;
-import com.xueyi.system.api.domain.authority.dto.SysRoleDto;
+import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
 import com.xueyi.system.authority.service.ISysRoleService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

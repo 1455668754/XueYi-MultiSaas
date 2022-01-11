@@ -4,13 +4,15 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.AuthorityConstants;
 import com.xueyi.common.core.constant.BaseConstants;
+import com.xueyi.common.core.domain.R;
 import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.core.utils.TreeUtils;
 import com.xueyi.common.core.web.result.AjaxResult;
+import com.xueyi.common.security.annotation.InnerAuth;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.entity.controller.TreeController;
-import com.xueyi.system.api.domain.authority.dto.SysMenuDto;
+import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.authority.service.ISysMenuService;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +30,15 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
     /** 定义节点名称 */
     protected String getNodeName() {
         return "菜单";
+    }
+
+    /**
+     * 获取当前节点及其祖籍信息
+     */
+    @InnerAuth
+    @GetMapping("/getAncestorsList/{id}")
+    public R<List<SysMenuDto>> getAncestorsList(@PathVariable("id") Long id) {
+        return R.ok(baseService.selectAncestorsListById(id));
     }
 
     /**

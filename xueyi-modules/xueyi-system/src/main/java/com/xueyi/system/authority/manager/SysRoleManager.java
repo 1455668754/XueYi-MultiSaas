@@ -3,7 +3,7 @@ package com.xueyi.system.authority.manager;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.SqlConstants;
 import com.xueyi.common.web.entity.manager.BaseManager;
-import com.xueyi.system.api.domain.authority.dto.SysRoleDto;
+import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
 import com.xueyi.system.authority.mapper.SysRoleMapper;
 import org.springframework.stereotype.Component;
 

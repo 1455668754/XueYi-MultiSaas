@@ -5,7 +5,7 @@ import cn.hutool.core.util.ObjectUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.security.utils.DictUtils;
 import com.xueyi.common.web.entity.controller.BaseController;
-import com.xueyi.system.api.domain.dict.dto.SysDictDataDto;
+import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
 import com.xueyi.system.dict.service.ISysDictDataService;
 import org.springframework.web.bind.annotation.*;
 

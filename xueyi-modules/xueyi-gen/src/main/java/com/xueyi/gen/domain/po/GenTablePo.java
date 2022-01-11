@@ -39,11 +39,6 @@ public class GenTablePo<S> extends SubBaseEntity<S> {
     @TableField("package_name")
     private String packageName;
 
-    /** 生成前端包路径 */
-    @NotBlank(message = "生成前端包路径不能为空")
-    @TableField("front_package_name")
-    private String frontPackageName;
-
     /** 生成模块路径 */
     @NotBlank(message = "生成模块路径不能为空")
     @TableField("module_name")
@@ -119,14 +114,6 @@ public class GenTablePo<S> extends SubBaseEntity<S> {
 
     public void setPackageName(String packageName) {
         this.packageName = packageName;
-    }
-
-    public String getFrontPackageName() {
-        return frontPackageName;
-    }
-
-    public void setFrontPackageName(String frontPackageName) {
-        this.frontPackageName = frontPackageName;
     }
 
     public String getModuleName() {

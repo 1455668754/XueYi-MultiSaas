@@ -27,6 +27,17 @@ import java.util.stream.Collectors;
 public class TreeServiceImpl<D extends TreeEntity<D>, DG extends TreeManager<D, DM>, DM extends TreeMapper<D>> extends TreeHandleServiceImpl<D, DG, DM> implements ITreeService<D> {
 
     /**
+     * 根据Id查询本节点及其所有祖籍节点
+     *
+     * @param id Id
+     * @return 本节点及其所有祖籍节点数据对象集合
+     */
+    @Override
+    public List<D> selectAncestorsListById(Serializable id) {
+        return baseManager.selectAncestorsListById(id);
+    }
+
+    /**
      * 新增修改数据对象
      * 同步启用父节点
      *

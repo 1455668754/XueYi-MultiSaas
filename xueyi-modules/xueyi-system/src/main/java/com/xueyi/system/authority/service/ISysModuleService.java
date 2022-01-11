@@ -1,8 +1,8 @@
 package com.xueyi.system.authority.service;
 
 import com.xueyi.common.web.entity.service.ISubBaseService;
-import com.xueyi.system.api.domain.authority.dto.SysMenuDto;
-import com.xueyi.system.api.domain.authority.dto.SysModuleDto;
+import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
+import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
 
 import java.util.List;
 

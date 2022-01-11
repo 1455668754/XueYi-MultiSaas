@@ -1,7 +1,7 @@
 package com.xueyi.system.material.mapper;
 
 import com.xueyi.common.web.entity.mapper.BaseMapper;
-import com.xueyi.system.api.domain.material.dto.SysMaterialDto;
+import com.xueyi.system.api.file.domain.dto.SysMaterialDto;
 
 /**
  * 素材管理 数据层

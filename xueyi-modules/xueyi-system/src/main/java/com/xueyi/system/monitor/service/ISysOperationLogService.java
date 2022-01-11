@@ -1,7 +1,7 @@
 package com.xueyi.system.monitor.service;
 
 import com.xueyi.common.web.entity.service.IBaseService;
-import com.xueyi.system.api.domain.monitor.dto.SysOperationLogDto;
+import com.xueyi.system.api.log.domain.dto.SysOperationLogDto;
 
 /**
  * 操作日志管理 服务层

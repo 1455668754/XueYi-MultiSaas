@@ -2,7 +2,7 @@ package com.xueyi.system.organize.service.impl;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
-import com.xueyi.system.api.domain.organize.dto.SysEnterpriseDto;
+import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
 import com.xueyi.system.organize.manager.SysEnterpriseManager;
 import com.xueyi.system.organize.mapper.SysEnterpriseMapper;
 import com.xueyi.system.organize.service.ISysEnterpriseService;

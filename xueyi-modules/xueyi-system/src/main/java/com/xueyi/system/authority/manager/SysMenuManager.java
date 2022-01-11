@@ -8,7 +8,7 @@ import com.xueyi.common.core.constant.AuthorityConstants;
 import com.xueyi.common.core.constant.SqlConstants;
 import com.xueyi.common.core.constant.TenantConstants;
 import com.xueyi.common.web.entity.manager.TreeManager;
-import com.xueyi.system.api.domain.authority.dto.SysMenuDto;
+import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.authority.domain.merge.SysRoleMenuMerge;
 import com.xueyi.system.authority.domain.merge.SysTenantMenuMerge;
 import com.xueyi.system.authority.mapper.SysMenuMapper;

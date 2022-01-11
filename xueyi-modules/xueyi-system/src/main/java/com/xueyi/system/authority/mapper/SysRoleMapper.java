@@ -1,7 +1,7 @@
 package com.xueyi.system.authority.mapper;
 
 import com.xueyi.common.web.entity.mapper.BaseMapper;
-import com.xueyi.system.api.domain.authority.dto.SysRoleDto;
+import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
 
 /**
  * 岗位管理 数据层

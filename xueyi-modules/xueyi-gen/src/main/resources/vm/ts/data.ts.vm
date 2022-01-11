@@ -1,20 +1,22 @@
-import { BasicColumn, FormSchema } from '/@/components/Table';
+import { FormSchema } from '@/components/Form'
+import { BasicColumn } from '@/components/Table'
+import { DescItem } from '@/components/Description'
 #if($dictMap)
-import { dicDictList, dictConversion } from '/@/utils/xueyi';
+import { dicDictList } from '@service/sys/dict'
+import { dictConversion } from '@admin/utils'
 #end
-import { DescItem } from '/@/components/Description';
 #foreach ($column in $columns)
 #if($column.htmlType == 'InputNumber')
-import { SortEnum } from '@xueyi/tokens/enums/basic';
+import { SortEnum } from '@enums/basic'
 #break
 #end
 #end
 
 /** ${functionName}主页路由 */
-export const ${BusinessName}IndexGo = '/tool/generate/';
+export const ${BusinessName}IndexGo = '/tool/generate/'
 
 /** ${functionName}详情页路由 */
-export const ${BusinessName}DetailGo = '/tool/generate/';
+export const ${BusinessName}DetailGo = '/tool/generate/'
 
 #if($dictMap)
 /** 字典查询 */
@@ -22,14 +24,14 @@ export const dictMap = await dicDictList([
 #foreach($item in $dictMap.entrySet())
     '${item.key}',
 #end
-]);
+])
 
 /** 字典表 */
 export const dict: any = {
 #foreach($item in ${dictMap.entrySet()})
     ${item.value}: dictMap['${item.key}'],
 #end
-};
+}
 
 #end
 /** 表格数据 */
@@ -62,7 +64,7 @@ export const columns: BasicColumn[] = [
     },
 #end
 #end
-];
+]
 
 /** 查询数据 */
 export const searchFormSchema: FormSchema[] = [
@@ -91,7 +93,7 @@ export const searchFormSchema: FormSchema[] = [
     },
 #end
 #end
-];
+]
 
 /** 表单数据 */
 export const formSchema: FormSchema[] = [
@@ -153,7 +155,7 @@ export const formSchema: FormSchema[] = [
 #end
 #end
 #end
-];
+]
 
 /** 详情数据 */
 export const detailSchema: DescItem[] = [
@@ -174,10 +176,10 @@ export const detailSchema: DescItem[] = [
         field: '${column.javaField}',
 #if($column.dictType && $column.dictName)
         render: (val) => {
-            return dictConversion(dict.${column.dictName}, val);
+            return dictConversion(dict.${column.dictName}, val)
         },
 #end
     },
 #end
 #end
-];
+]

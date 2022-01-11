@@ -172,11 +172,13 @@ create table sys_menu (
 ) engine=innodb comment = '菜单权限表';
 
 insert into sys_menu (id, parent_id, name, title, ancestors, path, frame_src, component, param_path, transition_name, ignore_route, is_cache, is_affix, is_disabled, frame_type, menu_type, hide_tab, hide_menu, hide_breadcrumb, hide_children, hide_path_for_children, dynamic_level, real_path, current_active_menu, perms, icon, sort, remark, is_common, is_default, module_id, tenant_id)
-values (0, 0, 'Default', '默认菜单', '', 'default', null, null, null, null, 'N', 'N', 'N', 'N', '0', 'M', 'N', 'N', 'N', 'N', 'N', 1, null, null, null, 'xy_organization', 1, '目录:默认菜单', 'Y', 'Y', 0, 0),
-       (23000000, 0, 'GenTool', '系统工具', '0', 'tool', null, '', null, null, 'N', 'N', 'N', 'N', '0', 'M', 'N', 'N', 'N', 'N', 'N', 1, null, null, '', 'xy_organization', 3, '目录:系统工具', 'Y', 'Y', 0, 0),
-       (23010000, 23000000, 'GenGen', '代码生成', '0,23000000', 'gen', null, 'tool/gen/index', null, null, 'N', 'N', 'N', 'N', '0', 'C', 'N', 'N', 'N', 'N', 'N', 1, null, null, 'system:gen:list', 'xy_organization', 1, '菜单:代码生成', 'Y', 'Y', 0, 0),
-       (23010100, 23010000, 'GenGenDetail', '代码生成配置', '0,23010000', 'generate/:id', null, 'tool/gen/GenDetail', null, null, 'N', 'Y', 'N', 'N', '0', 'X', 'N', 'Y', 'N', 'N', 'N', 1, null, '/tool/gen', 'system:gen:edit', 'xy_organization', 2, '详情:代码生成配置', 'Y', 'Y', 0, 0),
-       (23010200, 23010000, 'GenCodeDetail', '代码生成预览', '0,23010000', 'code/:id', null, 'tool/gen/CodeDetail', null, null, 'N', 'Y', 'N', 'N', '0', 'X', 'N', 'Y', 'N', 'N', 'N', 1, null, '/tool/gen', 'system:gen:preview', 'xy_organization', 2, '详情:代码生成预览', 'Y', 'Y', 0, 0);
+values (0, 0, 'Default', '默认菜单', '', 'default', null, null, null, null, 'N', 'N', 'N', 'N', '0', 'M', 'N', 'N', 'N', 'N', 'N', 1, null, null, null, '', 1, '目录:默认菜单', 'Y', 'Y', 0, 0),
+       (14000000, 0, 'SysAuthority', '权限管理', '0', 'authority', null, '', null, null, 'N', 'N', 'N', 'N', '0', 'M', 'N', 'N', 'N', 'N', 'N', 1, null, null, '', 'xy_authority', 4, '目录:权限管理', 'Y', 'Y', 0, 0),
+       (23000000, 0, 'GenTool', '系统工具', '0', 'generate', null, '', null, null, 'N', 'N', 'N', 'N', '0', 'M', 'N', 'N', 'N', 'N', 'N', 1, null, null, '', 'xy_organization', 3, '目录:系统工具', 'Y', 'Y', 0, 0),
+       (23010000, 23000000, 'GenGen', '代码生成', '0,23000000', 'gen', null, 'gen/generate/gen/index', null, null, 'N', 'N', 'N', 'N', '0', 'C', 'N', 'N', 'N', 'N', 'N', 1, null, null, 'system:gen:list', 'xy_organization', 1, '菜单:代码生成', 'Y', 'Y', 0, 0),
+       (23010100, 23010000, 'GenGenDetail', '代码生成配置', '0,23010000', 'generate/:id', null, 'gen/generate/gen/GenDetail', null, null, 'N', 'Y', 'N', 'N', '0', 'X', 'N', 'Y', 'N', 'N', 'N', 1, null, '/generate/gen', 'system:gen:edit', 'xy_organization', 2, '详情:代码生成配置', 'Y', 'Y', 0, 0),
+       (23010200, 23010000, 'GenCodeDetail', '代码生成预览', '0,23010000', 'code/:id', null, 'gen/generate/gen/CodeDetail', null, null, 'N', 'Y', 'N', 'N', '0', 'X', 'N', 'Y', 'N', 'N', 'N', 1, null, '/generate/gen', 'system:gen:preview', 'xy_organization', 2, '详情:代码生成预览', 'Y', 'Y', 0, 0);
+
 
 # (10000000, 0, 'SysOrganize', '组织管理', '0', 'organize', null, null, null, null, 'N', 'N', 'N', 'N', '0', 'M', 'N', 'N', 'N', 'N', 'N', 1, null, null, null, 'xy_organization', 1, '目录:组织管理', 'Y', 'Y', 0, 0),
 # (10010000, 10000000, 'SysDept', '部门管理', '0,10000000', 'dept', null, 'system/organize/dept/index', null, null, 'N', 'N', 'N', 'N', '0', 'C', 'N', 'N', 'N', 'N', 'N', 1, null, null, 'system:dept:list', 'xy_organization', 1, '菜单:部门管理', 'Y', 'Y', 0, 0),
@@ -612,7 +614,6 @@ create table gen_table (
   prefix                    varchar(100)        default ''                              comment '前缀名称',
   tpl_category              varchar(200)        not null default 'base'                 comment '使用的模板（base单表 tree树表 subBase主子单表 subTree主子树表 merge关联表）',
   package_name              varchar(100)                                                comment '生成包路径',
-  front_package_name        varchar(100)                                                comment '生成前端包路径',
   authority_name            varchar(30)                                                 comment '生成权限名',
   module_name               varchar(30)                                                 comment '生成模块名',
   business_name             varchar(30)                                                 comment '生成业务名',

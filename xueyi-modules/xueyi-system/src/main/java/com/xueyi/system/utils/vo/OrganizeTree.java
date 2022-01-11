@@ -2,8 +2,8 @@ package com.xueyi.system.utils.vo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.xueyi.common.core.constant.OrganizeConstants;
-import com.xueyi.system.api.domain.organize.dto.SysDeptDto;
-import com.xueyi.system.api.domain.organize.dto.SysPostDto;
+import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
+import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 
 import java.util.List;
 

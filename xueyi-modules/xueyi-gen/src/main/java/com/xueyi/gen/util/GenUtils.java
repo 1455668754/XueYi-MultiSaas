@@ -170,7 +170,6 @@ public class GenUtils {
                 if (StrUtil.equals(StrUtil.sub(genTable.getName(), 0, removeItem.getPrefix().length()), removeItem.getPrefix())) {
                     genTable.setPrefix(StringUtils.convertToCamelCase(removeItem.getPrefix()));
                     genTable.setPackageName(removeItem.getPackageName());
-                    genTable.setFrontPackageName(removeItem.getFrontPackageName());
                     genTable.setModuleName(getModuleName(removeItem.getPackageName()));
                     genTable.setAuthorityName(genTable.getModuleName());
                     return;

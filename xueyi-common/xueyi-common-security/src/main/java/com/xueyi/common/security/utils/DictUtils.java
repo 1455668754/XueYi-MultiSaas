@@ -3,7 +3,7 @@ package com.xueyi.common.security.utils;
 import com.xueyi.common.core.constant.CacheConstants;
 import com.xueyi.common.core.utils.SpringUtils;
 import com.xueyi.common.redis.service.RedisService;
-import com.xueyi.system.api.domain.dict.dto.SysDictDataDto;
+import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
 
 import java.util.Collection;
 import java.util.List;

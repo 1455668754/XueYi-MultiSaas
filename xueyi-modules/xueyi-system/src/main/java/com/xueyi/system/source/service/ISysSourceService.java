@@ -1,7 +1,7 @@
 package com.xueyi.system.source.service;
 
 import com.xueyi.common.web.entity.service.IBaseService;
-import com.xueyi.system.api.domain.source.Source;
+import com.xueyi.system.api.source.domain.Source;
 
 /**
  * 策略组管理 服务层

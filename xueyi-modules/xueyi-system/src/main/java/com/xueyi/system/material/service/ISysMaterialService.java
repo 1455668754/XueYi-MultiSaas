@@ -1,7 +1,7 @@
 package com.xueyi.system.material.service;
 
 import com.xueyi.common.web.entity.service.IBaseService;
-import com.xueyi.system.api.domain.material.dto.SysMaterialDto;
+import com.xueyi.system.api.file.domain.dto.SysMaterialDto;
 
 /**
  * 素材管理 服务层

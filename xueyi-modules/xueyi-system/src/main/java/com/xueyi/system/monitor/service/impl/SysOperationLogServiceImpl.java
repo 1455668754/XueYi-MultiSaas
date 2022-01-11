@@ -3,7 +3,7 @@ package com.xueyi.system.monitor.service.impl;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
-import com.xueyi.system.api.domain.monitor.dto.SysOperationLogDto;
+import com.xueyi.system.api.log.domain.dto.SysOperationLogDto;
 import com.xueyi.system.monitor.manager.SysOperationLogManager;
 import com.xueyi.system.monitor.mapper.SysOperationLogMapper;
 import com.xueyi.system.monitor.service.ISysOperationLogService;

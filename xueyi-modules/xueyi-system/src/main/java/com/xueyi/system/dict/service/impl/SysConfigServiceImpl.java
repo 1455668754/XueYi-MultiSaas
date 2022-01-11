@@ -7,7 +7,7 @@ import com.xueyi.common.core.constant.BaseConstants;
 import com.xueyi.common.core.constant.CacheConstants;
 import com.xueyi.common.redis.service.RedisService;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
-import com.xueyi.system.api.domain.dict.dto.SysConfigDto;
+import com.xueyi.system.api.dict.domain.dto.SysConfigDto;
 import com.xueyi.system.dict.manager.SysConfigManager;
 import com.xueyi.system.dict.mapper.SysConfigMapper;
 import com.xueyi.system.dict.service.ISysConfigService;

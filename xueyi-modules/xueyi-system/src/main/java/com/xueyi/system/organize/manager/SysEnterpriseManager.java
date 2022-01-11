@@ -2,7 +2,7 @@ package com.xueyi.system.organize.manager;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.web.entity.manager.BaseManager;
-import com.xueyi.system.api.domain.organize.dto.SysEnterpriseDto;
+import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
 import com.xueyi.system.organize.mapper.SysEnterpriseMapper;
 import org.springframework.stereotype.Component;
 

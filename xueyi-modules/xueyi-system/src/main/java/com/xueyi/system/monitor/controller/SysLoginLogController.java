@@ -6,7 +6,7 @@ import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.InnerAuth;
 import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.web.entity.controller.BaseController;
-import com.xueyi.system.api.domain.monitor.dto.SysLoginLogDto;
+import com.xueyi.system.api.log.domain.dto.SysLoginLogDto;
 import com.xueyi.system.monitor.service.ISysLoginLogService;
 import org.springframework.web.bind.annotation.*;
 

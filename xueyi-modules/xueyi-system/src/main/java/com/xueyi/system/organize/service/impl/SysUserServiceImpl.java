@@ -4,7 +4,7 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.xueyi.common.core.constant.BaseConstants;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
-import com.xueyi.system.api.domain.organize.dto.SysUserDto;
+import com.xueyi.system.api.organize.domain.dto.SysUserDto;
 import com.xueyi.system.organize.manager.SysUserManager;
 import com.xueyi.system.organize.mapper.SysUserMapper;
 import com.xueyi.system.organize.service.ISysUserService;

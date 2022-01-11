@@ -1,8 +1,8 @@
 package com.xueyi.tenant.controller;
 
 import com.xueyi.common.web.entity.controller.BaseController;
-import com.xueyi.system.api.feign.RemoteConfigService;
-import com.xueyi.system.api.feign.RemoteEnterpriseService;
+import com.xueyi.system.api.dict.feign.RemoteConfigService;
+import com.xueyi.system.api.organize.feign.RemoteEnterpriseService;
 import com.xueyi.tenant.domain.dto.TeTenantDto;
 import com.xueyi.tenant.service.ITeTenantService;
 import org.springframework.beans.factory.annotation.Autowired;

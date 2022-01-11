@@ -2,7 +2,7 @@ package com.xueyi.system.material.service.impl;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
-import com.xueyi.system.api.domain.material.dto.SysMaterialDto;
+import com.xueyi.system.api.file.domain.dto.SysMaterialDto;
 import com.xueyi.system.material.manager.SysMaterialManager;
 import com.xueyi.system.material.mapper.SysMaterialMapper;
 import com.xueyi.system.material.service.ISysMaterialService;

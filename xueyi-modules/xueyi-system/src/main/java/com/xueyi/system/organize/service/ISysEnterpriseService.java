@@ -1,7 +1,7 @@
 package com.xueyi.system.organize.service;
 
 import com.xueyi.common.web.entity.service.IBaseService;
-import com.xueyi.system.api.domain.organize.dto.SysEnterpriseDto;
+import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
 
 /**
  * 企业管理 服务层

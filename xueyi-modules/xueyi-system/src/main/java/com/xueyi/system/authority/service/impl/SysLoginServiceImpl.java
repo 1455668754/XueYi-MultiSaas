@@ -1,9 +1,9 @@
 package com.xueyi.system.authority.service.impl;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
-import com.xueyi.system.api.domain.authority.dto.SysRoleDto;
-import com.xueyi.system.api.domain.organize.dto.SysEnterpriseDto;
-import com.xueyi.system.api.domain.organize.dto.SysUserDto;
+import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
+import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
+import com.xueyi.system.api.organize.domain.dto.SysUserDto;
 import com.xueyi.system.authority.service.ISysLoginService;
 import com.xueyi.system.authority.service.ISysMenuService;
 import com.xueyi.system.organize.service.ISysEnterpriseService;

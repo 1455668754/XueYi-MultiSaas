@@ -6,7 +6,7 @@ import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.web.entity.controller.BaseController;
-import com.xueyi.system.api.domain.organize.dto.SysPostDto;
+import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 import com.xueyi.system.organize.service.ISysDeptService;
 import com.xueyi.system.organize.service.ISysPostService;
 import org.springframework.beans.factory.annotation.Autowired;

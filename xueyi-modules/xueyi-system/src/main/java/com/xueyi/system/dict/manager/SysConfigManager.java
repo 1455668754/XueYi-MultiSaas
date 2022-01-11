@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.BaseConstants;
 import com.xueyi.common.core.constant.SqlConstants;
 import com.xueyi.common.web.entity.manager.BaseManager;
-import com.xueyi.system.api.domain.dict.dto.SysConfigDto;
+import com.xueyi.system.api.dict.domain.dto.SysConfigDto;
 import com.xueyi.system.dict.mapper.SysConfigMapper;
 import org.springframework.stereotype.Component;
 

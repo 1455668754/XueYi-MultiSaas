@@ -1,8 +1,9 @@
 package com.xueyi.common.web.entity.manager;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.xueyi.common.core.constant.AuthorityConstants;
 import com.xueyi.common.core.constant.BaseConstants;
 import com.xueyi.common.core.constant.SqlConstants;
 import com.xueyi.common.core.web.entity.TreeEntity;
@@ -10,6 +11,7 @@ import com.xueyi.common.web.entity.manager.handle.TreeHandleManager;
 import com.xueyi.common.web.entity.mapper.TreeMapper;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 数据封装层 树型通用数据处理
@@ -19,6 +21,23 @@ import java.io.Serializable;
  * @author xueyi
  */
 public class TreeManager<D extends TreeEntity<D>, DM extends TreeMapper<D>> extends TreeHandleManager<D, DM> {
+
+    /**
+     * 根据Id查询本节点及其所有祖籍节点
+     *
+     * @param id Id
+     * @return 本节点及其所有祖籍节点数据对象集合
+     */
+    public List<D> selectAncestorsListById(Serializable id) {
+        D d = baseMapper.selectById(id);
+        if (ObjectUtil.isNull(d))
+            return null;
+        return baseMapper.selectList(
+                Wrappers.<D>query().lambda()
+                        .eq(D::getId, id)
+                        .or().in(D::getId, StrUtil.splitTrim(d.getAncestors(), ","))
+                        .ne(D::getId, AuthorityConstants.MENU_TOP_NODE));
+    }
 
     /**
      * 根据Id修改其子节点的状态

@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.xueyi.common.core.domain.R;
 import com.xueyi.common.core.utils.file.FileUtils;
 import com.xueyi.file.service.ISysFileService;
-import com.xueyi.system.api.domain.material.SysFile;
+import com.xueyi.system.api.file.domain.SysFile;
 
 /**
  * 文件请求处理

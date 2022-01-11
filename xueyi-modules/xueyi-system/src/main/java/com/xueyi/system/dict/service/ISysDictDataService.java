@@ -1,7 +1,7 @@
 package com.xueyi.system.dict.service;
 
 import com.xueyi.common.web.entity.service.IBaseService;
-import com.xueyi.system.api.domain.dict.dto.SysDictDataDto;
+import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
 
 import java.util.List;
 

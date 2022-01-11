@@ -4,7 +4,7 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.xueyi.common.core.constant.BaseConstants;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
-import com.xueyi.system.api.domain.authority.dto.SysRoleDto;
+import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
 import com.xueyi.system.authority.manager.SysRoleManager;
 import com.xueyi.system.authority.mapper.SysRoleMapper;
 import com.xueyi.system.authority.service.ISysRoleService;

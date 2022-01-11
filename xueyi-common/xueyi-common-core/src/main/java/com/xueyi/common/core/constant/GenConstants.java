@@ -181,28 +181,6 @@ public class GenConstants {
         }
     }
 
-    /** 需要与否 */
-    public enum IsRequire {
-
-        YES(true, "需要"), NO(false, "不需要");
-
-        private final Boolean code;
-        private final String info;
-
-        IsRequire(Boolean code, String info) {
-            this.code = code;
-            this.info = info;
-        }
-
-        public Boolean getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
-    }
-
     /** 表模板类型 */
     public enum TemplateType {
 
@@ -239,6 +217,7 @@ public class GenConstants {
         INTEGER("Integer", "Integer"),
         LONG("Long", "Long"),
         DOUBLE("Double", "Double"),
+        BOOLEAN("Boolean", "Boolean"),
         BIG_DECIMAL("BigDecimal", "BigDecimal"),
         DATE("Date", "Date");
 

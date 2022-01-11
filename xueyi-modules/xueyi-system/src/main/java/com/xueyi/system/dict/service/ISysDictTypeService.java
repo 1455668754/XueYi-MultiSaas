@@ -1,8 +1,8 @@
 package com.xueyi.system.dict.service;
 
 import com.xueyi.common.web.entity.service.ISubBaseService;
-import com.xueyi.system.api.domain.dict.dto.SysDictDataDto;
-import com.xueyi.system.api.domain.dict.dto.SysDictTypeDto;
+import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
+import com.xueyi.system.api.dict.domain.dto.SysDictTypeDto;
 
 /**
  * 字典类型管理 服务层

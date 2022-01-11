@@ -4,7 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.AuthorityConstants;
-import com.xueyi.system.api.domain.authority.dto.SysMenuDto;
+import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 
 import java.util.ArrayList;
 import java.util.List;

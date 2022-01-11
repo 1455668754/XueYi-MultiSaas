@@ -5,7 +5,7 @@ import com.baomidou.dynamic.datasource.annotation.DS;
 import com.xueyi.common.core.constant.BaseConstants;
 import com.xueyi.common.core.utils.TreeUtils;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
-import com.xueyi.system.api.domain.organize.dto.SysPostDto;
+import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 import com.xueyi.system.organize.manager.SysPostManager;
 import com.xueyi.system.organize.mapper.SysPostMapper;
 import com.xueyi.system.organize.service.ISysPostService;

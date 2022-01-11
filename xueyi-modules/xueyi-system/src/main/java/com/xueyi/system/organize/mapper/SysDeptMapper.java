@@ -1,8 +1,8 @@
 package com.xueyi.system.organize.mapper;
 
 import com.xueyi.common.web.entity.mapper.SubTreeMapper;
-import com.xueyi.system.api.domain.organize.dto.SysDeptDto;
-import com.xueyi.system.api.domain.organize.dto.SysPostDto;
+import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
+import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 
 /**
  * 部门管理 数据层

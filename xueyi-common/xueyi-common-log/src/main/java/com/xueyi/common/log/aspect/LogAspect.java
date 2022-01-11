@@ -10,7 +10,7 @@ import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessStatus;
 import com.xueyi.common.log.service.AsyncLogService;
 import com.xueyi.common.security.service.TokenService;
-import com.xueyi.system.api.domain.monitor.dto.SysOperationLogDto;
+import com.xueyi.system.api.log.domain.dto.SysOperationLogDto;
 import com.xueyi.system.api.model.LoginUser;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;

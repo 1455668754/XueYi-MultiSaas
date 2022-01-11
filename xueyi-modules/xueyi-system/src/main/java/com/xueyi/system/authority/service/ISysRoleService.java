@@ -1,7 +1,7 @@
 package com.xueyi.system.authority.service;
 
 import com.xueyi.common.web.entity.service.IBaseService;
-import com.xueyi.system.api.domain.authority.dto.SysRoleDto;
+import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
 
 /**
  * 角色管理 服务层
