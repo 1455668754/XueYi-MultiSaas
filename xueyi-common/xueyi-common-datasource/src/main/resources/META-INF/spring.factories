@@ -2,3 +2,5 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   com.xueyi.common.datasource.config.properties.SourceProperties,\
   com.xueyi.common.datasource.config.MyDynamicDataSourceConfig,\
   com.xueyi.common.datasource.provider.dynamicDataSourceLoading
+org.springframework.boot.env.EnvironmentPostProcessor=\
+  com.xueyi.common.datasource.env.ApplicationSeataInitializer

@@ -7,8 +7,6 @@ spring:
   application:
     # 应用名称
     name: xueyi-job
-  main:
-    allow-bean-definition-overriding: true #当遇到同样名字的时候，是否允许覆盖注册
   profiles:
     # 环境配置
     active: dev
@@ -16,16 +14,10 @@ spring:
     nacos:
       discovery:
         # 服务注册地址
-        server-addr: 124.71.32.2:31005
-#        server-addr: localhost:8848
-#        server-addr: nacos-0.nacos:8848
-        namespace: 6bf14baa-610a-47e7-a364-a423a46fcd62
+        server-addr: localhost:8848
       config:
         # 配置中心地址
-        server-addr: 124.71.32.2:31005
-#        server-addr: localhost:8848
-#        server-addr: nacos-0.nacos:8848
-        namespace: 6bf14baa-610a-47e7-a364-a423a46fcd62
+        server-addr: localhost:8848
         # 配置文件格式
         file-extension: yml
         # 共享配置

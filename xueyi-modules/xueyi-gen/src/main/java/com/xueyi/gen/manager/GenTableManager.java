@@ -53,18 +53,6 @@ public class GenTableManager extends SubBaseManager<GenTableDto, GenTableMapper,
     }
 
     /**
-     * 根据表名称查询据库列表
-     *
-     * @param name 表名称
-     * @return 数据库表
-     */
-    public GenTableDto selectTableByName(String name) {
-        LambdaQueryWrapper<GenTableDto> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(GenTableDto::getName,name);
-        return baseMapper.selectOne(queryWrapper);
-    }
-
-    /**
      * 修改其它生成选项
      *
      * @param id     Id

@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import java.util.List;
 
 /**
- * 登录服务
+ * 菜单服务
  *
  * @author xueyi
  */
-@FeignClient(contextId = "remoteLoginService", value = ServiceConstants.SYSTEM_SERVICE, fallbackFactory = RemoteMenuFallbackFactory.class)
+@FeignClient(contextId = "remoteMenuService", value = ServiceConstants.SYSTEM_SERVICE, fallbackFactory = RemoteMenuFallbackFactory.class)
 public interface RemoteMenuService {
 
     /**
