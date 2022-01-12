@@ -1,15 +1,15 @@
 package com.xueyi.tenant.domain.dto;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.tenant.api.domain.source.dto.TeStrategyDto;
 import com.xueyi.tenant.domain.po.TeTenantPo;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * 租户信息对象 xy_tenant
+ * 数据源 数据传输对象
  *
  * @author xueyi
  */
+@TableName("te_source")
 public class TeTenantDto extends TeTenantPo {
 
     private static final long serialVersionUID = 1L;
@@ -43,27 +43,5 @@ public class TeTenantDto extends TeTenantPo {
         this.systemMenuIds = systemMenuIds;
     }
 
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-                .append("Id",getId())
-                .append("strategyId",getStrategyId())
-                .append("name", getName())
-                .append("systemName", getSystemName())
-                .append("nick", getNick())
-                .append("logo", getLogo())
-                .append("nameFrequency", getNameFrequency())
-                .append("isLessor", getIsLessor())
-                .append("strategy", getStrategy())
-                .append("sort", getSort())
-                .append("status", getStatus())
-                .append("createBy", getCreateBy())
-                .append("createName", getCreateName())
-                .append("createTime", getCreateTime())
-                .append("updateBy", getUpdateBy())
-                .append("updateName", getUpdateName())
-                .append("updateTime", getUpdateTime())
-                .append("remark", getRemark())
-                .toString();
-    }
+
 }

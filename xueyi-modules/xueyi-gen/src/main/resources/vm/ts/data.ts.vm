@@ -12,12 +12,6 @@ import { SortEnum } from '@enums/basic'
 #end
 #end
 
-/** ${functionName}主页路由 */
-export const ${BusinessName}IndexGo = '/tool/generate/'
-
-/** ${functionName}详情页路由 */
-export const ${BusinessName}DetailGo = '/tool/generate/'
-
 #if($dictMap)
 /** 字典查询 */
 export const dictMap = await dicDictList([

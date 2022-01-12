@@ -147,17 +147,17 @@ public class SysMenuManager extends TreeManager<SysMenuDto, SysMenuMapper> {
             case BUTTON:
             case DETAILS:
                 queryWrapper
+                        .eq(SysMenuDto::getModuleId, moduleId)
                         .eq(SysMenuDto::getMenuType, AuthorityConstants.MenuType.MENU.getCode())
                         .or().eq(SysMenuDto::getMenuType, AuthorityConstants.MenuType.DIR.getCode())
-                        .or().eq(SysMenuDto::getId, AuthorityConstants.MENU_TOP_NODE)
-                        .eq(SysMenuDto::getModuleId, moduleId);
+                        .or().eq(SysMenuDto::getId, AuthorityConstants.MENU_TOP_NODE);
                 break;
             case MENU:
             case DIR:
                 queryWrapper
+                        .eq(SysMenuDto::getModuleId, moduleId)
                         .eq(SysMenuDto::getMenuType, AuthorityConstants.MenuType.DIR.getCode())
-                        .or().eq(SysMenuDto::getId, AuthorityConstants.MENU_TOP_NODE)
-                        .eq(SysMenuDto::getModuleId, moduleId);
+                        .or().eq(SysMenuDto::getId, AuthorityConstants.MENU_TOP_NODE);
                 break;
             default:
                 return new ArrayList<>();

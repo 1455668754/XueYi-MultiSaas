@@ -5,27 +5,28 @@
 </template>
 
 <script lang="ts">
-  import { get${BusinessName}Api } from '/@/api/${frontModuleName}/${businessName}';
-  import { Description, useDescription } from '/@/components/Description';
-  import { detailSchema, ${BusinessName}IndexGo } from './${businessName}.data';
-  import { PageWrapper } from '/@/components/Page';
-  import { useTabs } from '/@/hooks/web/useTabs';
-  import { useGo } from '/@/hooks/web/usePage';
-  import { defineComponent, ref } from 'vue';
-  import { useRoute } from 'vue-router';
+import { defineComponent, ref } from 'vue'
+import { get${BusinessName}Api } from '@service/${moduleName}/${authorityName}/${businessName}'
+import { Description, useDescription } from '@/components/Description'
+import { detailSchema } from './${businessName}.data'
+import { useRoute } from 'vue-router'
+import { ${BusinessName}IndexGo } from '@enums/${moduleName}'
+import { useTabs } from '@/hooks/web/useTabs'
+import { PageWrapper } from '@/components/Page'
+import { useGo } from '@/hooks/web/usePage'
 
-  export default defineComponent({
-    components: { Description, PageWrapper },
-    setup() {
-      const route = useRoute();
-      const go = useGo();
-      const { setTitle } = useTabs();
-      const getTitle = ref('${functionName}详情');
+export default defineComponent({
+  components: { Description, PageWrapper },
+  setup() {
+    const route = useRoute()
+    const go = useGo()
+    const { setTitle } = useTabs()
+    const getTitle = ref('${functionName}详情')
 
-      const [register, { setDescProps }] = useDescription({
-        title: '${BusinessName}Detail',
-        schema: detailSchema,
-      });
+    const [register, { setDescProps }] = useDescription({
+      title: '${BusinessName}Detail',
+      schema: detailSchema,
+    })
 #if($pkColumn.javaType == 'Long')
 #set($IdType = 'string | number')
 #elseif($pkColumn.javaType == 'Integer' || $pkColumn.javaType == 'Double' || $pkColumn.javaType == 'BigDecimal')
@@ -36,21 +37,21 @@
 #set($IdType = 'any')
 #end
 
-      async function create() {
-        const ${pkColumn.javaField} = route.params.${pkColumn.javaField} as ${IdType};
-        const data = await get${BusinessName}Api(${pkColumn.javaField});
-        setDescProps({ data: data });
-        getTitle.value = '${functionName}详情:' + data?.#if($nameColumn)${nameColumn.javaField}#else${pkColumn.javaField}#end;
-        setTitle('${functionName}详情:' + getTitle.value);
-      }
-      create();
+    async function create() {
+      const ${pkColumn.javaField} = route.params.${pkColumn.javaField} as ${IdType}
+      const data = await get${BusinessName}Api(${pkColumn.javaField})
+      setDescProps({ data: data })
+      getTitle.value = '${functionName}详情:' + data?.#if($nameColumn)${nameColumn.javaField}#else${pkColumn.javaField}#end
+      setTitle('${functionName}详情:' + getTitle.value)
+    }
+    create()
 
-      /** 返回${functionName}主页 */
-      function goBack() {
-        go(${BusinessName}IndexGo);
-      }
+    /** 返回${functionName}主页 */
+    function goBack() {
+      go(${BusinessName}IndexGo)
+    }
 
-      return { register, getTitle, goBack };
-    },
-  });
+    return { register, getTitle, goBack }
+  },
+})
 </script>

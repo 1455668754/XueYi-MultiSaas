@@ -124,3 +124,4 @@ public class ${ClassName}Po#if($generics)${generics}#end extends ${Entity}#if($g
 
 #end
 #end
+}

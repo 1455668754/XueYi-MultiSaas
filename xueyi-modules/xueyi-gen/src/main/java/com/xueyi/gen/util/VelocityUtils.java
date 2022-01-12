@@ -243,7 +243,8 @@ public class VelocityUtils {
             templates.add("vm/sql/sql.sql.vm");
             templates.add("vm/ts/api.ts.vm");
             templates.add("vm/ts/data.ts.vm");
-            templates.add("vm/ts/auth.auth.ts.vm");
+            templates.add("vm/ts/auth.ts.vm");
+            templates.add("vm/ts/enum.ts.vm");
             templates.add("vm/ts/infoModel.ts.vm");
             switch (Objects.requireNonNull(GenConstants.TemplateType.getValue(tplCategory))) {
                 case BASE:
@@ -285,6 +286,13 @@ public class VelocityUtils {
         String mybatisPath = MYBATIS_PATH + "/" + moduleName;
         String vuePath = "vue";
 
+        switch (template){
+            case "po.java.vm":
+                return StringUtils.format("{}/domain/{}.java", javaPath, className);
+            case "dto.java.vm":
+                return StringUtils.format("{}/domain/{}.java", javaPath, className);
+
+        }
         if (template.contains("dto.java.vm")) {
             fileName = StringUtils.format("{}/domain/{}.java", javaPath, className);
         }

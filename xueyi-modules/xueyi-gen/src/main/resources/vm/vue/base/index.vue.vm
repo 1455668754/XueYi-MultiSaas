@@ -27,7 +27,7 @@
             {
               icon: IconEnum.ICON_VIEW,
               tooltip: '查看',
-              auth: ${BusinessName}Auth.DETAIL,
+              auth: ${BusinessName}Auth.SINGLE,
               onClick: handleView.bind(null, record),
             },
             {
@@ -55,117 +55,117 @@
 </template>
 
 <script lang="ts">
-  import { ${BusinessName}Auth } from '@xueyi/tokens/auth/${frontModuleName}/${businessName}Auth.auth';
-  import { del${BusinessName}Api, list${BusinessName}Api } from '@service/${frontModuleName}/${businessName}';
-  import { ${BusinessName}DetailGo, columns, searchFormSchema } from './${businessName}.data';
-  import { BasicTable, useTable, TableAction } from '/@/components/Table';
-  import ${BusinessName}Modal from './${BusinessName}Modal.vue';
-  import { useMessage } from '/@/hooks/web/useMessage';
-  import { defineComponent, reactive } from 'vue';
-  import { useModal } from '/@/components/Modal';
-  import { useGo } from '/@/hooks/web/usePage';
-  import { IconEnum } from '@xueyi/tokens/enums/basic';
+import { defineComponent, reactive } from 'vue'
+import { list${BusinessName}Api, del${BusinessName}Api } from '@service/${moduleName}/${authorityName}/${businessName}'
+import { useModal } from '@/components/Modal'
+import { useMessage } from '@/hooks/web/useMessage'
+import { useGo } from '@/hooks/web/usePage'
+import { IconEnum } from '@admin/tokens'
+import { BasicTable, TableAction, useTable } from '@/components/Table'
+import { ${BusinessName}Auth } from '@auth/${moduleName}'
+import { columns, searchFormSchema } from './${businessName}.data'
+import { ${BusinessName}DetailGo } from '@enums/${moduleName}'
+import ${BusinessName}Modal from './${BusinessName}Modal.vue'
 
-  export default defineComponent({
-    name: '${BusinessName}Management',
-    components: { BasicTable, ${BusinessName}Modal, TableAction },
-    setup() {
-      const go = useGo();
-      const { createMessage } = useMessage();
-      const [registerModal, { openModal }] = useModal();
-      const state = reactive<{
-        ids: (string | number)[];
-        idNames: string;
-      }>({
-        ids: [],
-        idNames: '',
-      });
-      const [registerTable, { reload }] = useTable({
-        title: '${functionName}列表',
-        api: list${BusinessName}Api,
-        striped: false,
-        useSearchForm: true,
-        rowKey: '${pkColumn.javaField}',
-        bordered: true,
-        showIndexColumn: true,
-        columns,
-        formConfig: {
-          labelWidth: 120,
-          schemas: searchFormSchema,
+export default defineComponent({
+  name: '${BusinessName}Management',
+  components: { BasicTable, ${BusinessName}Modal, TableAction },
+  setup() {
+    const go = useGo()
+    const { createMessage } = useMessage()
+    const [registerModal, { openModal }] = useModal()
+    const state = reactive<{
+      ids: (string | number)[]
+      idNames: string
+    }>({
+      ids: [],
+      idNames: '',
+    })
+    const [registerTable, { reload }] = useTable({
+      title: '${functionName}列表',
+      api: list${BusinessName}Api,
+      striped: false,
+      useSearchForm: true,
+      rowKey: '${pkColumn.javaField}',
+      bordered: true,
+      showIndexColumn: true,
+      columns,
+      formConfig: {
+        labelWidth: 120,
+        schemas: searchFormSchema,
+      },
+      showTableSetting: true,
+      tableSetting: {
+        fullScreen: true,
+      },
+      actionColumn: {
+        width: 220,
+        title: '操作',
+        dataIndex: 'action',
+        slots: { customRender: 'action' },
+        fixed: undefined,
+      },
+      rowSelection: {
+        onChange: (selectedRowKeys, selectRows) => {
+          state.ids = selectedRowKeys
+          state.idNames = selectRows
+            .map((item) => {
+              return item.#if($nameColumn)${nameColumn.javaField}#else${pkColumn.javaField}#end
+            })
+            .join(',')
         },
-        showTableSetting: true,
-        tableSetting: {
-          fullScreen: true,
-        },
-        actionColumn: {
-          width: 220,
-          title: '操作',
-          dataIndex: 'action',
-          slots: { customRender: 'action' },
-          fixed: undefined,
-        },
-        rowSelection: {
-          onChange: (selectedRowKeys, selectRows) => {
-            state.ids = selectedRowKeys;
-            state.idNames = selectRows
-              .map((item) => {
-                return item.#if($nameColumn)${nameColumn.javaField}#else${pkColumn.javaField}#end;
-              })
-              .join(',');
-          },
-        },
-      });
+      },
+    })
 
-      /** 查看按钮 */
-      function handleView(record: Recordable) {
-        go(${BusinessName}DetailGo + record.${pkColumn.javaField});
+    /** 查看按钮 */
+    function handleView(record: Recordable) {
+      go(${BusinessName}DetailGo + record.${pkColumn.javaField})
+    }
+
+    /** 新增按钮 */
+    function handleCreate() {
+      openModal(true, {
+        isUpdate: false,
+      })
+    }
+
+    /** 修改按钮 */
+    function handleEdit(record: Recordable) {
+      openModal(true, {
+        record,
+        isUpdate: true,
+      })
+    }
+
+    /** 删除按钮 */
+    function handleDelete(record: Recordable) {
+      const delIds = record.${pkColumn.javaField} || state.ids
+      if (!record.${pkColumn.javaField} && state.ids.length === 0) {
+        createMessage.warning('请选择要操作的数据！')
+      } else {
+        del${BusinessName}Api(delIds).then(() => {
+          const delNames = record.#if($nameColumn)${nameColumn.javaField}#else${pkColumn.javaField}#end || state.idNames
+          createMessage.success('删除' + delNames + '成功！')
+          reload()
+        })
       }
+    }
 
-      /** 新增按钮 */
-      function handleCreate() {
-        openModal(true, {
-          isUpdate: false,
-        });
-      }
+    function handleSuccess() {
+      reload()
+    }
 
-      /** 修改按钮 */
-      function handleEdit(record: Recordable) {
-        openModal(true, {
-          record,
-          isUpdate: true,
-        });
-      }
-
-      /** 删除按钮 */
-      function handleDelete(record: Recordable) {
-        const delIds = record.${pkColumn.javaField} || state.ids;
-        if (!record.${pkColumn.javaField} && state.ids.length === 0) {
-          createMessage.warning('请选择要操作的数据！');
-        } else {
-          del${BusinessName}Api(delIds).then(() => {
-            const delNames = record.#if($nameColumn)${nameColumn.javaField}#else${pkColumn.javaField}#end || state.idNames;
-            createMessage.success('删除' + delNames + '成功！');
-            reload();
-          });
-        }
-      }
-
-      function handleSuccess() {
-        reload();
-      }
-
-      return {
-        IconEnum,
-        ${BusinessName}Auth,
-        registerTable,
-        registerModal,
-        handleView,
-        handleCreate,
-        handleEdit,
-        handleDelete,
-        handleSuccess,
-
-      };
-    },
-  });
+    return {
+      IconEnum,
+      ${BusinessName}Auth,
+      registerTable,
+      registerModal,
+      handleView,
+      handleCreate,
+      handleEdit,
+      handleDelete,
+      handleSuccess,
+    }
+  },
+})
 </script>
