@@ -74,7 +74,7 @@ public class GenConfig {
         return uiPath;
     }
 
-    public static void setUiPath(String uiPath) {
+    public void setUiPath(String uiPath) {
         GenConfig.uiPath = uiPath;
     }
 

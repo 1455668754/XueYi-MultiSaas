@@ -284,7 +284,6 @@ public class VelocityUtils {
 
         String javaPath = PROJECT_PATH + "/" + StringUtils.replace(packageName, ".", "/");
         String mybatisPath = MYBATIS_PATH + "/" + moduleName;
-        String vuePath = "vue";
 
         if (template.contains("dto.java.vm"))
             return StringUtils.format("{}/domain/dto/{}Dto.java", javaPath, className);
@@ -306,25 +305,25 @@ public class VelocityUtils {
             return StringUtils.format("{}/mapper/merge/{}MergeMapper.java", javaPath, className);
 
         else if (template.contains("sql.sql.vm"))
-            return businessName + "Menu.sql";
+            return StringUtils.format("sql/{}.sql", businessName);
 
         else if (template.contains("api.ts.vm"))
-            return StringUtils.format("{}/packages/service/modules/{}/{}/{}.ts", vuePath, moduleName, authorityName, businessName);
+            return StringUtils.format("packages/service/modules/{}/{}/{}.ts", moduleName, authorityName, businessName);
         else if (template.contains("infoModel.ts.vm"))
-            return StringUtils.format("{}/packages/types/modules/{}/{}/{}.ts", vuePath, moduleName, authorityName, businessName);
+            return StringUtils.format("packages/types/modules/{}/{}/{}.ts", moduleName, authorityName, businessName);
         else if (template.contains("auth.ts.vm"))
-            return StringUtils.format("{}/packages/token/auth/{}/{}/{}.auth.ts", vuePath, moduleName, authorityName, businessName);
+            return StringUtils.format("packages/tokens/auth/{}/{}/{}.auth.ts", moduleName, authorityName, businessName);
         else if (template.contains("enum.ts.vm"))
-            return StringUtils.format("{}/packages/token/enums/{}/{}/{}.enum.ts", vuePath, moduleName, authorityName, businessName);
+            return StringUtils.format("packages/tokens/enums/{}/{}/{}.enum.ts", moduleName, authorityName, businessName);
 
         else if (template.contains("data.ts.vm"))
-            return StringUtils.format("{}/admin/src/views/{}/{}/{}/{}.data.ts", vuePath, moduleName, authorityName, businessName, businessName);
+            return StringUtils.format("admin/src/views/{}/{}/{}/{}.data.ts", moduleName, authorityName, businessName, businessName);
         else if (template.contains("index.vue.vm"))
-            return StringUtils.format("{}/admin/src/views/{}/{}/{}/index.vue", vuePath, moduleName, authorityName, businessName);
+            return StringUtils.format("admin/src/views/{}/{}/{}/index.vue", moduleName, authorityName, businessName);
         else if (template.contains("detail.vue.vm"))
-            return StringUtils.format("{}/admin/src/views/{}/{}/{}/{}Detail.vue", vuePath, moduleName, authorityName, businessName, BusinessName);
+            return StringUtils.format("admin/src/views/{}/{}/{}/{}Detail.vue", moduleName, authorityName, businessName, BusinessName);
         else if (template.contains("model.vue.vm"))
-            return StringUtils.format("{}/admin/src/views/{}/{}/{}/{}Model.vue", vuePath, moduleName, authorityName, businessName, BusinessName);
+            return StringUtils.format("admin/src/views/{}/{}/{}/{}Model.vue", moduleName, authorityName, businessName, BusinessName);
         return "";
     }
 

@@ -1,6 +1,6 @@
 package com.xueyi.tenant.tenant.service.impl;
 
-import com.xueyi.tenant.tenant.domain.dto.TeTenantDto;
+import com.xueyi.tenant.api.tenant.domain.dto.TeTenantDto;
 import com.xueyi.tenant.tenant.service.ITeTenantService;
 import com.xueyi.tenant.tenant.manager.TeTenantManager;
 import com.xueyi.tenant.tenant.mapper.TeTenantMapper;

@@ -236,6 +236,7 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
                 String path = StrUtil.containsAny(template, genFiles)
                         ? getGenPath(table, template)
                         : getUiPath(table, template);
+                System.out.println(path);
                 FileUtils.writeStringToFile(new File(path), sw.toString(), CharsetKit.UTF_8);
             } catch (IOException e) {
                 throw new ServiceException("渲染模板失败，表名：" + table.getName());

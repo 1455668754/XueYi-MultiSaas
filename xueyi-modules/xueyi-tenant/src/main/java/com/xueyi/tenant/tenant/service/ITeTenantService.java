@@ -1,6 +1,6 @@
 package com.xueyi.tenant.tenant.service;
 
-import com.xueyi.tenant.tenant.domain.dto.TeTenantDto;
+import com.xueyi.tenant.api.tenant.domain.dto.TeTenantDto;
 import com.xueyi.common.web.entity.service.IBaseService;
 
 /**

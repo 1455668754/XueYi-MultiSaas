@@ -15,7 +15,7 @@ import com.xueyi.system.api.organize.domain.dto.SysUserDto;
 import com.xueyi.system.api.log.feign.RemoteLogService;
 import com.xueyi.system.api.authority.feign.RemoteLoginService;
 import com.xueyi.system.api.model.LoginUser;
-import com.xueyi.tenant.api.feign.RemoteTenantService;
+import com.xueyi.tenant.api.tenant.feign.RemoteTenantService;
 import com.xueyi.tenant.api.model.TenantRegister;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
