@@ -7,7 +7,7 @@ import com.baomidou.dynamic.datasource.toolkit.DynamicDataSourceContextHolder;
 import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.SpringUtils;
 import com.xueyi.common.core.utils.bean.BeanUtils;
-import com.xueyi.tenant.api.domain.source.dto.TeSourceDto;
+import com.xueyi.tenant.api.source.domain.dto.TeSourceDto;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
