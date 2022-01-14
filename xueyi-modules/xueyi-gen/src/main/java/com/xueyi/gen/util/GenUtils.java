@@ -29,6 +29,8 @@ public class GenUtils {
         genTable.setBusinessName(getBusinessName(genTable.getName()));
         genTable.setFunctionName(replaceText(genTable.getComment()));
         genTable.setFunctionAuthor(GenConfig.getAuthor());
+        if (StrUtil.isNotBlank(GenConfig.getUiPath()))
+            genTable.setUiPath(GenConfig.getUiPath());
     }
 
     /**
@@ -36,7 +38,7 @@ public class GenUtils {
      */
     public static void initTableOptions(List<GenTableColumnDto> columnList, GenTableDto table) {
         StringBuilder options = new StringBuilder();
-        String prefix = ", \"", infill = "\": \"", suffix = "\"" ;
+        String prefix = ", \"", infill = "\": \"", suffix = "\"";
         options.append("{ \"").append(GenConstants.OptionField.PARENT_MODULE_ID.getCode()).append(infill).append(AuthorityConstants.MODULE_DEFAULT_NODE).append(suffix)
                 .append(prefix).append(GenConstants.OptionField.PARENT_MENU_ID.getCode()).append(infill).append(AuthorityConstants.MENU_TOP_NODE).append(suffix);
         String isCoverId = GenConstants.Status.FALSE.getCode();
@@ -71,10 +73,10 @@ public class GenUtils {
                 .append(prefix).append(GenConstants.OptionField.COVER_STATUS.getCode()).append(infill).append(isCoverStatus).append(suffix)
                 .append(prefix).append(GenConstants.OptionField.COVER_SORT.getCode()).append(infill).append(isCoverSort).append(suffix)
                 .append(prefix).append(GenConstants.OptionField.IS_TENANT.getCode()).append(infill).append(isTenant).append(suffix)
-                .append(prefix).append(
-                        StrUtil.equals(isTenant, GenConstants.Status.TRUE.getCode())
-                                ? GenConstants.SourceMode.ISOLATE.getCode()
-                                : GenConstants.SourceMode.MASTER.getCode()).append(infill).append(isTenant).append(suffix).append(" }");
+                .append(prefix).append(GenConstants.OptionField.SOURCE_MODE.getCode()
+                ).append(infill).append(StrUtil.equals(isTenant, GenConstants.Status.TRUE.getCode())
+                        ? GenConstants.SourceMode.ISOLATE.getCode()
+                        : GenConstants.SourceMode.MASTER.getCode()).append(suffix).append(" }");
         table.setOptions(options.toString());
     }
 

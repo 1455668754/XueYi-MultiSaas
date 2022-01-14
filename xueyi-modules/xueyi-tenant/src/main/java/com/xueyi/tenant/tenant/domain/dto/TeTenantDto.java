@@ -1,5 +1,6 @@
 package com.xueyi.tenant.tenant.domain.dto;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.xueyi.tenant.api.domain.source.dto.TeStrategyDto;
 import com.xueyi.tenant.tenant.domain.po.TeTenantPo;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -17,6 +18,7 @@ public class TeTenantDto extends TeTenantPo {
     private static final long serialVersionUID = 1L;
 
     /** 策略信息 */
+    @TableField(exist = false)
     private TeStrategyDto strategy;
 
     public TeStrategyDto getStrategy() {

@@ -54,8 +54,9 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
 
     @Autowired
     private RemoteMenuService remoteMenuService;
+
     /**
-     * 获取代码生成地址
+     * 获取后端代码生成地址
      *
      * @param table    业务表信息
      * @param template 模板文件路径
@@ -65,6 +66,21 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
         String genPath = table.getGenPath();
         if (StringUtils.equals(genPath, "/")) {
             return System.getProperty("user.dir") + File.separator + "src" + File.separator + VelocityUtils.getFileName(template, table);
+        }
+        return genPath + File.separator + VelocityUtils.getFileName(template, table);
+    }
+
+    /**
+     * 获取前端代码生成地址
+     *
+     * @param table    业务表信息
+     * @param template 模板文件路径
+     * @return 生成地址
+     */
+    public static String getUiPath(GenTableDto table, String template) {
+        String genPath = table.getGenPath();
+        if (StringUtils.equals(genPath, "/")) {
+            return System.getProperty("user.dir") + File.separator + "MultiSaas-UI" + File.separator + VelocityUtils.getFileName(template, table);
         }
         return genPath + File.separator + VelocityUtils.getFileName(template, table);
     }
@@ -210,18 +226,19 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
 
         // 获取模板列表
         List<String> templates = VelocityUtils.getTemplateList(table.getTplCategory());
+        String[] genFiles = {"merge.java.vm", "mergeMapper.java.vm", "dto.java.vm", "po.java.vm", "controller.java.vm", "service.java.vm", "serviceImpl.java.vm", "manager.java.vm", "mapper.java.vm", "sql.sql.vm"};
         for (String template : templates) {
-            if (!StringUtils.containsAny(template, "sql.sql.vm", "api.js.vm", "index.vue.vm", "index-tree.vue.vm")) {
-                // 渲染模板
-                StringWriter sw = new StringWriter();
-                Template tpl = Velocity.getTemplate(template, HttpConstants.Character.UTF8.getCode());
-                tpl.merge(context, sw);
-                try {
-                    String path = getGenPath(table, template);
-                    FileUtils.writeStringToFile(new File(path), sw.toString(), CharsetKit.UTF_8);
-                } catch (IOException e) {
-                    throw new ServiceException("渲染模板失败，表名：" + table.getName());
-                }
+            // 渲染模板
+            StringWriter sw = new StringWriter();
+            Template tpl = Velocity.getTemplate(template, HttpConstants.Character.UTF8.getCode());
+            tpl.merge(context, sw);
+            try {
+                String path = StrUtil.containsAny(template, genFiles)
+                        ? getGenPath(table, template)
+                        : getUiPath(table, template);
+                FileUtils.writeStringToFile(new File(path), sw.toString(), CharsetKit.UTF_8);
+            } catch (IOException e) {
+                throw new ServiceException("渲染模板失败，表名：" + table.getName());
             }
         }
     }
@@ -335,7 +352,7 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
      * @param optionsObj 其它生成选项信息
      */
     private void checkTclBasic(GenTableDto genTable, JSONObject optionsObj) {
-        if(StrUtil.isEmpty(optionsObj.getString(GenConstants.OptionField.SOURCE_MODE.getCode()))){
+        if (StrUtil.isEmpty(optionsObj.getString(GenConstants.OptionField.SOURCE_MODE.getCode()))) {
             throw new ServiceException("未设置源策略模式！");
         }
         if (StrUtil.isNotEmpty(optionsObj.getString(GenConstants.OptionField.IS_TENANT.getCode())) && StrUtil.equals(optionsObj.getString(GenConstants.OptionField.IS_TENANT.getCode()), GenConstants.Status.TRUE.getCode())) {
@@ -516,17 +533,17 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
      */
     private void setMenuOptions(GenTableDto table, JSONObject optionsObj) {
         Long menuId = optionsObj.getLong(GenConstants.OptionField.PARENT_MENU_ID.getCode());
-        R<List<SysMenuDto>> result =  remoteMenuService.getAncestorsList(menuId, SecurityConstants.INNER);
+        R<List<SysMenuDto>> result = remoteMenuService.getAncestorsList(menuId, SecurityConstants.INNER);
         if (result.isFail())
             throw new ServiceException("菜单服务异常，请联系管理员！");
-        if (CollUtil.isNotEmpty(result.getResult())){
+        if (CollUtil.isNotEmpty(result.getResult())) {
             List<SysMenuDto> menuTree = TreeUtils.buildTree(result.getResult());
             StringBuffer buffer = new StringBuffer();
             // 节点祖籍一定为线性单链,且从顶级节点开始
             recursionMenuFn(buffer, menuTree.get(0).getChildren().get(0));
             optionsObj.put(GenConstants.OptionField.PARENT_MENU_PATH.getCode(), buffer.toString());
         }
-        getParentMenuAncestors(menuId, result.getResult(),optionsObj);
+        getParentMenuAncestors(menuId, result.getResult(), optionsObj);
         table.setOptions(optionsObj.toString());
     }
 
@@ -534,11 +551,11 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
      * 获取父级菜单祖籍
      */
     private void getParentMenuAncestors(Long menuId, List<SysMenuDto> menus, JSONObject optionsObj) {
-        if(CollUtil.isNotEmpty(menus)){
+        if (CollUtil.isNotEmpty(menus)) {
             Optional<SysMenuDto> menu = menus.stream().filter(e -> ObjectUtil.equals(e.getId(), menuId)).findFirst();
             menu.ifPresent(sysMenuDto -> optionsObj.put(GenConstants.OptionField.PARENT_MENU_ANCESTORS.getCode(), sysMenuDto.getAncestors()));
         }
-        if(optionsObj.containsKey(GenConstants.OptionField.PARENT_MENU_ANCESTORS.getCode()))
+        if (optionsObj.containsKey(GenConstants.OptionField.PARENT_MENU_ANCESTORS.getCode()))
             optionsObj.put(GenConstants.OptionField.PARENT_MENU_ANCESTORS.getCode(), "0");
     }
 
@@ -546,7 +563,7 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
      * 递归生成菜单父路径
      */
     private void recursionMenuFn(StringBuffer buffer, SysMenuDto menu) {
-        if(ObjectUtil.isNotNull(menu)) {
+        if (ObjectUtil.isNotNull(menu)) {
             buffer.append("/").append(menu.getPath());
             if (CollUtil.isNotEmpty(menu.getChildren()))
                 recursionMenuFn(buffer, menu.getChildren().get(0));

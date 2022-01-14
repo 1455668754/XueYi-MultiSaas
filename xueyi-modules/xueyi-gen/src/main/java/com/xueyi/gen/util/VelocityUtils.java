@@ -34,16 +34,12 @@ public class VelocityUtils {
     /** 覆写字段数组 */
     private static final String COVER = "cover";
 
-    /** 前端路径区分标识 */
-    private static final String FRONT_DEPTH_IDENTIFICATION = ".";
-
     /**
      * 设置模板变量信息
      *
      * @return 模板列表
      */
     public static VelocityContext prepareContext(GenTableDto genTable) {
-        String moduleName = genTable.getModuleName();
         String businessName = genTable.getBusinessName();
         String packageName = genTable.getPackageName();
         String tplCategory = genTable.getTplCategory();
@@ -71,11 +67,11 @@ public class VelocityUtils {
         // 生成模块名
         velocityContext.put("authorityName", genTable.getAuthorityName());
         // 生成业务名(首字母大写)
-        velocityContext.put("BusinessName", StringUtils.capitalize(genTable.getBusinessName()));
+        velocityContext.put("BusinessName", StringUtils.capitalize(businessName));
         // 生成业务名(首字母小写)
-        velocityContext.put("businessName", genTable.getBusinessName());
+        velocityContext.put("businessName", businessName);
         // 生成业务名(字母全大写)
-        velocityContext.put("BUSINESSName", StringUtils.upperCase(genTable.getBusinessName()));
+        velocityContext.put("BUSINESSName", StringUtils.upperCase(businessName));
         // 生成包路径前缀
         velocityContext.put("basePackage", getPackagePrefix(packageName));
         // 生成包路径
@@ -107,7 +103,7 @@ public class VelocityUtils {
         // 是否为多租户（true | false）
         velocityContext.put("isTenant", isTenant(genTable));
         // 源策略模式
-        velocityContext.put("sourceMode", getSourceMode(genTable));
+        velocityContext.put("sourceMode", getSourceMode(optionsObj));
         // 源策略是否为主库
         velocityContext.put("isMasterSource", isMasterSource(genTable));
         // 获取其他重要参数（名称、状态...）
@@ -156,10 +152,13 @@ public class VelocityUtils {
         context.put("menuId4", IdUtil.getSnowflake(0, 0).nextId());
         context.put("menuId5", IdUtil.getSnowflake(0, 0).nextId());
         context.put("menuId6", IdUtil.getSnowflake(0, 0).nextId());
+        context.put("menuId7", IdUtil.getSnowflake(0, 0).nextId());
     }
 
+    /**
+     * 设置树表模板变量信息
+     */
     public static void setTreeVelocityContext(VelocityContext context, GenTableDto genTable, JSONObject optionsObj) {
-
         Map<String, GenTableColumnDto> treeMap = new HashMap<>();
         for (GenTableColumnDto column : genTable.getSubList()) {
             if (StrUtil.equals(optionsObj.getString(GenConstants.OptionField.COVER_TREE_ID.getCode()), GenConstants.Status.TRUE.getCode())
@@ -195,7 +194,6 @@ public class VelocityUtils {
     public static void setSubVelocityContext(VelocityContext context, GenTableDto table) {
         GenTableDto subTable = table.getSubTable();
         String functionName = subTable.getFunctionName();
-
         // 外键关联的主表字段信息
         context.put("foreignColumn", getForeignMainColumn(table));
         // 子表外键字段信息
@@ -271,53 +269,63 @@ public class VelocityUtils {
      * 获取文件名
      */
     public static String getFileName(String template, GenTableDto genTable) {
-        // 文件名称
-        String fileName = "";
         // 包路径
         String packageName = genTable.getPackageName();
         // 模块名
         String moduleName = genTable.getModuleName();
+        // 权限名
+        String authorityName = genTable.getAuthorityName();
         // 大写类名
         String className = genTable.getClassName();
         // 业务名称
         String businessName = genTable.getBusinessName();
+        // 业务名称(首字母大写)
+        String BusinessName = StringUtils.capitalize(genTable.getBusinessName());
 
         String javaPath = PROJECT_PATH + "/" + StringUtils.replace(packageName, ".", "/");
         String mybatisPath = MYBATIS_PATH + "/" + moduleName;
         String vuePath = "vue";
 
-        switch (template){
-            case "po.java.vm":
-                return StringUtils.format("{}/domain/{}.java", javaPath, className);
-            case "dto.java.vm":
-                return StringUtils.format("{}/domain/{}.java", javaPath, className);
+        if (template.contains("dto.java.vm"))
+            return StringUtils.format("{}/domain/dto/{}Dto.java", javaPath, className);
+        else if (template.contains("po.java.vm"))
+            return StringUtils.format("{}/domain/po/{}Po.java", javaPath, className);
+        else if (template.contains("controller.java.vm"))
+            return StringUtils.format("{}/controller/{}Controller.java", javaPath, className);
+        else if (template.contains("service.java.vm"))
+            return StringUtils.format("{}/service/I{}Service.java", javaPath, className);
+        else if (template.contains("serviceImpl.java.vm"))
+            return StringUtils.format("{}/service/impl/{}ServiceImpl.java", javaPath, className);
+        else if (template.contains("manager.java.vm"))
+            return StringUtils.format("{}/manager/{}Manager.java", javaPath, className);
+        else if (template.contains("mapper.java.vm"))
+            return StringUtils.format("{}/mapper/{}Mapper.java", javaPath, className);
+        else if (template.contains("merge.java.vm"))
+            return StringUtils.format("{}/domain/merge/{}Merge.java", javaPath, className);
+        else if (template.contains("mergeMapper.java.vm"))
+            return StringUtils.format("{}/mapper/merge/{}MergeMapper.java", javaPath, className);
 
-        }
-        if (template.contains("dto.java.vm")) {
-            fileName = StringUtils.format("{}/domain/{}.java", javaPath, className);
-        }
-        if (template.contains("sub-dto.java.vm") && StrUtil.equals(GenConstants.TemplateType.SUB_BASE.getCode(), genTable.getTplCategory())) {
-            fileName = StringUtils.format("{}/domain/{}.java", javaPath, genTable.getSubTable().getClassName());
-        } else if (template.contains("mapper.java.vm")) {
-            fileName = StringUtils.format("{}/mapper/{}Mapper.java", javaPath, className);
-        } else if (template.contains("service.java.vm")) {
-            fileName = StringUtils.format("{}/service/I{}Service.java", javaPath, className);
-        } else if (template.contains("serviceImpl.java.vm")) {
-            fileName = StringUtils.format("{}/service/impl/{}ServiceImpl.java", javaPath, className);
-        } else if (template.contains("controller.java.vm")) {
-            fileName = StringUtils.format("{}/controller/{}Controller.java", javaPath, className);
-        } else if (template.contains("mapper.xml.vm")) {
-            fileName = StringUtils.format("{}/{}Mapper.xml", mybatisPath, className);
-        } else if (template.contains("sql.sql.vm")) {
-            fileName = businessName + "Menu.sql";
-        } else if (template.contains("api.js.vm")) {
-            fileName = StringUtils.format("{}/api/{}/{}.js", vuePath, moduleName, businessName);
-        } else if (template.contains("index.vue.vm")) {
-            fileName = StringUtils.format("{}/views/{}/{}/index.vue", vuePath, moduleName, businessName);
-        } else if (template.contains("index-tree.vue.vm")) {
-            fileName = StringUtils.format("{}/views/{}/{}/index.vue", vuePath, moduleName, businessName);
-        }
-        return fileName;
+        else if (template.contains("sql.sql.vm"))
+            return businessName + "Menu.sql";
+
+        else if (template.contains("api.ts.vm"))
+            return StringUtils.format("{}/packages/service/modules/{}/{}/{}.ts", vuePath, moduleName, authorityName, businessName);
+        else if (template.contains("infoModel.ts.vm"))
+            return StringUtils.format("{}/packages/types/modules/{}/{}/{}.ts", vuePath, moduleName, authorityName, businessName);
+        else if (template.contains("auth.ts.vm"))
+            return StringUtils.format("{}/packages/token/auth/{}/{}/{}.auth.ts", vuePath, moduleName, authorityName, businessName);
+        else if (template.contains("enum.ts.vm"))
+            return StringUtils.format("{}/packages/token/enums/{}/{}/{}.enum.ts", vuePath, moduleName, authorityName, businessName);
+
+        else if (template.contains("data.ts.vm"))
+            return StringUtils.format("{}/admin/src/views/{}/{}/{}/{}.data.ts", vuePath, moduleName, authorityName, businessName, businessName);
+        else if (template.contains("index.vue.vm"))
+            return StringUtils.format("{}/admin/src/views/{}/{}/{}/index.vue", vuePath, moduleName, authorityName, businessName);
+        else if (template.contains("detail.vue.vm"))
+            return StringUtils.format("{}/admin/src/views/{}/{}/{}/{}Detail.vue", vuePath, moduleName, authorityName, businessName, BusinessName);
+        else if (template.contains("model.vue.vm"))
+            return StringUtils.format("{}/admin/src/views/{}/{}/{}/{}Model.vue", vuePath, moduleName, authorityName, businessName, BusinessName);
+        return "";
     }
 
     /**
@@ -421,11 +429,10 @@ public class VelocityUtils {
     /**
      * 获取源策略
      *
-     * @param genTable 业务表对象
+     * @param optionsObj 生成其他选项
      * @return 是否为多租户
      */
-    public static String getSourceMode(GenTableDto genTable) {
-        JSONObject optionsObj = JSONObject.parseObject(genTable.getOptions());
+    public static String getSourceMode(JSONObject optionsObj) {
         return optionsObj.getString(GenConstants.OptionField.SOURCE_MODE.getCode());
     }
 

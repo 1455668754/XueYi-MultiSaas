@@ -17,6 +17,9 @@ public class GenConfig {
     /** 作者 */
     public static String author;
 
+    /** ui路径 */
+    public static String uiPath;
+
     /** 自动去除表前缀，默认是false */
     public static boolean autoRemovePre;
 
@@ -65,6 +68,14 @@ public class GenConfig {
 
     public void setAuthor(String author) {
         GenConfig.author = author;
+    }
+
+    public static String getUiPath() {
+        return uiPath;
+    }
+
+    public static void setUiPath(String uiPath) {
+        GenConfig.uiPath = uiPath;
     }
 
     public static boolean isAutoRemovePre() {

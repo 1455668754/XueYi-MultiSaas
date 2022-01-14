@@ -314,8 +314,8 @@ public class GenConstants {
     /** 源策略模式 */
     public enum SourceMode {
 
-        ISOLATE("isolate", "策略源"),
-        MASTER("master", "主数据源");
+        ISOLATE("ISOLATE", "策略源"),
+        MASTER("MASTER", "主数据源");
 
         private final String code;
         private final String info;

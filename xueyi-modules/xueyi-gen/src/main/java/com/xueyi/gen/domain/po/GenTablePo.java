@@ -68,9 +68,13 @@ public class GenTablePo<S> extends SubBaseEntity<S> {
     @TableField("gen_type")
     private String genType;
 
-    /** 生成路径（不填默认项目路径） */
+    /** 后端生成路径（不填默认项目路径） */
     @TableField("gen_path")
     private String genPath;
+
+    /** 前端生成路径（不填默认项目路径） */
+    @TableField("ui_path")
+    private String uiPath;
 
     /** 其它生成选项 */
     @TableField("options")
@@ -170,6 +174,14 @@ public class GenTablePo<S> extends SubBaseEntity<S> {
 
     public void setGenPath(String genPath) {
         this.genPath = genPath;
+    }
+
+    public String getUiPath() {
+        return uiPath;
+    }
+
+    public void setUiPath(String uiPath) {
+        this.uiPath = uiPath;
     }
 
     public String getOptions() {

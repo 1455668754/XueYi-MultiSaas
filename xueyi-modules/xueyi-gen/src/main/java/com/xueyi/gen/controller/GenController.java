@@ -98,7 +98,7 @@ public class GenController extends SubBaseController<GenTableDto, IGenTableServi
      */
 //    @RequiresPermissions("tool:gen:code")
     @Log(title = "代码生成", businessType = BusinessType.GENCODE)
-    @GetMapping("/genCode/{tableId}")
+    @GetMapping("/generate/{tableId}")
     public AjaxResult genCode(@PathVariable("tableId") Long tableId) {
         baseService.generatorCode(tableId);
         return AjaxResult.success();
@@ -131,7 +131,7 @@ public class GenController extends SubBaseController<GenTableDto, IGenTableServi
      */
     private void genCode(HttpServletResponse response, byte[] data) throws IOException {
         response.reset();
-        response.setHeader("Content-Disposition", "attachment; filename=\"ruoyi.zip\"");
+        response.setHeader("Content-Disposition", "attachment; filename=\"xueyi.zip\"");
         response.addHeader("Content-Length", "" + data.length);
         response.setContentType("application/octet-stream; charset=UTF-8");
         IOUtils.write(data, response.getOutputStream());
