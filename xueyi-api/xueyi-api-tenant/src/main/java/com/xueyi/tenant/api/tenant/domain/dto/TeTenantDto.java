@@ -2,7 +2,6 @@ package com.xueyi.tenant.api.tenant.domain.dto;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.xueyi.tenant.api.domain.source.dto.TeStrategyDto;
 import com.xueyi.tenant.api.tenant.domain.po.TeTenantPo;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
