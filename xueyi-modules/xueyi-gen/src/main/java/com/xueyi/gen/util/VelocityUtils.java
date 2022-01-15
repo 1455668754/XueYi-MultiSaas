@@ -78,8 +78,6 @@ public class VelocityUtils {
         velocityContext.put("packageName", packageName);
         // 作者
         velocityContext.put("author", genTable.getFunctionAuthor());
-//        // 当前日期
-//        velocityContext.put("datetime", DateUtils.getDate());
         // 主键字段
         velocityContext.put("pkColumn", genTable.getPkColumn());
         // 导入包集合
@@ -248,18 +246,18 @@ public class VelocityUtils {
                 case BASE:
                     templates.add("vm/vue/detail.vue.vm");
                     templates.add("vm/vue/base/index.vue.vm");
-                    templates.add("vm/vue/model.vue.vm");
+                    templates.add("vm/vue/modal.vue.vm");
                     break;
                 case TREE:
                     templates.add("vm/vue/detail.vue.vm");
                     templates.add("vm/vue/tree/index.vue.vm");
-                    templates.add("vm/vue/model.vue.vm");
+                    templates.add("vm/vue/modal.vue.vm");
                     break;
                 case SUB_TREE:
                 case SUB_BASE:
                     templates.add("vm/vue/detail.vue.vm");
                     templates.add("vm/vue/index.vue.vm");
-                    templates.add("vm/vue/model.vue.vm");
+                    templates.add("vm/vue/modal.vue.vm");
             }
         }
         return templates;
@@ -322,8 +320,8 @@ public class VelocityUtils {
             return StringUtils.format("admin/src/views/{}/{}/{}/index.vue", moduleName, authorityName, businessName);
         else if (template.contains("detail.vue.vm"))
             return StringUtils.format("admin/src/views/{}/{}/{}/{}Detail.vue", moduleName, authorityName, businessName, BusinessName);
-        else if (template.contains("model.vue.vm"))
-            return StringUtils.format("admin/src/views/{}/{}/{}/{}Model.vue", moduleName, authorityName, businessName, BusinessName);
+        else if (template.contains("modal.vue.vm"))
+            return StringUtils.format("admin/src/views/{}/{}/{}/{}Modal.vue", moduleName, authorityName, businessName, BusinessName);
         return "";
     }
 
