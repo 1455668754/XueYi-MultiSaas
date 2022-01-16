@@ -11,6 +11,12 @@ import { SortEnum } from '@enums/basic'
 #break
 #end
 #end
+#foreach ($column in $columns)
+#if($column.dictType && $column.dictName)
+import { ${BusinessName}IM } from '@type/${moduleName}'
+#break
+#end
+#end
 
 #if($dictMap)
 /** 字典查询 */
@@ -50,9 +56,9 @@ export const columns: BasicColumn[] = [
         align: 'left',
 #end
 #if($column.dictType && $column.dictName)
-        editComponent: 'Select',
-        editComponentProps: {
-            options: dict.${column.dictName},
+        customRender: ({ record }) => {
+            const data = record as ${BusinessName}IM
+            return dictConversion(dict.${column.dictName}, data.${column.javaField})
         },
 #end
     },
@@ -77,11 +83,13 @@ export const searchFormSchema: FormSchema[] = [
     {
         label: '${column.readNameNoSuffix()}',
         field: '${column.javaField}',
-        component: '${column.htmlType}',
 #if($column.dictType && $column.dictName)
+        component: 'Select',
         componentProps: {
             options: dict.${column.dictName},
         },
+#else
+        component: '${column.htmlType}',
 #end
         colProps: { span: 6 },
     },

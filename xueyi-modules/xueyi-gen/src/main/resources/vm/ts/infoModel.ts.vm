@@ -11,11 +11,7 @@
 #set($Entity="SubTree")
 #set($generics = "<"+${BusinessName}+"IM, "+${subBusinessName}+"IM>")
 #end
-#set($frontDepth = "")
-#foreach($item in $frontModuleDepth)
-#set($frontDepth = $frontDepth + "../")
-#end
-import { BasicFetchResult, BasicPageParams, ${Entity}Entity } from '${frontDepth}base'
+import { BasicFetchResult, BasicPageParams, ${Entity}Entity } from '../../../src'
 
 /** ${businessName} info model */
 export interface ${BusinessName}IM extends ${Entity}Entity${generics} {

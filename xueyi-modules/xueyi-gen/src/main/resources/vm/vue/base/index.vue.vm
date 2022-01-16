@@ -3,16 +3,15 @@
     <BasicTable @register="registerTable">
       <template #toolbar>
         <a-button
-          :preIcon="IconEnum.BUTTON_ADD"
+          :preIcon="IconEnum.ADD"
           v-auth="${BusinessName}Auth.ADD"
           @click="handleCreate"
           type="primary"
-          color="error"
         >
           新增
         </a-button>
         <a-button
-          :preIcon="IconEnum.BUTTON_DELETE"
+          :preIcon="IconEnum.DELETE"
           v-auth="${BusinessName}Auth.DELETE"
           @click="handleDelete"
           type="primary"
@@ -25,26 +24,23 @@
         <TableAction
           :actions="[
             {
-              icon: IconEnum.ICON_VIEW,
+              icon: IconEnum.VIEW,
               tooltip: '查看',
               auth: ${BusinessName}Auth.SINGLE,
               onClick: handleView.bind(null, record),
             },
             {
-              icon: IconEnum.ICON_EDIT,
+              icon: IconEnum.EDIT,
               tooltip: '编辑',
               auth: ${BusinessName}Auth.EDIT,
               onClick: handleEdit.bind(null, record),
             },
             {
-              icon: IconEnum.ICON_DELETE,
+              icon: IconEnum.DELETE,
               tooltip: '删除',
               auth: ${BusinessName}Auth.DELETE,
               color: 'error',
-              popConfirm: {
-                title: '是否确认删除',
-                confirm: handleDelete.bind(null, record),
-              },
+              onClick: handleDelete.bind(null, record),
             },
           ]"
         />
@@ -72,14 +68,14 @@ export default defineComponent({
   components: { BasicTable, ${BusinessName}Modal, TableAction },
   setup() {
     const go = useGo()
-    const { createMessage } = useMessage()
+    const { createMessage, createConfirm } = useMessage()
     const [registerModal, { openModal }] = useModal()
     const state = reactive<{
-      ids: (string | number)[]
-      idNames: string
+      ${pkColumn.javaField}s: (string | number)[]
+      ${pkColumn.javaField}Names: string
     }>({
-      ids: [],
-      idNames: '',
+      ${pkColumn.javaField}s: [],
+      ${pkColumn.javaField}Names: '',
     })
     const [registerTable, { reload }] = useTable({
       title: '${functionName}列表',
@@ -107,8 +103,8 @@ export default defineComponent({
       },
       rowSelection: {
         onChange: (selectedRowKeys, selectRows) => {
-          state.ids = selectedRowKeys
-          state.idNames = selectRows
+          state.${pkColumn.javaField}s = selectedRowKeys
+          state.${pkColumn.javaField}Names = selectRows
             .map((item) => {
               return item.#if($nameColumn)${nameColumn.javaField}#else${pkColumn.javaField}#end
             })
@@ -139,14 +135,20 @@ export default defineComponent({
 
     /** 删除按钮 */
     function handleDelete(record: Recordable) {
-      const delIds = record.${pkColumn.javaField} || state.ids
-      if (!record.${pkColumn.javaField} && state.ids.length === 0) {
+      const delIds = record.${pkColumn.javaField} || state.${pkColumn.javaField}s
+      const delNames = record.#if($nameColumn)${nameColumn.javaField}#else${pkColumn.javaField}#end || state.${pkColumn.javaField}Names
+      if (!record.${pkColumn.javaField} && state.${pkColumn.javaField}s.length === 0) {
         createMessage.warning('请选择要操作的数据！')
       } else {
-        del${BusinessName}Api(delIds).then(() => {
-          const delNames = record.#if($nameColumn)${nameColumn.javaField}#else${pkColumn.javaField}#end || state.idNames
-          createMessage.success('删除' + delNames + '成功！')
-          reload()
+        createConfirm({
+          iconType: 'warning',
+          title: '提示',
+          content: '是否确定要删除' + delNames + '?',
+          onOk: () =>
+            del${BusinessName}Api(delIds).then(() => {
+              createMessage.success('删除' + delNames + '成功！')
+              reload()
+            }),
         })
       }
     }

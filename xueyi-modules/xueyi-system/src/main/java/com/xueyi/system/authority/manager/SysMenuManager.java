@@ -45,13 +45,14 @@ public class SysMenuManager extends TreeManager<SysMenuDto, SysMenuMapper> {
         // 1.获取租户授权的公共菜单Ids
         List<SysTenantMenuMerge> tenantMenuMerges = tenantMenuMergeMapper.selectList(
                 Wrappers.<SysTenantMenuMerge>query().lambda()
-                        .eq(SysTenantMenuMerge::getEnterpriseId, enterpriseId));
-
+                        .eq(SysTenantMenuMerge::getEnterpriseId, enterpriseId)
+                        );
         // 2.获取租户全部可使用的菜单
         LambdaQueryWrapper<SysMenuDto> menuQueryWrapper = new LambdaQueryWrapper<>();
         if (CollUtil.isNotEmpty(tenantMenuMerges))
-            menuQueryWrapper.eq(SysMenuDto::getEnterpriseId, TenantConstants.COMMON_TENANT_ID)
-                    .in(SysMenuDto::getId, tenantMenuMerges)
+            menuQueryWrapper
+                    .in(SysMenuDto::getId, tenantMenuMerges.stream().map(SysTenantMenuMerge::getMenuId).collect(Collectors.toSet()))
+                    .eq(SysMenuDto::getEnterpriseId, TenantConstants.COMMON_TENANT_ID)
                     .or().eq(SysMenuDto::getEnterpriseId, enterpriseId);
         else
             menuQueryWrapper.eq(SysMenuDto::getEnterpriseId, enterpriseId);
@@ -74,7 +75,6 @@ public class SysMenuManager extends TreeManager<SysMenuDto, SysMenuMapper> {
                 Wrappers.<SysRoleMenuMerge>query().lambda()
                         .eq(SysRoleMenuMerge::getEnterpriseId, enterpriseId)
                         .in(SysRoleMenuMerge::getRoleId, roleIds));
-
         // 2.获取用户可使用的菜单
         if (CollUtil.isNotEmpty(roleModuleMenuMerges)) {
             List<Long> enterpriseIds = new ArrayList<Long>() {{

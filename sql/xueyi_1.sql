@@ -89,7 +89,7 @@ primary key (id)
 -- 初始化-数据源表数据 | 这条数据为我的基础库，实际使用时调整成自己的库即可
 -- ----------------------------
 insert into te_source(id, name, is_default, slave, driver_class_name, url_prepend, url_append, username, password)
-values (1, '注册数据源', 'Y', 'slave', 'com.mysql.cj.jdbc.Driver', 'jdbc:mysql://124.71.32.2:32001/xy-cloud1-v3', '?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8', 'root', 'password');
+values (1, '注册数据源', 'Y', 'slave', 'com.mysql.cj.jdbc.Driver', 'jdbc:mysql://localhost:3306/xy-cloud1', '?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8', 'root', 'password');
 
 -- ----------------------------
 -- 6、模块信息表
@@ -174,6 +174,14 @@ create table sys_menu (
 insert into sys_menu (id, parent_id, name, title, ancestors, path, frame_src, component, param_path, transition_name, ignore_route, is_cache, is_affix, is_disabled, frame_type, menu_type, hide_tab, hide_menu, hide_breadcrumb, hide_children, hide_path_for_children, dynamic_level, real_path, current_active_menu, perms, icon, sort, remark, is_common, is_default, module_id, tenant_id)
 values (0, 0, 'Default', '默认菜单', '', 'default', null, null, null, null, 'N', 'N', 'N', 'N', '0', 'M', 'N', 'N', 'N', 'N', 'N', 1, null, null, null, '', 1, '目录:默认菜单', 'Y', 'Y', 0, 0),
        (14000000, 0, 'SysAuthority', '权限管理', '0', 'authority', null, '', null, null, 'N', 'N', 'N', 'N', '0', 'M', 'N', 'N', 'N', 'N', 'N', 1, null, null, '', 'xy_authority', 4, '目录:权限管理', 'Y', 'Y', 0, 0),
+       (14010000, 14000000, 'SysRole', '角色管理', '0', 'role', null, 'system/authority/role/index', null, null, 'N', 'N', 'N', 'N', '0', 'C', 'N', 'N', 'N', 'N', 'N', 1, null, null, 'authority:role:list', 'xy_organization', 1, '菜单:角色管理', 'Y', 'Y', 0, 0),
+       (14010100, 14010000, 'SysRoleDetail', '角色详情', '0,1482190792092024832', 'RoleDetail/:id', null, 'system/authority/role/RoleDetail', null, null, 'N', 'Y', 'N', 'N', '0', 'X', 'N', 'Y', 'N', 'N', 'N', 5, null, '/authority/role', 'authority:role:single', '#', 2, '详情:角色详情', 'Y', 'Y', 0, 0),
+       (14010020, 14010000, 'SysRoleAdd', '角色新增', '0,1482190792092024832', '', null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', 'N', 'N', 'N', 'N', 'N', 1, null, null, 'authority:role:add', '#', 3, '按钮:角色新增', 'Y', 'Y', 0, 0),
+       (14010030, 14010000, 'SysRoleEdit', '角色修改', '0,1482190792092024832', '', null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', 'N', 'N', 'N', 'N', 'N', 1, null, null, 'authority:role:edit', '#', 4, '按钮:角色修改', 'Y', 'Y', 0, 0),
+       (14010040, 14010000, 'SysRoleEditStatus', '角色修改状态', '0,1482190792092024832', '', null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', 'N', 'N', 'N', 'N', 'N', 1, null, null, 'authority:role:editStatus', '#', 5, '按钮:角色修改状态', 'Y', 'Y', 0, 0),
+       (14010050, 14010000, 'SysRoleDelete', '角色删除', '0,1482190792092024832', '', null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', 'N', 'N', 'N', 'N', 'N', 1, null, null, 'authority:role:delete', '#', 6, '按钮:角色删除', 'Y', 'Y', 0, 0),
+       (14010060, 14010000, 'SysRoleImport', '角色导入', '0,1482190792092024832', '', null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', 'N', 'N', 'N', 'N', 'N', 1, null, null, 'authority:role:import', '#', 7, '按钮:角色导入', 'Y', 'Y', 0, 0),
+       (14010070, 14010000, 'SysRoleExport', '角色导出', '0,1482190792092024832', '', null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', 'N', 'N', 'N', 'N', 'N', 1, null, null, 'authority:role:export', '#', 8, '按钮:角色导出', 'Y', 'Y', 0, 0),
        (23000000, 0, 'GenTool', '系统工具', '0', 'generate', null, '', null, null, 'N', 'N', 'N', 'N', '0', 'M', 'N', 'N', 'N', 'N', 'N', 1, null, null, '', 'xy_organization', 3, '目录:系统工具', 'Y', 'Y', 0, 0),
        (23010000, 23000000, 'GenGen', '代码生成', '0,23000000', 'gen', null, 'gen/generate/gen/index', null, null, 'N', 'N', 'N', 'N', '0', 'C', 'N', 'N', 'N', 'N', 'N', 1, null, null, 'generate:gen:list', 'xy_organization', 1, '菜单:代码生成', 'Y', 'Y', 0, 0),
        (23010100, 23010000, 'GenGenDetail', '代码生成配置', '0,23010000', 'generate/:id', null, 'gen/generate/gen/GenDetail', null, null, 'N', 'Y', 'N', 'N', '0', 'X', 'N', 'Y', 'N', 'N', 'N', 5, null, '/generate/gen', 'generate:gen:edit', 'xy_organization', 2, '详情:代码生成配置', 'Y', 'Y', 0, 0),
