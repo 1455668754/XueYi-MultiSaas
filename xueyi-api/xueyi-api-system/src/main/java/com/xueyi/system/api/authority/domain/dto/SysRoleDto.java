@@ -22,13 +22,6 @@ public class SysRoleDto extends SysRolePo {
     @TableField(exist = false)
     private Set<Long> organizeIds;
 
-    public SysRoleDto() {
-    }
-
-    public SysRoleDto(Long Id) {
-        setId(Id);
-    }
-
     public Set<Long> getOrganizeIds() {
         return organizeIds;
     }
@@ -37,6 +30,7 @@ public class SysRoleDto extends SysRolePo {
         this.organizeIds = organizeIds;
     }
 
+    @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
                 .append("id", getId())
@@ -46,13 +40,14 @@ public class SysRoleDto extends SysRolePo {
                 .append("dataScope", getDataScope())
                 .append("sort", getSort())
                 .append("status", getStatus())
+                .append("remark", getRemark())
                 .append("createBy", getCreateBy())
                 .append("createName", getCreateName())
                 .append("createTime", getCreateTime())
                 .append("updateBy", getUpdateBy())
                 .append("updateName", getUpdateName())
                 .append("updateTime", getUpdateTime())
-                .append("remark", getRemark())
+                .append("isDefault", getIsDefault())
                 .append("deptPostIds", getOrganizeIds())
                 .toString();
     }

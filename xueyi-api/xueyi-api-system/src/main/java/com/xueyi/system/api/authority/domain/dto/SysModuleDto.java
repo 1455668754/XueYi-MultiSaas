@@ -36,6 +36,7 @@ public class SysModuleDto extends SysModulePo<SysMenuDto> {
                 .append("updateTime", getUpdateTime())
                 .append("isCommon", getIsCommon())
                 .append("isDefault", getIsDefault())
+                .append("subList", getSubList())
                 .toString();
     }
 }

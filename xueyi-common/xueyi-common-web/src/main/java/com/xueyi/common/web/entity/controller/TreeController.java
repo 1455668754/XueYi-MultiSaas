@@ -50,15 +50,6 @@ public abstract class TreeController<D extends TreeEntity<D>, DS extends ITreeSe
     }
 
     /**
-     * 获取下拉树列表
-     */
-    @GetMapping("/treeSelect")
-    public AjaxResult treeSelect() {
-        List<D> list = baseService.selectList(null);
-        return AjaxResult.success(baseService.buildTreeSelect(list));
-    }
-
-    /**
      * 树型 新增
      * 考虑父节点状态
      *

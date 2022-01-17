@@ -58,6 +58,12 @@ public class ${ClassName}Dto extends ${ClassName}Po#if($generics)${generics}#end
 #end
 #end
 #end
+#if($table.tree || $table.subTree)
+            .append("children", getChildren())
+#end
+#if($table.subBase || $table.subTree)
+            .append("subList", getSubList())
+#end
             .toString();
     }
 }

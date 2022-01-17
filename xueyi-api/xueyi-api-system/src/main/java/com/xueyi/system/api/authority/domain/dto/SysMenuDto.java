@@ -15,27 +15,21 @@ public class SysMenuDto extends SysMenuPo<SysMenuDto> {
 
     private static final long serialVersionUID = 1L;
 
-    public SysMenuDto() {
-    }
-
-    public SysMenuDto(Long Id) {
-        this.setId(Id);
-    }
-
     @Override
     public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
                 .append("id", getId())
-                .append("moduleId", getModuleId())
                 .append("parentId", getParentId())
+                .append("parentName", getParentName())
                 .append("name", getName())
+                .append("title", getTitle())
                 .append("ancestors", getAncestors())
                 .append("path", getPath())
+                .append("frameSrc", getFrameSrc())
                 .append("component", getComponent())
-                .append("query", getParamPath())
+                .append("paramPath", getParamPath())
                 .append("transitionName", getTransitionName())
                 .append("ignoreRoute", getIgnoreRoute())
-                .append("isCommon", getIsCommon())
                 .append("isCache", getIsCache())
                 .append("isAffix", getIsAffix())
                 .append("isDisabled", getIsDisabled())
@@ -50,17 +44,20 @@ public class SysMenuDto extends SysMenuPo<SysMenuDto> {
                 .append("realPath", getRealPath())
                 .append("currentActiveMenu", getCurrentActiveMenu())
                 .append("perms", getPerms())
-                .append("children", getChildren())
                 .append("icon", getIcon())
                 .append("sort", getSort())
                 .append("status", getStatus())
+                .append("remark", getRemark())
                 .append("createBy", getCreateBy())
                 .append("createName", getCreateName())
                 .append("createTime", getCreateTime())
                 .append("updateBy", getUpdateBy())
                 .append("updateName", getUpdateName())
                 .append("updateTime", getUpdateTime())
-                .append("remark", getRemark())
+                .append("isCommon", getIsCommon())
+                .append("isDefault", getIsDefault())
+                .append("moduleId", getModuleId())
+                .append("children", getChildren())
                 .toString();
     }
 }

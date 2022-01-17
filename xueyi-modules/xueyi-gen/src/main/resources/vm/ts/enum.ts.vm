@@ -1,5 +1,5 @@
 /** ${functionName}主页路由 */
-export const ${BusinessName}IndexGo = '${parentMenuPath}/${businessName}'
+export const ${BusinessName}IndexGo = '#if($parentMenuPath)${parentMenuPath}#end/${businessName}'
 
 /** ${functionName}详情页路由 */
-export const ${BusinessName}DetailGo = '${parentMenuPath}/${businessName}Detail/'
+export const ${BusinessName}DetailGo = '#if($parentMenuPath)${parentMenuPath}#end/${businessName}Detail/'

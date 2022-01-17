@@ -16,26 +16,22 @@ public class SysRolePo extends TBaseEntity {
 
     private static final long serialVersionUID = 1L;
 
-    /** 岗位编码 */
+    /** 角色编码 */
+    @Excel(name = "角色编码")
     @TableField("code")
     private String code;
 
-    /** 角色名称 */
-    @Excel(name = "角色名称")
-    @TableField("name")
-    private String name;
-
-    /** 角色权限 */
-    @Excel(name = "角色权限")
+    /** 角色权限字符串 */
+    @Excel(name = "角色权限字符串")
     @TableField("role_key")
     private String roleKey;
 
-    /** 数据范围（1：全部数据权限；2：自定义数据权限；3：本部门数据权限；4：本部门及以下数据权限 5：本岗位数据权限 6：仅本人数据权限） */
-    @Excel(name = "数据范围", readConverterExp = "1=全部数据权限,2=自定义数据权限,3=本部门数据权限,4=本部门及以下数据权限,5=本岗位数据权限,6=仅本人数据权限")
+    /** 数据范围（1全部数据权限 2自定数据权限 3本部门数据权限 4本部门及以下数据权限 5本岗位数据权限  6仅本人数据权限） */
+    @Excel(name = "数据范围", readConverterExp = "1=全部数据权限,2=自定数据权限,3=本部门数据权限,4=本部门及以下数据权限,5=本岗位数据权限,6=仅本人数据权限")
     @TableField("data_scope")
     private String dataScope;
 
-    /** 默认菜单（Y是 N否） */
+    /** 默认角色（Y是 N否） */
     @TableField("is_default")
     private String isDefault;
 
@@ -50,11 +46,7 @@ public class SysRolePo extends TBaseEntity {
     @NotBlank(message = "角色名称不能为空")
     @Size(min = 0, max = 30, message = "角色名称长度不能超过30个字符")
     public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        return super.getName();
     }
 
     @NotBlank(message = "权限字符不能为空")

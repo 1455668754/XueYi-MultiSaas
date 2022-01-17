@@ -87,6 +87,8 @@ export const searchFormSchema: FormSchema[] = [
         component: 'Select',
         componentProps: {
             options: dict.${column.dictName},
+            showSearch: true,
+            optionFilterProp: 'label',
         },
 #else
         component: '${column.htmlType}',
@@ -142,7 +144,7 @@ export const formSchema: FormSchema[] = [
             options: dict.${column.dictName},
 #if($column.htmlType == 'Select')
             showSearch: true,
-            treeNodeFilterProp: 'title',
+            optionFilterProp: 'label',
 #end
         },
 #end

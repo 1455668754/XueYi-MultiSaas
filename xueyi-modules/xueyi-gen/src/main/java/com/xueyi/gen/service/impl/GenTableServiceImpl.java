@@ -556,7 +556,7 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
             Optional<SysMenuDto> menu = menus.stream().filter(e -> ObjectUtil.equals(e.getId(), menuId)).findFirst();
             menu.ifPresent(sysMenuDto -> optionsObj.put(GenConstants.OptionField.PARENT_MENU_ANCESTORS.getCode(), sysMenuDto.getAncestors()));
         }
-        if (optionsObj.containsKey(GenConstants.OptionField.PARENT_MENU_ANCESTORS.getCode()))
+        if (!optionsObj.containsKey(GenConstants.OptionField.PARENT_MENU_ANCESTORS.getCode()))
             optionsObj.put(GenConstants.OptionField.PARENT_MENU_ANCESTORS.getCode(), "0");
     }
 

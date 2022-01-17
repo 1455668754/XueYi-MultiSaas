@@ -216,6 +216,8 @@ public class VelocityUtils {
         context.put("subbusinessName", subTable.getBusinessName());
         // 生成业务名(字母全大写)
         context.put("subBUSINESSName", StringUtils.upperCase(subTable.getBusinessName()));
+        // 生成相对路径
+        context.put("relativePath", getRelativePath(table, subTable));
     }
 
     /**
@@ -587,4 +589,18 @@ public class VelocityUtils {
                 : AuthorityConstants.MENU_TOP_NODE;
     }
 
+    /**
+     * 获取生成相对路径
+     *
+     * @param table 业务表对象
+     * @param subTable 子业务表对象
+     * @return 生成相对路径
+     */
+    public static String getRelativePath(GenTableDto table, GenTableDto subTable) {
+        return StrUtil.equals(table.getModuleName(),subTable.getModuleName())
+                ? StrUtil.equals(table.getAuthorityName(),subTable.getAuthorityName())
+                ? "."
+                : "../" + subTable.getAuthorityName()
+                : "../../" + subTable.getAuthorityName();
+    }
 }

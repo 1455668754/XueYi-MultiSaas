@@ -18,14 +18,14 @@ public class SysMenuPo<D> extends TTreeEntity<D> {
     @TableField("module_id")
     private Long moduleId;
 
-    /** 菜单名称 | 多语言 */
-    @Excel(name = "菜单名称")
+    /** 菜单标题 | 多语言 */
+    @Excel(name = "菜单标题")
     @TableField("title")
     private String title;
 
     /** 路由地址 */
     @Excel(name = "路由地址")
-    @TableField(value = "path")
+    @TableField("path")
     private String path;
 
     /** 外链地址 | 仅页面类型为外链时生效 */
@@ -106,7 +106,7 @@ public class SysMenuPo<D> extends TTreeEntity<D> {
     /** 详情页可打开Tab页数 */
     @Excel(name = "详情页可打开Tab页数")
     @TableField("dynamic_level")
-    private Long dynamicLevel;
+    private Integer dynamicLevel;
 
     /** 详情页的实际Path */
     @Excel(name = "详情页的实际Path")
@@ -134,206 +134,207 @@ public class SysMenuPo<D> extends TTreeEntity<D> {
     private String isCommon;
 
     /** 默认菜单（Y是 N否） */
+    @Excel(name = "默认菜单", readConverterExp = "Y=是,N=否")
     @TableField("is_default")
     private String isDefault;
-
-    public Long getModuleId() {
-        return moduleId;
-    }
 
     public void setModuleId(Long moduleId) {
         this.moduleId = moduleId;
     }
 
-    public String getTitle() {
-        return title;
+    public Long getModuleId() {
+        return moduleId;
     }
 
     public void setTitle(String title) {
         this.title = title;
     }
 
-    public String getPath() {
-        return path;
+    public String getTitle() {
+        return title;
     }
 
     public void setPath(String path) {
         this.path = path;
     }
 
-    public String getFrameSrc() {
-        return frameSrc;
+    public String getPath() {
+        return path;
     }
 
     public void setFrameSrc(String frameSrc) {
         this.frameSrc = frameSrc;
     }
 
-    public String getComponent() {
-        return component;
+    public String getFrameSrc() {
+        return frameSrc;
     }
 
     public void setComponent(String component) {
         this.component = component;
     }
 
-    public String getParamPath() {
-        return paramPath;
+    public String getComponent() {
+        return component;
     }
 
     public void setParamPath(String paramPath) {
         this.paramPath = paramPath;
     }
 
-    public String getTransitionName() {
-        return transitionName;
+    public String getParamPath() {
+        return paramPath;
     }
 
     public void setTransitionName(String transitionName) {
         this.transitionName = transitionName;
     }
 
-    public String getIgnoreRoute() {
-        return ignoreRoute;
+    public String getTransitionName() {
+        return transitionName;
     }
 
     public void setIgnoreRoute(String ignoreRoute) {
         this.ignoreRoute = ignoreRoute;
     }
 
-    public String getIsCache() {
-        return isCache;
+    public String getIgnoreRoute() {
+        return ignoreRoute;
     }
 
     public void setIsCache(String isCache) {
         this.isCache = isCache;
     }
 
-    public String getIsAffix() {
-        return isAffix;
+    public String getIsCache() {
+        return isCache;
     }
 
     public void setIsAffix(String isAffix) {
         this.isAffix = isAffix;
     }
 
-    public String getIsDisabled() {
-        return isDisabled;
+    public String getIsAffix() {
+        return isAffix;
     }
 
     public void setIsDisabled(String isDisabled) {
         this.isDisabled = isDisabled;
     }
 
-    public String getFrameType() {
-        return frameType;
+    public String getIsDisabled() {
+        return isDisabled;
     }
 
     public void setFrameType(String frameType) {
         this.frameType = frameType;
     }
 
-    public String getMenuType() {
-        return menuType;
+    public String getFrameType() {
+        return frameType;
     }
 
     public void setMenuType(String menuType) {
         this.menuType = menuType;
     }
 
-    public String getHideTab() {
-        return hideTab;
+    public String getMenuType() {
+        return menuType;
     }
 
     public void setHideTab(String hideTab) {
         this.hideTab = hideTab;
     }
 
-    public String getHideMenu() {
-        return hideMenu;
+    public String getHideTab() {
+        return hideTab;
     }
 
     public void setHideMenu(String hideMenu) {
         this.hideMenu = hideMenu;
     }
 
-    public String getHideBreadcrumb() {
-        return hideBreadcrumb;
+    public String getHideMenu() {
+        return hideMenu;
     }
 
     public void setHideBreadcrumb(String hideBreadcrumb) {
         this.hideBreadcrumb = hideBreadcrumb;
     }
 
-    public String getHideChildren() {
-        return hideChildren;
+    public String getHideBreadcrumb() {
+        return hideBreadcrumb;
     }
 
     public void setHideChildren(String hideChildren) {
         this.hideChildren = hideChildren;
     }
 
-    public String getHidePathForChildren() {
-        return hidePathForChildren;
+    public String getHideChildren() {
+        return hideChildren;
     }
 
     public void setHidePathForChildren(String hidePathForChildren) {
         this.hidePathForChildren = hidePathForChildren;
     }
 
-    public Long getDynamicLevel() {
-        return dynamicLevel;
+    public String getHidePathForChildren() {
+        return hidePathForChildren;
     }
 
-    public void setDynamicLevel(Long dynamicLevel) {
+    public void setDynamicLevel(Integer dynamicLevel) {
         this.dynamicLevel = dynamicLevel;
     }
 
-    public String getRealPath() {
-        return realPath;
+    public Integer getDynamicLevel() {
+        return dynamicLevel;
     }
 
     public void setRealPath(String realPath) {
         this.realPath = realPath;
     }
 
-    public String getCurrentActiveMenu() {
-        return currentActiveMenu;
+    public String getRealPath() {
+        return realPath;
     }
 
     public void setCurrentActiveMenu(String currentActiveMenu) {
         this.currentActiveMenu = currentActiveMenu;
     }
 
-    public String getPerms() {
-        return perms;
+    public String getCurrentActiveMenu() {
+        return currentActiveMenu;
     }
 
     public void setPerms(String perms) {
         this.perms = perms;
     }
 
-    public String getIcon() {
-        return icon;
+    public String getPerms() {
+        return perms;
     }
 
     public void setIcon(String icon) {
         this.icon = icon;
     }
 
-    public String getIsCommon() {
-        return isCommon;
+    public String getIcon() {
+        return icon;
     }
 
     public void setIsCommon(String isCommon) {
         this.isCommon = isCommon;
     }
 
-    public String getIsDefault() {
-        return isDefault;
+    public String getIsCommon() {
+        return isCommon;
     }
 
     public void setIsDefault(String isDefault) {
         this.isDefault = isDefault;
+    }
+
+    public String getIsDefault() {
+        return isDefault;
     }
 }

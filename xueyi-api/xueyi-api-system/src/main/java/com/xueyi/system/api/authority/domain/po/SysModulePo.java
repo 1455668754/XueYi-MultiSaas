@@ -14,15 +14,10 @@ public class SysModulePo<S> extends TSubBaseEntity<S> {
 
     private static final long serialVersionUID = 1L;
 
-    /** 图片地址 */
-    @Excel(name = "图片地址")
+    /** 模块logo */
+    @Excel(name = "模块logo")
     @TableField("logo")
     private String logo;
-
-    /** 模块类型（0常规 1内嵌 2外链）*/
-    @Excel(name = "跳转类型（0常规 1内嵌 2外链）")
-    @TableField("type")
-    private String type;
 
     /** 路由地址 */
     @Excel(name = "路由地址")
@@ -34,15 +29,22 @@ public class SysModulePo<S> extends TSubBaseEntity<S> {
     @TableField("param_path")
     private String paramPath;
 
+    /** 模块类型（0常规 1内嵌 2外链） */
+    @Excel(name = "模块类型", readConverterExp = "0=常规,1=内嵌,2=外链")
+    @TableField("type")
+    private String type;
+
     /** 模块显隐状态（Y隐藏 N显示） */
+    @Excel(name = "模块显隐状态", readConverterExp = "Y=隐藏,N=显示")
     @TableField("hide_module")
     private String hideModule;
 
     /** 公共模块（Y是 N否） */
+    @Excel(name = "公共模块", readConverterExp = "Y=是,N=否")
     @TableField("is_common")
     private String isCommon;
 
-    /** 默认菜单（Y是 N否） */
+    /** 默认模块（Y是 N否） */
     @TableField("is_default")
     private String isDefault;
 
@@ -52,14 +54,6 @@ public class SysModulePo<S> extends TSubBaseEntity<S> {
 
     public void setLogo(String logo) {
         this.logo = logo;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public String getPath() {
@@ -76,6 +70,14 @@ public class SysModulePo<S> extends TSubBaseEntity<S> {
 
     public void setParamPath(String paramPath) {
         this.paramPath = paramPath;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getHideModule() {
