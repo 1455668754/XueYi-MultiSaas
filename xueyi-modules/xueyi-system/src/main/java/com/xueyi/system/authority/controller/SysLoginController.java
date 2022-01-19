@@ -55,7 +55,6 @@ public class SysLoginController extends BasisController {
         loginUser.setRoles(roles);
         loginUser.setPermissions(permissions);
         loginUser.setSource(source);
-        loginUser.setMainSource(source.getMaster());
         return R.ok(loginUser);
     }
 }

@@ -45,6 +45,14 @@ public class TokenController {
         if (StringUtils.isNotEmpty(token)) {
             // 删除用户缓存记录
             AuthUtil.logoutByToken(token);
+            // 待检验方法
+//            String enterpriseIdStr = JwtUtils.getEnterpriseId(token);
+//            String userIdStr =  JwtUtils.getUserId(token);
+//            if (StringUtils.isNotEmpty(enterpriseIdStr) && StringUtils.isNotEmpty(userIdStr)){
+//                long enterpriseId = Long.valueOf(enterpriseIdStr);
+//                long userId = Long.valueOf(userIdStr);
+//                sysLoginService.logout(DataSourceUtils.getMainSourceNameByEnterpriseId(enterpriseId), enterpriseId, JwtUtils.getEnterpriseName(token), userId, JwtUtils.getUserName(token));
+//            }
             // 记录用户退出日志
 //            sysLoginService.logout(SourceUtils.getMainSourceNameByEnterpriseId(Long.valueOf(JwtUtils.getEnterpriseId(token))), Long.valueOf(JwtUtils.getEnterpriseId(token)), JwtUtils.getEnterpriseName(token), Long.valueOf(JwtUtils.getUserId(token)), JwtUtils.getUserName(token));
         }

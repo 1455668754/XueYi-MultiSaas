@@ -61,6 +61,7 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
         return AjaxResult.success(TreeUtils.buildTree((menus)));
     }
 
+
     /**
      * 前置校验 （强制）增加/修改
      */
@@ -68,7 +69,7 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
     protected void baseRefreshValidated(BaseConstants.Operate operate, SysMenuDto menu) {
         if (baseService.checkNameUnique(menu.getId(), menu.getParentId(), menu.getName()))
             throw new ServiceException(StrUtil.format("{}{}{}失败，菜单名称已存在", operate.getInfo(), getNodeName(), menu.getName()));
-        else if (!SecurityUtils.isAdminTenant()) {
+        else if (SecurityUtils.isNotAdminTenant()) {
             if (BaseConstants.Operate.ADD == operate || BaseConstants.Operate.ADD_FORCE == operate) {
                 if (StringUtils.equals(AuthorityConstants.IsCommon.YES.getCode(), menu.getIsCommon()))
                     throw new ServiceException(StrUtil.format("{}{}{}失败，无操作权限", operate.getInfo(), getNodeName(), menu.getName()));

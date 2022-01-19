@@ -1,9 +1,10 @@
 package com.xueyi.gateway.filter;
 
+import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.CacheConstants;
+import com.xueyi.common.core.constant.HttpConstants;
 import com.xueyi.common.core.constant.SecurityConstants;
 import com.xueyi.common.core.constant.TokenConstants;
-import com.xueyi.common.core.constant.HttpConstants;
 import com.xueyi.common.core.utils.JwtUtils;
 import com.xueyi.common.core.utils.ServletUtils;
 import com.xueyi.common.core.utils.StringUtils;
@@ -67,8 +68,9 @@ public class AuthFilter implements GlobalFilter, Ordered {
         String userId = JwtUtils.getUserId(claims);
         String userName = JwtUtils.getUserName(claims);
         String userType = JwtUtils.getUserType(claims);
+        String sourceName = JwtUtils.getSourceName(claims);
 
-        if (StringUtils.isEmpty(userId) || StringUtils.isEmpty(userName)) {
+        if (StrUtil.hasBlank(enterpriseId, enterpriseName, isLessor, userId, userName, userType, sourceName)) {
             return unauthorizedResponse(exchange, "令牌验证失败");
         }
         // 设置用户信息到请求
@@ -78,6 +80,7 @@ public class AuthFilter implements GlobalFilter, Ordered {
         addHeader(mutate, SecurityConstants.Details.USER_ID.getCode(), userId);
         addHeader(mutate, SecurityConstants.Details.USER_NAME.getCode(), userName);
         addHeader(mutate, SecurityConstants.Details.USER_TYPE.getCode(), userType);
+        addHeader(mutate, SecurityConstants.Details.SOURCE_NAME.getCode(), sourceName);
         addHeader(mutate, SecurityConstants.Details.USER_KEY.getCode(), userKey);
         // 内部请求来源参数清除
         removeHeader(mutate, SecurityConstants.FROM_SOURCE);
@@ -85,9 +88,8 @@ public class AuthFilter implements GlobalFilter, Ordered {
     }
 
     private void addHeader(ServerHttpRequest.Builder mutate, String name, Object value) {
-        if (value == null) {
+        if (value == null)
             return;
-        }
         String valueStr = value.toString();
         String valueEncode = ServletUtils.urlEncode(valueStr);
         mutate.header(name, valueEncode);

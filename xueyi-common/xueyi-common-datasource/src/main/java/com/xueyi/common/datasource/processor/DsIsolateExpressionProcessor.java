@@ -30,6 +30,6 @@ public class DsIsolateExpressionProcessor extends DsProcessor {
         TokenService tokenService = SpringUtils.getBean(TokenService.class);
         // 获取当前的用户
         LoginUser loginUser = tokenService.getLoginUser();
-        return ObjectUtil.isNotNull(loginUser) ? loginUser.getMainSource() : null;
+        return ObjectUtil.isNotNull(loginUser) ? loginUser.getSourceName() : null;
     }
 }

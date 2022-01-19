@@ -38,7 +38,7 @@ public class LoginUser implements Serializable {
     private String userType;
 
     /** 主数据源 */
-    private String mainSource;
+    private String sourceName;
 
     /** 登录时间 */
     private Long loginTime;
@@ -120,12 +120,12 @@ public class LoginUser implements Serializable {
         this.userType = userType;
     }
 
-    public String getMainSource() {
-        return mainSource;
+    public String getSourceName() {
+        return sourceName;
     }
 
-    public void setMainSource(String mainSource) {
-        this.mainSource = mainSource;
+    public void setSourceName(String sourceName) {
+        this.sourceName = sourceName;
     }
 
     public Long getLoginTime() {
