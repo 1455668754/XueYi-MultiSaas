@@ -49,7 +49,7 @@ export default defineComponent({
           ...${businessName},
         })
       }
-#if($table.tree)
+#if($table.tree || $table.subTree)
       const treeData = await list${BusinessName}ExcludeChildApi(
         unref(isUpdate) ? data.record.${pkColumn.javaField} : undefined,
       )

@@ -6,6 +6,9 @@ import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.xueyi.common.core.constant.GenConstants;
+import com.xueyi.common.core.constant.GenConstants.CoverField;
+import com.xueyi.common.core.constant.GenConstants.OptionField;
+import com.xueyi.common.core.constant.GenConstants.TemplateType;
 import com.xueyi.common.core.constant.HttpConstants;
 import com.xueyi.common.core.constant.SecurityConstants;
 import com.xueyi.common.core.domain.R;
@@ -332,7 +335,7 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
     public void validateEdit(GenTableDto genTable) {
         JSONObject optionsObj = JSONObject.parseObject(genTable.getOptions());
         checkTclBasic(genTable, optionsObj);
-        switch (Objects.requireNonNull(GenConstants.TemplateType.getValue(genTable.getTplCategory()))) {
+        switch (Objects.requireNonNull(TemplateType.getValue(genTable.getTplCategory()))) {
             case SUB_BASE:
                 checkTclSub(optionsObj);
                 checkTclBase(genTable, optionsObj);
@@ -353,10 +356,10 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
      * @param optionsObj 其它生成选项信息
      */
     private void checkTclBasic(GenTableDto genTable, JSONObject optionsObj) {
-        if (StrUtil.isEmpty(optionsObj.getString(GenConstants.OptionField.SOURCE_MODE.getCode()))) {
+        if (StrUtil.isEmpty(optionsObj.getString(OptionField.SOURCE_MODE.getCode()))) {
             throw new ServiceException("未设置源策略模式！");
         }
-        if (StrUtil.isNotEmpty(optionsObj.getString(GenConstants.OptionField.IS_TENANT.getCode())) && StrUtil.equals(optionsObj.getString(GenConstants.OptionField.IS_TENANT.getCode()), GenConstants.Status.TRUE.getCode())) {
+        if (StrUtil.isNotEmpty(optionsObj.getString(OptionField.IS_TENANT.getCode())) && StrUtil.equals(optionsObj.getString(OptionField.IS_TENANT.getCode()), GenConstants.Status.TRUE.getCode())) {
             for (GenTableColumnDto column : genTable.getSubList()) {
                 if (StrUtil.equalsAny(column.getJavaField(), GenConstants.TENANT_ENTITY)) {
                     return;
@@ -373,34 +376,15 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
      * @param optionsObj 其它生成选项信息
      */
     private void checkTclBase(GenTableDto genTable, JSONObject optionsObj) {
-        if (StrUtil.isEmpty(optionsObj.getString(GenConstants.OptionField.PARENT_MODULE_ID.getCode())))
+        if (StrUtil.isEmpty(optionsObj.getString(OptionField.PARENT_MODULE_ID.getCode())))
             throw new ServiceException("归属模块不能为空");
-        else if (StrUtil.isEmpty(optionsObj.getString(GenConstants.OptionField.PARENT_MENU_ID.getCode())))
+        else if (StrUtil.isEmpty(optionsObj.getString(OptionField.PARENT_MENU_ID.getCode())))
             throw new ServiceException("归属菜单不能为空");
-        else if (StrUtil.isEmpty(optionsObj.getString(GenConstants.OptionField.COVER_ID.getCode())))
-            throw new ServiceException("是否覆写主键字段选项不能为空");
-        else if (StrUtil.isEmpty(optionsObj.getString(GenConstants.OptionField.COVER_NAME.getCode())))
-            throw new ServiceException("是否覆写名称字段选项不能为空");
-        else if (StrUtil.isEmpty(optionsObj.getString(GenConstants.OptionField.COVER_STATUS.getCode())))
-            throw new ServiceException("是否覆写状态字段选项不能为空");
-        else if (StrUtil.isEmpty(optionsObj.getString(GenConstants.OptionField.COVER_SORT.getCode())))
-            throw new ServiceException("是否覆写排序字段选项不能为空");
-        else if (StrUtil.equals(optionsObj.getString(GenConstants.OptionField.COVER_NAME.getCode()), GenConstants.Status.TRUE.getCode()) && StrUtil.isEmpty(optionsObj.getString(GenConstants.OptionField.NAME.getCode())))
-            throw new ServiceException("覆写的名称字段字段不能为空");
-        else if (StrUtil.equals(optionsObj.getString(GenConstants.OptionField.COVER_STATUS.getCode()), GenConstants.Status.TRUE.getCode()) && StrUtil.isEmpty(optionsObj.getString(GenConstants.OptionField.STATUS.getCode())))
-            throw new ServiceException("覆写的状态字段字段不能为空");
-        else if (StrUtil.equals(optionsObj.getString(GenConstants.OptionField.COVER_SORT.getCode()), GenConstants.Status.TRUE.getCode()) && StrUtil.isEmpty(optionsObj.getString(GenConstants.OptionField.SORT.getCode())))
-            throw new ServiceException("覆写的排序字段字段不能为空");
-        else if (StrUtil.equals(optionsObj.getString(GenConstants.OptionField.COVER_ID.getCode()), GenConstants.Status.TRUE.getCode())) {
-            if (StrUtil.isEmpty(optionsObj.getString(GenConstants.OptionField.ID.getCode()))) {
-                throw new ServiceException("覆写的主键字段不能为空");
-            }
-            for (GenTableColumnDto column : genTable.getSubList()) {
-                if (column.isPk() && !ObjectUtil.equals(column.getId(), optionsObj.getLong(GenConstants.OptionField.ID.getCode()))) {
-                    throw new ServiceException("覆写的主键字段只能为主键");
-                }
-            }
-        }
+        else if (StrUtil.isEmpty(optionsObj.getString(OptionField.ID.getCode())))
+            throw new ServiceException("主键字段不能为空");
+        for (GenTableColumnDto column : genTable.getSubList())
+            if (column.isPk() && !ObjectUtil.equals(column.getId(), optionsObj.getLong(OptionField.ID.getCode())))
+                throw new ServiceException("覆写的主键字段只能为主键");
     }
 
     /**
@@ -409,21 +393,21 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
      * @param optionsObj 其它生成选项信息
      */
     private void checkTclTree(JSONObject optionsObj) {
-        if (StrUtil.isEmpty(optionsObj.getString(GenConstants.OptionField.COVER_TREE_ID.getCode())))
+        if (StrUtil.isEmpty(optionsObj.getString(OptionField.COVER_TREE_ID.getCode())))
             throw new ServiceException("是否覆写树编码字段选项不能为空");
-        else if (StrUtil.isEmpty(optionsObj.getString(GenConstants.OptionField.COVER_PARENT_ID.getCode())))
+        else if (StrUtil.isEmpty(optionsObj.getString(OptionField.COVER_PARENT_ID.getCode())))
             throw new ServiceException("是否覆写树父编码字段选项不能为空");
-        else if (StrUtil.isEmpty(optionsObj.getString(GenConstants.OptionField.COVER_TREE_NAME_ID.getCode())))
+        else if (StrUtil.isEmpty(optionsObj.getString(OptionField.COVER_TREE_NAME_ID.getCode())))
             throw new ServiceException("是否覆写树名称字段选项不能为空");
-        else if (StrUtil.isEmpty(optionsObj.getString(GenConstants.OptionField.COVER_ANCESTORS.getCode())))
+        else if (StrUtil.isEmpty(optionsObj.getString(OptionField.COVER_ANCESTORS.getCode())))
             throw new ServiceException("是否覆写祖籍列表字段选项不能为空");
-        else if (StrUtil.equals(optionsObj.getString(GenConstants.OptionField.COVER_TREE_ID.getCode()), GenConstants.Status.TRUE.getCode()) && StrUtil.isEmpty(optionsObj.getString(GenConstants.OptionField.TREE_ID.getCode())))
+        else if (StrUtil.equals(optionsObj.getString(OptionField.COVER_TREE_ID.getCode()), GenConstants.Status.TRUE.getCode()) && StrUtil.isEmpty(optionsObj.getString(OptionField.TREE_ID.getCode())))
             throw new ServiceException("覆写的树编码字段不能为空");
-        else if (StrUtil.equals(optionsObj.getString(GenConstants.OptionField.COVER_PARENT_ID.getCode()), GenConstants.Status.TRUE.getCode()) && StringUtils.isEmpty(optionsObj.getString(GenConstants.OptionField.PARENT_ID.getCode())))
+        else if (StrUtil.equals(optionsObj.getString(OptionField.COVER_PARENT_ID.getCode()), GenConstants.Status.TRUE.getCode()) && StringUtils.isEmpty(optionsObj.getString(OptionField.PARENT_ID.getCode())))
             throw new ServiceException("覆写的树父编码字段不能为空");
-        else if (StrUtil.equals(optionsObj.getString(GenConstants.OptionField.COVER_TREE_NAME_ID.getCode()), GenConstants.Status.TRUE.getCode()) && StringUtils.isEmpty(optionsObj.getString(GenConstants.OptionField.TREE_NAME_ID.getCode())))
+        else if (StrUtil.equals(optionsObj.getString(OptionField.COVER_TREE_NAME_ID.getCode()), GenConstants.Status.TRUE.getCode()) && StringUtils.isEmpty(optionsObj.getString(OptionField.TREE_NAME_ID.getCode())))
             throw new ServiceException("覆写的树名称字段不能为空");
-        else if (StrUtil.equals(optionsObj.getString(GenConstants.OptionField.COVER_ANCESTORS.getCode()), GenConstants.Status.TRUE.getCode()) && StringUtils.isEmpty(optionsObj.getString(GenConstants.OptionField.ANCESTORS.getCode())))
+        else if (StrUtil.equals(optionsObj.getString(OptionField.COVER_ANCESTORS.getCode()), GenConstants.Status.TRUE.getCode()) && StringUtils.isEmpty(optionsObj.getString(OptionField.ANCESTORS.getCode())))
             throw new ServiceException("覆写的树祖籍列表字段不能为空");
     }
 
@@ -433,11 +417,11 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
      * @param optionsObj 其它生成选项信息
      */
     private void checkTclSub(JSONObject optionsObj) {
-        if (StrUtil.isEmpty(optionsObj.getString(GenConstants.OptionField.FOREIGN_ID.getCode())))
+        if (StrUtil.isEmpty(optionsObj.getString(OptionField.FOREIGN_ID.getCode())))
             throw new ServiceException("外键关联的主表字段不能为空");
-        else if (StrUtil.isEmpty(optionsObj.getString(GenConstants.OptionField.SUB_TABLE_ID.getCode())))
+        else if (StrUtil.isEmpty(optionsObj.getString(OptionField.SUB_TABLE_ID.getCode())))
             throw new ServiceException("关联子表的表名字段不能为空");
-        else if (StringUtils.isEmpty(optionsObj.getString(GenConstants.OptionField.SUB_FOREIGN_ID.getCode())))
+        else if (StringUtils.isEmpty(optionsObj.getString(OptionField.SUB_FOREIGN_ID.getCode())))
             throw new ServiceException("关联子表的外键名字段不能为空");
     }
 
@@ -451,7 +435,7 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
         GenTableDto table = baseManager.selectSubById(id);
         JSONObject optionsObj = JSONObject.parseObject(table.getOptions());
         // 设置列信息
-        switch (Objects.requireNonNull(GenConstants.TemplateType.getValue(table.getTplCategory()))) {
+        switch (Objects.requireNonNull(TemplateType.getValue(table.getTplCategory()))) {
             case SUB_BASE:
                 setSubTable(table, optionsObj);
                 setBaseTable(table, optionsObj);
@@ -475,22 +459,16 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
      */
     private void setBaseTable(GenTableDto table, JSONObject optionsObj) {
         for (GenTableColumnDto column : table.getSubList()) {
-            if (StrUtil.equals(optionsObj.getString(GenConstants.OptionField.COVER_ID.getCode()), GenConstants.Status.TRUE.getCode())
-                    && ObjectUtil.equals(column.getId(), optionsObj.getLong(GenConstants.OptionField.ID.getCode()))) {
-                column.setJavaField(GenConstants.CoverField.ID.getCode());
-            } else if (StrUtil.equals(optionsObj.getString(GenConstants.OptionField.COVER_NAME.getCode()), GenConstants.Status.TRUE.getCode())
-                    && ObjectUtil.equals(column.getId(), optionsObj.getLong(GenConstants.OptionField.NAME.getCode()))) {
-                column.setJavaField(GenConstants.CoverField.NAME.getCode());
-            } else if (StrUtil.equals(optionsObj.getString(GenConstants.OptionField.COVER_STATUS.getCode()), GenConstants.Status.TRUE.getCode())
-                    && ObjectUtil.equals(column.getId(), optionsObj.getLong(GenConstants.OptionField.STATUS.getCode()))) {
-                column.setJavaField(GenConstants.CoverField.STATUS.getCode());
-            } else if (StrUtil.equals(optionsObj.getString(GenConstants.OptionField.COVER_SORT.getCode()), GenConstants.Status.TRUE.getCode())
-                    && ObjectUtil.equals(column.getId(), optionsObj.getLong(GenConstants.OptionField.SORT.getCode()))) {
-                column.setJavaField(GenConstants.CoverField.SORT.getCode());
-            }
-            if (column.isPk()) {
+            if (ObjectUtil.equals(column.getId(), optionsObj.getLong(OptionField.ID.getCode())))
+                column.setJavaField(CoverField.ID.getCode());
+            else if (ObjectUtil.equals(column.getId(), optionsObj.getLong(OptionField.NAME.getCode())))
+                column.setJavaField(CoverField.NAME.getCode());
+            else if (ObjectUtil.equals(column.getId(), optionsObj.getLong(OptionField.STATUS.getCode())))
+                column.setJavaField(CoverField.STATUS.getCode());
+            else if (ObjectUtil.equals(column.getId(), optionsObj.getLong(OptionField.SORT.getCode())))
+                column.setJavaField(CoverField.SORT.getCode());
+            if (column.isPk())
                 table.setPkColumn(column);
-            }
         }
     }
 
@@ -501,11 +479,9 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
      * @param optionsObj 其它生成选项信息
      */
     private void setTreeTable(GenTableDto table, JSONObject optionsObj) {
-        for (GenTableColumnDto column : table.getSubList()) {
-            if (ObjectUtil.equals(column.getId(), optionsObj.getLong(GenConstants.OptionField.ANCESTORS.getCode()))) {
-                column.setJavaField(GenConstants.CoverField.ANCESTORS.getCode());
-            }
-        }
+        for (GenTableColumnDto column : table.getSubList())
+            if (ObjectUtil.equals(column.getId(), optionsObj.getLong(OptionField.ANCESTORS.getCode())))
+                column.setJavaField(CoverField.ANCESTORS.getCode());
     }
 
     /**
@@ -515,15 +491,12 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
      * @param optionsObj 其它生成选项信息
      */
     private void setSubTable(GenTableDto table, JSONObject optionsObj) {
-        table.setSubTable(baseManager.selectSubById(optionsObj.getLong(GenConstants.OptionField.SUB_TABLE_ID.getCode())));
+        table.setSubTable(baseManager.selectSubById(optionsObj.getLong(OptionField.SUB_TABLE_ID.getCode())));
         JSONObject subOptionsObj = JSONObject.parseObject(table.getSubTable().getOptions());
         setBaseTable(table.getSubTable(), subOptionsObj);
-        switch (Objects.requireNonNull(GenConstants.TemplateType.getValue(table.getSubTable().getTplCategory()))) {
-            case SUB_TREE:
-            case TREE:
-                setTreeTable(table, optionsObj);
-                break;
-        }
+        if (StrUtil.equalsAny(table.getSubTable().getTplCategory()
+                , TemplateType.TREE.getCode(), TemplateType.SUB_TREE.getCode()))
+            setTreeTable(table, optionsObj);
     }
 
     /**
@@ -533,7 +506,7 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
      * @param optionsObj 其它生成选项信息
      */
     private void setMenuOptions(GenTableDto table, JSONObject optionsObj) {
-        Long menuId = optionsObj.getLong(GenConstants.OptionField.PARENT_MENU_ID.getCode());
+        Long menuId = optionsObj.getLong(OptionField.PARENT_MENU_ID.getCode());
         R<List<SysMenuDto>> result = remoteMenuService.getAncestorsList(menuId, SecurityConstants.INNER);
         if (result.isFail())
             throw new ServiceException("菜单服务异常，请联系管理员！");
@@ -542,7 +515,7 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
             StringBuffer buffer = new StringBuffer();
             // 节点祖籍一定为线性单链,且从顶级节点开始
             recursionMenuFn(buffer, menuTree.get(0).getChildren().get(0));
-            optionsObj.put(GenConstants.OptionField.PARENT_MENU_PATH.getCode(), buffer.toString());
+            optionsObj.put(OptionField.PARENT_MENU_PATH.getCode(), buffer.toString());
         }
         getParentMenuAncestors(menuId, result.getResult(), optionsObj);
         table.setOptions(optionsObj.toString());
@@ -554,10 +527,10 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
     private void getParentMenuAncestors(Long menuId, List<SysMenuDto> menus, JSONObject optionsObj) {
         if (CollUtil.isNotEmpty(menus)) {
             Optional<SysMenuDto> menu = menus.stream().filter(e -> ObjectUtil.equals(e.getId(), menuId)).findFirst();
-            menu.ifPresent(sysMenuDto -> optionsObj.put(GenConstants.OptionField.PARENT_MENU_ANCESTORS.getCode(), sysMenuDto.getAncestors()));
+            menu.ifPresent(sysMenuDto -> optionsObj.put(OptionField.PARENT_MENU_ANCESTORS.getCode(), sysMenuDto.getAncestors()));
         }
-        if (!optionsObj.containsKey(GenConstants.OptionField.PARENT_MENU_ANCESTORS.getCode()))
-            optionsObj.put(GenConstants.OptionField.PARENT_MENU_ANCESTORS.getCode(), "0");
+        if (!optionsObj.containsKey(OptionField.PARENT_MENU_ANCESTORS.getCode()))
+            optionsObj.put(OptionField.PARENT_MENU_ANCESTORS.getCode(), "0");
     }
 
     /**

@@ -111,7 +111,7 @@ public class GenConstants {
         private final String info;
         private final String key;
 
-        CoverField(String code, String info,String key) {
+        CoverField(String code, String info, String key) {
             this.code = code;
             this.info = info;
             this.key = key;
@@ -132,39 +132,50 @@ public class GenConstants {
 
     /** 其它生成选项字段 */
     public enum OptionField {
+        COVER_TREE_ID("isCoverTreeCode", "覆写树编码（Y是 N否）", null),
+        COVER_PARENT_ID("isCoverParentId", "覆写树父编码（Y是 N否）", null),
+        COVER_TREE_NAME_ID("isCoverTreeNameId", "覆写树名称（Y是 N否）", null),
+        COVER_ANCESTORS("isCoverAncestors", "覆写祖籍列表（Y是 N否）", null),
+        COVER_ID("isCoverId", "覆写Id（Y是 N否）", null),
+        COVER_NAME("isCoverName", "覆写name（Y是 N否）", null),
+        COVER_STATUS("isCoverStatus", "覆写status（Y是 N否）", null),
+        COVER_SORT("isCoverSort", "覆写sort（Y是 N否）", null),
 
-        SUB_TABLE_ID("subTableId", "关联子表的表名Id字段"),
-        FOREIGN_ID("foreignId", "外键关联的主表字段Id字段"),
-        SUB_FOREIGN_ID("subForeignId", "关联子表的外键名Id字段"),
-        COVER_TREE_ID("isCoverTreeCode", "覆写树编码（Y是 N否）"),
-        TREE_ID("treeCode", "树编码Id字段"),
-        COVER_PARENT_ID("isCoverParentId", "覆写树父编码（Y是 N否）"),
-        PARENT_ID("parentId", "树父编码Id字段"),
-        COVER_TREE_NAME_ID("isCoverTreeNameId", "覆写树名称（Y是 N否）"),
-        TREE_NAME_ID("treeNameId", "树名称Id字段"),
-        COVER_ANCESTORS("isCoverAncestors", "覆写祖籍列表（Y是 N否）"),
-        ANCESTORS("ancestors", "祖籍列表Id字段"),
-        PARENT_MODULE_ID("parentModuleId", "归属模块Id字段"),
-        PARENT_MENU_ID("parentMenuId", "归属菜单Id字段"),
-        PARENT_MENU_PATH("parentMenuPath", "归属菜单路径字段"),
-        PARENT_MENU_ANCESTORS("parentMenuAncestors", "归属菜单祖籍字段"),
-        COVER_ID("isCoverId", "覆写Id（Y是 N否）"),
-        ID("id", "主键Id字段"),
-        COVER_NAME("isCoverName", "覆写name（Y是 N否）"),
-        NAME("name", "名称Id字段"),
-        COVER_STATUS("isCoverStatus", "覆写status（Y是 N否）"),
-        STATUS("status", "状态Id字段"),
-        COVER_SORT("isCoverSort", "覆写sort（Y是 N否）"),
-        SORT("sort", "序号Id字段"),
-        IS_TENANT("isTenant", "多租户"),
-        SOURCE_MODE("sourceMode", "源策略模式");
+        PARENT_MODULE_ID("parentModuleId", "归属模块Id字段", null),
+        PARENT_MENU_ID("parentMenuId", "归属菜单Id字段", null),
+        PARENT_MENU_PATH("parentMenuPath", "归属菜单路径字段", null),
+        PARENT_MENU_ANCESTORS("parentMenuAncestors", "归属菜单祖籍字段", null),
+
+        ANCESTORS("ancestors", "祖籍列表字段", "ancestors"),
+        TREE_NAME_ID("treeNameId", "树名称字段", "name"),
+        PARENT_ID("parentId", "树父编码字段", "parent_id"),
+        SUB_TABLE_ID("subTableId", "关联子表的表名字段", null),
+        FOREIGN_ID("foreignId", "外键关联的主表字段字段", null),
+        SUB_FOREIGN_ID("subForeignId", "关联子表的外键名字段", null),
+        TREE_ID("treeCode", "树编码字段", null),
+
+        ID("id", "主键字段", "id"),
+        NAME("name", "名称字段", "name"),
+        STATUS("status", "状态字段", "status"),
+        SORT("sort", "序号字段", "sort"),
+        IS_TENANT("isTenant", "多租户", null),
+        SOURCE_MODE("sourceMode", "源策略模式", null);
 
         private final String code;
         private final String info;
+        private final String key;
 
-        OptionField(String code, String info) {
+        OptionField(String code, String info, String key) {
             this.code = code;
             this.info = info;
+            this.key = key;
+        }
+
+        public static OptionField getValue(String code) {
+            for (OptionField one : values())
+                if (StringUtils.equals(code, one.getCode()))
+                    return one;
+            return null;
         }
 
         public String getCode() {
@@ -175,18 +186,19 @@ public class GenConstants {
             return info;
         }
 
-        public static OptionField getValue(String code) {
-            for (OptionField one : values())
-                if (StringUtils.equals(code, one.getCode()))
-                    return one;
-            return null;
+        public String getKey() {
+            return key;
         }
     }
 
     /** 表模板类型 */
     public enum TemplateType {
 
-        BASE("base", "单表"), TREE("tree", "树表"), SUB_BASE("subBase", "主子表"), SUB_TREE("subTree", "主子树表"), MERGE("merge", "关联表");
+        BASE("base", "单表"),
+        TREE("tree", "树表"),
+        SUB_BASE("subBase", "主子表"),
+        SUB_TREE("subTree", "主子树表"),
+        MERGE("merge", "关联表");
 
         private final String code;
         private final String info;
@@ -196,19 +208,19 @@ public class GenConstants {
             this.info = info;
         }
 
+        public static TemplateType getValue(String code) {
+            for (TemplateType one : values())
+                if (StringUtils.equals(code, one.getCode()))
+                    return one;
+            return null;
+        }
+
         public String getCode() {
             return code;
         }
 
         public String getInfo() {
             return info;
-        }
-
-        public static TemplateType getValue(String code) {
-            for (TemplateType one : values())
-                if (StringUtils.equals(code, one.getCode()))
-                    return one;
-            return null;
         }
     }
 

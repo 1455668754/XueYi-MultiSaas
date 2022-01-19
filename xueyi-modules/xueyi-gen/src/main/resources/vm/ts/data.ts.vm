@@ -102,6 +102,7 @@ export const searchFormSchema: FormSchema[] = [
 /** 表单数据 */
 export const formSchema: FormSchema[] = [
 #foreach ($column in $columns)
+    ${treeMap}
 #if(($table.tree || $table.subTree) && $column.javaField == $treeMap.parentIdColumn.javaField)
     {
         label: '${treeMap.parentIdColumn.readNameNoSuffix()}',
@@ -123,12 +124,12 @@ export const formSchema: FormSchema[] = [
 #else
 #set($hide = true)
 #foreach($item in $mustHideField)
-#if($column.javaField == $item)
+#if($column.javaField == $item && !$column.isPk())
 #set($hide = false)
 #break
 #end
 #end
-#if($column.isInsert() == false)
+#if($column.isInsert() == false && !$column.isPk())
 #set($hide = false)
 #end
 #if($hide)

@@ -39,44 +39,30 @@ public class GenUtils {
     public static void initTableOptions(List<GenTableColumnDto> columnList, GenTableDto table) {
         StringBuilder options = new StringBuilder();
         String prefix = ", \"", infill = "\": \"", suffix = "\"";
-        options.append("{ \"").append(GenConstants.OptionField.PARENT_MODULE_ID.getCode()).append(infill).append(AuthorityConstants.MODULE_DEFAULT_NODE).append(suffix)
+        options.append("{ \"")
+                .append(GenConstants.OptionField.PARENT_MODULE_ID.getCode()).append(infill).append(AuthorityConstants.MODULE_DEFAULT_NODE).append(suffix)
                 .append(prefix).append(GenConstants.OptionField.PARENT_MENU_ID.getCode()).append(infill).append(AuthorityConstants.MENU_TOP_NODE).append(suffix);
-        String isCoverId = GenConstants.Status.FALSE.getCode();
-        String isCoverName = GenConstants.Status.FALSE.getCode();
-        String isCoverStatus = GenConstants.Status.FALSE.getCode();
-        String isCoverSort = GenConstants.Status.FALSE.getCode();
         String isTenant = GenConstants.Status.FALSE.getCode();
         for (GenTableColumnDto column : columnList) {
-            if (column.isPk()
-                    && (!StrUtil.equals(column.getJavaType(), GenConstants.JavaType.LONG.getCode()) || !StrUtil.equals(column.getJavaField(), GenConstants.CoverField.ID.getCode()))) {
+            if (column.isPk() && StrUtil.equals(column.getJavaType(), GenConstants.JavaType.LONG.getCode()) && StrUtil.equals(column.getJavaField(), GenConstants.OptionField.ID.getCode())) {
                 options.append(prefix).append(GenConstants.OptionField.ID.getCode()).append(infill).append(column.getId()).append(suffix);
-                isCoverId = GenConstants.Status.TRUE.getCode();
-            } else if (StrUtil.equals(column.getJavaField(), GenConstants.CoverField.NAME.getCode())
-                    && !StrUtil.equals(column.getJavaType(), GenConstants.JavaType.STRING.getCode())) {
+            } else if (StrUtil.equals(column.getJavaField(), GenConstants.OptionField.NAME.getCode()) && StrUtil.equals(column.getJavaType(), GenConstants.JavaType.STRING.getCode())) {
                 options.append(prefix).append(GenConstants.OptionField.NAME.getCode()).append(infill).append(column.getId()).append(suffix);
-                isCoverName = GenConstants.Status.TRUE.getCode();
-            } else if (StrUtil.equals(column.getJavaField(), GenConstants.CoverField.STATUS.getCode())
-                    && (!StrUtil.equals(column.getJavaType(), GenConstants.JavaType.STRING.getCode()) || !column.getComment().contains(GenConstants.CoverField.STATUS.getKey()))) {
+            } else if (StrUtil.equals(column.getJavaType(), GenConstants.JavaType.STRING.getCode()) && StrUtil.equals(column.getJavaField(), GenConstants.OptionField.STATUS.getCode()) && StrUtil.contains(column.getComment(), "（0正常 1停用）")) {
                 options.append(prefix).append(GenConstants.OptionField.STATUS.getCode()).append(infill).append(column.getId()).append(suffix);
-                isCoverStatus = GenConstants.Status.TRUE.getCode();
-            } else if (StrUtil.equals(column.getJavaField(), GenConstants.CoverField.SORT.getCode())
-                    && !StrUtil.equals(column.getJavaType(), GenConstants.JavaType.INTEGER.getCode())) {
-                options.append(prefix).append(GenConstants.OptionField.STATUS.getCode()).append(infill).append(column.getId()).append(suffix);
-                isCoverSort = GenConstants.Status.TRUE.getCode();
+            } else if (StrUtil.equals(column.getJavaType(), GenConstants.JavaType.INTEGER.getCode()) && StrUtil.equals(column.getJavaField(), GenConstants.CoverField.SORT.getCode())) {
+                options.append(prefix).append(GenConstants.OptionField.SORT.getCode()).append(infill).append(column.getId()).append(suffix);
             }
             if (StrUtil.equalsAny(column.getJavaField(), GenConstants.TENANT_ENTITY)) {
                 isTenant = GenConstants.Status.TRUE.getCode();
             }
         }
-        options.append(prefix).append(GenConstants.OptionField.COVER_ID.getCode()).append(infill).append(isCoverId).append(suffix)
-                .append(prefix).append(GenConstants.OptionField.COVER_NAME.getCode()).append(infill).append(isCoverName).append(suffix)
-                .append(prefix).append(GenConstants.OptionField.COVER_STATUS.getCode()).append(infill).append(isCoverStatus).append(suffix)
-                .append(prefix).append(GenConstants.OptionField.COVER_SORT.getCode()).append(infill).append(isCoverSort).append(suffix)
-                .append(prefix).append(GenConstants.OptionField.IS_TENANT.getCode()).append(infill).append(isTenant).append(suffix)
-                .append(prefix).append(GenConstants.OptionField.SOURCE_MODE.getCode()
-                ).append(infill).append(StrUtil.equals(isTenant, GenConstants.Status.TRUE.getCode())
+        options.append(prefix).append(GenConstants.OptionField.IS_TENANT.getCode()).append(infill).append(isTenant).append(suffix)
+                .append(prefix).append(GenConstants.OptionField.SOURCE_MODE.getCode()).append(infill)
+                .append(StrUtil.equals(isTenant, GenConstants.Status.TRUE.getCode())
                         ? GenConstants.SourceMode.ISOLATE.getCode()
-                        : GenConstants.SourceMode.MASTER.getCode()).append(suffix).append(" }");
+                        : GenConstants.SourceMode.MASTER.getCode()).append(suffix)
+                .append(" }");
         table.setOptions(options.toString());
     }
 
