@@ -71,6 +71,22 @@ public class GenTableColumnPo extends BaseEntity {
     @TableField("is_unique")
     private Boolean isUnique;
 
+    /** 导入字段（1是 0否） */
+    @TableField("is_import")
+    private Boolean isImport;
+
+    /** 导出字段（1是 0否） */
+    @TableField("is_export")
+    private Boolean isExport;
+
+    /** 隐藏字段（1是 0否） */
+    @TableField("is_hide")
+    private Boolean isHide;
+
+    /** 覆盖字段（1是 0否） */
+    @TableField("is_cover")
+    private Boolean isCover;
+
     /** 查询方式（EQ等于、NE不等于、GT大于、LT小于、LIKE模糊、BETWEEN范围） */
     @TableField("query_type")
     private String queryType;
@@ -193,6 +209,38 @@ public class GenTableColumnPo extends BaseEntity {
 
     public void setUnique(Boolean isUnique) {
         this.isUnique = isUnique;
+    }
+
+    public Boolean getImport() {
+        return isImport;
+    }
+
+    public void setImport(Boolean anImport) {
+        isImport = anImport;
+    }
+
+    public Boolean getExport() {
+        return isExport;
+    }
+
+    public void setExport(Boolean export) {
+        isExport = export;
+    }
+
+    public Boolean getHide() {
+        return isHide;
+    }
+
+    public void setHide(Boolean hide) {
+        isHide = hide;
+    }
+
+    public Boolean getCover() {
+        return isCover;
+    }
+
+    public void setCover(Boolean cover) {
+        isCover = cover;
     }
 
     public String getQueryType() {

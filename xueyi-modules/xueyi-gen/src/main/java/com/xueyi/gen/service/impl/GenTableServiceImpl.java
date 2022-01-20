@@ -6,7 +6,6 @@ import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.xueyi.common.core.constant.GenConstants;
-import com.xueyi.common.core.constant.GenConstants.CoverField;
 import com.xueyi.common.core.constant.GenConstants.OptionField;
 import com.xueyi.common.core.constant.GenConstants.TemplateType;
 import com.xueyi.common.core.constant.HttpConstants;
@@ -122,6 +121,32 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
     }
 
     /**
+     * 导入表结构
+     *
+     * @param tableList 导入表列表
+     */
+    @Override
+    @DSTransactional
+    public void importGenTable(List<GenTableDto> tableList) {
+        try {
+            tableList.forEach(table -> {
+                GenUtils.initTable(table);
+                int row = baseManager.insert(table);
+                if (row > 0) {
+                    // 保存列信息
+                    List<GenTableColumnDto> columnList = subService.selectDbTableColumnsByName(table.getName());
+                    columnList.forEach(column -> GenUtils.initColumnField(column, table));
+                    GenUtils.initTableOptions(columnList, table);
+                    subService.insertBatch(columnList);
+                    baseManager.update(table);
+                }
+            });
+        } catch (Exception e) {
+            throw new ServiceException("导入失败：" + e.getMessage());
+        }
+    }
+
+    /**
      * 修改业务
      *
      * @param table 业务信息
@@ -131,37 +156,9 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
     public int update(GenTableDto table) {
         int row = baseManager.update(table);
         if (row > 0)
-            for (GenTableColumnDto column : table.getSubList())
-                subService.update(column);
+            GenUtils.updateCheckColumn(table);
+            table.getSubList().forEach(column -> subService.update(column));
         return row;
-    }
-
-    /**
-     * 导入表结构
-     *
-     * @param tableList 导入表列表
-     */
-    @Override
-    @DSTransactional
-    public void importGenTable(List<GenTableDto> tableList) {
-        try {
-            for (GenTableDto table : tableList) {
-                String tableName = table.getName();
-                GenUtils.initTable(table);
-                int row = baseManager.insert(table);
-                if (row > 0) {
-                    // 保存列信息
-                    List<GenTableColumnDto> columnList = subService.selectDbTableColumnsByName(tableName);
-                    for (GenTableColumnDto column : columnList)
-                        GenUtils.initColumnField(column, table);
-                    subService.insertBatch(columnList);
-                    GenUtils.initTableOptions(columnList, table);
-                    baseManager.updateOptions(table.getId(), table.getOptions());
-                }
-            }
-        } catch (Exception e) {
-            throw new ServiceException("导入失败：" + e.getMessage());
-        }
     }
 
     /**
@@ -239,7 +236,6 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
                 String path = StrUtil.containsAny(template, genFiles)
                         ? getGenPath(table, template)
                         : getUiPath(table, template);
-                System.out.println(path);
                 FileUtils.writeStringToFile(new File(path), sw.toString(), CharsetKit.UTF_8);
             } catch (IOException e) {
                 throw new ServiceException("渲染模板失败，表名：" + table.getName());
@@ -264,7 +260,6 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
             throw new ServiceException("同步数据失败，原表结构不存在");
         }
         List<String> dbTableColumnNames = dbTableColumns.stream().map(GenTableColumnDto::getName).collect(Collectors.toList());
-
         dbTableColumns.forEach(column -> {
             if (!columnNames.contains(column.getName())) {
                 GenUtils.initColumnField(column, table);
@@ -384,7 +379,7 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
             throw new ServiceException("主键字段不能为空");
         for (GenTableColumnDto column : genTable.getSubList())
             if (column.isPk() && !ObjectUtil.equals(column.getId(), optionsObj.getLong(OptionField.ID.getCode())))
-                throw new ServiceException("覆写的主键字段只能为主键");
+                throw new ServiceException("主键字段只能为数据表主键");
     }
 
     /**
@@ -393,22 +388,14 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
      * @param optionsObj 其它生成选项信息
      */
     private void checkTclTree(JSONObject optionsObj) {
-        if (StrUtil.isEmpty(optionsObj.getString(OptionField.COVER_TREE_ID.getCode())))
-            throw new ServiceException("是否覆写树编码字段选项不能为空");
-        else if (StrUtil.isEmpty(optionsObj.getString(OptionField.COVER_PARENT_ID.getCode())))
-            throw new ServiceException("是否覆写树父编码字段选项不能为空");
-        else if (StrUtil.isEmpty(optionsObj.getString(OptionField.COVER_TREE_NAME_ID.getCode())))
-            throw new ServiceException("是否覆写树名称字段选项不能为空");
-        else if (StrUtil.isEmpty(optionsObj.getString(OptionField.COVER_ANCESTORS.getCode())))
-            throw new ServiceException("是否覆写祖籍列表字段选项不能为空");
-        else if (StrUtil.equals(optionsObj.getString(OptionField.COVER_TREE_ID.getCode()), GenConstants.Status.TRUE.getCode()) && StrUtil.isEmpty(optionsObj.getString(OptionField.TREE_ID.getCode())))
-            throw new ServiceException("覆写的树编码字段不能为空");
-        else if (StrUtil.equals(optionsObj.getString(OptionField.COVER_PARENT_ID.getCode()), GenConstants.Status.TRUE.getCode()) && StringUtils.isEmpty(optionsObj.getString(OptionField.PARENT_ID.getCode())))
-            throw new ServiceException("覆写的树父编码字段不能为空");
-        else if (StrUtil.equals(optionsObj.getString(OptionField.COVER_TREE_NAME_ID.getCode()), GenConstants.Status.TRUE.getCode()) && StringUtils.isEmpty(optionsObj.getString(OptionField.TREE_NAME_ID.getCode())))
-            throw new ServiceException("覆写的树名称字段不能为空");
-        else if (StrUtil.equals(optionsObj.getString(OptionField.COVER_ANCESTORS.getCode()), GenConstants.Status.TRUE.getCode()) && StringUtils.isEmpty(optionsObj.getString(OptionField.ANCESTORS.getCode())))
-            throw new ServiceException("覆写的树祖籍列表字段不能为空");
+        if (StrUtil.isEmpty(optionsObj.getString(OptionField.TREE_ID.getCode())))
+            throw new ServiceException("树编码字段不能为空");
+        else if (StringUtils.isEmpty(optionsObj.getString(OptionField.PARENT_ID.getCode())))
+            throw new ServiceException("树父编码字段不能为空");
+        else if (StringUtils.isEmpty(optionsObj.getString(OptionField.TREE_NAME.getCode())))
+            throw new ServiceException("树名称字段不能为空");
+        else if (StringUtils.isEmpty(optionsObj.getString(OptionField.ANCESTORS.getCode())))
+            throw new ServiceException("树祖籍列表字段不能为空");
     }
 
     /**
@@ -458,18 +445,10 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
      * @param optionsObj 其它生成选项信息
      */
     private void setBaseTable(GenTableDto table, JSONObject optionsObj) {
-        for (GenTableColumnDto column : table.getSubList()) {
-            if (ObjectUtil.equals(column.getId(), optionsObj.getLong(OptionField.ID.getCode())))
-                column.setJavaField(CoverField.ID.getCode());
-            else if (ObjectUtil.equals(column.getId(), optionsObj.getLong(OptionField.NAME.getCode())))
-                column.setJavaField(CoverField.NAME.getCode());
-            else if (ObjectUtil.equals(column.getId(), optionsObj.getLong(OptionField.STATUS.getCode())))
-                column.setJavaField(CoverField.STATUS.getCode());
-            else if (ObjectUtil.equals(column.getId(), optionsObj.getLong(OptionField.SORT.getCode())))
-                column.setJavaField(CoverField.SORT.getCode());
+        table.getSubList().forEach(column -> {
             if (column.isPk())
                 table.setPkColumn(column);
-        }
+        });
     }
 
     /**
@@ -479,9 +458,6 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
      * @param optionsObj 其它生成选项信息
      */
     private void setTreeTable(GenTableDto table, JSONObject optionsObj) {
-        for (GenTableColumnDto column : table.getSubList())
-            if (ObjectUtil.equals(column.getId(), optionsObj.getLong(OptionField.ANCESTORS.getCode())))
-                column.setJavaField(CoverField.ANCESTORS.getCode());
     }
 
     /**

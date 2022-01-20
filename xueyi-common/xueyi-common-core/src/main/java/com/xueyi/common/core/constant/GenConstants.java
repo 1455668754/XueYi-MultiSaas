@@ -45,6 +45,12 @@ public class GenConstants {
     /** 页面不需要查询字段 */
     public static final String[] COLUMN_NAME_NOT_QUERY = {"id", "sort", "createBy", "createTime", "updateBy", "updateTime", "remark"};
 
+    /** 页面不需要导入字段 */
+    public static final String[] COLUMN_NAME_NOT_IMPORT = {"id", "createBy", "createTime", "updateBy", "updateTime"};
+
+    /** 页面不需要导出字段 */
+    public static final String[] COLUMN_NAME_NOT_EXPORT = {"id", "sort", "createBy", "updateBy"};
+
     /** 后端base基类字段 */
     public static final String[] BASE_ENTITY = {"id", "name", "status", "sort", "remark", "createBy", "createTime", "updateBy", "updateTime", "delFlag"};
 
@@ -75,6 +81,9 @@ public class GenConstants {
     /** 字典名称结尾字段 */
     public static final String DICT_NAME_ENDING = "Options";
 
+    /** 状态校验内容 */
+    public static final String STATUS_CHECK = "（0正常 1停用）";
+
     /** 状态（Y是 N否） */
     public enum Status {
 
@@ -98,23 +107,37 @@ public class GenConstants {
     }
 
     /** 覆写字段 */
-    public enum CoverField {
+    public enum GenField {
 
-        ID("id", "id", "id"),
-        NAME("name", "名称", "name"),
-        STATUS("status", "状态（0正常 1停用）", "（0正常 1停用）"),
-        SORT("sort", "显示顺序", "sort"),
-        PARENT_ID("parentId", "父节点", "parentId"),
-        ANCESTORS("ancestors", "祖籍列表", "ancestors");
+        ID("id", "主键字段", "id"),
+        NAME("name", "名称字段", "name"),
+        STATUS("status", "状态字段", "status"),
+        SORT("sort", "序号字段", "sort"),
+        TYPE("type", "类型字段", "type"),
+        SEX("sex", "性别字段", "sex"),
+        PARENT_ID("parentId", "树父编码字段", "parent_id"),
+        ANCESTORS("ancestors", "祖籍列表字段", "ancestors"),
+        LOGO("logo", "logo字段", "logo"),
+        IMAGE("image", "图片字段", "image"),
+        FILE("file", "文件字段", "file"),
+        COMMENT("comment", "注释字段", "comment"),
+        REMARK("remark", "备注字段", "remark");
 
         private final String code;
         private final String info;
         private final String key;
 
-        CoverField(String code, String info, String key) {
+        GenField(String code, String info, String key) {
             this.code = code;
             this.info = info;
             this.key = key;
+        }
+
+        public static GenField getValue(String code) {
+            for (GenField one : values())
+                if (StringUtils.equals(code, one.getCode()))
+                    return one;
+            return null;
         }
 
         public String getCode() {
@@ -146,13 +169,14 @@ public class GenConstants {
         PARENT_MENU_PATH("parentMenuPath", "归属菜单路径字段", null),
         PARENT_MENU_ANCESTORS("parentMenuAncestors", "归属菜单祖籍字段", null),
 
-        ANCESTORS("ancestors", "祖籍列表字段", "ancestors"),
-        TREE_NAME_ID("treeNameId", "树名称字段", "name"),
+        TREE_ID("treeCode", "树编码字段", "id"),
         PARENT_ID("parentId", "树父编码字段", "parent_id"),
-        SUB_TABLE_ID("subTableId", "关联子表的表名字段", null),
+        TREE_NAME("treeName", "树名称字段", "name"),
+        ANCESTORS("ancestors", "祖籍列表字段", "ancestors"),
+
         FOREIGN_ID("foreignId", "外键关联的主表字段字段", null),
+        SUB_TABLE_ID("subTableId", "关联子表的表名字段", null),
         SUB_FOREIGN_ID("subForeignId", "关联子表的外键名字段", null),
-        TREE_ID("treeCode", "树编码字段", null),
 
         ID("id", "主键字段", "id"),
         NAME("name", "名称字段", "name"),

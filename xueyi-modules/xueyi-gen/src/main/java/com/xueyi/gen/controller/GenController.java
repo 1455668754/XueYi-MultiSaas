@@ -12,6 +12,7 @@ import com.xueyi.gen.domain.dto.GenTableDto;
 import com.xueyi.gen.service.IGenTableColumnService;
 import com.xueyi.gen.service.IGenTableService;
 import org.apache.commons.io.IOUtils;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -70,6 +71,15 @@ public class GenController extends SubBaseController<GenTableDto, IGenTableServi
         List<GenTableDto> tableList = baseService.selectDbTableListByNames(tableNames);
         baseService.importGenTable(tableList);
         return AjaxResult.success();
+    }
+
+    /**
+     * 修改
+     */
+    @Override
+    @PutMapping
+    public AjaxResult edit(@Validated @RequestBody GenTableDto table) {
+        return super.edit(table);
     }
 
     /**

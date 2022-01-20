@@ -15,9 +15,6 @@ public class BaseConstants {
     /** 顶级节点Id */
     public static final Long NONE_ID = -1L;
 
-    /** 类型 - 新增 */
-    public static final String ADD_NAME = "新增";
-
     /** 操作类型 */
     public enum Operate {
 
@@ -131,14 +128,14 @@ public class BaseConstants {
     }
 
     /** 系统默认值 */
-    public enum Default {
+    public enum Whether {
 
         YES("Y", "是"), NO("N", "否");
 
         private final String code;
         private final String info;
 
-        Default(String code, String info) {
+        Whether(String code, String info) {
             this.code = code;
             this.info = info;
         }

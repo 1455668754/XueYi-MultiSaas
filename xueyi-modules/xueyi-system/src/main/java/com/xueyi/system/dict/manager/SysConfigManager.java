@@ -54,7 +54,7 @@ public class SysConfigManager extends BaseManager<SysConfigDto, SysConfigMapper>
         return baseMapper.selectOne(
                 Wrappers.<SysConfigDto>query().lambda()
                         .ne(SysConfigDto::getId, Id)
-                        .eq(SysConfigDto::getType, BaseConstants.Default.YES.getCode())
+                        .eq(SysConfigDto::getType, BaseConstants.Whether.YES.getCode())
                         .last(SqlConstants.LIMIT_ONE));
     }
 

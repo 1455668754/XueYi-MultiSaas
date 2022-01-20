@@ -58,6 +58,22 @@ public class GenTableColumnDto extends GenTableColumnPo {
         return getQuery();
     }
 
+    public boolean isImport() {
+        return getImport();
+    }
+
+    public boolean isExport() {
+        return getExport();
+    }
+
+    public boolean isHide() {
+        return getHide();
+    }
+
+    public boolean isCover() {
+        return getCover();
+    }
+
     public String readConverterExp() {
         String remarks = StrUtil.subBetween(this.getComment(), "（", "）");
         StringBuffer sb = new StringBuffer();

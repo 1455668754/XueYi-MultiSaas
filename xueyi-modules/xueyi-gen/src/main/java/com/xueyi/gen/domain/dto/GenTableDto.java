@@ -26,6 +26,26 @@ public class GenTableDto extends GenTablePo<GenTableColumnDto> {
     @TableField(exist = false)
     private GenTableDto subTable;
 
+    public static boolean isBase(String tplCategory) {
+        return tplCategory != null && StrUtil.equals(GenConstants.TemplateType.BASE.getCode(), tplCategory);
+    }
+
+    public static boolean isTree(String tplCategory) {
+        return tplCategory != null && StrUtil.equals(GenConstants.TemplateType.TREE.getCode(), tplCategory);
+    }
+
+    public static boolean isSubBase(String tplCategory) {
+        return tplCategory != null && StrUtil.equals(GenConstants.TemplateType.SUB_BASE.getCode(), tplCategory);
+    }
+
+    public static boolean isSubTree(String tplCategory) {
+        return tplCategory != null && StrUtil.equals(GenConstants.TemplateType.SUB_TREE.getCode(), tplCategory);
+    }
+
+    public static boolean isMerge(String tplCategory) {
+        return tplCategory != null && StrUtil.equals(GenConstants.TemplateType.MERGE.getCode(), tplCategory);
+    }
+
     public GenTableColumnDto getPkColumn() {
         return pkColumn;
     }
@@ -42,45 +62,31 @@ public class GenTableDto extends GenTablePo<GenTableColumnDto> {
         this.subTable = subTable;
     }
 
+    /** 是否为单表 */
     public boolean isBase() {
         return isBase(getTplCategory());
     }
 
-    public static boolean isBase(String tplCategory) {
-        return tplCategory != null && StrUtil.equals(GenConstants.TemplateType.BASE.getCode(), tplCategory);
-    }
-
+    /** 是否为树表 */
     public boolean isTree() {
         return isTree(getTplCategory());
     }
 
-    public static boolean isTree(String tplCategory) {
-        return tplCategory != null && StrUtil.equals(GenConstants.TemplateType.TREE.getCode(), tplCategory);
-    }
-
+    /** 是否为主子单表 */
     public boolean isSubBase() {
         return isSubBase(getTplCategory());
     }
 
-    public static boolean isSubBase(String tplCategory) {
-        return tplCategory != null && StrUtil.equals(GenConstants.TemplateType.SUB_BASE.getCode(), tplCategory);
-    }
-
+    /** 是否为主子树表 */
     public boolean isSubTree() {
         return isSubTree(getTplCategory());
     }
 
-    public static boolean isSubTree(String tplCategory) {
-        return tplCategory != null && StrUtil.equals(GenConstants.TemplateType.SUB_TREE.getCode(), tplCategory);
-    }
-
+    /** 是否为关联表 */
     public boolean isMerge() {
         return isMerge(getTplCategory());
     }
 
-    public static boolean isMerge(String tplCategory) {
-        return tplCategory != null && StrUtil.equals(GenConstants.TemplateType.MERGE.getCode(), tplCategory);
-    }
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)

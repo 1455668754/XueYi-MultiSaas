@@ -1,8 +1,11 @@
 package com.xueyi.gen.util;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.xueyi.common.core.constant.AuthorityConstants;
+import com.xueyi.common.core.constant.DictConstants;
 import com.xueyi.common.core.constant.GenConstants;
 import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.gen.config.GenConfig;
@@ -12,6 +15,7 @@ import org.apache.commons.lang3.RegExUtils;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 代码生成器 工具类
@@ -37,33 +41,46 @@ public class GenUtils {
      * 初始化其它生成选项
      */
     public static void initTableOptions(List<GenTableColumnDto> columnList, GenTableDto table) {
-        StringBuilder options = new StringBuilder();
-        String prefix = ", \"", infill = "\": \"", suffix = "\"";
-        options.append("{ \"")
-                .append(GenConstants.OptionField.PARENT_MODULE_ID.getCode()).append(infill).append(AuthorityConstants.MODULE_DEFAULT_NODE).append(suffix)
-                .append(prefix).append(GenConstants.OptionField.PARENT_MENU_ID.getCode()).append(infill).append(AuthorityConstants.MENU_TOP_NODE).append(suffix);
-        String isTenant = GenConstants.Status.FALSE.getCode();
-        for (GenTableColumnDto column : columnList) {
-            if (column.isPk() && StrUtil.equals(column.getJavaType(), GenConstants.JavaType.LONG.getCode()) && StrUtil.equals(column.getJavaField(), GenConstants.OptionField.ID.getCode())) {
-                options.append(prefix).append(GenConstants.OptionField.ID.getCode()).append(infill).append(column.getId()).append(suffix);
-            } else if (StrUtil.equals(column.getJavaField(), GenConstants.OptionField.NAME.getCode()) && StrUtil.equals(column.getJavaType(), GenConstants.JavaType.STRING.getCode())) {
-                options.append(prefix).append(GenConstants.OptionField.NAME.getCode()).append(infill).append(column.getId()).append(suffix);
-            } else if (StrUtil.equals(column.getJavaType(), GenConstants.JavaType.STRING.getCode()) && StrUtil.equals(column.getJavaField(), GenConstants.OptionField.STATUS.getCode()) && StrUtil.contains(column.getComment(), "（0正常 1停用）")) {
-                options.append(prefix).append(GenConstants.OptionField.STATUS.getCode()).append(infill).append(column.getId()).append(suffix);
-            } else if (StrUtil.equals(column.getJavaType(), GenConstants.JavaType.INTEGER.getCode()) && StrUtil.equals(column.getJavaField(), GenConstants.CoverField.SORT.getCode())) {
-                options.append(prefix).append(GenConstants.OptionField.SORT.getCode()).append(infill).append(column.getId()).append(suffix);
-            }
-            if (StrUtil.equalsAny(column.getJavaField(), GenConstants.TENANT_ENTITY)) {
-                isTenant = GenConstants.Status.TRUE.getCode();
-            }
-        }
-        options.append(prefix).append(GenConstants.OptionField.IS_TENANT.getCode()).append(infill).append(isTenant).append(suffix)
-                .append(prefix).append(GenConstants.OptionField.SOURCE_MODE.getCode()).append(infill)
-                .append(StrUtil.equals(isTenant, GenConstants.Status.TRUE.getCode())
+        JSONObject optionJson = new JSONObject();
+        String[] javaFields = (String[]) columnList.stream().map(GenTableColumnDto::getJavaField).toArray();
+
+        // 设置默认模块
+        optionJson.put(GenConstants.OptionField.PARENT_MODULE_ID.getCode(), AuthorityConstants.MODULE_DEFAULT_NODE);
+        // 设置默认菜单
+        optionJson.put(GenConstants.OptionField.PARENT_MENU_ID.getCode(), AuthorityConstants.MENU_TOP_NODE);
+        // 检测是否为多租户模式
+        optionJson.put(GenConstants.OptionField.IS_TENANT.getCode(),
+                arraysContains(GenConstants.TENANT_ENTITY, javaFields)
+                        ? GenConstants.Status.TRUE.getCode()
+                        : GenConstants.Status.FALSE.getCode());
+        // 设置默认源策略模式
+        optionJson.put(GenConstants.OptionField.SOURCE_MODE.getCode(),
+                StrUtil.equals(optionJson.getString(GenConstants.OptionField.IS_TENANT.getCode()), GenConstants.Status.TRUE.getCode())
                         ? GenConstants.SourceMode.ISOLATE.getCode()
-                        : GenConstants.SourceMode.MASTER.getCode()).append(suffix)
-                .append(" }");
-        table.setOptions(options.toString());
+                        : GenConstants.SourceMode.MASTER.getCode());
+        columnList.forEach(column -> {
+            if (column.isPk()
+                    && StrUtil.equals(column.getJavaField(), GenConstants.OptionField.ID.getCode())) {
+                optionJson.put(GenConstants.OptionField.ID.getCode(), column.getId());
+                optionJson.put(GenConstants.OptionField.TREE_ID.getCode(), column.getId());
+                optionJson.put(GenConstants.OptionField.FOREIGN_ID.getCode(), column.getId());
+            } else if (StrUtil.equals(column.getJavaField(), GenConstants.OptionField.NAME.getCode())) {
+                optionJson.put(GenConstants.OptionField.NAME.getCode(), column.getId());
+                optionJson.put(GenConstants.OptionField.TREE_NAME.getCode(), column.getId());
+            } else if (StrUtil.equals(column.getJavaField(), GenConstants.OptionField.STATUS.getCode())) {
+                optionJson.put(GenConstants.OptionField.STATUS.getCode(), column.getId());
+            } else if (StrUtil.equals(column.getJavaField(), GenConstants.OptionField.SORT.getCode())) {
+                optionJson.put(GenConstants.OptionField.SORT.getCode(), column.getId());
+            } else if (StrUtil.equals(column.getJavaField(), GenConstants.OptionField.SORT.getCode())) {
+                optionJson.put(GenConstants.OptionField.SORT.getCode(), column.getId());
+            } else if (StrUtil.equals(column.getJavaField(), GenConstants.OptionField.PARENT_ID.getCode())) {
+                optionJson.put(GenConstants.OptionField.PARENT_ID.getCode(), column.getId());
+                table.setTplCategory(GenConstants.TemplateType.TREE.getCode());
+            } else if (StrUtil.equals(column.getJavaField(), GenConstants.OptionField.ANCESTORS.getCode())) {
+                optionJson.put(GenConstants.OptionField.ANCESTORS.getCode(), column.getId());
+            }
+        });
+        table.setOptions(optionJson.toString());
     }
 
     /**
@@ -76,13 +93,18 @@ public class GenUtils {
         // 设置java字段名
         column.setJavaField(StringUtils.toCamelCase(column.getName()));
         String javaField = column.getJavaField();
+
         // 设置默认类型
         column.setJavaType(GenConstants.JavaType.STRING.getCode());
-
+        // 设置默认显示类型
+        column.setHtmlType(GenConstants.DisplayType.INPUT.getCode());
         // 设置默认查询类型（长整型防精度丢失，到前端会自动转成字符串，故使用文本框）
         column.setQueryType(GenConstants.QueryType.EQ.getCode());
-        if (arraysContains(GenConstants.COLUMN_TYPE_STR, dataType) || arraysContains(GenConstants.COLUMN_TYPE_TEXT, dataType)) {
-            column.setHtmlType(arraysContains(GenConstants.COLUMN_TYPE_TEXT, dataType) ? GenConstants.DisplayType.INPUT_TEXTAREA.getCode() : GenConstants.DisplayType.INPUT.getCode());
+
+        if (arraysContains(GenConstants.COLUMN_TYPE_STR, dataType) && StrUtil.equals(column.getComment(), column.readNameNoSuffix())) {
+            column.setHtmlType(GenConstants.DisplayType.SELECT.getCode());
+        } else if (arraysContains(GenConstants.COLUMN_TYPE_TEXT, dataType)) {
+            column.setHtmlType(GenConstants.DisplayType.INPUT_TEXTAREA.getCode());
         } else if (arraysContains(GenConstants.COLUMN_TYPE_DATE, dataType)) {
             column.setJavaType(GenConstants.JavaType.DATE.getCode());
             column.setHtmlType(GenConstants.DisplayType.DATE_PICKER.getCode());
@@ -93,46 +115,153 @@ public class GenUtils {
             column.setHtmlType(GenConstants.DisplayType.INPUT_NUMBER.getCode());
             column.setJavaType(GenConstants.JavaType.INTEGER.getCode());
         } else if (arraysContains(GenConstants.COLUMN_TYPE_LONG, dataType)) {
-            column.setHtmlType(GenConstants.DisplayType.INPUT.getCode());
             column.setJavaType(GenConstants.JavaType.LONG.getCode());
         }
 
         // 插入字段（默认除必须移除的参数外所有字段都需要插入）
-        column.setInsert(!(arraysContains(GenConstants.COLUMN_NAME_NOT_INSERT, javaField) || arraysContains(GenConstants.COLUMN_MUST_HIDE, javaField) || column.isPk()));
+        boolean mustCheck = arraysContains(GenConstants.COLUMN_MUST_HIDE, javaField) || column.isPk();
+        column.setInsert(!(arraysContains(GenConstants.COLUMN_NAME_NOT_INSERT, javaField) || mustCheck));
         // 查看字段
-        column.setView(!(arraysContains(GenConstants.COLUMN_NAME_NOT_VIEW, javaField) || arraysContains(GenConstants.COLUMN_MUST_HIDE, javaField) || column.isPk()));
+        column.setView(!(arraysContains(GenConstants.COLUMN_NAME_NOT_VIEW, javaField) || mustCheck));
         // 编辑字段
-        column.setEdit(!(arraysContains(GenConstants.COLUMN_NAME_NOT_EDIT, javaField) || arraysContains(GenConstants.COLUMN_MUST_HIDE, javaField) || column.isPk()));
+        column.setEdit(!(arraysContains(GenConstants.COLUMN_NAME_NOT_EDIT, javaField) || mustCheck));
         // 列表字段
-        column.setList(!(arraysContains(GenConstants.COLUMN_NAME_NOT_LIST, javaField) || arraysContains(GenConstants.COLUMN_MUST_HIDE, javaField) || column.isPk()));
+        column.setList(!(arraysContains(GenConstants.COLUMN_NAME_NOT_LIST, javaField) || mustCheck));
         // 查询字段
-        column.setQuery(!(arraysContains(GenConstants.COLUMN_NAME_NOT_QUERY, javaField) || arraysContains(GenConstants.COLUMN_MUST_HIDE, javaField) || column.isPk()));
+        column.setQuery(!(arraysContains(GenConstants.COLUMN_NAME_NOT_QUERY, javaField) || mustCheck));
+        // 导入字段
+        column.setImport(!(arraysContains(GenConstants.COLUMN_NAME_NOT_IMPORT, javaField) || mustCheck));
+        // 导出字段
+        column.setExport(!(arraysContains(GenConstants.COLUMN_NAME_NOT_EXPORT, javaField) || mustCheck));
+        // 覆盖字段（默认无需覆盖字段）
+        column.setCover(false);
 
-        // 查询字段类型
-        if (StringUtils.endsWithIgnoreCase(javaField, "name")) {
-            column.setQueryType(GenConstants.QueryType.LIKE.getCode());
+        // 特殊指定
+        switch (Objects.requireNonNull(GenConstants.GenField.getValue(javaField))) {
+            case NAME:
+                column.setQueryType(GenConstants.QueryType.LIKE.getCode());
+                break;
+            case STATUS:
+                if (StrUtil.contains(column.getComment(), GenConstants.STATUS_CHECK)) {
+                    column.setHtmlType(GenConstants.DisplayType.RADIO_BUTTON_GROUP.getCode());
+                    column.setDictType(DictConstants.DictType.SYS_NORMAL_DISABLE.getCode());
+                }
+                break;
+            case SEX:
+                column.setDictType(DictConstants.DictType.SYS_USER_SEX.getCode());
+                break;
+            case LOGO:
+            case IMAGE:
+                column.setHtmlType(GenConstants.DisplayType.IMAGE_UPLOAD.getCode());
+                break;
+            case FILE:
+                column.setHtmlType(GenConstants.DisplayType.FILE_UPLOAD.getCode());
+                break;
+            case COMMENT:
+                column.setHtmlType(GenConstants.DisplayType.TINYMCE.getCode());
+                break;
         }
-        // 状态字段设置单选框
-        if (StringUtils.endsWithIgnoreCase(javaField, "status")) {
-            column.setHtmlType(GenConstants.DisplayType.RADIO_BUTTON_GROUP.getCode());
+        // 最终校验
+        basicInitColumn(column);
+    }
+
+    /**
+     * 最终校验列属性字段
+     */
+    public static void basicInitColumn(GenTableColumnDto column) {
+        // 校验是否需要覆盖
+        switch (Objects.requireNonNull(GenConstants.GenField.getValue(column.getJavaField()))) {
+            case ID:
+                if (!(StrUtil.equals(column.getJavaType(), GenConstants.JavaType.LONG.getCode())
+                        && StrUtil.equals(column.getName(), GenConstants.GenField.ID.getKey()))) {
+                    column.setCover(true);
+                }
+                break;
+            case NAME:
+                if (!(StrUtil.equals(column.getJavaType(), GenConstants.JavaType.STRING.getCode())
+                        && StrUtil.equals(column.getName(), GenConstants.GenField.NAME.getKey())
+                        && StrUtil.equals(column.getQueryType(), GenConstants.QueryType.LIKE.getCode()))) {
+                    column.setCover(true);
+                }
+                break;
+            case STATUS:
+                if (!(StrUtil.equals(column.getJavaType(), GenConstants.JavaType.STRING.getCode())
+                        && StrUtil.equals(column.getName(), GenConstants.GenField.STATUS.getKey())
+                        && StrUtil.contains(column.getComment(), GenConstants.STATUS_CHECK))) {
+                    column.setCover(true);
+                }
+                break;
+            case SORT:
+                if (!(StrUtil.equals(column.getJavaType(), GenConstants.JavaType.INTEGER.getCode())
+                        && StrUtil.equals(column.getName(), GenConstants.GenField.SORT.getKey()))) {
+                    column.setCover(true);
+                }
+                break;
+            case PARENT_ID:
+                if (!(StrUtil.equals(column.getJavaType(), GenConstants.JavaType.LONG.getCode())
+                        && StrUtil.equals(column.getName(), GenConstants.GenField.PARENT_ID.getKey()))) {
+                    column.setCover(true);
+                }
+                break;
+            case ANCESTORS:
+                if (!(StrUtil.equals(column.getJavaType(), GenConstants.JavaType.STRING.getCode())
+                        && StrUtil.equals(column.getName(), GenConstants.GenField.ANCESTORS.getKey()))) {
+                    column.setCover(true);
+                }
+                break;
+            case REMARK:
+                if (!(StrUtil.equals(column.getJavaType(), GenConstants.JavaType.STRING.getCode())
+                        && StrUtil.equals(column.getName(), GenConstants.GenField.REMARK.getKey()))) {
+                    column.setCover(true);
+                }
+                break;
+            default:
+                column.setCover(false);
         }
-        // 类型&性别字段设置下拉框
-        else if (StringUtils.endsWithIgnoreCase(javaField, "type")
-                || StringUtils.endsWithIgnoreCase(javaField, "sex")) {
-            column.setHtmlType(GenConstants.DisplayType.SELECT.getCode());
+        // 校验是否需要隐藏
+        boolean isMustHide = StrUtil.equalsAny(column.getName(), GenConstants.COLUMN_MUST_HIDE);
+        if (column.isHide() || isMustHide) {
+            if (isMustHide) {
+                column.setHide(true);
+                column.setCover(false);
+            }
+            column.setView(false);
+            column.setInsert(false);
+            column.setEdit(false);
+            column.setImport(false);
+            column.setExport(false);
+            column.setUnique(false);
+            column.setRequired(false);
+            column.setList(false);
+            column.setQuery(false);
         }
-        // 图片字段设置图片上传控件
-        else if (StringUtils.endsWithIgnoreCase(javaField, "image")) {
-            column.setHtmlType(GenConstants.DisplayType.IMAGE_UPLOAD.getCode());
-        }
-        // 文件字段设置文件上传控件
-        else if (StringUtils.endsWithIgnoreCase(javaField, "file")) {
-            column.setHtmlType(GenConstants.DisplayType.FILE_UPLOAD.getCode());
-        }
-        // 内容字段设置富文本控件
-        else if (StringUtils.endsWithIgnoreCase(javaField, "content")) {
-            column.setHtmlType(GenConstants.DisplayType.TINYMCE.getCode());
-        }
+    }
+
+    /**
+     * 最终校验列属性字段
+     */
+    public static void updateCheckColumn(GenTableDto table) {
+        JSONObject objectJson = JSONObject.parseObject(table.getOptions());
+        table.getSubList().forEach(column -> {
+            if (ObjectUtil.equals(column.getId(), objectJson.getLong(GenConstants.OptionField.ID.getCode()))) {
+                column.setJavaField(GenConstants.OptionField.ID.getCode());
+            } else if (ObjectUtil.equals(column.getId(), objectJson.getLong(GenConstants.OptionField.NAME.getCode()))) {
+                column.setJavaField(GenConstants.OptionField.NAME.getCode());
+            } else if (ObjectUtil.equals(column.getId(), objectJson.getLong(GenConstants.OptionField.STATUS.getCode()))) {
+                column.setJavaField(GenConstants.OptionField.STATUS.getCode());
+            } else if (ObjectUtil.equals(column.getId(), objectJson.getLong(GenConstants.OptionField.SORT.getCode()))) {
+                column.setJavaField(GenConstants.OptionField.SORT.getCode());
+            }
+            if (StrUtil.equalsAny(table.getTplCategory(),
+                    GenConstants.TemplateType.TREE.getCode(), GenConstants.TemplateType.SUB_TREE.getCode())) {
+                if (ObjectUtil.equals(column.getId(), objectJson.getLong(GenConstants.OptionField.PARENT_ID.getCode()))) {
+                    column.setJavaField(GenConstants.OptionField.PARENT_ID.getCode());
+                } else if (ObjectUtil.equals(column.getId(), objectJson.getLong(GenConstants.OptionField.ANCESTORS.getCode()))) {
+                    column.setJavaField(GenConstants.OptionField.ANCESTORS.getCode());
+                }
+            }
+            basicInitColumn(column);
+        });
     }
 
     /**
@@ -147,6 +276,21 @@ public class GenUtils {
     }
 
     /**
+     * 校验数组中是否存在值在另一个数组中
+     *
+     * @param arr      数组
+     * @param checkArr 查询数组
+     * @return 是否包含
+     */
+    public static boolean arraysContains(String[] arr, String[] checkArr) {
+        for (String targetValue : checkArr) {
+            if (arraysContains(arr, targetValue))
+                return true;
+        }
+        return false;
+    }
+
+    /**
      * 获取符合的替换前缀组 | 获取包名 | 获取模块名
      *
      * @param genTable 业务表对象
@@ -155,7 +299,8 @@ public class GenUtils {
         boolean autoRemovePre = GenConfig.isAutoRemovePre();
         if (autoRemovePre && CollUtil.isNotEmpty(GenConfig.getRemoveLists()))
             for (GenConfig.RemoveItem removeItem : GenConfig.getRemoveLists())
-                if (StrUtil.equals(StrUtil.sub(genTable.getName(), 0, removeItem.getPrefix().length()), removeItem.getPrefix())) {
+                if (StrUtil.equals(StrUtil.sub(genTable.getName(),
+                        0, removeItem.getPrefix().length()), removeItem.getPrefix())) {
                     genTable.setPrefix(StringUtils.convertToCamelCase(removeItem.getPrefix()));
                     genTable.setPackageName(removeItem.getPackageName());
                     genTable.setModuleName(getModuleName(removeItem.getPackageName()));
