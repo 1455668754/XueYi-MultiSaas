@@ -155,15 +155,6 @@ public class GenConstants {
 
     /** 其它生成选项字段 */
     public enum OptionField {
-        COVER_TREE_ID("isCoverTreeCode", "覆写树编码（Y是 N否）", null),
-        COVER_PARENT_ID("isCoverParentId", "覆写树父编码（Y是 N否）", null),
-        COVER_TREE_NAME_ID("isCoverTreeNameId", "覆写树名称（Y是 N否）", null),
-        COVER_ANCESTORS("isCoverAncestors", "覆写祖籍列表（Y是 N否）", null),
-        COVER_ID("isCoverId", "覆写Id（Y是 N否）", null),
-        COVER_NAME("isCoverName", "覆写name（Y是 N否）", null),
-        COVER_STATUS("isCoverStatus", "覆写status（Y是 N否）", null),
-        COVER_SORT("isCoverSort", "覆写sort（Y是 N否）", null),
-
         PARENT_MODULE_ID("parentModuleId", "归属模块Id字段", null),
         PARENT_MENU_ID("parentMenuId", "归属菜单Id字段", null),
         PARENT_MENU_PATH("parentMenuPath", "归属菜单路径字段", null),

@@ -136,8 +136,8 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
                     // 保存列信息
                     List<GenTableColumnDto> columnList = subService.selectDbTableColumnsByName(table.getName());
                     columnList.forEach(column -> GenUtils.initColumnField(column, table));
-                    GenUtils.initTableOptions(columnList, table);
                     subService.insertBatch(columnList);
+                    GenUtils.initTableOptions(columnList, table);
                     baseManager.update(table);
                 }
             });

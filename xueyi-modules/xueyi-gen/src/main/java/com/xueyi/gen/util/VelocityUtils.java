@@ -1,7 +1,6 @@
 package com.xueyi.gen.util;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -15,6 +14,7 @@ import com.xueyi.gen.domain.dto.GenTableDto;
 import org.apache.velocity.VelocityContext;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 模板工具类
@@ -46,7 +46,7 @@ public class VelocityUtils {
         String tplCategory = genTable.getTplCategory();
         String functionName = genTable.getFunctionName();
         JSONObject optionsObj = JSONObject.parseObject(genTable.getOptions());
-        Map<String, Set<String>> domainMap = getCoverMap(genTable, optionsObj);
+        Map<String, Set<String>> domainMap = getCoverMap(genTable);
 
         VelocityContext velocityContext = new VelocityContext();
         // 模板类型
@@ -158,40 +158,17 @@ public class VelocityUtils {
      * 设置树表模板变量信息
      */
     public static void setTreeVelocityContext(VelocityContext context, GenTableDto genTable, JSONObject optionsObj) {
-        JSONObject treeMap = new JSONObject();
-        for (GenTableColumnDto column : genTable.getSubList()) {
-            System.out.println(1);
-            if (StrUtil.equals(optionsObj.getString(GenConstants.OptionField.COVER_TREE_ID.getCode()), GenConstants.Status.TRUE.getCode())) {
-                System.out.println(2);
-
-                treeMap.put("idColumn", column);
-            } else if (StrUtil.equals(optionsObj.getString(GenConstants.OptionField.COVER_TREE_ID.getCode()), GenConstants.Status.FALSE.getCode())
-                    && StrUtil.equals(column.getJavaField(), optionsObj.getString(GenConstants.CoverField.ID.getCode()))) {
-                System.out.println(3);
-                treeMap.put("idColumn", column);
+        JSONObject treeObject = new JSONObject();
+        genTable.getSubList().forEach(column -> {
+            if (ObjectUtil.equals(column.getId(), optionsObj.getLong(GenConstants.OptionField.TREE_ID.getCode()))) {
+                treeObject.put("idColumn", column);
+            } else if (ObjectUtil.equals(column.getId(), optionsObj.getLong(GenConstants.OptionField.PARENT_ID.getCode()))) {
+                treeObject.put("parentIdColumn", column);
+            } else if (ObjectUtil.equals(column.getId(), optionsObj.getLong(GenConstants.OptionField.TREE_NAME.getCode()))) {
+                treeObject.put("nameColumn", column);
             }
-
-            if (StrUtil.equals(optionsObj.getString(GenConstants.OptionField.COVER_PARENT_ID.getCode()), GenConstants.Status.TRUE.getCode())
-                    && ObjectUtil.equals(column.getId(), optionsObj.getLong(GenConstants.OptionField.PARENT_ID.getCode()))) {
-                System.out.println(2);
-                treeMap.put("parentIdColumn", column);
-            } else if (StrUtil.equals(optionsObj.getString(GenConstants.OptionField.COVER_PARENT_ID.getCode()), GenConstants.Status.FALSE.getCode())
-                    && StrUtil.equals(column.getJavaField(), optionsObj.getString(GenConstants.CoverField.PARENT_ID.getCode()))) {
-                System.out.println(3);
-                treeMap.put("parentIdColumn", column);
-            }
-
-            if (StrUtil.equals(optionsObj.getString(GenConstants.OptionField.COVER_TREE_NAME_ID.getCode()), GenConstants.Status.TRUE.getCode())
-                    && ObjectUtil.equals(column.getId(), optionsObj.getLong(GenConstants.OptionField.PARENT_ID.getCode()))) {
-                System.out.println(2);
-                treeMap.put("nameColumn", column);
-            } else if (StrUtil.equals(optionsObj.getString(GenConstants.OptionField.COVER_TREE_NAME_ID.getCode()), GenConstants.Status.FALSE.getCode())
-                    && StrUtil.equals(column.getJavaField(), optionsObj.getString(GenConstants.CoverField.NAME.getCode()))) {
-                System.out.println(3);
-                treeMap.put("nameColumn", column);
-            }
-        }
-        context.put("treeMap", treeMap);
+        });
+        context.put("treeMap", treeObject);
     }
 
     /**
@@ -381,50 +358,10 @@ public class VelocityUtils {
     /**
      * 获取覆盖与隐藏字段信息
      */
-    public static Map<String, Set<String>> getCoverMap(GenTableDto genTable, JSONObject optionsObj) {
-        Set<String> hideList = new HashSet<>();
-        Set<String> coverList = new HashSet<>();
-        if (StrUtil.isEmpty(optionsObj.getString(GenConstants.OptionField.IS_TENANT.getCode())) && StrUtil.equals(optionsObj.getString(GenConstants.OptionField.IS_TENANT.getCode()), GenConstants.Status.TRUE.getCode())) {
-            coverList.addAll(Arrays.asList(GenConstants.TENANT_ENTITY));
-        }
-        if (!genTable.isMerge()) {
-            hideList.addAll(Arrays.asList(GenConstants.BASE_ENTITY));
-            GenTableColumnDto column;
-            genTable.getSubList().forEach(column -> {
-                if(ObjectUtil.equals(column.getId(), optionsObj.getLong(GenConstants.OptionField.ID.getCode()))
-                        && !(StrUtil.equals(column.getJavaType(), GenConstants.JavaType.LONG.getCode()) && StrUtil.equals(column.getJavaField(), GenConstants.OptionField.ID.getCode()))){
-                    coverList.add(GenConstants.CoverField.ID.getCode());
-                }
-                    });
-            if()
-
-            if (StrUtil.equals(optionsObj.getString(GenConstants.OptionField.COVER_ID.getCode()), GenConstants.Status.TRUE.getCode())) {
-                coverList.add(GenConstants.CoverField.ID.getCode());
-            }
-            if (StrUtil.equals(optionsObj.getString(GenConstants.OptionField.COVER_NAME.getCode()), GenConstants.Status.TRUE.getCode())) {
-                coverList.add(GenConstants.CoverField.NAME.getCode());
-            }
-            if (StrUtil.equals(optionsObj.getString(GenConstants.OptionField.COVER_STATUS.getCode()), GenConstants.Status.TRUE.getCode())) {
-                coverList.add(GenConstants.CoverField.STATUS.getCode());
-            }
-            if (StrUtil.equals(optionsObj.getString(GenConstants.OptionField.COVER_SORT.getCode()), GenConstants.Status.TRUE.getCode())) {
-                coverList.add(GenConstants.CoverField.SORT.getCode());
-            }
-            if (genTable.isSubTree() || genTable.isTree()) {
-                hideList.addAll(Arrays.asList(GenConstants.TREE_ENTITY));
-                if (StrUtil.equals(optionsObj.getString(GenConstants.OptionField.COVER_TREE_ID.getCode()), GenConstants.Status.TRUE.getCode())) {
-                    coverList.add(GenConstants.CoverField.ID.getCode());
-                }
-                if (StrUtil.equals(optionsObj.getString(GenConstants.OptionField.COVER_PARENT_ID.getCode()), GenConstants.Status.TRUE.getCode())) {
-                    coverList.add(GenConstants.CoverField.NAME.getCode());
-                }
-                if (StrUtil.equals(optionsObj.getString(GenConstants.OptionField.COVER_ANCESTORS.getCode()), GenConstants.Status.TRUE.getCode())) {
-                    coverList.add(GenConstants.CoverField.STATUS.getCode());
-                }
-            }
-        }
+    public static Map<String, Set<String>> getCoverMap(GenTableDto genTable) {
+        Set<String> coverList = genTable.getSubList().stream().filter(GenTableColumnDto::isCover).map(GenTableColumnDto::getJavaField).collect(Collectors.toSet());
+        Set<String> hideList = genTable.getSubList().stream().filter(GenTableColumnDto::isHide).map(GenTableColumnDto::getJavaField).collect(Collectors.toSet());
         Map<String, Set<String>> map = new HashMap<>();
-        hideList.removeAll(coverList);
         map.put(COVER, coverList);
         map.put(HIDE, hideList);
         return map;
