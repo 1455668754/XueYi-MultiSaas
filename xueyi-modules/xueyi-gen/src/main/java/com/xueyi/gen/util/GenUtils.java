@@ -50,11 +50,11 @@ public class GenUtils {
         // 检测是否为多租户模式
         optionJson.put(GenConstants.OptionField.IS_TENANT.getCode(),
                 arraysContains(GenConstants.TENANT_ENTITY, javaFields)
-                        ? GenConstants.Status.TRUE.getCode()
-                        : GenConstants.Status.FALSE.getCode());
+                        ? DictConstants.DicYesNo.YES.getCode()
+                        : DictConstants.DicYesNo.NO.getCode());
         // 设置默认源策略模式
         optionJson.put(GenConstants.OptionField.SOURCE_MODE.getCode(),
-                StrUtil.equals(optionJson.getString(GenConstants.OptionField.IS_TENANT.getCode()), GenConstants.Status.TRUE.getCode())
+                StrUtil.equals(optionJson.getString(GenConstants.OptionField.IS_TENANT.getCode()), DictConstants.DicYesNo.YES.getCode())
                         ? GenConstants.SourceMode.ISOLATE.getCode()
                         : GenConstants.SourceMode.MASTER.getCode());
         columnList.forEach(column -> {
@@ -101,6 +101,16 @@ public class GenUtils {
 
         if (arraysContains(GenConstants.COLUMN_TYPE_STR, dataType) && !StrUtil.equals(column.getComment(), column.readNameNoSuffix())) {
             column.setHtmlType(GenConstants.DisplayType.SELECT.getCode());
+            if (StrUtil.contains(column.getComment(), GenConstants.GenCheck.NORMAL_DISABLE.getInfo())) {
+                column.setHtmlType(GenConstants.DisplayType.RADIO_BUTTON_GROUP.getCode());
+                column.setDictType(DictConstants.DictType.SYS_NORMAL_DISABLE.getCode());
+            } else if (StrUtil.contains(column.getComment(), GenConstants.GenCheck.SHOW_HIDE.getInfo())) {
+                column.setHtmlType(GenConstants.DisplayType.RADIO_BUTTON_GROUP.getCode());
+                column.setDictType(DictConstants.DictType.SYS_SHOW_HIDE.getCode());
+            } else if (StrUtil.contains(column.getComment(), GenConstants.GenCheck.YES_NO.getInfo())) {
+                column.setHtmlType(GenConstants.DisplayType.RADIO_BUTTON_GROUP.getCode());
+                column.setDictType(DictConstants.DictType.SYS_YES_NO.getCode());
+            }
         } else if (arraysContains(GenConstants.COLUMN_TYPE_TEXT, dataType)) {
             column.setHtmlType(GenConstants.DisplayType.INPUT_TEXTAREA.getCode());
         } else if (arraysContains(GenConstants.COLUMN_TYPE_DATE, dataType)) {
@@ -142,12 +152,6 @@ public class GenUtils {
             switch (Objects.requireNonNull(field)) {
                 case NAME:
                     column.setQueryType(GenConstants.QueryType.LIKE.getCode());
-                    break;
-                case STATUS:
-                    if (StrUtil.contains(column.getComment(), GenConstants.STATUS_CHECK)) {
-                        column.setHtmlType(GenConstants.DisplayType.RADIO_BUTTON_GROUP.getCode());
-                        column.setDictType(DictConstants.DictType.SYS_NORMAL_DISABLE.getCode());
-                    }
                     break;
                 case SEX:
                     column.setDictType(DictConstants.DictType.SYS_USER_SEX.getCode());
@@ -220,7 +224,7 @@ public class GenUtils {
                 case STATUS:
                     if (!(StrUtil.equals(column.getJavaType(), GenConstants.JavaType.STRING.getCode())
                             && StrUtil.equals(column.getName(), GenConstants.GenField.STATUS.getKey())
-                            && StrUtil.contains(column.getComment(), GenConstants.STATUS_CHECK))) {
+                            && StrUtil.contains(column.getComment(), GenConstants.GenCheck.NORMAL_DISABLE.getInfo()))) {
                         column.setCover(true);
                     }
                     break;

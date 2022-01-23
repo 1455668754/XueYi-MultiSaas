@@ -31,7 +31,10 @@ public class OrganizeConstants {
     /** 组织树类型 */
     public enum OrganizeType {
 
-        ENTERPRISE("0", "企业级"), DEPT("1", "部门级"), POST("2", "岗位级"), USER("3", "用户级");
+        ENTERPRISE("0", "企业级"),
+        DEPT("1", "部门级"),
+        POST("2", "岗位级"),
+        USER("3", "用户级");
 
         private final String code;
         private final String info;

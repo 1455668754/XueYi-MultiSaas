@@ -1,8 +1,8 @@
 package com.xueyi.system.authority.controller;
 
 import cn.hutool.core.util.StrUtil;
-import com.xueyi.common.core.constant.AuthorityConstants;
 import com.xueyi.common.core.constant.BaseConstants;
+import com.xueyi.common.core.constant.DictConstants;
 import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.security.utils.SecurityUtils;
@@ -46,7 +46,7 @@ public class SysModuleController extends SubBaseController<SysModuleDto, ISysMod
      */
     @Override
     protected void baseRefreshValidated(BaseConstants.Operate operate, SysModuleDto module) {
-        if (StringUtils.equals(AuthorityConstants.IsCommon.YES.getCode(), module.getIsCommon()) && !SecurityUtils.isAdminTenant())
+        if (StringUtils.equals(DictConstants.DicCommonPrivate.COMMON.getCode(), module.getIsCommon()) && !SecurityUtils.isAdminTenant())
             throw new ServiceException(StrUtil.format("{}{}{}失败，没有操作权限", operate.getInfo(), getNodeName(), module.getName()));
     }
 

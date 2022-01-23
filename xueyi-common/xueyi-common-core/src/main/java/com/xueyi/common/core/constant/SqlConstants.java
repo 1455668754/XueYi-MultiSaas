@@ -15,7 +15,11 @@ public class SqlConstants {
     /** 数据库字段映射 */
     public enum Entity {
 
-        ID("id", "Id字段"), PARENT_ID("parent_id", "父级Id字段"), STATUS("status", "状态字段"), SORT("sort","排序字段"), ANCESTORS("ancestors","祖籍字段");
+        ID("id", "Id字段"),
+        PARENT_ID("parent_id", "父级Id字段"),
+        STATUS("status", "状态字段"),
+        SORT("sort","排序字段"),
+        ANCESTORS("ancestors","祖籍字段");
 
         private final String code;
         private final String info;

@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import com.xueyi.system.api.log.feign.RemoteLogService;
-import com.xueyi.system.api.log.domain.dto.SysOperationLogDto;
+import com.xueyi.system.api.log.domain.dto.SysOperateLogDto;
 import com.xueyi.common.core.constant.SecurityConstants;
 
 /**
@@ -22,8 +22,8 @@ public class AsyncLogService
      * 保存系统日志记录
      */
     @Async
-    public void saveSysLog(SysOperationLogDto sysOperationLogDto)
+    public void saveSysLog(SysOperateLogDto sysOperateLogDto)
     {
-        remoteLogService.saveLog(sysOperationLogDto, SecurityConstants.INNER);
+        remoteLogService.saveLog(sysOperateLogDto, SecurityConstants.INNER);
     }
 }

@@ -64,7 +64,10 @@ public class BaseConstants {
     /** 字段映射名 */
     public enum Entity {
 
-        ID("id", "Id"), PARENT_ID("parentId", "父级Id"), SORT("sort", "显示顺序"), CHILDREN("children", "子部门集合");
+        ID("id", "Id"),
+        PARENT_ID("parentId", "父级Id"),
+        SORT("sort", "显示顺序"),
+        CHILDREN("children", "子部门集合");
 
         private final String code;
         private final String info;
@@ -86,7 +89,9 @@ public class BaseConstants {
     /** 状态 */
     public enum Status {
 
-        NORMAL("0", "正常"), DISABLE("1", "停用"), EXCEPTION("1", "异常");
+        NORMAL("0", "正常"),
+        DISABLE("1", "停用"),
+        EXCEPTION("1", "异常");
 
         private final String code;
         private final String info;
@@ -108,7 +113,8 @@ public class BaseConstants {
     /** 校验返回结果码 */
     public enum Check {
 
-        UNIQUE("0", "唯一"), NOT_UNIQUE("1", "不唯一");
+        UNIQUE("0", "唯一"),
+        NOT_UNIQUE("1", "不唯一");
 
         private final String code;
         private final String info;
@@ -130,7 +136,8 @@ public class BaseConstants {
     /** 系统默认值 */
     public enum Whether {
 
-        YES("Y", "是"), NO("N", "否");
+        YES("Y", "是"),
+        NO("N", "否");
 
         private final String code;
         private final String info;
@@ -152,7 +159,8 @@ public class BaseConstants {
     /** 删除状态 */
     public enum DelFlag {
 
-        NORMAL(0L, "正常"), DELETED(1L, "已删除");
+        NORMAL(0L, "正常"),
+        DELETED(1L, "已删除");
 
         private final Long code;
         private final String info;

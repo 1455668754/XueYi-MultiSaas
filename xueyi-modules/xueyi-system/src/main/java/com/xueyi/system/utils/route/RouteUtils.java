@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.AuthorityConstants;
+import com.xueyi.common.core.constant.DictConstants;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 
 import java.util.ArrayList;
@@ -96,7 +97,7 @@ public class RouteUtils {
         router.setMeta(getMeta(menu));
         router.setPath(getRouterPath(menu));
         router.setName(menu.getName());
-        router.setDisabled(StrUtil.equals(AuthorityConstants.Status.YES.getCode(), menu.getIsDisabled()));
+        router.setDisabled(StrUtil.equals(DictConstants.DicYesNo.YES.getCode(), menu.getIsDisabled()));
         router.setParamPath(menu.getParamPath());
         router.setComponent(getComponent(menu));
     }
@@ -128,22 +129,22 @@ public class RouteUtils {
             meta.setCurrentActiveMenu(menu.getCurrentActiveMenu());
         }
         // ?
-        meta.setIgnoreKeepAlive(StrUtil.equals(AuthorityConstants.Status.YES.getCode(), menu.getIsCache()));
-        meta.setAffix(StrUtil.equals(AuthorityConstants.Status.YES.getCode(), menu.getIsAffix()));
+        meta.setIgnoreKeepAlive(StrUtil.equals(DictConstants.DicYesNo.YES.getCode(), menu.getIsCache()));
+        meta.setAffix(StrUtil.equals(DictConstants.DicYesNo.YES.getCode(), menu.getIsAffix()));
         if (StrUtil.equals(AuthorityConstants.FrameType.EMBEDDED.getCode(), menu.getFrameType()))
             meta.setFrameSrc(menu.getFrameSrc());
         meta.setTransitionName(menu.getTransitionName());
-        meta.setHideBreadcrumb(StrUtil.equals(AuthorityConstants.Hide.YES.getCode(), menu.getHideBreadcrumb()));
+        meta.setHideBreadcrumb(StrUtil.equals(DictConstants.DicShowHide.HIDE.getCode(), menu.getHideBreadcrumb()));
         if (StrUtil.isNotEmpty(menu.getParamPath()))
             meta.setCarryParam(true);
-        meta.setHideTab(StrUtil.equals(AuthorityConstants.Hide.YES.getCode(), menu.getHideTab()));
-        meta.setHideMenu(StrUtil.equals(AuthorityConstants.Hide.YES.getCode(), menu.getHideMenu()));
-        meta.setHideChildrenInMenu(StrUtil.equals(AuthorityConstants.Hide.YES.getCode(), menu.getHideChildren()));
+        meta.setHideTab(StrUtil.equals(DictConstants.DicShowHide.HIDE.getCode(), menu.getHideTab()));
+        meta.setHideMenu(StrUtil.equals(DictConstants.DicShowHide.HIDE.getCode(), menu.getHideMenu()));
+        meta.setHideChildrenInMenu(StrUtil.equals(DictConstants.DicShowHide.HIDE.getCode(), menu.getHideChildren()));
         if (StrUtil.equals(AuthorityConstants.FrameType.EXTERNAL_LINKS.getCode(), menu.getFrameType()))
             meta.setLink(true);
         meta.setOrderNo(menu.getSort());
-        meta.setIgnoreRoute(StrUtil.equals(AuthorityConstants.Status.YES.getCode(), menu.getIgnoreRoute()));
-        meta.setHidePathForChildren(StrUtil.equals(AuthorityConstants.Hide.YES.getCode(), menu.getHidePathForChildren()));
+        meta.setIgnoreRoute(StrUtil.equals(DictConstants.DicYesNo.YES.getCode(), menu.getIgnoreRoute()));
+        meta.setHidePathForChildren(StrUtil.equals(DictConstants.DicShowHide.HIDE.getCode(), menu.getHidePathForChildren()));
         return meta;
     }
 

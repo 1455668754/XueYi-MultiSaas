@@ -102,7 +102,6 @@ export const searchFormSchema: FormSchema[] = [
 /** 表单数据 */
 export const formSchema: FormSchema[] = [
 #foreach ($column in $columns)
-    ${treeMap}
 #if(($table.tree || $table.subTree) && $column.javaField == $treeMap.parentIdColumn.javaField)
     {
         label: '${treeMap.parentIdColumn.readNameNoSuffix()}',
@@ -154,8 +153,8 @@ export const formSchema: FormSchema[] = [
 #if($column.isRequired())
         required: true,
 #end
-        colProps: { span: 12 },
 #end
+        colProps: { span: 12 },
     },
 #end
 #end
@@ -184,6 +183,7 @@ export const detailSchema: DescItem[] = [
             return dictConversion(dict.${column.dictName}, val)
         },
 #end
+        span: 8,
     },
 #end
 #end

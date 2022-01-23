@@ -14,6 +14,7 @@ import { ${BusinessName}IndexGo } from '@enums/${moduleName}'
 import { useTabs } from '@/hooks/web/useTabs'
 import { PageWrapper } from '@/components/Page'
 import { useGo } from '@/hooks/web/usePage'
+import { DescItemSizeEnum } from '@admin/tokens'
 
 export default defineComponent({
   components: { Description, PageWrapper },
@@ -26,6 +27,7 @@ export default defineComponent({
     const [register, { setDescProps }] = useDescription({
       title: '${BusinessName}Detail',
       schema: detailSchema,
+      column: DescItemSizeEnum.DEFAULT,
     })
 #if($pkColumn.javaType == 'Long')
 #set($IdType = 'string | number')

@@ -10,7 +10,7 @@ import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessStatus;
 import com.xueyi.common.log.service.AsyncLogService;
 import com.xueyi.common.security.service.TokenService;
-import com.xueyi.system.api.log.domain.dto.SysOperationLogDto;
+import com.xueyi.system.api.log.domain.dto.SysOperateLogDto;
 import com.xueyi.system.api.model.LoginUser;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -70,7 +70,7 @@ public class LogAspect {
     protected void handleLog(final JoinPoint joinPoint, Log controllerLog, final Exception e, Object jsonResult) {
         try {
             // *========数据库日志=========*//
-            SysOperationLogDto operLog = new SysOperationLogDto();
+            SysOperateLogDto operLog = new SysOperateLogDto();
             operLog.setStatus(BusinessStatus.SUCCESS.getCode());
             // 请求的地址
             String ip = IpUtils.getIpAddr(ServletUtils.getRequest());
@@ -127,7 +127,7 @@ public class LogAspect {
      * @param operationLog 操作日志
      * @throws Exception
      */
-    public void getControllerMethodDescription(JoinPoint joinPoint, Log log, SysOperationLogDto operationLog, Object jsonResult) throws Exception {
+    public void getControllerMethodDescription(JoinPoint joinPoint, Log log, SysOperateLogDto operationLog, Object jsonResult) throws Exception {
         // 设置action动作
         operationLog.setBusinessType(String.valueOf(log.businessType().ordinal()));
         // 设置标题
@@ -151,7 +151,7 @@ public class LogAspect {
      * @param operLog 操作日志
      * @throws Exception 异常
      */
-    private void setRequestValue(JoinPoint joinPoint, SysOperationLogDto operLog) throws Exception {
+    private void setRequestValue(JoinPoint joinPoint, SysOperateLogDto operLog) throws Exception {
         String requestMethod = operLog.getRequestMethod();
         if (HttpMethod.PUT.name().equals(requestMethod) || HttpMethod.POST.name().equals(requestMethod)) {
             String params = argsArrayToString(joinPoint.getArgs());

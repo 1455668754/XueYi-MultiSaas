@@ -91,26 +91,4 @@ public class TenantConstants {
             return info;
         }
     }
-
-    /** 主数据源 */
-    public enum IsMain {
-
-        YES("Y", "是"), NO("N", "否");
-
-        private final String code;
-        private final String info;
-
-        IsMain(String code, String info) {
-            this.code = code;
-            this.info = info;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
-    }
 }

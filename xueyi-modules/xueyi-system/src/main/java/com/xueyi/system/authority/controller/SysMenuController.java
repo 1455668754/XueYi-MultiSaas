@@ -2,8 +2,8 @@ package com.xueyi.system.authority.controller;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.xueyi.common.core.constant.AuthorityConstants;
 import com.xueyi.common.core.constant.BaseConstants;
+import com.xueyi.common.core.constant.DictConstants;
 import com.xueyi.common.core.domain.R;
 import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.StringUtils;
@@ -71,13 +71,13 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
             throw new ServiceException(StrUtil.format("{}{}{}失败，菜单名称已存在", operate.getInfo(), getNodeName(), menu.getName()));
         else if (SecurityUtils.isNotAdminTenant()) {
             if (BaseConstants.Operate.ADD == operate || BaseConstants.Operate.ADD_FORCE == operate) {
-                if (StringUtils.equals(AuthorityConstants.IsCommon.YES.getCode(), menu.getIsCommon()))
+                if (StringUtils.equals(DictConstants.DicCommonPrivate.COMMON.getCode(), menu.getIsCommon()))
                     throw new ServiceException(StrUtil.format("{}{}{}失败，无操作权限", operate.getInfo(), getNodeName(), menu.getName()));
             } else {
                 SysMenuDto original = baseService.selectById(menu.getId());
                 if (ObjectUtil.isNull(original))
                     throw new ServiceException("数据不存在");
-                else if (StringUtils.equals(AuthorityConstants.IsCommon.YES.getCode(), original.getIsCommon()))
+                else if (StringUtils.equals(DictConstants.DicCommonPrivate.COMMON.getCode(), original.getIsCommon()))
                     throw new ServiceException(StrUtil.format("{}{}{}失败，无操作权限", operate.getInfo(), getNodeName(), menu.getName()));
             }
         }

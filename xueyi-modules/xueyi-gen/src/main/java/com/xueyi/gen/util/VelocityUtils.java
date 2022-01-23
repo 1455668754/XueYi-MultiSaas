@@ -7,6 +7,7 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.xueyi.common.core.constant.AuthorityConstants;
+import com.xueyi.common.core.constant.DictConstants;
 import com.xueyi.common.core.constant.GenConstants;
 import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.gen.domain.dto.GenTableColumnDto;
@@ -375,7 +376,7 @@ public class VelocityUtils {
      */
     public static boolean isTenant(GenTableDto genTable) {
         JSONObject optionsObj = JSONObject.parseObject(genTable.getOptions());
-        return StrUtil.equals(optionsObj.getString(GenConstants.OptionField.IS_TENANT.getCode()), GenConstants.Status.TRUE.getCode());
+        return StrUtil.equals(optionsObj.getString(GenConstants.OptionField.IS_TENANT.getCode()), DictConstants.DicYesNo.YES.getCode());
     }
 
     /**
@@ -480,9 +481,9 @@ public class VelocityUtils {
     public static String getDictName(String dictType) {
         for (String removeName : GenConstants.DICT_TYPE_REMOVE) {
             if (dictType.startsWith(removeName))
-                return StringUtils.convertToCamelCase(StrUtil.removePrefix(dictType, removeName)) + GenConstants.DICT_NAME_ENDING;
+                return GenConstants.DICT_NAME_START + StringUtils.convertToCamelCase(StrUtil.removePrefix(dictType, removeName)) + GenConstants.DICT_NAME_END;
         }
-        return StringUtils.convertToCamelCase(dictType) + GenConstants.DICT_NAME_ENDING;
+        return GenConstants.DICT_NAME_START + StringUtils.convertToCamelCase(dictType) + GenConstants.DICT_NAME_END;
     }
 
     /**
@@ -545,13 +546,13 @@ public class VelocityUtils {
     /**
      * 获取生成相对路径
      *
-     * @param table 业务表对象
+     * @param table    业务表对象
      * @param subTable 子业务表对象
      * @return 生成相对路径
      */
     public static String getRelativePath(GenTableDto table, GenTableDto subTable) {
-        return StrUtil.equals(table.getModuleName(),subTable.getModuleName())
-                ? StrUtil.equals(table.getAuthorityName(),subTable.getAuthorityName())
+        return StrUtil.equals(table.getModuleName(), subTable.getModuleName())
+                ? StrUtil.equals(table.getAuthorityName(), subTable.getAuthorityName())
                 ? "."
                 : "../" + subTable.getAuthorityName()
                 : "../../" + subTable.getAuthorityName();

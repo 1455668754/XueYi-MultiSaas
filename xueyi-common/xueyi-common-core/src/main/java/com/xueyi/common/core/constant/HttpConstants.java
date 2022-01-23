@@ -16,7 +16,8 @@ public class HttpConstants {
     /** 字符集 */
     public enum Character {
 
-        UTF8("UTF-8", "UTF-8"), GBK("GBK", "GBK");
+        UTF8("UTF-8", "UTF-8"),
+        GBK("GBK", "GBK");
 
         private final String code;
         private final String info;

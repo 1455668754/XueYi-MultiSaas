@@ -79,26 +79,22 @@ public class GenConstants {
     public static final String[] DICT_TYPE_REMOVE = {"sys_", "te_", "gen_"};
 
     /** 字典名称结尾字段 */
-    public static final String DICT_NAME_ENDING = "Options";
+    public static final String DICT_NAME_START = "Dic";
 
-    /** 状态校验内容 */
-    public static final String STATUS_CHECK = "（0正常 1停用）";
+    /** 字典名称结尾字段 */
+    public static final String DICT_NAME_END = "Options";
 
-    /** 状态（Y是 N否） */
-    public enum Status {
+    /** 校验内容 */
+    public enum GenCheck {
 
-        TRUE("Y", "是"), FALSE("N", "否");
+        NORMAL_DISABLE("（0正常 1停用）"),
+        SHOW_HIDE("（0显示 1隐藏）"),
+        YES_NO("（Y是 N否）");
 
-        private final String code;
         private final String info;
 
-        Status(String code, String info) {
-            this.code = code;
+        GenCheck(String info) {
             this.info = info;
-        }
-
-        public String getCode() {
-            return code;
         }
 
         public String getInfo() {
@@ -106,7 +102,7 @@ public class GenConstants {
         }
     }
 
-    /** 覆写字段 */
+    /** 生成字段 */
     public enum GenField {
 
         ID("id", "主键字段", "id"),

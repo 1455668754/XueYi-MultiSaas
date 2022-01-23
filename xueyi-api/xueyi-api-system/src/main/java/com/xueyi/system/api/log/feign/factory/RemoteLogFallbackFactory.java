@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import com.xueyi.common.core.domain.R;
 import com.xueyi.system.api.log.feign.RemoteLogService;
 import com.xueyi.system.api.log.domain.dto.SysLoginLogDto;
-import com.xueyi.system.api.log.domain.dto.SysOperationLogDto;
+import com.xueyi.system.api.log.domain.dto.SysOperateLogDto;
 
 /**
  * 日志服务 降级处理
@@ -24,7 +24,7 @@ public class RemoteLogFallbackFactory implements FallbackFactory<RemoteLogServic
         log.error("日志服务调用失败:{}", throwable.getMessage());
         return new RemoteLogService() {
             @Override
-            public R<Boolean> saveLog(SysOperationLogDto operationLog, String source) {
+            public R<Boolean> saveLog(SysOperateLogDto operationLog, String source) {
                 return null;
             }
 

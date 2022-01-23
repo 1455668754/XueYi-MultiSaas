@@ -5,6 +5,7 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
+import com.xueyi.common.core.constant.DictConstants;
 import com.xueyi.common.core.constant.GenConstants;
 import com.xueyi.common.core.constant.GenConstants.OptionField;
 import com.xueyi.common.core.constant.GenConstants.TemplateType;
@@ -354,7 +355,7 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
         if (StrUtil.isEmpty(optionsObj.getString(OptionField.SOURCE_MODE.getCode()))) {
             throw new ServiceException("未设置源策略模式！");
         }
-        if (StrUtil.isNotEmpty(optionsObj.getString(OptionField.IS_TENANT.getCode())) && StrUtil.equals(optionsObj.getString(OptionField.IS_TENANT.getCode()), GenConstants.Status.TRUE.getCode())) {
+        if (StrUtil.isNotEmpty(optionsObj.getString(OptionField.IS_TENANT.getCode())) && StrUtil.equals(optionsObj.getString(OptionField.IS_TENANT.getCode()), DictConstants.DicYesNo.YES.getCode())) {
             for (GenTableColumnDto column : genTable.getSubList()) {
                 if (StrUtil.equalsAny(column.getJavaField(), GenConstants.TENANT_ENTITY)) {
                     return;

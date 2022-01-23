@@ -8,7 +8,7 @@ import com.xueyi.common.core.constant.SecurityConstants;
 import com.xueyi.common.core.constant.ServiceConstants;
 import com.xueyi.common.core.domain.R;
 import com.xueyi.system.api.log.domain.dto.SysLoginLogDto;
-import com.xueyi.system.api.log.domain.dto.SysOperationLogDto;
+import com.xueyi.system.api.log.domain.dto.SysOperateLogDto;
 import com.xueyi.system.api.log.feign.factory.RemoteLogFallbackFactory;
 
 /**
@@ -26,7 +26,7 @@ public interface RemoteLogService {
      * @return 结果
      */
     @PostMapping("/operationLog")
-    R<Boolean> saveLog(@RequestBody SysOperationLogDto operationLog, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+    R<Boolean> saveLog(@RequestBody SysOperateLogDto operationLog, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
 
     /**
      * 保存访问记录
