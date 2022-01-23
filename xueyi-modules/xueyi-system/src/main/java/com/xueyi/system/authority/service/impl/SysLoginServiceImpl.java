@@ -1,5 +1,6 @@
 package com.xueyi.system.authority.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
 import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
@@ -79,7 +80,7 @@ public class SysLoginServiceImpl implements ISysLoginService {
         if (SysUserDto.isAdmin(userType))
             roles.add("admin");
         else
-            roles.addAll(roleList.stream().map(SysRoleDto::getRoleKey).collect(Collectors.toSet()));
+            roles.addAll(roleList.stream().map(SysRoleDto::getRoleKey).filter(StrUtil::isNotBlank).collect(Collectors.toSet()));
         return roles;
     }
 
@@ -99,11 +100,13 @@ public class SysLoginServiceImpl implements ISysLoginService {
         // 租管租户的超管用户拥有所有权限
         if (SysEnterpriseDto.isAdmin(isLessor) && SysUserDto.isAdmin(userType))
             perms.add("*:*:*");
-        else
-            // 常规租户的超管用户拥有本租户最高权限
-            perms.addAll(SysUserDto.isAdmin(userType)
+        else {
+            Set<String> set = SysUserDto.isAdmin(userType)
                     ? menuService.loginPermission(enterpriseId, sourceName)
-                    : menuService.loginPermission(roleList.stream().map(SysRoleDto::getId).collect(Collectors.toSet()), enterpriseId, sourceName));
+                    : menuService.loginPermission(roleList.stream().map(SysRoleDto::getId).collect(Collectors.toSet()), enterpriseId, sourceName);
+            // 常规租户的超管用户拥有本租户最高权限
+            perms.addAll(set.stream().filter(StrUtil::isNotBlank).collect(Collectors.toSet()));
+        }
         return perms;
     }
 }
