@@ -150,9 +150,9 @@ export const formSchema: FormSchema[] = [
 #end
 #if($column.isPk())
         show: false,
+#end
 #if($column.isRequired())
         required: true,
-#end
 #end
         colProps: { span: 12 },
     },
