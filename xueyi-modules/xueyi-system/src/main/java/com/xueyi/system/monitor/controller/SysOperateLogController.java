@@ -6,8 +6,8 @@ import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.InnerAuth;
 import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.web.entity.controller.BaseController;
-import com.xueyi.system.api.log.domain.dto.SysOperationLogDto;
-import com.xueyi.system.monitor.service.ISysOperationLogService;
+import com.xueyi.system.api.log.domain.dto.SysOperateLogDto;
+import com.xueyi.system.monitor.service.ISysOperateLogService;
 import org.springframework.web.bind.annotation.*;
 
 ;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/operationLog")
-public class SysOperationLogController extends BaseController<SysOperationLogDto, ISysOperationLogService> {
+public class SysOperateLogController extends BaseController<SysOperateLogDto, ISysOperateLogService> {
 
     /** 定义节点名称 */
     protected String getNodeName() {
@@ -36,7 +36,7 @@ public class SysOperationLogController extends BaseController<SysOperationLogDto
     @Override
     @InnerAuth
     @PostMapping
-    public AjaxResult add(@RequestBody SysOperationLogDto operationLog) {
+    public AjaxResult add(@RequestBody SysOperateLogDto operationLog) {
         return super.add(operationLog);
     }
 }

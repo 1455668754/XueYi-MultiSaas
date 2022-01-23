@@ -12,7 +12,7 @@ import java.util.Date;
  *
  * @author xueyi
  */
-public class SysOperationLogPo extends TBaseEntity {
+public class SysOperateLogPo extends TBaseEntity {
 
     private static final long serialVersionUID = 1L;
 

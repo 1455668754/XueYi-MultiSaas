@@ -3,10 +3,10 @@ package com.xueyi.system.monitor.service.impl;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
-import com.xueyi.system.api.log.domain.dto.SysOperationLogDto;
-import com.xueyi.system.monitor.manager.SysOperationLogManager;
-import com.xueyi.system.monitor.mapper.SysOperationLogMapper;
-import com.xueyi.system.monitor.service.ISysOperationLogService;
+import com.xueyi.system.api.log.domain.dto.SysOperateLogDto;
+import com.xueyi.system.monitor.manager.SysOperateLogManager;
+import com.xueyi.system.monitor.mapper.SysOperateLogMapper;
+import com.xueyi.system.monitor.service.ISysOperateLogService;
 import org.springframework.stereotype.Service;
 
 import static com.xueyi.common.core.constant.TenantConstants.ISOLATE;
@@ -18,7 +18,7 @@ import static com.xueyi.common.core.constant.TenantConstants.ISOLATE;
  */
 @Service
 @DS(ISOLATE)
-public class SysOperationLogServiceImpl extends BaseServiceImpl<SysOperationLogDto, SysOperationLogManager, SysOperationLogMapper> implements ISysOperationLogService {
+public class SysOperateLogServiceImpl extends BaseServiceImpl<SysOperateLogDto, SysOperateLogManager, SysOperateLogMapper> implements ISysOperateLogService {
 
     /**
      * 新增操作日志
@@ -28,7 +28,7 @@ public class SysOperationLogServiceImpl extends BaseServiceImpl<SysOperationLogD
      */
     @Override
     @DS("#operationLog.sourceName")
-    public int insert(SysOperationLogDto operationLog) {
+    public int insert(SysOperateLogDto operationLog) {
         return baseManager.insert(operationLog);
     }
 

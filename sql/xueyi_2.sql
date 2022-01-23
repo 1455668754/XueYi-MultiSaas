@@ -291,8 +291,8 @@ create table xy_material_folder (
 -- ----------------------------
 -- 10、操作日志记录
 -- ----------------------------
-drop table if exists sys_operation_log;
-create table sys_operation_log (
+drop table if exists sys_operate_log;
+create table sys_operate_log (
   id                        bigint              not null auto_increment                 comment '日志主键',
   title                     varchar(50)         default ''                              comment '模块标题',
   business_type             char(2)             default '0'                             comment '业务类型（0其它 1新增 2修改 3删除）',
@@ -313,7 +313,6 @@ create table sys_operation_log (
   tenant_id		            bigint	            not null                                comment '租户Id',
   primary key (id)
 ) engine=innodb auto_increment=100 comment = '操作日志记录';
-
 -- ----------------------------
 -- 11、系统访问记录
 -- ----------------------------

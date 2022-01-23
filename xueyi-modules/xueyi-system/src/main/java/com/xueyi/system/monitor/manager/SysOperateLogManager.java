@@ -2,8 +2,8 @@ package com.xueyi.system.monitor.manager;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.web.entity.manager.BaseManager;
-import com.xueyi.system.api.log.domain.dto.SysOperationLogDto;
-import com.xueyi.system.monitor.mapper.SysOperationLogMapper;
+import com.xueyi.system.api.log.domain.dto.SysOperateLogDto;
+import com.xueyi.system.monitor.mapper.SysOperateLogMapper;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,15 +12,15 @@ import org.springframework.stereotype.Component;
  * @author xueyi
  */
 @Component
-public class SysOperationLogManager extends BaseManager<SysOperationLogDto, SysOperationLogMapper> {
+public class SysOperateLogManager extends BaseManager<SysOperateLogDto, SysOperateLogMapper> {
 
     /**
      * 清空系统操作日志
      */
     public void cleanOperationLog(Long enterpriseId) {
         baseMapper.delete(
-                Wrappers.<SysOperationLogDto>update().lambda()
-                        .eq(SysOperationLogDto::getEnterpriseId, enterpriseId));
+                Wrappers.<SysOperateLogDto>update().lambda()
+                        .eq(SysOperateLogDto::getEnterpriseId, enterpriseId));
     }
 
 }

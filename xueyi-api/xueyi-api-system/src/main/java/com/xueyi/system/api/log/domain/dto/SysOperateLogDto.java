@@ -3,15 +3,15 @@ package com.xueyi.system.api.log.domain.dto;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.common.core.annotation.Excel;
-import com.xueyi.system.api.log.domain.po.SysOperationLogPo;
+import com.xueyi.system.api.log.domain.po.SysOperateLogPo;
 
 /**
  * 操作日志 数据传输对象
  *
  * @author xueyi
  */
-@TableName(value = "sys_operation_log",excludeProperty = {"name","sort","createBy","createTime","updateBy","updateTime","remark"})
-public class SysOperationLogDto extends SysOperationLogPo {
+@TableName(value = "sys_operate_log",excludeProperty = {"name","sort","createBy","createTime","updateBy","updateTime","remark"})
+public class SysOperateLogDto extends SysOperateLogPo {
 
     private static final long serialVersionUID = 1L;
 
