@@ -1,5 +1,6 @@
 package com.xueyi.common.web.entity.controller;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.xueyi.common.core.constant.BaseConstants;
 import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.core.utils.TreeUtils;
@@ -11,6 +12,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 
@@ -37,13 +39,15 @@ public abstract class TreeController<D extends TreeEntity<D>, DS extends ITreeSe
      * 查询树列表（排除节点）
      */
     @GetMapping("/list/exclude")
-    public AjaxResult listExcludeChild(D d) {
-        List<D> list = baseService.selectList(null);
+    public AjaxResult listExNodes(D d) {
+        Serializable id = d.getId();
+        d.setId(null);
+        List<D> list = baseService.selectList(d);
         Iterator<D> it = list.iterator();
         while (it.hasNext()) {
             D next = (D) it.next();
-            if (next.getId().longValue() == d.getId().longValue() ||
-                    ArrayUtils.contains(StringUtils.split(next.getAncestors(), ","), d.getId() + ""))
+            if (ObjectUtil.equals(next.getId(),id) ||
+                    ArrayUtils.contains(StringUtils.split(next.getAncestors(), ","), id + ""))
                 it.remove();
         }
         return AjaxResult.success(TreeUtils.buildTree(list));

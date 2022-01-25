@@ -166,6 +166,9 @@ public class GenUtils {
                 case COMMENT:
                     column.setHtmlType(GenConstants.DisplayType.TINYMCE.getCode());
                     break;
+                case REMARK:
+                    column.setHtmlType(GenConstants.DisplayType.INPUT_TEXTAREA.getCode());
+                    break;
             }
         }
         // 最终校验

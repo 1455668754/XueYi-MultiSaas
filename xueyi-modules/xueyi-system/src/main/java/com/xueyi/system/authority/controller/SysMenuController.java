@@ -14,8 +14,10 @@ import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.entity.controller.TreeController;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.authority.service.ISysMenuService;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -61,6 +63,23 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
         return AjaxResult.success(TreeUtils.buildTree((menus)));
     }
 
+    /**
+     * 根据菜单类型获取指定模块的可配菜单集（排除节点）
+     */
+    @PostMapping("/routeList/exclude")
+    public AjaxResult getMenuByMenuTypeExNodes( @RequestBody SysMenuDto menu) {
+        if(ObjectUtil.isNull(menu) || ObjectUtil.isNull(menu.getModuleId()) || ObjectUtil.isNull(menu.getMenuType()))
+            throw new ServiceException("请传入有效参数");
+        List<SysMenuDto> menus = baseService.getMenuByMenuType(menu.getModuleId(), menu.getMenuType());
+        Iterator<SysMenuDto> it = menus.iterator();
+        while (it.hasNext()) {
+            SysMenuDto next = (SysMenuDto) it.next();
+            if (ObjectUtil.equals(next.getId(),menu.getId()) ||
+                    ArrayUtils.contains(StringUtils.split(next.getAncestors(), ","), menu.getId() + ""))
+                it.remove();
+        }
+        return AjaxResult.success(TreeUtils.buildTree((menus)));
+    }
 
     /**
      * 前置校验 （强制）增加/修改

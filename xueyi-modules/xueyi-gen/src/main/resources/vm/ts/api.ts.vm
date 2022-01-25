@@ -4,7 +4,7 @@ import { defaultRequest } from '../../../request'
 enum Api {
     LIST_${BUSINESSName} = '/${moduleName}/${businessName}/list',
 #if($table.tree || $table.subTree)
-    LIST_${BUSINESSName}_EXCLUDE_CHILD = '/${moduleName}/${businessName}/list/exclude',
+    LIST_${BUSINESSName}_EXCLUDE_NODES = '/${moduleName}/${businessName}/list/exclude',
 #end
     GET_${BUSINESSName} = '/${moduleName}/${businessName}/',
     ADD_${BUSINESSName} = '/${moduleName}/${businessName}',
@@ -31,9 +31,9 @@ export const list${BusinessName}Api = (params?: #if($table.tree || $table.subTre
 
 #if($table.tree || $table.subTree)
 /** 查询${functionName}列表（排除节点） */
-export const list${BusinessName}ExcludeChildApi = (${IdName}: ${IdType} | undefined) =>
+export const list${BusinessName}ExNodesApi = (${IdName}: ${IdType} | undefined) =>
     defaultRequest.get<${BusinessName}LM>({
-        url: Api.LIST_${BUSINESSName}_EXCLUDE_CHILD,
+        url: Api.LIST_${BUSINESSName}_EXCLUDE_NODES,
         params: { ${IdName}: ${IdName} },
     })
 

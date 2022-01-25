@@ -15,7 +15,7 @@ import { formSchema } from './${businessName}.data'
 import { useMessage } from '@/hooks/web/useMessage'
 import {
 #if($table.tree)
-    list${BusinessName}ExcludeChildApi,
+    list${BusinessName}ExNodesApi,
 #end
   get${BusinessName}Api,
   add${BusinessName}Api,
@@ -50,7 +50,7 @@ export default defineComponent({
         })
       }
 #if($table.tree || $table.subTree)
-      const treeData = await list${BusinessName}ExcludeChildApi(
+      const treeData = await list${BusinessName}ExNodesApi(
         unref(isUpdate) ? data.record.${pkColumn.javaField} : undefined,
       )
       updateSchema({
