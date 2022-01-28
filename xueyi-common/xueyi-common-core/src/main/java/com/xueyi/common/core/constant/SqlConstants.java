@@ -9,8 +9,12 @@ public class SqlConstants {
 
     /** sql 查询返回限制 */
     public static final int DEFAULT_BATCH_SIZE = 1000;
+
     /** sql 查询返回限制 */
     public static final String LIMIT_ONE = "limit 1";
+
+    /** sql find_in_set函数 */
+    public static final String FIND_IN_SET = "find_in_set({0},{1})";
 
     /** 数据库字段映射 */
     public enum Entity {
