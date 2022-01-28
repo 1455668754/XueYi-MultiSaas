@@ -2,6 +2,8 @@ package com.xueyi.common.core.constant;
 
 import com.xueyi.common.core.utils.StringUtils;
 
+import static com.xueyi.common.core.constant.TenantConstants.COMMON_TENANT_ID;
+
 /**
  * 权限通用常量
  *
@@ -10,7 +12,7 @@ import com.xueyi.common.core.utils.StringUtils;
 public class AuthorityConstants {
 
     /** 公共企业Id */
-    public static final Long COMMON_ENTERPRISE = 0L;
+    public static final Long COMMON_ENTERPRISE = COMMON_TENANT_ID;
 
     /** 公共企业Id */
     public static final Long COMMON_USER = 0L;
