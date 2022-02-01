@@ -9,14 +9,12 @@ import com.xueyi.common.core.utils.ServletUtils;
 import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.core.utils.ip.IpUtils;
 import com.xueyi.common.security.utils.SecurityUtils;
-import com.xueyi.system.api.log.domain.dto.SysLoginLogDto;
-import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
-import com.xueyi.system.api.organize.domain.dto.SysUserDto;
-import com.xueyi.system.api.log.feign.RemoteLogService;
 import com.xueyi.system.api.authority.feign.RemoteLoginService;
+import com.xueyi.system.api.log.domain.dto.SysLoginLogDto;
+import com.xueyi.system.api.log.feign.RemoteLogService;
 import com.xueyi.system.api.model.LoginUser;
-import com.xueyi.tenant.api.tenant.feign.RemoteTenantService;
 import com.xueyi.tenant.api.model.TenantRegister;
+import com.xueyi.tenant.api.tenant.feign.RemoteTenantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -79,25 +77,16 @@ public class SysLoginService {
         }
 
         LoginUser userInfo = userResult.getResult();
-        SysEnterpriseDto enterprise = userInfo.getEnterprise();
-        SysUserDto user = userInfo.getUser();
+        String sourceName = userInfo.getSource().getMaster();
+        Long enterpriseId = userInfo.getEnterprise().getId();
+        Long userId = userInfo.getUser().getId();
 
-        if (BaseConstants.DelFlag.DELETED.getCode().equals(user.getDelFlag())) {
-            recordLoginInfo(userInfo.getSourceName(), enterprise.getId(), enterpriseName, user.getId(), userName, Constants.LOGIN_FAIL, "对不起，您的账号已被删除");
-            throw new ServiceException("对不起，您的账号：" + userName + " 已被删除");
-        }
-
-        if (BaseConstants.Status.DISABLE.getCode().equals(user.getStatus())) {
-            recordLoginInfo(userInfo.getSourceName(), enterprise.getId(), enterpriseName, user.getId(), userName, Constants.LOGIN_FAIL, "用户已停用，请联系管理员");
+        if (BaseConstants.Status.DISABLE.getCode().equals(userInfo.getUser().getStatus())) {
+            recordLoginInfo(sourceName, enterpriseId, enterpriseName, userId, userName, Constants.LOGIN_FAIL, "用户已停用，请联系管理员");
             throw new ServiceException("对不起，您的账号：" + userName + " 已停用");
         }
 
-        if (!SecurityUtils.matchesPassword(password, user.getPassword())) {
-            recordLoginInfo(userInfo.getSourceName(), enterprise.getId(), enterpriseName, user.getId(), userName, Constants.LOGIN_FAIL, "用户密码错误");
-            throw new ServiceException("企业账号/员工账号/密码错误，请检查");
-        }
-
-        recordLoginInfo(userInfo.getSourceName(), enterprise.getId(), enterpriseName, user.getId(), userName, Constants.LOGIN_SUCCESS, "登录成功");
+        recordLoginInfo(sourceName, enterpriseId, enterpriseName, userId, userName, Constants.LOGIN_SUCCESS, "登录成功");
         return userInfo;
     }
 

@@ -23,7 +23,7 @@ import static com.xueyi.common.core.constant.SourceConstants.Details;
  * @author xueyi
  */
 @Configuration
-public class dynamicDataSourceLoading {
+public class DynamicDataSourceLoading {
 
     @Autowired
     SourceProperties sourceProperties;

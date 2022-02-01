@@ -38,62 +38,48 @@ import java.util.stream.Collectors;
 public class ExcelUtil<T> {
 
     public static final String[] FORMULA_STR = {"=", "-", "+", "@"};
-    /**
-     * Excel sheet最大行数，默认65536
-     */
+
+    /** Excel sheet最大行数，默认65536 */
     public static final int sheetSize = 65536;
     private static final Logger log = LoggerFactory.getLogger(ExcelUtil.class);
-    /**
-     * 数字格式
-     */
+
+    /** 数字格式 */
     private static final DecimalFormat DOUBLE_FORMAT = new DecimalFormat("######0.00");
-    /**
-     * 实体对象
-     */
+
+    /** 实体对象 */
     public Class<T> clazz;
-    /**
-     * 工作表名称
-     */
+
+    /** 工作表名称 */
     private String sheetName;
-    /**
-     * 导出类型（EXPORT:导出数据；IMPORT：导入模板）
-     */
+
+    /** 导出类型（EXPORT:导出数据；IMPORT：导入模板） */
     private Type type;
-    /**
-     * 工作薄对象
-     */
+
+    /** 工作薄对象 */
     private Workbook wb;
-    /**
-     * 工作表对象
-     */
+
+    /** 工作表对象 */
     private Sheet sheet;
-    /**
-     * 样式列表
-     */
+
+    /** 样式列表 */
     private Map<String, CellStyle> styles;
-    /**
-     * 导入导出数据列表
-     */
+
+    /** 导入导出数据列表 */
     private List<T> list;
-    /**
-     * 注解列表
-     */
+
+    /** 注解列表 */
     private List<Object[]> fields;
-    /**
-     * 当前行号
-     */
-    private int rownum;
-    /**
-     * 标题
-     */
+
+    /** 当前行号 */
+    private int rowNum;
+
+    /** 标题 */
     private String title;
-    /**
-     * 最大高度
-     */
+
+    /** 最大高度 */
     private short maxHeight;
-    /**
-     * 统计列表
-     */
+
+    /** 统计列表 */
     private Map<Integer, Double> statistics = new HashMap<Integer, Double>();
 
     public ExcelUtil(Class<T> clazz) {
@@ -186,7 +172,7 @@ public class ExcelUtil<T> {
      */
     public void createTitle() {
         if (StringUtils.isNotEmpty(title)) {
-            Row titleRow = sheet.createRow(rownum == 0 ? rownum++ : 0);
+            Row titleRow = sheet.createRow(rowNum == 0 ? rowNum++ : 0);
             titleRow.setHeightInPoints(30);
             Cell titleCell = titleRow.createCell(0);
             titleCell.setCellStyle(styles.get("title"));
@@ -216,13 +202,6 @@ public class ExcelUtil<T> {
     public List<T> importExcel(InputStream is, int titleNum) throws Exception {
         return importExcel(StringUtils.EMPTY, is, titleNum);
     }
-
-    /**
-     * 对list数据源将其里面的数据导入到excel表单
-     *
-     * @param sheetName 工作表的名称
-     * @return 结果
-     */
 
     /**
      * 对excel表单指定表格索引名转换成list
@@ -416,7 +395,7 @@ public class ExcelUtil<T> {
             createSheet(sheetNo, index);
 
             // 产生一行
-            Row row = sheet.createRow(rownum);
+            Row row = sheet.createRow(rowNum);
             int column = 0;
             // 写入各个字段的列头名称
             for (Object[] os : fields) {
@@ -440,7 +419,7 @@ public class ExcelUtil<T> {
         int startNo = index * sheetSize;
         int endNo = Math.min(startNo + sheetSize, list.size());
         for (int i = startNo; i < endNo; i++) {
-            row = sheet.createRow(i + 1 + rownum - startNo);
+            row = sheet.createRow(i + 1 + rowNum - startNo);
             // 得到导出对象.
             T vo = (T) list.get(i);
             int column = 0;
