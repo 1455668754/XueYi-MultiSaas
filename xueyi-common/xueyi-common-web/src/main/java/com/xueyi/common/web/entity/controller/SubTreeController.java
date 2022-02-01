@@ -57,7 +57,7 @@ public abstract class SubTreeController<D extends SubTreeEntity<D, S>, DS extend
     }
 
     /**
-     * 主子树型 删除
+     * 主子树型 批量删除
      * 考虑归属数据存在与否&&子节点存在与否
      *
      * @see #removeNullValidated(List)   基类 空校验

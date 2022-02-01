@@ -13,11 +13,26 @@ public enum BusinessType {
     /** 新增 */
     INSERT,
 
+    /** 强制新增 */
+    INSERT_FORCE,
+
     /** 修改 */
     UPDATE,
 
+    /** 强制修改 */
+    UPDATE_FORCE,
+
+    /** 修改状态 */
+    UPDATE_STATUS,
+
+    /** 强制修改状态 */
+    UPDATE_STATUS_FORCE,
+
     /** 删除 */
     DELETE,
+
+    /** 强制删除 */
+    DELETE_FORCE,
 
     /** 授权 */
     GRANT,

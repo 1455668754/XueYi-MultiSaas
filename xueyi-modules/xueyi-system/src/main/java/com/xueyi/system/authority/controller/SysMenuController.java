@@ -15,8 +15,10 @@ import com.xueyi.common.web.entity.controller.TreeController;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.authority.service.ISysMenuService;
 import org.apache.commons.lang3.ArrayUtils;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 
@@ -34,6 +36,33 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
         return "菜单";
     }
 
+    /**
+     * 查询菜单列表
+     */
+    @Override
+    @GetMapping("/list")
+    public AjaxResult list(SysMenuDto menu) {
+        return super.list(menu);
+    }
+
+    /**
+     * 查询菜单列表（排除节点）
+     */
+    @Override
+    @GetMapping("/list/exclude")
+    public AjaxResult listExNodes(SysMenuDto menu) {
+        return super.listExNodes(menu);
+    }
+
+    /**
+     * 查询菜单详细
+     */
+    @Override
+    @GetMapping(value = "/{id}")
+    public AjaxResult getInfo(@PathVariable Serializable id) {
+        return super.getInfo(id);
+    }
+    
     /**
      * 获取当前节点及其祖籍信息
      */
@@ -56,7 +85,7 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
      * 根据菜单类型获取指定模块的可配菜单集
      */
     @PostMapping("/routeList")
-    public AjaxResult getMenuByMenuType( @RequestBody SysMenuDto menu) {
+    public AjaxResult getMenuByMenuType(@RequestBody SysMenuDto menu) {
         if(ObjectUtil.isNull(menu) || ObjectUtil.isNull(menu.getModuleId()) || ObjectUtil.isNull(menu.getMenuType()))
             throw new ServiceException("请传入有效参数");
         List<SysMenuDto> menus = baseService.getMenuByMenuType(menu.getModuleId(), menu.getMenuType());
@@ -67,7 +96,7 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
      * 根据菜单类型获取指定模块的可配菜单集（排除节点）
      */
     @PostMapping("/routeList/exclude")
-    public AjaxResult getMenuByMenuTypeExNodes( @RequestBody SysMenuDto menu) {
+    public AjaxResult getMenuByMenuTypeExNodes(@RequestBody SysMenuDto menu) {
         if(ObjectUtil.isNull(menu) || ObjectUtil.isNull(menu.getModuleId()) || ObjectUtil.isNull(menu.getMenuType()))
             throw new ServiceException("请传入有效参数");
         List<SysMenuDto> menus = baseService.getMenuByMenuType(menu.getModuleId(), menu.getMenuType());
@@ -82,6 +111,38 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
     }
 
     /**
+     * 菜单新增
+     */
+    @PostMapping
+    public AjaxResult add(@Validated @RequestBody SysMenuDto menu) {
+        return super.add(menu);
+    }
+
+    /**
+     * 菜单修改
+     */
+    @PutMapping
+    public AjaxResult edit(@Validated @RequestBody SysMenuDto menu) {
+        return super.edit(menu);
+    }
+
+    /**
+     * 菜单修改状态
+     */
+    @PutMapping("/status")
+    public AjaxResult editStatus(@Validated @RequestBody SysMenuDto menu) {
+        return super.editStatus(menu);
+    }
+
+    /**
+     * 菜单删除
+     */
+    @DeleteMapping("/batch/{idList}")
+    public AjaxResult batchRemove(@PathVariable List<Long> idList) {
+        return super.batchRemove(idList);
+    }
+
+    /**
      * 前置校验 （强制）增加/修改
      */
     @Override
@@ -89,7 +150,7 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
         if (baseService.checkNameUnique(menu.getId(), menu.getParentId(), menu.getName()))
             throw new ServiceException(StrUtil.format("{}{}{}失败，菜单名称已存在", operate.getInfo(), getNodeName(), menu.getName()));
         else if (SecurityUtils.isNotAdminTenant()) {
-            if (BaseConstants.Operate.ADD == operate || BaseConstants.Operate.ADD_FORCE == operate) {
+            if (operate.isAdd()) {
                 if (StringUtils.equals(DictConstants.DicCommonPrivate.COMMON.getCode(), menu.getIsCommon()))
                     throw new ServiceException(StrUtil.format("{}{}{}失败，无操作权限", operate.getInfo(), getNodeName(), menu.getName()));
             } else {

@@ -6,6 +6,8 @@ import com.xueyi.common.core.text.Convert;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
+import com.xueyi.common.security.annotation.Logical;
+import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.web.entity.controller.SubBaseController;
 import com.xueyi.gen.domain.dto.GenTableColumnDto;
 import com.xueyi.gen.domain.dto.GenTableDto;
@@ -41,7 +43,7 @@ public class GenController extends SubBaseController<GenTableDto, IGenTableServi
     /**
      * 查询数据库列表
      */
-//    @RequiresPermissions("tool:gen:list")
+    @RequiresPermissions(value = {"tool:gen:list"}, logical = Logical.OR)
     @GetMapping("/db/list")
     public AjaxResult dataList(GenTableDto table) {
         startPage();

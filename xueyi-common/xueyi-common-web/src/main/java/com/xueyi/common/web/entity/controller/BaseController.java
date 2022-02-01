@@ -79,7 +79,7 @@ public abstract class BaseController<D extends BaseEntity, DS extends IBaseServi
     }
 
     /**
-     * 修改
+     * 强制修改
      */
     @PutMapping("/force")
     public AjaxResult editForce(@Validated @RequestBody D d) {
@@ -106,7 +106,7 @@ public abstract class BaseController<D extends BaseEntity, DS extends IBaseServi
     }
 
     /**
-     * 删除
+     * 批量删除
      *
      * @see #removeNullValidated (List)  基类 空校验
      */
@@ -118,7 +118,7 @@ public abstract class BaseController<D extends BaseEntity, DS extends IBaseServi
     }
 
     /**
-     * 强制删除
+     * 强制批量删除
      *
      * @see #removeNullValidated (List)  基类 空校验
      */

@@ -109,7 +109,9 @@ public class VelocityUtils {
         // 获取其他重要参数（名称、状态...）
         getOtherMainColum(velocityContext, genTable);
         // sql模板设置
-        setMenuVelocityContext(velocityContext, genTable, optionsObj);
+        setMenuVelocityContext(velocityContext, optionsObj);
+        // api设置
+        setApiVelocityContext(velocityContext, genTable, optionsObj);
         switch (Objects.requireNonNull(GenConstants.TemplateType.getValue(tplCategory))) {
             case TREE:
                 setTreeVelocityContext(velocityContext, genTable, optionsObj);
@@ -139,20 +141,15 @@ public class VelocityUtils {
     /**
      * 设置sql模板变量信息
      */
-    public static void setMenuVelocityContext(VelocityContext context, GenTableDto genTable, JSONObject optionsObj) {
+    public static void setMenuVelocityContext(VelocityContext context, JSONObject optionsObj) {
         context.put("parentModuleId", getParentModuleId(optionsObj));
         context.put("parentMenuId", getParentMenuId(optionsObj));
         context.put("parentMenuPath", optionsObj.getString(GenConstants.OptionField.PARENT_MENU_PATH.getCode()));
         context.put("parentMenuAncestors", optionsObj.getString(GenConstants.OptionField.PARENT_MENU_ANCESTORS.getCode()));
-
-        context.put("menuId0", IdUtil.getSnowflake(0, 0).nextId());
-        context.put("menuId1", IdUtil.getSnowflake(0, 0).nextId());
-        context.put("menuId2", IdUtil.getSnowflake(0, 0).nextId());
-        context.put("menuId3", IdUtil.getSnowflake(0, 0).nextId());
-        context.put("menuId4", IdUtil.getSnowflake(0, 0).nextId());
-        context.put("menuId5", IdUtil.getSnowflake(0, 0).nextId());
-        context.put("menuId6", IdUtil.getSnowflake(0, 0).nextId());
-        context.put("menuId7", IdUtil.getSnowflake(0, 0).nextId());
+        // 生成菜单menuId0-9
+        for (int i = 0; i < 10; i++) {
+            context.put("menuId" + i, IdUtil.getSnowflake(0, 0).nextId());
+        }
     }
 
     /**
@@ -204,6 +201,29 @@ public class VelocityUtils {
         context.put("subBUSINESSName", StringUtils.upperCase(subTable.getBusinessName()));
         // 生成相对路径
         context.put("relativePath", getRelativePath(table, subTable));
+    }
+
+    /**
+     * 设置接口变量信息
+     */
+    public static void setApiVelocityContext(VelocityContext context, GenTableDto table, JSONObject optionsObj) {
+        JSONObject apiJSon = new JSONObject();
+        apiJSon.put("list", StrUtil.equals(optionsObj.getString(GenConstants.OptionField.API_LIST.getCode()), DictConstants.DicYesNo.YES.getCode()));
+        apiJSon.put("getInfo", StrUtil.equals(optionsObj.getString(GenConstants.OptionField.API_GET_INFO.getCode()), DictConstants.DicYesNo.YES.getCode()));
+        apiJSon.put("add", StrUtil.equals(optionsObj.getString(GenConstants.OptionField.API_ADD.getCode()), DictConstants.DicYesNo.YES.getCode()));
+        apiJSon.put("addForce", StrUtil.equals(optionsObj.getString(GenConstants.OptionField.API_ADD_FORCE.getCode()), DictConstants.DicYesNo.YES.getCode()));
+        apiJSon.put("edit", StrUtil.equals(optionsObj.getString(GenConstants.OptionField.API_EDIT.getCode()), DictConstants.DicYesNo.YES.getCode()));
+        apiJSon.put("editForce", StrUtil.equals(optionsObj.getString(GenConstants.OptionField.API_EDIT_FORCE.getCode()), DictConstants.DicYesNo.YES.getCode()));
+        apiJSon.put("editStatus", StrUtil.equals(optionsObj.getString(GenConstants.OptionField.API_EDIT_STATUS.getCode()), DictConstants.DicYesNo.YES.getCode()));
+        apiJSon.put("editStatusForce", StrUtil.equals(optionsObj.getString(GenConstants.OptionField.API_EDIT_STATUS_FORCE.getCode()), DictConstants.DicYesNo.YES.getCode()));
+        apiJSon.put("batchRemove", StrUtil.equals(optionsObj.getString(GenConstants.OptionField.API_BATCH_REMOVE.getCode()), DictConstants.DicYesNo.YES.getCode()));
+        apiJSon.put("batchRemoveForce", StrUtil.equals(optionsObj.getString(GenConstants.OptionField.API_BATCH_REMOVE_FORCE.getCode()), DictConstants.DicYesNo.YES.getCode()));
+        apiJSon.put("export", StrUtil.equals(optionsObj.getString(GenConstants.OptionField.API_EXPORT.getCode()), DictConstants.DicYesNo.YES.getCode()));
+        if (table.isSubBase() || table.isSubTree()) {
+            apiJSon.put("getSubInfo", StrUtil.equals(optionsObj.getString(GenConstants.OptionField.API_GET_SUB_INFO.getCode()), DictConstants.DicYesNo.YES.getCode()));
+        }
+        // 接口
+        context.put("api", apiJSon);
     }
 
     /**

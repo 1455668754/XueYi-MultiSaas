@@ -110,7 +110,7 @@ public abstract class TreeController<D extends TreeEntity<D>, DS extends ITreeSe
     }
 
     /**
-     * 树型 删除
+     * 树型 批量删除
      * 考虑子节点存在与否
      *
      * @see #removeNullValidated(List)  基类 空校验
