@@ -148,6 +148,7 @@ public class VelocityUtils {
         // 生成菜单menuId0-9
         for (int i = 0; i < 10; i++) {
             context.put("menuId" + i, IdUtil.getSnowflake(0, 0).nextId());
+            context.put("menuName" + i, IdUtil.simpleUUID());
         }
     }
 
