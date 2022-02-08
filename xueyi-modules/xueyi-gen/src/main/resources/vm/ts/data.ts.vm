@@ -7,7 +7,7 @@ import { dictConversion } from '@admin/utils'
 #end
 #foreach ($column in $columns)
 #if($column.htmlType == 'InputNumber')
-import { SortEnum } from '@enums/basic'
+import { DicSortEnum } from '@enums/basic'
 #break
 #end
 #end
@@ -137,7 +137,7 @@ export const formSchema: FormSchema[] = [
         field: '${column.javaField}',
         component: '${column.htmlType}',
 #if($column.htmlType == 'InputNumber')
-        defaultValue: SortEnum.ZERO,
+        defaultValue: DicSortEnum.ZERO,
 #end
 #if($column.dictType && $column.dictName)
         componentProps: {
@@ -154,7 +154,11 @@ export const formSchema: FormSchema[] = [
 #if($column.isRequired())
         required: true,
 #end
+#if($column.htmlType == 'InputTextArea' || $column.htmlType == 'tinymce' || $column.htmlType == 'markdown')
+        colProps: { span: 24 },
+#else
         colProps: { span: 12 },
+#end
     },
 #end
 #end
