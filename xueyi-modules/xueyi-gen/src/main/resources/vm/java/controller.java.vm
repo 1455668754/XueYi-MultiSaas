@@ -117,7 +117,7 @@ public class ${ClassName}Controller extends ${Entity}Controller${generics} {
     @PostMapping("/export")
     @RequiresPermissions("${authorityName}:${businessName}:export")
     public void export(HttpServletResponse response, ${ClassName}Dto ${className}) {
-        return super.export(response, ${className});
+        super.export(response, ${className});
     }
 #end
 #if($api.add)

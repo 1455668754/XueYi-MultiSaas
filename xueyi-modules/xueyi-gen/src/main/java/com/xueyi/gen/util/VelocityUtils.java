@@ -144,7 +144,6 @@ public class VelocityUtils {
     public static void setMenuVelocityContext(VelocityContext context, JSONObject optionsObj) {
         context.put("parentModuleId", getParentModuleId(optionsObj));
         context.put("parentMenuId", getParentMenuId(optionsObj));
-        context.put("parentMenuPath", optionsObj.getString(GenConstants.OptionField.PARENT_MENU_PATH.getCode()));
         context.put("parentMenuAncestors", optionsObj.getString(GenConstants.OptionField.PARENT_MENU_ANCESTORS.getCode()));
         // 生成菜单menuId0-9
         for (int i = 0; i < 10; i++) {

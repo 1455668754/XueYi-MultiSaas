@@ -55,7 +55,7 @@ public abstract class SubBaseHandleController<D extends SubBaseEntity<S>, DS ext
      * 主子型 删除 归属数据存在与否校验
      *
      * @param idList 待删除Id集合
-     * @see com.xueyi.common.web.entity.controller.SubBaseController#remove(List)
+     * @see com.xueyi.common.web.entity.controller.SubBaseController#batchRemove(List)
      */
     protected void removeSubValidated(List<Long> idList) {
         int size = idList.size();

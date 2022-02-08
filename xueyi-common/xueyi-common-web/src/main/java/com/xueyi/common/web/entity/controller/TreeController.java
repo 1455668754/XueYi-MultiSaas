@@ -120,7 +120,9 @@ public abstract class TreeController<D extends TreeEntity<D>, DS extends ITreeSe
     @DeleteMapping("/batch/{idList}")
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         removeNullValidated(idList);
+        baseRemoveValidated(BaseConstants.Operate.DELETE, idList);
+        removeNullValidated(idList);
         removeTreeValidated(idList);
-        return super.batchRemove(idList);
+        return toAjax(baseService.deleteByIds(idList));
     }
 }

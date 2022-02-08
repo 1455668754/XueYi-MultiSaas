@@ -153,7 +153,6 @@ public class GenConstants {
     public enum OptionField {
         PARENT_MODULE_ID("parentModuleId", "归属模块Id字段", null),
         PARENT_MENU_ID("parentMenuId", "归属菜单Id字段", null),
-        PARENT_MENU_PATH("parentMenuPath", "归属菜单路径字段", null),
         PARENT_MENU_ANCESTORS("parentMenuAncestors", "归属菜单祖籍字段", null),
 
         TREE_ID("treeCode", "树编码字段", "id"),

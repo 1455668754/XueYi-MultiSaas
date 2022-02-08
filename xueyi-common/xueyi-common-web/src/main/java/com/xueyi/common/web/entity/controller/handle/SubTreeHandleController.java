@@ -57,12 +57,12 @@ public abstract class SubTreeHandleController<D extends SubTreeEntity<D, S>, DS 
      * 主子树型 删除 子节点&&归属数据存在与否校验
      *
      * @param idList 待删除Id集合
-     * @see com.xueyi.common.web.entity.controller.SubTreeController#remove(List)
+     * @see com.xueyi.common.web.entity.controller.SubTreeController#batchRemove(List)
      */
     protected void removeTreeSubValidated(List<Long> idList) {
         int size = idList.size();
         // remove node where nodeChildren && sub exist
-        for (int i = idList.size() - 1; i >= 0; i--) {
+        for (int i = size - 1; i >= 0; i--) {
             if (baseService.checkExistSub(idList.get(i)) || baseService.checkHasChild(idList.get(i)))
                 idList.remove(i);
         }

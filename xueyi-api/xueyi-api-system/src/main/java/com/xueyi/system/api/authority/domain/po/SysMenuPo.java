@@ -113,11 +113,6 @@ public class SysMenuPo<D> extends TTreeEntity<D> {
     @TableField("real_path")
     private String realPath;
 
-    /** 详情页激活的菜单 */
-    @Excel(name = "详情页激活的菜单")
-    @TableField("current_active_menu")
-    private String currentActiveMenu;
-
     /** 权限标识 */
     @Excel(name = "权限标识")
     @TableField("perms")
@@ -296,14 +291,6 @@ public class SysMenuPo<D> extends TTreeEntity<D> {
 
     public String getRealPath() {
         return realPath;
-    }
-
-    public void setCurrentActiveMenu(String currentActiveMenu) {
-        this.currentActiveMenu = currentActiveMenu;
-    }
-
-    public String getCurrentActiveMenu() {
-        return currentActiveMenu;
     }
 
     public void setPerms(String perms) {

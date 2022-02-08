@@ -62,8 +62,8 @@ public abstract class BaseHandleController<D extends BaseEntity, DS extends IBas
      * 删除 空校验
      *
      * @param idList 待删除Id集合
-     * @see com.xueyi.common.web.entity.controller.BaseController#remove (Long[])
-     * @see com.xueyi.common.web.entity.controller.BaseController#removeForce (Long[])
+     * @see com.xueyi.common.web.entity.controller.BaseController#batchRemove(List)
+     * @see com.xueyi.common.web.entity.controller.BaseController#batchRemoveForce(List)
      */
     protected void removeNullValidated(List<Long> idList) {
         if (CollUtil.isEmpty(idList))

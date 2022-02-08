@@ -1,6 +1,9 @@
 package com.xueyi.system.api.authority.domain.dto;
 
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.xueyi.common.core.constant.AuthorityConstants;
 import com.xueyi.system.api.authority.domain.po.SysMenuPo;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -14,6 +17,37 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class SysMenuDto extends SysMenuPo<SysMenuDto> {
 
     private static final long serialVersionUID = 1L;
+
+    /** 菜单全路径 */
+    @TableField(exist = false)
+    private String fullPath;
+
+    /** 详情页激活的菜单 */
+    @TableField(exist = false)
+    private String currentActiveMenu;
+
+    public String getFullPath() {
+        return fullPath;
+    }
+
+    public void setFullPath(String fullPath) {
+        this.fullPath = fullPath;
+    }
+
+    public void setCurrentActiveMenu(String currentActiveMenu) {
+        this.currentActiveMenu = currentActiveMenu;
+    }
+
+    public String getCurrentActiveMenu() {
+        return currentActiveMenu;
+    }
+
+    /**
+     * 校验菜单类型是否为详情
+     */
+    public boolean isDetails(){
+        return StrUtil.equals(AuthorityConstants.MenuType.DETAILS.getCode(), getMenuType());
+    }
 
     @Override
     public String toString() {
@@ -42,6 +76,7 @@ public class SysMenuDto extends SysMenuPo<SysMenuDto> {
                 .append("hidePathForChildren", getHidePathForChildren())
                 .append("dynamicLevel", getDynamicLevel())
                 .append("realPath", getRealPath())
+                .append("fullPath", getFullPath())
                 .append("currentActiveMenu", getCurrentActiveMenu())
                 .append("perms", getPerms())
                 .append("icon", getIcon())

@@ -1,5 +1,6 @@
 package com.xueyi.common.web.entity.controller;
 
+import com.xueyi.common.core.constant.BaseConstants;
 import com.xueyi.common.core.web.entity.BaseEntity;
 import com.xueyi.common.core.web.entity.SubTreeEntity;
 import com.xueyi.common.core.web.result.AjaxResult;
@@ -67,7 +68,10 @@ public abstract class SubTreeController<D extends SubTreeEntity<D, S>, DS extend
     @DeleteMapping("/batch/{idList}")
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         removeNullValidated(idList);
+        baseRemoveValidated(BaseConstants.Operate.DELETE, idList);
+        removeNullValidated(idList);
         removeTreeSubValidated(idList);
-        return super.batchRemove(idList);
+        removeTreeValidated(idList);
+        return toAjax(baseService.deleteByIds(idList));
     }
 }

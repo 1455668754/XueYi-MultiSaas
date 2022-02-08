@@ -81,7 +81,7 @@ public abstract class TreeHandleController<D extends TreeEntity<D>, DS extends I
      * 树型 删除 子节点存在与否校验
      *
      * @param idList 待删除Id集合
-     * @see com.xueyi.common.web.entity.controller.TreeController#remove(List)
+     * @see com.xueyi.common.web.entity.controller.TreeController#batchRemove(List)
      */
     protected void removeTreeValidated(List<Long> idList) {
         int size = idList.size();

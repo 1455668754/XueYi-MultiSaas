@@ -1,6 +1,5 @@
 package com.xueyi.gen.service.impl;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
@@ -15,7 +14,6 @@ import com.xueyi.common.core.domain.R;
 import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.text.CharsetKit;
 import com.xueyi.common.core.utils.StringUtils;
-import com.xueyi.common.core.utils.TreeUtils;
 import com.xueyi.common.web.entity.service.impl.SubBaseServiceImpl;
 import com.xueyi.gen.domain.dto.GenTableColumnDto;
 import com.xueyi.gen.domain.dto.GenTableDto;
@@ -40,7 +38,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -484,41 +485,11 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
      */
     private void setMenuOptions(GenTableDto table, JSONObject optionsObj) {
         Long menuId = optionsObj.getLong(OptionField.PARENT_MENU_ID.getCode());
-        R<List<SysMenuDto>> result = remoteMenuService.getAncestorsList(menuId, SecurityConstants.INNER);
+        R<SysMenuDto> result = remoteMenuService.getInfoInner(menuId, SecurityConstants.INNER);
         if (result.isFail())
             throw new ServiceException("菜单服务异常，请联系管理员！");
-        if (CollUtil.isNotEmpty(result.getResult())) {
-            List<SysMenuDto> menuTree = TreeUtils.buildTree(result.getResult());
-            StringBuffer buffer = new StringBuffer();
-            // 节点祖籍一定为线性单链,且从顶级节点开始
-            recursionMenuFn(buffer, menuTree.get(0).getChildren().get(0));
-            optionsObj.put(OptionField.PARENT_MENU_PATH.getCode(), buffer.toString());
-        }
-        getParentMenuAncestors(menuId, result.getResult(), optionsObj);
+        optionsObj.put(OptionField.PARENT_MENU_ANCESTORS.getCode(), result.getResult().getAncestors() + "," + result.getResult().getId());
         table.setOptions(optionsObj.toString());
-    }
-
-    /**
-     * 获取父级菜单祖籍
-     */
-    private void getParentMenuAncestors(Long menuId, List<SysMenuDto> menus, JSONObject optionsObj) {
-        if (CollUtil.isNotEmpty(menus)) {
-            Optional<SysMenuDto> menu = menus.stream().filter(e -> ObjectUtil.equals(e.getId(), menuId)).findFirst();
-            menu.ifPresent(sysMenuDto -> optionsObj.put(OptionField.PARENT_MENU_ANCESTORS.getCode(), sysMenuDto.getAncestors()));
-        }
-        if (!optionsObj.containsKey(OptionField.PARENT_MENU_ANCESTORS.getCode()))
-            optionsObj.put(OptionField.PARENT_MENU_ANCESTORS.getCode(), "0");
-    }
-
-    /**
-     * 递归生成菜单父路径
-     */
-    private void recursionMenuFn(StringBuffer buffer, SysMenuDto menu) {
-        if (ObjectUtil.isNotNull(menu)) {
-            buffer.append("/").append(menu.getPath());
-            if (CollUtil.isNotEmpty(menu.getChildren()))
-                recursionMenuFn(buffer, menu.getChildren().get(0));
-        }
     }
 
     /**

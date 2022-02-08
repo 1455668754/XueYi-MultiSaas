@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 
-import java.util.List;
-
 /**
  * 菜单服务
  *
@@ -21,11 +19,11 @@ import java.util.List;
 public interface RemoteMenuService {
 
     /**
-     * 获取当前节点及其祖籍信息
+     * 根据Id获取菜单信息
      *
      * @param id 菜单Id
-     * @return 本节点及其所有祖籍节点数据对象集合
+     * @return 菜单对象
      */
-    @GetMapping("/menu/getAncestorsList/{id}")
-    R<List<SysMenuDto>> getAncestorsList(@PathVariable("id") Long id, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+    @GetMapping("/menu/inner/{id}")
+    R<SysMenuDto> getInfoInner(@PathVariable("id") Long id, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
 }
