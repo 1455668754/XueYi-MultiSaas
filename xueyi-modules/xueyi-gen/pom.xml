@@ -66,6 +66,12 @@
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
 
+        <!-- XueYi Common Log -->
+        <dependency>
+            <groupId>com.xueyi</groupId>
+            <artifactId>xueyi-common-log</artifactId>
+        </dependency>
+
         <!-- XueYi Common Web -->
         <dependency>
             <groupId>com.xueyi</groupId>

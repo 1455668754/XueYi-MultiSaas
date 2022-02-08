@@ -17,12 +17,6 @@
 
     <dependencies>
 
-        <!-- XueYi Common Log -->
-        <dependency>
-            <groupId>com.xueyi</groupId>
-            <artifactId>xueyi-common-log</artifactId>
-        </dependency>
-
         <!-- XueYi Common DataSource -->
         <dependency>
             <groupId>com.xueyi</groupId>

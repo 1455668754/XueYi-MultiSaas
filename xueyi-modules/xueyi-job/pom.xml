@@ -65,11 +65,11 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
-        
-        <!-- XueYi Common Swagger -->
+
+        <!-- XueYi Common Log -->
         <dependency>
             <groupId>com.xueyi</groupId>
-            <artifactId>xueyi-common-swagger</artifactId>
+            <artifactId>xueyi-common-log</artifactId>
         </dependency>
 
         <!-- XueYi Common Web -->
@@ -82,6 +82,12 @@
         <dependency>
             <groupId>com.xueyi</groupId>
             <artifactId>xueyi-common-datascope</artifactId>
+        </dependency>
+
+        <!-- XueYi Common Swagger -->
+        <dependency>
+            <groupId>com.xueyi</groupId>
+            <artifactId>xueyi-common-swagger</artifactId>
         </dependency>
 
     </dependencies>
