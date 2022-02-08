@@ -68,8 +68,7 @@ public class GenUtils {
                 optionJson.put(GenConstants.OptionField.TREE_NAME.getCode(), column.getId().toString());
             } else if (StrUtil.equals(column.getJavaField(), GenConstants.OptionField.STATUS.getCode())) {
                 optionJson.put(GenConstants.OptionField.STATUS.getCode(), column.getId().toString());
-            } else if (StrUtil.equals(column.getJavaField(), GenConstants.OptionField.SORT.getCode())) {
-                optionJson.put(GenConstants.OptionField.SORT.getCode(), column.getId().toString());
+                optionJson.put(GenConstants.OptionField.API_EDIT_STATUS.getCode(), DictConstants.DicYesNo.YES.getCode());
             } else if (StrUtil.equals(column.getJavaField(), GenConstants.OptionField.SORT.getCode())) {
                 optionJson.put(GenConstants.OptionField.SORT.getCode(), column.getId().toString());
             } else if (StrUtil.equals(column.getJavaField(), GenConstants.OptionField.PARENT_ID.getCode())) {
@@ -79,6 +78,17 @@ public class GenUtils {
                 optionJson.put(GenConstants.OptionField.ANCESTORS.getCode(), column.getId().toString());
             }
         });
+
+        optionJson.put(GenConstants.OptionField.API_LIST.getCode(), DictConstants.DicYesNo.YES.getCode());
+        optionJson.put(GenConstants.OptionField.API_GET_INFO.getCode(), DictConstants.DicYesNo.YES.getCode());
+        optionJson.put(GenConstants.OptionField.API_ADD.getCode(), DictConstants.DicYesNo.YES.getCode());
+        optionJson.put(GenConstants.OptionField.API_EDIT.getCode(), DictConstants.DicYesNo.YES.getCode());
+        optionJson.put(GenConstants.OptionField.API_BATCH_REMOVE.getCode(), DictConstants.DicYesNo.YES.getCode());
+        optionJson.put(GenConstants.OptionField.API_EXPORT.getCode(), DictConstants.DicYesNo.YES.getCode());
+        if (table.isSubBase() || table.isSubTree()) {
+            optionJson.put(GenConstants.OptionField.API_GET_SUB_INFO.getCode(), DictConstants.DicYesNo.YES.getCode());
+        }
+
         table.setOptions(optionJson.toString());
     }
 

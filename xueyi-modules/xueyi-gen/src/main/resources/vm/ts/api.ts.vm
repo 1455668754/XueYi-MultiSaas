@@ -47,6 +47,7 @@ export const add${BusinessName}Api = (params: ${BusinessName}IM) => defaultReque
 
 /** 修改${functionName} */
 export const edit${BusinessName}Api = (params: ${BusinessName}IM) => defaultRequest.put({ url: Api.EDIT_${BUSINESSName}, params })
+#if($api.editStatus || $api.editStatusForce)
 #if($statusColumn)
 #set($StatusName = $statusColumn.javaField)
 #if($statusColumn.javaType == 'Long')
@@ -62,7 +63,6 @@ export const edit${BusinessName}Api = (params: ${BusinessName}IM) => defaultRequ
 /** 修改${functionName}状态 */
 export const editStatus${BusinessName}Api = (${IdName}: ${IdType}, ${StatusName}: ${StatusType}) => defaultRequest.put({ url: Api.EDIT_STATUS_${BUSINESSName}, params: {${IdName}: ${IdName}, ${StatusName}: ${StatusName}} })
 #end
-#if($IdType)
 #end
 
 /** 删除${functionName} */

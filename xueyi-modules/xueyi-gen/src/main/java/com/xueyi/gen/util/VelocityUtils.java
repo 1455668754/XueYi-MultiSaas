@@ -380,11 +380,33 @@ public class VelocityUtils {
      * 获取覆盖与隐藏字段信息
      */
     public static Map<String, Set<String>> getCoverMap(GenTableDto genTable) {
-        Set<String> coverList = genTable.getSubList().stream().filter(GenTableColumnDto::isCover).map(GenTableColumnDto::getJavaField).collect(Collectors.toSet());
-        Set<String> hideList = genTable.getSubList().stream().filter(GenTableColumnDto::isHide).map(GenTableColumnDto::getJavaField).collect(Collectors.toSet());
+        Set<String> coverSet = genTable.getSubList().stream().filter(GenTableColumnDto::isCover).map(GenTableColumnDto::getJavaField).collect(Collectors.toSet());
+        Set<String> hideSet = genTable.getSubList().stream().filter(GenTableColumnDto::isHide).map(GenTableColumnDto::getJavaField).collect(Collectors.toSet());
+        switch (Objects.requireNonNull(GenConstants.TemplateType.getValue(genTable.getTplCategory()))) {
+            case TREE:
+                Set<String> treeSet = new HashSet<>(Arrays.asList(ArrayUtil.addAll(GenConstants.BASE_ENTITY, GenConstants.TREE_ENTITY)));
+                treeSet.removeAll(coverSet);
+                hideSet.addAll(treeSet);
+                break;
+            case SUB_TREE:
+                Set<String> subTreeSet = new HashSet<>(Arrays.asList(ArrayUtil.addAll(GenConstants.BASE_ENTITY, GenConstants.TREE_ENTITY, GenConstants.SUB_ENTITY)));
+                subTreeSet.removeAll(coverSet);
+                hideSet.addAll(subTreeSet);
+                break;
+            case SUB_BASE:
+                Set<String> subBaseSet = new HashSet<>(Arrays.asList(ArrayUtil.addAll(GenConstants.BASE_ENTITY, GenConstants.SUB_ENTITY)));
+                subBaseSet.removeAll(coverSet);
+                hideSet.addAll(subBaseSet);
+                break;
+            case BASE:
+                Set<String> baseSet = new HashSet<>(Arrays.asList(ArrayUtil.addAll(GenConstants.BASE_ENTITY)));
+                baseSet.removeAll(coverSet);
+                hideSet.addAll(baseSet);
+                break;
+        }
         Map<String, Set<String>> map = new HashMap<>();
-        map.put(COVER, coverList);
-        map.put(HIDE, hideList);
+        map.put(COVER, coverSet);
+        map.put(HIDE, hideSet);
         return map;
     }
 

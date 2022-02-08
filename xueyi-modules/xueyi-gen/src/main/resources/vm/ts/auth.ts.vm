@@ -8,8 +8,10 @@ export enum ${BusinessName}Auth {
   ADD = '${authorityName}:${businessName}:add',
   // 修改${functionName}
   EDIT = '${authorityName}:${businessName}:edit',
+#if($api.editStatus || $api.editStatusForce)
   // 修改${functionName}状态
   EDIT_STATUS = '${authorityName}:${businessName}:editStatus',
+#end
   // 删除${functionName}
   DELETE = '${authorityName}:${businessName}:delete',
   // ${functionName}导入
