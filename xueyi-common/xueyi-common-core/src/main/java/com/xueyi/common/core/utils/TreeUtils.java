@@ -22,7 +22,7 @@ public class TreeUtils {
     /**
      * 构建树结构
      * 存在默认参数 详见BaseConstants.Entity
-     * IdName = ID | FIdName = PARENT_ID | childrenName = CHILDREN | topNode = TOP_NODE | killScattered = false
+     * IdName = ID | FIdName = PARENT_ID | childrenName = CHILDREN | topNode = TOP_NODE | killScattered = false | killNoneChild = true
      *
      * @param list 组装列表
      * @return 树结构列表
@@ -32,13 +32,14 @@ public class TreeUtils {
                 BaseConstants.Entity.PARENT_ID.getCode(),
                 BaseConstants.Entity.CHILDREN.getCode(),
                 BaseConstants.TOP_NODE,
-                false);
+                false,
+                true);
     }
 
     /**
      * 构建树结构
      * 存在默认参数 详见BaseConstants.Entity
-     * IdName = ID | FIdName = PARENT_ID | childrenName = CHILDREN | topNode = TOP_NODE
+     * IdName = ID | FIdName = PARENT_ID | childrenName = CHILDREN | topNode = TOP_NODE | killNoneChild = true
      *
      * @param list          组装列表
      * @param killScattered 是否移除无法追溯到顶级节点 (true 是 | false 否)
@@ -49,13 +50,33 @@ public class TreeUtils {
                 BaseConstants.Entity.PARENT_ID.getCode(),
                 BaseConstants.Entity.CHILDREN.getCode(),
                 BaseConstants.TOP_NODE,
-                killScattered);
+                killScattered,
+                true);
     }
 
     /**
      * 构建树结构
      * 存在默认参数 详见BaseConstants.Entity
-     * IdName = ID | FIdName = PARENT_ID | childrenName = CHILDREN
+     * IdName = ID | FIdName = PARENT_ID | childrenName = CHILDREN | topNode = TOP_NODE
+     *
+     * @param list          组装列表
+     * @param killScattered 是否移除无法追溯到顶级节点 (true 是 | false 否)
+     * @param killNoneChild 是否移除空子节点集合
+     * @return 树结构列表
+     */
+    public static <T> List<T> buildTree(List<T> list, boolean killScattered, boolean killNoneChild) {
+        return buildTree(list, BaseConstants.Entity.ID.getCode(),
+                BaseConstants.Entity.PARENT_ID.getCode(),
+                BaseConstants.Entity.CHILDREN.getCode(),
+                BaseConstants.TOP_NODE,
+                killScattered,
+                killNoneChild);
+    }
+
+    /**
+     * 构建树结构
+     * 存在默认参数 详见BaseConstants.Entity
+     * IdName = ID | FIdName = PARENT_ID | childrenName = CHILDREN | killNoneChild = true
      *
      * @param list          组装列表
      * @param topNode       顶级节点
@@ -67,7 +88,8 @@ public class TreeUtils {
                 BaseConstants.Entity.PARENT_ID.getCode(),
                 BaseConstants.Entity.CHILDREN.getCode(),
                 topNode,
-                killScattered);
+                killScattered,
+                true);
     }
 
     /**
@@ -79,9 +101,10 @@ public class TreeUtils {
      * @param childrenName  children字段名称
      * @param topNode       顶级节点
      * @param killScattered 是否移除无法追溯到顶级节点 (true 是 | false 否)
+     * @param killNoneChild 是否移除空子节点集合
      * @return 树结构列表
      */
-    public static <T> List<T> buildTree(List<T> list, String IdName, String FIdName, String childrenName, Long topNode, boolean killScattered) {
+    public static <T> List<T> buildTree(List<T> list, String IdName, String FIdName, String childrenName, Long topNode, boolean killScattered, boolean killNoneChild) {
         List<T> returnList = new ArrayList<>();
         List<Long> tempList = new ArrayList<>();
         T top = null;
@@ -94,7 +117,7 @@ public class TreeUtils {
                         IdKey = checkAttribute(vo, IdName, IdKey);
                     Field Id = depthRecursive(vo, IdKey).getDeclaredField(IdName);
                     Id.setAccessible(true);
-                    if(ObjectUtil.equal(Id.get(vo), topNode)){
+                    if (ObjectUtil.equal(Id.get(vo), topNode)) {
                         hasTopNode = true;
                         top = vo;
                         list.remove(vo);
@@ -109,12 +132,12 @@ public class TreeUtils {
                 int FIdKey = 0;
                 for (T vo : list) {
                     if (FIdKey == 0)
-                        FIdKey=checkAttribute(vo, FIdName, FIdKey);
+                        FIdKey = checkAttribute(vo, FIdName, FIdKey);
                     Field FId = depthRecursive(vo, FIdKey).getDeclaredField(FIdName);
                     FId.setAccessible(true);
                     // 如果是顶级节点, 遍历该父节点的所有子节点
                     if (!tempList.contains((Long) FId.get(vo))) {
-                        recursionFn(list, vo, IdName, FIdName, childrenName);
+                        recursionFn(list, vo, IdName, FIdName, childrenName, killNoneChild);
                         returnList.add(vo);
                     }
                 }
@@ -128,12 +151,17 @@ public class TreeUtils {
         if (killScattered) {
             deleteNoTopNode(returnList, FIdName, topNode);
         }
-        if(hasTopNode && ObjectUtil.isNotNull(top)){
+        if (hasTopNode && ObjectUtil.isNotNull(top)) {
             List<T> topList = new ArrayList<>();
             try {
                 Field children = depthRecursive(top, checkAttribute(top, childrenName, 0)).getDeclaredField(childrenName);
                 children.setAccessible(true);
-                children.set(top, returnList);
+                if (killNoneChild) {
+                    if (CollUtil.isNotEmpty(returnList))
+                        children.set(top, returnList);
+                } else {
+                    children.set(top, returnList);
+                }
                 topList.add(top);
                 return topList;
             } catch (NoSuchFieldException | IllegalAccessException e) {
@@ -177,19 +205,24 @@ public class TreeUtils {
     /**
      * 递归列表
      */
-    private static <T> void recursionFn(List<T> list, T t, String IdName, String FIdName, String childrenName) {
+    private static <T> void recursionFn(List<T> list, T t, String IdName, String FIdName, String childrenName, boolean killNoneChild) {
         // 得到子节点列表
         List<T> childList = getChildList(list, t, IdName, FIdName);
         try {
             Field children = depthRecursive(t, checkAttribute(t, childrenName, 0)).getDeclaredField(childrenName);
             children.setAccessible(true);
-            children.set(t, childList);
+            if (killNoneChild) {
+                if (CollUtil.isNotEmpty(childList))
+                    children.set(t, childList);
+            } else {
+                children.set(t, childList);
+            }
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
         for (T tChild : childList) {
             if (hasChild(list, tChild, IdName, FIdName)) {
-                recursionFn(list, tChild, IdName, FIdName, childrenName);
+                recursionFn(list, tChild, IdName, FIdName, childrenName, killNoneChild);
             }
         }
     }
