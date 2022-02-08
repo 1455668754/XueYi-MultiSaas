@@ -1,5 +1,6 @@
 package com.xueyi.system.api.authority.domain.po;
 
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.xueyi.common.core.annotation.Excel;
 import com.xueyi.common.core.web.tenant.TTreeEntity;
@@ -25,22 +26,22 @@ public class SysMenuPo<D> extends TTreeEntity<D> {
 
     /** 路由地址 */
     @Excel(name = "路由地址")
-    @TableField("path")
+    @TableField(value = "path", updateStrategy = FieldStrategy.IGNORED)
     private String path;
 
     /** 外链地址 | 仅页面类型为外链时生效 */
     @Excel(name = "外链地址")
-    @TableField("frame_src")
+    @TableField(value = "frame_src", updateStrategy = FieldStrategy.IGNORED)
     private String frameSrc;
 
     /** 组件路径 */
     @Excel(name = "组件路径")
-    @TableField("component")
+    @TableField(value = "component", updateStrategy = FieldStrategy.IGNORED)
     private String component;
 
     /** 路由参数 */
     @Excel(name = "路由参数")
-    @TableField("param_path")
+    @TableField(value = "param_path", updateStrategy = FieldStrategy.IGNORED)
     private String paramPath;
 
     /** 路由切换动画 */
@@ -110,17 +111,17 @@ public class SysMenuPo<D> extends TTreeEntity<D> {
 
     /** 详情页的实际Path */
     @Excel(name = "详情页的实际Path")
-    @TableField("real_path")
+    @TableField(value = "real_path", updateStrategy = FieldStrategy.IGNORED)
     private String realPath;
 
     /** 权限标识 */
     @Excel(name = "权限标识")
-    @TableField("perms")
+    @TableField(value = "perms", updateStrategy = FieldStrategy.IGNORED)
     private String perms;
 
     /** 菜单图标 */
     @Excel(name = "菜单图标")
-    @TableField("icon")
+    @TableField(value = "icon", updateStrategy = FieldStrategy.IGNORED)
     private String icon;
 
     /** 公共菜单（Y是 N否） */

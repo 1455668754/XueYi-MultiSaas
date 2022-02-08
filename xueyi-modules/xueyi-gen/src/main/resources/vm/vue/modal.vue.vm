@@ -71,11 +71,11 @@ export default defineComponent({
         unref(isUpdate)
           ? await edit${BusinessName}Api(values).then(() => {
               closeModal()
-              createMessage.success('新增${functionName}成功！')
+              createMessage.success('编辑${functionName}成功！')
             })
           : await add${BusinessName}Api(values).then(() => {
               closeModal()
-              createMessage.success('编辑${functionName}成功！')
+              createMessage.success('新增${functionName}成功！')
             })
         emit('success')
       } finally {

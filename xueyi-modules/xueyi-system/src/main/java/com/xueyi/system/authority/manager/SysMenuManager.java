@@ -215,12 +215,15 @@ public class SysMenuManager extends TreeManager<SysMenuDto, SysMenuMapper> {
         List<SysMenuDto> children = baseMapper.selectList(
                 Wrappers.<SysMenuDto>update().lambda()
                         .apply(FIND_IN_SET, id, SqlConstants.Entity.ANCESTORS.getCode()));
-        tenantMenuMergeMapper.delete(
-                Wrappers.<SysTenantMenuMerge>update().lambda()
-                        .in(SysTenantMenuMerge::getMenuId, children.stream().map(SysMenuDto::getId).collect(Collectors.toSet())));
-        roleMenuMergeMapper.delete(
-                Wrappers.<SysRoleMenuMerge>update().lambda()
-                        .in(SysRoleMenuMerge::getMenuId, children.stream().map(SysMenuDto::getId).collect(Collectors.toSet())));
+        if(CollUtil.isNotEmpty(children)) {
+            Set<Long> idSet = children.stream().map(SysMenuDto::getId).collect(Collectors.toSet());
+            tenantMenuMergeMapper.delete(
+                    Wrappers.<SysTenantMenuMerge>update().lambda()
+                            .in(SysTenantMenuMerge::getMenuId, idSet));
+            roleMenuMergeMapper.delete(
+                    Wrappers.<SysRoleMenuMerge>update().lambda()
+                            .in(SysRoleMenuMerge::getMenuId, idSet));
+        }
         return super.deleteChildren(id);
     }
 }
