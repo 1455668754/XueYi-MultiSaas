@@ -7,8 +7,10 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.AuthorityConstants;
 import com.xueyi.common.core.constant.SqlConstants;
 import com.xueyi.common.core.constant.TenantConstants;
+import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.entity.manager.TreeManager;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
+import com.xueyi.system.api.model.LoginUser;
 import com.xueyi.system.authority.domain.merge.SysRoleMenuMerge;
 import com.xueyi.system.authority.domain.merge.SysTenantMenuMerge;
 import com.xueyi.system.authority.mapper.SysMenuMapper;
@@ -68,8 +70,9 @@ public class SysMenuManager extends TreeManager<SysMenuDto, SysMenuMapper> {
         if (CollUtil.isNotEmpty(tenantMenuMerges))
             menuQueryWrapper
                     .in(SysMenuDto::getId, tenantMenuMerges.stream().map(SysTenantMenuMerge::getMenuId).collect(Collectors.toSet()))
-                    .eq(SysMenuDto::getEnterpriseId, TenantConstants.COMMON_TENANT_ID)
-                    .or().eq(SysMenuDto::getEnterpriseId, enterpriseId);
+                    .and(i -> i
+                            .eq(SysMenuDto::getEnterpriseId, TenantConstants.COMMON_TENANT_ID)
+                            .or().eq(SysMenuDto::getEnterpriseId, enterpriseId));
         else
             menuQueryWrapper.eq(SysMenuDto::getEnterpriseId, enterpriseId);
         return baseMapper.selectList(menuQueryWrapper);
@@ -89,17 +92,14 @@ public class SysMenuManager extends TreeManager<SysMenuDto, SysMenuMapper> {
                         .eq(SysRoleMenuMerge::getEnterpriseId, enterpriseId)
                         .in(SysRoleMenuMerge::getRoleId, roleIds));
         // 2.获取用户可使用的菜单
-        if (CollUtil.isNotEmpty(roleModuleMenuMerges)) {
-            List<Long> enterpriseIds = new ArrayList<Long>() {{
-                this.add(TenantConstants.COMMON_TENANT_ID);
-                this.add(enterpriseId);
-            }};
-            return baseMapper.selectList(
-                    Wrappers.<SysMenuDto>query().lambda()
-                            .in(SysMenuDto::getId, roleModuleMenuMerges)
-                            .in(SysMenuDto::getEnterpriseId, enterpriseIds));
-        }
-        return new ArrayList<>();
+        return CollUtil.isNotEmpty(roleModuleMenuMerges)
+                ? baseMapper.selectList(
+                Wrappers.<SysMenuDto>query().lambda()
+                        .in(SysMenuDto::getId, roleModuleMenuMerges)
+                        .and(i -> i
+                                .eq(SysMenuDto::getEnterpriseId, enterpriseId)
+                                .or().eq(SysMenuDto::getEnterpriseId, TenantConstants.COMMON_TENANT_ID)))
+                : new ArrayList<>();
     }
 
     /**
@@ -135,13 +135,42 @@ public class SysMenuManager extends TreeManager<SysMenuDto, SysMenuMapper> {
      * @return 菜单列表
      */
     public List<SysMenuDto> getRoutes(Long moduleId) {
-        return baseMapper.selectList(
-                Wrappers.<SysMenuDto>query().lambda()
-                        .eq(SysMenuDto::getModuleId, moduleId)
-                        .ne(SysMenuDto::getId, AuthorityConstants.MENU_TOP_NODE)
+        LambdaQueryWrapper<SysMenuDto> menuQueryWrapper = new LambdaQueryWrapper<>();
+        if (SecurityUtils.isAdminUser()) {
+            if (SecurityUtils.isNotAdminTenant()) {
+                // 1.获取租户授权的公共菜单Ids
+                List<SysTenantMenuMerge> tenantMenuMerges = tenantMenuMergeMapper.selectList(new LambdaQueryWrapper<>());
+                // 2.获取租户全部可使用的菜单
+                if (CollUtil.isNotEmpty(tenantMenuMerges)) {
+                    menuQueryWrapper
+                            .in(SysMenuDto::getId, tenantMenuMerges.stream().map(SysTenantMenuMerge::getMenuId).collect(Collectors.toSet()));
+                } else {
+                    menuQueryWrapper
+                            .ne(SysMenuDto::getEnterpriseId, TenantConstants.COMMON_TENANT_ID);
+                }
+            }
+        } else {
+            LoginUser loginUser = SecurityUtils.getLoginUser();
+            // 1.获取用户可使用角色集内的所有菜单Ids
+            List<SysRoleMenuMerge> roleModuleMenuMerges = roleMenuMergeMapper.selectList(
+                    Wrappers.<SysRoleMenuMerge>query().lambda()
+                            .in(SysRoleMenuMerge::getRoleId, loginUser.getRoleIds()));
+            // 2.获取用户可使用的菜单
+            if (CollUtil.isNotEmpty(roleModuleMenuMerges)) {
+                menuQueryWrapper
+                        .in(SysMenuDto::getId, roleModuleMenuMerges);
+            } else {
+                return new ArrayList<>();
+            }
+        }
+        menuQueryWrapper
+                .eq(SysMenuDto::getModuleId, moduleId)
+                .ne(SysMenuDto::getId, AuthorityConstants.MENU_TOP_NODE)
+                .and(i -> i
                         .eq(SysMenuDto::getMenuType, AuthorityConstants.MenuType.DIR.getCode())
                         .or().eq(SysMenuDto::getMenuType, AuthorityConstants.MenuType.MENU.getCode())
                         .or().eq(SysMenuDto::getMenuType, AuthorityConstants.MenuType.DETAILS.getCode()));
+        return baseMapper.selectList(menuQueryWrapper);
     }
 
     /**
@@ -158,8 +187,9 @@ public class SysMenuManager extends TreeManager<SysMenuDto, SysMenuMapper> {
             case DETAILS:
                 queryWrapper
                         .eq(SysMenuDto::getModuleId, moduleId)
-                        .eq(SysMenuDto::getMenuType, AuthorityConstants.MenuType.MENU.getCode())
-                        .or().eq(SysMenuDto::getMenuType, AuthorityConstants.MenuType.DIR.getCode())
+                        .and(i -> i
+                                .eq(SysMenuDto::getMenuType, AuthorityConstants.MenuType.MENU.getCode())
+                                .or().eq(SysMenuDto::getMenuType, AuthorityConstants.MenuType.DIR.getCode()))
                         .or().eq(SysMenuDto::getId, AuthorityConstants.MENU_TOP_NODE);
                 break;
             case MENU:

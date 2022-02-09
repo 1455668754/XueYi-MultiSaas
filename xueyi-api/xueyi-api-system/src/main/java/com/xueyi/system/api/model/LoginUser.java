@@ -56,6 +56,9 @@ public class LoginUser implements Serializable {
     /** 角色权限列表 */
     private Set<String> roles;
 
+    /** 角色Id列表 */
+    private Set<Long> roleIds;
+
     /** 路由路径映射列表 */
     private Map<String,String> routeMap;
 
@@ -170,6 +173,14 @@ public class LoginUser implements Serializable {
 
     public void setRoles(Set<String> roles) {
         this.roles = roles;
+    }
+
+    public Set<Long> getRoleIds() {
+        return roleIds;
+    }
+
+    public void setRoleIds(Set<Long> roleIds) {
+        this.roleIds = roleIds;
     }
 
     public Map<String, String> getRouteMap() {

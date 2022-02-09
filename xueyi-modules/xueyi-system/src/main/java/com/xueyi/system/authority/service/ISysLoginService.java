@@ -47,24 +47,24 @@ public interface ISysLoginService {
     /**
      * 登录校验 | 获取菜单数据权限
      *
-     * @param roleList     角色信息集合
+     * @param roleIds      角色Id集合
      * @param isLessor     租户标识
      * @param userType     用户标识
      * @param enterpriseId 企业Id
      * @param sourceName   策略源
      * @return 菜单权限信息
      */
-    Set<String> getMenuPermission(List<SysRoleDto> roleList, String isLessor, String userType, Long enterpriseId, String sourceName);
+    Set<String> getMenuPermission(Set<Long> roleIds, String isLessor, String userType, Long enterpriseId, String sourceName);
 
     /**
      * 登录校验 | 获取路由路径集合
      *
-     * @param roleList     角色信息集合
+     * @param roleIds      角色Id集合
      * @param isLessor     租户标识
      * @param userType     用户标识
      * @param enterpriseId 企业Id
      * @param sourceName   策略源
      * @return 路由路径集合
      */
-    Map<String, String> getMenuRouteMap(List<SysRoleDto> roleList, String isLessor, String userType, Long enterpriseId, String sourceName);
+    Map<String, String> getMenuRouteMap(Set<Long> roleIds, String isLessor, String userType, Long enterpriseId, String sourceName);
 }

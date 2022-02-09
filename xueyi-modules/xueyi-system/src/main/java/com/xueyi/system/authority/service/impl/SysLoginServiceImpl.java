@@ -88,7 +88,7 @@ public class SysLoginServiceImpl implements ISysLoginService {
     /**
      * 登录校验 | 获取菜单数据权限
      *
-     * @param roleList     角色信息集合
+     * @param roleIds      角色Id集合
      * @param isLessor     租户标识
      * @param userType     用户标识
      * @param enterpriseId 企业Id
@@ -96,7 +96,7 @@ public class SysLoginServiceImpl implements ISysLoginService {
      * @return 菜单权限信息
      */
     @Override
-    public Set<String> getMenuPermission(List<SysRoleDto> roleList, String isLessor, String userType, Long enterpriseId, String sourceName) {
+    public Set<String> getMenuPermission(Set<Long> roleIds, String isLessor, String userType, Long enterpriseId, String sourceName) {
         Set<String> perms = new HashSet<>();
         // 租管租户的超管用户拥有所有权限
         if (SysEnterpriseDto.isAdmin(isLessor) && SysUserDto.isAdmin(userType))
@@ -104,7 +104,7 @@ public class SysLoginServiceImpl implements ISysLoginService {
         else {
             Set<String> set = SysUserDto.isAdmin(userType)
                     ? menuService.loginPermission(enterpriseId, sourceName)
-                    : menuService.loginPermission(roleList.stream().map(SysRoleDto::getId).collect(Collectors.toSet()), enterpriseId, sourceName);
+                    : menuService.loginPermission(roleIds, enterpriseId, sourceName);
             // 常规租户的超管用户拥有本租户最高权限
             perms.addAll(set.stream().filter(StrUtil::isNotBlank).collect(Collectors.toSet()));
         }
@@ -114,7 +114,7 @@ public class SysLoginServiceImpl implements ISysLoginService {
     /**
      * 登录校验 | 获取路由路径集合
      *
-     * @param roleList     角色信息集合
+     * @param roleIds      角色Id集合
      * @param isLessor     租户标识
      * @param userType     用户标识
      * @param enterpriseId 企业Id
@@ -122,14 +122,14 @@ public class SysLoginServiceImpl implements ISysLoginService {
      * @return 路由路径集合
      */
     @Override
-    public Map<String, String> getMenuRouteMap(List<SysRoleDto> roleList, String isLessor, String userType, Long enterpriseId, String sourceName) {
-        if(SysEnterpriseDto.isAdmin(isLessor))
+    public Map<String, String> getMenuRouteMap(Set<Long> roleIds, String isLessor, String userType, Long enterpriseId, String sourceName) {
+        if (SysEnterpriseDto.isAdmin(isLessor))
             return SysUserDto.isAdmin(userType)
                     ? menuService.getRouteMap(enterpriseId)
-                    : menuService.getRouteMap(roleList.stream().map(SysRoleDto::getId).collect(Collectors.toSet()), enterpriseId, sourceName);
+                    : menuService.getRouteMap(roleIds, enterpriseId, sourceName);
         else
             return SysUserDto.isAdmin(userType)
                     ? menuService.getRouteMap(enterpriseId, sourceName)
-                    : menuService.getRouteMap(roleList.stream().map(SysRoleDto::getId).collect(Collectors.toSet()), enterpriseId, sourceName);
+                    : menuService.getRouteMap(roleIds, enterpriseId, sourceName);
     }
 }
