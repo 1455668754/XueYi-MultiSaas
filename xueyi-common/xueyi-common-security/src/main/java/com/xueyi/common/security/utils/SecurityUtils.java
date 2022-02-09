@@ -1,5 +1,6 @@
 package com.xueyi.common.security.utils;
 
+import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.AuthorityConstants;
 import com.xueyi.common.core.constant.SecurityConstants;
 import com.xueyi.common.core.constant.TokenConstants;
@@ -103,7 +104,7 @@ public class SecurityUtils {
     public static String replaceTokenPrefix(String token) {
         // 如果前端设置了令牌前缀，则裁剪掉前缀
         return StringUtils.isNotEmpty(token) && token.startsWith(TokenConstants.PREFIX)
-                ? token.replaceFirst(TokenConstants.PREFIX, "")
+                ? token.replaceFirst(TokenConstants.PREFIX, StrUtil.EMPTY)
                 : token;
     }
 

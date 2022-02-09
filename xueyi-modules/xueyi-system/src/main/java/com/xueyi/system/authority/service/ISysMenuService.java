@@ -5,6 +5,7 @@ import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.utils.route.RouterVo;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -32,6 +33,33 @@ public interface ISysMenuService extends ITreeService<SysMenuDto> {
      * @return 菜单权限集合
      */
     Set<String> loginPermission(Set<Long> roleIds, Long enterpriseId, String sourceName);
+
+    /**
+     * 登录校验 | 获取全部路由路径集合
+     *
+     * @param enterpriseId 企业Id
+     * @return 路径集合
+     */
+    Map<String, String> getRouteMap(Long enterpriseId);
+
+    /**
+     * 登录校验 | 获取租户全部路由路径集合
+     *
+     * @param enterpriseId 企业Id
+     * @param sourceName   策略源
+     * @return 路径集合
+     */
+    Map<String, String> getRouteMap(Long enterpriseId, String sourceName);
+
+    /**
+     * 登录校验 | 获取路由路径集合
+     *
+     * @param roleIds      角色Id集合
+     * @param enterpriseId 企业Id
+     * @param sourceName   策略源
+     * @return 路径集合
+     */
+    Map<String, String> getRouteMap(Set<Long> roleIds, Long enterpriseId, String sourceName);
 
     /**
      * 根据模块Id查询菜单路由

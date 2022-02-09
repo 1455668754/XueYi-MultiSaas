@@ -5,10 +5,10 @@ import com.xueyi.common.core.domain.R;
 import com.xueyi.common.security.annotation.InnerAuth;
 import com.xueyi.common.security.utils.SourceUtils;
 import com.xueyi.common.web.entity.controller.BasisController;
+import com.xueyi.system.api.model.LoginUser;
 import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
 import com.xueyi.system.api.source.domain.Source;
-import com.xueyi.system.api.model.LoginUser;
 import com.xueyi.system.authority.service.ISysLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -49,11 +50,14 @@ public class SysLoginController extends BasisController {
         Set<String> roles = loginService.getRolePermission(user.getRoles(), enterprise.getIsLessor(), user.getUserType());
         // 菜单权限标识
         Set<String> permissions = loginService.getMenuPermission(user.getRoles(), enterprise.getIsLessor(), user.getUserType(), enterprise.getId(), source.getMaster());
+        // 路由路径集合
+        Map<String,String> routeMap = loginService.getMenuRouteMap(user.getRoles(), enterprise.getIsLessor(), user.getUserType(), enterprise.getId(), source.getMaster());
         LoginUser loginUser = new LoginUser();
         loginUser.setEnterprise(enterprise);
         loginUser.setUser(user);
         loginUser.setRoles(roles);
         loginUser.setPermissions(permissions);
+        loginUser.setRouteMap(routeMap);
         loginUser.setSource(source);
         return R.ok(loginUser);
     }

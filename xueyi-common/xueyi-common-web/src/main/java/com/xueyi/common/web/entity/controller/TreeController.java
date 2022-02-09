@@ -1,6 +1,7 @@
 package com.xueyi.common.web.entity.controller;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.BaseConstants;
 import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.core.utils.TreeUtils;
@@ -47,7 +48,7 @@ public abstract class TreeController<D extends TreeEntity<D>, DS extends ITreeSe
         while (it.hasNext()) {
             D next = (D) it.next();
             if (ObjectUtil.equals(next.getId(),id) ||
-                    ArrayUtils.contains(StringUtils.split(next.getAncestors(), ","), id + ""))
+                    ArrayUtils.contains(StringUtils.split(next.getAncestors(), StrUtil.COMMA), id + StrUtil.EMPTY))
                 it.remove();
         }
         return AjaxResult.success(TreeUtils.buildTree(list));

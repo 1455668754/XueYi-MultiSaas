@@ -58,6 +58,7 @@ public class SysUserController extends BaseController<SysUserDto, ISysUserServic
         map.put("user", loginUser.getUser());
         map.put("roles", loginUser.getRoles());
         map.put("permissions", loginUser.getPermissions());
+        map.put("routes", loginUser.getRouteMap());
         return AjaxResult.success(map);
     }
 

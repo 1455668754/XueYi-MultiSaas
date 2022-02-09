@@ -1,5 +1,6 @@
 package com.xueyi.common.core.web.page;
 
+import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.utils.StringUtils;
 
 /**
@@ -26,9 +27,9 @@ public class PageDomain {
 
     public String getOrderBy() {
         if (StringUtils.isEmpty(orderByColumn)) {
-            return "";
+            return StrUtil.EMPTY;
         }
-        return StringUtils.toUnderScoreCase(orderByColumn) + " " + isAsc;
+        return StringUtils.toUnderScoreCase(orderByColumn) + StrUtil.SPACE + isAsc;
     }
 
     public Integer getPageNum() {

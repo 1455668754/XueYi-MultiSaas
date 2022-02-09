@@ -5,6 +5,7 @@ import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -54,4 +55,16 @@ public interface ISysLoginService {
      * @return 菜单权限信息
      */
     Set<String> getMenuPermission(List<SysRoleDto> roleList, String isLessor, String userType, Long enterpriseId, String sourceName);
+
+    /**
+     * 登录校验 | 获取路由路径集合
+     *
+     * @param roleList     角色信息集合
+     * @param isLessor     租户标识
+     * @param userType     用户标识
+     * @param enterpriseId 企业Id
+     * @param sourceName   策略源
+     * @return 路由路径集合
+     */
+    Map<String, String> getMenuRouteMap(List<SysRoleDto> roleList, String isLessor, String userType, Long enterpriseId, String sourceName);
 }

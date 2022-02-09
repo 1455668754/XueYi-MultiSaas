@@ -288,8 +288,8 @@ public class VelocityUtils {
         // 业务名称(首字母大写)
         String BusinessName = StringUtils.capitalize(genTable.getBusinessName());
 
-        String javaPath = PROJECT_PATH + "/" + StringUtils.replace(packageName, ".", "/");
-        String mybatisPath = MYBATIS_PATH + "/" + moduleName;
+        String javaPath = PROJECT_PATH + StrUtil.SLASH + StringUtils.replace(packageName, StrUtil.DOT, StrUtil.SLASH);
+        String mybatisPath = MYBATIS_PATH + StrUtil.SLASH + moduleName;
 
         if (template.contains("dto.java.vm"))
             return StringUtils.format("{}/domain/dto/{}Dto.java", javaPath, className);
@@ -372,7 +372,7 @@ public class VelocityUtils {
      * @return 包前缀名称
      */
     public static String getPackagePrefix(String packageName) {
-        int lastIndex = packageName.lastIndexOf(".");
+        int lastIndex = packageName.lastIndexOf(StrUtil.DOT);
         return StringUtils.substring(packageName, 0, lastIndex);
     }
 
@@ -595,8 +595,8 @@ public class VelocityUtils {
     public static String getRelativePath(GenTableDto table, GenTableDto subTable) {
         return StrUtil.equals(table.getModuleName(), subTable.getModuleName())
                 ? StrUtil.equals(table.getAuthorityName(), subTable.getAuthorityName())
-                ? "."
-                : "../" + subTable.getAuthorityName()
-                : "../../" + subTable.getAuthorityName();
+                ? StrUtil.DOT
+                : StrUtil.DOUBLE_DOT +StrUtil.SLASH + subTable.getAuthorityName()
+                : StrUtil.DOUBLE_DOT +StrUtil.SLASH + StrUtil.DOUBLE_DOT +StrUtil.SLASH + subTable.getAuthorityName();
     }
 }

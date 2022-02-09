@@ -113,7 +113,7 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
         while (it.hasNext()) {
             SysMenuDto next = (SysMenuDto) it.next();
             if (ObjectUtil.equals(next.getId(), menu.getId()) ||
-                    ArrayUtils.contains(StringUtils.split(next.getAncestors(), ","), menu.getId() + ""))
+                    ArrayUtils.contains(StringUtils.split(next.getAncestors(), StrUtil.COMMA), menu.getId() + StrUtil.EMPTY))
                 it.remove();
         }
         return AjaxResult.success(TreeUtils.buildTree((menus)));

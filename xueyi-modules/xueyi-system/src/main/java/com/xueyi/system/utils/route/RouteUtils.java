@@ -19,9 +19,9 @@ public class RouteUtils {
 
     private static final int DYNAMIC_LEVEL = 5;
 
-    private static final String SLASH = "/";
-
+    /** 路由树初始深度 */
     private static final int LEVEL_0 = 0;
+
     /**
      * 构建前端路由所需要的菜单
      *
@@ -30,7 +30,7 @@ public class RouteUtils {
      */
     public static List<RouterVo> buildMenus(List<SysMenuDto> menus) {
         SysMenuDto menu = new SysMenuDto();
-        menu.setFullPath("");
+        menu.setFullPath(StrUtil.EMPTY);
         menu.setChildren(menus);
         return recursionFn(menu,  LEVEL_0);
     }
@@ -52,7 +52,7 @@ public class RouteUtils {
                     getRoute(menu, router);
                     routers.add(router);
                 }
-                menu.setFullPath(menus.getFullPath() + SLASH + menu.getPath());
+                menu.setFullPath(menus.getFullPath() + StrUtil.SLASH + menu.getPath());
                 if (CollUtil.isNotEmpty(menu.getChildren()))
                     assembleDetails(menu, routers);
                 if (!menu.isDetails()) {
@@ -110,8 +110,7 @@ public class RouteUtils {
      * @return 菜单标签信息
      */
     private static TagVo getTag(SysMenuDto menu) {
-        TagVo tag = new TagVo();
-        return tag;
+        return new TagVo();
     }
 
     /**
@@ -129,7 +128,6 @@ public class RouteUtils {
             meta.setRealPath(menu.getRealPath());
             meta.setCurrentActiveMenu(menu.getCurrentActiveMenu());
         }
-        // ?
         meta.setIgnoreKeepAlive(StrUtil.equals(DictConstants.DicYesNo.YES.getCode(), menu.getIsCache()));
         meta.setAffix(StrUtil.equals(DictConstants.DicYesNo.YES.getCode(), menu.getIsAffix()));
         if (StrUtil.equals(AuthorityConstants.FrameType.EMBEDDED.getCode(), menu.getFrameType()))
@@ -161,7 +159,7 @@ public class RouteUtils {
             return menu.getFrameSrc();
         // 一级目录
         if (ObjectUtil.equals(AuthorityConstants.MENU_TOP_NODE, menu.getParentId()))
-            return "/" + menu.getPath();
+            return StrUtil.SLASH + menu.getPath();
         return menu.getPath();
     }
 

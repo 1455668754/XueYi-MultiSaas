@@ -340,7 +340,7 @@ public class GenUtils {
      * @return 模块名
      */
     public static String getModuleName(String packageName) {
-        int lastIndex = packageName.lastIndexOf(".");
+        int lastIndex = packageName.lastIndexOf(StrUtil.DOT);
         int nameLength = packageName.length();
         return StringUtils.substring(packageName, lastIndex + 1, nameLength);
     }
@@ -352,7 +352,7 @@ public class GenUtils {
      * @return 业务名
      */
     public static String getBusinessName(String tableName) {
-        int lastIndex = tableName.lastIndexOf("_");
+        int lastIndex = tableName.lastIndexOf(StrUtil.UNDERLINE);
         int nameLength = tableName.length();
         return StringUtils.substring(tableName, lastIndex + 1, nameLength);
     }
@@ -364,6 +364,6 @@ public class GenUtils {
      * @return 替换后的名字
      */
     public static String replaceText(String text) {
-        return RegExUtils.replaceAll(text, "(?:信息表|表|雪忆)", "");
+        return RegExUtils.replaceAll(text, "(?:信息表|表|雪忆)", StrUtil.EMPTY);
     }
 }

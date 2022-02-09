@@ -34,19 +34,42 @@ public class SysMenuDto extends SysMenuPo<SysMenuDto> {
         this.fullPath = fullPath;
     }
 
+    public String getCurrentActiveMenu() {
+        return currentActiveMenu;
+    }
+
     public void setCurrentActiveMenu(String currentActiveMenu) {
         this.currentActiveMenu = currentActiveMenu;
     }
 
-    public String getCurrentActiveMenu() {
-        return currentActiveMenu;
+    /**
+     * 校验菜单类型是否为目录
+     */
+    public boolean isDir() {
+        return StrUtil.equals(AuthorityConstants.MenuType.DIR.getCode(), getMenuType());
+    }
+
+    /**
+     * 校验菜单类型是否为菜单
+     */
+    public boolean isMenu() {
+        return StrUtil.equals(AuthorityConstants.MenuType.MENU.getCode(), getMenuType());
     }
 
     /**
      * 校验菜单类型是否为详情
      */
-    public boolean isDetails(){
+    public boolean isDetails() {
         return StrUtil.equals(AuthorityConstants.MenuType.DETAILS.getCode(), getMenuType());
+    }
+
+    /**
+     * 移除详情菜单动态后缀
+     */
+    public String getDetailsSuffix() {
+        return isDetails()
+                ? StrUtil.sub(getPath(), 0, getPath().indexOf(StrUtil.COLON))
+                : getPath();
     }
 
     @Override

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -108,5 +109,27 @@ public class SysLoginServiceImpl implements ISysLoginService {
             perms.addAll(set.stream().filter(StrUtil::isNotBlank).collect(Collectors.toSet()));
         }
         return perms;
+    }
+
+    /**
+     * 登录校验 | 获取路由路径集合
+     *
+     * @param roleList     角色信息集合
+     * @param isLessor     租户标识
+     * @param userType     用户标识
+     * @param enterpriseId 企业Id
+     * @param sourceName   策略源
+     * @return 路由路径集合
+     */
+    @Override
+    public Map<String, String> getMenuRouteMap(List<SysRoleDto> roleList, String isLessor, String userType, Long enterpriseId, String sourceName) {
+        if(SysEnterpriseDto.isAdmin(isLessor))
+            return SysUserDto.isAdmin(userType)
+                    ? menuService.getRouteMap(enterpriseId)
+                    : menuService.getRouteMap(roleList.stream().map(SysRoleDto::getId).collect(Collectors.toSet()), enterpriseId, sourceName);
+        else
+            return SysUserDto.isAdmin(userType)
+                    ? menuService.getRouteMap(enterpriseId, sourceName)
+                    : menuService.getRouteMap(roleList.stream().map(SysRoleDto::getId).collect(Collectors.toSet()), enterpriseId, sourceName);
     }
 }

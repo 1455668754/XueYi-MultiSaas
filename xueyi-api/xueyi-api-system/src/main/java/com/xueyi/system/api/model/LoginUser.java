@@ -5,6 +5,7 @@ import com.xueyi.system.api.organize.domain.dto.SysUserDto;
 import com.xueyi.system.api.source.domain.Source;
 
 import java.io.Serializable;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -54,6 +55,9 @@ public class LoginUser implements Serializable {
 
     /** 角色权限列表 */
     private Set<String> roles;
+
+    /** 路由路径映射列表 */
+    private Map<String,String> routeMap;
 
     /** 源策略组 */
     private Source source;
@@ -166,6 +170,14 @@ public class LoginUser implements Serializable {
 
     public void setRoles(Set<String> roles) {
         this.roles = roles;
+    }
+
+    public Map<String, String> getRouteMap() {
+        return routeMap;
+    }
+
+    public void setRouteMap(Map<String, String> routeMap) {
+        this.routeMap = routeMap;
     }
 
     public Source getSource() {

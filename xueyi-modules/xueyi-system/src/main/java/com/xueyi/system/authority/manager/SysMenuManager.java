@@ -38,17 +38,31 @@ public class SysMenuManager extends TreeManager<SysMenuDto, SysMenuMapper> {
     SysRoleMenuMergeMapper roleMenuMergeMapper;
 
     /**
-     * 登录校验 | 获取租户全部菜单权限标识集合
+     * 登录校验 | 获取超管租户超管用户菜单集合
      *
      * @param enterpriseId 企业Id
-     * @return 菜单权限集合
+     * @return 菜单集合
      */
-    public Set<String> loginPermission(Long enterpriseId) {
+    public List<SysMenuDto> loginLessorMenuList(Long enterpriseId) {
+        // 1.获取超管租户超管用户可使用的菜单
+        return baseMapper.selectList(
+                Wrappers.<SysMenuDto>query().lambda()
+                        .eq(SysMenuDto::getEnterpriseId, TenantConstants.COMMON_TENANT_ID)
+                        .or().eq(SysMenuDto::getEnterpriseId, enterpriseId));
+    }
+
+    /**
+     * 登录校验 | 获取租户全部菜单集合
+     *
+     * @param enterpriseId 企业Id
+     * @return 菜单集合
+     */
+    public List<SysMenuDto> loginMenuList(Long enterpriseId) {
         // 1.获取租户授权的公共菜单Ids
         List<SysTenantMenuMerge> tenantMenuMerges = tenantMenuMergeMapper.selectList(
                 Wrappers.<SysTenantMenuMerge>query().lambda()
                         .eq(SysTenantMenuMerge::getEnterpriseId, enterpriseId)
-                        );
+        );
         // 2.获取租户全部可使用的菜单
         LambdaQueryWrapper<SysMenuDto> menuQueryWrapper = new LambdaQueryWrapper<>();
         if (CollUtil.isNotEmpty(tenantMenuMerges))
@@ -58,20 +72,17 @@ public class SysMenuManager extends TreeManager<SysMenuDto, SysMenuMapper> {
                     .or().eq(SysMenuDto::getEnterpriseId, enterpriseId);
         else
             menuQueryWrapper.eq(SysMenuDto::getEnterpriseId, enterpriseId);
-        List<SysMenuDto> menuList = baseMapper.selectList(menuQueryWrapper);
-        return CollUtil.isNotEmpty(menuList)
-                ? menuList.stream().map(SysMenuDto::getPerms).collect(Collectors.toSet())
-                : new HashSet<>();
+        return baseMapper.selectList(menuQueryWrapper);
     }
 
     /**
-     * 登录校验 | 获取菜单权限标识集合
+     * 登录校验 | 获取菜单集合
      *
      * @param roleIds      角色Id集合
      * @param enterpriseId 企业Id
-     * @return 菜单权限标识集合
+     * @return 菜单集合
      */
-    public Set<String> loginPermission(Set<Long> roleIds, Long enterpriseId) {
+    public List<SysMenuDto> loginMenuList(Set<Long> roleIds, Long enterpriseId) {
         // 1.获取用户可使用角色集内的所有菜单Ids
         List<SysRoleMenuMerge> roleModuleMenuMerges = roleMenuMergeMapper.selectList(
                 Wrappers.<SysRoleMenuMerge>query().lambda()
@@ -83,15 +94,12 @@ public class SysMenuManager extends TreeManager<SysMenuDto, SysMenuMapper> {
                 this.add(TenantConstants.COMMON_TENANT_ID);
                 this.add(enterpriseId);
             }};
-            List<SysMenuDto> menuList = baseMapper.selectList(
+            return baseMapper.selectList(
                     Wrappers.<SysMenuDto>query().lambda()
                             .in(SysMenuDto::getId, roleModuleMenuMerges)
                             .in(SysMenuDto::getEnterpriseId, enterpriseIds));
-            return CollUtil.isNotEmpty(menuList)
-                    ? menuList.stream().map(SysMenuDto::getPerms).collect(Collectors.toSet())
-                    : new HashSet<>();
         }
-        return new HashSet<>();
+        return new ArrayList<>();
     }
 
     /**
@@ -143,7 +151,7 @@ public class SysMenuManager extends TreeManager<SysMenuDto, SysMenuMapper> {
      * @param menuType 菜单类型
      * @return 菜单列表
      */
-    public List<SysMenuDto> getMenuByMenuType(Long moduleId, String menuType){
+    public List<SysMenuDto> getMenuByMenuType(Long moduleId, String menuType) {
         LambdaQueryWrapper<SysMenuDto> queryWrapper = new LambdaQueryWrapper<>();
         switch (Objects.requireNonNull(AuthorityConstants.MenuType.getValue(menuType))) {
             case BUTTON:
@@ -215,7 +223,7 @@ public class SysMenuManager extends TreeManager<SysMenuDto, SysMenuMapper> {
         List<SysMenuDto> children = baseMapper.selectList(
                 Wrappers.<SysMenuDto>update().lambda()
                         .apply(FIND_IN_SET, id, SqlConstants.Entity.ANCESTORS.getCode()));
-        if(CollUtil.isNotEmpty(children)) {
+        if (CollUtil.isNotEmpty(children)) {
             Set<Long> idSet = children.stream().map(SysMenuDto::getId).collect(Collectors.toSet());
             tenantMenuMergeMapper.delete(
                     Wrappers.<SysTenantMenuMerge>update().lambda()

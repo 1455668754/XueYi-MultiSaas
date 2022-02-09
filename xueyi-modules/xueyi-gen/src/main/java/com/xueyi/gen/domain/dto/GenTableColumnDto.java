@@ -92,7 +92,7 @@ public class GenTableColumnDto extends GenTableColumnPo {
     }
 
     public String readNameNoSuffix() {
-        return StrUtil.isNotEmpty(this.getComment()) ? this.getComment().replaceAll("(?:\\（)[^\\(\\)]*(?:\\）)", "") : this.getComment();
+        return StrUtil.isNotEmpty(this.getComment()) ? this.getComment().replaceAll("(?:\\（)[^\\(\\)]*(?:\\）)", StrUtil.EMPTY) : this.getComment();
     }
 
     @Override

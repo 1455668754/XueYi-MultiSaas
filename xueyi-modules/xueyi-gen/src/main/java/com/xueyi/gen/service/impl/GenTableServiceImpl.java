@@ -68,7 +68,7 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
      */
     public static String getGenPath(GenTableDto table, String template) {
         String genPath = table.getGenPath();
-        if (StringUtils.equals(genPath, "/")) {
+        if (StringUtils.equals(genPath, StrUtil.SLASH)) {
             return System.getProperty("user.dir") + File.separator + "src" + File.separator + VelocityUtils.getFileName(template, table);
         }
         return genPath + File.separator + VelocityUtils.getFileName(template, table);
@@ -83,7 +83,7 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
      */
     public static String getUiPath(GenTableDto table, String template) {
         String genPath = table.getGenPath();
-        if (StringUtils.equals(genPath, "/")) {
+        if (StringUtils.equals(genPath, StrUtil.SLASH)) {
             return System.getProperty("user.dir") + File.separator + "MultiSaas-UI" + File.separator + VelocityUtils.getFileName(template, table);
         }
         return genPath + File.separator + VelocityUtils.getFileName(template, table);
@@ -188,10 +188,10 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
             Template tpl = Velocity.getTemplate(template, HttpConstants.Character.UTF8.getCode());
             tpl.merge(context, sw);
             data = new JSONObject();
-            String vmName = StrUtil.subAfter(template, "/", true);
+            String vmName = StrUtil.subAfter(template, StrUtil.SLASH, true);
             vmName = StrUtil.removeSuffix(vmName, (".vm"));
             data.put("name", vmName);
-            data.put("language", StrUtil.subAfter(vmName, ".", true));
+            data.put("language", StrUtil.subAfter(vmName, StrUtil.DOT, true));
             data.put("template", sw.toString());
             dataMap.add(data);
         }
