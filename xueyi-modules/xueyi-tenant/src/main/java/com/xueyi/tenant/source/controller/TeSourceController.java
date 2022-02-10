@@ -1,6 +1,10 @@
 package com.xueyi.tenant.source.controller;
 
+import cn.hutool.core.util.StrUtil;
+import com.xueyi.common.core.constant.BaseConstants;
+import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.web.result.AjaxResult;
+import com.xueyi.common.datasource.utils.DSUtils;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.Logical;
@@ -36,8 +40,8 @@ public class TeSourceController extends BaseController<TeSourceDto, ITeSourceSer
     @Override
     @GetMapping("/list")
     @RequiresPermissions("tenant:source:list")
-    public AjaxResult list(TeSourceDto teSource) {
-        return super.list(teSource);
+    public AjaxResult list(TeSourceDto source) {
+        return super.list(source);
     }
 
     /**
@@ -56,8 +60,17 @@ public class TeSourceController extends BaseController<TeSourceDto, ITeSourceSer
     @Override
     @PostMapping("/export")
     @RequiresPermissions("tenant:source:export")
-    public void export(HttpServletResponse response, TeSourceDto teSource) {
-        super.export(response, teSource);
+    public void export(HttpServletResponse response, TeSourceDto source) {
+        super.export(response, source);
+    }
+
+    /**
+     * 数据源连接测试
+     */
+    @PostMapping("/connection")
+    public AjaxResult connection(@Validated @RequestBody TeSourceDto source) {
+        DSUtils.testDs(source);
+        return success();
     }
 
     /**
@@ -67,8 +80,8 @@ public class TeSourceController extends BaseController<TeSourceDto, ITeSourceSer
     @PostMapping
     @RequiresPermissions("tenant:source:add")
     @Log(title = "数据源管理", businessType = BusinessType.INSERT)
-    public AjaxResult add(@Validated @RequestBody TeSourceDto teSource) {
-        return super.add(teSource);
+    public AjaxResult add(@Validated @RequestBody TeSourceDto source) {
+        return super.add(source);
     }
 
     /**
@@ -78,8 +91,8 @@ public class TeSourceController extends BaseController<TeSourceDto, ITeSourceSer
     @PutMapping
     @RequiresPermissions("tenant:source:edit")
     @Log(title = "数据源管理", businessType = BusinessType.UPDATE)
-    public AjaxResult edit(@Validated @RequestBody TeSourceDto teSource) {
-        return super.edit(teSource);
+    public AjaxResult edit(@Validated @RequestBody TeSourceDto source) {
+        return super.edit(source);
     }
 
     /**
@@ -89,8 +102,8 @@ public class TeSourceController extends BaseController<TeSourceDto, ITeSourceSer
     @PutMapping("/status")
     @RequiresPermissions(value = {"tenant:source:edit", "tenant:source:editStatus"}, logical = Logical.OR)
     @Log(title = "数据源管理", businessType = BusinessType.UPDATE_STATUS)
-    public AjaxResult editStatus(@Validated @RequestBody TeSourceDto teSource) {
-        return super.editStatus(teSource);
+    public AjaxResult editStatus(@Validated @RequestBody TeSourceDto source) {
+        return super.editStatus(source);
     }
 
     /**
@@ -102,5 +115,15 @@ public class TeSourceController extends BaseController<TeSourceDto, ITeSourceSer
     @Log(title = "数据源管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);
+    }
+
+    /**
+     * 前置校验 （强制）增加/修改
+     */
+    @Override
+    protected void baseRefreshValidated(BaseConstants.Operate operate, TeSourceDto source) {
+        DSUtils.testDs(source);
+        if (baseService.checkNameUnique(source.getId(),  source.getName()))
+            throw new ServiceException(StrUtil.format("{}{}{}失败，数据源名称已存在", operate.getInfo(), getNodeName(), source.getName()));
     }
 }

@@ -24,6 +24,7 @@ public class TeSourceManager extends BaseManager<TeSourceDto, TeSourceMapper> {
      * @param source 数据源对象
      * @return 结果
      */
+    @Override
     public int insert(TeSourceDto source) {
         source.setSlave(IdUtil.simpleUUID());
         return baseMapper.insert(source);
@@ -35,6 +36,7 @@ public class TeSourceManager extends BaseManager<TeSourceDto, TeSourceMapper> {
      * @param sourceList 数据源对象集合
      * @return 结果
      */
+    @Override
     @DSTransactional
     public int insertBatch(Collection<TeSourceDto> sourceList) {
         if (CollUtil.isNotEmpty(sourceList))

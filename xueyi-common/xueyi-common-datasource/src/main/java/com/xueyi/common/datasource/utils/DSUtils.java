@@ -23,17 +23,17 @@ public class DSUtils {
     /**
      * 添加一个数据源到数据源库中
      *
-     * @param teSourceDto 数据源对象
+     * @param source 数据源对象
      */
-    public static void addDs(TeSourceDto teSourceDto) {
+    public static void addDs(TeSourceDto source) {
         try {
             DefaultDataSourceCreator dataSourceCreator = SpringUtils.getBean(DefaultDataSourceCreator.class);
             DataSourceProperty dataSourceProperty = new DataSourceProperty();
-            BeanUtils.copyProperties(teSourceDto, dataSourceProperty);
+            BeanUtils.copyProperties(source, dataSourceProperty);
             DataSource dataSource = SpringUtils.getBean(DataSource.class);
             DynamicRoutingDataSource ds = (DynamicRoutingDataSource) dataSource;
             dataSource = dataSourceCreator.createDataSource(dataSourceProperty);
-            ds.addDataSource(teSourceDto.getSlave(), dataSource);
+            ds.addDataSource(source.getSlave(), dataSource);
         } catch (Exception e) {
             e.printStackTrace();
             throw new ServiceException("数据源添加失败");
@@ -73,34 +73,34 @@ public class DSUtils {
 //    /**
 //     * 异步同步数据源到数据源库
 //     *
-//     * @param teSourceDto 数据源对象
+//     * @param source 数据源对象
 //     */
-//    public static void syncDs(TeSourceDto teSourceDto) {
+//    public static void syncDs(TeSourceDto source) {
 //        ProducerService producerService = SpringUtils.getBean(ProducerService.class);
-//        Message message = new Message(IdUtils.randomUUID(), teSourceDto);
+//        Message message = new Message(IdUtils.randomUUID(), source);
 //        producerService.sendMsg(message, MessageConstant.EXCHANGE_SOURCE, MessageConstant.ROUTING_KEY_SOURCE);
 //    }
 
     /**
      * 测试数据源是否可连接
      *
-     * @param teSourceDto 数据源对象
+     * @param source 数据源对象
      */
-    public static void testDs(TeSourceDto teSourceDto) {
+    public static void testDs(TeSourceDto source) {
         try {
-            Class.forName(teSourceDto.getDriverClassName());
-        }catch (Exception e) {
+            Class.forName(source.getDriverClassName());
+        } catch (Exception e) {
             // TODO: handle exception
             e.printStackTrace();
-            throw new ServiceException("数据源驱动加载失败");
+            throw new ServiceException("数据源驱动加载失败，请检查驱动信息！");
         }
         try {
-            Connection dbConn= DriverManager.getConnection(teSourceDto.getUrlPrepend()+ teSourceDto.getUrlAppend(), teSourceDto.getUsername(), teSourceDto.getPassword());
+            Connection dbConn = DriverManager.getConnection(source.getUrlPrepend() + source.getUrlAppend(), source.getUsername(), source.getPassword());
             dbConn.close();
-        }catch (Exception e) {
+        } catch (Exception e) {
             // TODO: handle exception
             e.printStackTrace();
-            throw new ServiceException("数据库连接失败");
+            throw new ServiceException("数据库连接失败，请检查连接信息！");
         }
     }
 }

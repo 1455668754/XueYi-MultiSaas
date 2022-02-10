@@ -212,6 +212,7 @@ public class SysMenuManager extends TreeManager<SysMenuDto, SysMenuMapper> {
      * @param menu 菜单对象
      * @return 结果
      */
+    @Override
     public int insert(SysMenuDto menu) {
         menu.setName(IdUtil.simpleUUID());
         return baseMapper.insert(menu);
@@ -223,6 +224,7 @@ public class SysMenuManager extends TreeManager<SysMenuDto, SysMenuMapper> {
      * @param menuList 菜单对象集合
      * @return 结果
      */
+    @Override
     @DSTransactional
     public int insertBatch(Collection<SysMenuDto> menuList) {
         if (CollUtil.isNotEmpty(menuList))

@@ -67,11 +67,11 @@ drop table if exists te_source;
 create table te_source (
   id		                bigint	            not null                                comment '数据源Id',
   name		                varchar(50)	        not null                                comment '数据源名称',
-  slave		                varchar(500)	    not null default ''	                    comment '数据源编码',
-  driver_class_name		    varchar(500)	    not null default ''	                    comment '驱动',
-  url_prepend	            varchar(500)	    not null default ''	                    comment '连接地址',
+  slave		                varchar(500)	    not null	                            comment '数据源编码',
+  driver_class_name		    varchar(500)	    not null	                            comment '驱动',
+  url_prepend	            varchar(500)	    not null	                            comment '连接地址',
   url_append	            varchar(500)	    not null default ''	                    comment '连接参数',
-  username	                varchar(500)	    not null default ''	                    comment '用户名',
+  username	                varchar(500)	    not null	                            comment '用户名',
   password	                varchar(500)	    not null default ''	                    comment '密码',
   sort                      int unsigned        not null default 0                      comment '显示顺序',
   status                    char(1)             not null default '0'                    comment '状态（0正常 1停用）',
@@ -82,7 +82,9 @@ create table te_source (
   update_time               datetime            on update current_timestamp             comment '更新时间',
   is_default                char(1)             not null default 'N'	                comment '默认数据源（Y是 N否）',
   del_flag		            tinyint             not null default 0                      comment '删除标志（0正常 1删除）',
-primary key (id)
+primary key (id),
+unique key (name),
+unique key (slave)
 ) engine=innodb comment = '数据源表';
 
 -- ----------------------------

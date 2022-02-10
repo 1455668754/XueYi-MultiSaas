@@ -69,8 +69,8 @@ public class ${ClassName}Controller extends ${Entity}Controller${generics} {
     @Override
     @GetMapping("/list")
     @RequiresPermissions("${authorityName}:${businessName}:list")
-    public AjaxResult list(${ClassName}Dto ${className}) {
-        return super.list(${className});
+    public AjaxResult list(${ClassName}Dto ${classNameNoPrefix}) {
+        return super.list(${classNameNoPrefix});
     }
 #if($table.tree || $table.subTree)
 
@@ -79,8 +79,8 @@ public class ${ClassName}Controller extends ${Entity}Controller${generics} {
      */
     @GetMapping("/list/exclude")
     @RequiresPermissions("${authorityName}:${businessName}:list")
-    public AjaxResult listExNodes(${ClassName}Dto ${className}) {
-        return super.listExNodes(${className});
+    public AjaxResult listExNodes(${ClassName}Dto ${classNameNoPrefix}) {
+        return super.listExNodes(${classNameNoPrefix});
     }
 #end
 #end
@@ -116,8 +116,8 @@ public class ${ClassName}Controller extends ${Entity}Controller${generics} {
     @Override
     @PostMapping("/export")
     @RequiresPermissions("${authorityName}:${businessName}:export")
-    public void export(HttpServletResponse response, ${ClassName}Dto ${className}) {
-        super.export(response, ${className});
+    public void export(HttpServletResponse response, ${ClassName}Dto ${classNameNoPrefix}) {
+        super.export(response, ${classNameNoPrefix});
     }
 #end
 #if($api.add)
@@ -129,8 +129,8 @@ public class ${ClassName}Controller extends ${Entity}Controller${generics} {
     @PostMapping
     @RequiresPermissions("${authorityName}:${businessName}:add")
     @Log(title = "${functionName}管理", businessType = BusinessType.INSERT)
-    public AjaxResult add(@Validated @RequestBody ${ClassName}Dto ${className}) {
-        return super.add(${className});
+    public AjaxResult add(@Validated @RequestBody ${ClassName}Dto ${classNameNoPrefix}) {
+        return super.add(${classNameNoPrefix});
     }
 #end
 #if($api.addForce)
@@ -142,8 +142,8 @@ public class ${ClassName}Controller extends ${Entity}Controller${generics} {
     @PostMapping("/force")
     @RequiresPermissions("${authorityName}:${businessName}:add")
     @Log(title = "${functionName}管理", businessType = BusinessType.INSERT_FORCE)
-    public AjaxResult addForce(@Validated @RequestBody ${ClassName}Dto ${className}) {
-        return super.addForce(${className});
+    public AjaxResult addForce(@Validated @RequestBody ${ClassName}Dto ${classNameNoPrefix}) {
+        return super.addForce(${classNameNoPrefix});
     }
 #end
 #if($api.edit)
@@ -155,8 +155,8 @@ public class ${ClassName}Controller extends ${Entity}Controller${generics} {
     @PutMapping
     @RequiresPermissions("${authorityName}:${businessName}:edit")
     @Log(title = "${functionName}管理", businessType = BusinessType.UPDATE)
-    public AjaxResult edit(@Validated @RequestBody ${ClassName}Dto ${className}) {
-        return super.edit(${className});
+    public AjaxResult edit(@Validated @RequestBody ${ClassName}Dto ${classNameNoPrefix}) {
+        return super.edit(${classNameNoPrefix});
     }
 #end
 #if($api.editForce)
@@ -168,8 +168,8 @@ public class ${ClassName}Controller extends ${Entity}Controller${generics} {
     @PutMapping("/force")
     @RequiresPermissions("${authorityName}:${businessName}:edit")
     @Log(title = "${functionName}管理", businessType = BusinessType.UPDATE_FORCE)
-    public AjaxResult editForce(@Validated @RequestBody ${ClassName}Dto ${className}) {
-        return super.editForce(${className});
+    public AjaxResult editForce(@Validated @RequestBody ${ClassName}Dto ${classNameNoPrefix}) {
+        return super.editForce(${classNameNoPrefix});
     }
 #end
 #if($api.editStatus)
@@ -181,8 +181,8 @@ public class ${ClassName}Controller extends ${Entity}Controller${generics} {
     @PutMapping("/status")
     @RequiresPermissions(value = {"${authorityName}:${businessName}:edit", "${authorityName}:${businessName}:editStatus"}, logical = Logical.OR)
     @Log(title = "${functionName}管理", businessType = BusinessType.UPDATE_STATUS)
-    public AjaxResult editStatus(@Validated @RequestBody ${ClassName}Dto ${className}) {
-        return super.editStatus(${className});
+    public AjaxResult editStatus(@Validated @RequestBody ${ClassName}Dto ${classNameNoPrefix}) {
+        return super.editStatus(${classNameNoPrefix});
     }
 #end
 #if($api.editStatusForce)
@@ -194,8 +194,8 @@ public class ${ClassName}Controller extends ${Entity}Controller${generics} {
     @PutMapping("/force/status")
     @RequiresPermissions(value = {"${authorityName}:${businessName}:edit", "${authorityName}:${businessName}:editStatus"}, logical = Logical.OR)
     @Log(title = "${functionName}管理", businessType = BusinessType.UPDATE_STATUS_FORCE)
-    public AjaxResult editStatusForce(@Validated @RequestBody ${ClassName}Dto ${className}) {
-        return super.editStatusForce(${className});
+    public AjaxResult editStatusForce(@Validated @RequestBody ${ClassName}Dto ${classNameNoPrefix}) {
+        return super.editStatusForce(${classNameNoPrefix});
     }
 #end
 #if($api.batchRemove)
