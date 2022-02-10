@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.dynamic.datasource.annotation.DS;
+import com.xueyi.common.core.constant.AuthorityConstants;
 import com.xueyi.common.core.utils.TreeUtils;
 import com.xueyi.common.web.entity.service.impl.TreeServiceImpl;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
@@ -70,7 +71,7 @@ public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuDto, SysMenuManag
     @Override
     public Map<String, String> getRouteMap(Long enterpriseId) {
         List<SysMenuDto> menuList = baseManager.loginLessorMenuList(enterpriseId)
-                .stream().filter(menu -> menu.isDir() || menu.isMenu() || menu.isDetails())
+                .stream().filter(menu -> ObjectUtil.notEqual(menu.getId(), AuthorityConstants.MENU_TOP_NODE) && (menu.isDir() || menu.isMenu() || menu.isDetails()))
                 .collect(Collectors.toList());
         return buildRoutePath(menuList);
     }
@@ -86,7 +87,7 @@ public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuDto, SysMenuManag
     @DS("#sourceName")
     public Map<String, String> getRouteMap(Long enterpriseId, String sourceName) {
         List<SysMenuDto> menuList = baseManager.loginMenuList(enterpriseId)
-                .stream().filter(menu -> menu.isDir() || menu.isMenu() || menu.isDetails())
+                .stream().filter(menu -> ObjectUtil.notEqual(menu.getId(), AuthorityConstants.MENU_TOP_NODE) && (menu.isDir() || menu.isMenu() || menu.isDetails()))
                 .collect(Collectors.toList());
         return buildRoutePath(menuList);
     }
@@ -103,7 +104,7 @@ public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuDto, SysMenuManag
     @DS("#sourceName")
     public Map<String, String> getRouteMap(Set<Long> roleIds, Long enterpriseId, String sourceName) {
         List<SysMenuDto> menuList = baseManager.loginMenuList(roleIds, enterpriseId)
-                .stream().filter(menu -> menu.isDir() || menu.isMenu() || menu.isDetails())
+                .stream().filter(menu -> ObjectUtil.notEqual(menu.getId(), AuthorityConstants.MENU_TOP_NODE) && (menu.isDir() || menu.isMenu() || menu.isDetails()))
                 .collect(Collectors.toList());
         return buildRoutePath(menuList);
     }

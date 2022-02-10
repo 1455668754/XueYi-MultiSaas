@@ -59,7 +59,7 @@
   import { list${BusinessName}Api, del${BusinessName}Api } from '@service/${moduleName}/${authorityName}/${businessName}'
   import { useModal } from '@/components/Modal'
   import { useMessage } from '@/hooks/web/useMessage'
-  import { useGo } from '@/hooks/web/usePage'
+  import { useUserStore } from '@/store/user'
   import { IconEnum } from '@admin/tokens'
   import { BasicTable, TableAction, useTable } from '@/components/Table'
   import { ${BusinessName}Auth } from '@auth/${moduleName}'
@@ -71,7 +71,6 @@
     name: '${BusinessName}Management',
     components: { BasicTable, ${BusinessName}Modal, TableAction },
     setup() {
-      const go = useGo()
       const { createMessage, createConfirm } = useMessage()
       const [registerModal, { openModal }] = useModal()
       const state = reactive<{
@@ -124,7 +123,7 @@
 
       /** 查看按钮 */
       function handleView(record: Recordable) {
-        go(${BusinessName}DetailGo + record.${pkColumn.javaField})
+        useUserStore().getRoutePath(${BusinessName}DetailGo, record.${pkColumn.javaField})
       }
 
       /** 新增按钮 */

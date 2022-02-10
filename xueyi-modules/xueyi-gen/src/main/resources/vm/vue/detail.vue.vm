@@ -13,19 +13,18 @@ import { useRoute } from 'vue-router'
 import { ${BusinessName}IndexGo } from '@enums/${moduleName}'
 import { useTabs } from '@/hooks/web/useTabs'
 import { PageWrapper } from '@/components/Page'
-import { useGo } from '@/hooks/web/usePage'
+import { useUserStore } from '@/store/user'
 import { DescItemSizeEnum } from '@admin/tokens'
 
 export default defineComponent({
   components: { Description, PageWrapper },
   setup() {
     const route = useRoute()
-    const go = useGo()
     const { setTitle } = useTabs()
     const getTitle = ref('${functionName}详情')
 
     const [register, { setDescProps }] = useDescription({
-      title: '${BusinessName}Detail',
+      title: '${functionName}详情',
       schema: detailSchema,
       column: DescItemSizeEnum.DEFAULT,
     })
@@ -50,7 +49,7 @@ export default defineComponent({
 
     /** 返回${functionName}主页 */
     function goBack() {
-      go(${BusinessName}IndexGo)
+      useUserStore().getRoutePath(${BusinessName}IndexGo)
     }
 
     return { register, getTitle, goBack }
