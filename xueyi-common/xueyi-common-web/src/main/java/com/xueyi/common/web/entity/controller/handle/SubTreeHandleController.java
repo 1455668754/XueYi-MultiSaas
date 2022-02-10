@@ -24,9 +24,7 @@ import java.util.List;
  */
 public abstract class SubTreeHandleController<D extends SubTreeEntity<D, S>, DS extends ISubTreeService<D, S>, S extends BaseEntity, SS extends IBaseService<S>> extends TreeController<D, DS> {
 
-    /**
-     * 定义子数据名称
-     */
+    /** 定义子数据名称 */
     protected abstract String getSubName();
 
     /**

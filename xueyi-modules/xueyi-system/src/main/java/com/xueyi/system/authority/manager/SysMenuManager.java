@@ -1,6 +1,7 @@
 package com.xueyi.system.authority.manager;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.IdUtil;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -203,6 +204,30 @@ public class SysMenuManager extends TreeManager<SysMenuDto, SysMenuMapper> {
                 return new ArrayList<>();
         }
         return baseMapper.selectList(queryWrapper);
+    }
+
+    /**
+     * 新增菜单对象
+     *
+     * @param menu 菜单对象
+     * @return 结果
+     */
+    public int insert(SysMenuDto menu) {
+        menu.setName(IdUtil.simpleUUID());
+        return baseMapper.insert(menu);
+    }
+
+    /**
+     * 新增菜单对象（批量）
+     *
+     * @param menuList 菜单对象集合
+     * @return 结果
+     */
+    @DSTransactional
+    public int insertBatch(Collection<SysMenuDto> menuList) {
+        if (CollUtil.isNotEmpty(menuList))
+            menuList.forEach(menu -> menu.setName(IdUtil.simpleUUID()));
+        return baseMapper.insertBatch(menuList);
     }
 
     /**

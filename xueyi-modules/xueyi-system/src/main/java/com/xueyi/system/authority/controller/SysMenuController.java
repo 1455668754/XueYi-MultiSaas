@@ -1,7 +1,6 @@
 package com.xueyi.system.authority.controller;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.AuthorityConstants;
@@ -138,7 +137,6 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
     @RequiresPermissions("authority:menu:edit")
     @Log(title = "菜单管理", businessType = BusinessType.UPDATE)
     public AjaxResult edit(@Validated @RequestBody SysMenuDto sysMenu) {
-        System.out.println(sysMenu);
         return super.edit(sysMenu);
     }
 
@@ -181,15 +179,10 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
                     throw new ServiceException(StrUtil.format("{}{}{}失败，无操作权限", operate.getInfo(), getNodeName(), menu.getTitle()));
             }
         }
-        // 每个菜单新增时生成唯一UUID
-        if (operate.isAdd()){
-            menu.setName(IdUtil.simpleUUID());
-        }
         if(ObjectUtil.equals(menu.getId(), AuthorityConstants.MENU_TOP_NODE))
             throw new ServiceException("默认菜单不允许修改！");
         if (baseService.checkNameUnique(menu.getId(), menu.getParentId(), menu.getName()))
             throw new ServiceException(StrUtil.format("{}{}{}失败，菜单名称已存在", operate.getInfo(), getNodeName(), menu.getTitle()));
-
     }
 
     /**
