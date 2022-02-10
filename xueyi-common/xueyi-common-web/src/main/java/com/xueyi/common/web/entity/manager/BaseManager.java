@@ -28,7 +28,7 @@ public class BaseManager<D extends BaseEntity, DM extends BaseMapper<D>> extends
      */
     public List<D> selectList(D d) {
         return baseMapper.selectList(
-                Wrappers.query(d).lambda());
+                Wrappers.query(d));
     }
 
     /**

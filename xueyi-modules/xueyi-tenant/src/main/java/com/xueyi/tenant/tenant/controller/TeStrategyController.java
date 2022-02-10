@@ -1,6 +1,7 @@
 package com.xueyi.tenant.tenant.controller;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.BaseConstants;
 import com.xueyi.common.core.exception.ServiceException;
@@ -10,7 +11,9 @@ import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.Logical;
 import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.web.entity.controller.BaseController;
+import com.xueyi.tenant.api.source.domain.dto.TeSourceDto;
 import com.xueyi.tenant.api.tenant.domain.dto.TeStrategyDto;
+import com.xueyi.tenant.source.service.ITeSourceService;
 import com.xueyi.tenant.tenant.service.ITeStrategyService;
 import com.xueyi.tenant.tenant.service.ITeTenantService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +34,9 @@ public class TeStrategyController extends BaseController<TeStrategyDto, ITeStrat
 
     @Autowired
     private ITeTenantService tenantService;
+
+    @Autowired
+    private ITeSourceService sourceService;
 
     /** 定义节点名称 */
     @Override
@@ -107,8 +113,13 @@ public class TeStrategyController extends BaseController<TeStrategyDto, ITeStrat
      */
     @Override
     protected void baseRefreshValidated(BaseConstants.Operate operate, TeStrategyDto strategy) {
-        if (baseService.checkNameUnique(strategy.getId(),  strategy.getName()))
-            throw new ServiceException(StrUtil.format("{}{}{}失败，数据源名称已存在", operate.getInfo(), getNodeName(), strategy.getName()));
+        if (baseService.checkNameUnique(strategy.getId(), strategy.getName()))
+            throw new ServiceException(StrUtil.format("{}{}{}失败，源策略名称已存在", operate.getInfo(), getNodeName(), strategy.getName()));
+        TeSourceDto source = sourceService.selectById(strategy.getSourceId());
+        if (ObjectUtil.isNull(source))
+            throw new ServiceException(StrUtil.format("{}{}{}失败，设置的数据源不存在", operate.getInfo(), getNodeName(), strategy.getName()));
+        else
+            strategy.setSourceSlave(source.getSlave());
     }
 
     /**
