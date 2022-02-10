@@ -129,7 +129,7 @@ public class TeSourceController extends BaseController<TeSourceDto, ITeSourceSer
     @Override
     protected void baseRefreshValidated(BaseConstants.Operate operate, TeSourceDto source) {
         DSUtils.testDs(source);
-        if (baseService.checkNameUnique(source.getId(),  source.getName()))
+        if (baseService.checkNameUnique(source.getId(), source.getName()))
             throw new ServiceException(StrUtil.format("{}{}{}失败，数据源名称已存在", operate.getInfo(), getNodeName(), source.getName()));
     }
 
@@ -139,14 +139,17 @@ public class TeSourceController extends BaseController<TeSourceDto, ITeSourceSer
     @Override
     protected void baseRemoveValidated(BaseConstants.Operate operate, List<Long> idList) {
         int size = idList.size();
-        for (int i = idList.size() - 1; i >= 0; i--)
+        for (int i = idList.size() - 1; i >= 0; i--) {
             if (strategyService.checkSourceExist(idList.get(i)))
                 idList.remove(i);
+            else if (baseService.checkIsDefault(idList.get(i)))
+                idList.remove(i);
+        }
         if (CollUtil.isEmpty(idList)) {
-            throw new ServiceException(StrUtil.format("删除失败，所有待删除{}皆已被源策略使用！", getNodeName()));
+            throw new ServiceException(StrUtil.format("删除失败，默认{}及已被使用的{}不允许删除！", getNodeName(), getNodeName()));
         } else if (idList.size() != size) {
             baseService.deleteByIds(idList);
-            throw new ServiceException(StrUtil.format("成功删除所有未被源策略使用的{}！", getNodeName()));
+            throw new ServiceException(StrUtil.format("默认{}及已被使用的{}不允许删除，其余{}删除成功！", getNodeName(), getNodeName(), getNodeName()));
         }
     }
 }

@@ -21,6 +21,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -52,6 +53,16 @@ public class TeStrategyController extends BaseController<TeStrategyDto, ITeStrat
     @RequiresPermissions("tenant:strategy:list")
     public AjaxResult list(TeStrategyDto strategy) {
         return super.list(strategy);
+    }
+
+    /**
+     * 查询源策略详细
+     */
+    @Override
+    @GetMapping(value = "/{id}")
+    @RequiresPermissions("tenant:strategy:single")
+    public AjaxResult getInfo(@PathVariable Serializable id) {
+        return super.getInfo(id);
     }
 
     /**
@@ -128,14 +139,17 @@ public class TeStrategyController extends BaseController<TeStrategyDto, ITeStrat
     @Override
     protected void baseRemoveValidated(BaseConstants.Operate operate, List<Long> idList) {
         int size = idList.size();
-        for (int i = idList.size() - 1; i >= 0; i--)
+        for (int i = idList.size() - 1; i >= 0; i--) {
             if (tenantService.checkStrategyExist(idList.get(i)))
                 idList.remove(i);
+            else if (baseService.checkIsDefault(idList.get(i)))
+                idList.remove(i);
+        }
         if (CollUtil.isEmpty(idList)) {
-            throw new ServiceException(StrUtil.format("删除失败，所有待删除{}皆已被租户使用！", getNodeName()));
+            throw new ServiceException(StrUtil.format("删除失败，默认{}及已被使用的{}不允许删除！", getNodeName(), getNodeName()));
         } else if (idList.size() != size) {
             baseService.deleteByIds(idList);
-            throw new ServiceException(StrUtil.format("成功删除所有未被租户使用的{}！", getNodeName()));
+            throw new ServiceException(StrUtil.format("默认{}及已被使用的{}不允许删除，其余{}删除成功！", getNodeName(), getNodeName(), getNodeName()));
         }
     }
 }

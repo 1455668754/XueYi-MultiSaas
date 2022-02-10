@@ -16,5 +16,13 @@ public interface ITeTenantService extends IBaseService<TeTenantDto> {
      * @param strategyId 数据源策略id
      * @return 结果 | true/false 存在/不存在
      */
-    public boolean checkStrategyExist(Long strategyId);
+    boolean checkStrategyExist(Long strategyId);
+
+    /**
+     * 校验租户是否为默认租户
+     *
+     * @param id 租户id
+     * @return 结果 | true/false 是/不是
+     */
+    boolean checkIsDefault(Long id);
 }

@@ -1,7 +1,9 @@
 package com.xueyi.tenant.tenant.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.dynamic.datasource.annotation.DS;
+import com.xueyi.common.core.constant.DictConstants;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.tenant.api.tenant.domain.dto.TeStrategyDto;
 import com.xueyi.tenant.tenant.manager.TeStrategyManager;
@@ -29,6 +31,18 @@ public class TeStrategyServiceImpl extends BaseServiceImpl<TeStrategyDto, TeStra
     @Override
     public boolean checkSourceExist(Long sourceId) {
         return ObjectUtil.isNotNull(baseManager.checkSourceExist(sourceId));
+    }
+
+    /**
+     * 校验源策略是否为默认源策略
+     *
+     * @param id 源策略id
+     * @return 结果 | true/false 是/不是
+     */
+    @Override
+    public boolean checkIsDefault(Long id) {
+        TeStrategyDto strategy = baseManager.selectById(id);
+        return ObjectUtil.isNotNull(strategy) && StrUtil.equals(strategy.getIsDefault(), DictConstants.DicYesNo.YES.getCode());
     }
 
 }
