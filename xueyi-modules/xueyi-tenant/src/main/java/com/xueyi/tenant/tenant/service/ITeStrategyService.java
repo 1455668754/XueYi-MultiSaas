@@ -9,4 +9,12 @@ import com.xueyi.common.web.entity.service.IBaseService;
  * @author xueyi
  */
 public interface ITeStrategyService extends IBaseService<TeStrategyDto> {
+
+    /**
+     * 校验数据源是否被使用
+     *
+     * @param sourceId 数据源id
+     * @return 结果 | true/false 存在/不存在
+     */
+    public boolean checkSourceExist(Long sourceId);
 }

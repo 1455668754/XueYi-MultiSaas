@@ -1,5 +1,6 @@
 package com.xueyi.tenant.source.controller;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.BaseConstants;
 import com.xueyi.common.core.exception.ServiceException;
@@ -12,6 +13,8 @@ import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.tenant.api.source.domain.dto.TeSourceDto;
 import com.xueyi.tenant.source.service.ITeSourceService;
+import com.xueyi.tenant.tenant.service.ITeStrategyService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +30,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/source")
 public class TeSourceController extends BaseController<TeSourceDto, ITeSourceService> {
+
+    @Autowired
+    private ITeStrategyService strategyService;
 
     /** 定义节点名称 */
     @Override
@@ -125,5 +131,22 @@ public class TeSourceController extends BaseController<TeSourceDto, ITeSourceSer
         DSUtils.testDs(source);
         if (baseService.checkNameUnique(source.getId(),  source.getName()))
             throw new ServiceException(StrUtil.format("{}{}{}失败，数据源名称已存在", operate.getInfo(), getNodeName(), source.getName()));
+    }
+
+    /**
+     * 前置校验 （强制）删除
+     */
+    @Override
+    protected void baseRemoveValidated(BaseConstants.Operate operate, List<Long> idList) {
+        int size = idList.size();
+        for (int i = idList.size() - 1; i >= 0; i--)
+            if (strategyService.checkSourceExist(idList.get(i)))
+                idList.remove(i);
+        if (CollUtil.isEmpty(idList)) {
+            throw new ServiceException(StrUtil.format("删除失败，所有待删除{}皆已被源策略使用！", getNodeName()));
+        } else if (idList.size() != size) {
+            baseService.deleteByIds(idList);
+            throw new ServiceException(StrUtil.format("成功删除所有未被源策略使用的{}！", getNodeName()));
+        }
     }
 }

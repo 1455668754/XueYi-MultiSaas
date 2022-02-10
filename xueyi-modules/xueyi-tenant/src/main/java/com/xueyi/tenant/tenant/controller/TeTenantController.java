@@ -1,8 +1,8 @@
 package com.xueyi.tenant.tenant.controller;
 
+import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.tenant.api.tenant.domain.dto.TeTenantDto;
 import com.xueyi.tenant.tenant.service.ITeTenantService;
-import com.xueyi.common.web.entity.controller.BaseController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
