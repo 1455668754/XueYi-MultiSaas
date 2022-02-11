@@ -10,6 +10,7 @@ import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.Logical;
 import com.xueyi.common.security.annotation.RequiresPermissions;
+import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.tenant.api.source.domain.dto.TeSourceDto;
 import com.xueyi.tenant.api.tenant.domain.dto.TeStrategyDto;
@@ -50,7 +51,7 @@ public class TeStrategyController extends BaseController<TeStrategyDto, ITeStrat
      */
     @Override
     @GetMapping("/list")
-    @RequiresPermissions("tenant:strategy:list")
+    @RequiresPermissions(Auth.TE_STRATEGY_LIST)
     public AjaxResult listExtra(TeStrategyDto strategy) {
         return super.listExtra(strategy);
     }
@@ -60,7 +61,7 @@ public class TeStrategyController extends BaseController<TeStrategyDto, ITeStrat
      */
     @Override
     @GetMapping(value = "/{id}")
-    @RequiresPermissions("tenant:strategy:single")
+    @RequiresPermissions(Auth.TE_STRATEGY_SINGLE)
     public AjaxResult getInfoExtra(@PathVariable Serializable id) {
         return super.getInfoExtra(id);
     }
@@ -70,7 +71,7 @@ public class TeStrategyController extends BaseController<TeStrategyDto, ITeStrat
      */
     @Override
     @PostMapping("/export")
-    @RequiresPermissions("tenant:strategy:export")
+    @RequiresPermissions(Auth.TE_STRATEGY_EXPORT)
     public void export(HttpServletResponse response, TeStrategyDto strategy) {
         super.export(response, strategy);
     }
@@ -80,7 +81,7 @@ public class TeStrategyController extends BaseController<TeStrategyDto, ITeStrat
      */
     @Override
     @PostMapping
-    @RequiresPermissions("tenant:strategy:add")
+    @RequiresPermissions(Auth.TE_STRATEGY_ADD)
     @Log(title = "数据源策略管理", businessType = BusinessType.INSERT)
     public AjaxResult add(@Validated @RequestBody TeStrategyDto strategy) {
         return super.add(strategy);
@@ -91,7 +92,7 @@ public class TeStrategyController extends BaseController<TeStrategyDto, ITeStrat
      */
     @Override
     @PutMapping
-    @RequiresPermissions("tenant:strategy:edit")
+    @RequiresPermissions(Auth.TE_STRATEGY_EDIT)
     @Log(title = "数据源策略管理", businessType = BusinessType.UPDATE)
     public AjaxResult edit(@Validated @RequestBody TeStrategyDto strategy) {
         return super.edit(strategy);
@@ -102,7 +103,7 @@ public class TeStrategyController extends BaseController<TeStrategyDto, ITeStrat
      */
     @Override
     @PutMapping("/status")
-    @RequiresPermissions(value = {"tenant:strategy:edit", "tenant:strategy:editStatus"}, logical = Logical.OR)
+    @RequiresPermissions(value = {Auth.TE_STRATEGY_EDIT, Auth.TE_STRATEGY_EDIT_STATUS}, logical = Logical.OR)
     @Log(title = "数据源策略管理", businessType = BusinessType.UPDATE_STATUS)
     public AjaxResult editStatus(@Validated @RequestBody TeStrategyDto strategy) {
         return super.editStatus(strategy);
@@ -113,10 +114,22 @@ public class TeStrategyController extends BaseController<TeStrategyDto, ITeStrat
      */
     @Override
     @DeleteMapping("/batch/{idList}")
-    @RequiresPermissions("tenant:strategy:delete")
+    @RequiresPermissions(Auth.TE_STRATEGY_DELETE)
     @Log(title = "数据源策略管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);
+    }
+
+    /**
+     * 获取数据源策略选择框列表
+     */
+    @Override
+    @GetMapping("/option")
+    @RequiresPermissions(value = {Auth.TE_STRATEGY_LIST, Auth.TE_TENANT_LIST}, logical = Logical.OR)
+    public AjaxResult option() {
+        TeStrategyDto strategy = new TeStrategyDto();
+        strategy.setStatus(BaseConstants.Status.NORMAL.getCode());
+        return AjaxResult.success(baseService.selectList(strategy));
     }
 
     /**

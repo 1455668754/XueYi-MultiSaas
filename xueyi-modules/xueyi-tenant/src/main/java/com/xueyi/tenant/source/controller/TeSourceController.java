@@ -10,6 +10,7 @@ import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.Logical;
 import com.xueyi.common.security.annotation.RequiresPermissions;
+import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.tenant.api.source.domain.dto.TeSourceDto;
 import com.xueyi.tenant.source.service.ITeSourceService;
@@ -45,7 +46,7 @@ public class TeSourceController extends BaseController<TeSourceDto, ITeSourceSer
      */
     @Override
     @GetMapping("/list")
-    @RequiresPermissions("tenant:source:list")
+    @RequiresPermissions(Auth.TE_SOURCE_LIST)
     public AjaxResult listExtra(TeSourceDto source) {
         return super.listExtra(source);
     }
@@ -55,7 +56,7 @@ public class TeSourceController extends BaseController<TeSourceDto, ITeSourceSer
      */
     @Override
     @GetMapping(value = "/{id}")
-    @RequiresPermissions("tenant:source:single")
+    @RequiresPermissions(Auth.TE_SOURCE_SINGLE)
     public AjaxResult getInfoExtra(@PathVariable Serializable id) {
         return super.getInfoExtra(id);
     }
@@ -65,7 +66,7 @@ public class TeSourceController extends BaseController<TeSourceDto, ITeSourceSer
      */
     @Override
     @PostMapping("/export")
-    @RequiresPermissions("tenant:source:export")
+    @RequiresPermissions(Auth.TE_SOURCE_EXPORT)
     public void export(HttpServletResponse response, TeSourceDto source) {
         super.export(response, source);
     }
@@ -84,7 +85,7 @@ public class TeSourceController extends BaseController<TeSourceDto, ITeSourceSer
      */
     @Override
     @PostMapping
-    @RequiresPermissions("tenant:source:add")
+    @RequiresPermissions(Auth.TE_SOURCE_ADD)
     @Log(title = "数据源管理", businessType = BusinessType.INSERT)
     public AjaxResult add(@Validated @RequestBody TeSourceDto source) {
         return super.add(source);
@@ -95,7 +96,7 @@ public class TeSourceController extends BaseController<TeSourceDto, ITeSourceSer
      */
     @Override
     @PutMapping
-    @RequiresPermissions("tenant:source:edit")
+    @RequiresPermissions(Auth.TE_SOURCE_EDIT)
     @Log(title = "数据源管理", businessType = BusinessType.UPDATE)
     public AjaxResult edit(@Validated @RequestBody TeSourceDto source) {
         return super.edit(source);
@@ -106,7 +107,7 @@ public class TeSourceController extends BaseController<TeSourceDto, ITeSourceSer
      */
     @Override
     @PutMapping("/status")
-    @RequiresPermissions(value = {"tenant:source:edit", "tenant:source:editStatus"}, logical = Logical.OR)
+    @RequiresPermissions(value = {Auth.TE_SOURCE_EDIT, Auth.TE_SOURCE_EDIT_STATUS}, logical = Logical.OR)
     @Log(title = "数据源管理", businessType = BusinessType.UPDATE_STATUS)
     public AjaxResult editStatus(@Validated @RequestBody TeSourceDto source) {
         return super.editStatus(source);
@@ -117,10 +118,22 @@ public class TeSourceController extends BaseController<TeSourceDto, ITeSourceSer
      */
     @Override
     @DeleteMapping("/batch/{idList}")
-    @RequiresPermissions("tenant:source:delete")
+    @RequiresPermissions(Auth.TE_SOURCE_DELETE)
     @Log(title = "数据源管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);
+    }
+
+    /**
+     * 获取数据源选择框列表
+     */
+    @Override
+    @GetMapping("/option")
+    @RequiresPermissions(value = {Auth.TE_SOURCE_LIST, Auth.TE_STRATEGY_LIST}, logical = Logical.OR)
+    public AjaxResult option() {
+        TeSourceDto source = new TeSourceDto();
+        source.setStatus(BaseConstants.Status.NORMAL.getCode());
+        return AjaxResult.success(baseService.selectList(source));
     }
 
     /**

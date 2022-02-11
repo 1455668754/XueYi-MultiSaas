@@ -16,6 +16,7 @@ import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.InnerAuth;
 import com.xueyi.common.security.annotation.Logical;
 import com.xueyi.common.security.annotation.RequiresPermissions;
+import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.entity.controller.TreeController;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
@@ -56,18 +57,18 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
      */
     @Override
     @GetMapping("/list")
-    @RequiresPermissions("authority:menu:list")
-    public AjaxResult listExtra(SysMenuDto sysMenu) {
-        return super.listExtra(sysMenu);
+    @RequiresPermissions(Auth.SYS_MENU_LIST)
+    public AjaxResult listExtra(SysMenuDto menu) {
+        return super.listExtra(menu);
     }
 
     /**
      * 查询菜单列表（排除节点）
      */
     @GetMapping("/list/exclude")
-    @RequiresPermissions("authority:menu:list")
-    public AjaxResult listExNodes(SysMenuDto sysMenu) {
-        return super.listExNodes(sysMenu);
+    @RequiresPermissions(Auth.SYS_MENU_LIST)
+    public AjaxResult listExNodes(SysMenuDto menu) {
+        return super.listExNodes(menu);
     }
 
     /**
@@ -75,7 +76,7 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
      */
     @Override
     @GetMapping(value = "/{id}")
-    @RequiresPermissions("authority:menu:single")
+    @RequiresPermissions(Auth.SYS_MENU_SINGLE)
     public AjaxResult getInfoExtra(@PathVariable Serializable id) {
         return super.getInfoExtra(id);
     }
@@ -123,10 +124,10 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
      */
     @Override
     @PostMapping
-    @RequiresPermissions("authority:menu:add")
+    @RequiresPermissions(Auth.SYS_MENU_ADD)
     @Log(title = "菜单管理", businessType = BusinessType.INSERT)
-    public AjaxResult add(@Validated @RequestBody SysMenuDto sysMenu) {
-        return super.add(sysMenu);
+    public AjaxResult add(@Validated @RequestBody SysMenuDto menu) {
+        return super.add(menu);
     }
 
     /**
@@ -134,10 +135,10 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
      */
     @Override
     @PutMapping
-    @RequiresPermissions("authority:menu:edit")
+    @RequiresPermissions(Auth.SYS_MENU_EDIT)
     @Log(title = "菜单管理", businessType = BusinessType.UPDATE)
-    public AjaxResult edit(@Validated @RequestBody SysMenuDto sysMenu) {
-        return super.edit(sysMenu);
+    public AjaxResult edit(@Validated @RequestBody SysMenuDto menu) {
+        return super.edit(menu);
     }
 
     /**
@@ -145,10 +146,10 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
      */
     @Override
     @PutMapping("/status")
-    @RequiresPermissions(value = {"authority:menu:edit", "authority:menu:editStatus"}, logical = Logical.OR)
+    @RequiresPermissions(value = {Auth.SYS_MENU_EDIT, Auth.SYS_MENU_EDIT_STATUS}, logical = Logical.OR)
     @Log(title = "菜单管理", businessType = BusinessType.UPDATE_STATUS)
-    public AjaxResult editStatus(@Validated @RequestBody SysMenuDto sysMenu) {
-        return super.editStatus(sysMenu);
+    public AjaxResult editStatus(@Validated @RequestBody SysMenuDto menu) {
+        return super.editStatus(menu);
     }
 
     /**
@@ -156,10 +157,22 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
      */
     @Override
     @DeleteMapping("/batch/{idList}")
-    @RequiresPermissions("authority:menu:delete")
+    @RequiresPermissions(Auth.SYS_MENU_DELETE)
     @Log(title = "菜单管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);
+    }
+
+    /**
+     * 获取菜单选择框列表
+     */
+    @Override
+    @GetMapping("/option")
+    @RequiresPermissions(value = {Auth.SYS_MENU_LIST}, logical = Logical.OR)
+    public AjaxResult option() {
+        SysMenuDto menu = new SysMenuDto();
+        menu.setStatus(BaseConstants.Status.NORMAL.getCode());
+        return AjaxResult.success(TreeUtils.buildTree(baseService.selectList(menu)));
     }
 
     /**

@@ -9,6 +9,7 @@ import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.Logical;
 import com.xueyi.common.security.annotation.RequiresPermissions;
+import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.tenant.api.tenant.domain.dto.TeTenantDto;
 import com.xueyi.tenant.tenant.service.ITeTenantService;
@@ -39,7 +40,7 @@ public class TeTenantController extends BaseController<TeTenantDto, ITeTenantSer
      */
     @Override
     @GetMapping("/list")
-    @RequiresPermissions("tenant:tenant:list")
+    @RequiresPermissions(Auth.TE_TENANT_LIST)
     public AjaxResult listExtra(TeTenantDto tenant) {
         return super.listExtra(tenant);
     }
@@ -49,7 +50,7 @@ public class TeTenantController extends BaseController<TeTenantDto, ITeTenantSer
      */
     @Override
     @GetMapping(value = "/{id}")
-    @RequiresPermissions("tenant:tenant:single")
+    @RequiresPermissions(Auth.TE_TENANT_SINGLE)
     public AjaxResult getInfoExtra(@PathVariable Serializable id) {
         return super.getInfoExtra(id);
     }
@@ -59,7 +60,7 @@ public class TeTenantController extends BaseController<TeTenantDto, ITeTenantSer
      */
     @Override
     @PostMapping("/export")
-    @RequiresPermissions("tenant:tenant:export")
+    @RequiresPermissions(Auth.TE_TENANT_EXPORT)
     public void export(HttpServletResponse response, TeTenantDto tenant) {
         super.export(response, tenant);
     }
@@ -69,7 +70,7 @@ public class TeTenantController extends BaseController<TeTenantDto, ITeTenantSer
      */
     @Override
     @PostMapping
-    @RequiresPermissions("tenant:tenant:add")
+    @RequiresPermissions(Auth.TE_TENANT_ADD)
     @Log(title = "租户管理", businessType = BusinessType.INSERT)
     public AjaxResult add(@Validated @RequestBody TeTenantDto tenant) {
         return super.add(tenant);
@@ -80,7 +81,7 @@ public class TeTenantController extends BaseController<TeTenantDto, ITeTenantSer
      */
     @Override
     @PutMapping
-    @RequiresPermissions("tenant:tenant:edit")
+    @RequiresPermissions(Auth.TE_TENANT_EDIT)
     @Log(title = "租户管理", businessType = BusinessType.UPDATE)
     public AjaxResult edit(@Validated @RequestBody TeTenantDto tenant) {
         return super.edit(tenant);
@@ -91,7 +92,7 @@ public class TeTenantController extends BaseController<TeTenantDto, ITeTenantSer
      */
     @Override
     @PutMapping("/status")
-    @RequiresPermissions(value = {"tenant:tenant:edit", "tenant:tenant:editStatus"}, logical = Logical.OR)
+    @RequiresPermissions(value = {Auth.TE_TENANT_EDIT, Auth.TE_TENANT_EDIT_STATUS}, logical = Logical.OR)
     @Log(title = "租户管理", businessType = BusinessType.UPDATE_STATUS)
     public AjaxResult editStatus(@Validated @RequestBody TeTenantDto tenant) {
         return super.editStatus(tenant);
@@ -102,7 +103,7 @@ public class TeTenantController extends BaseController<TeTenantDto, ITeTenantSer
      */
     @Override
     @DeleteMapping("/batch/{idList}")
-    @RequiresPermissions("tenant:tenant:delete")
+    @RequiresPermissions(Auth.TE_TENANT_DELETE)
     @Log(title = "租户管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);

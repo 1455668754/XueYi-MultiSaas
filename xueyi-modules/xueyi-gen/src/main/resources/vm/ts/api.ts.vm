@@ -2,14 +2,17 @@ import { ${BusinessName}IM,#if($table.tree || $table.subTree) ${BusinessName}PM#
 import { defaultRequest } from '../../../request'
 
 enum Api {
+#if($api.list)
     LIST_${BUSINESSName} = '/${moduleName}/${businessName}/list',
 #if($table.tree || $table.subTree)
     LIST_${BUSINESSName}_EXCLUDE_NODES = '/${moduleName}/${businessName}/list/exclude',
 #end
+    OPTION_${BUSINESSName} = '/${moduleName}/${businessName}/option',
+#end
     GET_${BUSINESSName} = '/${moduleName}/${businessName}/',
     ADD_${BUSINESSName} = '/${moduleName}/${businessName}',
     EDIT_${BUSINESSName} = '/${moduleName}/${businessName}',
-#if($statusColumn)
+#if($api.editStatus || $api.editStatusForce)
     EDIT_STATUS_${BUSINESSName} = '/${moduleName}/${businessName}/status',
 #end
     DEL_BATCH_${BUSINESSName} = '/${moduleName}/${businessName}/batch/',
@@ -24,7 +27,7 @@ enum Api {
 #else
 #set($IdType = 'any')
 #end
-
+#if($api.list)
 /** 查询${functionName}列表 */
 export const list${BusinessName}Api = (params?: #if($table.tree || $table.subTree)${BusinessName}PM#else${BusinessName}PPM#end) =>
     defaultRequest.get<#if($table.tree || $table.subTree)${BusinessName}LM#else${BusinessName}LRM#end>({ url: Api.LIST_${BUSINESSName}, params })
@@ -38,6 +41,11 @@ export const list${BusinessName}ExNodesApi = (${IdName}: ${IdType} | undefined) 
     })
 
 #end
+/** 查询${functionName}选择框列表 */
+export const option${BusinessName}Api = () =>
+    defaultRequest.get<#if($table.tree || $table.subTree)${BusinessName}LM#else${BusinessName}LRM#end>({ url: Api.OPTION_${BUSINESSName} })
+
+#end
 /** 查询${functionName}详细 */
 export const get${BusinessName}Api = (${IdName}: ${IdType}) =>
     defaultRequest.get<${BusinessName}IM>({ url: Api.GET_${BUSINESSName}, params: ${IdName} })
@@ -48,7 +56,6 @@ export const add${BusinessName}Api = (params: ${BusinessName}IM) => defaultReque
 /** 修改${functionName} */
 export const edit${BusinessName}Api = (params: ${BusinessName}IM) => defaultRequest.put({ url: Api.EDIT_${BUSINESSName}, params })
 #if($api.editStatus || $api.editStatusForce)
-#if($statusColumn)
 #set($StatusName = $statusColumn.javaField)
 #if($statusColumn.javaType == 'Long')
 #set($StatusType = 'string | number')
@@ -62,7 +69,6 @@ export const edit${BusinessName}Api = (params: ${BusinessName}IM) => defaultRequ
 
 /** 修改${functionName}状态 */
 export const editStatus${BusinessName}Api = (${IdName}: ${IdType}, ${StatusName}: ${StatusType}) => defaultRequest.put({ url: Api.EDIT_STATUS_${BUSINESSName}, params: {${IdName}: ${IdName}, ${StatusName}: ${StatusName}} })
-#end
 #end
 
 /** 删除${functionName} */
