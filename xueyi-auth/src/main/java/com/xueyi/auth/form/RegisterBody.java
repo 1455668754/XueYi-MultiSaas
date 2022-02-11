@@ -1,5 +1,7 @@
 package com.xueyi.auth.form;
 
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
@@ -54,5 +56,14 @@ public class RegisterBody {
 
     public void setUser(SysUserDto user) {
         this.user = user;
+    }
+
+    /** 构造租户注册对象 */
+    public JSONObject buildJson(){
+        return JSONUtil.createObj()
+                .set("tenant", getTenant())
+                .set("dept", getDept())
+                .set("post", getPost())
+                .set("user", getUser());
     }
 }

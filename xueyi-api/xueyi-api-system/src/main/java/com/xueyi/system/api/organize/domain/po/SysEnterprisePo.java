@@ -1,8 +1,11 @@
 package com.xueyi.system.api.organize.domain.po;
 
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.common.core.web.entity.BaseEntity;
+import com.xueyi.common.core.xss.Xss;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 /**
  * 企业 持久化对象
@@ -25,7 +28,7 @@ public class SysEnterprisePo extends BaseEntity {
     @TableField("system_name")
     private String systemName;
 
-    /** 企业昵称 */
+    /** 企业名称 */
     @TableField("nick")
     private String nick;
 
@@ -53,6 +56,9 @@ public class SysEnterprisePo extends BaseEntity {
         this.strategyId = strategyId;
     }
 
+    @Xss(message = "企业账号不能包含脚本字符")
+    @NotBlank(message = "企业账号不能为空")
+    @Size(max = 30, message = "企业账号长度不能超过30个字符")
     public String getName() {
         return name;
     }
@@ -61,6 +67,9 @@ public class SysEnterprisePo extends BaseEntity {
         this.name = name;
     }
 
+    @Xss(message = "系统名称不能包含脚本字符")
+    @NotBlank(message = "系统名称不能为空")
+    @Size(max = 30, message = "系统名称长度不能超过30个字符")
     public String getSystemName() {
         return systemName;
     }
@@ -69,6 +78,9 @@ public class SysEnterprisePo extends BaseEntity {
         this.systemName = systemName;
     }
 
+    @Xss(message = "企业名称不能包含脚本字符")
+    @NotBlank(message = "企业名称不能为空")
+    @Size(max = 30, message = "企业名称长度不能超过30个字符")
     public String getNick() {
         return nick;
     }

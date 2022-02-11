@@ -9,7 +9,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * 租户注册对象
+ * 租户初始化对象
  *
  * @author xueyi
  */

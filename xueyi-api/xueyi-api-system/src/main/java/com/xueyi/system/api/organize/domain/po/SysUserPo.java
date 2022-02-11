@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.xueyi.common.core.annotation.Excel;
 import com.xueyi.common.core.annotation.Excel.Type;
 import com.xueyi.common.core.web.tenant.TBaseEntity;
+import com.xueyi.common.core.xss.Xss;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -80,8 +81,9 @@ public class SysUserPo extends TBaseEntity {
     @TableField("is_default")
     private String isDefault;
 
+    @Xss(message = "用户编码不能包含脚本字符")
     @NotBlank(message = "用户编码不能为空")
-    @Size(min = 0, max = 64, message = "用户编码长度不能超过64个字符")
+    @Size(max = 64, message = "用户编码长度不能超过64个字符")
     public String getCode() {
         return code;
     }
@@ -90,8 +92,9 @@ public class SysUserPo extends TBaseEntity {
         this.code = code;
     }
 
+    @Xss(message = "用户账号不能包含脚本字符")
     @NotBlank(message = "用户账号不能为空")
-    @Size(min = 0, max = 30, message = "用户账号长度不能超过30个字符")
+    @Size(max = 30, message = "用户账号长度不能超过30个字符")
     public String getUserName() {
         return userName;
     }
@@ -108,7 +111,9 @@ public class SysUserPo extends TBaseEntity {
         this.userType = userType;
     }
 
-    @Size(min = 0, max = 30, message = "用户昵称长度不能超过30个字符")
+    @Xss(message = "用户编码不能包含脚本字符")
+    @NotBlank(message = "用户账号不能为空")
+    @Size(max = 30, message = "用户昵称长度不能超过30个字符")
     public String getNickName() {
         return nickName;
     }
@@ -117,7 +122,7 @@ public class SysUserPo extends TBaseEntity {
         this.nickName = nickName;
     }
 
-    @Size(min = 0, max = 11, message = "手机号码长度不能超过11个字符")
+    @Size(max = 11, message = "手机号码长度不能超过11个字符")
     public String getPhone() {
         return phone;
     }
@@ -127,7 +132,7 @@ public class SysUserPo extends TBaseEntity {
     }
 
     @Email(message = "邮箱格式不正确")
-    @Size(min = 0, max = 50, message = "邮箱长度不能超过50个字符")
+    @Size(max = 50, message = "邮箱长度不能超过50个字符")
     public String getEmail() {
         return email;
     }

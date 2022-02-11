@@ -1,7 +1,6 @@
 package com.xueyi.auth.service;
 
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.json.JSONUtil;
 import com.xueyi.auth.form.RegisterBody;
 import com.xueyi.common.core.constant.*;
 import com.xueyi.common.core.domain.R;
@@ -98,42 +97,12 @@ public class SysLoginService {
      * 注册
      */
     public void register(RegisterBody registerBody) {
-        String enterpriseName = registerBody.getTenant().getName();
-        String userName = registerBody.getUser().getUserName();
-        String password = registerBody.getUser().getPassword();
-        // 企业账号为空 错误
-        if (StringUtils.isBlank(enterpriseName)) {
-            throw new ServiceException("企业账号必须填写");
-        }
-        if (enterpriseName.length() < OrganizeConstants.ENTERPRISE_NAME_MIN_LENGTH
-                || enterpriseName.length() > OrganizeConstants.ENTERPRISE_NAME_MAX_LENGTH) {
-            throw new ServiceException("企业账号长度必须在" + OrganizeConstants.ENTERPRISE_NAME_MIN_LENGTH + "到" + OrganizeConstants.ENTERPRISE_NAME_MAX_LENGTH + "个字符之间");
-        }
-
-        // 用户名或密码为空 错误
-        if (StringUtils.isAnyBlank(userName, password)) {
-            throw new ServiceException("用户账号/密码必须填写");
-        }
-        if (userName.length() < OrganizeConstants.USERNAME_MIN_LENGTH
-                || userName.length() > OrganizeConstants.USERNAME_MAX_LENGTH) {
-            throw new ServiceException("用户账号长度必须在" + OrganizeConstants.USERNAME_MIN_LENGTH + "到" + OrganizeConstants.USERNAME_MAX_LENGTH + "个字符之间");
-        }
-        if (password.length() < OrganizeConstants.PASSWORD_MIN_LENGTH
-                || password.length() > OrganizeConstants.PASSWORD_MAX_LENGTH) {
-            throw new ServiceException("用户密码长度必须在" + OrganizeConstants.PASSWORD_MIN_LENGTH + "到" + OrganizeConstants.PASSWORD_MAX_LENGTH + "个字符之间");
-        }
-
         // 注册租户信息
-        R<?> registerResult = remoteTenantService.registerTenantInfo(JSONUtil.createObj()
-                .set("tenant", registerBody.getTenant())
-                .set("dept", registerBody.getDept())
-                .set("post", registerBody.getPost())
-                .set("user", registerBody.getUser()), SecurityConstants.INNER);
-
+        R<?> registerResult = remoteTenantService.registerTenantInfo(registerBody.buildJson(), SecurityConstants.INNER);
         if (R.FAIL == registerResult.getCode()) {
             throw new ServiceException(registerResult.getMessage());
         }
-        recordLoginInfo(TenantConstants.Source.SLAVE.getCode(), AuthorityConstants.COMMON_ENTERPRISE, enterpriseName, AuthorityConstants.COMMON_USER, userName, Constants.REGISTER, "注册成功");
+        recordLoginInfo(TenantConstants.Source.SLAVE.getCode(), AuthorityConstants.COMMON_ENTERPRISE, registerBody.getTenant().getName(), AuthorityConstants.COMMON_USER, registerBody.getUser().getUserName(), Constants.REGISTER, "注册成功");
     }
 
     /**
