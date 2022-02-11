@@ -1,16 +1,21 @@
-package com.xueyi.auth.form;
+package com.xueyi.tenant.tenant.domain.model;
 
+import com.xueyi.common.core.web.entity.BasisEntity;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
 import com.xueyi.tenant.api.tenant.domain.dto.TeTenantDto;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * 用户注册对象
+ * 租户注册对象
  *
  * @author xueyi
  */
-public class RegisterBody {
+public class TeTenantRegister extends BasisEntity {
+
+    private static final long serialVersionUID = 1L;
 
     /** 租户信息 */
     private TeTenantDto tenant;
@@ -54,5 +59,15 @@ public class RegisterBody {
 
     public void setUser(SysUserDto user) {
         this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+                .append("tenant", getTenant())
+                .append("dept", getDept())
+                .append("post", getPost())
+                .append("user", getUser())
+                .toString();
     }
 }

@@ -22,5 +22,4 @@ public interface BaseMapper<D extends BasisEntity> extends com.baomidou.mybatisp
      * 自定义批量更新，条件为主键
      */
     int updateBatch(@Param("collection") Collection<D> list);
-
 }

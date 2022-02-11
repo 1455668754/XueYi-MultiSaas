@@ -1,6 +1,7 @@
 package com.xueyi.auth.service;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.json.JSONUtil;
 import com.xueyi.auth.form.RegisterBody;
 import com.xueyi.common.core.constant.*;
 import com.xueyi.common.core.domain.R;
@@ -8,12 +9,10 @@ import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.ServletUtils;
 import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.core.utils.ip.IpUtils;
-import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.system.api.authority.feign.RemoteLoginService;
 import com.xueyi.system.api.log.domain.dto.SysLoginLogDto;
 import com.xueyi.system.api.log.feign.RemoteLogService;
 import com.xueyi.system.api.model.LoginUser;
-import com.xueyi.tenant.api.model.TenantRegister;
 import com.xueyi.tenant.api.tenant.feign.RemoteTenantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -99,48 +98,42 @@ public class SysLoginService {
      * 注册
      */
     public void register(RegisterBody registerBody) {
+        String enterpriseName = registerBody.getTenant().getName();
+        String userName = registerBody.getUser().getUserName();
+        String password = registerBody.getUser().getPassword();
         // 企业账号为空 错误
-        if (StringUtils.isBlank(registerBody.getEnterpriseName())) {
+        if (StringUtils.isBlank(enterpriseName)) {
             throw new ServiceException("企业账号必须填写");
         }
-        if (registerBody.getEnterpriseName().length() < OrganizeConstants.ENTERPRISE_NAME_MIN_LENGTH
-                || registerBody.getEnterpriseName().length() > OrganizeConstants.ENTERPRISE_NAME_MAX_LENGTH) {
+        if (enterpriseName.length() < OrganizeConstants.ENTERPRISE_NAME_MIN_LENGTH
+                || enterpriseName.length() > OrganizeConstants.ENTERPRISE_NAME_MAX_LENGTH) {
             throw new ServiceException("企业账号长度必须在" + OrganizeConstants.ENTERPRISE_NAME_MIN_LENGTH + "到" + OrganizeConstants.ENTERPRISE_NAME_MAX_LENGTH + "个字符之间");
         }
 
         // 用户名或密码为空 错误
-        if (StringUtils.isAnyBlank(registerBody.getUserName(), registerBody.getPassword())) {
+        if (StringUtils.isAnyBlank(userName, password)) {
             throw new ServiceException("用户账号/密码必须填写");
         }
-        if (registerBody.getUserName().length() < OrganizeConstants.USERNAME_MIN_LENGTH
-                || registerBody.getUserName().length() > OrganizeConstants.USERNAME_MAX_LENGTH) {
+        if (userName.length() < OrganizeConstants.USERNAME_MIN_LENGTH
+                || userName.length() > OrganizeConstants.USERNAME_MAX_LENGTH) {
             throw new ServiceException("用户账号长度必须在" + OrganizeConstants.USERNAME_MIN_LENGTH + "到" + OrganizeConstants.USERNAME_MAX_LENGTH + "个字符之间");
         }
-        if (registerBody.getPassword().length() < OrganizeConstants.PASSWORD_MIN_LENGTH
-                || registerBody.getPassword().length() > OrganizeConstants.PASSWORD_MAX_LENGTH) {
+        if (password.length() < OrganizeConstants.PASSWORD_MIN_LENGTH
+                || password.length() > OrganizeConstants.PASSWORD_MAX_LENGTH) {
             throw new ServiceException("用户密码长度必须在" + OrganizeConstants.PASSWORD_MIN_LENGTH + "到" + OrganizeConstants.PASSWORD_MAX_LENGTH + "个字符之间");
         }
 
         // 注册租户信息
-        TenantRegister register = new TenantRegister();
-        register.setEnterpriseName(registerBody.getEnterpriseName());
-        register.setEnterpriseSystemName(registerBody.getSystemName());
-        register.setEnterpriseNick(registerBody.getEnterpriseNick());
-        register.setLogo(registerBody.getLogo());
-        register.setUserName(registerBody.getUserName());
-        register.setNickName(registerBody.getNickName());
-        register.setEmail(registerBody.getEmail());
-        register.setPhone(registerBody.getPhone());
-        register.setSex(registerBody.getSex());
-        register.setAvatar(registerBody.getAvatar());
-        register.setProfile(registerBody.getProfile());
-        register.setPassword(SecurityUtils.encryptPassword(registerBody.getPassword()));
-        R<?> registerResult = remoteTenantService.registerTenantInfo(register, SecurityConstants.INNER);
+        R<?> registerResult = remoteTenantService.registerTenantInfo(JSONUtil.createObj()
+                .set("tenant", registerBody.getTenant())
+                .set("dept", registerBody.getDept())
+                .set("post", registerBody.getPost())
+                .set("user", registerBody.getUser()), SecurityConstants.INNER);
 
         if (R.FAIL == registerResult.getCode()) {
             throw new ServiceException(registerResult.getMessage());
         }
-        recordLoginInfo(TenantConstants.Source.SLAVE.getCode(), AuthorityConstants.COMMON_ENTERPRISE, register.getEnterpriseName(), AuthorityConstants.COMMON_USER, register.getUserName(), Constants.REGISTER, "注册成功");
+        recordLoginInfo(TenantConstants.Source.SLAVE.getCode(), AuthorityConstants.COMMON_ENTERPRISE, enterpriseName, AuthorityConstants.COMMON_USER, userName, Constants.REGISTER, "注册成功");
     }
 
     /**
