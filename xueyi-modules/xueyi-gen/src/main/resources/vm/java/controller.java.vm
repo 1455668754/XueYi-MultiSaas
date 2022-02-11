@@ -69,8 +69,8 @@ public class ${ClassName}Controller extends ${Entity}Controller${generics} {
     @Override
     @GetMapping("/list")
     @RequiresPermissions("${authorityName}:${businessName}:list")
-    public AjaxResult list(${ClassName}Dto ${classNameNoPrefix}) {
-        return super.list(${classNameNoPrefix});
+    public AjaxResult listExtra(${ClassName}Dto ${classNameNoPrefix}) {
+        return super.listExtra(${classNameNoPrefix});
     }
 #if($table.tree || $table.subTree)
 
@@ -92,21 +92,9 @@ public class ${ClassName}Controller extends ${Entity}Controller${generics} {
     @Override
     @GetMapping(value = "/{id}")
     @RequiresPermissions("${authorityName}:${businessName}:single")
-    public AjaxResult getInfo(@PathVariable Serializable id) {
-        return super.getInfo(id);
+    public AjaxResult getInfoExtra(@PathVariable Serializable id) {
+        return super.getInfoExtra(id);
     }
-#if($table.subBase || $table.subTree)
-
-    /**
-     * 查询${functionName}详细 | 包含${subFunctionName}数据
-     */
-    @Override
-    @GetMapping(value = "/sub/{id}")
-    @RequiresPermissions("${authorityName}:${businessName}:single")
-    public AjaxResult getSubInfo(@PathVariable Serializable id) {
-        return super.getSubInfo(id);
-    }
-#end
 #end
 #if($api.export)
 
@@ -222,6 +210,17 @@ public class ${ClassName}Controller extends ${Entity}Controller${generics} {
     @Log(title = "${functionName}管理", businessType = BusinessType.DELETE_FORCE)
     public AjaxResult batchRemoveForce(@PathVariable List<Long> idList) {
         return super.batchRemoveForce(idList);
+    }
+#end
+#if($api.list)
+
+    /**
+     * 获取${functionName}选择框列表
+     */
+    @Override
+    @GetMapping("/option")
+    public AjaxResult option() {
+        return super.option();
     }
 #end
 }

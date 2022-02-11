@@ -8,9 +8,11 @@ import com.xueyi.common.web.entity.controller.handle.SubTreeHandleController;
 import com.xueyi.common.web.entity.service.IBaseService;
 import com.xueyi.common.web.entity.service.ISubTreeService;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -23,14 +25,6 @@ import java.util.List;
  * @author xueyi
  */
 public abstract class SubTreeController<D extends SubTreeEntity<D, S>, DS extends ISubTreeService<D, S>, S extends BaseEntity, SS extends IBaseService<S>> extends SubTreeHandleController<D, DS, S, SS> {
-
-    /**
-     * 查询详细 | 包含子数据
-     */
-    @GetMapping(value = "/sub/{id}")
-    public AjaxResult getSubInfo(@PathVariable Serializable id) {
-        return AjaxResult.success(baseService.selectSubById(id));
-    }
 
     /**
      * 主子树型 修改

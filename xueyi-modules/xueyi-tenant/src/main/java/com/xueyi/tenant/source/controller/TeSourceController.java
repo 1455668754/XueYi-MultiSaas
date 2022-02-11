@@ -46,8 +46,8 @@ public class TeSourceController extends BaseController<TeSourceDto, ITeSourceSer
     @Override
     @GetMapping("/list")
     @RequiresPermissions("tenant:source:list")
-    public AjaxResult list(TeSourceDto source) {
-        return super.list(source);
+    public AjaxResult listExtra(TeSourceDto source) {
+        return super.listExtra(source);
     }
 
     /**
@@ -56,8 +56,8 @@ public class TeSourceController extends BaseController<TeSourceDto, ITeSourceSer
     @Override
     @GetMapping(value = "/{id}")
     @RequiresPermissions("tenant:source:single")
-    public AjaxResult getInfo(@PathVariable Serializable id) {
-        return super.getInfo(id);
+    public AjaxResult getInfoExtra(@PathVariable Serializable id) {
+        return super.getInfoExtra(id);
     }
 
     /**

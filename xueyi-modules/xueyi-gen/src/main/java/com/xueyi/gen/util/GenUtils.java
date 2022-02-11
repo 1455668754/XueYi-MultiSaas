@@ -85,10 +85,6 @@ public class GenUtils {
         optionJson.put(GenConstants.OptionField.API_EDIT.getCode(), DictConstants.DicYesNo.YES.getCode());
         optionJson.put(GenConstants.OptionField.API_BATCH_REMOVE.getCode(), DictConstants.DicYesNo.YES.getCode());
         optionJson.put(GenConstants.OptionField.API_EXPORT.getCode(), DictConstants.DicYesNo.YES.getCode());
-        if (table.isSubBase() || table.isSubTree()) {
-            optionJson.put(GenConstants.OptionField.API_GET_SUB_INFO.getCode(), DictConstants.DicYesNo.YES.getCode());
-        }
-
         table.setOptions(optionJson.toString());
     }
 

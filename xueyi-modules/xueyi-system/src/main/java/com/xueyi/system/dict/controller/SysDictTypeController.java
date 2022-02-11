@@ -12,7 +12,6 @@ import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
 import com.xueyi.system.api.dict.domain.dto.SysDictTypeDto;
 import com.xueyi.system.dict.service.ISysDictDataService;
 import com.xueyi.system.dict.service.ISysDictTypeService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,9 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/dict/type")
 public class SysDictTypeController extends SubBaseController<SysDictTypeDto, ISysDictTypeService, SysDictDataDto, ISysDictDataService> {
-
-    @Autowired
-    private ISysDictTypeService dictTypeService;
 
     /** 定义节点名称 */
     protected String getNodeName() {
@@ -47,16 +43,17 @@ public class SysDictTypeController extends SubBaseController<SysDictTypeDto, ISy
     @Log(title = "字典类型", businessType = BusinessType.CLEAN)
     @DeleteMapping("/refreshCache")
     public AjaxResult refreshCache() {
-        dictTypeService.resetDictCache();
+        baseService.resetDictCache();
         return AjaxResult.success();
     }
 
     /**
      * 获取字典选择框列表
      */
-    @GetMapping("/optionSelect")
-    public AjaxResult optionSelect() {
-        return AjaxResult.success(dictTypeService.selectList(null));
+    @Override
+    @GetMapping("/option")
+    public AjaxResult option() {
+        return super.option();
     }
 
     /**

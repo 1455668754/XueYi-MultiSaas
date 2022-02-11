@@ -57,8 +57,8 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
     @Override
     @GetMapping("/list")
     @RequiresPermissions("authority:menu:list")
-    public AjaxResult list(SysMenuDto sysMenu) {
-        return super.list(sysMenu);
+    public AjaxResult listExtra(SysMenuDto sysMenu) {
+        return super.listExtra(sysMenu);
     }
 
     /**
@@ -76,8 +76,8 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
     @Override
     @GetMapping(value = "/{id}")
     @RequiresPermissions("authority:menu:single")
-    public AjaxResult getInfo(@PathVariable Serializable id) {
-        return super.getInfo(id);
+    public AjaxResult getInfoExtra(@PathVariable Serializable id) {
+        return super.getInfoExtra(id);
     }
 
     /**

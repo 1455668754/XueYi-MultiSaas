@@ -30,7 +30,8 @@ public abstract class SubBaseManager<D extends SubBaseEntity<S>, DM extends SubB
      * @param id Id
      * @return 数据对象
      */
-    public D selectSubById(Serializable id) {
+    @Override
+    public D selectByIdExtra(Serializable id) {
         D d = baseMapper.selectById(id);
         LambdaQueryWrapper<S> subQueryWrapper = new LambdaQueryWrapper<>();
         querySetForeignKey(subQueryWrapper, d);

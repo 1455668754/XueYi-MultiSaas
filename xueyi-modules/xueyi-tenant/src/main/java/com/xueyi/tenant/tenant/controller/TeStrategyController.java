@@ -51,8 +51,8 @@ public class TeStrategyController extends BaseController<TeStrategyDto, ITeStrat
     @Override
     @GetMapping("/list")
     @RequiresPermissions("tenant:strategy:list")
-    public AjaxResult list(TeStrategyDto strategy) {
-        return super.list(strategy);
+    public AjaxResult listExtra(TeStrategyDto strategy) {
+        return super.listExtra(strategy);
     }
 
     /**
@@ -61,8 +61,8 @@ public class TeStrategyController extends BaseController<TeStrategyDto, ITeStrat
     @Override
     @GetMapping(value = "/{id}")
     @RequiresPermissions("tenant:strategy:single")
-    public AjaxResult getInfo(@PathVariable Serializable id) {
-        return super.getInfo(id);
+    public AjaxResult getInfoExtra(@PathVariable Serializable id) {
+        return super.getInfoExtra(id);
     }
 
     /**

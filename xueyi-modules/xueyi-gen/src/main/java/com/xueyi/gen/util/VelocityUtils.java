@@ -111,7 +111,7 @@ public class VelocityUtils {
         // sql模板设置
         setMenuVelocityContext(velocityContext, optionsObj);
         // api设置
-        setApiVelocityContext(velocityContext, genTable, optionsObj);
+        setApiVelocityContext(velocityContext, optionsObj);
         switch (Objects.requireNonNull(GenConstants.TemplateType.getValue(tplCategory))) {
             case TREE:
                 setTreeVelocityContext(velocityContext, genTable, optionsObj);
@@ -206,7 +206,7 @@ public class VelocityUtils {
     /**
      * 设置接口变量信息
      */
-    public static void setApiVelocityContext(VelocityContext context, GenTableDto table, JSONObject optionsObj) {
+    public static void setApiVelocityContext(VelocityContext context, JSONObject optionsObj) {
         JSONObject apiJSon = new JSONObject();
         apiJSon.put("list", StrUtil.equals(optionsObj.getString(GenConstants.OptionField.API_LIST.getCode()), DictConstants.DicYesNo.YES.getCode()));
         apiJSon.put("getInfo", StrUtil.equals(optionsObj.getString(GenConstants.OptionField.API_GET_INFO.getCode()), DictConstants.DicYesNo.YES.getCode()));
@@ -219,9 +219,6 @@ public class VelocityUtils {
         apiJSon.put("batchRemove", StrUtil.equals(optionsObj.getString(GenConstants.OptionField.API_BATCH_REMOVE.getCode()), DictConstants.DicYesNo.YES.getCode()));
         apiJSon.put("batchRemoveForce", StrUtil.equals(optionsObj.getString(GenConstants.OptionField.API_BATCH_REMOVE_FORCE.getCode()), DictConstants.DicYesNo.YES.getCode()));
         apiJSon.put("export", StrUtil.equals(optionsObj.getString(GenConstants.OptionField.API_EXPORT.getCode()), DictConstants.DicYesNo.YES.getCode()));
-        if (table.isSubBase() || table.isSubTree()) {
-            apiJSon.put("getSubInfo", StrUtil.equals(optionsObj.getString(GenConstants.OptionField.API_GET_SUB_INFO.getCode()), DictConstants.DicYesNo.YES.getCode()));
-        }
         // 接口
         context.put("api", apiJSon);
     }
@@ -596,7 +593,7 @@ public class VelocityUtils {
         return StrUtil.equals(table.getModuleName(), subTable.getModuleName())
                 ? StrUtil.equals(table.getAuthorityName(), subTable.getAuthorityName())
                 ? StrUtil.DOT
-                : StrUtil.DOUBLE_DOT +StrUtil.SLASH + subTable.getAuthorityName()
-                : StrUtil.DOUBLE_DOT +StrUtil.SLASH + StrUtil.DOUBLE_DOT +StrUtil.SLASH + subTable.getAuthorityName();
+                : StrUtil.DOUBLE_DOT + StrUtil.SLASH + subTable.getAuthorityName()
+                : StrUtil.DOUBLE_DOT + StrUtil.SLASH + StrUtil.DOUBLE_DOT + StrUtil.SLASH + subTable.getAuthorityName();
     }
 }

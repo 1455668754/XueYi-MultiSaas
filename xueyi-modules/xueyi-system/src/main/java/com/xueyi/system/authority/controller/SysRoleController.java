@@ -4,7 +4,6 @@ import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.BaseConstants;
 import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.web.result.AjaxResult;
-import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
 import com.xueyi.system.authority.service.ISysRoleService;
@@ -29,10 +28,10 @@ public class SysRoleController extends BaseController<SysRoleDto, ISysRoleServic
     /**
      * 获取角色选择框列表
      */
-    @RequiresPermissions("system:role:query")
-    @GetMapping("/optionSelect")
-    public AjaxResult optionSelect() {
-        return AjaxResult.success(baseService.selectList(null));
+    @Override
+    @GetMapping("/option")
+    public AjaxResult option() {
+        return super.option();
     }
 
     /**

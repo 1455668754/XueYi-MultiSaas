@@ -30,17 +30,6 @@ import java.util.List;
 public abstract class SubTreeServiceImpl<D extends SubTreeEntity<D, S>, DG extends SubTreeManager<D, DM, S, SM>, DM extends SubTreeMapper<D, S>, S extends BaseEntity, SS extends IBaseService<S>, SM extends BaseMapper<S>> extends SubTreeHandleServiceImpl<D, DG, DM, S, SS, SM> implements ISubTreeService<D, S> {
 
     /**
-     * 根据Id查询单条数据对象 | 包含子数据
-     *
-     * @param id Id
-     * @return 数据对象
-     */
-    @Override
-    public D selectSubById(Serializable id) {
-        return baseManager.selectSubById(id);
-    }
-
-    /**
      * 根据外键查询子数据对象集合 | 子数据
      *
      * @param foreignKey 外键

@@ -16,14 +16,6 @@ import java.util.List;
 public interface ISubService<D extends BaseEntity, S extends BaseEntity> {
 
     /**
-     * 根据Id查询单条数据对象 | 包含子数据
-     *
-     * @param id Id
-     * @return 数据对象
-     */
-    D selectSubById(Serializable id);
-
-    /**
      * 根据外键查询子数据对象集合 | 子数据
      *
      * @param foreignKey 外键

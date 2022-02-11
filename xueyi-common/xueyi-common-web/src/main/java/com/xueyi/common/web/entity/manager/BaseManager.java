@@ -32,6 +32,17 @@ public class BaseManager<D extends BaseEntity, DM extends BaseMapper<D>> extends
     }
 
     /**
+     * 查询数据对象列表 | 附加数据
+     *
+     * @param d 数据对象
+     * @return 数据对象集合
+     */
+    public List<D> selectListExtra(D d) {
+        return baseMapper.selectList(
+                Wrappers.query(d));
+    }
+
+    /**
      * 根据Id集合查询数据对象列表
      *
      * @param idList Id集合
@@ -46,11 +57,21 @@ public class BaseManager<D extends BaseEntity, DM extends BaseMapper<D>> extends
     /**
      * 根据Id查询单条数据对象
      *
-     * @param Id Id
+     * @param id Id
      * @return 数据对象
      */
-    public D selectById(Serializable Id) {
-        return baseMapper.selectById(Id);
+    public D selectById(Serializable id) {
+        return baseMapper.selectById(id);
+    }
+
+    /**
+     * 根据Id查询单条数据对象 | 附加数据
+     *
+     * @param id Id
+     * @return 数据对象
+     */
+    public D selectByIdExtra(Serializable id) {
+        return baseMapper.selectById(id);
     }
 
     /**

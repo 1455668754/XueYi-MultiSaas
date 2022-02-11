@@ -35,6 +35,17 @@ public class BaseServiceImpl<D extends BaseEntity, DG extends BaseManager<D, DM>
     }
 
     /**
+     * 查询数据对象列表 | 附加数据
+     *
+     * @param d 数据对象
+     * @return 数据对象集合
+     */
+    @Override
+    public List<D> selectListExtra(D d) {
+        return baseManager.selectListExtra(d);
+    }
+
+    /**
      * 根据Id集合查询数据对象列表
      *
      * @param idList Id集合
@@ -54,6 +65,17 @@ public class BaseServiceImpl<D extends BaseEntity, DG extends BaseManager<D, DM>
     @Override
     public D selectById(Serializable id) {
         return baseManager.selectById(id);
+    }
+
+    /**
+     * 根据Id查询单条数据对象 | 附加数据
+     *
+     * @param id Id
+     * @return 数据对象
+     */
+    @Override
+    public D selectByIdExtra(Serializable id) {
+        return baseManager.selectByIdExtra(id);
     }
 
     /**

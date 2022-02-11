@@ -31,8 +31,8 @@ public abstract class TreeController<D extends TreeEntity<D>, DS extends ITreeSe
      */
     @Override
     @GetMapping("/list")
-    public AjaxResult list(D d) {
-        List<D> list = baseService.selectList(d);
+    public AjaxResult listExtra(D d) {
+        List<D> list = baseService.selectListExtra(d);
         return AjaxResult.success(TreeUtils.buildTree(list));
     }
 
@@ -43,7 +43,7 @@ public abstract class TreeController<D extends TreeEntity<D>, DS extends ITreeSe
     public AjaxResult listExNodes(D d) {
         Serializable id = d.getId();
         d.setId(null);
-        List<D> list = baseService.selectList(d);
+        List<D> list = baseService.selectListExtra(d);
         Iterator<D> it = list.iterator();
         while (it.hasNext()) {
             D next = (D) it.next();
@@ -125,5 +125,14 @@ public abstract class TreeController<D extends TreeEntity<D>, DS extends ITreeSe
         removeNullValidated(idList);
         removeTreeValidated(idList);
         return toAjax(baseService.deleteByIds(idList));
+    }
+
+    /**
+     * 获取选择框列表
+     */
+    @Override
+    @GetMapping("/option")
+    public AjaxResult option() {
+        return AjaxResult.success(TreeUtils.buildTree(baseService.selectList(null)));
     }
 }

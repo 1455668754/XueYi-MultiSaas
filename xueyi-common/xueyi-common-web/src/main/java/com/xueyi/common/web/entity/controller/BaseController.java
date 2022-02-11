@@ -26,10 +26,19 @@ public abstract class BaseController<D extends BaseEntity, DS extends IBaseServi
     /**
      * 查询列表
      */
-    @GetMapping("/list")
     public AjaxResult list(D d) {
         startPage();
         List<D> list = baseService.selectList(d);
+        return getDataTable(list);
+    }
+
+    /**
+     * 查询列表 | 附加数据
+     */
+    @GetMapping("/list")
+    public AjaxResult listExtra(D d) {
+        startPage();
+        List<D> list = baseService.selectListExtra(d);
         return getDataTable(list);
     }
 
@@ -38,7 +47,7 @@ public abstract class BaseController<D extends BaseEntity, DS extends IBaseServi
      */
     @PostMapping("/export")
     public void export(HttpServletResponse response, D d) {
-        List<D> list = baseService.selectList(d);
+        List<D> list = baseService.selectListExtra(d);
         ExcelUtil<D> util = new ExcelUtil<D>(tClass);
         util.exportExcel(response, list, StrUtil.format("{}数据", getNodeName()));
     }
@@ -46,9 +55,16 @@ public abstract class BaseController<D extends BaseEntity, DS extends IBaseServi
     /**
      * 查询详细
      */
-    @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable Serializable id) {
         return AjaxResult.success(baseService.selectById(id));
+    }
+
+    /**
+     * 查询详细 | 附加数据
+     */
+    @GetMapping(value = "/{id}")
+    public AjaxResult getInfoExtra(@PathVariable Serializable id) {
+        return AjaxResult.success(baseService.selectByIdExtra(id));
     }
 
     /**
@@ -127,5 +143,13 @@ public abstract class BaseController<D extends BaseEntity, DS extends IBaseServi
         removeNullValidated(idList);
         baseRemoveValidated(BaseConstants.Operate.DELETE_FORCE, idList);
         return toAjax(baseService.deleteByIds(idList));
+    }
+
+    /**
+     * 获取选择框列表
+     */
+    @GetMapping("/option")
+    public AjaxResult option() {
+        return AjaxResult.success(baseService.selectList(null));
     }
 }

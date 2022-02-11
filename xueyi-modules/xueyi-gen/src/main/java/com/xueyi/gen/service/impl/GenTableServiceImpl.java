@@ -112,17 +112,6 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
     }
 
     /**
-     * 根据Id查询单条业务对象
-     *
-     * @param id Id
-     * @return 业务对象
-     */
-    @Override
-    public GenTableDto selectById(Serializable id) {
-        return baseManager.selectById(id);
-    }
-
-    /**
      * 导入表结构
      *
      * @param tableList 导入表列表
@@ -421,7 +410,7 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
      * @return 业务表对象
      */
     private GenTableDto initTable(Long id) {
-        GenTableDto table = baseManager.selectSubById(id);
+        GenTableDto table = baseManager.selectByIdExtra(id);
         JSONObject optionsObj = JSONObject.parseObject(table.getOptions());
         // 设置列信息
         switch (Objects.requireNonNull(TemplateType.getValue(table.getTplCategory()))) {
@@ -469,7 +458,7 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
      * @param optionsObj 其它生成选项信息
      */
     private void setSubTable(GenTableDto table, JSONObject optionsObj) {
-        table.setSubTable(baseManager.selectSubById(optionsObj.getLong(OptionField.SUB_TABLE_ID.getCode())));
+        table.setSubTable(baseManager.selectByIdExtra(optionsObj.getLong(OptionField.SUB_TABLE_ID.getCode())));
         JSONObject subOptionsObj = JSONObject.parseObject(table.getSubTable().getOptions());
         setBaseTable(table.getSubTable(), subOptionsObj);
         if (StrUtil.equalsAny(table.getSubTable().getTplCategory()

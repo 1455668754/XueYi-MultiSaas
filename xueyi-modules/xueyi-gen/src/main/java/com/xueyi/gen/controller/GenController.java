@@ -46,8 +46,8 @@ public class GenController extends SubBaseController<GenTableDto, IGenTableServi
     @Override
     @GetMapping("/list")
     @RequiresPermissions("generate:gen:list")
-    public AjaxResult list(GenTableDto genTable) {
-        return super.list(genTable);
+    public AjaxResult listExtra(GenTableDto genTable) {
+        return super.listExtra(genTable);
     }
 
     /**
@@ -67,7 +67,16 @@ public class GenController extends SubBaseController<GenTableDto, IGenTableServi
     @Override
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable Serializable id) {
-        return super.getInfo(id);
+        return AjaxResult.success(baseService.selectById(id));
+    }
+
+    /**
+     * 查询代码生成详细 | 包含代码生成数据
+     */
+    @Override
+    @GetMapping(value = "/sub/{id}")
+    public AjaxResult getInfoExtra(@PathVariable Serializable id) {
+        return super.getInfoExtra(id);
     }
 
     /**
@@ -78,15 +87,6 @@ public class GenController extends SubBaseController<GenTableDto, IGenTableServi
     public AjaxResult preview(@PathVariable("tableId") Long tableId) {
         List<JSONObject> dataMap = baseService.previewCode(tableId);
         return AjaxResult.success(dataMap);
-    }
-
-    /**
-     * 查询代码生成详细 | 包含代码生成数据
-     */
-    @Override
-    @GetMapping(value = "/sub/{id}")
-    public AjaxResult getSubInfo(@PathVariable Serializable id) {
-        return super.getSubInfo(id);
     }
 
     /**

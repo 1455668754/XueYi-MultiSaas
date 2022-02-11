@@ -174,7 +174,6 @@ public class GenConstants {
         API_LIST("apiList", "接口：查询列表", null),
         API_EXPORT("apiExport", "接口：导出", null),
         API_GET_INFO("apiGetInfo", "接口：查询详情", null),
-        API_GET_SUB_INFO("apiGetSubInfo", "接口：查询主子详情", null),
         API_ADD("apiAdd", "接口：新增", null),
         API_ADD_FORCE("apiAddForce", "接口：强制新增", null),
         API_EDIT("apiEdit", "接口：修改", null),

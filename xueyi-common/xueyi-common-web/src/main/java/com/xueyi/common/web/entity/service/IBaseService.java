@@ -24,6 +24,14 @@ public interface IBaseService<D extends BaseEntity> {
     List<D> selectList(D d);
 
     /**
+     * 查询数据对象列表 | 附加数据
+     *
+     * @param d 数据对象
+     * @return 数据对象集合
+     */
+    List<D> selectListExtra(D d);
+
+    /**
      * 根据Id集合查询数据对象列表
      *
      * @param idList Id集合
@@ -38,6 +46,14 @@ public interface IBaseService<D extends BaseEntity> {
      * @return 数据对象
      */
     D selectById(Serializable id);
+
+    /**
+     * 根据Id查询单条数据对象 | 附加数据
+     *
+     * @param id Id
+     * @return 数据对象
+     */
+    D selectByIdExtra(Serializable id);
 
     /**
      * 新增数据对象

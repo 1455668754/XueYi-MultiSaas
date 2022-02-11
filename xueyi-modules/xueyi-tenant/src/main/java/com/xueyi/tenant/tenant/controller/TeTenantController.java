@@ -40,8 +40,8 @@ public class TeTenantController extends BaseController<TeTenantDto, ITeTenantSer
     @Override
     @GetMapping("/list")
     @RequiresPermissions("tenant:tenant:list")
-    public AjaxResult list(TeTenantDto tenant) {
-        return super.list(tenant);
+    public AjaxResult listExtra(TeTenantDto tenant) {
+        return super.listExtra(tenant);
     }
 
     /**
@@ -50,8 +50,8 @@ public class TeTenantController extends BaseController<TeTenantDto, ITeTenantSer
     @Override
     @GetMapping(value = "/{id}")
     @RequiresPermissions("tenant:tenant:single")
-    public AjaxResult getInfo(@PathVariable Serializable id) {
-        return super.getInfo(id);
+    public AjaxResult getInfoExtra(@PathVariable Serializable id) {
+        return super.getInfoExtra(id);
     }
 
     /**
