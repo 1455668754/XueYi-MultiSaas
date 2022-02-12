@@ -129,11 +129,8 @@ public class TeSourceController extends BaseController<TeSourceDto, ITeSourceSer
      */
     @Override
     @GetMapping("/option")
-    @RequiresPermissions(value = {Auth.TE_SOURCE_LIST, Auth.TE_STRATEGY_LIST}, logical = Logical.OR)
     public AjaxResult option() {
-        TeSourceDto source = new TeSourceDto();
-        source.setStatus(BaseConstants.Status.NORMAL.getCode());
-        return AjaxResult.success(baseService.selectList(source));
+        return super.option();
     }
 
     /**

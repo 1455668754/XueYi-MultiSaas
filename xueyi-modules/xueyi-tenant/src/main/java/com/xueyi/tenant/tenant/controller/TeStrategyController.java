@@ -125,11 +125,8 @@ public class TeStrategyController extends BaseController<TeStrategyDto, ITeStrat
      */
     @Override
     @GetMapping("/option")
-    @RequiresPermissions(value = {Auth.TE_STRATEGY_LIST, Auth.TE_TENANT_LIST}, logical = Logical.OR)
     public AjaxResult option() {
-        TeStrategyDto strategy = new TeStrategyDto();
-        strategy.setStatus(BaseConstants.Status.NORMAL.getCode());
-        return AjaxResult.success(baseService.selectList(strategy));
+        return super.option();
     }
 
     /**

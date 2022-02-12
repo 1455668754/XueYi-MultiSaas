@@ -30,7 +30,15 @@ public abstract class TreeController<D extends TreeEntity<D>, DS extends ITreeSe
      * 查询树列表
      */
     @Override
-    @GetMapping("/list")
+    public AjaxResult list(D d) {
+        List<D> list = baseService.selectList(d);
+        return AjaxResult.success(TreeUtils.buildTree(list));
+    }
+
+    /**
+     * 查询树列表 | 附加数据
+     */
+    @Override
     public AjaxResult listExtra(D d) {
         List<D> list = baseService.selectListExtra(d);
         return AjaxResult.success(TreeUtils.buildTree(list));
@@ -39,7 +47,6 @@ public abstract class TreeController<D extends TreeEntity<D>, DS extends ITreeSe
     /**
      * 查询树列表（排除节点）
      */
-    @GetMapping("/list/exclude")
     public AjaxResult listExNodes(D d) {
         Serializable id = d.getId();
         d.setId(null);
@@ -61,7 +68,6 @@ public abstract class TreeController<D extends TreeEntity<D>, DS extends ITreeSe
      * @see #addTreeStatusValidated(D) 树型 父节点逻辑校验
      */
     @Override
-    @PostMapping
     public AjaxResult add(@Validated @RequestBody D d) {
         baseRefreshValidated(BaseConstants.Operate.ADD, d);
         addTreeStatusValidated(d);
@@ -76,7 +82,6 @@ public abstract class TreeController<D extends TreeEntity<D>, DS extends ITreeSe
      * @see #editTreeStatusValidated(D) 树型 父子节点逻辑校验
      */
     @Override
-    @PutMapping
     public AjaxResult edit(@Validated @RequestBody D d) {
         baseRefreshValidated(BaseConstants.Operate.EDIT, d);
         editTreeLoopValidated(d);
@@ -90,7 +95,6 @@ public abstract class TreeController<D extends TreeEntity<D>, DS extends ITreeSe
      * @see #editTreeLoopValidated(D) 树型 父节点不能为自己或自己的子节点
      */
     @Override
-    @PutMapping("/force")
     public AjaxResult editForce(@Validated @RequestBody D d) {
         baseRefreshValidated(BaseConstants.Operate.EDIT_FORCE, d);
         editTreeLoopValidated(d);
@@ -104,7 +108,6 @@ public abstract class TreeController<D extends TreeEntity<D>, DS extends ITreeSe
      * @see #editStatusTreeStatusValidated(D) 树型 父子节点逻辑校验
      */
     @Override
-    @PutMapping("/status")
     public AjaxResult editStatus(@Validated @RequestBody D d) {
         editStatusTreeStatusValidated(d);
         return toAjax(baseService.updateStatus(d.getId(), d.getStatus()));
@@ -118,21 +121,11 @@ public abstract class TreeController<D extends TreeEntity<D>, DS extends ITreeSe
      * @see #removeTreeValidated(List)  树型 子节点存在与否校验
      */
     @Override
-    @DeleteMapping("/batch/{idList}")
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         removeNullValidated(idList);
         baseRemoveValidated(BaseConstants.Operate.DELETE, idList);
         removeNullValidated(idList);
         removeTreeValidated(idList);
         return toAjax(baseService.deleteByIds(idList));
-    }
-
-    /**
-     * 获取选择框列表
-     */
-    @Override
-    @GetMapping("/option")
-    public AjaxResult option() {
-        return AjaxResult.success(TreeUtils.buildTree(baseService.selectList(null)));
     }
 }

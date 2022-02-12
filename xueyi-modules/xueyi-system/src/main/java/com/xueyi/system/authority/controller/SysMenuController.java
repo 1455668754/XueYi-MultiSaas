@@ -168,7 +168,6 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
      */
     @Override
     @GetMapping("/option")
-    @RequiresPermissions(value = {Auth.SYS_MENU_LIST}, logical = Logical.OR)
     public AjaxResult option() {
         SysMenuDto menu = new SysMenuDto();
         menu.setStatus(BaseConstants.Status.NORMAL.getCode());

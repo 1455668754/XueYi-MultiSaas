@@ -75,7 +75,6 @@ public class TeTenantController extends BaseController<TeTenantDto, ITeTenantSer
     @RequiresPermissions(Auth.TE_TENANT_ADD)
     @Log(title = "租户管理", businessType = BusinessType.INSERT)
     public AjaxResult add(@Validated @RequestBody TeTenantRegister tenantRegister) {
-
         return toAjax(baseService.insert(tenantRegister));
     }
 

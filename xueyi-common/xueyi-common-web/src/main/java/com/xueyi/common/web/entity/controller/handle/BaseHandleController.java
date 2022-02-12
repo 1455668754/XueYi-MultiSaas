@@ -9,6 +9,8 @@ import com.xueyi.common.web.entity.controller.BasisController;
 import com.xueyi.common.web.entity.service.IBaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.List;
 
 /**
@@ -23,10 +25,36 @@ public abstract class BaseHandleController<D extends BaseEntity, DS extends IBas
     @Autowired
     protected DS baseService;
 
-    protected Class<D> tClass;
-
     /** 定义节点名称 */
     protected abstract String getNodeName();
+
+    /**
+     * 获取T.class
+     *
+     * @return class
+     */
+    protected Class<D> getBaseClass() {
+        Type type = getClass().getGenericSuperclass();
+        if (type instanceof ParameterizedType) {
+            ParameterizedType pType = (ParameterizedType) type;
+            return (Class<D>) pType.getActualTypeArguments()[0];
+        }
+        return null;
+    }
+
+    /**
+     * new D
+     *
+     * @return D
+     */
+    protected D newBase() {
+        Class<D> clazz = getBaseClass();
+        try {
+            if(clazz != null)
+                return clazz.newInstance();
+        }catch (Exception ignored){}
+        return null;
+    }
 
     /**
      * 前置校验 （强制）增加/修改

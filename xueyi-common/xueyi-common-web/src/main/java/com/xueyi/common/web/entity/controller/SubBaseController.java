@@ -8,9 +8,7 @@ import com.xueyi.common.web.entity.controller.handle.SubBaseHandleController;
 import com.xueyi.common.web.entity.service.IBaseService;
 import com.xueyi.common.web.entity.service.ISubBaseService;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
@@ -33,7 +31,6 @@ public abstract class SubBaseController<D extends SubBaseEntity<S>, DS extends I
      * @see #editSubStatusValidated(SubBaseEntity) 主子树型 归属数据状态逻辑校验
      */
     @Override
-    @PutMapping
     public AjaxResult edit(@Validated @RequestBody D d) {
         editSubStatusValidated(d);
         return super.edit(d);
@@ -45,7 +42,6 @@ public abstract class SubBaseController<D extends SubBaseEntity<S>, DS extends I
      *
      * @see #editStatusSubStatusValidated(SubBaseEntity)  主子树型 归属数据状态逻辑校验
      */
-    @PutMapping("/status")
     public AjaxResult editStatus(@Validated @RequestBody D d) {
         editStatusSubStatusValidated(d);
         return super.editStatus(d);
@@ -59,7 +55,6 @@ public abstract class SubBaseController<D extends SubBaseEntity<S>, DS extends I
      * @see #removeSubValidated(List)  主子型 归属数据存在与否校验
      */
     @Override
-    @DeleteMapping("/batch/{idList}")
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         removeNullValidated(idList);
         baseRemoveValidated(BaseConstants.Operate.DELETE, idList);
