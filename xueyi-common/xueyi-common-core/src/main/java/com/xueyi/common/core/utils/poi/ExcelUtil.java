@@ -707,7 +707,7 @@ public class ExcelUtil<T> {
             }
             try {
                 temp = Double.valueOf(text);
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException ignored) {
             }
             statistics.put(index, statistics.get(index) + temp);
         }
@@ -740,13 +740,12 @@ public class ExcelUtil<T> {
      * @param field 字段
      * @param excel 注解
      * @return 最终的属性值
-     * @throws Exception
      */
     private Object getTargetValue(T vo, Field field, Excel excel) throws Exception {
         Object o = field.get(vo);
         if (StringUtils.isNotEmpty(excel.targetAttr())) {
             String target = excel.targetAttr();
-            if (target.indexOf(".") > -1) {
+            if (target.contains(".")) {
                 String[] targets = target.split("[.]");
                 for (String name : targets) {
                     o = getValue(o, name);
@@ -764,7 +763,6 @@ public class ExcelUtil<T> {
      * @param o
      * @param name
      * @return value
-     * @throws Exception
      */
     private Object getValue(Object o, String name) throws Exception {
         if (StringUtils.isNotNull(o) && StringUtils.isNotEmpty(name)) {
@@ -825,7 +823,7 @@ public class ExcelUtil<T> {
         double maxHeight = 0;
         for (Object[] os : this.fields) {
             Excel excel = (Excel) os[1];
-            maxHeight = maxHeight > excel.height() ? maxHeight : excel.height();
+            maxHeight = Math.max(maxHeight, excel.height());
         }
         return (short) (maxHeight * 20);
     }

@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * 文件上传工具类
@@ -32,7 +33,6 @@ public class FileUploadUtils {
      * @param baseDir 相对应用的基目录
      * @param file    上传的文件
      * @return 文件名称
-     * @throws IOException
      */
     public static final String upload(String baseDir, MultipartFile file) throws IOException {
         try {
@@ -57,7 +57,7 @@ public class FileUploadUtils {
     public static final String upload(String baseDir, MultipartFile file, String[] allowedExtension)
             throws FileSizeLimitExceededException, IOException, FileNameLengthLimitExceededException,
             InvalidExtensionException {
-        int fileNameLength = file.getOriginalFilename().length();
+        int fileNameLength = Objects.requireNonNull(file.getOriginalFilename()).length();
         if (fileNameLength > FileUploadUtils.DEFAULT_FILE_NAME_LENGTH) {
             throw new FileNameLengthLimitExceededException(FileUploadUtils.DEFAULT_FILE_NAME_LENGTH);
         }
@@ -68,8 +68,7 @@ public class FileUploadUtils {
 
         File desc = getAbsoluteFile(baseDir, fileName);
         file.transferTo(desc);
-        String pathFileName = getPathFileName(fileName);
-        return pathFileName;
+        return getPathFileName(fileName);
     }
 
     /**
@@ -91,8 +90,7 @@ public class FileUploadUtils {
     }
 
     private static final String getPathFileName(String fileName) throws IOException {
-        String pathFileName = "/" + fileName;
-        return pathFileName;
+        return "/" + fileName;
     }
 
     /**
@@ -158,7 +156,7 @@ public class FileUploadUtils {
     public static final String getExtension(MultipartFile file) {
         String extension = FilenameUtils.getExtension(file.getOriginalFilename());
         if (StringUtils.isEmpty(extension)) {
-            extension = MimeTypeUtils.getExtension(file.getContentType());
+            extension = MimeTypeUtils.getExtension(Objects.requireNonNull(file.getContentType()));
         }
         return extension;
     }

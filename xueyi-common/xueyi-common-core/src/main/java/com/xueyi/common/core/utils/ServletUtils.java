@@ -112,11 +112,9 @@ public class ServletUtils {
         }
     }
 
-    public static String getHeader(HttpServletRequest request, String name)
-    {
+    public static String getHeader(HttpServletRequest request, String name) {
         String value = request.getHeader(name);
-        if (StringUtils.isEmpty(value))
-        {
+        if (StringUtils.isEmpty(value)) {
             return StringUtils.EMPTY;
         }
         return urlDecode(value);
@@ -140,9 +138,8 @@ public class ServletUtils {
      *
      * @param response 渲染对象
      * @param string   待渲染的字符串
-     * @return null
      */
-    public static String renderString(HttpServletResponse response, String string) {
+    public static void renderString(HttpServletResponse response, String string) {
         try {
             response.setStatus(200);
             response.setContentType("application/json");
@@ -151,22 +148,21 @@ public class ServletUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
     }
 
     /**
      * 是否是Ajax异步请求
      *
-     * @param request
+     * @param request 请求
      */
     public static boolean isAjaxRequest(HttpServletRequest request) {
         String accept = request.getHeader("accept");
-        if (accept != null && accept.indexOf("application/json") != -1) {
+        if (accept != null && accept.contains("application/json")) {
             return true;
         }
 
         String xRequestedWith = request.getHeader("X-Requested-With");
-        if (xRequestedWith != null && xRequestedWith.indexOf("XMLHttpRequest") != -1) {
+        if (xRequestedWith != null && xRequestedWith.contains("XMLHttpRequest")) {
             return true;
         }
 
@@ -176,10 +172,7 @@ public class ServletUtils {
         }
 
         String ajax = request.getParameter("__ajax");
-        if (StringUtils.inStringIgnoreCase(ajax, "json", "xml")) {
-            return true;
-        }
-        return false;
+        return StringUtils.inStringIgnoreCase(ajax, "json", "xml");
     }
 
     /**
