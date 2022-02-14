@@ -3,7 +3,6 @@ package com.xueyi.common.web.handler;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.extension.plugins.handler.TenantLineHandler;
 import com.xueyi.common.core.constant.AuthorityConstants;
-import com.xueyi.common.core.constant.BaseConstants;
 import com.xueyi.common.core.constant.TenantConstants;
 import com.xueyi.common.security.utils.SecurityUtils;
 import net.sf.jsqlparser.expression.Expression;
@@ -46,8 +45,7 @@ public class XueYiTenantLineHandler implements TenantLineHandler {
 
     @Override
     public boolean ignoreTable(String tableName) {
-        return ObjectUtil.equals(BaseConstants.NONE_ID, SecurityUtils.getEnterpriseId())
-                || Arrays.asList(TenantConstants.EXCLUDE_TENANT_TABLE).contains(tableName);
+        return Arrays.asList(TenantConstants.EXCLUDE_TENANT_TABLE).contains(tableName);
     }
 
     @Override
