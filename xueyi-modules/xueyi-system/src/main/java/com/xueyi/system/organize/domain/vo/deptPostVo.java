@@ -1,4 +1,4 @@
-package com.xueyi.system.organize.domain;
+package com.xueyi.system.organize.domain.vo;
 
 import com.xueyi.common.core.web.entity.BaseEntity;
 import java.util.List;
@@ -9,8 +9,7 @@ import java.util.List;
  * @author xueyi
  */
 // 待删除
-public class deptPostVo extends BaseEntity
-{
+public class deptPostVo extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /** Id */

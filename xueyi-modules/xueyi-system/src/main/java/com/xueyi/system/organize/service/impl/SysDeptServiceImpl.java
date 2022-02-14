@@ -12,11 +12,14 @@ import com.xueyi.system.organize.mapper.SysPostMapper;
 import com.xueyi.system.organize.service.ISysDeptService;
 import com.xueyi.system.organize.service.ISysPostService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.Collection;
 
 import static com.xueyi.common.core.constant.TenantConstants.ISOLATE;
+import static com.xueyi.common.core.constant.TenantConstants.SOURCE;
 
 /**
  * 部门管理 服务层处理
@@ -26,6 +29,20 @@ import static com.xueyi.common.core.constant.TenantConstants.ISOLATE;
 @Service
 @DS(ISOLATE)
 public class SysDeptServiceImpl extends SubTreeServiceImpl<SysDeptDto, SysDeptManager, SysDeptMapper, SysPostDto, ISysPostService, SysPostMapper> implements ISysDeptService {
+
+    /**
+     * 新增部门 | 内部调用
+     *
+     * @param dept       部门对象
+     * @param sourceName 策略源
+     * @return 结果
+     */
+    @Override
+    @DS(SOURCE)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public int addInner(SysDeptDto dept, String sourceName) {
+        return baseManager.insert(dept);
+    }
 
     /**
      * 校验部门编码是否唯一

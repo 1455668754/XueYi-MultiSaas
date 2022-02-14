@@ -5,9 +5,7 @@ import cn.hutool.core.util.IdUtil;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.xueyi.common.core.constant.AuthorityConstants;
-import com.xueyi.common.core.constant.SqlConstants;
-import com.xueyi.common.core.constant.TenantConstants;
+import com.xueyi.common.core.constant.*;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.entity.manager.TreeManager;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
@@ -102,6 +100,23 @@ public class SysMenuManager extends TreeManager<SysMenuDto, SysMenuMapper> {
                                 .or().eq(SysMenuDto::getEnterpriseId, TenantConstants.COMMON_TENANT_ID)))
                 : new ArrayList<>();
     }
+
+    /**
+     * 获取指定范围的公共菜单
+     *
+     * @return 菜单对象集合
+     */
+    public List<SysMenuDto> selectCommonList(Collection<? extends Serializable> idList) {
+        return baseMapper.selectList(Wrappers.<SysMenuDto>query().lambda()
+                .ne(SysMenuDto::getId, AuthorityConstants.MENU_TOP_NODE)
+                .eq(SysMenuDto::getIsCommon, DictConstants.DicCommonPrivate.COMMON.getCode())
+                .eq(SysMenuDto::getStatus, BaseConstants.Status.NORMAL.getCode())
+                .func(i -> {
+                    if (CollUtil.isNotEmpty(idList))
+                        i.in(SysMenuDto::getId, idList);
+                }));
+    }
+
 
     /**
      * 校验菜单是否存在租户

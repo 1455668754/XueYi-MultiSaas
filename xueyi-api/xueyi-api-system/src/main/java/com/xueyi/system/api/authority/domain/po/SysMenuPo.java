@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.xueyi.common.core.annotation.Excel;
 import com.xueyi.common.core.web.tenant.TTreeEntity;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * 菜单 持久化对象
  *
@@ -134,195 +136,196 @@ public class SysMenuPo<D> extends TTreeEntity<D> {
     @TableField("is_default")
     private String isDefault;
 
-    public void setModuleId(Long moduleId) {
-        this.moduleId = moduleId;
-    }
-
+    @NotBlank(message = "模块Id不能为空")
     public Long getModuleId() {
         return moduleId;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setModuleId(Long moduleId) {
+        this.moduleId = moduleId;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getPath() {
         return path;
     }
 
-    public void setFrameSrc(String frameSrc) {
-        this.frameSrc = frameSrc;
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public String getFrameSrc() {
         return frameSrc;
     }
 
-    public void setComponent(String component) {
-        this.component = component;
+    public void setFrameSrc(String frameSrc) {
+        this.frameSrc = frameSrc;
     }
 
     public String getComponent() {
         return component;
     }
 
-    public void setParamPath(String paramPath) {
-        this.paramPath = paramPath;
+    public void setComponent(String component) {
+        this.component = component;
     }
 
     public String getParamPath() {
         return paramPath;
     }
 
-    public void setTransitionName(String transitionName) {
-        this.transitionName = transitionName;
+    public void setParamPath(String paramPath) {
+        this.paramPath = paramPath;
     }
 
     public String getTransitionName() {
         return transitionName;
     }
 
-    public void setIgnoreRoute(String ignoreRoute) {
-        this.ignoreRoute = ignoreRoute;
+    public void setTransitionName(String transitionName) {
+        this.transitionName = transitionName;
     }
 
     public String getIgnoreRoute() {
         return ignoreRoute;
     }
 
-    public void setIsCache(String isCache) {
-        this.isCache = isCache;
+    public void setIgnoreRoute(String ignoreRoute) {
+        this.ignoreRoute = ignoreRoute;
     }
 
     public String getIsCache() {
         return isCache;
     }
 
-    public void setIsAffix(String isAffix) {
-        this.isAffix = isAffix;
+    public void setIsCache(String isCache) {
+        this.isCache = isCache;
     }
 
     public String getIsAffix() {
         return isAffix;
     }
 
-    public void setIsDisabled(String isDisabled) {
-        this.isDisabled = isDisabled;
+    public void setIsAffix(String isAffix) {
+        this.isAffix = isAffix;
     }
 
     public String getIsDisabled() {
         return isDisabled;
     }
 
-    public void setFrameType(String frameType) {
-        this.frameType = frameType;
+    public void setIsDisabled(String isDisabled) {
+        this.isDisabled = isDisabled;
     }
 
     public String getFrameType() {
         return frameType;
     }
 
-    public void setMenuType(String menuType) {
-        this.menuType = menuType;
+    public void setFrameType(String frameType) {
+        this.frameType = frameType;
     }
 
     public String getMenuType() {
         return menuType;
     }
 
-    public void setHideTab(String hideTab) {
-        this.hideTab = hideTab;
+    public void setMenuType(String menuType) {
+        this.menuType = menuType;
     }
 
     public String getHideTab() {
         return hideTab;
     }
 
-    public void setHideMenu(String hideMenu) {
-        this.hideMenu = hideMenu;
+    public void setHideTab(String hideTab) {
+        this.hideTab = hideTab;
     }
 
     public String getHideMenu() {
         return hideMenu;
     }
 
-    public void setHideBreadcrumb(String hideBreadcrumb) {
-        this.hideBreadcrumb = hideBreadcrumb;
+    public void setHideMenu(String hideMenu) {
+        this.hideMenu = hideMenu;
     }
 
     public String getHideBreadcrumb() {
         return hideBreadcrumb;
     }
 
-    public void setHideChildren(String hideChildren) {
-        this.hideChildren = hideChildren;
+    public void setHideBreadcrumb(String hideBreadcrumb) {
+        this.hideBreadcrumb = hideBreadcrumb;
     }
 
     public String getHideChildren() {
         return hideChildren;
     }
 
-    public void setHidePathForChildren(String hidePathForChildren) {
-        this.hidePathForChildren = hidePathForChildren;
+    public void setHideChildren(String hideChildren) {
+        this.hideChildren = hideChildren;
     }
 
     public String getHidePathForChildren() {
         return hidePathForChildren;
     }
 
-    public void setDynamicLevel(Integer dynamicLevel) {
-        this.dynamicLevel = dynamicLevel;
+    public void setHidePathForChildren(String hidePathForChildren) {
+        this.hidePathForChildren = hidePathForChildren;
     }
 
     public Integer getDynamicLevel() {
         return dynamicLevel;
     }
 
-    public void setRealPath(String realPath) {
-        this.realPath = realPath;
+    public void setDynamicLevel(Integer dynamicLevel) {
+        this.dynamicLevel = dynamicLevel;
     }
 
     public String getRealPath() {
         return realPath;
     }
 
-    public void setPerms(String perms) {
-        this.perms = perms;
+    public void setRealPath(String realPath) {
+        this.realPath = realPath;
     }
 
     public String getPerms() {
         return perms;
     }
 
-    public void setIcon(String icon) {
-        this.icon = icon;
+    public void setPerms(String perms) {
+        this.perms = perms;
     }
 
     public String getIcon() {
         return icon;
     }
 
-    public void setIsCommon(String isCommon) {
-        this.isCommon = isCommon;
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
     public String getIsCommon() {
         return isCommon;
     }
 
-    public void setIsDefault(String isDefault) {
-        this.isDefault = isDefault;
+    public void setIsCommon(String isCommon) {
+        this.isCommon = isCommon;
     }
 
     public String getIsDefault() {
         return isDefault;
+    }
+
+    public void setIsDefault(String isDefault) {
+        this.isDefault = isDefault;
     }
 }

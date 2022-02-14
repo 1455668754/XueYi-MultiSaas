@@ -27,6 +27,6 @@ public interface RemoteLoginService {
      * @param source         请求来源
      * @return 结果
      */
-    @GetMapping("/login/info/{enterpriseName}/{userName}/{password}")
-    R<LoginUser> getUserInfo(@PathVariable("enterpriseName") String enterpriseName, @PathVariable("userName") String userName, @PathVariable("password") String password, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+    @GetMapping("/login/inner/info/{enterpriseName}/{userName}/{password}")
+    R<LoginUser> getLoginInfo(@PathVariable("enterpriseName") String enterpriseName, @PathVariable("userName") String userName, @PathVariable("password") String password, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
 }

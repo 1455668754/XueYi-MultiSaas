@@ -135,7 +135,7 @@ public class TeStrategyController extends BaseController<TeStrategyDto, ITeStrat
     @Override
     protected void baseRefreshValidated(BaseConstants.Operate operate, TeStrategyDto strategy) {
         if (baseService.checkNameUnique(strategy.getId(), strategy.getName()))
-            throw new ServiceException(StrUtil.format("{}{}{}失败，源策略名称已存在", operate.getInfo(), getNodeName(), strategy.getName()));
+            throw new ServiceException(StrUtil.format("{}{}{}失败，{}名称已存在", operate.getInfo(), getNodeName(), strategy.getName(), getNodeName()));
         TeSourceDto source = sourceService.selectById(strategy.getSourceId());
         if (ObjectUtil.isNull(source))
             throw new ServiceException(StrUtil.format("{}{}{}失败，设置的数据源不存在", operate.getInfo(), getNodeName(), strategy.getName()));

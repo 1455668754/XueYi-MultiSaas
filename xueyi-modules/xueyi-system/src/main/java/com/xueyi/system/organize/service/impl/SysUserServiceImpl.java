@@ -9,8 +9,11 @@ import com.xueyi.system.organize.manager.SysUserManager;
 import com.xueyi.system.organize.mapper.SysUserMapper;
 import com.xueyi.system.organize.service.ISysUserService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.xueyi.common.core.constant.TenantConstants.ISOLATE;
+import static com.xueyi.common.core.constant.TenantConstants.SOURCE;
 
 /**
  * 用户管理 服务层处理
@@ -31,9 +34,23 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDto, SysUserManag
      * @return 用户对象
      */
     @Override
-    @DS("#sourceName")
+    @DS(SOURCE)
     public SysUserDto userLogin(String userName, String password, Long enterpriseId, String sourceName) {
         return baseManager.userLogin(userName, password, enterpriseId);
+    }
+
+    /**
+     * 新增用户 | 内部调用
+     *
+     * @param user       用户对象
+     * @param sourceName 策略源
+     * @return 结果
+     */
+    @Override
+    @DS(SOURCE)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public int addInner(SysUserDto user, String sourceName) {
+        return baseManager.insert(user);
     }
 
     /**

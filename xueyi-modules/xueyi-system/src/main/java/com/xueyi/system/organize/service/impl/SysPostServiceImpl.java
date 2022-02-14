@@ -11,10 +11,13 @@ import com.xueyi.system.organize.mapper.SysPostMapper;
 import com.xueyi.system.organize.service.ISysPostService;
 import com.xueyi.system.utils.vo.OrganizeTree;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static com.xueyi.common.core.constant.TenantConstants.ISOLATE;
+import static com.xueyi.common.core.constant.TenantConstants.SOURCE;
 
 /**
  * 岗位管理 服务层处理
@@ -24,6 +27,20 @@ import static com.xueyi.common.core.constant.TenantConstants.ISOLATE;
 @Service
 @DS(ISOLATE)
 public class SysPostServiceImpl extends BaseServiceImpl<SysPostDto, SysPostManager, SysPostMapper> implements ISysPostService {
+
+    /**
+     * 新增岗位 | 内部调用
+     *
+     * @param post       岗位对象
+     * @param sourceName 策略源
+     * @return 结果
+     */
+    @Override
+    @DS(SOURCE)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public int addInner(SysPostDto post, String sourceName) {
+        return baseManager.insert(post);
+    }
 
     /**
      * 校验岗位编码是否唯一

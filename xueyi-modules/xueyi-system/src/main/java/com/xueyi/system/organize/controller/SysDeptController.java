@@ -2,12 +2,16 @@ package com.xueyi.system.organize.controller;
 
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.BaseConstants;
+import com.xueyi.common.core.domain.R;
 import com.xueyi.common.core.exception.ServiceException;
+import com.xueyi.common.security.annotation.InnerAuth;
 import com.xueyi.common.web.entity.controller.SubTreeController;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 import com.xueyi.system.organize.service.ISysDeptService;
 import com.xueyi.system.organize.service.ISysPostService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,6 +33,16 @@ public class SysDeptController extends SubTreeController<SysDeptDto, ISysDeptSer
     protected String getSubName() {
         return "岗位";
     }
+
+    /**
+     * 新增部门 | 内部调用
+     */
+    @InnerAuth
+    @PostMapping("/inner/add")
+    public R<SysDeptDto> addInner(@RequestBody SysDeptDto dept) {
+        return baseService.addInner(dept, dept.getSourceName()) > 0 ? R.ok(dept): R.fail();
+    }
+
 //    /**
 //     * 修改部门-角色关系
 //     */

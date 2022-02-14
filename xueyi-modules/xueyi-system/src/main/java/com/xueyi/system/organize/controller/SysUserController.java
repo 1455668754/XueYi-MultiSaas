@@ -4,11 +4,13 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.BaseConstants;
+import com.xueyi.common.core.domain.R;
 import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
+import com.xueyi.common.security.annotation.InnerAuth;
 import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.security.service.TokenService;
 import com.xueyi.common.security.utils.SecurityUtils;
@@ -42,6 +44,15 @@ public class SysUserController extends BaseController<SysUserDto, ISysUserServic
     /** 定义父数据名称 */
     protected String getParentName() {
         return "岗位";
+    }
+
+    /**
+     * 新增用户 | 内部调用
+     */
+    @InnerAuth
+    @PostMapping("/inner/add")
+    public R<SysUserDto> addInner(@RequestBody SysUserDto user) {
+        return baseService.addInner(user, user.getSourceName()) > 0 ? R.ok(user): R.fail();
     }
 
     /**

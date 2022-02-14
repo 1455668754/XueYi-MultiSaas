@@ -1,8 +1,15 @@
 package com.xueyi.system.authority.service.impl;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
-import com.xueyi.system.authority.service.ISysAuthorityService;
+import com.xueyi.system.authority.domain.vo.SysAuthVo;
+import com.xueyi.system.authority.manager.SysAuthManager;
+import com.xueyi.system.authority.service.ISysAuthService;
+import com.xueyi.system.authority.service.ISysMenuService;
+import com.xueyi.system.authority.service.ISysModuleService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 import static com.xueyi.common.core.constant.TenantConstants.ISOLATE;
 
@@ -13,7 +20,26 @@ import static com.xueyi.common.core.constant.TenantConstants.ISOLATE;
  */
 @Service
 @DS(ISOLATE)
-public class SysAuthorityServiceImpl implements ISysAuthorityService {
+public class SysAuthServiceImpl implements ISysAuthService {
+
+    @Autowired
+    private SysAuthManager authManager;
+
+    @Autowired
+    private ISysModuleService moduleService;
+
+    @Autowired
+    private ISysMenuService menuService;
+
+    /**
+     * 获取公共模块|菜单权限树 | 租户端
+     *
+     * @return 权限对象集合
+     */
+    @Override
+    public List<SysAuthVo> selectCommonAuthScope() {
+       return authManager.selectCommonAuthScope();
+    }
 //
 //
 //    @Autowired

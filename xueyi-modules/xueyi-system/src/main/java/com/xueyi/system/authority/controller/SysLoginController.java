@@ -39,8 +39,8 @@ public class SysLoginController extends BasisController {
      * 获取当前用户信息
      */
     @InnerAuth
-    @GetMapping("/info/{enterpriseName}/{userName}/{password}")
-    public R<LoginUser> info(@PathVariable("enterpriseName") String enterpriseName, @PathVariable("userName") String userName, @PathVariable("password") String password) {
+    @GetMapping("/inner/info/{enterpriseName}/{userName}/{password}")
+    public R<LoginUser> getLoginInfo(@PathVariable("enterpriseName") String enterpriseName, @PathVariable("userName") String userName, @PathVariable("password") String password) {
         SysEnterpriseDto enterprise = loginService.loginByEnterpriseName(enterpriseName);
         if (ObjectUtil.isNull(enterprise)) {
             return R.fail("账号或密码错误，请检查");

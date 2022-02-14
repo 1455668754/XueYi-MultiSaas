@@ -22,6 +22,15 @@ public interface ISysUserService extends IBaseService<SysUserDto> {
     SysUserDto userLogin(String userName, String password, Long enterpriseId, String sourceName);
 
     /**
+     * 新增用户 | 内部调用
+     *
+     * @param user       用户对象
+     * @param sourceName 策略源
+     * @return 结果
+     */
+    int addInner(SysUserDto user, String sourceName);
+
+    /**
      * 修改用户基本信息
      *
      * @param user 用户信息

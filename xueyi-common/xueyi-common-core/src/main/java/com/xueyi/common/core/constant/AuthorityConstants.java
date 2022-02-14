@@ -184,4 +184,27 @@ public class AuthorityConstants {
             return info;
         }
     }
+
+    /** 权限类型 */
+    public enum AuthorityType {
+
+        MODULE("0", "模块"),
+        MENU("1", "菜单");
+
+        private final String code;
+        private final String info;
+
+        AuthorityType(String code, String info) {
+            this.code = code;
+            this.info = info;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public String getInfo() {
+            return info;
+        }
+    }
 }

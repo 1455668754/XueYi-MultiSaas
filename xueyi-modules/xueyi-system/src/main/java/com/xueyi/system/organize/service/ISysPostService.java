@@ -14,6 +14,15 @@ import java.util.List;
 public interface ISysPostService extends IBaseService<SysPostDto> {
 
     /**
+     * 新增岗位 | 内部调用
+     *
+     * @param post       岗位对象
+     * @param sourceName 策略源
+     * @return 结果
+     */
+    int addInner(SysPostDto post, String sourceName);
+
+    /**
      * 校验岗位编码是否唯一
      *
      * @param Id   岗位Id

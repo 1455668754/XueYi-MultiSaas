@@ -15,6 +15,8 @@ public interface TenantConstants {
     String TE_TENANT_ADD = "tenant:tenant:add";
     /** 租户 - 租户管理 - 修改 */
     String TE_TENANT_EDIT = "tenant:tenant:edit";
+    /** 租户 - 租户管理 - 权限 */
+    String TE_TENANT_AUTH = "tenant:tenant:auth";
     /** 租户 - 租户管理 - 修改状态 */
     String TE_TENANT_EDIT_STATUS = "tenant:tenant:editStatus";
     /** 租户 - 租户管理 - 删除 */

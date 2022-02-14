@@ -12,6 +12,15 @@ import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 public interface ISysDeptService extends ISubTreeService<SysDeptDto, SysPostDto> {
 
     /**
+     * 新增部门 | 内部调用
+     *
+     * @param dept       部门对象
+     * @param sourceName 策略源
+     * @return 结果
+     */
+    int addInner(SysDeptDto dept, String sourceName);
+
+    /**
      * 校验部门编码是否唯一
      *
      * @param Id   部门Id

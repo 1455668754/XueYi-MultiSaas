@@ -2,17 +2,17 @@ package com.xueyi.system.organize.controller;
 
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.BaseConstants;
+import com.xueyi.common.core.domain.R;
 import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.core.web.result.AjaxResult;
+import com.xueyi.common.security.annotation.InnerAuth;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 import com.xueyi.system.organize.service.ISysDeptService;
 import com.xueyi.system.organize.service.ISysPostService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 岗位管理 业务处理
@@ -34,6 +34,15 @@ public class SysPostController extends BaseController<SysPostDto, ISysPostServic
     /** 定义父数据名称 */
     protected String getParentName() {
         return "部门";
+    }
+
+    /**
+     * 新增岗位 | 内部调用
+     */
+    @InnerAuth
+    @PostMapping("/inner/add")
+    public R<SysPostDto> addInner(@RequestBody SysPostDto post) {
+        return baseService.addInner(post, post.getSourceName()) > 0 ? R.ok(post): R.fail();
     }
 
 //    /**

@@ -75,6 +75,7 @@ public class TeTenantController extends BaseController<TeTenantDto, ITeTenantSer
     @RequiresPermissions(Auth.TE_TENANT_ADD)
     @Log(title = "租户管理", businessType = BusinessType.INSERT)
     public AjaxResult add(@Validated @RequestBody TeTenantRegister tenantRegister) {
+        registerValidated(tenantRegister);
         return toAjax(baseService.insert(tenantRegister));
     }
 
@@ -109,6 +110,15 @@ public class TeTenantController extends BaseController<TeTenantDto, ITeTenantSer
     @Log(title = "租户管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);
+    }
+
+    /**
+     * 前置校验 （强制）增加/修改
+     */
+    @Override
+    protected void baseRefreshValidated(BaseConstants.Operate operate, TeTenantDto tenant) {
+        if (baseService.checkNameUnique(tenant.getId(), tenant.getName()))
+            throw new ServiceException(StrUtil.format("{}{}{}失败，{}名称已存在", operate.getInfo(), getNodeName(), tenant.getName(), getNodeName()));
     }
 
     /**
@@ -156,5 +166,7 @@ public class TeTenantController extends BaseController<TeTenantDto, ITeTenantSer
                 || password.length() > OrganizeConstants.PASSWORD_MAX_LENGTH) {
             throw new ServiceException("用户密码长度必须在" + OrganizeConstants.PASSWORD_MIN_LENGTH + "到" + OrganizeConstants.PASSWORD_MAX_LENGTH + "个字符之间");
         }
+        if (baseService.checkNameUnique(tenantRegister.getTenant().getId(), tenantRegister.getTenant().getName()))
+            throw new ServiceException("企业账号已存在，请更换后再提交！");
     }
 }

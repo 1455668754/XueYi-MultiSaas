@@ -20,8 +20,11 @@ import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.entity.controller.TreeController;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
+import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
 import com.xueyi.system.authority.service.ISysMenuService;
+import com.xueyi.system.authority.service.ISysModuleService;
 import org.apache.commons.lang3.ArrayUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +40,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/menu")
 public class SysMenuController extends TreeController<SysMenuDto, ISysMenuService> {
+
+    @Autowired
+    private ISysModuleService moduleService;
 
     /** 定义节点名称 */
     protected String getNodeName() {
@@ -179,6 +185,10 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
      */
     @Override
     protected void baseRefreshValidated(BaseConstants.Operate operate, SysMenuDto menu) {
+        if (ObjectUtil.equals(menu.getId(), AuthorityConstants.MENU_TOP_NODE))
+            throw new ServiceException("默认菜单不允许修改！");
+        if (baseService.checkNameUnique(menu.getId(), menu.getParentId(), menu.getName()))
+            throw new ServiceException(StrUtil.format("{}{}{}失败，菜单名称已存在", operate.getInfo(), getNodeName(), menu.getTitle()));
         if (SecurityUtils.isNotAdminTenant()) {
             if (operate.isAdd()) {
                 if (StringUtils.equals(DictConstants.DicCommonPrivate.COMMON.getCode(), menu.getIsCommon()))
@@ -191,10 +201,11 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
                     throw new ServiceException(StrUtil.format("{}{}{}失败，无操作权限", operate.getInfo(), getNodeName(), menu.getTitle()));
             }
         }
-        if(ObjectUtil.equals(menu.getId(), AuthorityConstants.MENU_TOP_NODE))
-            throw new ServiceException("默认菜单不允许修改！");
-        if (baseService.checkNameUnique(menu.getId(), menu.getParentId(), menu.getName()))
-            throw new ServiceException(StrUtil.format("{}{}{}失败，菜单名称已存在", operate.getInfo(), getNodeName(), menu.getTitle()));
+        if (StringUtils.equals(DictConstants.DicCommonPrivate.COMMON.getCode(), menu.getIsCommon())) {
+            SysModuleDto module = moduleService.selectById(menu.getModuleId());
+            if (StringUtils.equals(DictConstants.DicCommonPrivate.COMMON.getCode(), module.getIsCommon()))
+                throw new ServiceException(StrUtil.format("{}{}{}失败，公共菜单必须挂载在公共模块下！", operate.getInfo(), getNodeName(), menu.getTitle()));
+        }
     }
 
     /**

@@ -39,15 +39,13 @@ public interface ITeTenantService extends IBaseService<TeTenantDto> {
      * 租户组织数据初始化
      *
      * @param tenantRegister 租户初始化对象
-     * @return 结果
      */
-    boolean organizeInit(TeTenantRegister tenantRegister);
+    void organizeInit(TeTenantRegister tenantRegister);
 
     /**
      * 租户权限数据初始化
      *
      * @param tenantRegister 租户初始化对象
-     * @return 结果
      */
-    boolean authorityInit(TeTenantRegister tenantRegister);
+    void authorityInit(TeTenantRegister tenantRegister);
 }

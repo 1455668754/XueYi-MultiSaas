@@ -29,6 +29,9 @@ public class TeTenantRegister extends BasisEntity {
     /** 用户信息 */
     private SysUserDto user;
 
+    /** 权限Ids */
+    private Long[] authIds;
+
     public TeTenantDto getTenant() {
         return tenant;
     }
@@ -61,6 +64,14 @@ public class TeTenantRegister extends BasisEntity {
         this.user = user;
     }
 
+    public Long[] getAuthIds() {
+        return authIds;
+    }
+
+    public void setAuthIds(Long[] authIds) {
+        this.authIds = authIds;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
@@ -68,6 +79,7 @@ public class TeTenantRegister extends BasisEntity {
                 .append("dept", getDept())
                 .append("post", getPost())
                 .append("user", getUser())
+                .append("authIds", getAuthIds())
                 .toString();
     }
 }

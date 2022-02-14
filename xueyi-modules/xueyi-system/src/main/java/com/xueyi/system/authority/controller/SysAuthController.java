@@ -1,6 +1,14 @@
 package com.xueyi.system.authority.controller;
 
+import com.xueyi.common.core.utils.TreeUtils;
+import com.xueyi.common.core.web.result.AjaxResult;
+import com.xueyi.common.security.annotation.Logical;
+import com.xueyi.common.security.annotation.RequiresPermissions;
+import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.web.entity.controller.BasisController;
+import com.xueyi.system.authority.service.ISysAuthService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -10,11 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
  * @author xueyi
  */
 @RestController
-@RequestMapping("/authority")
-public class SysAuthorityController extends BasisController {
+@RequestMapping("/auth")
+public class SysAuthController extends BasisController {
 
-//    @Autowired
-//    private IysAuthorityService authorityService;
+    @Autowired
+    private ISysAuthService authService;
 //
 //    @Autowired
 //    private ISysCacheInitService cacheInitService;
@@ -22,13 +30,16 @@ public class SysAuthorityController extends BasisController {
 //    @Autowired
 //    private IsRoleService roleService;
 //
-//    /**
-//     * 获取当前租户模块-菜单范围 | 租户级
-//     */
-//    @GetMapping(value = "/lessorScope")
-//    public AjaxResult getLessorMenuScope() {
-//        return AjaxResult.success(authorityService.selectLessorMenuScope(SecurityUtils.getEnterpriseId()));
-//    }
+
+    /**
+     * 获取公共模块|菜单权限树 | 租户端
+     */
+    @GetMapping(value = "/tenant/authScope")
+    @RequiresPermissions(value = {Auth.TE_TENANT_ADD, Auth.TE_TENANT_AUTH}, logical = Logical.OR)
+    public AjaxResult getCommonAuthScope() {
+        return AjaxResult.success(TreeUtils.buildTree(authService.selectCommonAuthScope()));
+    }
+
 //
 //    /**
 //     * 根据租户Id获取模块-菜单范围 | 租户级

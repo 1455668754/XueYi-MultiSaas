@@ -140,7 +140,7 @@ public class TeSourceController extends BaseController<TeSourceDto, ITeSourceSer
     protected void baseRefreshValidated(BaseConstants.Operate operate, TeSourceDto source) {
         DSUtils.testDs(source);
         if (baseService.checkNameUnique(source.getId(), source.getName()))
-            throw new ServiceException(StrUtil.format("{}{}{}失败，数据源名称已存在", operate.getInfo(), getNodeName(), source.getName()));
+            throw new ServiceException(StrUtil.format("{}{}{}失败，{}名称已存在", operate.getInfo(), getNodeName(), source.getName(), getNodeName()));
     }
 
     /**

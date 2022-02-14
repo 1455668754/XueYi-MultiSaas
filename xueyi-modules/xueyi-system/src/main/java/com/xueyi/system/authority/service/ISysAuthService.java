@@ -1,19 +1,22 @@
 package com.xueyi.system.authority.service;
 
+import com.xueyi.system.authority.domain.vo.SysAuthVo;
+
+import java.util.List;
+
 /**
  * 权限管理 服务层
  *
  * @author xueyi
  */
-public interface ISysAuthorityService {
+public interface ISysAuthService {
 
-//    /**
-//     * 根据企业Id获取模块-菜单集合 | 租管级
-//     *
-//     * @param enterpriseId 企业Id
-//     * @return 模块-菜单集合
-//     */
-//    public List<TreeSelect> selectLessorMenuScope(Long enterpriseId);
+    /**
+     * 获取公共模块|菜单权限树 | 租户端
+     *
+     * @return 权限对象集合
+     */
+    List<SysAuthVo> selectCommonAuthScope();
 //
 //    /**
 //     * 根据企业Id获取模块-菜单选择 | 半选 | 全选 | 租管级

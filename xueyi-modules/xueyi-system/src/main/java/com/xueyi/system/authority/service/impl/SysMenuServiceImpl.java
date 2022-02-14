@@ -19,6 +19,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.xueyi.common.core.constant.TenantConstants.MASTER;
+import static com.xueyi.common.core.constant.TenantConstants.SOURCE;
 
 /**
  * 菜单管理 服务层处理
@@ -37,7 +38,7 @@ public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuDto, SysMenuManag
      * @return 菜单权限集合
      */
     @Override
-    @DS("#sourceName")
+    @DS(SOURCE)
     public Set<String> loginPermission(Long enterpriseId, String sourceName) {
         List<SysMenuDto> menuList = baseManager.loginMenuList(enterpriseId);
         return CollUtil.isNotEmpty(menuList)
@@ -54,7 +55,7 @@ public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuDto, SysMenuManag
      * @return 菜单权限集合
      */
     @Override
-    @DS("#sourceName")
+    @DS(SOURCE)
     public Set<String> loginPermission(Set<Long> roleIds, Long enterpriseId, String sourceName) {
         List<SysMenuDto> menuList = baseManager.loginMenuList(roleIds, enterpriseId);
         return CollUtil.isNotEmpty(menuList)
@@ -84,7 +85,7 @@ public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuDto, SysMenuManag
      * @return 路径集合
      */
     @Override
-    @DS("#sourceName")
+    @DS(SOURCE)
     public Map<String, String> getRouteMap(Long enterpriseId, String sourceName) {
         List<SysMenuDto> menuList = baseManager.loginMenuList(enterpriseId)
                 .stream().filter(menu -> ObjectUtil.notEqual(menu.getId(), AuthorityConstants.MENU_TOP_NODE) && (menu.isDir() || menu.isMenu() || menu.isDetails()))
@@ -101,7 +102,7 @@ public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuDto, SysMenuManag
      * @return 路径集合
      */
     @Override
-    @DS("#sourceName")
+    @DS(SOURCE)
     public Map<String, String> getRouteMap(Set<Long> roleIds, Long enterpriseId, String sourceName) {
         List<SysMenuDto> menuList = baseManager.loginMenuList(roleIds, enterpriseId)
                 .stream().filter(menu -> ObjectUtil.notEqual(menu.getId(), AuthorityConstants.MENU_TOP_NODE) && (menu.isDir() || menu.isMenu() || menu.isDetails()))

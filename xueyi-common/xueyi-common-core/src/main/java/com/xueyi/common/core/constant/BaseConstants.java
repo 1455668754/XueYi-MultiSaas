@@ -110,29 +110,6 @@ public class BaseConstants {
         }
     }
 
-    /** 校验返回结果码 */
-    public enum Check {
-
-        UNIQUE("0", "唯一"),
-        NOT_UNIQUE("1", "不唯一");
-
-        private final String code;
-        private final String info;
-
-        Check(String code, String info) {
-            this.code = code;
-            this.info = info;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
-    }
-
     /** 系统默认值 */
     public enum Whether {
 
@@ -148,29 +125,6 @@ public class BaseConstants {
         }
 
         public String getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
-    }
-
-    /** 删除状态 */
-    public enum DelFlag {
-
-        NORMAL(0L, "正常"),
-        DELETED(1L, "已删除");
-
-        private final Long code;
-        private final String info;
-
-        DelFlag(Long code, String info) {
-            this.code = code;
-            this.info = info;
-        }
-
-        public Long getCode() {
             return code;
         }
 

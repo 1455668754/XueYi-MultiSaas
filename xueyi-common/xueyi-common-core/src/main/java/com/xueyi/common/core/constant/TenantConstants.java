@@ -26,6 +26,9 @@ public class TenantConstants {
     /** 主数据源标识 */
     public static final String MASTER = "#master";
 
+    /** 手动数据源标识（调用对象中的sourceName属性） */
+    public static final String SOURCE = "#sourceName";
+
     /** 数据源 */
     public enum Source {
 

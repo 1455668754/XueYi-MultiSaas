@@ -1,12 +1,12 @@
 package com.xueyi.system.api.organize.feign.factory;
 
+import com.xueyi.common.core.domain.R;
+import com.xueyi.system.api.organize.domain.dto.SysUserDto;
+import com.xueyi.system.api.organize.feign.RemoteUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
-import com.xueyi.common.core.domain.R;
-import com.xueyi.system.api.organize.feign.RemoteUserService;
-import com.xueyi.system.api.model.LoginUser;
 
 /**
  * 用户服务 降级处理
@@ -23,8 +23,8 @@ public class RemoteUserFallbackFactory implements FallbackFactory<RemoteUserServ
         log.error("用户服务调用失败:{}", throwable.getMessage());
         return new RemoteUserService() {
             @Override
-            public R<LoginUser> getUserInfo(String enterpriseName, String userName, String source) {
-                return R.fail("获取用户失败:" + throwable.getMessage());
+            public R<SysUserDto> add(SysUserDto user, String source) {
+                return R.fail("新增用户失败:" + throwable.getMessage());
             }
         };
     }

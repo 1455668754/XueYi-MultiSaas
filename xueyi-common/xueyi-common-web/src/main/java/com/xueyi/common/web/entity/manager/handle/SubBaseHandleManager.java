@@ -30,7 +30,7 @@ public abstract class SubBaseHandleManager<D extends SubBaseEntity<S>, DM extend
      *
      * @param queryWrapper 条件构造器
      * @param d            数据对象
-     * @see com.xueyi.common.web.entity.manager.SubTreeManager#selectSubById(Serializable)
+     * @see com.xueyi.common.web.entity.manager.SubTreeManager#selectByIdExtra(Serializable)
      */
     protected void querySetForeignKey(LambdaQueryWrapper<S> queryWrapper, D d) {
         setForeignKey(queryWrapper, null, d, null);
