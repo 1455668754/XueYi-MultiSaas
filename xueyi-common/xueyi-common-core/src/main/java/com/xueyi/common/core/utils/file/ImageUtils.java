@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
@@ -51,7 +50,6 @@ public class ImageUtils {
      */
     public static byte[] readFile(String url) {
         InputStream in = null;
-        ByteArrayOutputStream baos = null;
         try {
             // 网络地址
             URL urlObj = new URL(url);
@@ -66,7 +64,6 @@ public class ImageUtils {
             return null;
         } finally {
             IOUtils.closeQuietly(in);
-            IOUtils.closeQuietly(baos);
         }
     }
 }
