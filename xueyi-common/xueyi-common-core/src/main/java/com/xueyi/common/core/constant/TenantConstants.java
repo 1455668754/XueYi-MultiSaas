@@ -7,6 +7,9 @@ package com.xueyi.common.core.constant;
  */
 public class TenantConstants {
 
+    /** 无效租户Id */
+    public static final Long EMPTY_TENANT_ID = -1L;
+
     /** 注册租户默认策略Id */
     public static final Long REGISTER_TENANT_STRATEGY_ID = 0L;
 

@@ -28,7 +28,8 @@ public class XueYiTenantLineHandler implements TenantLineHandler {
 
     public Expression getCommonTenantId() {
         List<Expression> childList = new ArrayList<>();
-        childList.add(new LongValue(TenantConstants.COMMON_TENANT_ID));
+        if (SecurityUtils.isNotEmptyTenant())
+            childList.add(new LongValue(TenantConstants.COMMON_TENANT_ID));
         childList.add(new LongValue(SecurityUtils.getEnterpriseId()));
         return new MultipleExpression(childList) {
             @Override
@@ -45,7 +46,7 @@ public class XueYiTenantLineHandler implements TenantLineHandler {
 
     @Override
     public boolean ignoreTable(String tableName) {
-        return ObjectUtil.isNotNull(SecurityUtils.getEnterpriseId()) || Arrays.asList(TenantConstants.EXCLUDE_TENANT_TABLE).contains(tableName);
+        return Arrays.asList(TenantConstants.EXCLUDE_TENANT_TABLE).contains(tableName);
     }
 
     @Override

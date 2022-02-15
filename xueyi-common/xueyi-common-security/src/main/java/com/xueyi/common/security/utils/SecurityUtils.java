@@ -1,8 +1,10 @@
 package com.xueyi.common.security.utils;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.AuthorityConstants;
 import com.xueyi.common.core.constant.SecurityConstants;
+import com.xueyi.common.core.constant.TenantConstants;
 import com.xueyi.common.core.constant.TokenConstants;
 import com.xueyi.common.core.context.SecurityContextHolder;
 import com.xueyi.common.core.utils.ServletUtils;
@@ -109,6 +111,20 @@ public class SecurityUtils {
     }
 
     /**
+     * 是否为空租户信息
+     */
+    public static boolean isEmptyTenant() {
+        return ObjectUtil.equals(TenantConstants.EMPTY_TENANT_ID, getEnterpriseId());
+    }
+
+    /**
+     * 是否不为空租户信息
+     */
+    public static boolean isNotEmptyTenant() {
+        return !isEmptyTenant();
+    }
+
+    /**
      * 是否为超管用户
      */
     public static boolean isAdminUser() {
@@ -119,7 +135,7 @@ public class SecurityUtils {
      * 是否不为超管用户
      */
     public static boolean isNotAdminUser() {
-        return !StringUtils.equals(AuthorityConstants.UserType.ADMIN.getCode(), getUserType());
+        return !isAdminUser();
     }
 
     /**
@@ -133,7 +149,7 @@ public class SecurityUtils {
      * 是否不为超管租户
      */
     public static boolean isNotAdminTenant() {
-        return !StringUtils.equals(AuthorityConstants.TenantType.ADMIN.getCode(), getIsLessor());
+        return !isAdminTenant();
     }
 
     /**
