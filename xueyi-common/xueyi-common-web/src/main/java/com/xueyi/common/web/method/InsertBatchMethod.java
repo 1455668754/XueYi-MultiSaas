@@ -1,6 +1,7 @@
 package com.xueyi.common.web.method;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.core.injector.AbstractMethod;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
@@ -32,10 +33,13 @@ public class InsertBatchMethod extends AbstractMethod {
 
     private String prepareFieldSql(TableInfo tableInfo) {
         StringBuilder fieldSql = new StringBuilder();
-        fieldSql.append(tableInfo.getKeyColumn()).append(",");
+        System.out.println(tableInfo.getKeyColumn());
+        if (StrUtil.isNotEmpty(tableInfo.getKeyColumn()))
+            fieldSql.append(tableInfo.getKeyColumn()).append(",");
         tableInfo.getFieldList().forEach(x -> {
-            if(!ObjectUtil.equals(FieldStrategy.NEVER,x.getInsertStrategy()))
+            if (!ObjectUtil.equals(FieldStrategy.NEVER, x.getInsertStrategy())) {
                 fieldSql.append(x.getColumn()).append(",");
+            }
         });
         fieldSql.delete(fieldSql.length() - 1, fieldSql.length());
         fieldSql.insert(0, "(");
@@ -46,9 +50,10 @@ public class InsertBatchMethod extends AbstractMethod {
     private String prepareValuesSql(TableInfo tableInfo) {
         final StringBuilder valueSql = new StringBuilder();
         valueSql.append("<foreach collection=\"collection\" item=\"item\" index=\"index\" open=\"(\" separator=\"),(\" close=\")\">");
-        valueSql.append("#{item.").append(tableInfo.getKeyProperty()).append("},");
+        if (StrUtil.isNotEmpty(tableInfo.getKeyColumn()))
+            valueSql.append("#{item.").append(tableInfo.getKeyProperty()).append("},");
         tableInfo.getFieldList().forEach(x -> {
-            if(!ObjectUtil.equals(FieldStrategy.NEVER,x.getInsertStrategy()))
+            if (!ObjectUtil.equals(FieldStrategy.NEVER, x.getInsertStrategy()))
                 valueSql.append("#{item.").append(x.getProperty()).append("},");
         });
         valueSql.delete(valueSql.length() - 1, valueSql.length());
