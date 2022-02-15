@@ -19,7 +19,6 @@ import java.io.Serializable;
 import java.util.Collection;
 
 import static com.xueyi.common.core.constant.TenantConstants.ISOLATE;
-import static com.xueyi.common.core.constant.TenantConstants.SOURCE;
 
 /**
  * 部门管理 服务层处理
@@ -33,14 +32,12 @@ public class SysDeptServiceImpl extends SubTreeServiceImpl<SysDeptDto, SysDeptMa
     /**
      * 新增部门 | 内部调用
      *
-     * @param dept       部门对象
-     * @param sourceName 策略源
+     * @param dept 部门对象
      * @return 结果
      */
     @Override
-    @DS(SOURCE)
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public int addInner(SysDeptDto dept, String sourceName) {
+    public int addInner(SysDeptDto dept) {
         return baseManager.insert(dept);
     }
 

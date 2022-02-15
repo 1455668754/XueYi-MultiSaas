@@ -42,14 +42,12 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDto, SysUserManag
     /**
      * 新增用户 | 内部调用
      *
-     * @param user       用户对象
-     * @param sourceName 策略源
+     * @param user 用户对象
      * @return 结果
      */
     @Override
-    @DS(SOURCE)
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public int addInner(SysUserDto user, String sourceName) {
+    public int addInner(SysUserDto user) {
         return baseManager.insert(user);
     }
 

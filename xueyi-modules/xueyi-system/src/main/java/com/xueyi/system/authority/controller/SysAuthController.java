@@ -1,16 +1,16 @@
 package com.xueyi.system.authority.controller;
 
+import com.xueyi.common.core.domain.R;
 import com.xueyi.common.core.utils.TreeUtils;
 import com.xueyi.common.core.web.result.AjaxResult;
+import com.xueyi.common.security.annotation.InnerAuth;
 import com.xueyi.common.security.annotation.Logical;
 import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.web.entity.controller.BasisController;
 import com.xueyi.system.authority.service.ISysAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 权限管理 业务处理
@@ -30,6 +30,26 @@ public class SysAuthController extends BasisController {
 //    @Autowired
 //    private IsRoleService roleService;
 //
+
+    /**
+     * 新增租户权限
+     */
+    @InnerAuth
+    @PostMapping("/inner/addTenantAuth")
+    public R<Boolean> addTenantAuthInner(@RequestBody Long[] authIds) {
+        authService.addTenantAuthInner(authIds);
+        return R.ok();
+    }
+
+    /**
+     * 修改租户权限
+     */
+    @InnerAuth
+    @PostMapping("/inner/editTenantAuth")
+    public R<Boolean> editTenantAuthInner(@RequestBody Long[] authIds) {
+        authService.editTenantAuthInner(authIds);
+        return R.ok();
+    }
 
     /**
      * 获取公共模块|菜单权限树 | 租户端

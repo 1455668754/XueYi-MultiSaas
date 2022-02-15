@@ -33,7 +33,6 @@ public class InsertBatchMethod extends AbstractMethod {
 
     private String prepareFieldSql(TableInfo tableInfo) {
         StringBuilder fieldSql = new StringBuilder();
-        System.out.println(tableInfo.getKeyColumn());
         if (StrUtil.isNotEmpty(tableInfo.getKeyColumn()))
             fieldSql.append(tableInfo.getKeyColumn()).append(",");
         tableInfo.getFieldList().forEach(x -> {

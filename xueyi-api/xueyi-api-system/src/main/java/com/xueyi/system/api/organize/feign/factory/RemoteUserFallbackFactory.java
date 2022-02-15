@@ -23,7 +23,7 @@ public class RemoteUserFallbackFactory implements FallbackFactory<RemoteUserServ
         log.error("用户服务调用失败:{}", throwable.getMessage());
         return new RemoteUserService() {
             @Override
-            public R<SysUserDto> add(SysUserDto user, String source) {
+            public R<SysUserDto> add(SysUserDto user, Long enterpriseId, String sourceName, String source) {
                 return R.fail("新增用户失败:" + throwable.getMessage());
             }
         };

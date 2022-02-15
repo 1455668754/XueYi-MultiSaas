@@ -1,11 +1,10 @@
 package com.xueyi.system.authority.service.impl;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
+import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.xueyi.system.authority.domain.vo.SysAuthVo;
 import com.xueyi.system.authority.manager.SysAuthManager;
 import com.xueyi.system.authority.service.ISysAuthService;
-import com.xueyi.system.authority.service.ISysMenuService;
-import com.xueyi.system.authority.service.ISysModuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,12 +24,6 @@ public class SysAuthServiceImpl implements ISysAuthService {
     @Autowired
     private SysAuthManager authManager;
 
-    @Autowired
-    private ISysModuleService moduleService;
-
-    @Autowired
-    private ISysMenuService menuService;
-
     /**
      * 获取公共模块|菜单权限树 | 租户端
      *
@@ -38,7 +31,29 @@ public class SysAuthServiceImpl implements ISysAuthService {
      */
     @Override
     public List<SysAuthVo> selectCommonAuthScope() {
-       return authManager.selectCommonAuthScope();
+        return authManager.selectCommonAuthScope();
+    }
+
+    /**
+     * 新增租户权限
+     *
+     * @param authIds 权限Ids
+     */
+    @Override
+    @DSTransactional
+    public void addTenantAuthInner(Long[] authIds) {
+        authManager.addTenantAuthInner(authIds);
+    }
+
+    /**
+     * 修改租户权限
+     *
+     * @param authIds 权限Ids
+     */
+    @Override
+    @DSTransactional
+    public void editTenantAuthInner(Long[] authIds) {
+        authManager.editTenantAuthInner(authIds);
     }
 //
 //

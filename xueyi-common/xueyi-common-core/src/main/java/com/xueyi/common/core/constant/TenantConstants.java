@@ -8,13 +8,16 @@ package com.xueyi.common.core.constant;
 public class TenantConstants {
 
     /** 无效租户Id */
-    public static final Long EMPTY_TENANT_ID = -1L;
-
-    /** 注册租户默认策略Id */
-    public static final Long REGISTER_TENANT_STRATEGY_ID = 0L;
+    public static final Long EMPTY_TENANT_ID = -2L;
 
     /** 公共租户Id */
     public static final Long COMMON_TENANT_ID = 0L;
+
+    /** 租户Id */
+    public static final String TENANT_ID = "tenant_id";
+
+    /** 注册租户默认策略Id */
+    public static final Long REGISTER_TENANT_STRATEGY_ID = 0L;
 
     /** 具备公共数据的表名 */
     public static final String[] COMMON_TENANT_TABLE = {"sys_menu", "sys_module"};

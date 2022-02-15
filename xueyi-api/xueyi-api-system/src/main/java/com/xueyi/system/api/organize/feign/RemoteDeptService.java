@@ -25,5 +25,5 @@ public interface RemoteDeptService {
      * @return 结果
      */
     @PostMapping("/dept/inner/add")
-    R<SysDeptDto> add(@RequestBody SysDeptDto dept, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+    R<SysDeptDto> add(@RequestBody SysDeptDto dept, @RequestHeader(SecurityConstants.ENTERPRISE_ID) Long enterpriseId, @RequestHeader(SecurityConstants.SOURCE_NAME) String sourceName, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
 }

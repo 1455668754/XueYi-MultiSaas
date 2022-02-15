@@ -52,7 +52,7 @@ public class SysUserController extends BaseController<SysUserDto, ISysUserServic
     @InnerAuth
     @PostMapping("/inner/add")
     public R<SysUserDto> addInner(@RequestBody SysUserDto user) {
-        return baseService.addInner(user, user.getSourceName()) > 0 ? R.ok(user): R.fail();
+        return baseService.addInner(user) > 0 ? R.ok(user) : R.fail();
     }
 
     /**

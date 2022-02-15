@@ -14,11 +14,10 @@ public interface ISysDeptService extends ISubTreeService<SysDeptDto, SysPostDto>
     /**
      * 新增部门 | 内部调用
      *
-     * @param dept       部门对象
-     * @param sourceName 策略源
+     * @param dept 部门对象
      * @return 结果
      */
-    int addInner(SysDeptDto dept, String sourceName);
+    int addInner(SysDeptDto dept);
 
     /**
      * 校验部门编码是否唯一

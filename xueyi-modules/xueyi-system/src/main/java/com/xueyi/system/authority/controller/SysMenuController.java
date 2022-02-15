@@ -189,22 +189,29 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
             throw new ServiceException("默认菜单不允许修改！");
         if (baseService.checkNameUnique(menu.getId(), menu.getParentId(), menu.getName()))
             throw new ServiceException(StrUtil.format("{}{}{}失败，菜单名称已存在", operate.getInfo(), getNodeName(), menu.getTitle()));
-        if (SecurityUtils.isNotAdminTenant()) {
-            if (operate.isAdd()) {
-                if (StringUtils.equals(DictConstants.DicCommonPrivate.COMMON.getCode(), menu.getIsCommon()))
-                    throw new ServiceException(StrUtil.format("{}{}{}失败，无操作权限", operate.getInfo(), getNodeName(), menu.getTitle()));
-            } else {
-                SysMenuDto original = baseService.selectById(menu.getId());
-                if (ObjectUtil.isNull(original))
-                    throw new ServiceException("数据不存在");
-                else if (StringUtils.equals(DictConstants.DicCommonPrivate.COMMON.getCode(), original.getIsCommon()))
-                    throw new ServiceException(StrUtil.format("{}{}{}失败，无操作权限", operate.getInfo(), getNodeName(), menu.getTitle()));
+        if(operate.isAdd() && SecurityUtils.isNotAdminTenant() && StringUtils.equals(DictConstants.DicCommonPrivate.COMMON.getCode(), menu.getIsCommon())){
+            throw new ServiceException(StrUtil.format("{}{}{}失败，无操作权限！", operate.getInfo(), getNodeName(), menu.getTitle()));
+        }
+        if(operate.isEdit()){
+            SysMenuDto original = baseService.selectById(menu.getId());
+            if (ObjectUtil.isNull(original))
+                throw new ServiceException("数据不存在");
+            if (SecurityUtils.isNotAdminTenant()) {
+                if (StringUtils.equals(DictConstants.DicCommonPrivate.COMMON.getCode(), original.getIsCommon())) {
+                    throw new ServiceException(StrUtil.format("{}{}{}失败，无操作权限！", operate.getInfo(), getNodeName(), menu.getTitle()));
+                }
+            }
+            if(!StringUtils.equals(menu.getIsCommon(), original.getIsCommon())) {
+                throw new ServiceException(StrUtil.format("{}{}{}失败，公共菜单属性禁止变更！", operate.getInfo(), getNodeName(), menu.getTitle()));
             }
         }
         if (StringUtils.equals(DictConstants.DicCommonPrivate.COMMON.getCode(), menu.getIsCommon())) {
             SysModuleDto module = moduleService.selectById(menu.getModuleId());
             if (StringUtils.equals(DictConstants.DicCommonPrivate.COMMON.getCode(), module.getIsCommon()))
                 throw new ServiceException(StrUtil.format("{}{}{}失败，公共菜单必须挂载在公共模块下！", operate.getInfo(), getNodeName(), menu.getTitle()));
+            if(operate.isEdit()){
+                SysMenuDto original = baseService.selectById(menu.getId());
+            }
         }
     }
 

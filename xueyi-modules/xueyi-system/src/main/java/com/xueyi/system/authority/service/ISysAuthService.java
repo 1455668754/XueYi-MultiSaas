@@ -17,6 +17,20 @@ public interface ISysAuthService {
      * @return 权限对象集合
      */
     List<SysAuthVo> selectCommonAuthScope();
+
+    /**
+     * 新增租户权限
+     *
+     * @param authIds 权限Ids
+     */
+    void addTenantAuthInner(Long[] authIds);
+
+    /**
+     * 修改租户权限
+     *
+     * @param authIds 权限Ids
+     */
+    void editTenantAuthInner(Long[] authIds);
 //
 //    /**
 //     * 根据企业Id获取模块-菜单选择 | 半选 | 全选 | 租管级

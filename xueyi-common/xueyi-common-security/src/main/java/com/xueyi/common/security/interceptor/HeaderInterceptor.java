@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author xueyi
  */
 public class HeaderInterceptor implements AsyncHandlerInterceptor {
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if (!(handler instanceof HandlerMethod)) {

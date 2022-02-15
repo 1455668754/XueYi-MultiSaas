@@ -3,6 +3,7 @@ package com.xueyi.system.authority.domain.merge;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.common.core.web.tenant.TBasisEntity;
+import com.xueyi.common.security.utils.SecurityUtils;
 
 /**
  * 租户-菜单关联 持久化对象
@@ -17,6 +18,13 @@ public class SysTenantMenuMerge extends TBasisEntity {
     /** 菜单Id */
     @TableField("menu_id")
     private Long menuId;
+
+    public SysTenantMenuMerge(){}
+
+    public SysTenantMenuMerge(Long menuId){
+        setMenuId(menuId);
+        setEnterpriseId(SecurityUtils.getEnterpriseId());
+    }
 
     public Long getMenuId() {
         return menuId;

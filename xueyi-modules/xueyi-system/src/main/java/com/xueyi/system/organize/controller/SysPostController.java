@@ -42,7 +42,7 @@ public class SysPostController extends BaseController<SysPostDto, ISysPostServic
     @InnerAuth
     @PostMapping("/inner/add")
     public R<SysPostDto> addInner(@RequestBody SysPostDto post) {
-        return baseService.addInner(post, post.getSourceName()) > 0 ? R.ok(post): R.fail();
+        return baseService.addInner(post) > 0 ? R.ok(post) : R.fail();
     }
 
 //    /**

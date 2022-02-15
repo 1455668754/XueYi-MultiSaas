@@ -49,9 +49,7 @@ public class BaseManager<D extends BaseEntity, DM extends BaseMapper<D>> extends
      * @return 数据对象集合
      */
     public List<D> selectListByIds(Collection<? extends Serializable> idList) {
-        return baseMapper.selectList(
-                Wrappers.<D>query().lambda()
-                        .in(D::getId, idList));
+        return baseMapper.selectBatchIds(idList);
     }
 
     /**

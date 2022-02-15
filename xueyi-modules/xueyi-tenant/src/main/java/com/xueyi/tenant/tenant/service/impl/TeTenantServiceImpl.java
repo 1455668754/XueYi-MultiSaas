@@ -8,6 +8,7 @@ import com.xueyi.common.core.constant.SecurityConstants;
 import com.xueyi.common.core.domain.R;
 import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
+import com.xueyi.system.api.authority.feign.RemoteAuthService;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
@@ -28,7 +29,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.xueyi.common.core.constant.TenantConstants.MASTER;
-import static com.xueyi.common.core.constant.TenantConstants.SOURCE;
 
 /**
  * 租户管理 服务层处理
@@ -53,6 +53,10 @@ public class TeTenantServiceImpl extends BaseServiceImpl<TeTenantDto, TeTenantMa
 
     @Autowired
     private RemoteUserService userService;
+
+    @Autowired
+    private RemoteAuthService authService;
+
 
     /**
      * 新增租户 | 包含数据初始化
@@ -103,26 +107,19 @@ public class TeTenantServiceImpl extends BaseServiceImpl<TeTenantDto, TeTenantMa
      * @param tenantRegister 租户初始化对象
      */
     @Override
-    @DS(SOURCE)
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void organizeInit(TeTenantRegister tenantRegister) {
         Long enterpriseId = tenantRegister.getTenant().getId();
-        String sourceName = tenantRegister.getTenant().getSourceName();
-        tenantRegister.getDept().setEnterpriseId(enterpriseId);
-        tenantRegister.getDept().setSourceName(sourceName);
-        R<SysDeptDto> deptR = deptService.add(tenantRegister.getDept(), SecurityConstants.INNER);
+        String sourceName = tenantRegister.getSourceName();
+        R<SysDeptDto> deptR = deptService.add(tenantRegister.getDept(),enterpriseId, sourceName, SecurityConstants.INNER);
         if(deptR.isFail())
             throw new ServiceException("新增失败！");
-        tenantRegister.getPost().setEnterpriseId(enterpriseId);
-        tenantRegister.getPost().setSourceName(sourceName);
         tenantRegister.getPost().setDeptId(deptR.getResult().getId());
-        R<SysPostDto> postR = postService.add(tenantRegister.getPost(), SecurityConstants.INNER);
+        R<SysPostDto> postR = postService.add(tenantRegister.getPost(),enterpriseId, sourceName, SecurityConstants.INNER);
         if(postR.isFail())
             throw new ServiceException("新增失败！");
-        tenantRegister.getUser().setEnterpriseId(enterpriseId);
-        tenantRegister.getUser().setSourceName(sourceName);
         tenantRegister.getUser().setPostIds(new Long[]{postR.getResult().getId()});
-        R<SysUserDto> userR = userService.add(tenantRegister.getUser(), SecurityConstants.INNER);
+        R<SysUserDto> userR = userService.add(tenantRegister.getUser(),enterpriseId, sourceName, SecurityConstants.INNER);
         if(userR.isFail())
             throw new ServiceException("新增失败！");
     }
@@ -133,7 +130,10 @@ public class TeTenantServiceImpl extends BaseServiceImpl<TeTenantDto, TeTenantMa
      * @param tenantRegister 租户初始化对象
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void authorityInit(TeTenantRegister tenantRegister) {
-
+        R<Boolean> userR = authService.add(tenantRegister.getAuthIds(), tenantRegister.getTenant().getId(), tenantRegister.getSourceName(), SecurityConstants.INNER);
+        if(userR.isFail())
+            throw new ServiceException("新增失败！");
     }
 }

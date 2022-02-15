@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static com.xueyi.common.core.constant.TenantConstants.ISOLATE;
-import static com.xueyi.common.core.constant.TenantConstants.SOURCE;
 
 /**
  * 岗位管理 服务层处理
@@ -31,14 +30,12 @@ public class SysPostServiceImpl extends BaseServiceImpl<SysPostDto, SysPostManag
     /**
      * 新增岗位 | 内部调用
      *
-     * @param post       岗位对象
-     * @param sourceName 策略源
+     * @param post 岗位对象
      * @return 结果
      */
     @Override
-    @DS(SOURCE)
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public int addInner(SysPostDto post, String sourceName) {
+    public int addInner(SysPostDto post) {
         return baseManager.insert(post);
     }
 

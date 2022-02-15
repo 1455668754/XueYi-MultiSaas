@@ -25,5 +25,5 @@ public interface RemoteUserService {
      * @return 结果
      */
     @PostMapping("/user/inner/add")
-    R<SysUserDto> add(@RequestBody SysUserDto user, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+    R<SysUserDto> add(@RequestBody SysUserDto user, @RequestHeader(SecurityConstants.ENTERPRISE_ID) Long enterpriseId, @RequestHeader(SecurityConstants.SOURCE_NAME) String sourceName, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
 }

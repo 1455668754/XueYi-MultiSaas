@@ -25,5 +25,5 @@ public interface RemotePostService {
      * @return 结果
      */
     @PostMapping("/post/inner/add")
-    R<SysPostDto> add(@RequestBody SysPostDto post, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+    R<SysPostDto> add(@RequestBody SysPostDto post, @RequestHeader(SecurityConstants.ENTERPRISE_ID) Long enterpriseId, @RequestHeader(SecurityConstants.SOURCE_NAME) String sourceName, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
 }

@@ -24,11 +24,10 @@ public interface ISysUserService extends IBaseService<SysUserDto> {
     /**
      * 新增用户 | 内部调用
      *
-     * @param user       用户对象
-     * @param sourceName 策略源
+     * @param user 用户对象
      * @return 结果
      */
-    int addInner(SysUserDto user, String sourceName);
+    int addInner(SysUserDto user);
 
     /**
      * 修改用户基本信息

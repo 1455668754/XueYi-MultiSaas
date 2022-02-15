@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+
 /**
  * 租户处理器
  *
@@ -41,7 +42,7 @@ public class XueYiTenantLineHandler implements TenantLineHandler {
 
     @Override
     public String getTenantIdColumn() {
-        return "tenant_id";
+        return TenantConstants.TENANT_ID;
     }
 
     @Override

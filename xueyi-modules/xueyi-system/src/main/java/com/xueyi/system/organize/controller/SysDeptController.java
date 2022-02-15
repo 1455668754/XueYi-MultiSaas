@@ -40,7 +40,7 @@ public class SysDeptController extends SubTreeController<SysDeptDto, ISysDeptSer
     @InnerAuth
     @PostMapping("/inner/add")
     public R<SysDeptDto> addInner(@RequestBody SysDeptDto dept) {
-        return baseService.addInner(dept, dept.getSourceName()) > 0 ? R.ok(dept): R.fail();
+        return baseService.addInner(dept) > 0 ? R.ok(dept) : R.fail();
     }
 
 //    /**
