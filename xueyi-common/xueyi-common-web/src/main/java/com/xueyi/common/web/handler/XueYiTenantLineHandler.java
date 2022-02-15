@@ -45,7 +45,7 @@ public class XueYiTenantLineHandler implements TenantLineHandler {
 
     @Override
     public boolean ignoreTable(String tableName) {
-        return Arrays.asList(TenantConstants.EXCLUDE_TENANT_TABLE).contains(tableName);
+        return ObjectUtil.isNotNull(SecurityUtils.getEnterpriseId()) || Arrays.asList(TenantConstants.EXCLUDE_TENANT_TABLE).contains(tableName);
     }
 
     @Override
