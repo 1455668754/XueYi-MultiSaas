@@ -29,11 +29,11 @@ public abstract class BaseHandleController<D extends BaseEntity, DS extends IBas
     protected abstract String getNodeName();
 
     /**
-     * 获取T.class
+     * 获取D.class
      *
      * @return class
      */
-    protected Class<D> getBaseClass() {
+    protected Class<D> getClazz() {
         Type type = getClass().getGenericSuperclass();
         if (type instanceof ParameterizedType) {
             ParameterizedType pType = (ParameterizedType) type;
@@ -47,8 +47,8 @@ public abstract class BaseHandleController<D extends BaseEntity, DS extends IBas
      *
      * @return D
      */
-    protected D newBase() {
-        Class<D> clazz = getBaseClass();
+    protected D newBaseObject() {
+        Class<D> clazz = getClazz();
         try {
             if(clazz != null)
                 return clazz.newInstance();
