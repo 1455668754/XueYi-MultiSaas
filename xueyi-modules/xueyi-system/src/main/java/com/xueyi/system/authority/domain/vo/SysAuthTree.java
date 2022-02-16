@@ -16,7 +16,7 @@ import java.util.List;
  *
  * @author xueyi
  */
-public class SysAuthVo extends BasisEntity {
+public class SysAuthTree extends BasisEntity {
 
     /** Id */
     private Long id;
@@ -37,13 +37,13 @@ public class SysAuthVo extends BasisEntity {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<OrganizeTree> children;
 
-    public SysAuthVo() {
+    public SysAuthTree() {
     }
 
     /**
      * 模块转换
      */
-    public SysAuthVo(SysModuleDto module) {
+    public SysAuthTree(SysModuleDto module) {
         this.id = module.getId();
         this.parentId = AuthorityConstants.MODULE_DEFAULT_NODE;
         this.label = module.getName();
@@ -54,7 +54,7 @@ public class SysAuthVo extends BasisEntity {
     /**
      * 菜单转换
      */
-    public SysAuthVo(SysMenuDto menu) {
+    public SysAuthTree(SysMenuDto menu) {
         this.id = menu.getId();
         this.parentId = ObjectUtil.equals(menu.getParentId(), AuthorityConstants.MENU_TOP_NODE) ? menu.getModuleId(): menu.getParentId();
         this.label = menu.getTitle();

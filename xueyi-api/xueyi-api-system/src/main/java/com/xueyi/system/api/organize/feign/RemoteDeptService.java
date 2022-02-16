@@ -21,9 +21,12 @@ public interface RemoteDeptService {
     /**
      * 新增部门
      *
-     * @param dept 部门对象
+     * @param dept         部门对象
+     * @param enterpriseId 企业Id
+     * @param sourceName   策略源
+     * @param source       请求来源
      * @return 结果
      */
     @PostMapping("/dept/inner/add")
-    R<SysDeptDto> add(@RequestBody SysDeptDto dept, @RequestHeader(SecurityConstants.ENTERPRISE_ID) Long enterpriseId, @RequestHeader(SecurityConstants.SOURCE_NAME) String sourceName, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+    R<SysDeptDto> addInner(@RequestBody SysDeptDto dept, @RequestHeader(SecurityConstants.ENTERPRISE_ID) Long enterpriseId, @RequestHeader(SecurityConstants.SOURCE_NAME) String sourceName, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
 }

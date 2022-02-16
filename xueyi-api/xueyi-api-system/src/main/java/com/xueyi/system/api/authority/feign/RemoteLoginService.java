@@ -26,16 +26,19 @@ public interface RemoteLoginService {
      * @return 结果
      */
     @GetMapping("/login/inner/enterpriseInfo/{enterpriseName}")
-    R<LoginUser> getEnterpriseInfo(@PathVariable("enterpriseName") String enterpriseName, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+    R<LoginUser> getEnterpriseInfoInner(@PathVariable("enterpriseName") String enterpriseName, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
 
     /**
      * 通过用户名查询用户登录信息
      *
-     * @param userName 员工账号
-     * @param password 密码
-     * @param source   请求来源
+     * @param userName     员工账号
+     * @param password     密码
+     * @param enterpriseId 企业Id
+     * @param isLessor     企业类型
+     * @param sourceName   策略源
+     * @param source       请求来源
      * @return 结果
      */
     @GetMapping("/login/inner/userInfo/{userName}/{password}")
-    R<LoginUser> getLoginInfo(@PathVariable("userName") String userName, @PathVariable("password") String password, @RequestHeader(SecurityConstants.ENTERPRISE_ID) Long enterpriseId, @RequestHeader(SecurityConstants.IS_LESSOR) String isLessor, @RequestHeader(SecurityConstants.SOURCE_NAME) String sourceName, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+    R<LoginUser> getUserInfoInner(@PathVariable("userName") String userName, @PathVariable("password") String password, @RequestHeader(SecurityConstants.ENTERPRISE_ID) Long enterpriseId, @RequestHeader(SecurityConstants.IS_LESSOR) String isLessor, @RequestHeader(SecurityConstants.SOURCE_NAME) String sourceName, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
 }

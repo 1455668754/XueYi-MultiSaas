@@ -23,12 +23,12 @@ public class RemoteLoginFallbackFactory implements FallbackFactory<RemoteLoginSe
         log.error("登录服务调用失败:{}", throwable.getMessage());
         return new RemoteLoginService() {
             @Override
-            public R<LoginUser> getEnterpriseInfo(String enterpriseName, String source) {
+            public R<LoginUser> getEnterpriseInfoInner(String enterpriseName, String source) {
                 return R.fail("获取企业登录信息失败:" + throwable.getMessage());
             }
 
             @Override
-            public R<LoginUser> getLoginInfo(String userName, String password, Long enterpriseId, String isLessor, String sourceName, String source) {
+            public R<LoginUser> getUserInfoInner(String userName, String password, Long enterpriseId, String isLessor, String sourceName, String source) {
                 return R.fail("获取用户登录信息失败:" + throwable.getMessage());
             }
         };

@@ -21,9 +21,12 @@ public interface RemotePostService {
     /**
      * 新增岗位
      *
-     * @param post 岗位对象
+     * @param post         岗位对象
+     * @param enterpriseId 企业Id
+     * @param sourceName   策略源
+     * @param source       请求来源
      * @return 结果
      */
     @PostMapping("/post/inner/add")
-    R<SysPostDto> add(@RequestBody SysPostDto post, @RequestHeader(SecurityConstants.ENTERPRISE_ID) Long enterpriseId, @RequestHeader(SecurityConstants.SOURCE_NAME) String sourceName, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+    R<SysPostDto> addInner(@RequestBody SysPostDto post, @RequestHeader(SecurityConstants.ENTERPRISE_ID) Long enterpriseId, @RequestHeader(SecurityConstants.SOURCE_NAME) String sourceName, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
 }

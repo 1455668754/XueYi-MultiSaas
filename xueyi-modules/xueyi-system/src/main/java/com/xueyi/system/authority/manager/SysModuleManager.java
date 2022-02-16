@@ -27,7 +27,7 @@ import java.util.List;
 public class SysModuleManager extends SubBaseManager<SysModuleDto, SysModuleMapper, SysMenuDto, SysMenuMapper> {
 
     /**
-     * 获取指定范围的公共模块
+     * 获取全部或指定范围内的状态正常公共模块
      *
      * @return 模块对象集合
      */

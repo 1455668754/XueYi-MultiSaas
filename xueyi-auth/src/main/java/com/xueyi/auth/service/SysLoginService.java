@@ -65,7 +65,7 @@ public class SysLoginService {
             throw new ServiceException("用户密码不在指定范围");
         }
         // 查询企业信息与策略源信息
-        R<LoginUser> enterpriseResult = remoteLoginService.getEnterpriseInfo(enterpriseName, SecurityConstants.INNER);
+        R<LoginUser> enterpriseResult = remoteLoginService.getEnterpriseInfoInner(enterpriseName, SecurityConstants.INNER);
         if (enterpriseResult.isFail()) {
             throw new ServiceException(enterpriseResult.getMessage());
         }
@@ -75,7 +75,7 @@ public class SysLoginService {
         String isLessor = enterprise.getIsLessor();
         String sourceName = source.getMaster();
         // 查询用户信息
-        R<LoginUser> userResult = remoteLoginService.getLoginInfo(userName, password, enterpriseId, isLessor, sourceName, SecurityConstants.INNER);
+        R<LoginUser> userResult = remoteLoginService.getUserInfoInner(userName, password, enterpriseId, isLessor, sourceName, SecurityConstants.INNER);
         if (userResult.isFail()) {
             throw new ServiceException(userResult.getMessage());
         }

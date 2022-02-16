@@ -21,9 +21,12 @@ public interface RemoteUserService {
     /**
      * 新增用户
      *
-     * @param user 用户对象
+     * @param user         用户对象
+     * @param enterpriseId 企业Id
+     * @param sourceName   策略源
+     * @param source       请求来源
      * @return 结果
      */
     @PostMapping("/user/inner/add")
-    R<SysUserDto> add(@RequestBody SysUserDto user, @RequestHeader(SecurityConstants.ENTERPRISE_ID) Long enterpriseId, @RequestHeader(SecurityConstants.SOURCE_NAME) String sourceName, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+    R<SysUserDto> addInner(@RequestBody SysUserDto user, @RequestHeader(SecurityConstants.ENTERPRISE_ID) Long enterpriseId, @RequestHeader(SecurityConstants.SOURCE_NAME) String sourceName, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
 }

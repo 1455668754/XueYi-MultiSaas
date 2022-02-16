@@ -2,6 +2,8 @@ package com.xueyi.tenant.api.tenant.domain.dto;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.xueyi.common.core.constant.AuthorityConstants;
+import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.tenant.api.tenant.domain.po.TeTenantPo;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -20,6 +22,13 @@ public class TeTenantDto extends TeTenantPo {
     @TableField(exist = false)
     private TeStrategyDto strategy;
 
+    /** 权限Ids */
+    @TableField(exist = false)
+    private Long[] authIds;
+
+    public static boolean isAdmin(String isLessor) {
+        return StringUtils.equals(AuthorityConstants.TenantType.ADMIN.getCode(), isLessor);
+    }
 
     public TeStrategyDto getStrategy() {
         return strategy;
@@ -27,6 +36,22 @@ public class TeTenantDto extends TeTenantPo {
 
     public void setStrategy(TeStrategyDto strategy) {
         this.strategy = strategy;
+    }
+
+    public Long[] getAuthIds() {
+        return authIds;
+    }
+
+    public void setAuthIds(Long[] authIds) {
+        this.authIds = authIds;
+    }
+
+    public boolean isNotAdmin() {
+        return !isAdmin(this.getIsLessor());
+    }
+
+    public boolean isAdmin() {
+        return isAdmin(this.getIsLessor());
     }
 
     @Override
@@ -51,6 +76,7 @@ public class TeTenantDto extends TeTenantPo {
                 .append("updateName", getUpdateName())
                 .append("updateTime", getUpdateTime())
                 .append("isDefault", getIsDefault())
+                .append("authIds", getAuthIds())
                 .toString();
     }
 }

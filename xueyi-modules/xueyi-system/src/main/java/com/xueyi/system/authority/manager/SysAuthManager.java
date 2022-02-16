@@ -2,11 +2,16 @@ package com.xueyi.system.authority.manager;
 
 import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.xueyi.common.core.utils.TreeUtils;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
+import com.xueyi.system.authority.domain.merge.SysRoleMenuMerge;
+import com.xueyi.system.authority.domain.merge.SysRoleModuleMerge;
 import com.xueyi.system.authority.domain.merge.SysTenantMenuMerge;
 import com.xueyi.system.authority.domain.merge.SysTenantModuleMerge;
-import com.xueyi.system.authority.domain.vo.SysAuthVo;
+import com.xueyi.system.authority.domain.vo.SysAuthTree;
+import com.xueyi.system.authority.mapper.merge.SysRoleMenuMergeMapper;
+import com.xueyi.system.authority.mapper.merge.SysRoleModuleMergeMapper;
 import com.xueyi.system.authority.mapper.merge.SysTenantMenuMergeMapper;
 import com.xueyi.system.authority.mapper.merge.SysTenantModuleMergeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,21 +38,51 @@ public class SysAuthManager {
 
     @Autowired
     private SysTenantModuleMergeMapper tenantModuleMergeMapper;
+
     @Autowired
     private SysTenantMenuMergeMapper tenantMenuMergeMapper;
+
+    @Autowired
+    private SysRoleModuleMergeMapper roleModuleMergeMapper;
+
+    @Autowired
+    private SysRoleMenuMergeMapper roleMenuMergeMapper;
 
     /**
      * 获取公共模块|菜单权限树 | 租户端
      *
      * @return 权限对象集合
      */
-    public List<SysAuthVo> selectCommonAuthScope() {
+    public List<SysAuthTree> selectCommonAuthScope() {
         List<SysModuleDto> modules = moduleManager.selectCommonList(null);
         List<SysMenuDto> menus = menuManager.selectCommonList(null);
-        List<SysAuthVo> list = new ArrayList<>();
-        list.addAll(modules.stream().map(SysAuthVo::new).collect(Collectors.toList()));
-        list.addAll(menus.stream().map(SysAuthVo::new).collect(Collectors.toList()));
+        List<SysAuthTree> list = new ArrayList<>();
+        list.addAll(modules.stream().map(SysAuthTree::new).collect(Collectors.toList()));
+        list.addAll(menus.stream().map(SysAuthTree::new).collect(Collectors.toList()));
         return list;
+    }
+
+    /**
+     * 获取租户权限
+     *
+     * @return 权限集合
+     */
+    public Long[] selectTenantAuthInner() {
+        List<SysAuthTree> treeList = new ArrayList<>();
+        List<SysTenantModuleMerge> tenantModuleMerges = tenantModuleMergeMapper.selectList(Wrappers.query());
+        if (CollUtil.isNotEmpty(tenantModuleMerges)) {
+            List<Long> moduleIds = tenantModuleMerges.stream().map(SysTenantModuleMerge::getModuleId).collect(Collectors.toList());
+            List<SysModuleDto> moduleList = moduleManager.selectListByIds(moduleIds);
+            treeList.addAll(moduleList.stream().map(SysAuthTree::new).collect(Collectors.toList()));
+        }
+        List<SysTenantMenuMerge> tenantMenuMerges = tenantMenuMergeMapper.selectList(Wrappers.query());
+        if (CollUtil.isNotEmpty(tenantMenuMerges)) {
+            List<Long> menuIds = tenantMenuMerges.stream().map(SysTenantMenuMerge::getMenuId).collect(Collectors.toList());
+            List<SysMenuDto> menuList = menuManager.selectListByIds(menuIds);
+            treeList.addAll(menuList.stream().map(SysAuthTree::new).collect(Collectors.toList()));
+        }
+        List<SysAuthTree> leafNodes = TreeUtils.getLeafNodes(TreeUtils.buildTree(treeList));
+        return leafNodes.stream().map(SysAuthTree::getId).toArray(Long[]::new);
     }
 
     /**
@@ -79,44 +114,78 @@ public class SysAuthManager {
      * @param authIds 权限Ids
      */
     public void editTenantAuthInner(Long[] authIds) {
-        List<Long> menuIdList = Arrays.asList(authIds);
+        List<Long> menuIdList = new ArrayList<>(Arrays.asList(authIds));
+        // 1.校验authIds是否为空? 删除不存在的,增加新增的 : 删除所有
         if (CollUtil.isNotEmpty(menuIdList)) {
+            // 2.查询authIds中的模块Id，分离menuIds与moduleIds
             List<SysModuleDto> moduleList = moduleManager.selectListByIds(menuIdList);
             if (CollUtil.isNotEmpty(moduleList)) {
-                // 1.权限Ids中的模块Ids与菜单Ids分开
                 List<Long> moduleIdList = moduleList.stream().map(SysModuleDto::getId).collect(Collectors.toList());
                 menuIdList.removeAll(moduleIdList);
-                // 2.查询原始的租户与模块关联数据
+                // 3.查询原始的租户与模块关联数据,新增/删除差异关联数据
                 List<SysTenantModuleMerge> originalModuleList = tenantModuleMergeMapper.selectList(Wrappers.query());
                 if (CollUtil.isNotEmpty(originalModuleList)) {
-                    // 3.删除被移除的租户与模块的关联数据
                     List<Long> originalModuleIds = originalModuleList.stream().map(SysTenantModuleMerge::getModuleId).collect(Collectors.toList());
                     List<Long> delModuleIds = new ArrayList<>(originalModuleIds);
-                    delModuleIds.removeAll(menuIdList);
+                    delModuleIds.removeAll(moduleIdList);
                     if (CollUtil.isNotEmpty(delModuleIds)) {
-                        tenantModuleMergeMapper.deleteBatchIds(delModuleIds);
+                        tenantModuleMergeMapper.delete(
+                                Wrappers.<SysTenantModuleMerge>query().lambda()
+                                        .in(SysTenantModuleMerge::getModuleId, delModuleIds));
+                        roleModuleMergeMapper.delete(
+                                Wrappers.<SysRoleModuleMerge>query().lambda()
+                                        .in(SysRoleModuleMerge::getModuleId, delModuleIds));
                     }
-                    menuIdList.removeAll(originalModuleIds);
+                    moduleIdList.removeAll(originalModuleIds);
                 }
-                // 4.存储新增的租户与模块的关联数据
-                List<SysTenantModuleMerge> tenantModuleMerges = moduleIdList.stream().map(SysTenantModuleMerge::new).collect(Collectors.toList());
-                tenantModuleMergeMapper.insertBatch(tenantModuleMerges);
+                if (CollUtil.isNotEmpty(moduleIdList)) {
+                    List<SysTenantModuleMerge> tenantModuleMerges = moduleIdList.stream().map(SysTenantModuleMerge::new).collect(Collectors.toList());
+                    tenantModuleMergeMapper.insertBatch(tenantModuleMerges);
+                }
             }
-            // 5.查询原始的租户与菜单关联数据
+            // // 4.查询原始的租户与菜单关联数据,新增/删除差异关联数据
             List<SysTenantMenuMerge> originalMenuList = tenantMenuMergeMapper.selectList(Wrappers.query());
             if (CollUtil.isNotEmpty(originalMenuList)) {
-                // 6.删除被移除的租户与菜单的关联数据
                 List<Long> originalMenuIds = originalMenuList.stream().map(SysTenantMenuMerge::getMenuId).collect(Collectors.toList());
                 List<Long> delMenuIds = new ArrayList<>(originalMenuIds);
                 delMenuIds.removeAll(menuIdList);
                 if (CollUtil.isNotEmpty(delMenuIds)) {
-                    tenantMenuMergeMapper.deleteBatchIds(delMenuIds);
+                    tenantMenuMergeMapper.delete(
+                            Wrappers.<SysTenantMenuMerge>query().lambda()
+                                    .in(SysTenantMenuMerge::getMenuId, delMenuIds));
+                    roleMenuMergeMapper.delete(
+                            Wrappers.<SysRoleMenuMerge>query().lambda()
+                                    .in(SysRoleMenuMerge::getMenuId, delMenuIds));
                 }
                 menuIdList.removeAll(originalMenuIds);
             }
-            // 7.存储新增的租户与菜单的关联数据
-            List<SysTenantMenuMerge> tenantMenuMerges = menuIdList.stream().map(SysTenantMenuMerge::new).collect(Collectors.toList());
-            tenantMenuMergeMapper.insertBatch(tenantMenuMerges);
+            if (CollUtil.isNotEmpty(menuIdList)) {
+                List<SysTenantMenuMerge> tenantMenuMerges = menuIdList.stream().map(SysTenantMenuMerge::new).collect(Collectors.toList());
+                tenantMenuMergeMapper.insertBatch(tenantMenuMerges);
+            }
+        } else {
+            List<SysTenantModuleMerge> originalModuleList = tenantModuleMergeMapper.selectList(Wrappers.query());
+            if (CollUtil.isNotEmpty(originalModuleList)) {
+                List<Long> originalModuleIds = originalModuleList.stream().map(SysTenantModuleMerge::getModuleId).collect(Collectors.toList());
+                if (CollUtil.isNotEmpty(originalModuleIds)) {
+                    tenantModuleMergeMapper.delete(
+                            Wrappers.<SysTenantModuleMerge>query().lambda()
+                                    .in(SysTenantModuleMerge::getModuleId, originalModuleIds));
+                    roleModuleMergeMapper.delete(
+                            Wrappers.<SysRoleModuleMerge>query().lambda()
+                                    .in(SysRoleModuleMerge::getModuleId, originalModuleIds));
+                }
+            }
+            List<SysTenantMenuMerge> originalMenuList = tenantMenuMergeMapper.selectList(Wrappers.query());
+            List<Long> originalMenuIds = originalMenuList.stream().map(SysTenantMenuMerge::getMenuId).collect(Collectors.toList());
+            if (CollUtil.isNotEmpty(originalMenuIds)) {
+                tenantMenuMergeMapper.delete(
+                        Wrappers.<SysTenantMenuMerge>query().lambda()
+                                .in(SysTenantMenuMerge::getMenuId, originalMenuIds));
+                roleMenuMergeMapper.delete(
+                        Wrappers.<SysRoleMenuMerge>query().lambda()
+                                .in(SysRoleMenuMerge::getMenuId, originalMenuIds));
+            }
         }
     }
 }

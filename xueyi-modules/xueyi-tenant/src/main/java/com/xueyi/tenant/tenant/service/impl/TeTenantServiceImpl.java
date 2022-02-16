@@ -43,6 +43,9 @@ public class TeTenantServiceImpl extends BaseServiceImpl<TeTenantDto, TeTenantMa
     ITeTenantService oneselfService;
 
     @Autowired
+    private RemoteAuthService remoteAuthService;
+
+    @Autowired
     private ITeStrategyService strategyService;
 
     @Autowired
@@ -57,6 +60,38 @@ public class TeTenantServiceImpl extends BaseServiceImpl<TeTenantDto, TeTenantMa
     @Autowired
     private RemoteAuthService authService;
 
+    /**
+     * 获取租户权限
+     *
+     * @param id id
+     * @return 权限Ids
+     */
+    @Override
+    public Long[] selectAuth(Long id) {
+        TeTenantDto tenant = baseManager.selectById(id);
+        TeStrategyDto strategy = strategyService.selectById(tenant.getStrategyId());
+        R<Long[]> authR = remoteAuthService.getTenantAuthInner(tenant.getId(), strategy.getSourceSlave(), SecurityConstants.INNER);
+        if (authR.isFail())
+            throw new ServiceException(authR.getMessage());
+        return authR.getResult();
+    }
+
+    /**
+     * 修改租户权限
+     *
+     * @param id      id
+     * @param authIds 权限Ids
+     */
+    @Override
+    public void updateAuth(Long id, Long[] authIds) {
+        TeTenantDto tenant = baseManager.selectById(id);
+        if (tenant.isNotAdmin()) {
+            TeStrategyDto strategy = strategyService.selectById(tenant.getStrategyId());
+            R<Boolean> authR = remoteAuthService.editTenantAuthInner(authIds, tenant.getId(), strategy.getSourceSlave(), SecurityConstants.INNER);
+            if (authR.isFail())
+                throw new ServiceException(authR.getMessage());
+        }
+    }
 
     /**
      * 新增租户 | 包含数据初始化
@@ -73,7 +108,9 @@ public class TeTenantServiceImpl extends BaseServiceImpl<TeTenantDto, TeTenantMa
             TeStrategyDto strategy = strategyService.selectById(tenantRegister.getTenant().getStrategyId());
             tenantRegister.setSourceName(strategy.getSourceSlave());
             oneselfService.organizeInit(tenantRegister);
-            oneselfService.authorityInit(tenantRegister);
+            if (tenantRegister.getTenant().isNotAdmin()) {
+                oneselfService.authorityInit(tenantRegister);
+            }
         }
         return rows;
     }
@@ -111,17 +148,17 @@ public class TeTenantServiceImpl extends BaseServiceImpl<TeTenantDto, TeTenantMa
     public void organizeInit(TeTenantRegister tenantRegister) {
         Long enterpriseId = tenantRegister.getTenant().getId();
         String sourceName = tenantRegister.getSourceName();
-        R<SysDeptDto> deptR = deptService.add(tenantRegister.getDept(),enterpriseId, sourceName, SecurityConstants.INNER);
-        if(deptR.isFail())
-            throw new ServiceException("新增失败！");
+        R<SysDeptDto> deptR = deptService.addInner(tenantRegister.getDept(), enterpriseId, sourceName, SecurityConstants.INNER);
+        if (deptR.isFail())
+            throw new ServiceException("新增失败，请检查！");
         tenantRegister.getPost().setDeptId(deptR.getResult().getId());
-        R<SysPostDto> postR = postService.add(tenantRegister.getPost(),enterpriseId, sourceName, SecurityConstants.INNER);
-        if(postR.isFail())
-            throw new ServiceException("新增失败！");
+        R<SysPostDto> postR = postService.addInner(tenantRegister.getPost(), enterpriseId, sourceName, SecurityConstants.INNER);
+        if (postR.isFail())
+            throw new ServiceException("新增失败，请检查！");
         tenantRegister.getUser().setPostIds(new Long[]{postR.getResult().getId()});
-        R<SysUserDto> userR = userService.add(tenantRegister.getUser(),enterpriseId, sourceName, SecurityConstants.INNER);
-        if(userR.isFail())
-            throw new ServiceException("新增失败！");
+        R<SysUserDto> userR = userService.addInner(tenantRegister.getUser(), enterpriseId, sourceName, SecurityConstants.INNER);
+        if (userR.isFail())
+            throw new ServiceException("新增失败，请检查！");
     }
 
     /**
@@ -132,8 +169,8 @@ public class TeTenantServiceImpl extends BaseServiceImpl<TeTenantDto, TeTenantMa
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void authorityInit(TeTenantRegister tenantRegister) {
-        R<Boolean> userR = authService.add(tenantRegister.getAuthIds(), tenantRegister.getTenant().getId(), tenantRegister.getSourceName(), SecurityConstants.INNER);
-        if(userR.isFail())
-            throw new ServiceException("新增失败！");
+        R<Boolean> authR = authService.addTenantAuthInner(tenantRegister.getAuthIds(), tenantRegister.getTenant().getId(), tenantRegister.getSourceName(), SecurityConstants.INNER);
+        if (authR.isFail())
+            throw new ServiceException("新增失败，请检查！");
     }
 }

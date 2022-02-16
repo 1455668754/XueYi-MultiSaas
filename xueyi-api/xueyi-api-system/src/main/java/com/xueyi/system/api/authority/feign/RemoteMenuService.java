@@ -21,7 +21,8 @@ public interface RemoteMenuService {
     /**
      * 根据Id获取菜单信息
      *
-     * @param id 菜单Id
+     * @param id     菜单Id
+     * @param source 请求来源
      * @return 菜单对象
      */
     @GetMapping("/menu/inner/{id}")

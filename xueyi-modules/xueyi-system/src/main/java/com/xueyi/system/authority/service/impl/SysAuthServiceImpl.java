@@ -2,7 +2,7 @@ package com.xueyi.system.authority.service.impl;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
-import com.xueyi.system.authority.domain.vo.SysAuthVo;
+import com.xueyi.system.authority.domain.vo.SysAuthTree;
 import com.xueyi.system.authority.manager.SysAuthManager;
 import com.xueyi.system.authority.service.ISysAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +30,18 @@ public class SysAuthServiceImpl implements ISysAuthService {
      * @return 权限对象集合
      */
     @Override
-    public List<SysAuthVo> selectCommonAuthScope() {
+    public List<SysAuthTree> selectCommonAuthScope() {
         return authManager.selectCommonAuthScope();
+    }
+
+    /**
+     * 获取租户权限
+     *
+     * @return 权限集合
+     */
+    @Override
+    public Long[] selectTenantAuthInner() {
+        return authManager.selectTenantAuthInner();
     }
 
     /**

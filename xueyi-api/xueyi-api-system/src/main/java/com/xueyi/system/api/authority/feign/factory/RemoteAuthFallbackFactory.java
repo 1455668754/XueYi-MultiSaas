@@ -22,12 +22,17 @@ public class RemoteAuthFallbackFactory implements FallbackFactory<RemoteAuthServ
         log.error("权限服务调用失败:{}", throwable.getMessage());
         return new RemoteAuthService() {
             @Override
-            public R<Boolean> add(Long[] authIds, Long enterpriseId, String sourceName, String source) {
+            public R<Long[]> getTenantAuthInner(Long enterpriseId, String sourceName, String source) {
+                return R.fail("获取租户权限信息失败:" + throwable.getMessage());
+            }
+
+            @Override
+            public R<Boolean> addTenantAuthInner(Long[] authIds, Long enterpriseId, String sourceName, String source) {
                 return R.fail("新增租户权限信息失败:" + throwable.getMessage());
             }
 
             @Override
-            public R<Boolean> edit(Long[] authIds, Long enterpriseId, String sourceName, String source) {
+            public R<Boolean> editTenantAuthInner(Long[] authIds, Long enterpriseId, String sourceName, String source) {
                 return R.fail("修改权限信息失败:" + throwable.getMessage());
             }
         };

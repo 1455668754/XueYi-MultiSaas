@@ -23,13 +23,15 @@ public class SysAuthController extends BasisController {
 
     @Autowired
     private ISysAuthService authService;
-//
-//    @Autowired
-//    private ISysCacheInitService cacheInitService;
-//
-//    @Autowired
-//    private IsRoleService roleService;
-//
+
+    /**
+     * 新增租户权限
+     */
+    @InnerAuth
+    @GetMapping("/inner/getTenantAuth")
+    public R<Long[]> getTenantAuthInner() {
+        return R.ok(authService.selectTenantAuthInner());
+    }
 
     /**
      * 新增租户权限

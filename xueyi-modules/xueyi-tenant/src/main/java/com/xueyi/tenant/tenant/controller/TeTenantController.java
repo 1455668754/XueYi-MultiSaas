@@ -59,6 +59,15 @@ public class TeTenantController extends BaseController<TeTenantDto, ITeTenantSer
     }
 
     /**
+     * 查询租户权限
+     */
+    @GetMapping("/auth/{id}")
+    @RequiresPermissions(Auth.TE_TENANT_AUTH)
+    public AjaxResult getAuth(@PathVariable Long id) {
+        return AjaxResult.success(baseService.selectAuth(id));
+    }
+
+    /**
      * 租户导出
      */
     @Override
@@ -91,13 +100,24 @@ public class TeTenantController extends BaseController<TeTenantDto, ITeTenantSer
     }
 
     /**
+     * 租户权限修改
+     */
+    @PutMapping("/auth")
+    @RequiresPermissions(Auth.TE_TENANT_AUTH)
+    @Log(title = "租户管理", businessType = BusinessType.AUTH)
+    public AjaxResult editAuth(@RequestBody TeTenantDto tenant) {
+        baseService.updateAuth(tenant.getId(), tenant.getAuthIds());
+        return success();
+    }
+
+    /**
      * 租户修改状态
      */
     @Override
     @PutMapping("/status")
     @RequiresPermissions(value = {Auth.TE_TENANT_EDIT, Auth.TE_TENANT_EDIT_STATUS}, logical = Logical.OR)
     @Log(title = "租户管理", businessType = BusinessType.UPDATE_STATUS)
-    public AjaxResult editStatus(@Validated @RequestBody TeTenantDto tenant) {
+    public AjaxResult editStatus(@RequestBody TeTenantDto tenant) {
         return super.editStatus(tenant);
     }
 

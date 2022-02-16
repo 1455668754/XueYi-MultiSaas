@@ -23,7 +23,7 @@ public class RemoteDeptFallbackFactory implements FallbackFactory<RemoteDeptServ
         log.error("部门服务调用失败:{}", throwable.getMessage());
         return new RemoteDeptService() {
             @Override
-            public R<SysDeptDto> add(SysDeptDto dept, Long enterpriseId, String sourceName, String source) {
+            public R<SysDeptDto> addInner(SysDeptDto dept, Long enterpriseId, String sourceName, String source) {
                 return R.fail("新增部门失败:" + throwable.getMessage());
             }
         };

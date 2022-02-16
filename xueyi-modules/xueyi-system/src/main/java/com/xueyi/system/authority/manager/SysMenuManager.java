@@ -85,7 +85,7 @@ public class SysMenuManager extends TreeManager<SysMenuDto, SysMenuMapper> {
     }
 
     /**
-     * 获取指定范围的公共菜单
+     * 获取全部或指定范围内的状态正常公共菜单
      *
      * @return 菜单对象集合
      */

@@ -6,6 +6,7 @@ import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.BaseConstants;
 import com.xueyi.common.core.exception.base.BaseException;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -83,7 +84,7 @@ public class TreeUtils {
      * @param killScattered 是否移除无法追溯到顶级节点 (true 是 | false 否)
      * @return 树结构列表
      */
-    public static <T> List<T> buildTree(List<T> list, Long topNode, boolean killScattered) {
+    public static <T> List<T> buildTree(List<T> list, Serializable topNode, boolean killScattered) {
         return buildTree(list, BaseConstants.Entity.ID.getCode(),
                 BaseConstants.Entity.PARENT_ID.getCode(),
                 BaseConstants.Entity.CHILDREN.getCode(),
@@ -104,7 +105,7 @@ public class TreeUtils {
      * @param killNoneChild 是否移除空子节点集合
      * @return 树结构列表
      */
-    public static <T> List<T> buildTree(List<T> list, String IdName, String FIdName, String childrenName, Long topNode, boolean killScattered, boolean killNoneChild) {
+    public static <T> List<T> buildTree(List<T> list, String IdName, String FIdName, String childrenName, Serializable topNode, boolean killScattered, boolean killNoneChild) {
         List<T> returnList = new ArrayList<>();
         List<Long> tempList = new ArrayList<>();
         T top = null;
@@ -260,7 +261,7 @@ public class TreeUtils {
     /**
      * 删除无法溯源至顶级节点的值
      */
-    private static <T> void deleteNoTopNode(List<T> list, String FIdName, Long topNode) {
+    private static <T> void deleteNoTopNode(List<T> list, String FIdName, Serializable topNode) {
         list.removeIf(vo -> {
             try {
                 Field FId = depthRecursive(vo, checkAttribute(vo, FIdName, 0)).getDeclaredField(FIdName);
@@ -271,5 +272,60 @@ public class TreeUtils {
             }
             return false;
         });
+    }
+
+    /**
+     * 获取树结构叶子节点集合
+     * 存在默认参数 详见BaseConstants.Entity
+     * childrenName = CHILDREN
+     *
+     * @param list 组装列表
+     * @return 叶子节点集合
+     */
+    public static <T> List<T> getLeafNodes(List<T> list) {
+        return getLeafNodes(list, BaseConstants.Entity.CHILDREN.getCode());
+    }
+
+    /**
+     * 获取树结构叶子节点集合
+     * 存在默认参数 详见BaseConstants.Entity
+     *
+     * @param list         组装列表
+     * @param childrenName children字段名称
+     * @return 叶子节点集合
+     */
+    public static <T> List<T> getLeafNodes(List<T> list, String childrenName) {
+        List<T> returnList = new ArrayList<>();
+        try {
+            if (CollUtil.isNotEmpty(list)) {
+                T t = list.stream().findFirst().orElse(null);
+                assert t != null;
+                int childrenKey = checkAttribute(t, childrenName, 0);
+                recursionLeafFn(returnList, list, childrenName, childrenKey);
+            }
+        } catch (Exception ignored) {
+
+        }
+        return returnList;
+    }
+
+    /**
+     * 递归列表
+     */
+    private static <T> void recursionLeafFn(List<T> returnList, List<T> list, String childrenName, int childrenKey) {
+        for (T vo : list) {
+            try {
+                Field children = depthRecursive(vo, childrenKey).getDeclaredField(childrenName);
+                children.setAccessible(true);
+                List<T> childList = (List<T>) children.get(vo);
+                if (CollUtil.isEmpty(childList)) {
+                    returnList.add(vo);
+                } else {
+                    recursionLeafFn(returnList, childList, childrenName, childrenKey);
+                }
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

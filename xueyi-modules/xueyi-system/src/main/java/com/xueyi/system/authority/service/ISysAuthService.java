@@ -1,6 +1,6 @@
 package com.xueyi.system.authority.service;
 
-import com.xueyi.system.authority.domain.vo.SysAuthVo;
+import com.xueyi.system.authority.domain.vo.SysAuthTree;
 
 import java.util.List;
 
@@ -16,7 +16,14 @@ public interface ISysAuthService {
      *
      * @return 权限对象集合
      */
-    List<SysAuthVo> selectCommonAuthScope();
+    List<SysAuthTree> selectCommonAuthScope();
+
+    /**
+     * 获取租户权限
+     *
+     * @return 权限集合
+     */
+    Long[] selectTenantAuthInner();
 
     /**
      * 新增租户权限
