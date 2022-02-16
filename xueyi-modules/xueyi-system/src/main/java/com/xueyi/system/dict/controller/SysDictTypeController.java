@@ -101,7 +101,7 @@ public class SysDictTypeController extends SubBaseController<SysDictTypeDto, ISy
     @PutMapping("/status")
     @RequiresPermissions(value = {Auth.SYS_DICT_EDIT, Auth.SYS_DICT_EDIT_STATUS}, logical = Logical.OR)
     @Log(title = "字典类型管理", businessType = BusinessType.UPDATE_STATUS)
-    public AjaxResult editStatus(@Validated @RequestBody SysDictTypeDto dictType) {
+    public AjaxResult editStatus(@RequestBody SysDictTypeDto dictType) {
         return super.editStatus(dictType);
     }
 

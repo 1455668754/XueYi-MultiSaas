@@ -42,7 +42,7 @@ public abstract class SubBaseController<D extends SubBaseEntity<S>, DS extends I
      *
      * @see #editStatusSubStatusValidated(SubBaseEntity)  主子树型 归属数据状态逻辑校验
      */
-    public AjaxResult editStatus(@Validated @RequestBody D d) {
+    public AjaxResult editStatus(@RequestBody D d) {
         editStatusSubStatusValidated(d);
         return super.editStatus(d);
     }

@@ -169,7 +169,7 @@ public class ${ClassName}Controller extends ${Entity}Controller${generics} {
     @PutMapping("/status")
     @RequiresPermissions(value = {"${authorityName}:${businessName}:edit", "${authorityName}:${businessName}:editStatus"}, logical = Logical.OR)
     @Log(title = "${functionName}管理", businessType = BusinessType.UPDATE_STATUS)
-    public AjaxResult editStatus(@Validated @RequestBody ${ClassName}Dto ${classNameNoPrefix}) {
+    public AjaxResult editStatus(@RequestBody ${ClassName}Dto ${classNameNoPrefix}) {
         return super.editStatus(${classNameNoPrefix});
     }
 #end
@@ -182,7 +182,7 @@ public class ${ClassName}Controller extends ${Entity}Controller${generics} {
     @PutMapping("/force/status")
     @RequiresPermissions(value = {"${authorityName}:${businessName}:edit", "${authorityName}:${businessName}:editStatus"}, logical = Logical.OR)
     @Log(title = "${functionName}管理", businessType = BusinessType.UPDATE_STATUS_FORCE)
-    public AjaxResult editStatusForce(@Validated @RequestBody ${ClassName}Dto ${classNameNoPrefix}) {
+    public AjaxResult editStatusForce(@RequestBody ${ClassName}Dto ${classNameNoPrefix}) {
         return super.editStatusForce(${classNameNoPrefix});
     }
 #end

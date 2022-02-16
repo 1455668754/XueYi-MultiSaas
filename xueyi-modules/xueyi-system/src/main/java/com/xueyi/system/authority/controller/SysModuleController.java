@@ -112,7 +112,7 @@ public class SysModuleController extends SubBaseController<SysModuleDto, ISysMod
     @PutMapping("/status")
     @RequiresPermissions(value = {Auth.SYS_MODULE_EDIT, Auth.SYS_MODULE_EDIT_STATUS}, logical = Logical.OR)
     @Log(title = "模块管理", businessType = BusinessType.UPDATE_STATUS)
-    public AjaxResult editStatus(@Validated @RequestBody SysModuleDto module) {
+    public AjaxResult editStatus(@RequestBody SysModuleDto module) {
         return super.editStatus(module);
     }
 

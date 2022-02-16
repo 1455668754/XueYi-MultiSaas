@@ -100,7 +100,7 @@ public abstract class BaseController<D extends BaseEntity, DS extends IBaseServi
     /**
      * 修改状态
      */
-    public AjaxResult editStatus(@Validated @RequestBody D d) {
+    public AjaxResult editStatus(@RequestBody D d) {
         baseEditStatusValidated(BaseConstants.Operate.EDIT_STATUS, d);
         return toAjax(baseService.updateStatus(d.getId(), d.getStatus()));
     }
@@ -108,7 +108,7 @@ public abstract class BaseController<D extends BaseEntity, DS extends IBaseServi
     /**
      * 强制修改状态
      */
-    public AjaxResult editStatusForce(@Validated @RequestBody D d) {
+    public AjaxResult editStatusForce(@RequestBody D d) {
         baseEditStatusValidated(BaseConstants.Operate.EDIT_STATUS_FORCE, d);
         return toAjax(baseService.updateStatus(d.getId(), d.getStatus()));
     }

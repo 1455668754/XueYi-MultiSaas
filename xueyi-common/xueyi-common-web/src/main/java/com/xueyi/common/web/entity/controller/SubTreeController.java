@@ -42,7 +42,7 @@ public abstract class SubTreeController<D extends SubTreeEntity<D, S>, DS extend
      *
      * @see #editStatusSubStatusValidated(SubTreeEntity)  主子树型 归属数据状态逻辑校验
      */
-    public AjaxResult editStatus(@Validated @RequestBody D d) {
+    public AjaxResult editStatus(@RequestBody D d) {
         editStatusSubStatusValidated(d);
         return super.editStatus(d);
     }

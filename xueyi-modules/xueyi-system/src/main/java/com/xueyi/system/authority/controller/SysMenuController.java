@@ -154,7 +154,7 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
     @PutMapping("/status")
     @RequiresPermissions(value = {Auth.SYS_MENU_EDIT, Auth.SYS_MENU_EDIT_STATUS}, logical = Logical.OR)
     @Log(title = "菜单管理", businessType = BusinessType.UPDATE_STATUS)
-    public AjaxResult editStatus(@Validated @RequestBody SysMenuDto menu) {
+    public AjaxResult editStatus(@RequestBody SysMenuDto menu) {
         return super.editStatus(menu);
     }
 

@@ -19,6 +19,9 @@ public enum BusinessType {
     /** 修改 */
     UPDATE,
 
+    /** 权限修改 */
+    AUTH,
+
     /** 强制修改 */
     UPDATE_FORCE,
 

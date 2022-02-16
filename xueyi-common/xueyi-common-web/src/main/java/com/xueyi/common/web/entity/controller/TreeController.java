@@ -108,7 +108,7 @@ public abstract class TreeController<D extends TreeEntity<D>, DS extends ITreeSe
      * @see #editStatusTreeStatusValidated(D) 树型 父子节点逻辑校验
      */
     @Override
-    public AjaxResult editStatus(@Validated @RequestBody D d) {
+    public AjaxResult editStatus(@RequestBody D d) {
         editStatusTreeStatusValidated(d);
         return toAjax(baseService.updateStatus(d.getId(), d.getStatus()));
     }
