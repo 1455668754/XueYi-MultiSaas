@@ -27,16 +27,13 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDto, SysUserManag
     /**
      * 用户登录校验 | 查询用户信息
      *
-     * @param userName     用户账号
-     * @param password     密码
-     * @param enterpriseId 企业Id
-     * @param sourceName   策略源
+     * @param userName 用户账号
+     * @param password 密码
      * @return 用户对象
      */
     @Override
-    @DS(SOURCE)
-    public SysUserDto userLogin(String userName, String password, Long enterpriseId, String sourceName) {
-        return baseManager.userLogin(userName, password, enterpriseId);
+    public SysUserDto userLogin(String userName, String password) {
+        return baseManager.userLogin(userName, password);
     }
 
     /**

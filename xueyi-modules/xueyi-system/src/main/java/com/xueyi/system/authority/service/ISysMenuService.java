@@ -18,48 +18,39 @@ public interface ISysMenuService extends ITreeService<SysMenuDto> {
     /**
      * 登录校验 | 获取租户全部菜单权限标识集合
      *
-     * @param enterpriseId 企业Id
-     * @param sourceName   策略源
      * @return 菜单权限集合
      */
-    Set<String> loginPermission(Long enterpriseId, String sourceName);
+    Set<String> loginPermission();
 
     /**
      * 登录校验 | 获取菜单权限标识集合
      *
-     * @param roleIds      角色Id集合
-     * @param enterpriseId 企业Id
-     * @param sourceName   策略源
+     * @param roleIds 角色Id集合
      * @return 菜单权限集合
      */
-    Set<String> loginPermission(Set<Long> roleIds, Long enterpriseId, String sourceName);
+    Set<String> loginPermission(Set<Long> roleIds);
 
     /**
      * 登录校验 | 获取全部路由路径集合
      *
-     * @param enterpriseId 企业Id
      * @return 路径集合
      */
-    Map<String, String> getRouteMap(Long enterpriseId);
+    Map<String, String> getLessorRouteMap();
 
     /**
      * 登录校验 | 获取租户全部路由路径集合
      *
-     * @param enterpriseId 企业Id
-     * @param sourceName   策略源
      * @return 路径集合
      */
-    Map<String, String> getRouteMap(Long enterpriseId, String sourceName);
+    Map<String, String> getRouteMap();
 
     /**
      * 登录校验 | 获取路由路径集合
      *
-     * @param roleIds      角色Id集合
-     * @param enterpriseId 企业Id
-     * @param sourceName   策略源
+     * @param roleIds 角色Id集合
      * @return 路径集合
      */
-    Map<String, String> getRouteMap(Set<Long> roleIds, Long enterpriseId, String sourceName);
+    Map<String, String> getRouteMap(Set<Long> roleIds);
 
     /**
      * 根据模块Id查询菜单路由

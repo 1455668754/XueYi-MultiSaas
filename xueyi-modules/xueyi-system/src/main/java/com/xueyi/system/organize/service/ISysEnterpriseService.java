@@ -11,7 +11,7 @@ import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
 public interface ISysEnterpriseService extends IBaseService<SysEnterpriseDto> {
 
     /**
-     * 根据名称查询企业对象
+     * 根据名称查询状态正常企业对象
      *
      * @param name 名称
      * @return 企业对象

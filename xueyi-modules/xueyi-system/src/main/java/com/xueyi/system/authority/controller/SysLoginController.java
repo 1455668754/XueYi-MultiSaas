@@ -35,39 +35,46 @@ public class SysLoginController extends BasisController {
     @Autowired
     ISysLoginService loginService;
 
-    /**
-     * 获取当前用户信息
-     */
-    @InnerAuth
-    @GetMapping("/inner/info/{enterpriseName}/{userName}/{password}")
-    public R<LoginUser> getLoginInfo(@PathVariable("enterpriseName") String enterpriseName, @PathVariable("userName") String userName, @PathVariable("password") String password) {
+    @GetMapping("/inner/enterpriseInfo/{enterpriseName}")
+    R<LoginUser> getEnterpriseInfo(@PathVariable("enterpriseName") String enterpriseName) {
         SysEnterpriseDto enterprise = loginService.loginByEnterpriseName(enterpriseName);
         if (ObjectUtil.isNull(enterprise)) {
             return R.fail("账号或密码错误，请检查");
         }
         Source source = SourceUtils.getSourceCache(enterprise.getStrategyId());
-        SysUserDto user = loginService.loginByUser(userName, password, enterprise.getId(), source.getMaster());
+        LoginUser loginUser = new LoginUser();
+        loginUser.setEnterprise(enterprise);
+        loginUser.setSource(source);
+        return R.ok(loginUser);
+    }
+
+
+    /**
+     * 获取当前用户信息
+     */
+    @InnerAuth
+    @GetMapping("/inner/userInfo/{userName}/{password}")
+    public R<LoginUser> getLoginInfo(@PathVariable("userName") String userName, @PathVariable("password") String password) {
+        SysUserDto user = loginService.loginByUser(userName, password);
         if (ObjectUtil.isNull(user)) {
             return R.fail("账号或密码错误，请检查");
         }
         // 角色权限标识
-        Set<String> roles = loginService.getRolePermission(user.getRoles(), enterprise.getIsLessor(), user.getUserType());
+        Set<String> roles = loginService.getRolePermission(user.getRoles(), user.getUserType());
         // 角色Id集合
         Set<Long> roleIds = CollUtil.isNotEmpty(user.getRoles())
                 ? user.getRoles().stream().map(SysRoleDto::getId).collect(Collectors.toSet())
                 : new HashSet<>();
         // 菜单权限标识
-        Set<String> permissions = loginService.getMenuPermission(roleIds, enterprise.getIsLessor(), user.getUserType(), enterprise.getId(), source.getMaster());
+        Set<String> permissions = loginService.getMenuPermission(roleIds, user.getUserType());
         // 路由路径集合
-        Map<String, String> routeMap = loginService.getMenuRouteMap(roleIds, enterprise.getIsLessor(), user.getUserType(), enterprise.getId(), source.getMaster());
+        Map<String, String> routeMap = loginService.getMenuRouteMap(roleIds, user.getUserType());
         LoginUser loginUser = new LoginUser();
-        loginUser.setEnterprise(enterprise);
         loginUser.setUser(user);
         loginUser.setRoles(roles);
         loginUser.setRoleIds(roleIds);
         loginUser.setPermissions(permissions);
         loginUser.setRouteMap(routeMap);
-        loginUser.setSource(source);
         return R.ok(loginUser);
     }
 }

@@ -53,15 +53,13 @@ public class SysUserManager extends BaseManager<SysUserDto, SysUserMapper> {
      *
      * @param userName     用户账号
      * @param password     用户密码
-     * @param enterpriseId 企业Id
      * @return 用户对象
      */
-    public SysUserDto userLogin(String userName, String password, Long enterpriseId) {
+
+    public SysUserDto userLogin(String userName, String password) {
         SysUserDto userDto = baseMapper.selectOne(
                 Wrappers.<SysUserDto>query().lambda()
-                        .eq(SysUserDto::getUserName, userName)
-                        .eq(SysUserDto::getEnterpriseId, enterpriseId));
-
+                        .eq(SysUserDto::getUserName, userName));
         //check password is true
         if (ObjectUtil.isNull(userDto) || !SecurityUtils.matchesPassword(password, userDto.getPassword()))
             return null;
@@ -93,8 +91,7 @@ public class SysUserManager extends BaseManager<SysUserDto, SysUserMapper> {
         // select roles in user
         LambdaQueryWrapper<SysOrganizeRoleMerge> organizeRoleMergeQueryWrapper = new LambdaQueryWrapper<>();
         organizeRoleMergeQueryWrapper
-                .eq(SysOrganizeRoleMerge::getUserId, userDto.getId())
-                .or().eq(SysOrganizeRoleMerge::getEnterpriseId, enterpriseId);
+                .eq(SysOrganizeRoleMerge::getUserId, userDto.getId());
         if (CollUtil.isNotEmpty(postIds))
             organizeRoleMergeQueryWrapper
                     .or().in(SysOrganizeRoleMerge::getPostId, postIds)

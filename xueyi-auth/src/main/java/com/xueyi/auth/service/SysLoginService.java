@@ -12,6 +12,8 @@ import com.xueyi.system.api.authority.feign.RemoteLoginService;
 import com.xueyi.system.api.log.domain.dto.SysLoginLogDto;
 import com.xueyi.system.api.log.feign.RemoteLogService;
 import com.xueyi.system.api.model.LoginUser;
+import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
+import com.xueyi.system.api.source.domain.Source;
 import com.xueyi.tenant.api.tenant.feign.RemoteTenantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -62,10 +64,19 @@ public class SysLoginService {
             recordLoginInfo(TenantConstants.Source.SLAVE.getCode(), AuthorityConstants.COMMON_ENTERPRISE, enterpriseName, AuthorityConstants.COMMON_USER, userName, Constants.LOGIN_FAIL, "用户密码不在指定范围");
             throw new ServiceException("用户密码不在指定范围");
         }
-
+        // 查询企业信息与策略源信息
+        R<LoginUser> enterpriseResult = remoteLoginService.getEnterpriseInfo(enterpriseName, SecurityConstants.INNER);
+        if (enterpriseResult.isFail()) {
+            throw new ServiceException(enterpriseResult.getMessage());
+        }
+        SysEnterpriseDto enterprise = enterpriseResult.getResult().getEnterprise();
+        Source source = enterpriseResult.getResult().getSource();
+        Long enterpriseId = enterprise.getId();
+        String isLessor = enterprise.getIsLessor();
+        String sourceName = source.getMaster();
         // 查询用户信息
-        R<LoginUser> userResult = remoteLoginService.getLoginInfo(enterpriseName, userName, password, SecurityConstants.INNER);
-        if (R.FAIL == userResult.getCode()) {
+        R<LoginUser> userResult = remoteLoginService.getLoginInfo(userName, password, enterpriseId, isLessor, sourceName, SecurityConstants.INNER);
+        if (userResult.isFail()) {
             throw new ServiceException(userResult.getMessage());
         }
 
@@ -73,19 +84,19 @@ public class SysLoginService {
             recordLoginInfo(TenantConstants.Source.SLAVE.getCode(), AuthorityConstants.COMMON_ENTERPRISE, enterpriseName, AuthorityConstants.COMMON_USER, userName, Constants.LOGIN_FAIL, "登录用户不存在");
             throw new ServiceException("企业账号/员工账号/密码错误，请检查");
         }
+        LoginUser loginUser = userResult.getResult();
 
-        LoginUser userInfo = userResult.getResult();
-        String sourceName = userInfo.getSource().getMaster();
-        Long enterpriseId = userInfo.getEnterprise().getId();
-        Long userId = userInfo.getUser().getId();
+        loginUser.setEnterprise(enterprise);
+        loginUser.setSource(source);
+        Long userId = loginUser.getUser().getId();
 
-        if (BaseConstants.Status.DISABLE.getCode().equals(userInfo.getUser().getStatus())) {
+        if (BaseConstants.Status.DISABLE.getCode().equals(loginUser.getUser().getStatus())) {
             recordLoginInfo(sourceName, enterpriseId, enterpriseName, userId, userName, Constants.LOGIN_FAIL, "用户已停用，请联系管理员");
             throw new ServiceException("对不起，您的账号：" + userName + " 已停用");
         }
 
         recordLoginInfo(sourceName, enterpriseId, enterpriseName, userId, userName, Constants.LOGIN_SUCCESS, "登录成功");
-        return userInfo;
+        return loginUser;
     }
 
     public void logout(String sourceName, Long loginEnterpriseId, String loginEnterpriseName, Long loginUserId, String loginUserName) {

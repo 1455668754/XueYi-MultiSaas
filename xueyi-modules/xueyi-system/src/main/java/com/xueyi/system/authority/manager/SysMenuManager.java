@@ -41,63 +41,46 @@ public class SysMenuManager extends TreeManager<SysMenuDto, SysMenuMapper> {
     /**
      * 登录校验 | 获取超管租户超管用户菜单集合
      *
-     * @param enterpriseId 企业Id
      * @return 菜单集合
      */
-    public List<SysMenuDto> loginLessorMenuList(Long enterpriseId) {
+    public List<SysMenuDto> loginLessorMenuList() {
         // 1.获取超管租户超管用户可使用的菜单
-        return baseMapper.selectList(
-                Wrappers.<SysMenuDto>query().lambda()
-                        .eq(SysMenuDto::getEnterpriseId, TenantConstants.COMMON_TENANT_ID)
-                        .or().eq(SysMenuDto::getEnterpriseId, enterpriseId));
+        return baseMapper.selectList(Wrappers.query());
     }
 
     /**
      * 登录校验 | 获取租户全部菜单集合
      *
-     * @param enterpriseId 企业Id
      * @return 菜单集合
      */
-    public List<SysMenuDto> loginMenuList(Long enterpriseId) {
+    public List<SysMenuDto> loginMenuList() {
         // 1.获取租户授权的公共菜单Ids
-        List<SysTenantMenuMerge> tenantMenuMerges = tenantMenuMergeMapper.selectList(
-                Wrappers.<SysTenantMenuMerge>query().lambda()
-                        .eq(SysTenantMenuMerge::getEnterpriseId, enterpriseId)
-        );
+        List<SysTenantMenuMerge> tenantMenuMerges = tenantMenuMergeMapper.selectList(Wrappers.query());
         // 2.获取租户全部可使用的菜单
-        LambdaQueryWrapper<SysMenuDto> menuQueryWrapper = new LambdaQueryWrapper<>();
-        if (CollUtil.isNotEmpty(tenantMenuMerges))
-            menuQueryWrapper
-                    .in(SysMenuDto::getId, tenantMenuMerges.stream().map(SysTenantMenuMerge::getMenuId).collect(Collectors.toSet()))
-                    .and(i -> i
-                            .eq(SysMenuDto::getEnterpriseId, TenantConstants.COMMON_TENANT_ID)
-                            .or().eq(SysMenuDto::getEnterpriseId, enterpriseId));
-        else
-            menuQueryWrapper.eq(SysMenuDto::getEnterpriseId, enterpriseId);
-        return baseMapper.selectList(menuQueryWrapper);
+        return baseMapper.selectList(Wrappers.<SysMenuDto>query().lambda()
+                .func(i -> {
+                    if(CollUtil.isNotEmpty(tenantMenuMerges)){
+                        i.in(SysMenuDto::getId, tenantMenuMerges.stream().map(SysTenantMenuMerge::getMenuId).collect(Collectors.toSet()));
+                    }
+                }));
     }
 
     /**
      * 登录校验 | 获取菜单集合
      *
      * @param roleIds      角色Id集合
-     * @param enterpriseId 企业Id
      * @return 菜单集合
      */
-    public List<SysMenuDto> loginMenuList(Set<Long> roleIds, Long enterpriseId) {
+    public List<SysMenuDto> loginMenuList(Set<Long> roleIds) {
         // 1.获取用户可使用角色集内的所有菜单Ids
         List<SysRoleMenuMerge> roleModuleMenuMerges = roleMenuMergeMapper.selectList(
                 Wrappers.<SysRoleMenuMerge>query().lambda()
-                        .eq(SysRoleMenuMerge::getEnterpriseId, enterpriseId)
                         .in(SysRoleMenuMerge::getRoleId, roleIds));
         // 2.获取用户可使用的菜单
         return CollUtil.isNotEmpty(roleModuleMenuMerges)
                 ? baseMapper.selectList(
                 Wrappers.<SysMenuDto>query().lambda()
-                        .in(SysMenuDto::getId, roleModuleMenuMerges)
-                        .and(i -> i
-                                .eq(SysMenuDto::getEnterpriseId, enterpriseId)
-                                .or().eq(SysMenuDto::getEnterpriseId, TenantConstants.COMMON_TENANT_ID)))
+                        .in(SysMenuDto::getId, roleModuleMenuMerges))
                 : new ArrayList<>();
     }
 

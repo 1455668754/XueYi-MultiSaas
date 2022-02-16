@@ -19,7 +19,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.xueyi.common.core.constant.TenantConstants.MASTER;
-import static com.xueyi.common.core.constant.TenantConstants.SOURCE;
 
 /**
  * 菜单管理 服务层处理
@@ -31,16 +30,13 @@ import static com.xueyi.common.core.constant.TenantConstants.SOURCE;
 public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuDto, SysMenuManager, SysMenuMapper> implements ISysMenuService {
 
     /**
-     * 登录校验 | 获取租户全部菜单权限标识集合
+     * 登录校验 | 获取当前租户全部菜单权限标识集合
      *
-     * @param enterpriseId 企业Id
-     * @param sourceName   策略源
      * @return 菜单权限集合
      */
     @Override
-    @DS(SOURCE)
-    public Set<String> loginPermission(Long enterpriseId, String sourceName) {
-        List<SysMenuDto> menuList = baseManager.loginMenuList(enterpriseId);
+    public Set<String> loginPermission() {
+        List<SysMenuDto> menuList = baseManager.loginMenuList();
         return CollUtil.isNotEmpty(menuList)
                 ? menuList.stream().map(SysMenuDto::getPerms).collect(Collectors.toSet())
                 : new HashSet<>();
@@ -49,15 +45,12 @@ public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuDto, SysMenuManag
     /**
      * 登录校验 | 获取菜单权限标识集合
      *
-     * @param roleIds      角色Id集合
-     * @param enterpriseId 企业Id
-     * @param sourceName   策略源
+     * @param roleIds 角色Id集合
      * @return 菜单权限集合
      */
     @Override
-    @DS(SOURCE)
-    public Set<String> loginPermission(Set<Long> roleIds, Long enterpriseId, String sourceName) {
-        List<SysMenuDto> menuList = baseManager.loginMenuList(roleIds, enterpriseId);
+    public Set<String> loginPermission(Set<Long> roleIds) {
+        List<SysMenuDto> menuList = baseManager.loginMenuList(roleIds);
         return CollUtil.isNotEmpty(menuList)
                 ? menuList.stream().map(SysMenuDto::getPerms).collect(Collectors.toSet())
                 : new HashSet<>();
@@ -66,12 +59,11 @@ public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuDto, SysMenuManag
     /**
      * 登录校验 | 获取全部路由路径集合
      *
-     * @param enterpriseId 企业Id
      * @return 路径集合
      */
     @Override
-    public Map<String, String> getRouteMap(Long enterpriseId) {
-        List<SysMenuDto> menuList = baseManager.loginLessorMenuList(enterpriseId)
+    public Map<String, String> getLessorRouteMap() {
+        List<SysMenuDto> menuList = baseManager.loginLessorMenuList()
                 .stream().filter(menu -> ObjectUtil.notEqual(menu.getId(), AuthorityConstants.MENU_TOP_NODE) && (menu.isDir() || menu.isMenu() || menu.isDetails()))
                 .collect(Collectors.toList());
         return buildRoutePath(menuList);
@@ -80,14 +72,11 @@ public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuDto, SysMenuManag
     /**
      * 登录校验 | 获取租户全部路由路径集合
      *
-     * @param enterpriseId 企业Id
-     * @param sourceName   策略源
      * @return 路径集合
      */
     @Override
-    @DS(SOURCE)
-    public Map<String, String> getRouteMap(Long enterpriseId, String sourceName) {
-        List<SysMenuDto> menuList = baseManager.loginMenuList(enterpriseId)
+    public Map<String, String> getRouteMap() {
+        List<SysMenuDto> menuList = baseManager.loginMenuList()
                 .stream().filter(menu -> ObjectUtil.notEqual(menu.getId(), AuthorityConstants.MENU_TOP_NODE) && (menu.isDir() || menu.isMenu() || menu.isDetails()))
                 .collect(Collectors.toList());
         return buildRoutePath(menuList);
@@ -96,15 +85,12 @@ public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuDto, SysMenuManag
     /**
      * 登录校验 | 获取路由路径集合
      *
-     * @param roleIds      角色Id集合
-     * @param enterpriseId 企业Id
-     * @param sourceName   策略源
+     * @param roleIds 角色Id集合
      * @return 路径集合
      */
     @Override
-    @DS(SOURCE)
-    public Map<String, String> getRouteMap(Set<Long> roleIds, Long enterpriseId, String sourceName) {
-        List<SysMenuDto> menuList = baseManager.loginMenuList(roleIds, enterpriseId)
+    public Map<String, String> getRouteMap(Set<Long> roleIds) {
+        List<SysMenuDto> menuList = baseManager.loginMenuList(roleIds)
                 .stream().filter(menu -> ObjectUtil.notEqual(menu.getId(), AuthorityConstants.MENU_TOP_NODE) && (menu.isDir() || menu.isMenu() || menu.isDetails()))
                 .collect(Collectors.toList());
         return buildRoutePath(menuList);

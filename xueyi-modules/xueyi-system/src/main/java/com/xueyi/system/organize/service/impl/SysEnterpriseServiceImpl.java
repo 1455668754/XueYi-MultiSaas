@@ -20,7 +20,7 @@ import static com.xueyi.common.core.constant.TenantConstants.ISOLATE;
 public class SysEnterpriseServiceImpl extends BaseServiceImpl<SysEnterpriseDto, SysEnterpriseManager, SysEnterpriseMapper> implements ISysEnterpriseService {
 
     /**
-     * 根据名称查询企业对象
+     * 根据名称查询状态正常企业对象
      *
      * @param name 名称
      * @return 企业对象

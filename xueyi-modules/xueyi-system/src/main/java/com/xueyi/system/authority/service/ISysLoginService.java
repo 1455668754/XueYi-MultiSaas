@@ -26,45 +26,36 @@ public interface ISysLoginService {
     /**
      * 登录校验 | 根据用户账号查询用户信息
      *
-     * @param userName     用户账号
-     * @param password     密码
-     * @param enterpriseId 企业Id
-     * @param sourceName   策略源
+     * @param userName 用户账号
+     * @param password 密码
      * @return 用户对象
      */
-    SysUserDto loginByUser(String userName, String password, Long enterpriseId, String sourceName);
+    SysUserDto loginByUser(String userName, String password);
 
     /**
      * 登录校验 | 获取角色数据权限
      *
      * @param roleList 角色信息集合
-     * @param isLessor 租户标识
      * @param userType 用户标识
      * @return 角色权限信息
      */
-    Set<String> getRolePermission(List<SysRoleDto> roleList, String isLessor, String userType);
+    Set<String> getRolePermission(List<SysRoleDto> roleList, String userType);
 
     /**
      * 登录校验 | 获取菜单数据权限
      *
-     * @param roleIds      角色Id集合
-     * @param isLessor     租户标识
-     * @param userType     用户标识
-     * @param enterpriseId 企业Id
-     * @param sourceName   策略源
+     * @param roleIds  角色Id集合
+     * @param userType 用户标识
      * @return 菜单权限信息
      */
-    Set<String> getMenuPermission(Set<Long> roleIds, String isLessor, String userType, Long enterpriseId, String sourceName);
+    Set<String> getMenuPermission(Set<Long> roleIds, String userType);
 
     /**
      * 登录校验 | 获取路由路径集合
      *
-     * @param roleIds      角色Id集合
-     * @param isLessor     租户标识
-     * @param userType     用户标识
-     * @param enterpriseId 企业Id
-     * @param sourceName   策略源
+     * @param roleIds  角色Id集合
+     * @param userType 用户标识
      * @return 路由路径集合
      */
-    Map<String, String> getMenuRouteMap(Set<Long> roleIds, String isLessor, String userType, Long enterpriseId, String sourceName);
+    Map<String, String> getMenuRouteMap(Set<Long> roleIds, String userType);
 }
