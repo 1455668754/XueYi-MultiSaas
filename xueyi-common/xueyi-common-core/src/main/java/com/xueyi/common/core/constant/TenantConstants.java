@@ -19,6 +19,10 @@ public class TenantConstants {
     /** 注册租户默认策略Id */
     public static final Long REGISTER_TENANT_STRATEGY_ID = 0L;
 
+    /** 子库必须数据表 */
+    public static final String[] SLAVE_TABLE = {"sys_dept", "sys_login_log", "sys_notice", "sys_notice_log", "sys_operate_log", "sys_organize_role_merge", "sys_post", "sys_role",
+            "sys_role_menu_merge", "sys_role_module_merge", "sys_role_organize_merge", "sys_tenant_menu_merge", "sys_tenant_module_merge", "sys_user", "sys_user_post_merge", "xy_material", "xy_material_folder"};
+
     /** 具备公共数据的表名 */
     public static final String[] COMMON_TENANT_TABLE = {"sys_menu", "sys_module"};
 

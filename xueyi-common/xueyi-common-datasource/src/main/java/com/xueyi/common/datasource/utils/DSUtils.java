@@ -1,17 +1,21 @@
 package com.xueyi.common.datasource.utils;
 
+import cn.hutool.core.collection.CollUtil;
 import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
 import com.baomidou.dynamic.datasource.creator.DefaultDataSourceCreator;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DataSourceProperty;
 import com.baomidou.dynamic.datasource.toolkit.DynamicDataSourceContextHolder;
+import com.xueyi.common.core.constant.TenantConstants;
 import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.SpringUtils;
 import com.xueyi.common.core.utils.bean.BeanUtils;
 import com.xueyi.tenant.api.source.domain.dto.TeSourceDto;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 源管理工具类
@@ -100,7 +104,42 @@ public class DSUtils {
         } catch (Exception e) {
             // TODO: handle exception
             e.printStackTrace();
-            throw new ServiceException("数据库连接失败，请检查连接信息！");
+            throw new ServiceException("数据源连接失败，请检查连接信息！");
+        }
+    }
+
+    /**
+     * 测试数据源是否为可连接子库
+     *
+     * @param source 数据源对象
+     */
+    public static void testSlaveDs(TeSourceDto source) {
+        String error = "数据源连接失败，请检查连接信息！";
+        try {
+            Class.forName(source.getDriverClassName());
+        }catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+            throw new ServiceException("数据源驱动加载失败");
+        }
+        try {
+            Connection dbConn= DriverManager.getConnection(source.getUrlPrepend()+source.getUrlAppend(),source.getUsername(),source.getPassword());
+            PreparedStatement statement = dbConn.prepareStatement("select table_name from information_schema.tables where table_schema = (select database())");
+            ResultSet resultSet = statement.executeQuery();
+            List<String> tableNameList = new ArrayList<>();
+            while (resultSet.next())
+                tableNameList.add(resultSet.getString("table_name"));
+            List<String> slaveTable = new ArrayList<>(Arrays.asList(TenantConstants.SLAVE_TABLE));
+            slaveTable.removeAll(tableNameList);
+            if(CollUtil.isNotEmpty(slaveTable)){
+                error = "请连接包含子库数据表信息的数据源！";
+                throw new ServiceException(error);
+            }
+            dbConn.close();
+        }catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+            throw new ServiceException(error);
         }
     }
 }

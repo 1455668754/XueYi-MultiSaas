@@ -76,7 +76,7 @@ public class TeSourceController extends BaseController<TeSourceDto, ITeSourceSer
      */
     @PostMapping("/connection")
     public AjaxResult connection(@Validated @RequestBody TeSourceDto source) {
-        DSUtils.testDs(source);
+        DSUtils.testSlaveDs(source);
         return success();
     }
 
@@ -138,7 +138,7 @@ public class TeSourceController extends BaseController<TeSourceDto, ITeSourceSer
      */
     @Override
     protected void baseRefreshValidated(BaseConstants.Operate operate, TeSourceDto source) {
-        DSUtils.testDs(source);
+        DSUtils.testSlaveDs(source);
         if (baseService.checkNameUnique(source.getId(), source.getName()))
             throw new ServiceException(StrUtil.format("{}{}{}失败，{}名称已存在", operate.getInfo(), getNodeName(), source.getName(), getNodeName()));
     }
