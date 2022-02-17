@@ -91,7 +91,7 @@ public class SysAuthManager {
      * @param authIds 权限Ids
      */
     public void addTenantAuthInner(Long[] authIds) {
-        List<Long> menuIdList = Arrays.asList(authIds);
+        List<Long> menuIdList = new ArrayList<>(Arrays.asList(authIds));
         if (CollUtil.isNotEmpty(menuIdList)) {
             List<SysModuleDto> moduleList = moduleManager.selectListByIds(menuIdList);
             if (CollUtil.isNotEmpty(moduleList)) {

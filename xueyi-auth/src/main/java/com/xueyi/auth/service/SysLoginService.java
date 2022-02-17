@@ -99,8 +99,11 @@ public class SysLoginService {
         return loginUser;
     }
 
-    public void logout(String sourceName, Long loginEnterpriseId, String loginEnterpriseName, Long loginUserId, String loginUserName) {
-        recordLoginInfo(sourceName, loginEnterpriseId, loginEnterpriseName, loginUserId, loginUserName, Constants.LOGOUT, "退出成功");
+    /**
+     * 退出
+     */
+    public void logout(String sourceName, Long enterpriseId, String enterpriseName, Long userId, String userName) {
+        recordLoginInfo(sourceName, enterpriseId, enterpriseName, userId, userName, Constants.LOGOUT, "退出成功");
     }
 
 

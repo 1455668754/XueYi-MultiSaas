@@ -4,6 +4,7 @@ import com.xueyi.auth.form.LoginBody;
 import com.xueyi.auth.form.RegisterBody;
 import com.xueyi.auth.service.SysLoginService;
 import com.xueyi.common.core.domain.R;
+import com.xueyi.common.core.utils.JwtUtils;
 import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.security.auth.AuthUtil;
 import com.xueyi.common.security.service.TokenService;
@@ -43,18 +44,15 @@ public class TokenController {
     public R<?> logout(HttpServletRequest request) {
         String token = SecurityUtils.getToken(request);
         if (StringUtils.isNotEmpty(token)) {
+            String sourceName =JwtUtils.getSourceName(token);
+            Long enterpriseId = Long.valueOf(JwtUtils.getEnterpriseId(token));
+            String enterpriseName =JwtUtils.getEnterpriseName(token);
+            Long userId = Long.valueOf(JwtUtils.getUserId(token));
+            String userName =JwtUtils.getUserName(token);
             // 删除用户缓存记录
             AuthUtil.logoutByToken(token);
-            // 待检验方法
-//            String enterpriseIdStr = JwtUtils.getEnterpriseId(token);
-//            String userIdStr =  JwtUtils.getUserId(token);
-//            if (StringUtils.isNotEmpty(enterpriseIdStr) && StringUtils.isNotEmpty(userIdStr)){
-//                long enterpriseId = Long.valueOf(enterpriseIdStr);
-//                long userId = Long.valueOf(userIdStr);
-//                sysLoginService.logout(DataSourceUtils.getMainSourceNameByEnterpriseId(enterpriseId), enterpriseId, JwtUtils.getEnterpriseName(token), userId, JwtUtils.getUserName(token));
-//            }
             // 记录用户退出日志
-//            sysLoginService.logout(SourceUtils.getMainSourceNameByEnterpriseId(Long.valueOf(JwtUtils.getEnterpriseId(token))), Long.valueOf(JwtUtils.getEnterpriseId(token)), JwtUtils.getEnterpriseName(token), Long.valueOf(JwtUtils.getUserId(token)), JwtUtils.getUserName(token));
+            sysLoginService.logout(sourceName, enterpriseId, enterpriseName, userId, userName);
         }
         return R.ok();
     }
