@@ -239,9 +239,6 @@ public class SysMenuManager extends TreeManager<SysMenuDto, SysMenuMapper> {
     @Override
     @DSTransactional
     public int deleteById(Serializable id) {
-        tenantMenuMergeMapper.delete(
-                Wrappers.<SysTenantMenuMerge>update().lambda()
-                        .eq(SysTenantMenuMerge::getMenuId, id));
         roleMenuMergeMapper.delete(
                 Wrappers.<SysRoleMenuMerge>update().lambda()
                         .eq(SysRoleMenuMerge::getMenuId, id));
@@ -257,9 +254,6 @@ public class SysMenuManager extends TreeManager<SysMenuDto, SysMenuMapper> {
     @Override
     @DSTransactional
     public int deleteByIds(Collection<? extends Serializable> idList) {
-        tenantMenuMergeMapper.delete(
-                Wrappers.<SysTenantMenuMerge>update().lambda()
-                        .in(SysTenantMenuMerge::getMenuId, idList));
         roleMenuMergeMapper.delete(
                 Wrappers.<SysRoleMenuMerge>update().lambda()
                         .in(SysRoleMenuMerge::getMenuId, idList));
@@ -280,9 +274,6 @@ public class SysMenuManager extends TreeManager<SysMenuDto, SysMenuMapper> {
                         .apply(FIND_IN_SET, id, SqlConstants.Entity.ANCESTORS.getCode()));
         if (CollUtil.isNotEmpty(children)) {
             Set<Long> idSet = children.stream().map(SysMenuDto::getId).collect(Collectors.toSet());
-            tenantMenuMergeMapper.delete(
-                    Wrappers.<SysTenantMenuMerge>update().lambda()
-                            .in(SysTenantMenuMerge::getMenuId, idSet));
             roleMenuMergeMapper.delete(
                     Wrappers.<SysRoleMenuMerge>update().lambda()
                             .in(SysRoleMenuMerge::getMenuId, idSet));
