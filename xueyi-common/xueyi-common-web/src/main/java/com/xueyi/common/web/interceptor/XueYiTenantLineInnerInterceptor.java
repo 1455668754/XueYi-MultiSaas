@@ -1,16 +1,23 @@
 package com.xueyi.common.web.interceptor;
 
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.baomidou.mybatisplus.core.toolkit.ExceptionUtils;
 import com.baomidou.mybatisplus.extension.plugins.inner.TenantLineInnerInterceptor;
 import com.xueyi.common.web.handler.XueYiTenantLineHandler;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.Parenthesis;
+import net.sf.jsqlparser.expression.StringValue;
 import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
 import net.sf.jsqlparser.expression.operators.conditional.OrExpression;
-import net.sf.jsqlparser.expression.operators.relational.EqualsTo;
-import net.sf.jsqlparser.expression.operators.relational.InExpression;
+import net.sf.jsqlparser.expression.operators.relational.*;
+import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.delete.Delete;
+import net.sf.jsqlparser.statement.insert.Insert;
+import net.sf.jsqlparser.statement.select.Select;
 import net.sf.jsqlparser.statement.update.Update;
+
+import java.util.List;
 
 /**
  * 租户拦截器
@@ -52,52 +59,51 @@ public class XueYiTenantLineInnerInterceptor extends TenantLineInnerInterceptor 
         }
     }
 
-    // 后续操作公共数据时决定是否需要调整（暂时不清楚具体逻辑）
-//    /**
-//     * 新增
-//     */
-//    @Override
-//    protected void processInsert(Insert insert, int index, String sql, Object obj) {
-//        if (tenantLineHandler.ignoreTable(insert.getTable().getName())) {
-//            // 过滤退出执行
-//            return;
-//        }
-//        List<Column> columns = insert.getColumns();
-//        if (CollectionUtils.isEmpty(columns)) {
-//            // 针对不给列名的insert 不处理
-//            return;
-//        }
-//        String tenantIdColumn = tenantLineHandler.getTenantIdColumn();
-//        if (tenantLineHandler.ignoreInsert(columns, tenantIdColumn)) {
-//            // 针对已给出租户列的insert 不处理
-//            return;
-//        }
-//        columns.add(new Column(tenantIdColumn));
-//
-//        // fixed gitee pulls/141 duplicate update
-//        List<Expression> duplicateUpdateColumns = insert.getDuplicateUpdateExpressionList();
-//        if (CollectionUtils.isNotEmpty(duplicateUpdateColumns)) {
-//            EqualsTo equalsTo = new EqualsTo();
-//            equalsTo.setLeftExpression(new StringValue(tenantIdColumn));
-//            equalsTo.setRightExpression(tenantLineHandler.getTenantId());
-//            duplicateUpdateColumns.add(equalsTo);
-//        }
-//
-//        Select select = insert.getSelect();
-//        if (select != null) {
-//            this.processInsertSelect(select.getSelectBody());
-//        } else if (insert.getItemsList() != null) {
-//            // fixed github pull/295
-//            ItemsList itemsList = insert.getItemsList();
-//            if (itemsList instanceof MultiExpressionList) {
-//                ((MultiExpressionList) itemsList).getExpressionLists().forEach(el -> el.getExpressions().add(tenantLineHandler.getTenantId()));
-//            } else {
-//                ((ExpressionList) itemsList).getExpressions().add(tenantLineHandler.getTenantId());
-//            }
-//        } else {
-//            throw ExceptionUtils.mpe("Failed to process multiple-table update, please exclude the tableName or statementId");
-//        }
-//    }
+    /**
+     * insert 语句处理
+     */
+    @Override
+    protected void processInsert(Insert insert, int index, String sql, Object obj) {
+        if (tenantLineHandler.ignoreTable(insert.getTable().getName())) {
+            // 过滤退出执行
+            return;
+        }
+        List<Column> columns = insert.getColumns();
+        if (CollectionUtils.isEmpty(columns)) {
+            // 针对不给列名的insert 不处理
+            return;
+        }
+        String tenantIdColumn = tenantLineHandler.getTenantIdColumn();
+        if (tenantLineHandler.ignoreInsert(columns, tenantIdColumn)) {
+            // 针对已给出租户列的insert 不处理
+            return;
+        }
+        columns.add(new Column(tenantIdColumn));
+
+        // fixed gitee pulls/141 duplicate update
+        List<Expression> duplicateUpdateColumns = insert.getDuplicateUpdateExpressionList();
+        if (CollectionUtils.isNotEmpty(duplicateUpdateColumns)) {
+            EqualsTo equalsTo = new EqualsTo();
+            equalsTo.setLeftExpression(new StringValue(tenantIdColumn));
+            equalsTo.setRightExpression(tenantLineHandler.getTenantId());
+            duplicateUpdateColumns.add(equalsTo);
+        }
+
+        Select select = insert.getSelect();
+        if (select != null) {
+            this.processInsertSelect(select.getSelectBody());
+        } else if (insert.getItemsList() != null) {
+            // fixed github pull/295
+            ItemsList itemsList = insert.getItemsList();
+            if (itemsList instanceof MultiExpressionList) {
+                ((MultiExpressionList) itemsList).getExpressionLists().forEach(el -> el.getExpressions().add(tenantLineHandler.getTenantId()));
+            } else {
+                ((ExpressionList) itemsList).getExpressions().add(tenantLineHandler.getTenantId());
+            }
+        } else {
+            throw ExceptionUtils.mpe("Failed to process multiple-table update, please exclude the tableName or statementId");
+        }
+    }
 
     /**
      * update 语句处理
@@ -109,6 +115,7 @@ public class XueYiTenantLineInnerInterceptor extends TenantLineInnerInterceptor 
             // 过滤退出执行
             return;
         }
+        // 核心逻辑：区分混合数据与租户数据
         if (this.tenantLineHandler.isCommonTable(table.getName()) && this.tenantLineHandler.isLessor())
             update.setWhere(this.inExpression(table, update.getWhere()));
         else
@@ -125,6 +132,7 @@ public class XueYiTenantLineInnerInterceptor extends TenantLineInnerInterceptor 
             // 过滤退出执行
             return;
         }
+        // 核心逻辑：区分混合数据与租户数据
         if (this.tenantLineHandler.isCommonTable(table.getName()) && this.tenantLineHandler.isLessor())
             delete.setWhere(this.inExpression(table, delete.getWhere()));
         else

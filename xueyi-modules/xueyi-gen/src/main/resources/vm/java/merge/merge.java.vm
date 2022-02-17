@@ -3,12 +3,12 @@ package ${packageName}.domain.po;
 #foreach ($import in $importList)
 import ${import};
 #end
-#set($Entity="BaseEntity")
+#set($Entity="BasisEntity")
 #if($isTenant)
 #set($Entity = "T" + $Entity)
-import com.xueyi.common.core.web.tenant.${Entity};
+import com.xueyi.common.core.web.tenant.base.${Entity};
 #else
-import com.xueyi.common.core.web.entity.${Entity};
+import com.xueyi.common.core.web.entity.base.${Entity};
 #end
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;

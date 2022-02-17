@@ -5,7 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.BaseConstants;
 import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.core.utils.TreeUtils;
-import com.xueyi.common.core.web.entity.TreeEntity;
+import com.xueyi.common.core.web.entity.base.TreeEntity;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.web.entity.controller.handle.TreeHandleController;
 import com.xueyi.common.web.entity.service.ITreeService;

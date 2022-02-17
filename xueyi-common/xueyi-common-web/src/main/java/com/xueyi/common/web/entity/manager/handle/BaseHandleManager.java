@@ -1,6 +1,6 @@
 package com.xueyi.common.web.entity.manager.handle;
 
-import com.xueyi.common.core.web.entity.BaseEntity;
+import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.web.entity.mapper.BaseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 

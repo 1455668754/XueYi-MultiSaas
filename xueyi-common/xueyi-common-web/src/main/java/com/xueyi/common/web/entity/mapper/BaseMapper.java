@@ -1,6 +1,6 @@
 package com.xueyi.common.web.entity.mapper;
 
-import com.xueyi.common.core.web.entity.BasisEntity;
+import com.xueyi.common.core.web.entity.base.BasisEntity;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Collection;

@@ -1,4 +1,4 @@
-package com.xueyi.common.core.web.entity;
+package com.xueyi.common.core.web.entity.base;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 

@@ -1,7 +1,7 @@
 package com.xueyi.common.datascope.aspect;
 
 import com.xueyi.common.core.utils.StringUtils;
-import com.xueyi.common.core.web.entity.BaseEntity;
+import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;

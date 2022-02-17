@@ -2,7 +2,7 @@ package com.xueyi.system.api.dict.domain.po;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.xueyi.common.core.annotation.Excel;
-import com.xueyi.common.core.web.entity.SubBaseEntity;
+import com.xueyi.common.core.web.entity.base.SubBaseEntity;
 
 /**
  * 字典类型 持久化对象

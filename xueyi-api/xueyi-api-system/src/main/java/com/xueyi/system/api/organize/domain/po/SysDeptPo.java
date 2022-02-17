@@ -1,7 +1,7 @@
 package com.xueyi.system.api.organize.domain.po;
 
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.xueyi.common.core.web.tenant.TSubTreeEntity;
+import com.xueyi.common.core.web.tenant.base.TSubTreeEntity;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

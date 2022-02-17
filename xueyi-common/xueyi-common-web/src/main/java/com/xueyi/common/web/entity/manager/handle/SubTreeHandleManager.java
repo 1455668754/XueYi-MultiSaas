@@ -2,8 +2,8 @@ package com.xueyi.common.web.entity.manager.handle;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.xueyi.common.core.web.entity.BaseEntity;
-import com.xueyi.common.core.web.entity.SubTreeEntity;
+import com.xueyi.common.core.web.entity.base.BaseEntity;
+import com.xueyi.common.core.web.entity.base.SubTreeEntity;
 import com.xueyi.common.web.entity.manager.TreeManager;
 import com.xueyi.common.web.entity.mapper.BaseMapper;
 import com.xueyi.common.web.entity.mapper.SubTreeMapper;

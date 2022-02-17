@@ -1,6 +1,6 @@
 package com.xueyi.common.web.entity.service;
 
-import com.xueyi.common.core.web.entity.TreeEntity;
+import com.xueyi.common.core.web.entity.base.TreeEntity;
 import com.xueyi.common.core.web.vo.TreeSelect;
 
 import java.io.Serializable;

@@ -78,9 +78,14 @@ public class SysAuthManager {
         List<SysTenantMenuMerge> tenantMenuMerges = tenantMenuMergeMapper.selectList(Wrappers.query());
         if (CollUtil.isNotEmpty(tenantMenuMerges)) {
             List<Long> menuIds = tenantMenuMerges.stream().map(SysTenantMenuMerge::getMenuId).collect(Collectors.toList());
+            System.out.println(menuIds);
             List<SysMenuDto> menuList = menuManager.selectListByIds(menuIds);
+            System.out.println(menuList);
             treeList.addAll(menuList.stream().map(SysAuthTree::new).collect(Collectors.toList()));
         }
+        System.out.println(treeList);
+        System.out.println("treeList");
+        System.out.println(TreeUtils.buildTree(treeList));
         List<SysAuthTree> leafNodes = TreeUtils.getLeafNodes(TreeUtils.buildTree(treeList));
         return leafNodes.stream().map(SysAuthTree::getId).toArray(Long[]::new);
     }

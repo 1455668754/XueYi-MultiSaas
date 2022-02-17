@@ -1,18 +1,17 @@
-package com.xueyi.common.core.web.tenant;
+package com.xueyi.common.core.web.tenant.common;
 
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.xueyi.common.core.web.entity.SubTreeEntity;
+import com.xueyi.common.core.web.entity.common.CTreeEntity;
 
 import static com.xueyi.common.core.constant.TenantConstants.TENANT_ID;
 
 /**
- * SubTree 租户基类
+ * Tree 租户混合基类
  *
  * @param <D> Dto
- * @param <S> SubDto
  * @author xueyi
  */
-public class TSubTreeEntity<D, S> extends SubTreeEntity<D, S> {
+public class TCTreeEntity<D> extends CTreeEntity<D> {
 
     private static final long serialVersionUID = 1L;
 

@@ -1,6 +1,6 @@
 package com.xueyi.tenant.tenant.domain.model;
 
-import com.xueyi.common.core.web.entity.BasisEntity;
+import com.xueyi.common.core.web.entity.base.BasisEntity;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;

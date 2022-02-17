@@ -3,10 +3,12 @@ package com.xueyi.system.authority.domain.vo;
 import cn.hutool.core.util.ObjectUtil;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.xueyi.common.core.constant.AuthorityConstants;
-import com.xueyi.common.core.web.entity.BasisEntity;
+import com.xueyi.common.core.web.entity.base.BasisEntity;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
 import com.xueyi.system.utils.vo.OrganizeTree;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
@@ -108,5 +110,17 @@ public class SysAuthTree extends BasisEntity {
 
     public void setChildren(List<OrganizeTree> children) {
         this.children = children;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+                .append("id", getId())
+                .append("parentId", getParentId())
+                .append("label", getLabel())
+                .append("status", getStatus())
+                .append("type", getType())
+                .append("children", getChildren())
+                .toString();
     }
 }

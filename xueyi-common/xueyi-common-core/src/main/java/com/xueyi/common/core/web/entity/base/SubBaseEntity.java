@@ -1,17 +1,16 @@
-package com.xueyi.common.core.web.entity;
+package com.xueyi.common.core.web.entity.base;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 
 import java.util.List;
 
 /**
- * SubTree 基类
+ * SubBase 基类
  *
- * @param <D> Dto
  * @param <S> SubDto
  * @author xueyi
  */
-public class SubTreeEntity<D, S> extends TreeEntity<D> {
+public class SubBaseEntity<S> extends BaseEntity {
 
     /** 子数据集合 */
     @TableField(exist = false)

@@ -1,6 +1,6 @@
 package com.xueyi.common.web.entity.mapper.basic;
 
-import com.xueyi.common.core.web.entity.SubBaseEntity;
+import com.xueyi.common.core.web.entity.base.SubBaseEntity;
 
 /**
  * 数据层 主子基类数据处理

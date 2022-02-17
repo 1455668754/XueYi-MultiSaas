@@ -2,7 +2,7 @@ package com.xueyi.system.api.authority.domain.po;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.xueyi.common.core.annotation.Excel;
-import com.xueyi.common.core.web.tenant.TBaseEntity;
+import com.xueyi.common.core.web.tenant.base.TBaseEntity;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;

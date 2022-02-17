@@ -1,6 +1,6 @@
 package com.xueyi.system.organize.domain.vo;
 
-import com.xueyi.common.core.web.entity.BaseEntity;
+import com.xueyi.common.core.web.entity.base.BaseEntity;
 import java.util.List;
 
 /**

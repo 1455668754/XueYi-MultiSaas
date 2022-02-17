@@ -207,7 +207,7 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
         }
         if (StringUtils.equals(DictConstants.DicCommonPrivate.COMMON.getCode(), menu.getIsCommon())) {
             SysModuleDto module = moduleService.selectById(menu.getModuleId());
-            if (StringUtils.equals(DictConstants.DicCommonPrivate.COMMON.getCode(), module.getIsCommon()))
+            if (StringUtils.equals(DictConstants.DicCommonPrivate.PRIVATE.getCode(), module.getIsCommon()))
                 throw new ServiceException(StrUtil.format("{}{}{}失败，公共菜单必须挂载在公共模块下！", operate.getInfo(), getNodeName(), menu.getTitle()));
             if(operate.isEdit()){
                 SysMenuDto original = baseService.selectById(menu.getId());

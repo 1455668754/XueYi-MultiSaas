@@ -1,6 +1,6 @@
 package com.xueyi.common.web.entity.mapper.basic;
 
-import com.xueyi.common.core.web.entity.TreeEntity;
+import com.xueyi.common.core.web.entity.base.TreeEntity;
 
 /**
  * 数据层 树型基类数据处理

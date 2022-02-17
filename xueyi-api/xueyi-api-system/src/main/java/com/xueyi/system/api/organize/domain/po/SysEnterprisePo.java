@@ -1,7 +1,7 @@
 package com.xueyi.system.api.organize.domain.po;
 
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.xueyi.common.core.web.entity.BaseEntity;
+import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.core.xss.Xss;
 
 import javax.validation.constraints.NotBlank;

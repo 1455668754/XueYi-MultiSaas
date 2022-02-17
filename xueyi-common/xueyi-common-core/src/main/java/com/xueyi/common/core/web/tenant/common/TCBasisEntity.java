@@ -1,16 +1,16 @@
-package com.xueyi.common.core.web.tenant;
+package com.xueyi.common.core.web.tenant.common;
 
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.xueyi.common.core.web.entity.BasisEntity;
+import com.xueyi.common.core.web.entity.common.CBasisEntity;
 
 import static com.xueyi.common.core.constant.TenantConstants.TENANT_ID;
 
 /**
- * Base 租户Po基类
+ * Basis 租户混合基类
  *
  * @author xueyi
  */
-public class TBasisEntity extends BasisEntity {
+public class TCBasisEntity extends CBasisEntity {
 
     private static final long serialVersionUID = 1L;
 

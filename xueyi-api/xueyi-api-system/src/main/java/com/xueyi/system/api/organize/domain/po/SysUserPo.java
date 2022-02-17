@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.xueyi.common.core.annotation.Excel;
 import com.xueyi.common.core.annotation.Excel.Type;
-import com.xueyi.common.core.web.tenant.TBaseEntity;
+import com.xueyi.common.core.web.tenant.base.TBaseEntity;
 import com.xueyi.common.core.xss.Xss;
 
 import javax.validation.constraints.Email;

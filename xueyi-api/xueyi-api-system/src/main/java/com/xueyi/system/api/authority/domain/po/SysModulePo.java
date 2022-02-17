@@ -2,7 +2,7 @@ package com.xueyi.system.api.authority.domain.po;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.xueyi.common.core.annotation.Excel;
-import com.xueyi.common.core.web.tenant.TSubBaseEntity;
+import com.xueyi.common.core.web.tenant.common.TCSubBaseEntity;
 
 /**
  * 模块 持久化对象
@@ -10,7 +10,7 @@ import com.xueyi.common.core.web.tenant.TSubBaseEntity;
  * @param <S> SubDto
  * @author xueyi
  */
-public class SysModulePo<S> extends TSubBaseEntity<S> {
+public class SysModulePo<S> extends TCSubBaseEntity<S> {
 
     private static final long serialVersionUID = 1L;
 
@@ -38,11 +38,6 @@ public class SysModulePo<S> extends TSubBaseEntity<S> {
     @Excel(name = "模块显隐状态", readConverterExp = "Y=隐藏,N=显示")
     @TableField("hide_module")
     private String hideModule;
-
-    /** 公共模块（Y是 N否） */
-    @Excel(name = "公共模块", readConverterExp = "Y=是,N=否")
-    @TableField("is_common")
-    private String isCommon;
 
     /** 默认模块（Y是 N否） */
     @TableField("is_default")
@@ -86,14 +81,6 @@ public class SysModulePo<S> extends TSubBaseEntity<S> {
 
     public void setHideModule(String hideModule) {
         this.hideModule = hideModule;
-    }
-
-    public String getIsCommon() {
-        return isCommon;
-    }
-
-    public void setIsCommon(String isCommon) {
-        this.isCommon = isCommon;
     }
 
     public String getIsDefault() {

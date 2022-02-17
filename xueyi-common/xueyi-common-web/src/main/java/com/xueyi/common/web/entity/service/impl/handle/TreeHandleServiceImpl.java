@@ -2,7 +2,7 @@ package com.xueyi.common.web.entity.service.impl.handle;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.xueyi.common.core.constant.BaseConstants;
-import com.xueyi.common.core.web.entity.TreeEntity;
+import com.xueyi.common.core.web.entity.base.TreeEntity;
 import com.xueyi.common.web.entity.manager.TreeManager;
 import com.xueyi.common.web.entity.mapper.TreeMapper;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;

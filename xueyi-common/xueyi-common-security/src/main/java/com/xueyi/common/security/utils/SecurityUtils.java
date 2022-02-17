@@ -125,20 +125,6 @@ public class SecurityUtils {
     }
 
     /**
-     * 是否为超管用户
-     */
-    public static boolean isAdminUser() {
-        return StringUtils.equals(AuthorityConstants.UserType.ADMIN.getCode(), getUserType());
-    }
-
-    /**
-     * 是否不为超管用户
-     */
-    public static boolean isNotAdminUser() {
-        return !isAdminUser();
-    }
-
-    /**
      * 是否为超管租户
      */
     public static boolean isAdminTenant() {
@@ -150,6 +136,20 @@ public class SecurityUtils {
      */
     public static boolean isNotAdminTenant() {
         return !isAdminTenant();
+    }
+
+    /**
+     * 是否为超管用户
+     */
+    public static boolean isAdminUser() {
+        return StringUtils.equals(AuthorityConstants.UserType.ADMIN.getCode(), getUserType());
+    }
+
+    /**
+     * 是否不为超管用户
+     */
+    public static boolean isNotAdminUser() {
+        return !isAdminUser();
     }
 
     /**

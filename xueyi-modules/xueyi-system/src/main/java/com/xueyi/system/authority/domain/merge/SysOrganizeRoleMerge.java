@@ -2,7 +2,7 @@ package com.xueyi.system.authority.domain.merge;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.xueyi.common.core.web.tenant.TBasisEntity;
+import com.xueyi.common.core.web.tenant.base.TBasisEntity;
 
 /**
  * 组织-角色关联（角色绑定） 持久化对象

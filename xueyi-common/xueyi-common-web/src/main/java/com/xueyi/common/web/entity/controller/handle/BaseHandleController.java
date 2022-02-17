@@ -4,7 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.BaseConstants;
 import com.xueyi.common.core.exception.ServiceException;
-import com.xueyi.common.core.web.entity.BaseEntity;
+import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.web.entity.controller.BasisController;
 import com.xueyi.common.web.entity.service.IBaseService;
 import org.springframework.beans.factory.annotation.Autowired;

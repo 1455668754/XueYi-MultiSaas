@@ -1,8 +1,8 @@
 package com.xueyi.common.web.entity.controller;
 
 import com.xueyi.common.core.constant.BaseConstants;
-import com.xueyi.common.core.web.entity.BaseEntity;
-import com.xueyi.common.core.web.entity.SubBaseEntity;
+import com.xueyi.common.core.web.entity.base.BaseEntity;
+import com.xueyi.common.core.web.entity.base.SubBaseEntity;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.web.entity.controller.handle.SubBaseHandleController;
 import com.xueyi.common.web.entity.service.IBaseService;

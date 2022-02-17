@@ -6,7 +6,7 @@ import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.BaseConstants;
 import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.StringUtils;
-import com.xueyi.common.core.web.entity.TreeEntity;
+import com.xueyi.common.core.web.entity.base.TreeEntity;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.common.web.entity.service.ITreeService;
 

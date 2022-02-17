@@ -1,17 +1,16 @@
-package com.xueyi.common.core.web.tenant;
+package com.xueyi.common.core.web.tenant.base;
 
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.xueyi.common.core.web.entity.SubBaseEntity;
+import com.xueyi.common.core.web.entity.base.BasisEntity;
 
 import static com.xueyi.common.core.constant.TenantConstants.TENANT_ID;
 
 /**
- * SubBase 租户基类
+ * Basis 租户基类
  *
- * @param <S> SubDto
  * @author xueyi
  */
-public class TSubBaseEntity<S> extends SubBaseEntity<S> {
+public class TBasisEntity extends BasisEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -26,4 +25,5 @@ public class TSubBaseEntity<S> extends SubBaseEntity<S> {
     public void setEnterpriseId(Long enterpriseId) {
         this.enterpriseId = enterpriseId;
     }
+
 }

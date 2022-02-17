@@ -1,7 +1,7 @@
 package com.xueyi.job.domain.po;
 
 import com.xueyi.common.core.annotation.Excel;
-import com.xueyi.common.core.web.entity.BaseEntity;
+import com.xueyi.common.core.web.entity.base.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 

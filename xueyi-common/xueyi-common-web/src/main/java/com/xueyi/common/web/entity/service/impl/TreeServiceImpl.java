@@ -4,7 +4,7 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.xueyi.common.core.constant.BaseConstants;
 import com.xueyi.common.core.utils.TreeUtils;
-import com.xueyi.common.core.web.entity.TreeEntity;
+import com.xueyi.common.core.web.entity.base.TreeEntity;
 import com.xueyi.common.core.web.vo.TreeSelect;
 import com.xueyi.common.web.entity.manager.TreeManager;
 import com.xueyi.common.web.entity.mapper.TreeMapper;

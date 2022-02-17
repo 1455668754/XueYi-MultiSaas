@@ -1,7 +1,7 @@
-package com.xueyi.common.core.web.tenant;
+package com.xueyi.common.core.web.tenant.base;
 
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.xueyi.common.core.web.entity.TreeEntity;
+import com.xueyi.common.core.web.entity.base.TreeEntity;
 
 import static com.xueyi.common.core.constant.TenantConstants.TENANT_ID;
 

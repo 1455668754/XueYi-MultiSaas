@@ -1,4 +1,4 @@
-package com.xueyi.common.core.web.entity;
+package com.xueyi.common.core.web.entity.base;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 
@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * entity Po基类
+ * Basis 基类
  *
  * @author xueyi
  */

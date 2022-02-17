@@ -2,7 +2,7 @@ package com.xueyi.system.api.file.domain.po;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.xueyi.common.core.annotation.Excel;
-import com.xueyi.common.core.web.tenant.TSubTreeEntity;
+import com.xueyi.common.core.web.tenant.base.TSubTreeEntity;
 
 
 /**

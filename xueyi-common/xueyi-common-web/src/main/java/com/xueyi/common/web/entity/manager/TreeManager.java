@@ -5,7 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.BaseConstants;
 import com.xueyi.common.core.constant.SqlConstants;
-import com.xueyi.common.core.web.entity.TreeEntity;
+import com.xueyi.common.core.web.entity.base.TreeEntity;
 import com.xueyi.common.web.entity.manager.handle.TreeHandleManager;
 import com.xueyi.common.web.entity.mapper.TreeMapper;
 

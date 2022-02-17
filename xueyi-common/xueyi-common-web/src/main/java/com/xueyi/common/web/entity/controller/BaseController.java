@@ -3,7 +3,7 @@ package com.xueyi.common.web.entity.controller;
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.BaseConstants;
 import com.xueyi.common.core.utils.poi.ExcelUtil;
-import com.xueyi.common.core.web.entity.BaseEntity;
+import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.web.entity.controller.handle.BaseHandleController;
 import com.xueyi.common.web.entity.service.IBaseService;

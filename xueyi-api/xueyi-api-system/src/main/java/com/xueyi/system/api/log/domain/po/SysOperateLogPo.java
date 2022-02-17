@@ -3,7 +3,7 @@ package com.xueyi.system.api.log.domain.po;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.xueyi.common.core.annotation.Excel;
-import com.xueyi.common.core.web.tenant.TBaseEntity;
+import com.xueyi.common.core.web.tenant.base.TBaseEntity;
 
 import java.util.Date;
 

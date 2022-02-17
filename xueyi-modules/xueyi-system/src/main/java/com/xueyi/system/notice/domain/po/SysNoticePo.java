@@ -1,7 +1,7 @@
 package com.xueyi.system.notice.domain.po;
 
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.xueyi.common.core.web.entity.BaseEntity;
+import com.xueyi.common.core.web.entity.base.BaseEntity;
 
 /**
  * 通知公告 持久化对象

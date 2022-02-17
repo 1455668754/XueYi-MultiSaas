@@ -3,7 +3,7 @@ package com.xueyi.common.web.entity.manager;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.SqlConstants;
-import com.xueyi.common.core.web.entity.BaseEntity;
+import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.web.entity.manager.handle.BaseHandleManager;
 import com.xueyi.common.web.entity.mapper.BaseMapper;
 

@@ -1,6 +1,6 @@
 package com.xueyi.common.web.entity.manager.handle;
 
-import com.xueyi.common.core.web.entity.TreeEntity;
+import com.xueyi.common.core.web.entity.base.TreeEntity;
 import com.xueyi.common.web.entity.manager.BaseManager;
 import com.xueyi.common.web.entity.mapper.TreeMapper;
 

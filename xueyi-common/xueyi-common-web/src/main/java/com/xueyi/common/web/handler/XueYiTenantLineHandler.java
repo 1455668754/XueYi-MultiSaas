@@ -1,8 +1,6 @@
 package com.xueyi.common.web.handler;
 
-import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.extension.plugins.handler.TenantLineHandler;
-import com.xueyi.common.core.constant.AuthorityConstants;
 import com.xueyi.common.core.constant.TenantConstants;
 import com.xueyi.common.security.utils.SecurityUtils;
 import net.sf.jsqlparser.expression.Expression;
@@ -60,6 +58,6 @@ public class XueYiTenantLineHandler implements TenantLineHandler {
     }
 
     public boolean isLessor() {
-        return ObjectUtil.equals(AuthorityConstants.TenantType.ADMIN.getCode(), SecurityUtils.getIsLessor());
+        return SecurityUtils.isAdminTenant();
     }
 }

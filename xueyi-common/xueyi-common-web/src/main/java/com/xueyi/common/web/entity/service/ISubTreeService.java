@@ -1,7 +1,7 @@
 package com.xueyi.common.web.entity.service;
 
-import com.xueyi.common.core.web.entity.BaseEntity;
-import com.xueyi.common.core.web.entity.SubTreeEntity;
+import com.xueyi.common.core.web.entity.base.BaseEntity;
+import com.xueyi.common.core.web.entity.base.SubTreeEntity;
 
 /**
  * 服务层 主子树型通用数据处理

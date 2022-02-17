@@ -3,9 +3,9 @@ package com.xueyi.system.api.authority.domain.po;
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.xueyi.common.core.annotation.Excel;
-import com.xueyi.common.core.web.tenant.TTreeEntity;
+import com.xueyi.common.core.web.tenant.common.TCTreeEntity;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
  * 菜单 持久化对象
@@ -13,7 +13,7 @@ import javax.validation.constraints.NotBlank;
  * @param <D> Dto
  * @author xueyi
  */
-public class SysMenuPo<D> extends TTreeEntity<D> {
+public class SysMenuPo<D> extends TCTreeEntity<D> {
 
     private static final long serialVersionUID = 1L;
 
@@ -126,17 +126,12 @@ public class SysMenuPo<D> extends TTreeEntity<D> {
     @TableField(value = "icon", updateStrategy = FieldStrategy.IGNORED)
     private String icon;
 
-    /** 公共菜单（Y是 N否） */
-    @Excel(name = "公共菜单", readConverterExp = "Y=是,N=否")
-    @TableField("is_common")
-    private String isCommon;
-
     /** 默认菜单（Y是 N否） */
     @Excel(name = "默认菜单", readConverterExp = "Y=是,N=否")
     @TableField("is_default")
     private String isDefault;
 
-    @NotBlank(message = "模块Id不能为空")
+    @NotNull(message = "模块Id不能为空")
     public Long getModuleId() {
         return moduleId;
     }
@@ -311,14 +306,6 @@ public class SysMenuPo<D> extends TTreeEntity<D> {
 
     public void setIcon(String icon) {
         this.icon = icon;
-    }
-
-    public String getIsCommon() {
-        return isCommon;
-    }
-
-    public void setIsCommon(String isCommon) {
-        this.isCommon = isCommon;
     }
 
     public String getIsDefault() {
