@@ -2,6 +2,8 @@ package com.xueyi.common.core.web.entity.common;
 
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.xueyi.common.core.constant.DictConstants;
+import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.core.web.entity.base.BasisEntity;
 
 /**
@@ -25,4 +27,13 @@ public class CBasisEntity extends BasisEntity {
         this.isCommon = isCommon;
     }
 
+    /** 校验是否为公共数据 */
+    public boolean isCommon(){
+        return StringUtils.equals(DictConstants.DicCommonPrivate.COMMON.getCode(), getIsCommon());
+    }
+
+    /** 校验是否非公共数据 */
+    public boolean isNotCommon(){
+        return !isCommon();
+    }
 }

@@ -5,7 +5,6 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.AuthorityConstants;
 import com.xueyi.common.core.constant.BaseConstants;
-import com.xueyi.common.core.constant.DictConstants;
 import com.xueyi.common.core.domain.R;
 import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.StringUtils;
@@ -47,6 +46,11 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
     /** 定义节点名称 */
     protected String getNodeName() {
         return "菜单";
+    }
+
+    /** 定义父数据名称 */
+    protected String getParentName() {
+        return "模块";
     }
 
     /**
@@ -186,32 +190,36 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
     @Override
     protected void baseRefreshValidated(BaseConstants.Operate operate, SysMenuDto menu) {
         if (ObjectUtil.equals(menu.getId(), AuthorityConstants.MENU_TOP_NODE))
-            throw new ServiceException("默认菜单不允许修改！");
+            throw new ServiceException(StrUtil.format("默认{}不允许修改！", getNodeName()));
         if (baseService.checkNameUnique(menu.getId(), menu.getParentId(), menu.getName()))
-            throw new ServiceException(StrUtil.format("{}{}{}失败，菜单名称已存在", operate.getInfo(), getNodeName(), menu.getTitle()));
-        if(operate.isAdd() && SecurityUtils.isNotAdminTenant() && StringUtils.equals(DictConstants.DicCommonPrivate.COMMON.getCode(), menu.getIsCommon())){
+            throw new ServiceException(StrUtil.format("{}{}{}失败，{}名称已存在！", operate.getInfo(), getNodeName(), menu.getTitle(), getNodeName()));
+        if (operate.isAdd() && SecurityUtils.isNotAdminTenant() && menu.isCommon()) {
             throw new ServiceException(StrUtil.format("{}{}{}失败，无操作权限！", operate.getInfo(), getNodeName(), menu.getTitle()));
         }
-        if(operate.isEdit()){
+        if (operate.isEdit()) {
             SysMenuDto original = baseService.selectById(menu.getId());
             if (ObjectUtil.isNull(original))
-                throw new ServiceException("数据不存在");
+                throw new ServiceException("数据不存在！");
             if (SecurityUtils.isNotAdminTenant()) {
-                if (StringUtils.equals(DictConstants.DicCommonPrivate.COMMON.getCode(), original.getIsCommon())) {
+                if (original.isCommon()) {
                     throw new ServiceException(StrUtil.format("{}{}{}失败，无操作权限！", operate.getInfo(), getNodeName(), menu.getTitle()));
                 }
             }
-            if(!StringUtils.equals(menu.getIsCommon(), original.getIsCommon())) {
-                throw new ServiceException(StrUtil.format("{}{}{}失败，公共菜单属性禁止变更！", operate.getInfo(), getNodeName(), menu.getTitle()));
+            if (!StringUtils.equals(menu.getIsCommon(), original.getIsCommon())) {
+                throw new ServiceException(StrUtil.format("{}{}{}失败，公共{}属性禁止变更！", operate.getInfo(), getNodeName(), menu.getTitle(), getNodeName()));
             }
         }
-        if (StringUtils.equals(DictConstants.DicCommonPrivate.COMMON.getCode(), menu.getIsCommon())) {
+        if (menu.isCommon()) {
             SysModuleDto module = moduleService.selectById(menu.getModuleId());
-            if (StringUtils.equals(DictConstants.DicCommonPrivate.PRIVATE.getCode(), module.getIsCommon()))
-                throw new ServiceException(StrUtil.format("{}{}{}失败，公共菜单必须挂载在公共模块下！", operate.getInfo(), getNodeName(), menu.getTitle()));
-            if(operate.isEdit()){
-                SysMenuDto original = baseService.selectById(menu.getId());
-            }
+            if (ObjectUtil.isNull(module))
+                throw new ServiceException("数据不存在！");
+            if (module.isNotCommon())
+                throw new ServiceException(StrUtil.format("{}{}{}失败，公共{}必须挂载在公共{}下！", operate.getInfo(), getNodeName(), menu.getTitle(), getNodeName(), getParentName()));
+            SysMenuDto parentMenu = baseService.selectById(menu.getParentId());
+            if (ObjectUtil.isNull(parentMenu))
+                throw new ServiceException("数据不存在！");
+            if (parentMenu.isNotCommon())
+                throw new ServiceException(StrUtil.format("{}{}{}失败，公共{}必须挂载在公共{}下！", operate.getInfo(), getNodeName(), menu.getTitle(), getNodeName(), getNodeName()));
         }
     }
 
