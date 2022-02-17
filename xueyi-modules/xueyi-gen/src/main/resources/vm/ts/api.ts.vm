@@ -17,6 +17,7 @@ enum Api {
 #end
     DEL_BATCH_${BUSINESSName} = '/${moduleName}/${businessName}/batch/',
 }
+
 #set($IdName = $pkColumn.javaField)
 #if($pkColumn.javaType == 'Long')
 #set($IdType = 'string | number')

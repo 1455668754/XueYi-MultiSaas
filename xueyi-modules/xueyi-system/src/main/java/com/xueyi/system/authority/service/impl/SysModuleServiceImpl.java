@@ -28,6 +28,17 @@ import static com.xueyi.common.core.constant.TenantConstants.ISOLATE;
 public class SysModuleServiceImpl extends SubBaseServiceImpl<SysModuleDto, SysModuleManager, SysModuleMapper, SysMenuDto, ISysMenuService, SysMenuMapper> implements ISysModuleService {
 
     /**
+     * 当前用户首页可展示的模块路由
+     *
+     * @return 模块集合
+     */
+    @Override
+    public List<SysModuleDto> getRoutes() {
+//        Set<SysModuleDto> systemSet = AuthorityUtils.getSystemCache(SecurityUtils.getEnterpriseId());
+        return null;
+    }
+
+    /**
      * 设置子数据的外键值
      */
     @Override
@@ -39,14 +50,4 @@ public class SysModuleServiceImpl extends SubBaseServiceImpl<SysModuleDto, SysMo
             menuList.forEach(sub -> sub.setModuleId(moduleId));
     }
 
-    /**
-     * 当前用户首页可展示的模块路由
-     *
-     * @return 模块集合
-     */
-    @Override
-    public List<SysModuleDto> getRoutes() {
-//        Set<SysModuleDto> systemSet = AuthorityUtils.getSystemCache(SecurityUtils.getEnterpriseId());
-        return null;
-    }
 }

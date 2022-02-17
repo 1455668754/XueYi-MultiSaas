@@ -21,7 +21,7 @@ public class AuthorityConstants {
     public static final Long MENU_TOP_NODE = 0L;
 
     /** 默认模块Id */
-    public static final Long MODULE_DEFAULT_NODE = 0L;
+    public static final Long MODULE_DEFAULT_NODE = 1L;
 
     /** 用户类型 */
     public enum UserType {
