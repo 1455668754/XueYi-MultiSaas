@@ -140,7 +140,7 @@ public abstract class BaseController<D extends BaseEntity, DS extends IBaseServi
      * 获取选择框列表
      */
     public AjaxResult option() {
-        D d = newBase();
+        D d = newBaseObject();
         d.setStatus(BaseConstants.Status.NORMAL.getCode());
         return list(d);
     }
