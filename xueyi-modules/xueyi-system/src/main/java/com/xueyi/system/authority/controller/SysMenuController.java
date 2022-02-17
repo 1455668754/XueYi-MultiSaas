@@ -193,21 +193,16 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
             throw new ServiceException(StrUtil.format("默认{}不允许修改！", getNodeName()));
         if (baseService.checkNameUnique(menu.getId(), menu.getParentId(), menu.getName()))
             throw new ServiceException(StrUtil.format("{}{}{}失败，{}名称已存在！", operate.getInfo(), getNodeName(), menu.getTitle(), getNodeName()));
-        if (operate.isAdd() && SecurityUtils.isNotAdminTenant() && menu.isCommon()) {
+        if (operate.isAdd() && SecurityUtils.isNotAdminTenant() && menu.isCommon())
             throw new ServiceException(StrUtil.format("{}{}{}失败，无操作权限！", operate.getInfo(), getNodeName(), menu.getTitle()));
-        }
         if (operate.isEdit()) {
             SysMenuDto original = baseService.selectById(menu.getId());
             if (ObjectUtil.isNull(original))
                 throw new ServiceException("数据不存在！");
-            if (SecurityUtils.isNotAdminTenant()) {
-                if (original.isCommon()) {
-                    throw new ServiceException(StrUtil.format("{}{}{}失败，无操作权限！", operate.getInfo(), getNodeName(), menu.getTitle()));
-                }
-            }
-            if (!StringUtils.equals(menu.getIsCommon(), original.getIsCommon())) {
+            if (SecurityUtils.isNotAdminTenant() && original.isCommon())
+                throw new ServiceException(StrUtil.format("{}{}{}失败，无操作权限！", operate.getInfo(), getNodeName(), menu.getTitle()));
+            if (!StringUtils.equals(menu.getIsCommon(), original.getIsCommon()))
                 throw new ServiceException(StrUtil.format("{}{}{}失败，公共{}属性禁止变更！", operate.getInfo(), getNodeName(), menu.getTitle(), getNodeName()));
-            }
         }
         if (menu.isCommon()) {
             SysModuleDto module = moduleService.selectById(menu.getModuleId());
@@ -220,6 +215,11 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
                 throw new ServiceException("数据不存在！");
             if (parentMenu.isNotCommon())
                 throw new ServiceException(StrUtil.format("{}{}{}失败，公共{}必须挂载在公共{}下！", operate.getInfo(), getNodeName(), menu.getTitle(), getNodeName(), getNodeName()));
+        }
+
+        // 待移除：混合逻辑完成后移除
+        if (operate.isAdd() && menu.isCommon()) {
+            menu.setEnterpriseId(AuthorityConstants.COMMON_ENTERPRISE);
         }
     }
 

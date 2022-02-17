@@ -1,8 +1,9 @@
 package com.xueyi.system.authority.controller;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.xueyi.common.core.constant.AuthorityConstants;
 import com.xueyi.common.core.constant.BaseConstants;
-import com.xueyi.common.core.constant.DictConstants;
 import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.core.web.result.AjaxResult;
@@ -141,8 +142,23 @@ public class SysModuleController extends SubBaseController<SysModuleDto, ISysMod
      */
     @Override
     protected void baseRefreshValidated(BaseConstants.Operate operate, SysModuleDto module) {
-        if (StringUtils.equals(DictConstants.DicCommonPrivate.COMMON.getCode(), module.getIsCommon()) && !SecurityUtils.isAdminTenant())
-            throw new ServiceException(StrUtil.format("{}{}{}失败，没有操作权限", operate.getInfo(), getNodeName(), module.getName()));
-    }
+        if (baseService.checkNameUnique(module.getId(), module.getName()))
+            throw new ServiceException(StrUtil.format("{}{}{}失败，{}名称已存在！", operate.getInfo(), getNodeName(), module.getName(), getNodeName()));
+        if (operate.isAdd() && SecurityUtils.isNotAdminTenant() && module.isCommon())
+            throw new ServiceException(StrUtil.format("{}{}{}失败，无操作权限！", operate.getInfo(), getNodeName(), module.getName()));
+        if (operate.isEdit()) {
+            SysModuleDto original = baseService.selectById(module.getId());
+            if (ObjectUtil.isNull(original))
+                throw new ServiceException("数据不存在！");
+            if (SecurityUtils.isNotAdminTenant() && original.isCommon())
+                    throw new ServiceException(StrUtil.format("{}{}{}失败，无操作权限！", operate.getInfo(), getNodeName(), module.getName()));
+            if (!StringUtils.equals(module.getIsCommon(), original.getIsCommon()))
+                throw new ServiceException(StrUtil.format("{}{}{}失败，公共{}属性禁止变更！", operate.getInfo(), getNodeName(), module.getName(), getNodeName()));
+        }
 
+        // 待移除：混合逻辑完成后移除
+        if (operate.isAdd() && module.isCommon()) {
+            module.setEnterpriseId(AuthorityConstants.COMMON_ENTERPRISE);
+        }
+    }
 }
