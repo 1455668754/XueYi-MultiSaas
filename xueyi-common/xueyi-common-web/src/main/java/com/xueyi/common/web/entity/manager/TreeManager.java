@@ -12,7 +12,7 @@ import com.xueyi.common.web.entity.mapper.TreeMapper;
 import java.io.Serializable;
 import java.util.List;
 
-import static com.xueyi.common.core.constant.SqlConstants.FIND_IN_SET;
+import static com.xueyi.common.core.constant.SqlConstants.ANCESTORS_FIND;
 
 /**
  * 数据封装层 树型通用数据处理
@@ -50,7 +50,7 @@ public class TreeManager<D extends TreeEntity<D>, DM extends TreeMapper<D>> exte
         return baseMapper.update(null,
                 Wrappers.<D>update().lambda()
                         .set(D::getStatus, status)
-                        .apply(FIND_IN_SET, id, SqlConstants.Entity.ANCESTORS.getCode()));
+                        .apply(ANCESTORS_FIND, id));
     }
 
     /**
@@ -65,7 +65,7 @@ public class TreeManager<D extends TreeEntity<D>, DM extends TreeMapper<D>> exte
         return baseMapper.update(null,
                 Wrappers.<D>update().lambda()
                         .setSql(StrUtil.format("{} = insert({},{},{},{})", SqlConstants.Entity.ANCESTORS.getCode(), SqlConstants.Entity.ANCESTORS.getCode(), 1, oldAncestors.length(), newAncestors))
-                        .apply(FIND_IN_SET, id, SqlConstants.Entity.ANCESTORS.getCode()));
+                        .apply(ANCESTORS_FIND, id));
     }
 
     /**
@@ -82,7 +82,7 @@ public class TreeManager<D extends TreeEntity<D>, DM extends TreeMapper<D>> exte
                 Wrappers.<D>update().lambda()
                         .set(D::getStatus, status)
                         .setSql(StrUtil.format("{} = insert({},{},{},{})", SqlConstants.Entity.ANCESTORS.getCode(), SqlConstants.Entity.ANCESTORS.getCode(), 1, oldAncestors.length(), newAncestors))
-                        .apply(FIND_IN_SET, id, SqlConstants.Entity.ANCESTORS.getCode()));
+                        .apply(ANCESTORS_FIND, id));
     }
 
     /**
@@ -95,7 +95,7 @@ public class TreeManager<D extends TreeEntity<D>, DM extends TreeMapper<D>> exte
         return baseMapper.delete(
                 Wrappers.<D>update().lambda()
                         .eq(D::getId, id)
-                        .apply(FIND_IN_SET, id, SqlConstants.Entity.ANCESTORS.getCode()));
+                        .apply(ANCESTORS_FIND, id));
     }
 
     /**
@@ -109,7 +109,7 @@ public class TreeManager<D extends TreeEntity<D>, DM extends TreeMapper<D>> exte
         return baseMapper.selectOne(
                 Wrappers.<D>query().lambda()
                         .eq(D::getId, id)
-                        .apply(FIND_IN_SET, parentId, SqlConstants.Entity.ANCESTORS.getCode())
+                        .apply(ANCESTORS_FIND, parentId)
                         .last(SqlConstants.LIMIT_ONE));
     }
 
@@ -122,7 +122,7 @@ public class TreeManager<D extends TreeEntity<D>, DM extends TreeMapper<D>> exte
     public D checkHasChild(Serializable id) {
         return baseMapper.selectOne(
                 Wrappers.<D>query().lambda()
-                        .apply(FIND_IN_SET, id, SqlConstants.Entity.ANCESTORS.getCode())
+                        .apply(ANCESTORS_FIND, id)
                         .last(SqlConstants.LIMIT_ONE));
     }
 
@@ -136,7 +136,7 @@ public class TreeManager<D extends TreeEntity<D>, DM extends TreeMapper<D>> exte
         return baseMapper.selectOne(
                 Wrappers.<D>query().lambda()
                         .ne(D::getStatus, BaseConstants.Status.NORMAL.getCode())
-                        .apply(FIND_IN_SET, id, SqlConstants.Entity.ANCESTORS.getCode())
+                        .apply(ANCESTORS_FIND, id)
                         .last(SqlConstants.LIMIT_ONE));
     }
 

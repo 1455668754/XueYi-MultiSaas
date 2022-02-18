@@ -22,7 +22,7 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.xueyi.common.core.constant.SqlConstants.FIND_IN_SET;
+import static com.xueyi.common.core.constant.SqlConstants.ANCESTORS_FIND;
 
 /**
  * 菜单管理 数据封装层
@@ -271,7 +271,7 @@ public class SysMenuManager extends TreeManager<SysMenuDto, SysMenuMapper> {
     public int deleteChildren(Serializable id) {
         List<SysMenuDto> children = baseMapper.selectList(
                 Wrappers.<SysMenuDto>update().lambda()
-                        .apply(FIND_IN_SET, id, SqlConstants.Entity.ANCESTORS.getCode()));
+                        .apply(ANCESTORS_FIND, id));
         if (CollUtil.isNotEmpty(children)) {
             Set<Long> idSet = children.stream().map(SysMenuDto::getId).collect(Collectors.toSet());
             roleMenuMergeMapper.delete(

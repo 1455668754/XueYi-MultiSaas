@@ -179,9 +179,7 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
     @Override
     @GetMapping("/option")
     public AjaxResult option() {
-        SysMenuDto menu = new SysMenuDto();
-        menu.setStatus(BaseConstants.Status.NORMAL.getCode());
-        return AjaxResult.success(TreeUtils.buildTree(baseService.selectList(menu)));
+        return super.option();
     }
 
     /**

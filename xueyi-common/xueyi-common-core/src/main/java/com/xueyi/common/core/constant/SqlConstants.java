@@ -14,7 +14,7 @@ public class SqlConstants {
     public static final String LIMIT_ONE = "limit 1";
 
     /** sql find_in_set函数 */
-    public static final String FIND_IN_SET = "find_in_set({0},{1})";
+    public static final String ANCESTORS_FIND = "find_in_set({0}, ancestors)";
 
     /** 数据库字段映射 */
     public enum Entity {
