@@ -20,7 +20,6 @@ create table sys_dept (
   create_time               datetime            default current_timestamp               comment '创建时间',
   update_by                 bigint              default null                            comment '更新者',
   update_time               datetime            on update current_timestamp             comment '更新时间',
-  is_default                char(1)             not null default 'N'	                comment '默认部门（Y是 N否）',
   del_flag		            tinyint             not null default 0                      comment '删除标志(0正常 1删除)',
   tenant_id		            bigint	            not null                                comment '租户Id',
   primary key (id)
@@ -58,7 +57,6 @@ create table sys_post (
   create_time               datetime            default current_timestamp               comment '创建时间',
   update_by                 bigint              default null                            comment '更新者',
   update_time               datetime            on update current_timestamp             comment '更新时间',
-  is_default                char(1)             not null default 'N'	                comment '默认岗位（Y是 N否）',
   del_flag		            tinyint             not null default 0                      comment '删除标志(0正常 1删除)',
   tenant_id		            bigint	            not null                                comment '租户Id',
   primary key (id)
@@ -99,7 +97,6 @@ create table sys_user (
   create_time               datetime            default current_timestamp               comment '创建时间',
   update_by                 bigint              default null                            comment '更新者',
   update_time               datetime            on update current_timestamp             comment '更新时间',
-  is_default                char(1)             not null default 'N'	                comment '默认用户（Y是 N否）',
   del_flag		            tinyint             not null default 0                      comment '删除标志(0正常 1删除)',
   tenant_id		            bigint	            not null                                comment '租户Id',
   primary key (id)
@@ -149,7 +146,6 @@ create table sys_role (
   create_time               datetime            default current_timestamp               comment '创建时间',
   update_by                 bigint              default null                            comment '更新者',
   update_time               datetime            on update current_timestamp             comment '更新时间',
-  is_default                char(1)             not null default 'N'	                comment '默认角色（Y是 N否）',
   del_flag		            tinyint             not null default 0                      comment '删除标志（0正常 1删除）',
   tenant_id		            bigint	            not null                                comment '租户Id',
   primary key (id)

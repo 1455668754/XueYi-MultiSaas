@@ -77,10 +77,6 @@ public class SysUserPo extends TBaseEntity {
     @TableField("login_date")
     private Date loginDate;
 
-    /** 默认用户（Y是 N否） */
-    @TableField("is_default")
-    private String isDefault;
-
     @Xss(message = "用户编码不能包含脚本字符")
     @NotBlank(message = "用户编码不能为空")
     @Size(max = 64, message = "用户编码长度不能超过64个字符")
@@ -190,11 +186,4 @@ public class SysUserPo extends TBaseEntity {
         this.loginDate = loginDate;
     }
 
-    public String getIsDefault() {
-        return isDefault;
-    }
-
-    public void setIsDefault(String isDefault) {
-        this.isDefault = isDefault;
-    }
 }

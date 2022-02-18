@@ -6,8 +6,6 @@ import com.xueyi.system.api.authority.domain.po.SysRolePo;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.util.Set;
-
 /**
  * 角色 数据传输对象
  *
@@ -18,15 +16,27 @@ public class SysRoleDto extends SysRolePo {
 
     private static final long serialVersionUID = 1L;
 
-    /** 部门-岗位组（数据权限） */
+    /** 权限Ids（菜单权限） */
     @TableField(exist = false)
-    private Set<Long> organizeIds;
+    private Long[] authIds;
 
-    public Set<Long> getOrganizeIds() {
+    /** 组织Ids（数据权限） */
+    @TableField(exist = false)
+    private Long[] organizeIds;
+
+    public Long[] getAuthIds() {
+        return authIds;
+    }
+
+    public void setAuthIds(Long[] authIds) {
+        this.authIds = authIds;
+    }
+
+    public Long[] getOrganizeIds() {
         return organizeIds;
     }
 
-    public void setOrganizeIds(Set<Long> organizeIds) {
+    public void setOrganizeIds(Long[] organizeIds) {
         this.organizeIds = organizeIds;
     }
 
@@ -47,8 +57,8 @@ public class SysRoleDto extends SysRolePo {
                 .append("updateBy", getUpdateBy())
                 .append("updateName", getUpdateName())
                 .append("updateTime", getUpdateTime())
-                .append("isDefault", getIsDefault())
-                .append("deptPostIds", getOrganizeIds())
+                .append("authIds", getAuthIds())
+                .append("organizeIds", getOrganizeIds())
                 .toString();
     }
 }

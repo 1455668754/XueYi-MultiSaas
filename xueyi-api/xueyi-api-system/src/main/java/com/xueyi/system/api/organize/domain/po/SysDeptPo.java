@@ -39,10 +39,6 @@ public class SysDeptPo<D, S> extends TSubTreeEntity<D, S> {
     @TableField("email")
     private String email;
 
-    /** 默认部门（Y是 N否） */
-    @TableField("is_default")
-    private String isDefault;
-
     public String getCode() {
         return code;
     }
@@ -88,11 +84,4 @@ public class SysDeptPo<D, S> extends TSubTreeEntity<D, S> {
         this.email = email;
     }
 
-    public String getIsDefault() {
-        return isDefault;
-    }
-
-    public void setIsDefault(String isDefault) {
-        this.isDefault = isDefault;
-    }
 }

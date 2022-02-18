@@ -25,13 +25,23 @@ public class SysAuthServiceImpl implements ISysAuthService {
     private SysAuthManager authManager;
 
     /**
-     * 获取公共模块|菜单权限树 | 租户端
+     * 获取公共模块|菜单权限树
      *
      * @return 权限对象集合
      */
     @Override
     public List<SysAuthTree> selectCommonAuthScope() {
         return authManager.selectCommonAuthScope();
+    }
+
+    /**
+     * 获取企业模块|菜单权限树
+     *
+     * @return 权限对象集合
+     */
+    @Override
+    public List<SysAuthTree> selectEnterpriseAuthScope() {
+        return authManager.selectEnterpriseAuthScope();
     }
 
     /**

@@ -54,12 +54,21 @@ public class SysAuthController extends BasisController {
     }
 
     /**
-     * 获取公共模块|菜单权限树 | 租户端
+     * 获取公共模块|菜单权限树
      */
     @GetMapping(value = "/tenant/authScope")
     @RequiresPermissions(value = {Auth.TE_TENANT_ADD, Auth.TE_TENANT_AUTH}, logical = Logical.OR)
     public AjaxResult getCommonAuthScope() {
         return AjaxResult.success(TreeUtils.buildTree(authService.selectCommonAuthScope()));
+    }
+
+    /**
+     * 获取企业模块|菜单权限树
+     */
+    @GetMapping(value = "/enterprise/authScope")
+    @RequiresPermissions(value = {Auth.SYS_ROLE_ADD, Auth.SYS_ROLE_AUTH}, logical = Logical.OR)
+    public AjaxResult getEnterpriseAuthScope() {
+        return AjaxResult.success(TreeUtils.buildTree(authService.selectEnterpriseAuthScope()));
     }
 
 //

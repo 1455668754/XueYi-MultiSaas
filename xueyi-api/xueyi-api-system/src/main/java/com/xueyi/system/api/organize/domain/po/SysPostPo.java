@@ -30,10 +30,6 @@ public class SysPostPo extends TBaseEntity {
     @TableField("name")
     private String name;
 
-    /** 默认岗位（Y是 N否） */
-    @TableField("is_default")
-    private String isDefault;
-
     public Long getDeptId() {
         return deptId;
     }
@@ -62,11 +58,4 @@ public class SysPostPo extends TBaseEntity {
         this.name = name;
     }
 
-    public String getIsDefault() {
-        return isDefault;
-    }
-
-    public void setIsDefault(String isDefault) {
-        this.isDefault = isDefault;
-    }
 }

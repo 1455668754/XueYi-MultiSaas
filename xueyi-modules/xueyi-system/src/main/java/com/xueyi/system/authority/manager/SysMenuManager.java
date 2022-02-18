@@ -89,18 +89,53 @@ public class SysMenuManager extends TreeManager<SysMenuDto, SysMenuMapper> {
      *
      * @return 菜单对象集合
      */
-    public List<SysMenuDto> selectCommonList(Collection<? extends Serializable> idList) {
-        return baseMapper.selectList(Wrappers.<SysMenuDto>query().lambda()
-                .ne(SysMenuDto::getId, AuthorityConstants.MENU_TOP_NODE)
-                .eq(SysMenuDto::getIsCommon, DictConstants.DicCommonPrivate.COMMON.getCode())
-                .eq(SysMenuDto::getStatus, BaseConstants.Status.NORMAL.getCode())
-                .func(i -> {
-                    if (CollUtil.isNotEmpty(idList))
-                        i.in(SysMenuDto::getId, idList);
-                }));
+    public List<SysMenuDto> selectCommonList() {
+        // 校验租管租户 ? 查询所有 : 查询租户-菜单关联表,校验是否有数据 ? 查有关联权限的公共菜单与所有私有菜单 : 查询所有私有菜单
+        if(SecurityUtils.isAdminTenant()){
+            return baseMapper.selectList(Wrappers.<SysMenuDto>query().lambda()
+                    .ne(SysMenuDto::getId, AuthorityConstants.MENU_TOP_NODE)
+                    .eq(SysMenuDto::getIsCommon, DictConstants.DicCommonPrivate.COMMON.getCode())
+                    .eq(SysMenuDto::getStatus, BaseConstants.Status.NORMAL.getCode()));
+        }else {
+            List<SysTenantMenuMerge> tenantMenuMerges = tenantMenuMergeMapper.selectList(Wrappers.query());
+            return CollUtil.isNotEmpty(tenantMenuMerges)
+                    ? baseMapper.selectList(Wrappers.<SysMenuDto>query().lambda()
+                    .ne(SysMenuDto::getId, AuthorityConstants.MENU_TOP_NODE)
+                    .eq(SysMenuDto::getIsCommon, DictConstants.DicCommonPrivate.COMMON.getCode())
+                    .eq(SysMenuDto::getStatus, BaseConstants.Status.NORMAL.getCode())
+                    .in(SysMenuDto::getId, tenantMenuMerges.stream().map(SysTenantMenuMerge::getMenuId).collect(Collectors.toList())))
+                    : new ArrayList<>();
+        }
     }
 
-
+    /**
+     * 获取租户有权限且状态正常的菜单
+     *
+     * @return 菜单对象集合
+     */
+    public List<SysMenuDto> selectTenantList() {
+        // 校验租管租户 ? 查询所有 : 查询租户-菜单关联表,校验是否有数据 ? 查有关联权限的公共菜单 : 返回空集合
+        if (SecurityUtils.isAdminTenant()) {
+            return baseMapper.selectList(Wrappers.<SysMenuDto>query().lambda()
+                    .ne(SysMenuDto::getId, AuthorityConstants.MENU_TOP_NODE)
+                    .eq(SysMenuDto::getStatus, BaseConstants.Status.NORMAL.getCode()));
+        } else {
+            List<SysTenantMenuMerge> tenantMenuMerges = tenantMenuMergeMapper.selectList(Wrappers.query());
+            return baseMapper.selectList(Wrappers.<SysMenuDto>query().lambda()
+                    .ne(SysMenuDto::getId, AuthorityConstants.MENU_TOP_NODE)
+                    .eq(SysMenuDto::getStatus, BaseConstants.Status.NORMAL.getCode())
+                    .func(i -> {
+                        if (CollUtil.isNotEmpty(tenantMenuMerges))
+                            i.and(j -> j.
+                                    eq(SysMenuDto::getIsCommon, DictConstants.DicCommonPrivate.PRIVATE.getCode())
+                                    .or().in(SysMenuDto::getId, tenantMenuMerges.stream().map(SysTenantMenuMerge::getMenuId).collect(Collectors.toList()))
+                            );
+                        else
+                            i.eq(SysMenuDto::getIsCommon, DictConstants.DicCommonPrivate.PRIVATE.getCode());
+                    }));
+        }
+    }
+    
     /**
      * 校验菜单是否存在租户
      *

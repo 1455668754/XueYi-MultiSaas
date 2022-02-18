@@ -31,10 +31,6 @@ public class SysRolePo extends TBaseEntity {
     @TableField("data_scope")
     private String dataScope;
 
-    /** 默认角色（Y是 N否） */
-    @TableField("is_default")
-    private String isDefault;
-
     public String getCode() {
         return code;
     }
@@ -67,11 +63,4 @@ public class SysRolePo extends TBaseEntity {
         this.dataScope = dataScope;
     }
 
-    public String getIsDefault() {
-        return isDefault;
-    }
-
-    public void setIsDefault(String isDefault) {
-        this.isDefault = isDefault;
-    }
 }

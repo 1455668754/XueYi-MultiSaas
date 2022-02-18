@@ -12,11 +12,18 @@ import java.util.List;
 public interface ISysAuthService {
 
     /**
-     * 获取公共模块|菜单权限树 | 租户端
+     * 获取公共模块|菜单权限树
      *
      * @return 权限对象集合
      */
     List<SysAuthTree> selectCommonAuthScope();
+
+    /**
+     * 获取企业模块|菜单权限树
+     *
+     * @return 权限对象集合
+     */
+    List<SysAuthTree> selectEnterpriseAuthScope();
 
     /**
      * 获取租户权限

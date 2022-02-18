@@ -49,17 +49,27 @@ public class SysAuthManager {
     private SysRoleMenuMergeMapper roleMenuMergeMapper;
 
     /**
-     * 获取公共模块|菜单权限树 | 租户端
+     * 获取公共模块|菜单权限树
      *
      * @return 权限对象集合
      */
     public List<SysAuthTree> selectCommonAuthScope() {
-        List<SysModuleDto> modules = moduleManager.selectCommonList(null);
-        List<SysMenuDto> menus = menuManager.selectCommonList(null);
+        List<SysModuleDto> modules = moduleManager.selectCommonList();
+        List<SysMenuDto> menus = menuManager.selectCommonList();
         List<SysAuthTree> list = new ArrayList<>();
         list.addAll(modules.stream().map(SysAuthTree::new).collect(Collectors.toList()));
         list.addAll(menus.stream().map(SysAuthTree::new).collect(Collectors.toList()));
         return list;
+    }
+
+    /**
+     * 获取企业模块|菜单权限树
+     *
+     * @return 权限对象集合
+     */
+    public List<SysAuthTree> selectEnterpriseAuthScope() {
+//        return authManager.selectEnterpriseAuthScope();
+        return null;
     }
 
     /**

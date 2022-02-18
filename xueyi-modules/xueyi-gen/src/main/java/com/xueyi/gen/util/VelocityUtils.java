@@ -247,23 +247,9 @@ public class VelocityUtils {
             templates.add("vm/ts/auth.ts.vm");
             templates.add("vm/ts/enum.ts.vm");
             templates.add("vm/ts/infoModel.ts.vm");
-            switch (Objects.requireNonNull(GenConstants.TemplateType.getValue(tplCategory))) {
-                case BASE:
-                    templates.add("vm/vue/detail.vue.vm");
-                    templates.add("vm/vue/base/index.vue.vm");
-                    templates.add("vm/vue/modal.vue.vm");
-                    break;
-                case TREE:
-                    templates.add("vm/vue/detail.vue.vm");
-                    templates.add("vm/vue/tree/index.vue.vm");
-                    templates.add("vm/vue/modal.vue.vm");
-                    break;
-                case SUB_TREE:
-                case SUB_BASE:
-                    templates.add("vm/vue/detail.vue.vm");
-                    templates.add("vm/vue/index.vue.vm");
-                    templates.add("vm/vue/modal.vue.vm");
-            }
+            templates.add("vm/vue/detail.vue.vm");
+            templates.add("vm/vue/index.vue.vm");
+            templates.add("vm/vue/modal.vue.vm");
         }
         return templates;
     }
