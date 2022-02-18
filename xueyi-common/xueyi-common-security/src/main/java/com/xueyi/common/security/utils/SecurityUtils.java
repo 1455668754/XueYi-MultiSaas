@@ -4,7 +4,6 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.AuthorityConstants;
 import com.xueyi.common.core.constant.SecurityConstants;
-import com.xueyi.common.core.constant.TenantConstants;
 import com.xueyi.common.core.constant.TokenConstants;
 import com.xueyi.common.core.context.SecurityContextHolder;
 import com.xueyi.common.core.utils.ServletUtils;
@@ -114,7 +113,7 @@ public class SecurityUtils {
      * 是否为空租户信息
      */
     public static boolean isEmptyTenant() {
-        return ObjectUtil.equals(TenantConstants.EMPTY_TENANT_ID, getEnterpriseId());
+        return ObjectUtil.equals(SecurityConstants.EMPTY_TENANT_ID, getEnterpriseId());
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.xueyi.common.web.handler;
 
 import com.baomidou.mybatisplus.extension.plugins.handler.TenantLineHandler;
+import com.xueyi.common.core.constant.SecurityConstants;
 import com.xueyi.common.core.constant.TenantConstants;
 import com.xueyi.common.security.utils.SecurityUtils;
 import net.sf.jsqlparser.expression.Expression;
@@ -28,7 +29,7 @@ public class XueYiTenantLineHandler implements TenantLineHandler {
     public Expression getCommonTenantId() {
         List<Expression> childList = new ArrayList<>();
         if (SecurityUtils.isNotEmptyTenant())
-            childList.add(new LongValue(TenantConstants.COMMON_TENANT_ID));
+            childList.add(new LongValue(SecurityConstants.COMMON_TENANT_ID));
         childList.add(new LongValue(SecurityUtils.getEnterpriseId()));
         return new MultipleExpression(childList) {
             @Override

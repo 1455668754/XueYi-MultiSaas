@@ -145,7 +145,7 @@ public class SysMenuManager extends TreeManager<SysMenuDto, SysMenuMapper> {
                             .in(SysMenuDto::getId, tenantMenuMerges.stream().map(SysTenantMenuMerge::getMenuId).collect(Collectors.toSet()));
                 } else {
                     menuQueryWrapper
-                            .ne(SysMenuDto::getEnterpriseId, TenantConstants.COMMON_TENANT_ID);
+                            .ne(SysMenuDto::getEnterpriseId, SecurityConstants.COMMON_TENANT_ID);
                 }
             }
         } else {

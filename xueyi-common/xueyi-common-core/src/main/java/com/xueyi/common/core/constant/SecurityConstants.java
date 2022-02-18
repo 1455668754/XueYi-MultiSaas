@@ -7,6 +7,15 @@ package com.xueyi.common.core.constant;
  */
 public class SecurityConstants {
 
+    /** 空用户Id */
+    public static final Long EMPTY_USER_ID = BaseConstants.NONE_ID;
+
+    /** 空租户Id */
+    public static final Long EMPTY_TENANT_ID = BaseConstants.NONE_ID;
+
+    /** 公共数据租户Id */
+    public static final Long COMMON_TENANT_ID = BaseConstants.COMMON_ID;
+
     /** 请求来源 */
     public static final String FROM_SOURCE = "from-source";
 

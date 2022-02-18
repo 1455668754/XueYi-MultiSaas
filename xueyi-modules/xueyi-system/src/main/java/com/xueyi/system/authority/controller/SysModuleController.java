@@ -2,8 +2,8 @@ package com.xueyi.system.authority.controller;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.xueyi.common.core.constant.AuthorityConstants;
 import com.xueyi.common.core.constant.BaseConstants;
+import com.xueyi.common.core.constant.SecurityConstants;
 import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.core.web.result.AjaxResult;
@@ -158,7 +158,7 @@ public class SysModuleController extends SubBaseController<SysModuleDto, ISysMod
 
         // 待移除：混合逻辑完成后移除
         if (operate.isAdd() && module.isCommon()) {
-            module.setEnterpriseId(AuthorityConstants.COMMON_ENTERPRISE);
+            module.setEnterpriseId(SecurityConstants.COMMON_TENANT_ID);
         }
     }
 }

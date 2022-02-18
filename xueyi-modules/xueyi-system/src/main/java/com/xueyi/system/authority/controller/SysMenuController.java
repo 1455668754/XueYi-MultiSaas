@@ -5,6 +5,7 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.AuthorityConstants;
 import com.xueyi.common.core.constant.BaseConstants;
+import com.xueyi.common.core.constant.SecurityConstants;
 import com.xueyi.common.core.domain.R;
 import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.StringUtils;
@@ -217,7 +218,7 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
 
         // 待移除：混合逻辑完成后移除
         if (operate.isAdd() && menu.isCommon()) {
-            menu.setEnterpriseId(AuthorityConstants.COMMON_ENTERPRISE);
+            menu.setEnterpriseId(SecurityConstants.COMMON_TENANT_ID);
         }
     }
 

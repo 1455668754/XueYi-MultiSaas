@@ -41,27 +41,27 @@ public class SysLoginService {
     public LoginUser login(String enterpriseName, String userName, String password) {
         // 企业账号||员工账号||密码为空 错误
         if (StringUtils.isAnyBlank(enterpriseName, userName, password)) {
-            recordLoginInfo(TenantConstants.Source.SLAVE.getCode(), AuthorityConstants.COMMON_ENTERPRISE, enterpriseName, AuthorityConstants.COMMON_USER, userName, Constants.LOGIN_FAIL, "企业账号/员工账号/密码必须填写");
+            recordLoginInfo(TenantConstants.Source.SLAVE.getCode(), SecurityConstants.EMPTY_TENANT_ID, enterpriseName, SecurityConstants.EMPTY_USER_ID, userName, Constants.LOGIN_FAIL, "企业账号/员工账号/密码必须填写");
             throw new ServiceException("企业账号/员工账号/密码必须填写");
         }
         // 企业账号不在指定范围内 错误
         if (enterpriseName.length() < OrganizeConstants.ENTERPRISE_NAME_MIN_LENGTH
                 || enterpriseName.length() > OrganizeConstants.ENTERPRISE_NAME_MAX_LENGTH) {
-            recordLoginInfo(TenantConstants.Source.SLAVE.getCode(), AuthorityConstants.COMMON_ENTERPRISE, enterpriseName, AuthorityConstants.COMMON_USER, userName, Constants.LOGIN_FAIL, "企业账号不在指定范围");
+            recordLoginInfo(TenantConstants.Source.SLAVE.getCode(), SecurityConstants.EMPTY_TENANT_ID, enterpriseName, SecurityConstants.EMPTY_USER_ID, userName, Constants.LOGIN_FAIL, "企业账号不在指定范围");
             throw new ServiceException("企业账号不在指定范围");
         }
 
         // 员工账号不在指定范围内 错误
         if (userName.length() < OrganizeConstants.USERNAME_MIN_LENGTH
                 || userName.length() > OrganizeConstants.USERNAME_MAX_LENGTH) {
-            recordLoginInfo(TenantConstants.Source.SLAVE.getCode(), AuthorityConstants.COMMON_ENTERPRISE, enterpriseName, AuthorityConstants.COMMON_USER, userName, Constants.LOGIN_FAIL, "员工账号不在指定范围");
+            recordLoginInfo(TenantConstants.Source.SLAVE.getCode(), SecurityConstants.EMPTY_TENANT_ID, enterpriseName, SecurityConstants.EMPTY_USER_ID, userName, Constants.LOGIN_FAIL, "员工账号不在指定范围");
             throw new ServiceException("员工账号不在指定范围");
         }
 
         // 密码如果不在指定范围内 错误
         if (password.length() < OrganizeConstants.PASSWORD_MIN_LENGTH
                 || password.length() > OrganizeConstants.PASSWORD_MAX_LENGTH) {
-            recordLoginInfo(TenantConstants.Source.SLAVE.getCode(), AuthorityConstants.COMMON_ENTERPRISE, enterpriseName, AuthorityConstants.COMMON_USER, userName, Constants.LOGIN_FAIL, "用户密码不在指定范围");
+            recordLoginInfo(TenantConstants.Source.SLAVE.getCode(), SecurityConstants.EMPTY_TENANT_ID, enterpriseName, SecurityConstants.EMPTY_USER_ID, userName, Constants.LOGIN_FAIL, "用户密码不在指定范围");
             throw new ServiceException("用户密码不在指定范围");
         }
         // 查询企业信息与策略源信息
@@ -81,7 +81,7 @@ public class SysLoginService {
         }
 
         if (ObjectUtil.isNull(userResult) || ObjectUtil.isNull(userResult.getResult())) {
-            recordLoginInfo(TenantConstants.Source.SLAVE.getCode(), AuthorityConstants.COMMON_ENTERPRISE, enterpriseName, AuthorityConstants.COMMON_USER, userName, Constants.LOGIN_FAIL, "登录用户不存在");
+            recordLoginInfo(TenantConstants.Source.SLAVE.getCode(), SecurityConstants.EMPTY_TENANT_ID, enterpriseName, SecurityConstants.EMPTY_USER_ID, userName, Constants.LOGIN_FAIL, "登录用户不存在");
             throw new ServiceException("企业账号/员工账号/密码错误，请检查");
         }
         LoginUser loginUser = userResult.getResult();
@@ -116,7 +116,7 @@ public class SysLoginService {
         if (R.FAIL == registerResult.getCode()) {
             throw new ServiceException(registerResult.getMessage());
         }
-        recordLoginInfo(TenantConstants.Source.SLAVE.getCode(), AuthorityConstants.COMMON_ENTERPRISE, registerBody.getTenant().getName(), AuthorityConstants.COMMON_USER, registerBody.getUser().getUserName(), Constants.REGISTER, "注册成功");
+        recordLoginInfo(TenantConstants.Source.SLAVE.getCode(), SecurityConstants.EMPTY_TENANT_ID, registerBody.getTenant().getName(), SecurityConstants.EMPTY_USER_ID, registerBody.getUser().getUserName(), Constants.REGISTER, "注册成功");
     }
 
     /**

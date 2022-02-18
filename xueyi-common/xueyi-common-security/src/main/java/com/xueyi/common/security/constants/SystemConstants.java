@@ -41,6 +41,25 @@ public interface SystemConstants {
     /** 系统 - 菜单管理 - 导出 */
     String SYS_MENU_EXPORT = "authority:menu:export";
 
+    /** 系统 - 角色管理 - 列表 */
+    String SYS_ROLE_LIST = "authority:role:list";
+    /** 系统 - 角色管理 - 详情 */
+    String SYS_ROLE_SINGLE = "authority:role:single";
+    /** 系统 - 角色管理 - 新增 */
+    String SYS_ROLE_ADD = "authority:role:add";
+    /** 系统 - 角色管理 - 修改 */
+    String SYS_ROLE_EDIT = "authority:role:edit";
+    /** 系统 - 角色管理 - 权限 */
+    String SYS_ROLE_AUTH = "authority:role:auth";
+    /** 系统 - 角色管理 - 修改状态 */
+    String SYS_ROLE_EDIT_STATUS = "authority:role:editStatus";
+    /** 系统 - 角色管理 - 删除 */
+    String SYS_ROLE_DELETE = "authority:role:delete";
+    /** 系统 - 角色管理 - 导入 */
+    String SYS_ROLE_IMPORT = "authority:role:import";
+    /** 系统 - 角色管理 - 导出 */
+    String SYS_ROLE_EXPORT = "authority:role:export";
+    
     /** 系统 - 字典管理 - 列表 */
     String SYS_DICT_LIST = "dict:dict:list";
     /** 系统 - 字典管理 - 详情 */

@@ -10,10 +10,13 @@ import cn.hutool.core.util.StrUtil;
 public class BaseConstants {
 
     /** 顶级节点Id */
-    public static final Long TOP_NODE = 0L;
+    public static final Long TOP_ID = 0L;
 
-    /** 顶级节点Id */
-    public static final Long NONE_ID = -1L;
+    /** 公共节点Id */
+    public static final Long COMMON_ID = 0L;
+
+    /** 空节点Id */
+    public static final Long NONE_ID = -2L;
 
     /** 操作类型 */
     public enum Operate {

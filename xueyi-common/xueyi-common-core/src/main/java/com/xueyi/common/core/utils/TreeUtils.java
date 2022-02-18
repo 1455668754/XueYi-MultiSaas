@@ -32,7 +32,7 @@ public class TreeUtils {
         return buildTree(list, BaseConstants.Entity.ID.getCode(),
                 BaseConstants.Entity.PARENT_ID.getCode(),
                 BaseConstants.Entity.CHILDREN.getCode(),
-                BaseConstants.TOP_NODE,
+                BaseConstants.TOP_ID,
                 false,
                 true);
     }
@@ -50,7 +50,7 @@ public class TreeUtils {
         return buildTree(list, BaseConstants.Entity.ID.getCode(),
                 BaseConstants.Entity.PARENT_ID.getCode(),
                 BaseConstants.Entity.CHILDREN.getCode(),
-                BaseConstants.TOP_NODE,
+                BaseConstants.TOP_ID,
                 killScattered,
                 true);
     }
@@ -69,7 +69,7 @@ public class TreeUtils {
         return buildTree(list, BaseConstants.Entity.ID.getCode(),
                 BaseConstants.Entity.PARENT_ID.getCode(),
                 BaseConstants.Entity.CHILDREN.getCode(),
-                BaseConstants.TOP_NODE,
+                BaseConstants.TOP_ID,
                 killScattered,
                 killNoneChild);
     }

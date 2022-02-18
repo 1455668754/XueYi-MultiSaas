@@ -2,7 +2,6 @@ package com.xueyi.common.core.context;
 
 import com.alibaba.ttl.TransmittableThreadLocal;
 import com.xueyi.common.core.constant.SecurityConstants;
-import com.xueyi.common.core.constant.TenantConstants;
 import com.xueyi.common.core.text.Convert;
 import com.xueyi.common.core.utils.StringUtils;
 
@@ -23,7 +22,7 @@ public class SecurityContextHolder {
      * 获取企业Id
      */
     public static Long getEnterpriseId() {
-        return Convert.toLong(get(SecurityConstants.ENTERPRISE_ID), TenantConstants.EMPTY_TENANT_ID);
+        return Convert.toLong(get(SecurityConstants.ENTERPRISE_ID), SecurityConstants.EMPTY_TENANT_ID);
     }
 
     /**
@@ -65,7 +64,7 @@ public class SecurityContextHolder {
      * 获取用户Id
      */
     public static Long getUserId() {
-        return Convert.toLong(get(SecurityConstants.USER_ID), 0L);
+        return Convert.toLong(get(SecurityConstants.USER_ID), SecurityConstants.EMPTY_USER_ID);
     }
 
     /**

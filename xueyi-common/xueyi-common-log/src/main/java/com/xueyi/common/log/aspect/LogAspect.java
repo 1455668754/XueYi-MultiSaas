@@ -1,7 +1,7 @@
 package com.xueyi.common.log.aspect;
 
 import com.alibaba.fastjson.JSON;
-import com.xueyi.common.core.constant.AuthorityConstants;
+import com.xueyi.common.core.constant.SecurityConstants;
 import com.xueyi.common.core.constant.TenantConstants;
 import com.xueyi.common.core.utils.ServletUtils;
 import com.xueyi.common.core.utils.StringUtils;
@@ -85,18 +85,18 @@ public class LogAspect {
                 if (StringUtils.isNotNull(userId)) {
                     operLog.setUserId(userId);
                 } else {
-                    operLog.setUserId(AuthorityConstants.COMMON_USER);
+                    operLog.setUserId(SecurityConstants.EMPTY_USER_ID);
                 }
 
                 if (StringUtils.isNotNull(enterpriseId)) {
                     operLog.setEnterpriseId(enterpriseId);
                 } else {
-                    operLog.setEnterpriseId(AuthorityConstants.COMMON_ENTERPRISE);
+                    operLog.setEnterpriseId(SecurityConstants.EMPTY_TENANT_ID);
                 }
             } else {
                 operLog.setSourceName(TenantConstants.Source.SLAVE.getCode());
-                operLog.setUserId(AuthorityConstants.COMMON_USER);
-                operLog.setEnterpriseId(AuthorityConstants.COMMON_ENTERPRISE);
+                operLog.setUserId(SecurityConstants.EMPTY_USER_ID);
+                operLog.setEnterpriseId(SecurityConstants.EMPTY_TENANT_ID);
             }
             if (e != null) {
                 operLog.setStatus(BusinessStatus.FAIL.getCode());

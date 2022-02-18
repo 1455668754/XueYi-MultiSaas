@@ -2,8 +2,6 @@ package com.xueyi.common.core.constant;
 
 import com.xueyi.common.core.utils.StringUtils;
 
-import static com.xueyi.common.core.constant.TenantConstants.COMMON_TENANT_ID;
-
 /**
  * 权限通用常量
  *
@@ -11,14 +9,8 @@ import static com.xueyi.common.core.constant.TenantConstants.COMMON_TENANT_ID;
  */
 public class AuthorityConstants {
 
-    /** 公共企业Id */
-    public static final Long COMMON_ENTERPRISE = COMMON_TENANT_ID;
-
-    /** 公共企业Id */
-    public static final Long COMMON_USER = 0L;
-
     /** 菜单树 - 顶级节点Id */
-    public static final Long MENU_TOP_NODE = 0L;
+    public static final Long MENU_TOP_NODE = BaseConstants.TOP_ID;
 
     /** 默认模块Id */
     public static final Long MODULE_DEFAULT_NODE = 1L;

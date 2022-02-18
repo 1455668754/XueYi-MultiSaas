@@ -7,17 +7,11 @@ package com.xueyi.common.core.constant;
  */
 public class TenantConstants {
 
-    /** 无效租户Id */
-    public static final Long EMPTY_TENANT_ID = -2L;
-
-    /** 公共租户Id */
-    public static final Long COMMON_TENANT_ID = 0L;
-
     /** 租户Id */
     public static final String TENANT_ID = "tenant_id";
 
     /** 注册租户默认策略Id */
-    public static final Long REGISTER_TENANT_STRATEGY_ID = 0L;
+    public static final Long REGISTER_TENANT_STRATEGY_ID = BaseConstants.COMMON_ID;
 
     /** 子库必须数据表 */
     public static final String[] SLAVE_TABLE = {"sys_dept", "sys_login_log", "sys_notice", "sys_notice_log", "sys_operate_log", "sys_organize_role_merge", "sys_post", "sys_role",

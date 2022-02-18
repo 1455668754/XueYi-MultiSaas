@@ -62,8 +62,8 @@ public class TreeHandleServiceImpl<D extends TreeEntity<D>, DG extends TreeManag
      * @see com.xueyi.common.web.entity.service.impl.TreeServiceImpl#insert(TreeEntity)
      */
     protected void addTreeAncestorsValidated(D d) {
-        if (ObjectUtil.equals(BaseConstants.TOP_NODE, d.getParentId()))
-            d.setAncestors(String.valueOf(BaseConstants.TOP_NODE));
+        if (ObjectUtil.equals(BaseConstants.TOP_ID, d.getParentId()))
+            d.setAncestors(String.valueOf(BaseConstants.TOP_ID));
         else {
             D parent = baseManager.selectById(d.getParentId());
             d.setAncestors(parent.getAncestors() + "," + d.getParentId());
@@ -81,8 +81,8 @@ public class TreeHandleServiceImpl<D extends TreeEntity<D>, DG extends TreeManag
         D original = baseManager.selectById(d.getId());
         if (!ObjectUtil.equals(d.getParentId(), original.getParentId())) {
             String oldAncestors = original.getAncestors();
-            if (ObjectUtil.equals(BaseConstants.TOP_NODE, d.getParentId()))
-                d.setAncestors(String.valueOf(BaseConstants.TOP_NODE));
+            if (ObjectUtil.equals(BaseConstants.TOP_ID, d.getParentId()))
+                d.setAncestors(String.valueOf(BaseConstants.TOP_ID));
             else {
                 D parent = baseManager.selectById(d.getParentId());
                 d.setAncestors(parent.getAncestors() + "," + d.getParentId());
