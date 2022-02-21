@@ -30,7 +30,7 @@ public class SysAuthController extends BasisController {
     @InnerAuth
     @GetMapping("/inner/getTenantAuth")
     public R<Long[]> getTenantAuthInner() {
-        return R.ok(authService.selectTenantAuthInner());
+        return R.ok(authService.selectTenantAuth());
     }
 
     /**
@@ -39,7 +39,7 @@ public class SysAuthController extends BasisController {
     @InnerAuth
     @PostMapping("/inner/addTenantAuth")
     public R<Boolean> addTenantAuthInner(@RequestBody Long[] authIds) {
-        authService.addTenantAuthInner(authIds);
+        authService.addTenantAuth(authIds);
         return R.ok();
     }
 
@@ -49,7 +49,7 @@ public class SysAuthController extends BasisController {
     @InnerAuth
     @PostMapping("/inner/editTenantAuth")
     public R<Boolean> editTenantAuthInner(@RequestBody Long[] authIds) {
-        authService.editTenantAuthInner(authIds);
+        authService.editTenantAuth(authIds);
         return R.ok();
     }
 

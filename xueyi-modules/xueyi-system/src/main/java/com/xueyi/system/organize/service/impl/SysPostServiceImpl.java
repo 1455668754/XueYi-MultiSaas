@@ -3,18 +3,14 @@ package com.xueyi.system.organize.service.impl;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.xueyi.common.core.constant.BaseConstants;
-import com.xueyi.common.core.utils.TreeUtils;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 import com.xueyi.system.organize.manager.SysPostManager;
 import com.xueyi.system.organize.mapper.SysPostMapper;
 import com.xueyi.system.organize.service.ISysPostService;
-import com.xueyi.system.utils.vo.OrganizeTree;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 import static com.xueyi.common.core.constant.TenantConstants.ISOLATE;
 
@@ -49,16 +45,5 @@ public class SysPostServiceImpl extends BaseServiceImpl<SysPostDto, SysPostManag
     @Override
     public boolean checkPostCodeUnique(Long Id, String code) {
         return ObjectUtil.isNotNull(baseManager.checkPostCodeUnique(ObjectUtil.isNull(Id) ? BaseConstants.NONE_ID : Id, code));
-    }
-
-    /**
-     * 构建前端所需要下拉树结构
-     *
-     * @return 下拉树结构列表
-     */
-    @Override
-    public List<OrganizeTree> buildDeptPostTreeSelect() {
-        List<OrganizeTree> organizeList = baseManager.SelectDeptPostList();
-        return TreeUtils.buildTree(organizeList);
     }
 }

@@ -3,10 +3,11 @@ package com.xueyi.system.authority.domain.vo;
 import cn.hutool.core.util.ObjectUtil;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.xueyi.common.core.constant.AuthorityConstants;
+import com.xueyi.common.core.constant.BaseConstants;
 import com.xueyi.common.core.web.entity.base.BasisEntity;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
-import com.xueyi.system.utils.vo.OrganizeTree;
+import com.xueyi.system.organize.domain.vo.SysOrganizeTree;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -37,17 +38,16 @@ public class SysAuthTree extends BasisEntity {
 
     /** 子部门/岗位 */
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<OrganizeTree> children;
+    private List<SysOrganizeTree> children;
 
-    public SysAuthTree() {
-    }
+    public SysAuthTree() {}
 
     /**
      * 模块转换
      */
     public SysAuthTree(SysModuleDto module) {
         this.id = module.getId();
-        this.parentId = AuthorityConstants.MODULE_DEFAULT_NODE;
+        this.parentId = BaseConstants.TOP_ID;
         this.label = module.getName();
         this.status = module.getStatus();
         this.type = AuthorityConstants.AuthorityType.MODULE.getCode();
@@ -104,11 +104,11 @@ public class SysAuthTree extends BasisEntity {
         this.type = type;
     }
 
-    public List<OrganizeTree> getChildren() {
+    public List<SysOrganizeTree> getChildren() {
         return children;
     }
 
-    public void setChildren(List<OrganizeTree> children) {
+    public void setChildren(List<SysOrganizeTree> children) {
         this.children = children;
     }
 

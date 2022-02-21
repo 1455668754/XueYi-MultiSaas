@@ -2,6 +2,7 @@ package com.xueyi.system.authority.service.impl;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
+import com.xueyi.common.core.utils.TreeUtils;
 import com.xueyi.system.authority.domain.vo.SysAuthTree;
 import com.xueyi.system.authority.manager.SysAuthManager;
 import com.xueyi.system.authority.service.ISysAuthService;
@@ -50,8 +51,8 @@ public class SysAuthServiceImpl implements ISysAuthService {
      * @return 权限集合
      */
     @Override
-    public Long[] selectTenantAuthInner() {
-        return authManager.selectTenantAuthInner();
+    public Long[] selectTenantAuth() {
+        return authManager.selectTenantAuth();
     }
 
     /**
@@ -61,8 +62,8 @@ public class SysAuthServiceImpl implements ISysAuthService {
      */
     @Override
     @DSTransactional
-    public void addTenantAuthInner(Long[] authIds) {
-        authManager.addTenantAuthInner(authIds);
+    public void addTenantAuth(Long[] authIds) {
+        authManager.addTenantAuth(authIds);
     }
 
     /**
@@ -72,8 +73,8 @@ public class SysAuthServiceImpl implements ISysAuthService {
      */
     @Override
     @DSTransactional
-    public void editTenantAuthInner(Long[] authIds) {
-        authManager.editTenantAuthInner(authIds);
+    public void editTenantAuth(Long[] authIds) {
+        authManager.editTenantAuth(authIds);
     }
 //
 //

@@ -56,10 +56,9 @@ public class SysAuthManager {
     public List<SysAuthTree> selectCommonAuthScope() {
         List<SysModuleDto> modules = moduleManager.selectCommonList();
         List<SysMenuDto> menus = menuManager.selectCommonList();
-        List<SysAuthTree> list = new ArrayList<>();
-        list.addAll(modules.stream().map(SysAuthTree::new).collect(Collectors.toList()));
-        list.addAll(menus.stream().map(SysAuthTree::new).collect(Collectors.toList()));
-        return list;
+        return new ArrayList<>(CollUtil.addAll(
+                modules.stream().map(SysAuthTree::new).collect(Collectors.toList()),
+                menus.stream().map(SysAuthTree::new).collect(Collectors.toList())));
     }
 
     /**
@@ -68,8 +67,11 @@ public class SysAuthManager {
      * @return 权限对象集合
      */
     public List<SysAuthTree> selectEnterpriseAuthScope() {
-//        return authManager.selectEnterpriseAuthScope();
-        return null;
+        List<SysModuleDto> modules = moduleManager.selectTenantList();
+        List<SysMenuDto> menus = menuManager.selectTenantList();
+        return new ArrayList<>(CollUtil.addAll(
+                modules.stream().map(SysAuthTree::new).collect(Collectors.toList()),
+                menus.stream().map(SysAuthTree::new).collect(Collectors.toList())));
     }
 
     /**
@@ -77,7 +79,7 @@ public class SysAuthManager {
      *
      * @return 权限集合
      */
-    public Long[] selectTenantAuthInner() {
+    public Long[] selectTenantAuth() {
         List<SysAuthTree> treeList = new ArrayList<>();
         List<SysTenantModuleMerge> tenantModuleMerges = tenantModuleMergeMapper.selectList(Wrappers.query());
         if (CollUtil.isNotEmpty(tenantModuleMerges)) {
@@ -88,14 +90,9 @@ public class SysAuthManager {
         List<SysTenantMenuMerge> tenantMenuMerges = tenantMenuMergeMapper.selectList(Wrappers.query());
         if (CollUtil.isNotEmpty(tenantMenuMerges)) {
             List<Long> menuIds = tenantMenuMerges.stream().map(SysTenantMenuMerge::getMenuId).collect(Collectors.toList());
-            System.out.println(menuIds);
             List<SysMenuDto> menuList = menuManager.selectListByIds(menuIds);
-            System.out.println(menuList);
             treeList.addAll(menuList.stream().map(SysAuthTree::new).collect(Collectors.toList()));
         }
-        System.out.println(treeList);
-        System.out.println("treeList");
-        System.out.println(TreeUtils.buildTree(treeList));
         List<SysAuthTree> leafNodes = TreeUtils.getLeafNodes(TreeUtils.buildTree(treeList));
         return leafNodes.stream().map(SysAuthTree::getId).toArray(Long[]::new);
     }
@@ -105,7 +102,7 @@ public class SysAuthManager {
      *
      * @param authIds 权限Ids
      */
-    public void addTenantAuthInner(Long[] authIds) {
+    public void addTenantAuth(Long[] authIds) {
         List<Long> menuIdList = new ArrayList<>(Arrays.asList(authIds));
         if (CollUtil.isNotEmpty(menuIdList)) {
             List<SysModuleDto> moduleList = moduleManager.selectListByIds(menuIdList);
@@ -128,7 +125,7 @@ public class SysAuthManager {
      *
      * @param authIds 权限Ids
      */
-    public void editTenantAuthInner(Long[] authIds) {
+    public void editTenantAuth(Long[] authIds) {
         List<Long> menuIdList = new ArrayList<>(Arrays.asList(authIds));
         // 1.校验authIds是否为空? 删除不存在的,增加新增的 : 删除所有
         if (CollUtil.isNotEmpty(menuIdList)) {

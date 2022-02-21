@@ -2,9 +2,6 @@ package com.xueyi.system.organize.service;
 
 import com.xueyi.common.web.entity.service.IBaseService;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
-import com.xueyi.system.utils.vo.OrganizeTree;
-
-import java.util.List;
 
 /**
  * 岗位管理 服务层
@@ -30,10 +27,4 @@ public interface ISysPostService extends IBaseService<SysPostDto> {
      */
     boolean checkPostCodeUnique(Long Id, String code);
 
-    /**
-     * 构建前端所需要下拉树结构
-     *
-     * @return 下拉树结构列表
-     */
-    List<OrganizeTree> buildDeptPostTreeSelect();
 }

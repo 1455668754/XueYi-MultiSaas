@@ -30,21 +30,21 @@ public interface ISysAuthService {
      *
      * @return 权限集合
      */
-    Long[] selectTenantAuthInner();
+    Long[] selectTenantAuth();
 
     /**
      * 新增租户权限
      *
      * @param authIds 权限Ids
      */
-    void addTenantAuthInner(Long[] authIds);
+    void addTenantAuth(Long[] authIds);
 
     /**
      * 修改租户权限
      *
      * @param authIds 权限Ids
      */
-    void editTenantAuthInner(Long[] authIds);
+    void editTenantAuth(Long[] authIds);
 //
 //    /**
 //     * 根据企业Id获取模块-菜单选择 | 半选 | 全选 | 租管级

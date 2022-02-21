@@ -1,9 +1,11 @@
-package com.xueyi.system.utils.vo;
+package com.xueyi.system.organize.domain.vo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.xueyi.common.core.constant.OrganizeConstants;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
@@ -12,7 +14,7 @@ import java.util.List;
  *
  * @author xueyi
  */
-public class OrganizeTree {
+public class SysOrganizeTree {
 
     /** Id */
     private Long id;
@@ -31,15 +33,15 @@ public class OrganizeTree {
 
     /** 子部门/岗位 */
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<OrganizeTree> children;
+    private List<SysOrganizeTree> children;
 
-    public OrganizeTree() {
+    public SysOrganizeTree() {
     }
 
     /**
      * 部门转换
      */
-    public OrganizeTree(SysDeptDto dept) {
+    public SysOrganizeTree(SysDeptDto dept) {
         this.id = dept.getId();
         this.parentId = dept.getParentId();
         this.label = "部门 | " + dept.getName();
@@ -50,7 +52,7 @@ public class OrganizeTree {
     /**
      * 岗位转换 | 岗位的父级设置为部门
      */
-    public OrganizeTree(SysPostDto post) {
+    public SysOrganizeTree(SysPostDto post) {
         this.id = post.getId();
         this.parentId = post.getDeptId();
         this.label = "岗位 | " + post.getName();
@@ -98,11 +100,23 @@ public class OrganizeTree {
         this.type = type;
     }
 
-    public List<OrganizeTree> getChildren() {
+    public List<SysOrganizeTree> getChildren() {
         return children;
     }
 
-    public void setChildren(List<OrganizeTree> children) {
+    public void setChildren(List<SysOrganizeTree> children) {
         this.children = children;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+                .append("id", getId())
+                .append("parentId", getParentId())
+                .append("label", getLabel())
+                .append("status", getStatus())
+                .append("type", getType())
+                .append("children", getChildren())
+                .toString();
     }
 }

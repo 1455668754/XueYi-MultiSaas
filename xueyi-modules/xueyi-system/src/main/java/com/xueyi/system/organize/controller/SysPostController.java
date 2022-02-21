@@ -56,14 +56,6 @@ public class SysPostController extends BaseController<SysPostDto, ISysPostServic
 //    }
 
     /**
-     * 获取下拉树列表
-     */
-    @GetMapping("/treeSelect")
-    public AjaxResult treeSelect() {
-        return AjaxResult.success(baseService.buildDeptPostTreeSelect());
-    }
-
-    /**
      * 前置校验 （强制）增加/修改
      */
     @Override
