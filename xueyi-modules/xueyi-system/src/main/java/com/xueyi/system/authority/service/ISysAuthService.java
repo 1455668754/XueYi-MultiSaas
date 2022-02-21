@@ -26,11 +26,19 @@ public interface ISysAuthService {
     List<SysAuthTree> selectEnterpriseAuthScope();
 
     /**
-     * 获取租户权限
+     * 获取租户权限对象集合
      *
-     * @return 权限集合
+     * @return 权限对象集合
      */
-    Long[] selectTenantAuth();
+    List<SysAuthTree> selectTenantAuth();
+
+    /**
+     * 获取角色权限对象集合
+     *
+     * @param roleId 角色Id
+     * @return 权限对象集合
+     */
+    List<SysAuthTree> selectRoleAuth(Long roleId);
 
     /**
      * 新增租户权限
@@ -45,6 +53,21 @@ public interface ISysAuthService {
      * @param authIds 权限Ids
      */
     void editTenantAuth(Long[] authIds);
+
+    /**
+     * 新增角色权限
+     *
+     * @param authIds 权限Ids
+     */
+    void addRoleAuth(Long[] authIds);
+
+    /**
+     * 修改角色权限
+     *
+     * @param roleId  角色Id
+     * @param authIds 权限Ids
+     */
+    void editRoleAuth(Long roleId, Long[] authIds);
 //
 //    /**
 //     * 根据企业Id获取模块-菜单选择 | 半选 | 全选 | 租管级

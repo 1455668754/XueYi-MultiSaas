@@ -8,9 +8,12 @@ import com.xueyi.common.security.annotation.Logical;
 import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.web.entity.controller.BasisController;
+import com.xueyi.system.authority.domain.vo.SysAuthTree;
 import com.xueyi.system.authority.service.ISysAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 权限管理 业务处理
@@ -25,12 +28,13 @@ public class SysAuthController extends BasisController {
     private ISysAuthService authService;
 
     /**
-     * 新增租户权限
+     * 获取租户权限 | 叶子节点
      */
     @InnerAuth
     @GetMapping("/inner/getTenantAuth")
     public R<Long[]> getTenantAuthInner() {
-        return R.ok(authService.selectTenantAuth());
+        List<SysAuthTree> leafNodes = TreeUtils.getLeafNodes(TreeUtils.buildTree(authService.selectTenantAuth()));
+        return R.ok(leafNodes.stream().map(SysAuthTree::getId).toArray(Long[]::new));
     }
 
     /**

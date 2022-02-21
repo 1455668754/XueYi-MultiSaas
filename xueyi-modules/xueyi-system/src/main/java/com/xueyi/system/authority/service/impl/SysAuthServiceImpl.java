@@ -2,7 +2,6 @@ package com.xueyi.system.authority.service.impl;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
-import com.xueyi.common.core.utils.TreeUtils;
 import com.xueyi.system.authority.domain.vo.SysAuthTree;
 import com.xueyi.system.authority.manager.SysAuthManager;
 import com.xueyi.system.authority.service.ISysAuthService;
@@ -46,13 +45,24 @@ public class SysAuthServiceImpl implements ISysAuthService {
     }
 
     /**
-     * 获取租户权限
+     * 获取租户权限对象集合
      *
-     * @return 权限集合
+     * @return 权限对象集合
      */
     @Override
-    public Long[] selectTenantAuth() {
+    public List<SysAuthTree> selectTenantAuth() {
         return authManager.selectTenantAuth();
+    }
+
+    /**
+     * 获取角色权限对象集合
+     *
+     * @param roleId 角色Id
+     * @return 权限对象集合
+     */
+    @Override
+    public List<SysAuthTree> selectRoleAuth(Long roleId) {
+        return authManager.selectRoleAuth(roleId);
     }
 
     /**
@@ -76,6 +86,29 @@ public class SysAuthServiceImpl implements ISysAuthService {
     public void editTenantAuth(Long[] authIds) {
         authManager.editTenantAuth(authIds);
     }
+
+    /**
+     * 新增角色权限
+     *
+     * @param authIds 权限Ids
+     */
+    @Override
+    @DSTransactional
+    public void addRoleAuth(Long[] authIds){
+    }
+
+    /**
+     * 修改角色权限
+     *
+     * @param roleId  角色Id
+     * @param authIds 权限Ids
+     */
+    @Override
+    @DSTransactional
+    public void editRoleAuth(Long roleId, Long[] authIds){
+
+    }
+
 //
 //
 //    @Autowired
