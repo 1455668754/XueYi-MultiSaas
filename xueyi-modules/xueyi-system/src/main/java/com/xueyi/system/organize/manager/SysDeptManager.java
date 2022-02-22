@@ -23,18 +23,6 @@ import java.io.Serializable;
 public class SysDeptManager extends SubTreeManager<SysDeptDto, SysDeptMapper, SysPostDto, SysPostMapper> {
 
     /**
-     * 设置主子表中子表外键值
-     */
-    @Override
-    protected void setForeignKey(LambdaQueryWrapper<SysPostDto> queryWrapper, LambdaUpdateWrapper<SysPostDto> updateWrapper, SysDeptDto dept, Serializable id) {
-        Serializable deptId = ObjectUtil.isNotNull(dept) ? dept.getId() : id;
-        if (ObjectUtil.isNotNull(queryWrapper))
-            queryWrapper.eq(SysPostDto::getDeptId, deptId);
-        else
-            updateWrapper.eq(SysPostDto::getDeptId, deptId);
-    }
-
-    /**
      * 校验部门编码是否唯一
      *
      * @param Id   部门Id
@@ -47,5 +35,17 @@ public class SysDeptManager extends SubTreeManager<SysDeptDto, SysDeptMapper, Sy
                         .ne(SysDeptDto::getId, Id)
                         .eq(SysDeptDto::getCode, code)
                         .last(SqlConstants.LIMIT_ONE));
+    }
+
+    /**
+     * 设置主子表中子表外键值
+     */
+    @Override
+    protected void setForeignKey(LambdaQueryWrapper<SysPostDto> queryWrapper, LambdaUpdateWrapper<SysPostDto> updateWrapper, SysDeptDto dept, Serializable key) {
+        Serializable deptId = ObjectUtil.isNotNull(dept) ? dept.getId() : key;
+        if (ObjectUtil.isNotNull(queryWrapper))
+            queryWrapper.eq(SysPostDto::getDeptId, deptId);
+        else
+            updateWrapper.eq(SysPostDto::getDeptId, deptId);
     }
 }

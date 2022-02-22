@@ -57,8 +57,8 @@ public class SysDeptServiceImpl extends SubTreeServiceImpl<SysDeptDto, SysDeptMa
      * 设置子数据的外键值
      */
     @Override
-    protected void setForeignKey(Collection<SysPostDto> postList, SysPostDto post, SysDeptDto dept, Serializable id) {
-        Long deptId = ObjectUtil.isNotNull(dept) ? dept.getId() : (Long) id;
+    protected void setForeignKey(Collection<SysPostDto> postList, SysPostDto post, SysDeptDto dept, Serializable key) {
+        Long deptId = ObjectUtil.isNotNull(dept) ? dept.getId() : (Long) key;
         if (ObjectUtil.isNotNull(post))
             post.setDeptId(deptId);
         else
