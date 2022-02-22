@@ -1,8 +1,8 @@
-package com.xueyi.system.authority.mapper.merge;
+package com.xueyi.system.organize.mapper.merge;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.xueyi.common.web.entity.mapper.BaseMapper;
-import com.xueyi.system.authority.domain.merge.SysRoleOrganizeMerge;
+import com.xueyi.system.organize.domain.merge.SysRoleOrganizeMerge;
 
 import static com.xueyi.common.core.constant.TenantConstants.ISOLATE;
 

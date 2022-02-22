@@ -3,6 +3,7 @@ package com.xueyi.system.authority.controller;
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.BaseConstants;
 import com.xueyi.common.core.exception.ServiceException;
+import com.xueyi.common.core.utils.TreeUtils;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
@@ -11,7 +12,11 @@ import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
+import com.xueyi.system.authority.domain.vo.SysAuthTree;
+import com.xueyi.system.authority.service.ISysAuthService;
 import com.xueyi.system.authority.service.ISysRoleService;
+import com.xueyi.system.organize.service.ISysOrganizeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +32,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/role")
 public class SysRoleController extends BaseController<SysRoleDto, ISysRoleService> {
+
+    @Autowired
+    private ISysAuthService authService;
+
+    @Autowired
+    private ISysOrganizeService organizeService;
 
     /** 定义节点名称 */
     @Override
@@ -52,6 +63,25 @@ public class SysRoleController extends BaseController<SysRoleDto, ISysRoleServic
     @RequiresPermissions(Auth.SYS_ROLE_SINGLE)
     public AjaxResult getInfoExtra(@PathVariable Serializable id) {
         return super.getInfoExtra(id);
+    }
+
+    /**
+     * 获取角色功能权限 | 叶子节点
+     */
+    @GetMapping("/auth/{id}")
+    @RequiresPermissions(Auth.SYS_ROLE_AUTH)
+    public AjaxResult getRoleAuth(@PathVariable Long id) {
+        List<SysAuthTree> leafNodes = TreeUtils.getLeafNodes(TreeUtils.buildTree(authService.selectRoleAuth(id)));
+        return AjaxResult.success(leafNodes.stream().map(SysAuthTree::getId).toArray(Long[]::new));
+    }
+
+    /**
+     * 获取角色组织权限
+     */
+    @GetMapping("/organize/{id}")
+    @RequiresPermissions(Auth.SYS_ROLE_AUTH)
+    public AjaxResult getRoleOrganize(@PathVariable Long id) {
+        return AjaxResult.success(organizeService.selectRoleOrganize(id));
     }
 
     /**
@@ -84,6 +114,27 @@ public class SysRoleController extends BaseController<SysRoleDto, ISysRoleServic
     @Log(title = "角色管理", businessType = BusinessType.UPDATE)
     public AjaxResult edit(@Validated @RequestBody SysRoleDto role) {
         return super.edit(role);
+    }
+
+    /**
+     * 角色修改功能权限
+     */
+    @PutMapping("/auth")
+    @RequiresPermissions(Auth.SYS_ROLE_AUTH)
+    @Log(title = "角色管理", businessType = BusinessType.AUTH)
+    public AjaxResult editAuth(@RequestBody SysRoleDto role) {
+        authService.editRoleAuth(role.getId(), role.getAuthIds());
+        return AjaxResult.success();
+    }
+
+    /**
+     * 角色修改组织权限
+     */
+    @PutMapping("/organize")
+    @RequiresPermissions(Auth.SYS_ROLE_AUTH)
+    @Log(title = "角色管理", businessType = BusinessType.AUTH)
+    public AjaxResult editOrganize(@RequestBody SysRoleDto role) {
+        return AjaxResult.success(baseService.updateDataScope(role));
     }
 
     /**
@@ -128,5 +179,8 @@ public class SysRoleController extends BaseController<SysRoleDto, ISysRoleServic
             throw new ServiceException(StrUtil.format("{}{}{}失败，角色名称已存在", operate.getInfo(), getNodeName(), role.getName()));
         else if (baseService.checkRoleKeyUnique(role.getId(), role.getRoleKey()))
             throw new ServiceException(StrUtil.format("{}{}{}失败，角色权限已存在", operate.getInfo(), getNodeName(), role.getName()));
+        // 修改禁止操作权限范围
+        if (operate.isEdit())
+            role.setDataScope(null);
     }
 }

@@ -75,6 +75,8 @@ public class SysAuthController extends BasisController {
         return AjaxResult.success(TreeUtils.buildTree(authService.selectEnterpriseAuthScope()));
     }
 
+
+
 //
 //    /**
 //     * 根据租户Id获取模块-菜单范围 | 租户级

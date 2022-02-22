@@ -1,4 +1,4 @@
-package com.xueyi.system.authority.domain.merge;
+package com.xueyi.system.organize.domain.merge;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;

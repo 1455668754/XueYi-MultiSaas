@@ -11,13 +11,21 @@ import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
 public interface ISysRoleService extends IBaseService<SysRoleDto> {
 
     /**
+     * 修改角色组织权限
+     *
+     * @param role 角色对象
+     * @return 结果
+     */
+    int updateDataScope(SysRoleDto role);
+
+    /**
      * 校验角色编码是否唯一
      *
      * @param Id   角色Id
      * @param code 角色编码
      * @return 结果 | true/false 唯一/不唯一
      */
-    public boolean checkRoleCodeUnique(Long Id, String code);
+    boolean checkRoleCodeUnique(Long Id, String code);
 
     /**
      * 校验角色权限是否唯一
@@ -26,5 +34,5 @@ public interface ISysRoleService extends IBaseService<SysRoleDto> {
      * @param roleKey 角色权限
      * @return 结果 | true/false 唯一/不唯一
      */
-    public boolean checkRoleKeyUnique(Long Id, String roleKey);
+    boolean checkRoleKeyUnique(Long Id, String roleKey);
 }

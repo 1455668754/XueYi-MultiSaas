@@ -244,13 +244,79 @@ public class SysAuthManager {
                 // 1.权限Ids中的模块Ids与菜单Ids分开
                 List<Long> moduleIdList = moduleList.stream().map(SysModuleDto::getId).collect(Collectors.toList());
                 menuIdList.removeAll(moduleIdList);
-                // 2.存储租户与模块的关联数据
+                // 2.存储角色与模块的关联数据
                 List<SysRoleModuleMerge> roleModuleMerges = moduleIdList.stream().map(moduleId -> new SysRoleModuleMerge(roleId, moduleId)).collect(Collectors.toList());
                 roleModuleMergeMapper.insertBatch(roleModuleMerges);
             }
-            // 3.存储租户与菜单的关联数据
+            // 3.存储角色与菜单的关联数据
             List<SysRoleMenuMerge> roleMenuMerges = menuIdList.stream().map(menuId -> new SysRoleMenuMerge(roleId, menuId)).collect(Collectors.toList());
             roleMenuMergeMapper.insertBatch(roleMenuMerges);
+        }
+    }
+
+    /**
+     * 修改角色权限
+     *
+     * @param roleId  角色Id
+     * @param authIds 权限Ids
+     */
+    public void editRoleAuth(Long roleId, Long[] authIds) {
+        List<Long> menuIdList = new ArrayList<>(Arrays.asList(authIds));
+        // 1.校验authIds是否为空? 删除不存在的,增加新增的 : 删除所有
+        if (CollUtil.isNotEmpty(menuIdList)) {
+            // 2.查询authIds中的模块Id，分离menuIds与moduleIds
+            List<SysModuleDto> moduleList = moduleManager.selectListByIds(menuIdList);
+            if (CollUtil.isNotEmpty(moduleList)) {
+                List<Long> moduleIdList = moduleList.stream().map(SysModuleDto::getId).collect(Collectors.toList());
+                menuIdList.removeAll(moduleIdList);
+                // 3.查询原始的角色与模块关联数据,新增/删除差异关联数据
+                List<SysRoleModuleMerge> originalModuleList = roleModuleMergeMapper.selectList(
+                        Wrappers.<SysRoleModuleMerge>query().lambda()
+                                .eq(SysRoleModuleMerge::getRoleId, roleId));
+                if (CollUtil.isNotEmpty(originalModuleList)) {
+                    List<Long> originalModuleIds = originalModuleList.stream().map(SysRoleModuleMerge::getModuleId).collect(Collectors.toList());
+                    List<Long> delModuleIds = new ArrayList<>(originalModuleIds);
+                    delModuleIds.removeAll(moduleIdList);
+                    if (CollUtil.isNotEmpty(delModuleIds)) {
+                        roleModuleMergeMapper.delete(
+                                Wrappers.<SysRoleModuleMerge>query().lambda()
+                                        .eq(SysRoleModuleMerge::getRoleId, roleId)
+                                        .in(SysRoleModuleMerge::getModuleId, delModuleIds));
+                    }
+                    moduleIdList.removeAll(originalModuleIds);
+                }
+                if (CollUtil.isNotEmpty(moduleIdList)) {
+                    List<SysRoleModuleMerge> roleModuleMerges = moduleIdList.stream().map(moduleId -> new SysRoleModuleMerge(roleId, moduleId)).collect(Collectors.toList());
+                    roleModuleMergeMapper.insertBatch(roleModuleMerges);
+                }
+            }
+            // // 4.查询原始的角色与菜单关联数据,新增/删除差异关联数据
+            List<SysRoleMenuMerge> originalMenuList = roleMenuMergeMapper.selectList(
+                    Wrappers.<SysRoleMenuMerge>query().lambda()
+                            .eq(SysRoleMenuMerge::getRoleId, roleId));
+            if (CollUtil.isNotEmpty(originalMenuList)) {
+                List<Long> originalMenuIds = originalMenuList.stream().map(SysRoleMenuMerge::getMenuId).collect(Collectors.toList());
+                List<Long> delMenuIds = new ArrayList<>(originalMenuIds);
+                delMenuIds.removeAll(menuIdList);
+                if (CollUtil.isNotEmpty(delMenuIds)) {
+                    roleMenuMergeMapper.delete(
+                            Wrappers.<SysRoleMenuMerge>query().lambda()
+                                    .eq(SysRoleMenuMerge::getRoleId, roleId)
+                                    .in(SysRoleMenuMerge::getMenuId, delMenuIds));
+                }
+                menuIdList.removeAll(originalMenuIds);
+            }
+            if (CollUtil.isNotEmpty(menuIdList)) {
+                List<SysRoleMenuMerge> roleMenuMerges = menuIdList.stream().map(menuId -> new SysRoleMenuMerge(roleId, menuId)).collect(Collectors.toList());
+                roleMenuMergeMapper.insertBatch(roleMenuMerges);
+            }
+        } else {
+            roleModuleMergeMapper.delete(
+                    Wrappers.<SysRoleModuleMerge>query().lambda()
+                            .eq(SysRoleModuleMerge::getRoleId, roleId));
+            roleMenuMergeMapper.delete(
+                    Wrappers.<SysRoleMenuMerge>query().lambda()
+                            .in(SysRoleMenuMerge::getRoleId, roleId));
         }
     }
 }

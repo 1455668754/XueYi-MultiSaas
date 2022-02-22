@@ -22,6 +22,7 @@ import java.beans.PropertyEditorSupport;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * web层 通用数据处理
@@ -41,11 +42,10 @@ public class BasisController {
         if (!demoProperties.isEnabled()) {
             return;
         }
-        String url = ServletUtils.getRequest().getRequestURI();
+        String url = Objects.requireNonNull(ServletUtils.getRequest()).getRequestURI();
         // 需要放开的url
-        if (StringUtils.isNotEmpty(url) && (url.contains("/demo") || url.contains("/tool/gen"))) {
+        if (StringUtils.isNotEmpty(url) && (url.contains("/demo") || url.contains("/tool/gen")))
             return;
-        }
         // 增删改 请求
         if ("DELETE".equals(httpServletRequest.getMethod()) || "POST".equals(httpServletRequest.getMethod())
                 || "PUT".equals(httpServletRequest.getMethod())) {

@@ -32,4 +32,38 @@ public class SysOrganizeServiceImpl implements ISysOrganizeService {
     public List<SysOrganizeTree> selectOrganizeScope() {
         return organizeManager.selectOrganizeScope();
     }
+
+    /**
+     * 获取角色组织Ids
+     *
+     * @param roleId 角色Id
+     * @return 组织Ids
+     */
+    @Override
+    public Long[] selectRoleOrganize(Long roleId){
+        return organizeManager.selectRoleOrganize(roleId);
+    }
+
+    /**
+     * 新增角色组织权限
+     *
+     * @param roleId      角色Id
+     * @param organizeIds 组织Ids
+     */
+    @Override
+    public void addRoleOrganize(Long roleId, Long[] organizeIds) {
+        organizeManager.addRoleOrganize(roleId, organizeIds);
+    }
+
+
+    /**
+     * 修改角色组织权限
+     *
+     * @param roleId      角色Id
+     * @param organizeIds 组织Ids
+     */
+    @Override
+    public void editRoleOrganize(Long roleId, Long[] organizeIds) {
+        organizeManager.editRoleOrganize(roleId, organizeIds);
+    }
 }
