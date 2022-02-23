@@ -91,16 +91,17 @@ public class TreeHandleServiceImpl<D extends TreeEntity<D>, DG extends TreeManag
      * 修改/修改状态 树型 检查子节点状态
      * 是否变更，变更则同步禁用子节点
      *
-     * @param Id     Id
+     * @param id     id
      * @param status 状态
      * @see com.xueyi.common.web.entity.service.impl.TreeServiceImpl#update(TreeEntity)
      * @see com.xueyi.common.web.entity.service.impl.TreeServiceImpl#updateStatus(Serializable, String)
      */
-    protected void UUSChildrenStatusCheck(Serializable Id, String status) {
-        D original = baseManager.selectById(Id);
-        if (!ObjectUtil.equals(original.getStatus(), status)
+    protected void UUSChildrenStatusCheck(Serializable id, String status) {
+        D original = baseManager.selectById(id);
+        if (ObjectUtil.notEqual(original.getStatus(), status)
                 && ObjectUtil.equals(BaseConstants.Status.DISABLE.getCode(), status)
-                && ObjectUtil.isNotNull(baseManager.checkHasNormalChild(Id)))
-            baseManager.updateChildrenStatus(Id, BaseConstants.Status.DISABLE.getCode());
+                && ObjectUtil.isNotNull(baseManager.checkHasNormalChild(id))) {
+            baseManager.updateChildrenStatus(id, BaseConstants.Status.DISABLE.getCode());
+        }
     }
 }

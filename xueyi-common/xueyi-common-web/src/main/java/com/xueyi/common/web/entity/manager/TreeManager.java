@@ -135,7 +135,7 @@ public class TreeManager<D extends TreeEntity<D>, DM extends TreeMapper<D>> exte
     public D checkHasNormalChild(Serializable id) {
         return baseMapper.selectOne(
                 Wrappers.<D>query().lambda()
-                        .ne(D::getStatus, BaseConstants.Status.NORMAL.getCode())
+                        .eq(D::getStatus, BaseConstants.Status.NORMAL.getCode())
                         .apply(ANCESTORS_FIND, id)
                         .last(SqlConstants.LIMIT_ONE));
     }
