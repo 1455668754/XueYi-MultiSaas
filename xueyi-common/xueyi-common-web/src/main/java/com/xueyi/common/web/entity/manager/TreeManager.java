@@ -64,7 +64,7 @@ public class TreeManager<D extends TreeEntity<D>, DM extends TreeMapper<D>> exte
     public int updateChildrenAncestors(Serializable id, String newAncestors, String oldAncestors) {
         return baseMapper.update(null,
                 Wrappers.<D>update().lambda()
-                        .setSql(StrUtil.format("{} = insert({},{},{},{})", SqlConstants.Entity.ANCESTORS.getCode(), SqlConstants.Entity.ANCESTORS.getCode(), 1, oldAncestors.length(), newAncestors))
+                        .setSql(StrUtil.format("{} = insert({},{},{},'{}')", SqlConstants.Entity.ANCESTORS.getCode(), SqlConstants.Entity.ANCESTORS.getCode(), 1, oldAncestors.length(), newAncestors))
                         .apply(ANCESTORS_FIND, id));
     }
 
