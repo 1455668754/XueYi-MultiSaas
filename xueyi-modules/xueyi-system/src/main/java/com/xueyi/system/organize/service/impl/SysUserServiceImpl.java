@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.xueyi.common.core.constant.TenantConstants.ISOLATE;
-import static com.xueyi.common.core.constant.TenantConstants.SOURCE;
 
 /**
  * 用户管理 服务层处理
@@ -128,6 +127,6 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDto, SysUserManag
     @Override
     public boolean checkUserAllowed(Long Id) {
         SysUserDto user = baseManager.selectById(Id);
-        return !SysUserDto.isAdmin(user.getUserType());
+        return SysUserDto.isNotAdmin(user.getUserType());
     }
 }

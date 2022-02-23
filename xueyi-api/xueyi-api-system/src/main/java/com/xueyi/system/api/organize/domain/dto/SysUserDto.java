@@ -51,10 +51,6 @@ public class SysUserDto extends SysUserPo {
         setId(userId);
     }
 
-    public static boolean isAdmin(String userType) {
-        return StringUtils.equals(AuthorityConstants.UserType.ADMIN.getCode(), userType);
-    }
-
     public List<SysPostDto> getPosts() {
         return posts;
     }
@@ -93,6 +89,14 @@ public class SysUserDto extends SysUserPo {
 
     public boolean isAdmin() {
         return isAdmin(this.getUserType());
+    }
+
+    public static boolean isNotAdmin(String userType) {
+        return !isAdmin(userType);
+    }
+
+    public static boolean isAdmin(String userType) {
+        return StringUtils.equals(AuthorityConstants.UserType.ADMIN.getCode(), userType);
     }
 
     @Override

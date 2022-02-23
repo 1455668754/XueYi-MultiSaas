@@ -2,6 +2,7 @@ package com.xueyi.system.api.organize.domain.po;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.xueyi.common.core.web.tenant.base.TSubTreeEntity;
+import com.xueyi.common.core.xss.Xss;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -35,6 +36,9 @@ public class SysDeptPo<D, S> extends TSubTreeEntity<D, S> {
     @TableField("email")
     private String email;
 
+    @Xss(message = "用户账号不能包含脚本字符")
+    @NotBlank(message = "部门编码不能为空")
+    @Size(max = 30, message = "部门编码长度不能超过20个字符")
     public String getCode() {
         return code;
     }
@@ -43,9 +47,10 @@ public class SysDeptPo<D, S> extends TSubTreeEntity<D, S> {
         this.code = code;
     }
 
-    @NotBlank(message = "部门名称不能为空")
-    @Size(min = 0, max = 30, message = "部门名称长度不能超过30个字符")
     @Override
+    @Xss(message = "用户账号不能包含脚本字符")
+    @NotBlank(message = "部门名称不能为空")
+    @Size(max = 30, message = "部门名称长度不能超过30个字符")
     public String getName() {
         return super.getName();
     }
@@ -58,7 +63,7 @@ public class SysDeptPo<D, S> extends TSubTreeEntity<D, S> {
         this.leader = leader;
     }
 
-    @Size(min = 0, max = 11, message = "联系电话长度不能超过11个字符")
+    @Size(max = 11, message = "联系电话长度不能超过11个字符")
     public String getPhone() {
         return phone;
     }
@@ -68,7 +73,7 @@ public class SysDeptPo<D, S> extends TSubTreeEntity<D, S> {
     }
 
     @Email(message = "邮箱格式不正确")
-    @Size(min = 0, max = 50, message = "邮箱长度不能超过50个字符")
+    @Size(max = 50, message = "邮箱长度不能超过50个字符")
     public String getEmail() {
         return email;
     }

@@ -11,6 +11,7 @@ import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.InnerAuth;
+import com.xueyi.common.security.annotation.Logical;
 import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.security.service.TokenService;
 import com.xueyi.common.security.utils.SecurityUtils;
@@ -19,8 +20,11 @@ import com.xueyi.system.api.model.LoginUser;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
 import com.xueyi.system.organize.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 
@@ -37,6 +41,7 @@ public class SysUserController extends BaseController<SysUserDto, ISysUserServic
     private TokenService tokenService;
 
     /** 定义节点名称 */
+    @Override
     protected String getNodeName() {
         return "用户";
     }
@@ -73,6 +78,89 @@ public class SysUserController extends BaseController<SysUserDto, ISysUserServic
         return AjaxResult.success(map);
     }
 
+    /**
+     * 查询用户列表
+     */
+    @Override
+    @GetMapping("/list")
+    @RequiresPermissions("organize:user:list")
+    public AjaxResult listExtra(SysUserDto user) {
+        return super.listExtra(user);
+    }
+
+    /**
+     * 查询用户详细
+     */
+    @Override
+    @GetMapping(value = "/{id}")
+    @RequiresPermissions("organize:user:single")
+    public AjaxResult getInfoExtra(@PathVariable Serializable id) {
+        return super.getInfoExtra(id);
+    }
+
+    /**
+     * 用户导出
+     */
+    @Override
+    @PostMapping("/export")
+    @RequiresPermissions("organize:user:export")
+    public void export(HttpServletResponse response, SysUserDto user) {
+        super.export(response, user);
+    }
+
+    /**
+     * 用户新增
+     */
+    @Override
+    @PostMapping
+    @RequiresPermissions("organize:user:add")
+    @Log(title = "用户管理", businessType = BusinessType.INSERT)
+    public AjaxResult add(@Validated @RequestBody SysUserDto user) {
+        return super.add(user);
+    }
+
+    /**
+     * 用户修改
+     */
+    @Override
+    @PutMapping
+    @RequiresPermissions("organize:user:edit")
+    @Log(title = "用户管理", businessType = BusinessType.UPDATE)
+    public AjaxResult edit(@Validated @RequestBody SysUserDto user) {
+        return super.edit(user);
+    }
+
+    /**
+     * 用户修改状态
+     */
+    @Override
+    @PutMapping("/status")
+    @RequiresPermissions(value = {"organize:user:edit", "organize:user:editStatus"}, logical = Logical.OR)
+    @Log(title = "用户管理", businessType = BusinessType.UPDATE_STATUS)
+    public AjaxResult editStatus(@RequestBody SysUserDto user) {
+        return super.editStatus(user);
+    }
+
+    /**
+     * 用户批量删除
+     */
+    @Override
+    @DeleteMapping("/batch/{idList}")
+    @RequiresPermissions("organize:user:delete")
+    @Log(title = "用户管理", businessType = BusinessType.DELETE)
+    public AjaxResult batchRemove(@PathVariable List<Long> idList) {
+        return super.batchRemove(idList);
+    }
+
+    /**
+     * 获取用户选择框列表
+     */
+    @Override
+    @GetMapping("/option")
+    public AjaxResult option() {
+        return super.option();
+    }
+
 //    /**
 //     * 修改用户-角色关系
 //     */
@@ -101,7 +189,8 @@ public class SysUserController extends BaseController<SysUserDto, ISysUserServic
      */
     @Override
     protected void AEHandleValidated(BaseConstants.Operate operate, SysUserDto user) {
-        adminValidated(user.getId());
+        if (operate.isEdit())
+            adminValidated(user.getId());
         if (baseService.checkUserCodeUnique(user.getId(), user.getCode()))
             throw new ServiceException(StrUtil.format("{}{}{}失败，用户编码已存在", operate.getInfo(), getNodeName(), user.getNickName()));
         else if (baseService.checkNameUnique(user.getId(), user.getName()))
@@ -153,7 +242,7 @@ public class SysUserController extends BaseController<SysUserDto, ISysUserServic
      * 校验归属的岗位是否启用
      */
     private void adminValidated(Long Id) {
-        if (baseService.checkUserAllowed(Id))
+        if (!baseService.checkUserAllowed(Id))
             throw new ServiceException("不允许操作超级管理员用户");
     }
 }
