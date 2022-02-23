@@ -62,6 +62,7 @@ public class BaseEntity extends BasisEntity {
     @TableLogic(value = "0", delval = "1")
     private Long delFlag;
 
+    //待删除
     /** 雪花Id */
     @TableField(exist = false)
     private Long snowflakeId;

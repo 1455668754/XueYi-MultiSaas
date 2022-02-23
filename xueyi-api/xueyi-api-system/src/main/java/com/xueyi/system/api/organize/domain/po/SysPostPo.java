@@ -25,11 +25,6 @@ public class SysPostPo extends TBaseEntity {
     @TableField("code")
     private String code;
 
-    /** 岗位名称 */
-    @Excel(name = "岗位名称(*)")
-    @TableField("name")
-    private String name;
-
     public Long getDeptId() {
         return deptId;
     }
@@ -51,11 +46,7 @@ public class SysPostPo extends TBaseEntity {
     @NotBlank(message = "岗位名称不能为空")
     @Size(min = 0, max = 50, message = "岗位名称长度不能超过50个字符")
     public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        return super.getName();
     }
 
 }

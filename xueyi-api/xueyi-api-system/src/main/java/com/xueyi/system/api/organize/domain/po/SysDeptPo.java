@@ -23,10 +23,6 @@ public class SysDeptPo<D, S> extends TSubTreeEntity<D, S> {
     @TableField("code")
     private String code;
 
-    /** 部门名称 */
-    @TableField("name")
-    private String name;
-
     /** 负责人 */
     @TableField("leader")
     private String leader;
@@ -49,12 +45,9 @@ public class SysDeptPo<D, S> extends TSubTreeEntity<D, S> {
 
     @NotBlank(message = "部门名称不能为空")
     @Size(min = 0, max = 30, message = "部门名称长度不能超过30个字符")
+    @Override
     public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        return super.getName();
     }
 
     public String getLeader() {

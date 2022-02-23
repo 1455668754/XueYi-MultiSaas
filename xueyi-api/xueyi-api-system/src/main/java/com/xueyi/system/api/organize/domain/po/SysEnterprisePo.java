@@ -20,10 +20,6 @@ public class SysEnterprisePo extends BaseEntity {
     @TableField("strategy_id")
     private Long strategyId;
 
-    /** 企业账号 */
-    @TableField("name")
-    private String name;
-
     /** 系统名称 */
     @TableField("system_name")
     private String systemName;
@@ -60,11 +56,7 @@ public class SysEnterprisePo extends BaseEntity {
     @NotBlank(message = "企业账号不能为空")
     @Size(max = 30, message = "企业账号长度不能超过30个字符")
     public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        return super.getName();
     }
 
     @Xss(message = "系统名称不能包含脚本字符")
