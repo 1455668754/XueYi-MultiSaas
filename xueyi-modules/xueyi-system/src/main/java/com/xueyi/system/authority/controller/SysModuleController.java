@@ -141,7 +141,7 @@ public class SysModuleController extends SubBaseController<SysModuleDto, ISysMod
      * 新增/修改 前置校验
      */
     @Override
-    protected void baseRefreshValidated(BaseConstants.Operate operate, SysModuleDto module) {
+    protected void AEHandleValidated(BaseConstants.Operate operate, SysModuleDto module) {
         if (baseService.checkNameUnique(module.getId(), module.getName()))
             throw new ServiceException(StrUtil.format("{}{}{}失败，{}名称已存在！", operate.getInfo(), getNodeName(), module.getName(), getNodeName()));
         if (operate.isAdd() && SecurityUtils.isNotAdminTenant() && module.isCommon())

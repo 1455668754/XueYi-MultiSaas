@@ -28,11 +28,11 @@ public abstract class SubBaseController<D extends SubBaseEntity<S>, DS extends I
      * 主子型 修改
      * 考虑归属数据状态
      *
-     * @see #editSubStatusValidated(SubBaseEntity) 主子树型 归属数据状态逻辑校验
+     * @see #EHandleSubStatusValidated(SubBaseEntity) 主子树型 归属数据状态逻辑校验
      */
     @Override
     public AjaxResult edit(@Validated @RequestBody D d) {
-        editSubStatusValidated(d);
+        EHandleSubStatusValidated(d);
         return super.edit(d);
     }
 
@@ -40,10 +40,10 @@ public abstract class SubBaseController<D extends SubBaseEntity<S>, DS extends I
      * 主子型 修改
      * 考虑归属数据状态
      *
-     * @see #editStatusSubStatusValidated(SubBaseEntity)  主子树型 归属数据状态逻辑校验
+     * @see #ESHandleSubStatusValidated(SubBaseEntity)  主子树型 归属数据状态逻辑校验
      */
     public AjaxResult editStatus(@RequestBody D d) {
-        editStatusSubStatusValidated(d);
+        ESHandleSubStatusValidated(d);
         return super.editStatus(d);
     }
 
@@ -51,15 +51,15 @@ public abstract class SubBaseController<D extends SubBaseEntity<S>, DS extends I
      * 主子型 批量删除
      * 考虑归属数据存在与否&&子节点存在与否
      *
-     * @see #removeNullValidated(List)   基类 空校验
-     * @see #removeSubValidated(List)  主子型 归属数据存在与否校验
+     * @see #RHandleEmptyValidated(List)   基类 空校验
+     * @see #RHandleSubValidated(List)  主子型 归属数据存在与否校验
      */
     @Override
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
-        removeNullValidated(idList);
-        baseRemoveValidated(BaseConstants.Operate.DELETE, idList);
-        removeNullValidated(idList);
-        removeSubValidated(idList);
+        RHandleEmptyValidated(idList);
+        RHandleValidated(BaseConstants.Operate.DELETE, idList);
+        RHandleEmptyValidated(idList);
+        RHandleSubValidated(idList);
         return toAjax(baseService.deleteByIds(idList));
     }
 }

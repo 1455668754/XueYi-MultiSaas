@@ -133,7 +133,7 @@ public class TeStrategyController extends BaseController<TeStrategyDto, ITeStrat
      * 前置校验 （强制）增加/修改
      */
     @Override
-    protected void baseRefreshValidated(BaseConstants.Operate operate, TeStrategyDto strategy) {
+    protected void AEHandleValidated(BaseConstants.Operate operate, TeStrategyDto strategy) {
         if (baseService.checkNameUnique(strategy.getId(), strategy.getName()))
             throw new ServiceException(StrUtil.format("{}{}{}失败，{}名称已存在", operate.getInfo(), getNodeName(), strategy.getName(), getNodeName()));
         TeSourceDto source = sourceService.selectById(strategy.getSourceId());
@@ -147,7 +147,7 @@ public class TeStrategyController extends BaseController<TeStrategyDto, ITeStrat
      * 前置校验 （强制）删除
      */
     @Override
-    protected void baseRemoveValidated(BaseConstants.Operate operate, List<Long> idList) {
+    protected void RHandleValidated(BaseConstants.Operate operate, List<Long> idList) {
         int size = idList.size();
         for (int i = idList.size() - 1; i >= 0; i--) {
             if (tenantService.checkStrategyExist(idList.get(i)))

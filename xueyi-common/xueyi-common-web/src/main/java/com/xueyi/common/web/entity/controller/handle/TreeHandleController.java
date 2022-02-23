@@ -22,29 +22,29 @@ import java.util.List;
 public abstract class TreeHandleController<D extends TreeEntity<D>, DS extends ITreeService<D>> extends BaseController<D, DS> {
 
     /**
+     * 树型 新增 父节点逻辑校验
+     *
+     * @param d 待新增数据对象
+     * @see com.xueyi.common.web.entity.controller.TreeController#add(D)
+     */
+    protected void AHandleTreeStatusValidated(D d) {
+        if (StringUtils.equals(BaseConstants.Status.NORMAL.getCode(), d.getStatus())
+                && BaseConstants.Status.DISABLE == baseService.checkStatus(d.getParentId()))
+            throw new ServiceException(StrUtil.format("新增{}{}失败，该{}的父级{}已被停用，禁止启用！！", getNodeName(), d.getName(), getNodeName(), getNodeName()));
+    }
+
+    /**
      * 树型 树死循环逻辑校验 | 父节点不能为自己或自己的子节点
      *
      * @param d 待修改数据对象
      * @see com.xueyi.common.web.entity.controller.TreeController#edit(D)
      * @see com.xueyi.common.web.entity.controller.TreeController#editForce(D)
      */
-    protected void editTreeLoopValidated(D d) {
+    protected void EHandleTreeLoopValidated(D d) {
         if (ObjectUtil.equals(d.getId(), d.getParentId()))
             throw new ServiceException(StrUtil.format("修改{}{}失败，上级{}不能是自己！", getNodeName(), d.getName(), getNodeName()));
         else if (baseService.checkIsChild(d.getParentId(), d.getId()))
             throw new ServiceException(StrUtil.format("修改{}{}失败，上级{}不能是自己的子{}！", getNodeName(), d.getName(), getNodeName(), getNodeName()));
-    }
-
-    /**
-     * 树型 新增 父节点逻辑校验
-     *
-     * @param d 待新增数据对象
-     * @see com.xueyi.common.web.entity.controller.TreeController#add(D)
-     */
-    protected void addTreeStatusValidated(D d) {
-        if (StringUtils.equals(BaseConstants.Status.NORMAL.getCode(), d.getStatus())
-                && BaseConstants.Status.DISABLE == baseService.checkStatus(d.getParentId()))
-            throw new ServiceException(StrUtil.format("新增{}{}失败，该{}的父级{}已被停用，禁止启用！！", getNodeName(), d.getName(), getNodeName(), getNodeName()));
     }
 
     /**
@@ -53,7 +53,7 @@ public abstract class TreeHandleController<D extends TreeEntity<D>, DS extends I
      * @param d 待修改数据对象
      * @see com.xueyi.common.web.entity.controller.TreeController#edit(D)
      */
-    protected void editTreeStatusValidated(D d) {
+    protected void EHandleTreeStatusValidated(D d) {
         if (StringUtils.equals(BaseConstants.Status.DISABLE.getCode(), d.getStatus())
                 && baseService.checkHasNormalChild(d.getId()))
             throw new ServiceException(StrUtil.format("修改{}{}失败，该{}包含未停用的子{}，禁止停用！", getNodeName(), d.getName(), getNodeName(), getNodeName()));
@@ -68,7 +68,7 @@ public abstract class TreeHandleController<D extends TreeEntity<D>, DS extends I
      * @param d 待修改数据对象
      * @see com.xueyi.common.web.entity.controller.TreeController#edit(D)
      */
-    protected void editStatusTreeStatusValidated(D d) {
+    protected void ESHandleTreeStatusValidated(D d) {
         if (StringUtils.equals(BaseConstants.Status.DISABLE.getCode(), d.getStatus())
                 && baseService.checkHasNormalChild(d.getId()))
             throw new ServiceException(StrUtil.format("停用失败，该{}包含未停用的子{}！", getNodeName(), getNodeName()));
@@ -83,7 +83,7 @@ public abstract class TreeHandleController<D extends TreeEntity<D>, DS extends I
      * @param idList 待删除Id集合
      * @see com.xueyi.common.web.entity.controller.TreeController#batchRemove(List)
      */
-    protected void removeTreeValidated(List<Long> idList) {
+    protected void RHandleTreeChildValidated(List<Long> idList) {
         int size = idList.size();
         // remove node where nodeChildren exist
         for (int i = idList.size() - 1; i >= 0; i--)

@@ -33,7 +33,7 @@ public abstract class SubBaseHandleController<D extends SubBaseEntity<S>, DS ext
      * @param d 待修改数据对象
      * @see com.xueyi.common.web.entity.controller.SubBaseController#edit(D)
      */
-    protected void editSubStatusValidated(D d) {
+    protected void EHandleSubStatusValidated(D d) {
         if (StringUtils.equals(BaseConstants.Status.DISABLE.getCode(), d.getStatus())
                 && baseService.checkExistNormalSub(d.getId()))
             throw new ServiceException(StrUtil.format("修改{}{}失败，该{}包含未停用的归属{}，禁止停用！", getNodeName(), d.getName(), getNodeName(), getSubName()));
@@ -45,7 +45,7 @@ public abstract class SubBaseHandleController<D extends SubBaseEntity<S>, DS ext
      * @param d 待修改数据对象
      * @see com.xueyi.common.web.entity.controller.SubBaseController#editStatus(D)
      */
-    protected void editStatusSubStatusValidated(D d) {
+    protected void ESHandleSubStatusValidated(D d) {
         if (StringUtils.equals(BaseConstants.Status.DISABLE.getCode(), d.getStatus())
                 && baseService.checkExistNormalSub(d.getId()))
             throw new ServiceException(StrUtil.format("停用失败，该{}包含未停用的归属{}！", getNodeName(), getSubName()));
@@ -57,7 +57,7 @@ public abstract class SubBaseHandleController<D extends SubBaseEntity<S>, DS ext
      * @param idList 待删除Id集合
      * @see com.xueyi.common.web.entity.controller.SubBaseController#batchRemove(List)
      */
-    protected void removeSubValidated(List<Long> idList) {
+    protected void RHandleSubValidated(List<Long> idList) {
         int size = idList.size();
         // remove node where sub exist
         for (int i = idList.size() - 1; i >= 0; i--) {

@@ -100,7 +100,7 @@ public class SysUserController extends BaseController<SysUserDto, ISysUserServic
      * 前置校验 （强制）增加/修改
      */
     @Override
-    protected void baseRefreshValidated(BaseConstants.Operate operate, SysUserDto user) {
+    protected void AEHandleValidated(BaseConstants.Operate operate, SysUserDto user) {
         adminValidated(user.getId());
         if (baseService.checkUserCodeUnique(user.getId(), user.getCode()))
             throw new ServiceException(StrUtil.format("{}{}{}失败，用户编码已存在", operate.getInfo(), getNodeName(), user.getNickName()));
@@ -123,7 +123,7 @@ public class SysUserController extends BaseController<SysUserDto, ISysUserServic
      * @param user 用户对象
      */
     @Override
-    protected void baseEditStatusValidated(BaseConstants.Operate operate, SysUserDto user) {
+    protected void ESHandleValidated(BaseConstants.Operate operate, SysUserDto user) {
         adminValidated(user.getId());
     }
 
@@ -133,7 +133,7 @@ public class SysUserController extends BaseController<SysUserDto, ISysUserServic
      * @param idList Id集合
      */
     @Override
-    protected void baseRemoveValidated(BaseConstants.Operate operate, List<Long> idList) {
+    protected void RHandleValidated(BaseConstants.Operate operate, List<Long> idList) {
         int size = idList.size();
         Long userId = SecurityUtils.getUserId();
         // remove oneself or admin

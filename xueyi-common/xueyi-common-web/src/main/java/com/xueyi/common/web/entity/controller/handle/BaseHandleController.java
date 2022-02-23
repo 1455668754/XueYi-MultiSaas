@@ -63,7 +63,7 @@ public abstract class BaseHandleController<D extends BaseEntity, DS extends IBas
      * @param operate 操作类型
      * @param d       数据对象
      */
-    protected void baseRefreshValidated(BaseConstants.Operate operate, D d) {
+    protected void AEHandleValidated(BaseConstants.Operate operate, D d) {
     }
 
     /**
@@ -73,7 +73,7 @@ public abstract class BaseHandleController<D extends BaseEntity, DS extends IBas
      * @param operate 操作类型
      * @param d       数据对象
      */
-    protected void baseEditStatusValidated(BaseConstants.Operate operate, D d) {
+    protected void ESHandleValidated(BaseConstants.Operate operate, D d) {
     }
 
     /**
@@ -83,7 +83,7 @@ public abstract class BaseHandleController<D extends BaseEntity, DS extends IBas
      * @param operate 操作类型
      * @param idList  Id集合
      */
-    protected void baseRemoveValidated(BaseConstants.Operate operate, List<Long> idList) {
+    protected void RHandleValidated(BaseConstants.Operate operate, List<Long> idList) {
     }
 
     /**
@@ -93,7 +93,7 @@ public abstract class BaseHandleController<D extends BaseEntity, DS extends IBas
      * @see com.xueyi.common.web.entity.controller.BaseController#batchRemove(List)
      * @see com.xueyi.common.web.entity.controller.BaseController#batchRemoveForce(List)
      */
-    protected void removeNullValidated(List<Long> idList) {
+    protected void RHandleEmptyValidated(List<Long> idList) {
         if (CollUtil.isEmpty(idList))
             throw new ServiceException(StrUtil.format("无待删除{}！", getNodeName()));
     }

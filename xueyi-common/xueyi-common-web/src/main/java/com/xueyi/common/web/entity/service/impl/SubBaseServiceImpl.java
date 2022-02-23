@@ -63,12 +63,12 @@ public abstract class SubBaseServiceImpl<D extends SubBaseEntity<S>, DG extends 
      *
      * @param d 数据对象
      * @return 结果
-     * @see #subStatusValidated(Serializable, String) 主子树型 检查归属数据状态
+     * @see #UUSHandleSubStatusCheck(Serializable, String) 主子树型 检查归属数据状态
      */
     @Override
     @DSTransactional
     public int update(D d) {
-        subStatusValidated(d.getId(), d.getStatus());
+        UUSHandleSubStatusCheck(d.getId(), d.getStatus());
         return super.update(d);
     }
 
@@ -79,12 +79,12 @@ public abstract class SubBaseServiceImpl<D extends SubBaseEntity<S>, DG extends 
      * @param id     Id
      * @param status 状态
      * @return 结果
-     * @see #subStatusValidated(Serializable, String) 主子树型 检查归属数据状态
+     * @see #UUSHandleSubStatusCheck(Serializable, String) 主子树型 检查归属数据状态
      */
     @Override
     @DSTransactional
     public int updateStatus(Serializable id, String status) {
-        subStatusValidated(id, status);
+        UUSHandleSubStatusCheck(id, status);
         return super.updateStatus(id, status);
     }
 

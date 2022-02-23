@@ -172,7 +172,7 @@ public class SysRoleController extends BaseController<SysRoleDto, ISysRoleServic
      * 前置校验 （强制）增加/修改
      */
     @Override
-    protected void baseRefreshValidated(BaseConstants.Operate operate, SysRoleDto role) {
+    protected void AEHandleValidated(BaseConstants.Operate operate, SysRoleDto role) {
         if (baseService.checkRoleCodeUnique(role.getId(), role.getCode()))
             throw new ServiceException(StrUtil.format("{}{}{}失败，角色编码已存在", operate.getInfo(), getNodeName(), role.getName()));
         else if (baseService.checkNameUnique(role.getId(), role.getName()))

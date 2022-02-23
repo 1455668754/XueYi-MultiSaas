@@ -65,12 +65,12 @@ public abstract class TreeController<D extends TreeEntity<D>, DS extends ITreeSe
      * 树型 新增
      * 考虑父节点状态
      *
-     * @see #addTreeStatusValidated(D) 树型 父节点逻辑校验
+     * @see #AHandleTreeStatusValidated(D) 树型 父节点逻辑校验
      */
     @Override
     public AjaxResult add(@Validated @RequestBody D d) {
-        baseRefreshValidated(BaseConstants.Operate.ADD, d);
-        addTreeStatusValidated(d);
+        AEHandleValidated(BaseConstants.Operate.ADD, d);
+        AHandleTreeStatusValidated(d);
         return toAjax(baseService.insert(d));
     }
 
@@ -78,26 +78,26 @@ public abstract class TreeController<D extends TreeEntity<D>, DS extends ITreeSe
      * 树型 修改
      * 考虑子节点状态
      *
-     * @see #editTreeLoopValidated(D) 树型 父节点不能为自己或自己的子节点
-     * @see #editTreeStatusValidated(D) 树型 父子节点逻辑校验
+     * @see #EHandleTreeLoopValidated(D) 树型 父节点不能为自己或自己的子节点
+     * @see #EHandleTreeStatusValidated(D) 树型 父子节点逻辑校验
      */
     @Override
     public AjaxResult edit(@Validated @RequestBody D d) {
-        baseRefreshValidated(BaseConstants.Operate.EDIT, d);
-        editTreeLoopValidated(d);
-        editTreeStatusValidated(d);
+        AEHandleValidated(BaseConstants.Operate.EDIT, d);
+        EHandleTreeLoopValidated(d);
+        EHandleTreeStatusValidated(d);
         return toAjax(baseService.update(d));
     }
 
     /**
      * 树型 强制修改
      *
-     * @see #editTreeLoopValidated(D) 树型 父节点不能为自己或自己的子节点
+     * @see #EHandleTreeLoopValidated(D) 树型 父节点不能为自己或自己的子节点
      */
     @Override
     public AjaxResult editForce(@Validated @RequestBody D d) {
-        baseRefreshValidated(BaseConstants.Operate.EDIT_FORCE, d);
-        editTreeLoopValidated(d);
+        AEHandleValidated(BaseConstants.Operate.EDIT_FORCE, d);
+        EHandleTreeLoopValidated(d);
         return toAjax(baseService.update(d));
     }
 
@@ -105,11 +105,11 @@ public abstract class TreeController<D extends TreeEntity<D>, DS extends ITreeSe
      * 树型 修改状态
      * 考虑子节点状态
      *
-     * @see #editStatusTreeStatusValidated(D) 树型 父子节点逻辑校验
+     * @see #ESHandleTreeStatusValidated(D) 树型 父子节点逻辑校验
      */
     @Override
     public AjaxResult editStatus(@RequestBody D d) {
-        editStatusTreeStatusValidated(d);
+        ESHandleTreeStatusValidated(d);
         return toAjax(baseService.updateStatus(d.getId(), d.getStatus()));
     }
 
@@ -117,15 +117,15 @@ public abstract class TreeController<D extends TreeEntity<D>, DS extends ITreeSe
      * 树型 批量删除
      * 考虑子节点存在与否
      *
-     * @see #removeNullValidated(List)  基类 空校验
-     * @see #removeTreeValidated(List)  树型 子节点存在与否校验
+     * @see #RHandleEmptyValidated(List)  基类 空校验
+     * @see #RHandleTreeChildValidated(List)  树型 子节点存在与否校验
      */
     @Override
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
-        removeNullValidated(idList);
-        baseRemoveValidated(BaseConstants.Operate.DELETE, idList);
-        removeNullValidated(idList);
-        removeTreeValidated(idList);
+        RHandleEmptyValidated(idList);
+        RHandleValidated(BaseConstants.Operate.DELETE, idList);
+        RHandleEmptyValidated(idList);
+        RHandleTreeChildValidated(idList);
         return toAjax(baseService.deleteByIds(idList));
     }
 }

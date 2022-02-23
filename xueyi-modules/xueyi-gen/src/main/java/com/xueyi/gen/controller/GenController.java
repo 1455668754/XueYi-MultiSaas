@@ -194,7 +194,7 @@ public class GenController extends SubBaseController<GenTableDto, IGenTableServi
      * 前置校验 （强制）增加/修改
      */
     @Override
-    protected void baseRefreshValidated(BaseConstants.Operate operate, GenTableDto table) {
+    protected void AEHandleValidated(BaseConstants.Operate operate, GenTableDto table) {
         if (operate.isEdit())
             baseService.validateEdit(table);
     }

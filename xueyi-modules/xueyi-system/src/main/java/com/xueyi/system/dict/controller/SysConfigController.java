@@ -61,7 +61,7 @@ public class SysConfigController extends BaseController<SysConfigDto, ISysConfig
      * 前置校验 （强制）增加/修改
      */
     @Override
-    protected void baseRefreshValidated(BaseConstants.Operate operate, SysConfigDto config) {
+    protected void AEHandleValidated(BaseConstants.Operate operate, SysConfigDto config) {
         if (baseService.checkConfigCodeUnique(config.getId(), config.getCode()))
             throw new ServiceException(StrUtil.format("{}{}{}失败，参数编码已存在", operate.getInfo(), getNodeName(), config.getName()));
     }
@@ -72,7 +72,7 @@ public class SysConfigController extends BaseController<SysConfigDto, ISysConfig
      * @param idList Id集合
      */
     @Override
-    protected void baseRemoveValidated(BaseConstants.Operate operate, List<Long> idList) {
+    protected void RHandleValidated(BaseConstants.Operate operate, List<Long> idList) {
         int size = idList.size();
         // remove oneself or admin
         for (int i = idList.size() - 1; i >= 0; i--) {

@@ -43,14 +43,14 @@ public class TreeServiceImpl<D extends TreeEntity<D>, DG extends TreeManager<D, 
      *
      * @param d 数据对象
      * @return 结果
-     * @see #treeParentStatusValidated(Serializable, String) 树型 检查父级状态
-     * @see #addTreeAncestorsValidated(TreeEntity) 树型 设置祖籍
+     * @see #AUHandleParentStatusCheck(Serializable, String) 树型 检查父级状态
+     * @see #AHandleAncestorsSet(TreeEntity) 树型 设置祖籍
      */
     @Override
     @DSTransactional
     public int insert(D d) {
-        treeParentStatusValidated(d.getParentId(), d.getStatus());
-        addTreeAncestorsValidated(d);
+        AUHandleParentStatusCheck(d.getParentId(), d.getStatus());
+        AHandleAncestorsSet(d);
         return baseManager.insert(d);
     }
 
@@ -60,16 +60,16 @@ public class TreeServiceImpl<D extends TreeEntity<D>, DG extends TreeManager<D, 
      *
      * @param d 数据对象
      * @return 结果
-     * @see #treeParentStatusValidated(Serializable, String) 树型 检查父级状态
-     * @see #editTreeAncestorsValidated(TreeEntity) 树型 检验祖籍是否变更
-     * @see #treeChildrenStatusValidated(Serializable, String) 树型 检查子节点状态
+     * @see #AUHandleParentStatusCheck(Serializable, String) 树型 检查父级状态
+     * @see #UHandleAncestorsCheck(TreeEntity) 树型 检验祖籍是否变更
+     * @see #UUSChildrenStatusCheck(Serializable, String) 树型 检查子节点状态
      */
     @Override
     @DSTransactional
     public int update(D d) {
-        treeParentStatusValidated(d.getParentId(), d.getStatus());
-        editTreeAncestorsValidated(d);
-        treeChildrenStatusValidated(d.getId(), d.getStatus());
+        AUHandleParentStatusCheck(d.getParentId(), d.getStatus());
+        UHandleAncestorsCheck(d);
+        UUSChildrenStatusCheck(d.getId(), d.getStatus());
         return baseManager.update(d);
     }
 
@@ -80,14 +80,14 @@ public class TreeServiceImpl<D extends TreeEntity<D>, DG extends TreeManager<D, 
      * @param id     Id
      * @param status 状态
      * @return 结果
-     * @see #updateStatusTreeParentStatusValidated(Serializable, String) 树型 检查父级状态
-     * @see #treeChildrenStatusValidated(Serializable, String) 树型 检查子节点状态
+     * @see #USHandelParentStatusCheck(Serializable, String) 树型 检查父级状态
+     * @see #UUSChildrenStatusCheck(Serializable, String) 树型 检查子节点状态
      */
     @Override
     @DSTransactional
     public int updateStatus(Serializable id, String status) {
-        updateStatusTreeParentStatusValidated(id, status);
-        treeChildrenStatusValidated(id, status);
+        USHandelParentStatusCheck(id, status);
+        UUSChildrenStatusCheck(id, status);
         return baseManager.updateStatus(id, status);
     }
 

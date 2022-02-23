@@ -1,6 +1,7 @@
 package com.xueyi.common.web.entity.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.BaseConstants;
 import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
@@ -175,10 +176,10 @@ public class BaseServiceImpl<D extends BaseEntity, DG extends BaseManager<D, DM>
     @Override
     public BaseConstants.Status checkStatus(Serializable id) {
         D info = StringUtils.isNotNull(id) ? baseManager.selectById(id) : null;
-        if (StringUtils.isNull(info))
-            return BaseConstants.Status.EXCEPTION;
-        else if (StringUtils.equals(BaseConstants.Status.NORMAL.getCode(), info.getStatus()))
-            return BaseConstants.Status.NORMAL;
-        return BaseConstants.Status.DISABLE;
+        return ObjectUtil.isNull(info)
+                ? BaseConstants.Status.EXCEPTION
+                : StrUtil.equals(BaseConstants.Status.NORMAL.getCode(), info.getStatus())
+                ? BaseConstants.Status.NORMAL
+                : BaseConstants.Status.DISABLE;
     }
 }

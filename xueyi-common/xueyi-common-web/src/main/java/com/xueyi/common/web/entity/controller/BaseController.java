@@ -69,7 +69,7 @@ public abstract class BaseController<D extends BaseEntity, DS extends IBaseServi
      * 新增
      */
     public AjaxResult add(@Validated @RequestBody D d) {
-        baseRefreshValidated(BaseConstants.Operate.ADD, d);
+        AEHandleValidated(BaseConstants.Operate.ADD, d);
         return toAjax(baseService.insert(d));
     }
 
@@ -77,7 +77,7 @@ public abstract class BaseController<D extends BaseEntity, DS extends IBaseServi
      * 强制新增
      */
     public AjaxResult addForce(@Validated @RequestBody D d) {
-        baseRefreshValidated(BaseConstants.Operate.ADD_FORCE, d);
+        AEHandleValidated(BaseConstants.Operate.ADD_FORCE, d);
         return toAjax(baseService.insert(d));
     }
 
@@ -85,7 +85,7 @@ public abstract class BaseController<D extends BaseEntity, DS extends IBaseServi
      * 修改
      */
     public AjaxResult edit(@Validated @RequestBody D d) {
-        baseRefreshValidated(BaseConstants.Operate.EDIT, d);
+        AEHandleValidated(BaseConstants.Operate.EDIT, d);
         return toAjax(baseService.update(d));
     }
 
@@ -93,7 +93,7 @@ public abstract class BaseController<D extends BaseEntity, DS extends IBaseServi
      * 强制修改
      */
     public AjaxResult editForce(@Validated @RequestBody D d) {
-        baseRefreshValidated(BaseConstants.Operate.EDIT_FORCE, d);
+        AEHandleValidated(BaseConstants.Operate.EDIT_FORCE, d);
         return toAjax(baseService.update(d));
     }
 
@@ -101,7 +101,7 @@ public abstract class BaseController<D extends BaseEntity, DS extends IBaseServi
      * 修改状态
      */
     public AjaxResult editStatus(@RequestBody D d) {
-        baseEditStatusValidated(BaseConstants.Operate.EDIT_STATUS, d);
+        ESHandleValidated(BaseConstants.Operate.EDIT_STATUS, d);
         return toAjax(baseService.updateStatus(d.getId(), d.getStatus()));
     }
 
@@ -109,30 +109,30 @@ public abstract class BaseController<D extends BaseEntity, DS extends IBaseServi
      * 强制修改状态
      */
     public AjaxResult editStatusForce(@RequestBody D d) {
-        baseEditStatusValidated(BaseConstants.Operate.EDIT_STATUS_FORCE, d);
+        ESHandleValidated(BaseConstants.Operate.EDIT_STATUS_FORCE, d);
         return toAjax(baseService.updateStatus(d.getId(), d.getStatus()));
     }
 
     /**
      * 批量删除
      *
-     * @see #removeNullValidated (List)  基类 空校验
+     * @see #RHandleEmptyValidated (List)  基类 空校验
      */
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
-        removeNullValidated(idList);
-        baseRemoveValidated(BaseConstants.Operate.DELETE, idList);
+        RHandleEmptyValidated(idList);
+        RHandleValidated(BaseConstants.Operate.DELETE, idList);
         return toAjax(baseService.deleteByIds(idList));
     }
 
     /**
      * 强制批量删除
      *
-     * @see #removeNullValidated (List)  基类 空校验
+     * @see #RHandleEmptyValidated (List)  基类 空校验
      */
     public AjaxResult batchRemoveForce(@PathVariable List<Long> idList) {
         List<Long> s = new ArrayList<>();
-        removeNullValidated(idList);
-        baseRemoveValidated(BaseConstants.Operate.DELETE_FORCE, idList);
+        RHandleEmptyValidated(idList);
+        RHandleValidated(BaseConstants.Operate.DELETE_FORCE, idList);
         return toAjax(baseService.deleteByIds(idList));
     }
 

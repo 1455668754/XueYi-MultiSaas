@@ -136,7 +136,7 @@ public class TeTenantController extends BaseController<TeTenantDto, ITeTenantSer
      * 前置校验 （强制）增加/修改
      */
     @Override
-    protected void baseRefreshValidated(BaseConstants.Operate operate, TeTenantDto tenant) {
+    protected void AEHandleValidated(BaseConstants.Operate operate, TeTenantDto tenant) {
         if (baseService.checkNameUnique(tenant.getId(), tenant.getName()))
             throw new ServiceException(StrUtil.format("{}{}{}失败，{}名称已存在", operate.getInfo(), getNodeName(), tenant.getName(), getNodeName()));
     }
@@ -145,7 +145,7 @@ public class TeTenantController extends BaseController<TeTenantDto, ITeTenantSer
      * 前置校验 （强制）删除
      */
     @Override
-    protected void baseRemoveValidated(BaseConstants.Operate operate, List<Long> idList) {
+    protected void RHandleValidated(BaseConstants.Operate operate, List<Long> idList) {
         int size = idList.size();
         for (int i = idList.size() - 1; i >= 0; i--)
             if (baseService.checkIsDefault(idList.get(i)))

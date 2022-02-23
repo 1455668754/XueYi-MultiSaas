@@ -59,7 +59,7 @@ public class SysPostController extends BaseController<SysPostDto, ISysPostServic
      * 前置校验 （强制）增加/修改
      */
     @Override
-    protected void baseRefreshValidated(BaseConstants.Operate operate, SysPostDto post) {
+    protected void AEHandleValidated(BaseConstants.Operate operate, SysPostDto post) {
         if (baseService.checkPostCodeUnique(post.getId(), post.getCode()))
             throw new ServiceException(StrUtil.format("{}{}{}失败，岗位编码已存在", operate.getInfo(), getNodeName(), post.getName()));
         else if (baseService.checkNameUnique(post.getId(), post.getName()))
@@ -74,7 +74,7 @@ public class SysPostController extends BaseController<SysPostDto, ISysPostServic
      * @param post 部门对象
      */
     @Override
-    protected void baseEditStatusValidated(BaseConstants.Operate operate, SysPostDto post) {
+    protected void ESHandleValidated(BaseConstants.Operate operate, SysPostDto post) {
         if (StringUtils.equals(BaseConstants.Status.NORMAL.getCode(), post.getStatus())) {
             SysPostDto original = baseService.selectById(post.getId());
             if (BaseConstants.Status.DISABLE == deptService.checkStatus(original.getDeptId()))

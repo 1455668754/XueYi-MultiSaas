@@ -39,7 +39,7 @@ public abstract class SubBaseHandleServiceImpl<D extends SubBaseEntity<S>, DG ex
      * @see com.xueyi.common.web.entity.service.impl.SubBaseServiceImpl#update(SubBaseEntity)
      * @see com.xueyi.common.web.entity.service.impl.SubBaseServiceImpl#updateStatus(Serializable, String)
      */
-    protected void subStatusValidated(Serializable id, String status) {
+    protected void UUSHandleSubStatusCheck(Serializable id, String status) {
         D original = baseManager.selectById(id);
         if (!ObjectUtil.equals(original.getStatus(), status)
                 && ObjectUtil.equals(BaseConstants.Status.DISABLE.getCode(), status)

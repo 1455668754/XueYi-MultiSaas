@@ -187,7 +187,7 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
      * 前置校验 （强制）增加/修改
      */
     @Override
-    protected void baseRefreshValidated(BaseConstants.Operate operate, SysMenuDto menu) {
+    protected void AEHandleValidated(BaseConstants.Operate operate, SysMenuDto menu) {
         if (ObjectUtil.equals(menu.getId(), AuthorityConstants.MENU_TOP_NODE))
             throw new ServiceException(StrUtil.format("默认{}不允许修改！", getNodeName()));
         if (baseService.checkNameUnique(menu.getId(), menu.getParentId(), menu.getName()))
@@ -230,7 +230,7 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
      * @param idList  Id集合
      */
     @Override
-    protected void baseRemoveValidated(BaseConstants.Operate operate, List<Long> idList) {
+    protected void RHandleValidated(BaseConstants.Operate operate, List<Long> idList) {
         // remove top node
         for (int i = idList.size() - 1; i >= 0; i--)
             if (ObjectUtil.equals(idList.get(i), AuthorityConstants.MENU_TOP_NODE))

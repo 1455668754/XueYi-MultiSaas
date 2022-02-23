@@ -28,11 +28,11 @@ public abstract class SubTreeController<D extends SubTreeEntity<D, S>, DS extend
      * 主子树型 修改
      * 考虑归属数据状态&&子节点状态
      *
-     * @see #editSubStatusValidated(SubTreeEntity) 主子树型 归属数据状态逻辑校验
+     * @see #EHandleSubStatusValidated(SubTreeEntity) 主子树型 归属数据状态逻辑校验
      */
     @Override
     public AjaxResult edit(@Validated @RequestBody D d) {
-        editSubStatusValidated(d);
+        EHandleSubStatusValidated(d);
         return super.edit(d);
     }
 
@@ -40,10 +40,10 @@ public abstract class SubTreeController<D extends SubTreeEntity<D, S>, DS extend
      * 主子树型 修改
      * 考虑归属数据状态&&子节点状态
      *
-     * @see #editStatusSubStatusValidated(SubTreeEntity)  主子树型 归属数据状态逻辑校验
+     * @see #ESHandleSubStatusValidated(SubTreeEntity)  主子树型 归属数据状态逻辑校验
      */
     public AjaxResult editStatus(@RequestBody D d) {
-        editStatusSubStatusValidated(d);
+        ESHandleSubStatusValidated(d);
         return super.editStatus(d);
     }
 
@@ -51,16 +51,16 @@ public abstract class SubTreeController<D extends SubTreeEntity<D, S>, DS extend
      * 主子树型 批量删除
      * 考虑归属数据存在与否&&子节点存在与否
      *
-     * @see #removeNullValidated(List)   基类 空校验
-     * @see #removeTreeSubValidated(List)  主子树型 子节点存在与否校验&&归属数据存在与否校验
+     * @see #RHandleEmptyValidated(List)   基类 空校验
+     * @see #RHandleTreeSubValidated(List)  主子树型 子节点存在与否校验&&归属数据存在与否校验
      */
     @Override
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
-        removeNullValidated(idList);
-        baseRemoveValidated(BaseConstants.Operate.DELETE, idList);
-        removeNullValidated(idList);
-        removeTreeSubValidated(idList);
-        removeTreeValidated(idList);
+        RHandleEmptyValidated(idList);
+        RHandleValidated(BaseConstants.Operate.DELETE, idList);
+        RHandleEmptyValidated(idList);
+        RHandleTreeSubValidated(idList);
+        RHandleTreeChildValidated(idList);
         return toAjax(baseService.deleteByIds(idList));
     }
 }

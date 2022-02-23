@@ -39,7 +39,7 @@ public abstract class SubTreeHandleServiceImpl<D extends SubTreeEntity<D, S>, DG
      * @see com.xueyi.common.web.entity.service.impl.SubTreeServiceImpl#update(SubTreeEntity)
      * @see com.xueyi.common.web.entity.service.impl.SubTreeServiceImpl#updateStatus(Serializable, String)
      */
-    protected void subStatusValidated(Serializable id, String status) {
+    protected void UUSHandleSubStatusCheck(Serializable id, String status) {
         D original = baseManager.selectById(id);
         if (!ObjectUtil.equals(original.getStatus(), status)
                 && ObjectUtil.equals(BaseConstants.Status.DISABLE.getCode(), status)
