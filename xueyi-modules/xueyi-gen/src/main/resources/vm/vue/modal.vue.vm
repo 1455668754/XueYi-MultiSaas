@@ -14,12 +14,12 @@ import { computed, defineComponent, ref, unref } from 'vue'
 import { formSchema } from './${businessName}.data'
 import { useMessage } from '@/hooks/web/useMessage'
 import {
-#if($table.tree)
-    list${BusinessName}ExNodesApi,
-#end
   get${BusinessName}Api,
   add${BusinessName}Api,
   edit${BusinessName}Api,
+#if($table.tree || $table.subTree)
+  list${BusinessName}ExNodesApi,
+#end
 } from '@service/${moduleName}/${authorityName}/${businessName}'
 import { BasicModal, useModalInner } from '@/components/Modal'
 import { BasicForm, useForm } from '@/components/Form'
@@ -32,7 +32,7 @@ export default defineComponent({
     const { createMessage } = useMessage()
     const isUpdate = ref(true)
 
-    const [registerForm, { resetFields, setFieldsValue, #if($table.tree)updateSchema,#end validate }] = useForm({
+    const [registerForm, { resetFields, setFieldsValue, #if($table.tree || $table.subTree)updateSchema,#end validate }] = useForm({
       labelWidth: 100,
       schemas: formSchema,
       showActionButtonGroup: false,
@@ -45,18 +45,13 @@ export default defineComponent({
 
       if (unref(isUpdate)) {
         const ${businessName} = await get${BusinessName}Api(data.record.${pkColumn.javaField})
-        setFieldsValue({
-          ...${businessName},
-        })
+        setFieldsValue({...${businessName}})
       }
 #if($table.tree || $table.subTree)
       const treeData = await list${BusinessName}ExNodesApi(
         unref(isUpdate) ? data.record.${pkColumn.javaField} : undefined,
       )
-      updateSchema({
-        field: '${treeMap.parentIdColumn.javaField}',
-        componentProps: { treeData },
-      })
+      updateSchema({field: '${treeMap.parentIdColumn.javaField}', componentProps: { treeData } })
 #end
     })
 

@@ -49,6 +49,8 @@ public abstract class SubTreeServiceImpl<D extends SubTreeEntity<D, S>, DG exten
     @Override
     @DSTransactional
     public int insert(D d) {
+        treeParentStatusValidated(d.getParentId(), d.getStatus());
+        addTreeAncestorsValidated(d);
         int i = baseManager.insert(d);
         if (CollUtil.isNotEmpty(d.getSubList())) {
             setForeignKey(d.getSubList(), d);

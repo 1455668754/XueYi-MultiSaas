@@ -19,7 +19,7 @@
         >
           删除
         </a-button>
-#if($table.tree)
+#if($table.tree || $table.subTree)
         <a-button type="primary" @click="expandAll">展开全部</a-button>
         <a-button type="primary" @click="collapseAll">折叠全部</a-button>
 #end
@@ -56,15 +56,15 @@
 
 <script lang="ts">
 import { defineComponent, reactive } from 'vue'
-import { list${BusinessName}Api, del${BusinessName}Api } from 'vm/vue/index.vue${moduleName}/${authorityName}/${businessName}'
+import { list${BusinessName}Api, del${BusinessName}Api } from '@service/${moduleName}/${authorityName}/${businessName}'
 import { useModal } from '@/components/Modal'
 import { useMessage } from '@/hooks/web/useMessage'
 import { IconEnum } from '@admin/tokens'
 import { BasicTable, TableAction, useTable } from '@/components/Table'
-import { ${BusinessName}Auth } from 'vm/vue/index.vue${moduleName}'
-import { columns, searchFormSchema } from './tree${businessName}.data'
-import { ${BusinessName}DetailGo } from 'vm/vue/index.vue${moduleName}'
-import ${BusinessName}Modal from './tree${BusinessName}Modal.vue'
+import { ${BusinessName}Auth } from '@auth/${moduleName}'
+import { columns, searchFormSchema } from './${businessName}.data'
+import { ${BusinessName}DetailGo } from '@enums/${moduleName}'
+import ${BusinessName}Modal from './${BusinessName}Modal.vue'
 import { useUserStore } from '@/store/user'
 
 export default defineComponent({
@@ -80,7 +80,7 @@ export default defineComponent({
       ${pkColumn.javaField}s: [],
       ${pkColumn.javaField}Names: '',
     })
-    const [registerTable, { reload#if($table.tree), expandAll, collapseAll#end }] = useTable({
+    const [registerTable, { reload#if($table.tree || $table.subTree), expandAll, collapseAll#end }] = useTable({
       title: '${functionName}列表',
       api: list${BusinessName}Api,
       striped: false,
@@ -93,7 +93,7 @@ export default defineComponent({
         labelWidth: 120,
         schemas: searchFormSchema,
       },
-#if($table.tree)
+#if($table.tree || $table.subTree)
       isTreeTable: true,
       pagination: false,
       canResize: false,
@@ -175,7 +175,7 @@ export default defineComponent({
       handleEdit,
       handleDelete,
       handleSuccess,
-#if($table.tree)
+#if($table.tree || $table.subTree)
       expandAll,
       collapseAll,
 #end
