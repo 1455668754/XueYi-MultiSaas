@@ -45,7 +45,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleDto, SysRoleManag
         int row = baseManager.insert(role);
         if (row > 0) {
             authService.addRoleAuth(role.getId(), role.getAuthIds());
-            organizeService.addRoleOrganize(role.getId(),
+            organizeService.addRoleOrganizeMerge(role.getId(),
                     StrUtil.equals(role.getDataScope(), AuthorityConstants.DataScope.CUSTOM.getCode())
                             ? role.getOrganizeIds()
                             : new Long[]{});
@@ -64,7 +64,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleDto, SysRoleManag
     public int updateDataScope(SysRoleDto role) {
         int row = baseManager.updateDataScope(role.getId(), role.getRoleKey(), role.getDataScope());
         if (row > 0) {
-            organizeService.editRoleOrganize(role.getId(),
+            organizeService.editRoleOrganizeMerge(role.getId(),
                     StrUtil.equals(role.getDataScope(), AuthorityConstants.DataScope.CUSTOM.getCode())
                             ? role.getOrganizeIds()
                             : new Long[]{});

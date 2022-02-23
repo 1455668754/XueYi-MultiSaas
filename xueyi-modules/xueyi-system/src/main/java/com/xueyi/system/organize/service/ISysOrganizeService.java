@@ -24,7 +24,31 @@ public interface ISysOrganizeService {
      * @param roleId 角色Id
      * @return 组织Ids
      */
-    Long[] selectRoleOrganize(Long roleId);
+    Long[] selectRoleOrganizeMerge(Long roleId);
+
+    /**
+     * 根据部门Id获取关联的角色Ids
+     *
+     * @param deptId 部门Id
+     * @return 角色Ids
+     */
+    Long[] selectDeptRoleMerge(Long deptId);
+
+    /**
+     * 根据岗位Id获取关联的角色Ids
+     *
+     * @param postId 岗位Id
+     * @return 角色Ids
+     */
+    Long[] selectPostRoleMerge(Long postId);
+
+    /**
+     * 根据用户Id获取关联的角色Ids
+     *
+     * @param userId 用户Id
+     * @return 角色Ids
+     */
+    Long[] selectUserRoleMerge(Long userId);
 
     /**
      * 新增角色组织权限
@@ -32,7 +56,7 @@ public interface ISysOrganizeService {
      * @param roleId      角色Id
      * @param organizeIds 组织Ids
      */
-    void addRoleOrganize(Long roleId, Long[] organizeIds);
+    void addRoleOrganizeMerge(Long roleId, Long[] organizeIds);
 
     /**
      * 修改角色组织权限
@@ -40,5 +64,29 @@ public interface ISysOrganizeService {
      * @param roleId      角色Id
      * @param organizeIds 组织Ids
      */
-    void editRoleOrganize(Long roleId, Long[] organizeIds);
+    void editRoleOrganizeMerge(Long roleId, Long[] organizeIds);
+
+    /**
+     * 修改部门的角色关联数据
+     *
+     * @param deptId  部门Id
+     * @param roleIds 角色Ids
+     */
+    void editDeptRoleMerge(Long deptId, Long[] roleIds);
+
+    /**
+     * 修改岗位的角色关联数据
+     *
+     * @param postId  岗位Id
+     * @param roleIds 角色Ids
+     */
+    void editPostIdRoleMerge(Long postId, Long[] roleIds);
+
+    /**
+     * 修改用户的角色关联数据
+     *
+     * @param userId  用户Id
+     * @param roleIds 角色Ids
+     */
+    void editUserRoleMerge(Long userId, Long[] roleIds);
 }

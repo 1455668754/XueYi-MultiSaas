@@ -7,6 +7,63 @@ package com.xueyi.common.security.constants;
  */
 public interface SystemConstants {
 
+    /** 系统 - 部门管理 - 列表 */
+    String SYS_DEPT_LIST = "organize:dept:list";
+    /** 系统 - 部门管理 - 详情 */
+    String SYS_DEPT_SINGLE = "organize:dept:single";
+    /** 系统 - 部门管理 - 新增 */
+    String SYS_DEPT_ADD = "organize:dept:add";
+    /** 系统 - 部门管理 - 修改 */
+    String SYS_DEPT_EDIT = "organize:dept:edit";
+    /** 系统 - 部门管理 - 权限 */
+    String SYS_DEPT_AUTH = "organize:dept:auth";
+    /** 系统 - 部门管理 - 修改状态 */
+    String SYS_DEPT_EDIT_STATUS = "organize:dept:editStatus";
+    /** 系统 - 部门管理 - 删除 */
+    String SYS_DEPT_DELETE = "organize:dept:delete";
+    /** 系统 - 部门管理 - 导入 */
+    String SYS_DEPT_IMPORT = "organize:dept:import";
+    /** 系统 - 部门管理 - 导出 */
+    String SYS_DEPT_EXPORT = "organize:dept:export";
+
+    /** 系统 - 岗位管理 - 列表 */
+    String SYS_POST_LIST = "organize:post:list";
+    /** 系统 - 岗位管理 - 详情 */
+    String SYS_POST_SINGLE = "organize:post:single";
+    /** 系统 - 岗位管理 - 新增 */
+    String SYS_POST_ADD = "organize:post:add";
+    /** 系统 - 岗位管理 - 修改 */
+    String SYS_POST_EDIT = "organize:post:edit";
+    /** 系统 - 岗位管理 - 权限 */
+    String SYS_POST_AUTH = "organize:post:auth";
+    /** 系统 - 岗位管理 - 修改状态 */
+    String SYS_POST_EDIT_STATUS = "organize:post:editStatus";
+    /** 系统 - 岗位管理 - 删除 */
+    String SYS_POST_DELETE = "organize:post:delete";
+    /** 系统 - 岗位管理 - 导入 */
+    String SYS_POST_IMPORT = "organize:post:import";
+    /** 系统 - 岗位管理 - 导出 */
+    String SYS_POST_EXPORT = "organize:post:export";
+
+    /** 系统 - 用户管理 - 列表 */
+    String SYS_USER_LIST = "organize:user:list";
+    /** 系统 - 用户管理 - 详情 */
+    String SYS_USER_SINGLE = "organize:user:single";
+    /** 系统 - 用户管理 - 新增 */
+    String SYS_USER_ADD = "organize:user:add";
+    /** 系统 - 用户管理 - 修改 */
+    String SYS_USER_EDIT = "organize:user:edit";
+    /** 系统 - 用户管理 - 权限 */
+    String SYS_USER_AUTH = "organize:user:auth";
+    /** 系统 - 用户管理 - 修改状态 */
+    String SYS_USER_EDIT_STATUS = "organize:user:editStatus";
+    /** 系统 - 用户管理 - 删除 */
+    String SYS_USER_DELETE = "organize:user:delete";
+    /** 系统 - 用户管理 - 导入 */
+    String SYS_USER_IMPORT = "organize:user:import";
+    /** 系统 - 用户管理 - 导出 */
+    String SYS_USER_EXPORT = "organize:user:export";
+    
     /** 系统 - 模块管理 - 列表 */
     String SYS_MODULE_LIST = "authority:module:list";
     /** 系统 - 模块管理 - 详情 */

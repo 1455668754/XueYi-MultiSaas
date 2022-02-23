@@ -2,7 +2,9 @@ package com.xueyi.system.organize.domain.merge;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.xueyi.common.core.constant.OrganizeConstants;
 import com.xueyi.common.core.web.tenant.base.TBasisEntity;
+import com.xueyi.common.security.utils.SecurityUtils;
 
 /**
  * 组织-角色关联（角色绑定） 持久化对象
@@ -29,6 +31,25 @@ public class SysOrganizeRoleMerge extends TBasisEntity {
     /** 角色Id */
     @TableField("role_id")
     private Long roleId;
+
+    public SysOrganizeRoleMerge() {
+    }
+
+    public SysOrganizeRoleMerge(Long organizeId, Long roleId, OrganizeConstants.OrganizeType organizeType) {
+        switch (organizeType) {
+            case DEPT:
+                setDeptId(organizeId);
+                break;
+            case POST:
+                setPostId(organizeId);
+                break;
+            case USER:
+                setUserId(organizeId);
+                break;
+        }
+        setRoleId(roleId);
+        setEnterpriseId(SecurityUtils.getEnterpriseId());
+    }
 
     public Long getDeptId() {
         return deptId;

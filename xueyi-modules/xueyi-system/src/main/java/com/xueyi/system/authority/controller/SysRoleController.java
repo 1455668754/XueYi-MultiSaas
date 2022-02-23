@@ -81,7 +81,7 @@ public class SysRoleController extends BaseController<SysRoleDto, ISysRoleServic
     @GetMapping("/organize/{id}")
     @RequiresPermissions(Auth.SYS_ROLE_AUTH)
     public AjaxResult getRoleOrganize(@PathVariable Long id) {
-        return AjaxResult.success(organizeService.selectRoleOrganize(id));
+        return AjaxResult.success(organizeService.selectRoleOrganizeMerge(id));
     }
 
     /**

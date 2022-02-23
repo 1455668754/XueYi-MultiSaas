@@ -40,8 +40,41 @@ public class SysOrganizeServiceImpl implements ISysOrganizeService {
      * @return 组织Ids
      */
     @Override
-    public Long[] selectRoleOrganize(Long roleId){
-        return organizeManager.selectRoleOrganize(roleId);
+    public Long[] selectRoleOrganizeMerge(Long roleId) {
+        return organizeManager.selectRoleOrganizeMerge(roleId);
+    }
+
+    /**
+     * 根据部门Id获取关联的角色Ids
+     *
+     * @param deptId 部门Id
+     * @return 角色Ids
+     */
+    @Override
+    public Long[] selectDeptRoleMerge(Long deptId) {
+        return organizeManager.selectDeptRoleMerge(deptId);
+    }
+
+    /**
+     * 根据岗位Id获取关联的角色Ids
+     *
+     * @param postId 岗位Id
+     * @return 角色Ids
+     */
+    @Override
+    public Long[] selectPostRoleMerge(Long postId) {
+        return organizeManager.selectPostRoleMerge(postId);
+    }
+
+    /**
+     * 根据用户Id获取关联的角色Ids
+     *
+     * @param userId 用户Id
+     * @return 角色Ids
+     */
+    @Override
+    public Long[] selectUserRoleMerge(Long userId) {
+        return organizeManager.selectUserRoleMerge(userId);
     }
 
     /**
@@ -51,8 +84,8 @@ public class SysOrganizeServiceImpl implements ISysOrganizeService {
      * @param organizeIds 组织Ids
      */
     @Override
-    public void addRoleOrganize(Long roleId, Long[] organizeIds) {
-        organizeManager.addRoleOrganize(roleId, organizeIds);
+    public void addRoleOrganizeMerge(Long roleId, Long[] organizeIds) {
+        organizeManager.addRoleOrganizeMerge(roleId, organizeIds);
     }
 
 
@@ -63,7 +96,40 @@ public class SysOrganizeServiceImpl implements ISysOrganizeService {
      * @param organizeIds 组织Ids
      */
     @Override
-    public void editRoleOrganize(Long roleId, Long[] organizeIds) {
-        organizeManager.editRoleOrganize(roleId, organizeIds);
+    public void editRoleOrganizeMerge(Long roleId, Long[] organizeIds) {
+        organizeManager.editRoleOrganizeMerge(roleId, organizeIds);
+    }
+
+    /**
+     * 修改部门的角色关联数据
+     *
+     * @param deptId  部门Id
+     * @param roleIds 角色Ids
+     */
+    @Override
+    public void editDeptRoleMerge(Long deptId, Long[] roleIds) {
+        organizeManager.editDeptRoleMerge(deptId, roleIds);
+    }
+
+    /**
+     * 修改岗位的角色关联数据
+     *
+     * @param postId  岗位Id
+     * @param roleIds 角色Ids
+     */
+    @Override
+    public void editPostIdRoleMerge(Long postId, Long[] roleIds) {
+        organizeManager.editPostIdRoleMerge(postId, roleIds);
+    }
+
+    /**
+     * 修改用户的角色关联数据
+     *
+     * @param userId  用户Id
+     * @param roleIds 角色Ids
+     */
+    @Override
+    public void editUserRoleMerge(Long userId, Long[] roleIds) {
+        organizeManager.editUserRoleMerge(userId, roleIds);
     }
 }

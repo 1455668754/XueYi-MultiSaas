@@ -11,9 +11,11 @@ import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.InnerAuth;
 import com.xueyi.common.security.annotation.Logical;
 import com.xueyi.common.security.annotation.RequiresPermissions;
+import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 import com.xueyi.system.organize.service.ISysDeptService;
+import com.xueyi.system.organize.service.ISysOrganizeService;
 import com.xueyi.system.organize.service.ISysPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -31,6 +33,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/post")
 public class SysPostController extends BaseController<SysPostDto, ISysPostService> {
+
+    @Autowired
+    private ISysOrganizeService organizeService;
 
     @Autowired
     private ISysDeptService deptService;
@@ -60,7 +65,7 @@ public class SysPostController extends BaseController<SysPostDto, ISysPostServic
      */
     @Override
     @GetMapping("/list")
-    @RequiresPermissions("organize:post:list")
+    @RequiresPermissions(Auth.SYS_POST_LIST)
     public AjaxResult listExtra(SysPostDto post) {
         return super.listExtra(post);
     }
@@ -70,9 +75,18 @@ public class SysPostController extends BaseController<SysPostDto, ISysPostServic
      */
     @Override
     @GetMapping(value = "/{id}")
-    @RequiresPermissions("organize:post:single")
+    @RequiresPermissions(Auth.SYS_POST_SINGLE)
     public AjaxResult getInfoExtra(@PathVariable Serializable id) {
         return super.getInfoExtra(id);
+    }
+
+    /**
+     * 查询部门关联的角色Id集
+     */
+    @GetMapping(value = "/auth/{id}")
+    @RequiresPermissions(Auth.SYS_POST_AUTH)
+    public AjaxResult getRoleAuth(@PathVariable Long id) {
+        return AjaxResult.success(organizeService.selectPostRoleMerge(id));
     }
 
     /**
@@ -80,7 +94,7 @@ public class SysPostController extends BaseController<SysPostDto, ISysPostServic
      */
     @Override
     @PostMapping("/export")
-    @RequiresPermissions("organize:post:export")
+    @RequiresPermissions(Auth.SYS_POST_EXPORT)
     public void export(HttpServletResponse response, SysPostDto post) {
         super.export(response, post);
     }
@@ -90,7 +104,7 @@ public class SysPostController extends BaseController<SysPostDto, ISysPostServic
      */
     @Override
     @PostMapping
-    @RequiresPermissions("organize:post:add")
+    @RequiresPermissions(Auth.SYS_POST_ADD)
     @Log(title = "岗位管理", businessType = BusinessType.INSERT)
     public AjaxResult add(@Validated @RequestBody SysPostDto post) {
         return super.add(post);
@@ -101,10 +115,20 @@ public class SysPostController extends BaseController<SysPostDto, ISysPostServic
      */
     @Override
     @PutMapping
-    @RequiresPermissions("organize:post:edit")
+    @RequiresPermissions(Auth.SYS_POST_EDIT)
     @Log(title = "岗位管理", businessType = BusinessType.UPDATE)
     public AjaxResult edit(@Validated @RequestBody SysPostDto post) {
         return super.edit(post);
+    }
+
+    /**
+     * 查询岗位关联的角色Id集
+     */
+    @PutMapping(value = "/auth")
+    @RequiresPermissions(Auth.SYS_POST_AUTH)
+    public AjaxResult editRoleAuth(@RequestBody SysPostDto post) {
+        organizeService.editPostIdRoleMerge(post.getId(), post.getRoleIds());
+        return AjaxResult.success();
     }
 
     /**
@@ -112,7 +136,7 @@ public class SysPostController extends BaseController<SysPostDto, ISysPostServic
      */
     @Override
     @PutMapping("/status")
-    @RequiresPermissions(value = {"organize:post:edit", "organize:post:editStatus"}, logical = Logical.OR)
+    @RequiresPermissions(value = {Auth.SYS_POST_EDIT, Auth.SYS_POST_EDIT_STATUS}, logical = Logical.OR)
     @Log(title = "岗位管理", businessType = BusinessType.UPDATE_STATUS)
     public AjaxResult editStatus(@RequestBody SysPostDto post) {
         return super.editStatus(post);
@@ -123,7 +147,7 @@ public class SysPostController extends BaseController<SysPostDto, ISysPostServic
      */
     @Override
     @DeleteMapping("/batch/{idList}")
-    @RequiresPermissions("organize:post:delete")
+    @RequiresPermissions(Auth.SYS_POST_DELETE)
     @Log(title = "岗位管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);

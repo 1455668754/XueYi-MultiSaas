@@ -13,11 +13,12 @@ import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.InnerAuth;
 import com.xueyi.common.security.annotation.Logical;
 import com.xueyi.common.security.annotation.RequiresPermissions;
-import com.xueyi.common.security.service.TokenService;
+import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.system.api.model.LoginUser;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
+import com.xueyi.system.organize.service.ISysOrganizeService;
 import com.xueyi.system.organize.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -38,17 +39,12 @@ import java.util.List;
 public class SysUserController extends BaseController<SysUserDto, ISysUserService> {
 
     @Autowired
-    private TokenService tokenService;
+    private ISysOrganizeService organizeService;
 
     /** 定义节点名称 */
     @Override
     protected String getNodeName() {
         return "用户";
-    }
-
-    /** 定义父数据名称 */
-    protected String getParentName() {
-        return "岗位";
     }
 
     /**
@@ -67,7 +63,7 @@ public class SysUserController extends BaseController<SysUserDto, ISysUserServic
      */
     @GetMapping("/getInfo")
     public AjaxResult getInfo() {
-        LoginUser loginUser = tokenService.getLoginUser();
+        LoginUser loginUser = SecurityUtils.getLoginUser();
         // 密码禁传
         loginUser.getUser().setPassword(null);
         HashMap<String, Object> map = new HashMap<>();
@@ -83,7 +79,7 @@ public class SysUserController extends BaseController<SysUserDto, ISysUserServic
      */
     @Override
     @GetMapping("/list")
-    @RequiresPermissions("organize:user:list")
+    @RequiresPermissions(Auth.SYS_USER_LIST)
     public AjaxResult listExtra(SysUserDto user) {
         return super.listExtra(user);
     }
@@ -93,9 +89,18 @@ public class SysUserController extends BaseController<SysUserDto, ISysUserServic
      */
     @Override
     @GetMapping(value = "/{id}")
-    @RequiresPermissions("organize:user:single")
+    @RequiresPermissions(Auth.SYS_USER_SINGLE)
     public AjaxResult getInfoExtra(@PathVariable Serializable id) {
         return super.getInfoExtra(id);
+    }
+
+    /**
+     * 查询用户关联的角色Id集
+     */
+    @GetMapping(value = "/auth/{id}")
+    @RequiresPermissions(Auth.SYS_USER_AUTH)
+    public AjaxResult getRoleAuth(@PathVariable Long id) {
+        return AjaxResult.success(organizeService.selectUserRoleMerge(id));
     }
 
     /**
@@ -103,7 +108,7 @@ public class SysUserController extends BaseController<SysUserDto, ISysUserServic
      */
     @Override
     @PostMapping("/export")
-    @RequiresPermissions("organize:user:export")
+    @RequiresPermissions(Auth.SYS_USER_EXPORT)
     public void export(HttpServletResponse response, SysUserDto user) {
         super.export(response, user);
     }
@@ -113,7 +118,7 @@ public class SysUserController extends BaseController<SysUserDto, ISysUserServic
      */
     @Override
     @PostMapping
-    @RequiresPermissions("organize:user:add")
+    @RequiresPermissions(Auth.SYS_USER_ADD)
     @Log(title = "用户管理", businessType = BusinessType.INSERT)
     public AjaxResult add(@Validated @RequestBody SysUserDto user) {
         return super.add(user);
@@ -124,10 +129,20 @@ public class SysUserController extends BaseController<SysUserDto, ISysUserServic
      */
     @Override
     @PutMapping
-    @RequiresPermissions("organize:user:edit")
+    @RequiresPermissions(Auth.SYS_USER_EDIT)
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
     public AjaxResult edit(@Validated @RequestBody SysUserDto user) {
         return super.edit(user);
+    }
+
+    /**
+     * 查询用户关联的角色Id集
+     */
+    @PutMapping(value = "/auth")
+    @RequiresPermissions(Auth.SYS_USER_AUTH)
+    public AjaxResult editRoleAuth(@RequestBody SysUserDto user) {
+        organizeService.editUserRoleMerge(user.getId(), user.getRoleIds());
+        return AjaxResult.success();
     }
 
     /**
@@ -135,7 +150,7 @@ public class SysUserController extends BaseController<SysUserDto, ISysUserServic
      */
     @Override
     @PutMapping("/status")
-    @RequiresPermissions(value = {"organize:user:edit", "organize:user:editStatus"}, logical = Logical.OR)
+    @RequiresPermissions(value = {Auth.SYS_USER_EDIT, Auth.SYS_USER_EDIT_STATUS}, logical = Logical.OR)
     @Log(title = "用户管理", businessType = BusinessType.UPDATE_STATUS)
     public AjaxResult editStatus(@RequestBody SysUserDto user) {
         return super.editStatus(user);
@@ -146,7 +161,7 @@ public class SysUserController extends BaseController<SysUserDto, ISysUserServic
      */
     @Override
     @DeleteMapping("/batch/{idList}")
-    @RequiresPermissions("organize:user:delete")
+    @RequiresPermissions(Auth.SYS_USER_DELETE)
     @Log(title = "用户管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);
