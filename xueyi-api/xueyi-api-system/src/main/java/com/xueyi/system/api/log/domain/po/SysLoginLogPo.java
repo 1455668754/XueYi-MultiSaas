@@ -7,6 +7,8 @@ import com.xueyi.common.core.web.tenant.base.TBaseEntity;
 
 import java.util.Date;
 
+import static com.baomidou.mybatisplus.annotation.SqlCondition.LIKE;
+
 /**
  * 访问日志 持久化对象
  *
@@ -18,21 +20,21 @@ public class SysLoginLogPo extends TBaseEntity {
 
     /** 企业账号 */
     @Excel(name = "企业账号")
-    @TableField("enterprise_name")
+    @TableField(value = "enterprise_name")
     private String enterpriseName;
 
-    /** 用户账号 */
-    @Excel(name = "用户账号")
-    @TableField("user_name")
-    private String userName;
-    
     /** 用户Id */
     @TableField("user_id")
     private Long userId;
 
+    /** 用户账号 */
+    @Excel(name = "用户账号")
+    @TableField(value = "user_name", condition = LIKE)
+    private String userName;
+
     /** 用户名称 */
     @Excel(name = "用户名称")
-    @TableField("user_nick")
+    @TableField(value = "user_nick", condition = LIKE)
     private String userNick;
 
     /** 状态 0成功 1失败 */
@@ -42,7 +44,7 @@ public class SysLoginLogPo extends TBaseEntity {
 
     /** 地址 */
     @Excel(name = "地址")
-    @TableField("ipaddr")
+    @TableField(value = "ipaddr", condition = LIKE)
     private String ipaddr;
 
     /** 描述 */
@@ -64,20 +66,20 @@ public class SysLoginLogPo extends TBaseEntity {
         this.enterpriseName = enterpriseName;
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
     public Long getUserId() {
         return userId;
     }
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getUserNick() {

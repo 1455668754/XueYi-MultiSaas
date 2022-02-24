@@ -1,8 +1,8 @@
 /** ${functionName}权限标识 */
 export enum ${BusinessName}Auth {
-  // 查看${functionName}详情
+  // 查看${functionName}列表
   LIST = '${authorityName}:${businessName}:list',
-  // 查询${functionName}列表
+  // 查询${functionName}详情
   SINGLE = '${authorityName}:${businessName}:single',
   // 新增${functionName}
   ADD = '${authorityName}:${businessName}:add',

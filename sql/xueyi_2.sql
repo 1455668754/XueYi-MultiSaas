@@ -309,6 +309,7 @@ create table sys_operate_log (
   tenant_id		            bigint	            not null                                comment '租户Id',
   primary key (id)
 ) engine=innodb auto_increment=100 comment = '操作日志记录';
+
 -- ----------------------------
 -- 11、系统访问记录
 -- ----------------------------
@@ -316,8 +317,9 @@ drop table if exists sys_login_log;
 create table sys_login_log (
   id                        bigint              not null auto_increment                 comment '访问Id',
   enterprise_name           varchar(50)         default ''                              comment '企业账号',
-  user_name                 varchar(50)         default ''                              comment '用户账号',
   user_id                   bigint              not null                                comment '用户Id',
+  user_name                 varchar(50)         default ''                              comment '用户账号',
+  user_nick                 varchar(50)         default ''                              comment '用户名称',
   ipaddr                    varchar(128)        default ''                              comment '登录IP地址',
   status                    char(1)             default '0'                             comment '登录状态（0成功 1失败）',
   msg                       varchar(255)        default ''                              comment '提示信息',

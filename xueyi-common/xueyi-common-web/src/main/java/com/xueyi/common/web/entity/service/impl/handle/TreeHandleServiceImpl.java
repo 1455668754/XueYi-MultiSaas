@@ -1,6 +1,7 @@
 package com.xueyi.common.web.entity.service.impl.handle;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.web.entity.base.TreeEntity;
 import com.xueyi.common.web.entity.manager.TreeManager;
@@ -62,7 +63,7 @@ public class TreeHandleServiceImpl<D extends TreeEntity<D>, DG extends TreeManag
             d.setAncestors(String.valueOf(BaseConstants.TOP_ID));
         } else {
             D parent = baseManager.selectById(d.getParentId());
-            d.setAncestors(parent.getAncestors() + "," + d.getParentId());
+            d.setAncestors(parent.getAncestors() + StrUtil.COMMA + d.getParentId());
         }
     }
 
@@ -81,7 +82,7 @@ public class TreeHandleServiceImpl<D extends TreeEntity<D>, DG extends TreeManag
                 d.setAncestors(String.valueOf(BaseConstants.TOP_ID));
             else {
                 D parent = baseManager.selectById(d.getParentId());
-                d.setAncestors(parent.getAncestors() + "," + d.getParentId());
+                d.setAncestors(parent.getAncestors() + StrUtil.COMMA + d.getParentId());
             }
             baseManager.updateChildrenAncestors(d.getId(), d.getAncestors(), oldAncestors);
         }

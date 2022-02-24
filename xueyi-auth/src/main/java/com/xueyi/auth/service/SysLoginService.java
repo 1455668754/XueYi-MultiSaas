@@ -1,6 +1,7 @@
 package com.xueyi.auth.service;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.xueyi.auth.form.RegisterBody;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.Constants;
@@ -17,6 +18,7 @@ import com.xueyi.system.api.log.domain.dto.SysLoginLogDto;
 import com.xueyi.system.api.log.feign.RemoteLogService;
 import com.xueyi.system.api.model.LoginUser;
 import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
+import com.xueyi.system.api.organize.domain.dto.SysUserDto;
 import com.xueyi.system.api.source.domain.Source;
 import com.xueyi.tenant.api.tenant.feign.RemoteTenantService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,33 +47,36 @@ public class SysLoginService {
     public LoginUser login(String enterpriseName, String userName, String password) {
         // 企业账号||员工账号||密码为空 错误
         if (StringUtils.isAnyBlank(enterpriseName, userName, password)) {
-            recordLoginInfo(TenantConstants.Source.SLAVE.getCode(), SecurityConstants.EMPTY_TENANT_ID, enterpriseName, SecurityConstants.EMPTY_USER_ID, userName, Constants.LOGIN_FAIL, "企业账号/员工账号/密码必须填写");
+            recordLoginInfo(enterpriseName, userName, Constants.LOGIN_FAIL, "企业账号/员工账号/密码必须填写");
             throw new ServiceException("企业账号/员工账号/密码必须填写");
         }
         // 企业账号不在指定范围内 错误
         if (enterpriseName.length() < OrganizeConstants.ENTERPRISE_NAME_MIN_LENGTH
                 || enterpriseName.length() > OrganizeConstants.ENTERPRISE_NAME_MAX_LENGTH) {
-            recordLoginInfo(TenantConstants.Source.SLAVE.getCode(), SecurityConstants.EMPTY_TENANT_ID, enterpriseName, SecurityConstants.EMPTY_USER_ID, userName, Constants.LOGIN_FAIL, "企业账号不在指定范围");
+            recordLoginInfo(enterpriseName, userName, Constants.LOGIN_FAIL, "企业账号不在指定范围");
             throw new ServiceException("企业账号不在指定范围");
         }
 
         // 员工账号不在指定范围内 错误
         if (userName.length() < OrganizeConstants.USERNAME_MIN_LENGTH
                 || userName.length() > OrganizeConstants.USERNAME_MAX_LENGTH) {
-            recordLoginInfo(TenantConstants.Source.SLAVE.getCode(), SecurityConstants.EMPTY_TENANT_ID, enterpriseName, SecurityConstants.EMPTY_USER_ID, userName, Constants.LOGIN_FAIL, "员工账号不在指定范围");
+            recordLoginInfo(enterpriseName, userName, Constants.LOGIN_FAIL, "员工账号不在指定范围");
             throw new ServiceException("员工账号不在指定范围");
         }
 
         // 密码如果不在指定范围内 错误
         if (password.length() < OrganizeConstants.PASSWORD_MIN_LENGTH
                 || password.length() > OrganizeConstants.PASSWORD_MAX_LENGTH) {
-            recordLoginInfo(TenantConstants.Source.SLAVE.getCode(), SecurityConstants.EMPTY_TENANT_ID, enterpriseName, SecurityConstants.EMPTY_USER_ID, userName, Constants.LOGIN_FAIL, "用户密码不在指定范围");
+            recordLoginInfo(enterpriseName, userName, Constants.LOGIN_FAIL, "用户密码不在指定范围");
             throw new ServiceException("用户密码不在指定范围");
         }
         // 查询企业信息与策略源信息
         R<LoginUser> enterpriseResult = remoteLoginService.getEnterpriseInfoInner(enterpriseName, SecurityConstants.INNER);
         if (enterpriseResult.isFail()) {
-            throw new ServiceException(enterpriseResult.getMessage());
+            throw new ServiceException("当前访问人数过多，请稍后再试！");
+        } else if (ObjectUtil.isNull(enterpriseResult.getResult())) {
+            recordLoginInfo(enterpriseName, userName, Constants.LOGIN_FAIL, "登录企业账号不存在");
+            throw new ServiceException("企业账号/员工账号/密码错误，请检查！");
         }
         SysEnterpriseDto enterprise = enterpriseResult.getResult().getEnterprise();
         Source source = enterpriseResult.getResult().getSource();
@@ -81,33 +86,31 @@ public class SysLoginService {
         // 查询用户信息
         R<LoginUser> userResult = remoteLoginService.getUserInfoInner(userName, password, enterpriseId, isLessor, sourceName, SecurityConstants.INNER);
         if (userResult.isFail()) {
-            throw new ServiceException(userResult.getMessage());
-        }
-
-        if (ObjectUtil.isNull(userResult) || ObjectUtil.isNull(userResult.getResult())) {
-            recordLoginInfo(TenantConstants.Source.SLAVE.getCode(), SecurityConstants.EMPTY_TENANT_ID, enterpriseName, SecurityConstants.EMPTY_USER_ID, userName, Constants.LOGIN_FAIL, "登录用户不存在");
-            throw new ServiceException("企业账号/员工账号/密码错误，请检查");
+            throw new ServiceException("当前访问人数过多，请稍后再试！");
+        } else if (ObjectUtil.isNull(userResult.getResult())) {
+            recordLoginInfo(sourceName, enterpriseId, enterpriseName, userName, Constants.LOGIN_FAIL, "登录用户不存在");
+            throw new ServiceException("企业账号/员工账号/密码错误，请检查！");
         }
         LoginUser loginUser = userResult.getResult();
-
         loginUser.setEnterprise(enterprise);
         loginUser.setSource(source);
-        Long userId = loginUser.getUser().getId();
-
+        SysUserDto user = loginUser.getUser();
+        Long userId = user.getId();
+        String userNick = user.getNickName();
         if (BaseConstants.Status.DISABLE.getCode().equals(loginUser.getUser().getStatus())) {
-            recordLoginInfo(sourceName, enterpriseId, enterpriseName, userId, userName, Constants.LOGIN_FAIL, "用户已停用，请联系管理员");
-            throw new ServiceException("对不起，您的账号：" + userName + " 已停用");
+            recordLoginInfo(sourceName, enterpriseId, enterpriseName, userId, userName, userNick, Constants.LOGIN_FAIL, "用户已停用，请联系管理员");
+            throw new ServiceException("对不起，您的账号：" + userName + " 已停用！");
         }
 
-        recordLoginInfo(sourceName, enterpriseId, enterpriseName, userId, userName, Constants.LOGIN_SUCCESS, "登录成功");
+        recordLoginInfo(sourceName, enterpriseId, enterpriseName, userId, userName, userNick, Constants.LOGIN_SUCCESS, "登录成功");
         return loginUser;
     }
 
     /**
      * 退出
      */
-    public void logout(String sourceName, Long enterpriseId, String enterpriseName, Long userId, String userName) {
-        recordLoginInfo(sourceName, enterpriseId, enterpriseName, userId, userName, Constants.LOGOUT, "退出成功");
+    public void logout(String sourceName, Long enterpriseId, String enterpriseName, Long userId, String userName, String userNick) {
+        recordLoginInfo(sourceName, enterpriseId, enterpriseName, userId, userName, userNick, Constants.LOGOUT, "退出成功");
     }
 
 
@@ -120,7 +123,34 @@ public class SysLoginService {
         if (R.FAIL == registerResult.getCode()) {
             throw new ServiceException(registerResult.getMessage());
         }
-        recordLoginInfo(TenantConstants.Source.SLAVE.getCode(), SecurityConstants.EMPTY_TENANT_ID, registerBody.getTenant().getName(), SecurityConstants.EMPTY_USER_ID, registerBody.getUser().getUserName(), Constants.REGISTER, "注册成功");
+        // 注册逻辑补充完整后再增加日志
+//        recordLoginInfo(TenantConstants.Source.SLAVE.getCode(), SecurityConstants.EMPTY_TENANT_ID, registerBody.getTenant().getName(), SecurityConstants.EMPTY_USER_ID, registerBody.getUser().getUserName(), Constants.REGISTER, "注册成功");
+    }
+
+    /**
+     * 记录登录信息 | 无企业信息
+     *
+     * @param enterpriseName 企业名称
+     * @param userName       用户名
+     * @param status         状态
+     * @param message        消息内容
+     */
+    public void recordLoginInfo(String enterpriseName, String userName, String status, String message) {
+        recordLoginInfo(TenantConstants.Source.SLAVE.getCode(), SecurityConstants.EMPTY_TENANT_ID, enterpriseName, SecurityConstants.EMPTY_USER_ID, userName, StrUtil.EMPTY, status, message);
+    }
+
+    /**
+     * 记录登录信息 | 无用户信息
+     *
+     * @param sourceName     索引数据源源
+     * @param enterpriseId   企业Id
+     * @param enterpriseName 企业名称
+     * @param userName       用户名
+     * @param status         状态
+     * @param message        消息内容
+     */
+    public void recordLoginInfo(String sourceName, Long enterpriseId, String enterpriseName, String userName, String status, String message) {
+        recordLoginInfo(sourceName, enterpriseId, enterpriseName, SecurityConstants.EMPTY_USER_ID, userName, StrUtil.EMPTY, status, message);
     }
 
     /**
@@ -134,13 +164,13 @@ public class SysLoginService {
      * @param status         状态
      * @param message        消息内容
      */
-    public void recordLoginInfo(String sourceName, Long enterpriseId, String enterpriseName, Long userId, String userName, String status, String message) {
+    public void recordLoginInfo(String sourceName, Long enterpriseId, String enterpriseName, Long userId, String userName, String userNick, String status, String message) {
         SysLoginLogDto loginInfo = new SysLoginLogDto();
-        loginInfo.setSourceName(sourceName);
         loginInfo.setEnterpriseId(enterpriseId);
         loginInfo.setEnterpriseName(enterpriseName);
         loginInfo.setUserId(userId);
         loginInfo.setUserName(userName);
+        loginInfo.setUserNick(userNick);
         loginInfo.setIpaddr(IpUtils.getIpAddr(ServletUtils.getRequest()));
         loginInfo.setMsg(message);
         // 日志状态
@@ -149,6 +179,6 @@ public class SysLoginService {
         } else if (Constants.LOGIN_FAIL.equals(status)) {
             loginInfo.setStatus(BaseConstants.Status.DISABLE.getCode());
         }
-        remoteLogService.saveLoginInfo(loginInfo, SecurityConstants.INNER);
+        remoteLogService.saveLoginInfo(loginInfo, enterpriseId, sourceName, SecurityConstants.INNER);
     }
 }

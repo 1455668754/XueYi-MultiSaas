@@ -27,7 +27,6 @@ public class SysLoginLogServiceImpl extends BaseServiceImpl<SysLoginLogDto, SysL
      * @param loginLog 访问日志对象 | sourceName 数据源名称
      */
     @Override
-    @DS("#loginLog.sourceName")
     public int insert(SysLoginLogDto loginLog) {
         return baseManager.insert(loginLog);
     }

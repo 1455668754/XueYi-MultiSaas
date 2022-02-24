@@ -152,4 +152,20 @@ public interface SystemConstants {
     String SYS_NOTICE_IMPORT = "system:notice:import";
     /** 系统 - 通知公告 - 导出 */
     String SYS_NOTICE_EXPORT = "system:notice:export";
+
+    /** 系统 - 访问日志 - 列表 */
+    String SYS_LOGIN_LOG_LIST = "monitor:loginLog:list";
+    /** 系统 - 访问日志 - 删除 */
+    String SYS_LOGIN_LOG_DELETE = "monitor:loginLog:delete";
+    /** 系统 - 访问日志 - 导出 */
+    String SYS_LOGIN_LOG_EXPORT = "monitor:loginLog:export";
+
+    /** 系统 - 操作日志 - 列表 */
+    String SYS_OPERATE_LOG_LIST = "monitor:operateLog:list";
+    /** 系统 - 操作日志 - 详情 */
+    String SYS_OPERATE_LOG_SINGLE = "monitor:operateLog:single";
+    /** 系统 - 操作日志 - 删除 */
+    String SYS_OPERATE_LOG_DELETE = "monitor:operateLog:delete";
+    /** 系统 - 操作日志 - 导出 */
+    String SYS_OPERATE_LOG_EXPORT = "monitor:operateLog:export";
 }

@@ -38,9 +38,9 @@ public class SysLoginController extends BasisController {
     @GetMapping("/inner/enterpriseInfo/{enterpriseName}")
     R<LoginUser> getEnterpriseInfo(@PathVariable("enterpriseName") String enterpriseName) {
         SysEnterpriseDto enterprise = loginService.loginByEnterpriseName(enterpriseName);
-        if (ObjectUtil.isNull(enterprise)) {
-            return R.fail("账号或密码错误，请检查");
-        }
+        // 不存在直接返回空数据 | 与网络调用错误区分
+        if (ObjectUtil.isNull(enterprise))
+            return R.ok();
         Source source = SourceUtils.getSourceCache(enterprise.getStrategyId());
         LoginUser loginUser = new LoginUser();
         loginUser.setEnterprise(enterprise);
@@ -56,9 +56,9 @@ public class SysLoginController extends BasisController {
     @GetMapping("/inner/userInfo/{userName}/{password}")
     public R<LoginUser> getLoginInfo(@PathVariable("userName") String userName, @PathVariable("password") String password) {
         SysUserDto user = loginService.loginByUser(userName, password);
-        if (ObjectUtil.isNull(user)) {
-            return R.fail("账号或密码错误，请检查");
-        }
+        // 不存在直接返回空数据 | 与网络调用错误区分
+        if (ObjectUtil.isNull(user))
+            return R.ok();
         // 角色权限标识
         Set<String> roles = loginService.getRolePermission(user.getRoles(), user.getUserType());
         // 角色Id集合
