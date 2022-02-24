@@ -1,4 +1,4 @@
-package com.xueyi.common.core.constant;
+package com.xueyi.common.core.constant.gen;
 
 import com.xueyi.common.core.utils.StringUtils;
 

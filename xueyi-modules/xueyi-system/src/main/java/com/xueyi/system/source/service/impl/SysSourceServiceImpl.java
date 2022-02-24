@@ -1,7 +1,7 @@
 package com.xueyi.system.source.service.impl;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
-import com.xueyi.common.core.constant.CacheConstants;
+import com.xueyi.common.core.constant.basic.CacheConstants;
 import com.xueyi.common.redis.service.RedisService;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.source.domain.Source;
@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.xueyi.common.core.constant.TenantConstants.MASTER;
+import static com.xueyi.common.core.constant.basic.TenantConstants.MASTER;
 
 /**
  * 策略组管理 服务层处理

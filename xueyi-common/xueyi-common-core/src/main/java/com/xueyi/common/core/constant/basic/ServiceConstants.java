@@ -1,4 +1,4 @@
-package com.xueyi.common.core.constant;
+package com.xueyi.common.core.constant.basic;
 
 /**
  * 服务名称通用常量

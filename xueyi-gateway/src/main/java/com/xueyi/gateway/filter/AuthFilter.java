@@ -1,10 +1,10 @@
 package com.xueyi.gateway.filter;
 
 import cn.hutool.core.util.StrUtil;
-import com.xueyi.common.core.constant.CacheConstants;
-import com.xueyi.common.core.constant.HttpConstants;
-import com.xueyi.common.core.constant.SecurityConstants;
-import com.xueyi.common.core.constant.TokenConstants;
+import com.xueyi.common.core.constant.basic.CacheConstants;
+import com.xueyi.common.core.constant.basic.HttpConstants;
+import com.xueyi.common.core.constant.basic.SecurityConstants;
+import com.xueyi.common.core.constant.basic.TokenConstants;
 import com.xueyi.common.core.utils.JwtUtils;
 import com.xueyi.common.core.utils.ServletUtils;
 import com.xueyi.common.core.utils.StringUtils;

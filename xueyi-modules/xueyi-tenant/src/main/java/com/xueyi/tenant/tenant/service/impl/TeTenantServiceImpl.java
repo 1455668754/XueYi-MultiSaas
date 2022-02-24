@@ -3,8 +3,8 @@ package com.xueyi.tenant.tenant.service.impl;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.dynamic.datasource.annotation.DS;
-import com.xueyi.common.core.constant.DictConstants;
-import com.xueyi.common.core.constant.SecurityConstants;
+import com.xueyi.common.core.constant.basic.DictConstants;
+import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.domain.R;
 import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.xueyi.common.core.constant.TenantConstants.MASTER;
+import static com.xueyi.common.core.constant.basic.TenantConstants.MASTER;
 
 /**
  * 租户管理 服务层处理

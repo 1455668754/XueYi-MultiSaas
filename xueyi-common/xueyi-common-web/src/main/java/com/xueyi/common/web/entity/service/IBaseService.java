@@ -1,6 +1,6 @@
 package com.xueyi.common.web.entity.service;
 
-import com.xueyi.common.core.constant.BaseConstants;
+import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 
 import java.io.Serializable;

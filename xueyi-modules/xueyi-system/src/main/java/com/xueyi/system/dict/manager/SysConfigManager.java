@@ -1,8 +1,8 @@
 package com.xueyi.system.dict.manager;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.xueyi.common.core.constant.BaseConstants;
-import com.xueyi.common.core.constant.SqlConstants;
+import com.xueyi.common.core.constant.basic.BaseConstants;
+import com.xueyi.common.core.constant.basic.SqlConstants;
 import com.xueyi.common.web.entity.manager.BaseManager;
 import com.xueyi.system.api.dict.domain.dto.SysConfigDto;
 import com.xueyi.system.dict.mapper.SysConfigMapper;

@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import com.xueyi.common.core.constant.HttpConstants;
+import com.xueyi.common.core.constant.basic.HttpConstants;
 import org.springframework.util.AntPathMatcher;
 import com.xueyi.common.core.text.StrFormatter;
 

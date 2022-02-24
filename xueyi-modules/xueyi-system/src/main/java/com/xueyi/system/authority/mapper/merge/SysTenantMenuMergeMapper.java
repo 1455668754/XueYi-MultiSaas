@@ -4,7 +4,7 @@ import com.baomidou.dynamic.datasource.annotation.DS;
 import com.xueyi.common.web.entity.mapper.BaseMapper;
 import com.xueyi.system.authority.domain.merge.SysTenantMenuMerge;
 
-import static com.xueyi.common.core.constant.TenantConstants.ISOLATE;
+import static com.xueyi.common.core.constant.basic.TenantConstants.ISOLATE;
 
 /**
  * 租户-菜单关联 数据层

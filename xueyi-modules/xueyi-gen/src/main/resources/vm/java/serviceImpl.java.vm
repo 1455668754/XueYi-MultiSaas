@@ -24,13 +24,12 @@ import ${subPackageName}.mapper.${subClassName}Mapper;
 import cn.hutool.core.util.ObjectUtil;
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.List;
 #end
 import com.xueyi.common.web.entity.service.impl.${Entity}ServiceImpl;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import org.springframework.stereotype.Service;
 
-import static com.xueyi.common.core.constant.TenantConstants.${sourceMode};
+import static com.xueyi.common.core.constant.basic.TenantConstants.${sourceMode};
 
 /**
  * ${functionName}管理 服务层处理

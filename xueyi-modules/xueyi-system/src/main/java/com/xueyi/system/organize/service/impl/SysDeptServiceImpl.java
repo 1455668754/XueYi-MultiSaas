@@ -2,7 +2,7 @@ package com.xueyi.system.organize.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.dynamic.datasource.annotation.DS;
-import com.xueyi.common.core.constant.BaseConstants;
+import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.web.entity.service.impl.SubTreeServiceImpl;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.Serializable;
 import java.util.Collection;
 
-import static com.xueyi.common.core.constant.TenantConstants.ISOLATE;
+import static com.xueyi.common.core.constant.basic.TenantConstants.ISOLATE;
 
 /**
  * 部门管理 服务层处理

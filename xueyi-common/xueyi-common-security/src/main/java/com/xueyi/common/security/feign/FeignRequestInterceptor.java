@@ -1,7 +1,7 @@
 package com.xueyi.common.security.feign;
 
 import cn.hutool.core.util.StrUtil;
-import com.xueyi.common.core.constant.SecurityConstants;
+import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.utils.ServletUtils;
 import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.core.utils.ip.IpUtils;

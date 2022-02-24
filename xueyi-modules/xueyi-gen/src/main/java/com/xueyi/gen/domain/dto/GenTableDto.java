@@ -3,7 +3,7 @@ package com.xueyi.gen.domain.dto;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.xueyi.common.core.constant.GenConstants;
+import com.xueyi.common.core.constant.gen.GenConstants;
 import com.xueyi.gen.domain.po.GenTablePo;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;

@@ -11,7 +11,7 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
-import com.xueyi.common.core.constant.ScheduleConstants;
+import com.xueyi.common.core.constant.job.ScheduleConstants;
 import com.xueyi.common.core.exception.job.TaskException;
 import com.xueyi.common.core.exception.job.TaskException.Code;
 import com.xueyi.job.domain.dto.SysJobDto;

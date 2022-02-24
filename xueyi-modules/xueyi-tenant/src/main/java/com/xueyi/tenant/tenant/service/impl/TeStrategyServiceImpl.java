@@ -3,7 +3,7 @@ package com.xueyi.tenant.tenant.service.impl;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.dynamic.datasource.annotation.DS;
-import com.xueyi.common.core.constant.DictConstants;
+import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.tenant.api.tenant.domain.dto.TeStrategyDto;
 import com.xueyi.tenant.tenant.manager.TeStrategyManager;
@@ -11,7 +11,7 @@ import com.xueyi.tenant.tenant.mapper.TeStrategyMapper;
 import com.xueyi.tenant.tenant.service.ITeStrategyService;
 import org.springframework.stereotype.Service;
 
-import static com.xueyi.common.core.constant.TenantConstants.MASTER;
+import static com.xueyi.common.core.constant.basic.TenantConstants.MASTER;
 
 /**
  * 数据源策略管理 服务层处理

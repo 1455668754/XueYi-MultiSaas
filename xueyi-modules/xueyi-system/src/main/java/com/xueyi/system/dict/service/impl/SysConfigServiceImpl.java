@@ -3,8 +3,8 @@ package com.xueyi.system.dict.service.impl;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.dynamic.datasource.annotation.DS;
-import com.xueyi.common.core.constant.BaseConstants;
-import com.xueyi.common.core.constant.CacheConstants;
+import com.xueyi.common.core.constant.basic.BaseConstants;
+import com.xueyi.common.core.constant.basic.CacheConstants;
 import com.xueyi.common.redis.service.RedisService;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.dict.domain.dto.SysConfigDto;
@@ -20,7 +20,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.xueyi.common.core.constant.TenantConstants.MASTER;
+import static com.xueyi.common.core.constant.basic.TenantConstants.MASTER;
 
 /**
  * 参数配置管理 服务层实现

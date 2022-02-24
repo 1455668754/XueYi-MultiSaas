@@ -5,7 +5,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import com.xueyi.system.api.log.feign.RemoteLogService;
 import com.xueyi.system.api.log.domain.dto.SysOperateLogDto;
-import com.xueyi.common.core.constant.SecurityConstants;
+import com.xueyi.common.core.constant.basic.SecurityConstants;
 
 /**
  * 异步调用日志服务

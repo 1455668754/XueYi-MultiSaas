@@ -1,7 +1,7 @@
 package com.xueyi.job.controller;
 
-import com.xueyi.common.core.constant.HttpConstants;
-import com.xueyi.common.core.constant.ScheduleConstants;
+import com.xueyi.common.core.constant.basic.HttpConstants;
+import com.xueyi.common.core.constant.job.ScheduleConstants;
 import com.xueyi.common.core.exception.job.TaskException;
 import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.core.utils.poi.ExcelUtil;

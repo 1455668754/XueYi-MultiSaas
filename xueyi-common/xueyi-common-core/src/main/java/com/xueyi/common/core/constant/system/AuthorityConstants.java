@@ -1,5 +1,6 @@
-package com.xueyi.common.core.constant;
+package com.xueyi.common.core.constant.system;
 
+import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.utils.StringUtils;
 
 /**

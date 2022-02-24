@@ -3,7 +3,7 @@ package com.xueyi.common.core.utils;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.xueyi.common.core.constant.BaseConstants;
+import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.exception.base.BaseException;
 
 import java.io.Serializable;

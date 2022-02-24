@@ -5,7 +5,7 @@ import com.xueyi.common.web.entity.mapper.SubBaseMapper;
 import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
 import com.xueyi.system.api.dict.domain.dto.SysDictTypeDto;
 
-import static com.xueyi.common.core.constant.TenantConstants.MASTER;
+import static com.xueyi.common.core.constant.basic.TenantConstants.MASTER;
 
 /**
  * 字典类型管理 数据层

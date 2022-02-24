@@ -3,7 +3,7 @@ package com.xueyi.system.organize.manager;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ArrayUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.xueyi.common.core.constant.OrganizeConstants;
+import com.xueyi.common.core.constant.system.OrganizeConstants;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 import com.xueyi.system.organize.domain.merge.SysOrganizeRoleMerge;

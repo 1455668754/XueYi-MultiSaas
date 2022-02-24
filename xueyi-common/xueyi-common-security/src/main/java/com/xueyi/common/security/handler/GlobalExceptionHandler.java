@@ -1,6 +1,6 @@
 package com.xueyi.common.security.handler;
 
-import com.xueyi.common.core.constant.HttpConstants;
+import com.xueyi.common.core.constant.basic.HttpConstants;
 import com.xueyi.common.core.exception.DemoModeException;
 import com.xueyi.common.core.exception.InnerAuthException;
 import com.xueyi.common.core.exception.ServiceException;

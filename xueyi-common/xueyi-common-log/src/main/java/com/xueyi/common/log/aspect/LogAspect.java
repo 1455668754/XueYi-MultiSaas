@@ -1,8 +1,8 @@
 package com.xueyi.common.log.aspect;
 
 import com.alibaba.fastjson.JSON;
-import com.xueyi.common.core.constant.SecurityConstants;
-import com.xueyi.common.core.constant.TenantConstants;
+import com.xueyi.common.core.constant.basic.SecurityConstants;
+import com.xueyi.common.core.constant.basic.TenantConstants;
 import com.xueyi.common.core.utils.ServletUtils;
 import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.core.utils.ip.IpUtils;

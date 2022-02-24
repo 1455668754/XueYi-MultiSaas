@@ -1,6 +1,6 @@
 package com.xueyi.job.util;
 
-import com.xueyi.common.core.constant.ScheduleConstants;
+import com.xueyi.common.core.constant.job.ScheduleConstants;
 import com.xueyi.common.core.utils.ExceptionUtil;
 import com.xueyi.common.core.utils.SpringUtils;
 import com.xueyi.common.core.utils.StringUtils;

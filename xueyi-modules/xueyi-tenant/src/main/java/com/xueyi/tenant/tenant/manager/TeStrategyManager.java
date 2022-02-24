@@ -1,7 +1,7 @@
 package com.xueyi.tenant.tenant.manager;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.xueyi.common.core.constant.SqlConstants;
+import com.xueyi.common.core.constant.basic.SqlConstants;
 import com.xueyi.common.web.entity.manager.BaseManager;
 import com.xueyi.tenant.api.tenant.domain.dto.TeStrategyDto;
 import com.xueyi.tenant.tenant.mapper.TeStrategyMapper;

@@ -1,4 +1,4 @@
-package com.xueyi.common.core.constant;
+package com.xueyi.common.core.constant.basic;
 
 /**
  * 安全相关通用常量

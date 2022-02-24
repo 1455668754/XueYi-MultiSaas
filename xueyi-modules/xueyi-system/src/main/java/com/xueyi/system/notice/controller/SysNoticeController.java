@@ -1,5 +1,7 @@
 package com.xueyi.system.notice.controller;
 
+import com.xueyi.common.core.constant.basic.BaseConstants;
+import com.xueyi.common.core.constant.system.NoticeConstants;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
@@ -111,5 +113,15 @@ public class SysNoticeController extends BaseController<SysNoticeDto, ISysNotice
     @GetMapping("/option")
     public AjaxResult option() {
         return super.option();
+    }
+
+    /**
+     * 前置校验 （强制）增加/修改
+     */
+    @Override
+    protected void AEHandleValidated(BaseConstants.Operate operate, SysNoticeDto notice) {
+        // 初始化发送状态
+        if(operate.isAdd())
+            notice.setStatus(NoticeConstants.NoticeStatus.READY.getCode());
     }
 }

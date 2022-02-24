@@ -3,7 +3,7 @@ package com.xueyi.job.domain.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.xueyi.common.core.annotation.Excel;
 import com.xueyi.common.core.annotation.Excel.ColumnType;
-import com.xueyi.common.core.constant.ScheduleConstants;
+import com.xueyi.common.core.constant.job.ScheduleConstants;
 import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.job.util.CronUtils;

@@ -1,8 +1,8 @@
 package com.xueyi.common.web.handler;
 
 import com.baomidou.mybatisplus.extension.plugins.handler.TenantLineHandler;
-import com.xueyi.common.core.constant.SecurityConstants;
-import com.xueyi.common.core.constant.TenantConstants;
+import com.xueyi.common.core.constant.basic.SecurityConstants;
+import com.xueyi.common.core.constant.basic.TenantConstants;
 import com.xueyi.common.security.utils.SecurityUtils;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.LongValue;

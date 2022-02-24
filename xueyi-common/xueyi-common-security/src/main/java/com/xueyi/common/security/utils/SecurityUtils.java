@@ -2,9 +2,9 @@ package com.xueyi.common.security.utils;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.xueyi.common.core.constant.AuthorityConstants;
-import com.xueyi.common.core.constant.SecurityConstants;
-import com.xueyi.common.core.constant.TokenConstants;
+import com.xueyi.common.core.constant.system.AuthorityConstants;
+import com.xueyi.common.core.constant.basic.SecurityConstants;
+import com.xueyi.common.core.constant.basic.TokenConstants;
 import com.xueyi.common.core.context.SecurityContextHolder;
 import com.xueyi.common.core.utils.ServletUtils;
 import com.xueyi.common.core.utils.StringUtils;

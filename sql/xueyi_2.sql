@@ -337,7 +337,7 @@ create table sys_notice (
   name                      varchar(50)         not null                                comment '公告标题',
   type                      char(1)             not null default '0'                    comment '公告类型（0通知 1公告）',
   content                   longblob            default null                            comment '公告内容',
-  status                    char(1)             default '0'                             comment '公告状态（0未发送 1已发送）',
+  status                    char(1)             default '0'                             comment '公告状态（0待发送 1已发送 2已关闭 3发送失败 4发送异常）',
   remark                    varchar(1000)       default null                            comment '备注',
   create_by                 bigint              default null                            comment '创建者',
   create_time               datetime            default current_timestamp               comment '创建时间',

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
-import com.xueyi.common.core.constant.ServiceConstants;
+import com.xueyi.common.core.constant.basic.ServiceConstants;
 import com.xueyi.common.core.domain.R;
 import com.xueyi.system.api.file.domain.SysFile;
 import com.xueyi.system.api.file.feign.factory.RemoteFileFallbackFactory;

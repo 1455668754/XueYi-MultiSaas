@@ -1,6 +1,6 @@
 package com.xueyi.common.core.web.result;
 
-import com.xueyi.common.core.constant.HttpConstants;
+import com.xueyi.common.core.constant.basic.HttpConstants;
 import com.xueyi.common.core.utils.StringUtils;
 
 import java.util.HashMap;

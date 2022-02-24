@@ -3,8 +3,8 @@ package com.xueyi.system.utils.route;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.xueyi.common.core.constant.AuthorityConstants;
-import com.xueyi.common.core.constant.DictConstants;
+import com.xueyi.common.core.constant.system.AuthorityConstants;
+import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 
 import java.util.ArrayList;

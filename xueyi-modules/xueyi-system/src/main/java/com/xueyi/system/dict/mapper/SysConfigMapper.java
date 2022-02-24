@@ -4,7 +4,7 @@ import com.baomidou.dynamic.datasource.annotation.DS;
 import com.xueyi.common.web.entity.mapper.BaseMapper;
 import com.xueyi.system.api.dict.domain.dto.SysConfigDto;
 
-import static com.xueyi.common.core.constant.TenantConstants.MASTER;
+import static com.xueyi.common.core.constant.basic.TenantConstants.MASTER;
 
 /**
  * 参数配置管理 数据层

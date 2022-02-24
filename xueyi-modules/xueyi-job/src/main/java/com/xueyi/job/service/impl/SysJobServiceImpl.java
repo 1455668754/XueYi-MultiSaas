@@ -1,7 +1,7 @@
 package com.xueyi.job.service.impl;
 
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
-import com.xueyi.common.core.constant.ScheduleConstants;
+import com.xueyi.common.core.constant.job.ScheduleConstants;
 import com.xueyi.common.core.exception.job.TaskException;
 import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;

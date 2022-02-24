@@ -1,4 +1,4 @@
-package com.xueyi.common.core.constant;
+package com.xueyi.common.core.constant.basic;
 
 /**
  * Token的Key通用常量

@@ -1,7 +1,7 @@
 package com.xueyi.system.organize.manager;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.xueyi.common.core.constant.SqlConstants;
+import com.xueyi.common.core.constant.basic.SqlConstants;
 import com.xueyi.common.web.entity.manager.BaseManager;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 import com.xueyi.system.organize.mapper.SysDeptMapper;

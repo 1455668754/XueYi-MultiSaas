@@ -1,4 +1,4 @@
-package com.xueyi.common.core.constant;
+package com.xueyi.common.core.constant.basic;
 
 /**
  * sql 通用常量

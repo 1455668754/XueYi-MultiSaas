@@ -2,7 +2,7 @@ package com.xueyi.system.authority.manager;
 
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.xueyi.common.core.constant.SqlConstants;
+import com.xueyi.common.core.constant.basic.SqlConstants;
 import com.xueyi.common.web.entity.manager.BaseManager;
 import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
 import com.xueyi.system.authority.domain.merge.SysRoleMenuMerge;

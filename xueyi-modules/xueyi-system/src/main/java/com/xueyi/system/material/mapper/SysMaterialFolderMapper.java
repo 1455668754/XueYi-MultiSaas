@@ -5,7 +5,7 @@ import com.xueyi.common.web.entity.mapper.SubTreeMapper;
 import com.xueyi.system.api.file.domain.dto.SysMaterialDto;
 import com.xueyi.system.api.file.domain.dto.SysMaterialFolderDto;
 
-import static com.xueyi.common.core.constant.TenantConstants.ISOLATE;
+import static com.xueyi.common.core.constant.basic.TenantConstants.ISOLATE;
 
 /**
  * 素材分类管理 数据层

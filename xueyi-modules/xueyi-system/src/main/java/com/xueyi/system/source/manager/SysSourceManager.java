@@ -1,7 +1,7 @@
 package com.xueyi.system.source.manager;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.xueyi.common.core.constant.BaseConstants;
+import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.web.entity.manager.BaseManager;
 import com.xueyi.system.api.source.domain.Source;
 import com.xueyi.system.source.mapper.SysSourceMapper;

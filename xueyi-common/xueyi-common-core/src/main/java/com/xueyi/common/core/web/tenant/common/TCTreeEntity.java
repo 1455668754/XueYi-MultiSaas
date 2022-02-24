@@ -3,7 +3,7 @@ package com.xueyi.common.core.web.tenant.common;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.xueyi.common.core.web.entity.common.CTreeEntity;
 
-import static com.xueyi.common.core.constant.TenantConstants.TENANT_ID;
+import static com.xueyi.common.core.constant.basic.TenantConstants.TENANT_ID;
 
 /**
  * Tree 租户混合基类

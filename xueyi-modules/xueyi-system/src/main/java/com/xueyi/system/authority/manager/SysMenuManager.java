@@ -5,7 +5,11 @@ import cn.hutool.core.util.IdUtil;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.xueyi.common.core.constant.*;
+import com.xueyi.common.core.constant.basic.BaseConstants;
+import com.xueyi.common.core.constant.basic.DictConstants;
+import com.xueyi.common.core.constant.basic.SecurityConstants;
+import com.xueyi.common.core.constant.basic.SqlConstants;
+import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.entity.manager.TreeManager;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
@@ -22,7 +26,7 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.xueyi.common.core.constant.SqlConstants.ANCESTORS_FIND;
+import static com.xueyi.common.core.constant.basic.SqlConstants.ANCESTORS_FIND;
 
 /**
  * 菜单管理 数据封装层

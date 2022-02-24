@@ -1,6 +1,6 @@
 package com.xueyi.common.core.domain;
 
-import com.xueyi.common.core.constant.Constants;
+import com.xueyi.common.core.constant.basic.Constants;
 
 import java.io.Serializable;
 

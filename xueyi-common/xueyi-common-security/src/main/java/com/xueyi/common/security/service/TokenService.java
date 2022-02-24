@@ -1,7 +1,7 @@
 package com.xueyi.common.security.service;
 
-import com.xueyi.common.core.constant.CacheConstants;
-import com.xueyi.common.core.constant.SecurityConstants;
+import com.xueyi.common.core.constant.basic.CacheConstants;
+import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.utils.*;
 import com.xueyi.common.core.utils.ip.IpUtils;
 import com.xueyi.common.redis.service.RedisService;

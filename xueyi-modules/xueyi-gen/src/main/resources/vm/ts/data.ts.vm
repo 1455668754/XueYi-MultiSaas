@@ -5,11 +5,29 @@ import { DescItem } from '@/components/Description'
 import { dicDictList } from '@service/sys/dict'
 import { dictConversion } from '@admin/utils'
 #end
+#set($InputNumber = false)
+#set($tinymce = false)
+#set($markdown = false)
 #foreach ($column in $columns)
-#if($column.htmlType == 'InputNumber')
-import { DicSortEnum } from '@enums/basic'
-#break
+#if($column.htmlType == 'InputNumber' && ($column.isInsert() || $column.isEdit()))
+#set($InputNumber = true)
+#elseif($column.htmlType == 'tinymce' && ($column.isInsert() || $column.isEdit()))
+#set($tinymce = true)
+#elseif($column.htmlType == 'markdown' && ($column.isInsert() || $column.isEdit()))
+#set($markdown = true)
 #end
+#end
+#if($tinymce || $markdown)
+import { h } from 'vue'
+#end
+#if($InputNumber)
+import { DicSortEnum } from '@enums/basic'
+#end
+#if($tinymce)
+import { Tinymce } from '@/components/Tinymce'
+#end
+#if($markdown)
+import { MarkDown } from '@/components/Markdown'
 #end
 #foreach ($column in $columns)
 #if($column.dictType && $column.dictName)
@@ -90,6 +108,8 @@ export const searchFormSchema: FormSchema[] = [
             showSearch: true,
             optionFilterProp: 'label',
         },
+#elseif($column.htmlType == 'tinymce' || $column.htmlType == 'markdown')
+        component: 'Input',
 #else
         component: '${column.htmlType}',
 #end
@@ -135,6 +155,27 @@ export const formSchema: FormSchema[] = [
     {
         label: '${column.readNameNoSuffix()}',
         field: '${column.javaField}',
+#if($column.htmlType == 'tinymce')
+        component: 'Input',
+        render: ({ model, field }) => {
+            return h(Tinymce, {
+                value: model[field],
+                onChange: (value: string) => {
+                    model[field] = value
+                },
+            })
+        },
+#elseif($column.htmlType == 'markdown')
+        component: 'Input',
+        render: ({ model, field }) => {
+            return h(MarkDown, {
+                value: model[field],
+                onChange: (value: string) => {
+                    model[field] = value
+                },
+            })
+        },
+#else
         component: '${column.htmlType}',
 #if($column.htmlType == 'InputNumber')
         defaultValue: DicSortEnum.ZERO,
@@ -147,6 +188,7 @@ export const formSchema: FormSchema[] = [
             optionFilterProp: 'label',
 #end
         },
+#end
 #end
 #if($column.isPk())
         show: false,

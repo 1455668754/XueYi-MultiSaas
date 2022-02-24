@@ -1,11 +1,11 @@
 package com.xueyi.common.datasource.processor;
 
 import com.baomidou.dynamic.datasource.processor.DsProcessor;
-import com.xueyi.common.core.constant.TenantConstants;
+import com.xueyi.common.core.constant.basic.TenantConstants;
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.stereotype.Component;
 
-import static com.xueyi.common.core.constant.TenantConstants.MASTER;
+import static com.xueyi.common.core.constant.basic.TenantConstants.MASTER;
 
 /**
  * 主库源策略

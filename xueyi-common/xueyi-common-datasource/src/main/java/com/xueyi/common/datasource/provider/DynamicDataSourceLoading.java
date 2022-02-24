@@ -3,7 +3,7 @@ package com.xueyi.common.datasource.provider;
 import com.baomidou.dynamic.datasource.provider.AbstractJdbcDataSourceProvider;
 import com.baomidou.dynamic.datasource.provider.DynamicDataSourceProvider;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DataSourceProperty;
-import com.xueyi.common.core.constant.SourceConstants;
+import com.xueyi.common.core.constant.basic.SourceConstants;
 import com.xueyi.common.datasource.config.properties.SourceProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,7 +15,7 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.xueyi.common.core.constant.SourceConstants.Details;
+import static com.xueyi.common.core.constant.basic.SourceConstants.Details;
 
 /**
  * 子数据源加载

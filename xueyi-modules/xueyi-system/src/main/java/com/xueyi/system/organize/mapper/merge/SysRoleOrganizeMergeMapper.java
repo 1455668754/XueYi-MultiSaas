@@ -4,7 +4,7 @@ import com.baomidou.dynamic.datasource.annotation.DS;
 import com.xueyi.common.web.entity.mapper.BaseMapper;
 import com.xueyi.system.organize.domain.merge.SysRoleOrganizeMerge;
 
-import static com.xueyi.common.core.constant.TenantConstants.ISOLATE;
+import static com.xueyi.common.core.constant.basic.TenantConstants.ISOLATE;
 
 /**
  * 角色-组织关联（权限范围） 数据层

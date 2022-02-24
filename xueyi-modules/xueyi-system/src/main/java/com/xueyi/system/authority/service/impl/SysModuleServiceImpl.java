@@ -16,7 +16,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
-import static com.xueyi.common.core.constant.TenantConstants.ISOLATE;
+import static com.xueyi.common.core.constant.basic.TenantConstants.ISOLATE;
 
 /**
  * 模块管理 服务层处理

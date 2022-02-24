@@ -8,7 +8,7 @@ import com.xueyi.system.notice.mapper.SysNoticeMapper;
 import com.xueyi.system.notice.service.ISysNoticeService;
 import org.springframework.stereotype.Service;
 
-import static com.xueyi.common.core.constant.TenantConstants.ISOLATE;
+import static com.xueyi.common.core.constant.basic.TenantConstants.ISOLATE;
 
 /**
  * 通知公告管理 服务层处理

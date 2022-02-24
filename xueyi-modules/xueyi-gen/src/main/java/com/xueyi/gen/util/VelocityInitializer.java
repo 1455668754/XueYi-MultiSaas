@@ -1,6 +1,6 @@
 package com.xueyi.gen.util;
 
-import com.xueyi.common.core.constant.HttpConstants;
+import com.xueyi.common.core.constant.basic.HttpConstants;
 import org.apache.velocity.app.Velocity;
 
 import java.util.Properties;

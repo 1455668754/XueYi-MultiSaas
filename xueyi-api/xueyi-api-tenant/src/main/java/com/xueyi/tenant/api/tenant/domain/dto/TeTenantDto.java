@@ -2,7 +2,7 @@ package com.xueyi.tenant.api.tenant.domain.dto;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.xueyi.common.core.constant.AuthorityConstants;
+import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.tenant.api.tenant.domain.po.TeTenantPo;
 import org.apache.commons.lang3.builder.ToStringBuilder;

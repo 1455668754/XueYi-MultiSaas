@@ -1,7 +1,7 @@
 package com.xueyi.common.core.context;
 
 import com.alibaba.ttl.TransmittableThreadLocal;
-import com.xueyi.common.core.constant.SecurityConstants;
+import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.text.Convert;
 import com.xueyi.common.core.utils.StringUtils;
 

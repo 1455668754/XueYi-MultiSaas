@@ -2,7 +2,7 @@ package com.xueyi.common.core.web.entity.common;
 
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.xueyi.common.core.constant.DictConstants;
+import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.core.web.entity.base.SubBaseEntity;
 

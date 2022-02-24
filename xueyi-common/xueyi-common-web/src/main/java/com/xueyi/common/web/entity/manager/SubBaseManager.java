@@ -2,8 +2,8 @@ package com.xueyi.common.web.entity.manager;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.xueyi.common.core.constant.BaseConstants;
-import com.xueyi.common.core.constant.SqlConstants;
+import com.xueyi.common.core.constant.basic.BaseConstants;
+import com.xueyi.common.core.constant.basic.SqlConstants;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.core.web.entity.base.SubBaseEntity;
 import com.xueyi.common.web.entity.manager.handle.SubBaseHandleManager;

@@ -3,8 +3,8 @@ package com.xueyi.common.web.entity.manager;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.xueyi.common.core.constant.BaseConstants;
-import com.xueyi.common.core.constant.SqlConstants;
+import com.xueyi.common.core.constant.basic.BaseConstants;
+import com.xueyi.common.core.constant.basic.SqlConstants;
 import com.xueyi.common.core.web.entity.base.TreeEntity;
 import com.xueyi.common.web.entity.manager.handle.TreeHandleManager;
 import com.xueyi.common.web.entity.mapper.TreeMapper;
@@ -12,7 +12,7 @@ import com.xueyi.common.web.entity.mapper.TreeMapper;
 import java.io.Serializable;
 import java.util.List;
 
-import static com.xueyi.common.core.constant.SqlConstants.ANCESTORS_FIND;
+import static com.xueyi.common.core.constant.basic.SqlConstants.ANCESTORS_FIND;
 
 /**
  * 数据封装层 树型通用数据处理

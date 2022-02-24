@@ -9,7 +9,7 @@ import com.xueyi.system.monitor.mapper.SysOperateLogMapper;
 import com.xueyi.system.monitor.service.ISysOperateLogService;
 import org.springframework.stereotype.Service;
 
-import static com.xueyi.common.core.constant.TenantConstants.ISOLATE;
+import static com.xueyi.common.core.constant.basic.TenantConstants.ISOLATE;
 
 /**
  * 操作日志管理 服务层处理

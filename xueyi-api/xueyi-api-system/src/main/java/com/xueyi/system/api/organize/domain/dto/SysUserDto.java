@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.common.core.annotation.Excel;
 import com.xueyi.common.core.annotation.Excel.Type;
 import com.xueyi.common.core.annotation.Excels;
-import com.xueyi.common.core.constant.AuthorityConstants;
+import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
 import com.xueyi.system.api.organize.domain.po.SysUserPo;

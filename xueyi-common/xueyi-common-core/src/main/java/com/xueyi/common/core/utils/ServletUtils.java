@@ -1,7 +1,7 @@
 package com.xueyi.common.core.utils;
 
 import com.alibaba.fastjson.JSONObject;
-import com.xueyi.common.core.constant.HttpConstants;
+import com.xueyi.common.core.constant.basic.HttpConstants;
 import com.xueyi.common.core.domain.R;
 import com.xueyi.common.core.text.Convert;
 import org.springframework.core.io.buffer.DataBuffer;

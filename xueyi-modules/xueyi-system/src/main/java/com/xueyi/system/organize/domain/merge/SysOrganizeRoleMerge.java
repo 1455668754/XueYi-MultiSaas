@@ -2,7 +2,7 @@ package com.xueyi.system.organize.domain.merge;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.xueyi.common.core.constant.OrganizeConstants;
+import com.xueyi.common.core.constant.system.OrganizeConstants;
 import com.xueyi.common.core.web.tenant.base.TBasisEntity;
 import com.xueyi.common.security.utils.SecurityUtils;
 

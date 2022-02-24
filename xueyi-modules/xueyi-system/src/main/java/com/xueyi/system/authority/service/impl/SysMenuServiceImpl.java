@@ -4,7 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.dynamic.datasource.annotation.DS;
-import com.xueyi.common.core.constant.AuthorityConstants;
+import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.core.utils.TreeUtils;
 import com.xueyi.common.web.entity.service.impl.TreeServiceImpl;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.xueyi.common.core.constant.TenantConstants.MASTER;
+import static com.xueyi.common.core.constant.basic.TenantConstants.MASTER;
 
 /**
  * 菜单管理 服务层处理

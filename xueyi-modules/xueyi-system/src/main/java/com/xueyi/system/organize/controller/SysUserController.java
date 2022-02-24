@@ -3,7 +3,7 @@ package com.xueyi.system.organize.controller;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.xueyi.common.core.constant.BaseConstants;
+import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.domain.R;
 import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.StringUtils;
@@ -168,27 +168,6 @@ public class SysUserController extends BaseController<SysUserDto, ISysUserServic
     }
 
     /**
-     * 获取用户选择框列表
-     */
-    @Override
-    @GetMapping("/option")
-    public AjaxResult option() {
-        return super.option();
-    }
-
-//    /**
-//     * 修改用户-角色关系
-//     */
-//    @RequiresPermissions("system:role:set")
-//    @Log(title = "用户管理", businessType = BusinessType.UPDATE)
-//    @PutMapping("/changeUserRole")
-//    public AjaxResult editUserRole(@Validated @RequestBody SysUser user) {
-//        if(baseService.checkUserAllowed(user.getUserId()))
-//            return AjaxResult.error("禁止操作超级管理员");
-//        return toAjax(baseService.updateUserRole(user));
-//    }
-
-    /**
      * 重置密码
      */
     @RequiresPermissions("system:user:edit")
@@ -197,6 +176,16 @@ public class SysUserController extends BaseController<SysUserDto, ISysUserServic
     public AjaxResult resetPassword(@RequestBody SysUserDto user) {
         adminValidated(user.getId());
         return toAjax(baseService.resetUserPassword(user.getId(), SecurityUtils.encryptPassword(user.getPassword())));
+    }
+
+
+    /**
+     * 获取用户选择框列表
+     */
+    @Override
+    @GetMapping("/option")
+    public AjaxResult option() {
+        return super.option();
     }
 
     /**

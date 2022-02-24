@@ -1,7 +1,7 @@
 package com.xueyi.system.api.organize.domain.dto;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.xueyi.common.core.constant.AuthorityConstants;
+import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.system.api.organize.domain.po.SysEnterprisePo;
 import org.apache.commons.lang3.builder.ToStringBuilder;

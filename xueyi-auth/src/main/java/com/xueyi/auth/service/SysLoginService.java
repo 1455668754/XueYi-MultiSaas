@@ -2,7 +2,11 @@ package com.xueyi.auth.service;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.xueyi.auth.form.RegisterBody;
-import com.xueyi.common.core.constant.*;
+import com.xueyi.common.core.constant.basic.BaseConstants;
+import com.xueyi.common.core.constant.basic.Constants;
+import com.xueyi.common.core.constant.basic.SecurityConstants;
+import com.xueyi.common.core.constant.basic.TenantConstants;
+import com.xueyi.common.core.constant.system.OrganizeConstants;
 import com.xueyi.common.core.domain.R;
 import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.ServletUtils;

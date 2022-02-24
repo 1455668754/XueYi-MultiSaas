@@ -19,7 +19,7 @@ import ${subPackageName}.domain.dto.${subClassName}Dto;
 #end
 import com.xueyi.common.web.entity.mapper.${Entity}Mapper;
 
-import static com.xueyi.common.core.constant.TenantConstants.${sourceMode};
+import static com.xueyi.common.core.constant.basic.TenantConstants.${sourceMode};
 
 /**
  * ${functionName}管理 数据层

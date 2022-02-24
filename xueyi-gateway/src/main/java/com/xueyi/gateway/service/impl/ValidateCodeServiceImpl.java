@@ -1,8 +1,8 @@
 package com.xueyi.gateway.service.impl;
 
 import com.google.code.kaptcha.Producer;
-import com.xueyi.common.core.constant.CacheConstants;
-import com.xueyi.common.core.constant.Constants;
+import com.xueyi.common.core.constant.basic.CacheConstants;
+import com.xueyi.common.core.constant.basic.Constants;
 import com.xueyi.common.core.exception.CaptchaException;
 import com.xueyi.common.core.utils.IdUtils;
 import com.xueyi.common.core.utils.StringUtils;

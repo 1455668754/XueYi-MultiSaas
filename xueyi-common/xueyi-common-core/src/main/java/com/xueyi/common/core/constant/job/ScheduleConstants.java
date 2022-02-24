@@ -1,4 +1,4 @@
-package com.xueyi.common.core.constant;
+package com.xueyi.common.core.constant.job;
 
 import com.xueyi.common.core.utils.StringUtils;
 

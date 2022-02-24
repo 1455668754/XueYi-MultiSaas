@@ -4,8 +4,8 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
-import com.xueyi.common.core.constant.AuthorityConstants;
-import com.xueyi.common.core.constant.BaseConstants;
+import com.xueyi.common.core.constant.system.AuthorityConstants;
+import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
 import com.xueyi.system.authority.manager.SysRoleManager;
@@ -16,7 +16,7 @@ import com.xueyi.system.organize.service.ISysOrganizeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static com.xueyi.common.core.constant.TenantConstants.ISOLATE;
+import static com.xueyi.common.core.constant.basic.TenantConstants.ISOLATE;
 
 /**
  * 角色管理 服务层处理

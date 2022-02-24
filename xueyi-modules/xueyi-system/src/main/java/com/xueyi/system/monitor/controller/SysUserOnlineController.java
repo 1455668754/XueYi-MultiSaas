@@ -1,6 +1,6 @@
 package com.xueyi.system.monitor.controller;
 
-import com.xueyi.common.core.constant.CacheConstants;
+import com.xueyi.common.core.constant.basic.CacheConstants;
 import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.web.entity.controller.BasisController;;
 import com.xueyi.common.core.web.result.AjaxResult;
