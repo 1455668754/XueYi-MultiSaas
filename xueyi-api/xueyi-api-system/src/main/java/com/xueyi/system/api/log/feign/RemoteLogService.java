@@ -25,7 +25,7 @@ public interface RemoteLogService {
      * @param operateLog 日志实体
      * @return 结果
      */
-    @PostMapping("/operationLog")
+    @PostMapping("/operateLog")
     R<Boolean> saveOperateLog(@RequestBody SysOperateLogDto operateLog, @RequestHeader(SecurityConstants.ENTERPRISE_ID) Long enterpriseId, @RequestHeader(SecurityConstants.SOURCE_NAME) String sourceName, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
 
     /**
