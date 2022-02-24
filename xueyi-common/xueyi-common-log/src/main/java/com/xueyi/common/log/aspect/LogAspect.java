@@ -1,5 +1,6 @@
 package com.xueyi.common.log.aspect;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
@@ -71,48 +72,40 @@ public class LogAspect {
     protected void handleLog(final JoinPoint joinPoint, Log controllerLog, final Exception e, Object jsonResult) {
         try {
             // *========数据库日志=========*//
-            SysOperateLogDto operLog = new SysOperateLogDto();
-            operLog.setStatus(BusinessStatus.SUCCESS.getCode());
+            SysOperateLogDto operateLog = new SysOperateLogDto();
+            operateLog.setStatus(BusinessStatus.SUCCESS.getCode());
             // 请求的地址
             String ip = IpUtils.getIpAddr(ServletUtils.getRequest());
-            operLog.setIp(ip);
+            operateLog.setIp(ip);
 
-            operLog.setUrl(ServletUtils.getRequest().getRequestURI());
-            LoginUser user = tokenService.getLoginUser();
-            if (user != null) {
-                operLog.setSourceName(user.getSourceName());
-                Long userId = user.getUserId();
-                Long enterpriseId = user.getEnterpriseId();
-                if (StringUtils.isNotNull(userId)) {
-                    operLog.setUserId(userId);
-                } else {
-                    operLog.setUserId(SecurityConstants.EMPTY_USER_ID);
-                }
-
-                if (StringUtils.isNotNull(enterpriseId)) {
-                    operLog.setEnterpriseId(enterpriseId);
-                } else {
-                    operLog.setEnterpriseId(SecurityConstants.EMPTY_TENANT_ID);
-                }
-            } else {
-                operLog.setSourceName(TenantConstants.Source.SLAVE.getCode());
-                operLog.setUserId(SecurityConstants.EMPTY_USER_ID);
-                operLog.setEnterpriseId(SecurityConstants.EMPTY_TENANT_ID);
-            }
+            operateLog.setUrl(ServletUtils.getRequest().getRequestURI());
+            LoginUser loginUser = tokenService.getLoginUser();
+            String sourceName = ObjectUtil.isNotNull(loginUser) ? loginUser.getSourceName() : null;
+            Long userId = ObjectUtil.isNotNull(loginUser) ? loginUser.getUserId() : null;
+            Long enterpriseId = ObjectUtil.isNotNull(loginUser) ? loginUser.getEnterpriseId() : null;
+            String userName = ObjectUtil.isNotNull(loginUser) && ObjectUtil.isNotNull(loginUser.getUser())
+                    ? loginUser.getUser().getUserName() : StrUtil.EMPTY;
+            String userNick = ObjectUtil.isNotNull(loginUser) && ObjectUtil.isNotNull(loginUser.getUser())
+                    ? loginUser.getUser().getNickName() : StrUtil.EMPTY;
+            operateLog.setSourceName(StrUtil.isNotEmpty(sourceName) ? sourceName : TenantConstants.Source.SLAVE.getCode());
+            operateLog.setUserId(ObjectUtil.isNotNull(userId) ? userId : SecurityConstants.EMPTY_USER_ID);
+            operateLog.setUserName(userName);
+            operateLog.setUserNick(userNick);
+            operateLog.setEnterpriseId(ObjectUtil.isNotNull(enterpriseId) ? enterpriseId : SecurityConstants.EMPTY_TENANT_ID);
             if (e != null) {
-                operLog.setStatus(BusinessStatus.FAIL.getCode());
-                operLog.setErrorMsg(StringUtils.substring(e.getMessage(), 0, 2000));
+                operateLog.setStatus(BusinessStatus.FAIL.getCode());
+                operateLog.setErrorMsg(StringUtils.substring(e.getMessage(), 0, 2000));
             }
             // 设置方法名称
             String className = joinPoint.getTarget().getClass().getName();
             String methodName = joinPoint.getSignature().getName();
-            operLog.setMethod(className + StrUtil.DOT + methodName + "()");
+            operateLog.setMethod(className + StrUtil.DOT + methodName + "()");
             // 设置请求方式
-            operLog.setRequestMethod(ServletUtils.getRequest().getMethod());
+            operateLog.setRequestMethod(ServletUtils.getRequest().getMethod());
             // 处理设置注解上的参数
-            getControllerMethodDescription(joinPoint, controllerLog, operLog, jsonResult);
+            getControllerMethodDescription(joinPoint, controllerLog, operateLog, jsonResult);
             // 保存数据库
-            asyncLogService.saveOperateLog(operLog);
+            asyncLogService.saveOperateLog(operateLog);
         } catch (Exception exp) {
             // 记录本地异常日志
             log.error("==前置通知异常==");

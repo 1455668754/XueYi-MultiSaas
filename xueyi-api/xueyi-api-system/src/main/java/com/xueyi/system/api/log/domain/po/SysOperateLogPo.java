@@ -48,12 +48,12 @@ public class SysOperateLogPo extends TBaseEntity {
     /** 操作人员账号 */
     @Excel(name = "操作人员账号")
     @TableField("user_name")
-    private Long userName;
+    private String userName;
 
     /** 操作人员名称 */
     @Excel(name = "操作人员名称")
     @TableField("user_nick")
-    private Long userNick;
+    private String userNick;
 
     /** 请求url */
     @Excel(name = "请求地址")
@@ -144,19 +144,19 @@ public class SysOperateLogPo extends TBaseEntity {
         this.userId = userId;
     }
 
-    public Long getUserName() {
+    public String getUserName() {
         return userName;
     }
 
-    public void setUserName(Long userName) {
+    public void setUserName(String userName) {
         this.userName = userName;
     }
 
-    public Long getUserNick() {
+    public String getUserNick() {
         return userNick;
     }
 
-    public void setUserNick(Long userNick) {
+    public void setUserNick(String userNick) {
         this.userNick = userNick;
     }
 
