@@ -10,7 +10,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  * @author xueyi
  */
-@TableName(value = "sys_notice",excludeProperty = {"name","sort"})
+@TableName(value = "sys_notice",excludeProperty = {"sort"})
 public class SysNoticeDto extends SysNoticePo {
 
     private static final long serialVersionUID = 1L;
@@ -18,18 +18,18 @@ public class SysNoticeDto extends SysNoticePo {
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-                .append("Id", getId())
-                .append("title", getTitle())
+                .append("id", getId())
+                .append("name", getName())
                 .append("type", getType())
                 .append("content", getContent())
                 .append("status", getStatus())
+                .append("remark", getRemark())
                 .append("createBy", getCreateBy())
                 .append("createName", getCreateName())
                 .append("createTime", getCreateTime())
                 .append("updateBy", getUpdateBy())
                 .append("updateName", getUpdateName())
                 .append("updateTime", getUpdateTime())
-                .append("remark", getRemark())
                 .toString();
     }
 }

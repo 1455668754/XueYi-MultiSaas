@@ -334,7 +334,7 @@ create table sys_login_log (
 drop table if exists sys_notice;
 create table sys_notice (
   id                        bigint              not null                                comment '公告Id',
-  title                     varchar(50)         not null                                comment '公告标题',
+  name                      varchar(50)         not null                                comment '公告标题',
   type                      char(1)             not null default '0'                    comment '公告类型（0通知 1公告）',
   content                   longblob            default null                            comment '公告内容',
   status                    char(1)             default '0'                             comment '公告状态（0未发送 1已发送）',
