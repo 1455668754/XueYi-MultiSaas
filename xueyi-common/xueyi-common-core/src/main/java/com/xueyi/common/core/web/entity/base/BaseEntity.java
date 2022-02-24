@@ -62,11 +62,6 @@ public class BaseEntity extends BasisEntity {
     @TableLogic(value = "0", delval = "1")
     private Long delFlag;
 
-    //待删除
-    /** 雪花Id */
-    @TableField(exist = false)
-    private Long snowflakeId;
-
     /** 创建者 */
     @TableField(exist = false)
     private String createName;
@@ -155,14 +150,6 @@ public class BaseEntity extends BasisEntity {
         this.delFlag = delFlag;
     }
 
-    public Long getSnowflakeId() {
-        return snowflakeId;
-    }
-
-    public void setSnowflakeId(Long snowflakeId) {
-        this.snowflakeId = snowflakeId;
-    }
-
     public String getCreateName() {
         return createName;
     }
@@ -178,5 +165,4 @@ public class BaseEntity extends BasisEntity {
     public void setUpdateName(String updateName) {
         this.updateName = updateName;
     }
-
 }

@@ -184,7 +184,6 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobDto, SysJobManager,
         job.setStatus(ScheduleConstants.Status.PAUSE.getCode());
         int rows = jobMapper.insertJob(job);
         if (rows > 0) {
-            job.setJobId(job.getSnowflakeId());
             ScheduleUtils.createScheduleJob(scheduler, job);
         }
         return rows;
