@@ -53,6 +53,7 @@ public class SysLoginLogController extends BaseController<SysLoginLogDto, ISysLo
     @PostMapping("/export")
     @RequiresPermissions(Auth.SYS_LOGIN_LOG_EXPORT)
     public void export(HttpServletResponse response, SysLoginLogDto loginLog) {
+        System.out.println(loginLog);
         super.export(response, loginLog);
     }
 

@@ -1,7 +1,6 @@
 package com.xueyi.system.monitor.service.impl;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
-import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.log.domain.dto.SysOperateLogDto;
 import com.xueyi.system.monitor.manager.SysOperateLogManager;
@@ -27,7 +26,6 @@ public class SysOperateLogServiceImpl extends BaseServiceImpl<SysOperateLogDto, 
      * @return 结果
      */
     @Override
-    @DS("#operationLog.sourceName")
     public int insert(SysOperateLogDto operationLog) {
         return baseManager.insert(operationLog);
     }
@@ -36,7 +34,7 @@ public class SysOperateLogServiceImpl extends BaseServiceImpl<SysOperateLogDto, 
      * 清空操作日志
      */
     @Override
-    public void cleanOperationLog() {
-        baseManager.cleanOperationLog(SecurityUtils.getEnterpriseId());
+    public void cleanOperateLog() {
+        baseManager.cleanOperateLog();
     }
 }

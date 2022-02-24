@@ -2,6 +2,8 @@ package com.xueyi.system.api.log.domain.dto;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.system.api.log.domain.po.SysLoginLogPo;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * 访问日志 数据传输对象

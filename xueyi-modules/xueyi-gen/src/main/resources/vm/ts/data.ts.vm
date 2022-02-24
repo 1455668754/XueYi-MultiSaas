@@ -87,21 +87,23 @@ export const columns: BasicColumn[] = [
 /** 查询数据 */
 export const searchFormSchema: FormSchema[] = [
 #foreach ($column in $columns)
-#set($hide = true)
+#set($show = true)
 #foreach($item in $mustHideField)
 #if($column.javaField == $item)
-#set($hide = false)
+#set($show = false)
 #break
 #end
 #end
 #if($column.isQuery() == false)
-#set($hide = false)
+#set($show = false)
 #end
-#if($hide)
+#if($show)
     {
         label: '${column.readNameNoSuffix()}',
         field: '${column.javaField}',
-#if($column.dictType && $column.dictName)
+#if($column.htmlType == 'DatePicker' && ($column.queryType == 'between' || $column.queryType == 'notBetween'))
+        component: 'RangePicker',
+#elseif($column.dictType && $column.dictName)
         component: 'Select',
         componentProps: {
             options: dict.${column.dictName},
@@ -141,17 +143,17 @@ export const formSchema: FormSchema[] = [
         colProps: { span: 24 },
     },
 #else
-#set($hide = true)
+#set($show = true)
 #foreach($item in $mustHideField)
 #if($column.javaField == $item && !$column.isPk())
-#set($hide = false)
+#set($show = false)
 #break
 #end
 #end
 #if($column.isInsert() == false && !$column.isPk())
-#set($hide = false)
+#set($show = false)
 #end
-#if($hide)
+#if($show)
     {
         label: '${column.readNameNoSuffix()}',
         field: '${column.javaField}',

@@ -17,10 +17,8 @@ public class SysOperateLogManager extends BaseManager<SysOperateLogDto, SysOpera
     /**
      * 清空系统操作日志
      */
-    public void cleanOperationLog(Long enterpriseId) {
-        baseMapper.delete(
-                Wrappers.<SysOperateLogDto>update().lambda()
-                        .eq(SysOperateLogDto::getEnterpriseId, enterpriseId));
+    public void cleanOperateLog() {
+        baseMapper.delete(Wrappers.query());
     }
 
 }

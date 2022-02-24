@@ -13,5 +13,5 @@ public interface ISysOperateLogService extends IBaseService<SysOperateLogDto> {
     /**
      * 清空操作日志
      */
-    void cleanOperationLog();
+    void cleanOperateLog();
 }

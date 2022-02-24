@@ -134,7 +134,7 @@ public class LogAspect {
         // 设置标题
         operationLog.setTitle(log.title());
         // 设置操作人类别
-        operationLog.setOperationType(String.valueOf(log.operatorType().ordinal()));
+        operationLog.setOperateType(String.valueOf(log.operatorType().ordinal()));
         // 是否需要保存request，参数和值
         if (log.isSaveRequestData()) {
             // 获取参数的信息，传入到数据库中。

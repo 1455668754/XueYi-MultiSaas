@@ -19,16 +19,6 @@ public class SysOperateLogDto extends SysOperateLogPo {
     @TableField(exist = false)
     private Integer[] businessTypes;
 
-    /** 操作账号 */
-    @Excel(name = "操作账号")
-    @TableField(exist = false)
-    private String userName;
-
-    /** 操作人员 */
-    @Excel(name = "操作人员")
-    @TableField(exist = false)
-    private String userNick;
-
     public Integer[] getBusinessTypes() {
         return businessTypes;
     }
@@ -37,19 +27,4 @@ public class SysOperateLogDto extends SysOperateLogPo {
         this.businessTypes = businessTypes;
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getUserNick() {
-        return userNick;
-    }
-
-    public void setUserNick(String userNick) {
-        this.userNick = userNick;
-    }
 }

@@ -38,12 +38,22 @@ public class SysOperateLogPo extends TBaseEntity {
 
     /** 操作类别（0其它 1后台用户 2手机端用户） */
     @Excel(name = "操作类别", readConverterExp = "0=其它,1=后台用户,2=手机端用户")
-    @TableField("operation_type")
-    private String operationType;
+    @TableField("operate_type")
+    private String operateType;
 
     /** 操作Id */
     @TableField("user_id")
     private Long userId;
+
+    /** 操作人员账号 */
+    @Excel(name = "操作人员账号")
+    @TableField("user_name")
+    private Long userName;
+
+    /** 操作人员名称 */
+    @Excel(name = "操作人员名称")
+    @TableField("user_nick")
+    private Long userNick;
 
     /** 请求url */
     @Excel(name = "请求地址")
@@ -118,12 +128,12 @@ public class SysOperateLogPo extends TBaseEntity {
         this.requestMethod = requestMethod;
     }
 
-    public String getOperationType() {
-        return operationType;
+    public String getOperateType() {
+        return operateType;
     }
 
-    public void setOperationType(String operationType) {
-        this.operationType = operationType;
+    public void setOperateType(String operateType) {
+        this.operateType = operateType;
     }
 
     public Long getUserId() {
@@ -132,6 +142,22 @@ public class SysOperateLogPo extends TBaseEntity {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public Long getUserName() {
+        return userName;
+    }
+
+    public void setUserName(Long userName) {
+        this.userName = userName;
+    }
+
+    public Long getUserNick() {
+        return userNick;
+    }
+
+    public void setUserNick(Long userNick) {
+        this.userNick = userNick;
     }
 
     public String getUrl() {
