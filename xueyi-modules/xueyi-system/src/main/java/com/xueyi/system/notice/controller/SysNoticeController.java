@@ -7,6 +7,7 @@ import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.Logical;
 import com.xueyi.common.security.annotation.RequiresPermissions;
+import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.system.notice.domain.dto.SysNoticeDto;
 import com.xueyi.system.notice.service.ISysNoticeService;
@@ -37,7 +38,7 @@ public class SysNoticeController extends BaseController<SysNoticeDto, ISysNotice
      */
     @Override
     @GetMapping("/list")
-    @RequiresPermissions("system:notice:list")
+    @RequiresPermissions(Auth.SYS_NOTICE_LIST)
     public AjaxResult listExtra(SysNoticeDto notice) {
         return super.listExtra(notice);
     }
@@ -47,7 +48,7 @@ public class SysNoticeController extends BaseController<SysNoticeDto, ISysNotice
      */
     @Override
     @GetMapping(value = "/{id}")
-    @RequiresPermissions("system:notice:single")
+    @RequiresPermissions(Auth.SYS_NOTICE_SINGLE)
     public AjaxResult getInfoExtra(@PathVariable Serializable id) {
         return super.getInfoExtra(id);
     }
@@ -57,7 +58,7 @@ public class SysNoticeController extends BaseController<SysNoticeDto, ISysNotice
      */
     @Override
     @PostMapping("/export")
-    @RequiresPermissions("system:notice:export")
+    @RequiresPermissions(Auth.SYS_NOTICE_EXPORT)
     public void export(HttpServletResponse response, SysNoticeDto notice) {
         super.export(response, notice);
     }
@@ -67,7 +68,7 @@ public class SysNoticeController extends BaseController<SysNoticeDto, ISysNotice
      */
     @Override
     @PostMapping
-    @RequiresPermissions("system:notice:add")
+    @RequiresPermissions(Auth.SYS_NOTICE_ADD)
     @Log(title = "通知公告管理", businessType = BusinessType.INSERT)
     public AjaxResult add(@Validated @RequestBody SysNoticeDto notice) {
         return super.add(notice);
@@ -78,7 +79,7 @@ public class SysNoticeController extends BaseController<SysNoticeDto, ISysNotice
      */
     @Override
     @PutMapping
-    @RequiresPermissions("system:notice:edit")
+    @RequiresPermissions(Auth.SYS_NOTICE_EDIT)
     @Log(title = "通知公告管理", businessType = BusinessType.UPDATE)
     public AjaxResult edit(@Validated @RequestBody SysNoticeDto notice) {
         return super.edit(notice);
@@ -89,7 +90,7 @@ public class SysNoticeController extends BaseController<SysNoticeDto, ISysNotice
      */
     @Override
     @PutMapping("/status")
-    @RequiresPermissions(value = {"system:notice:edit", "system:notice:editStatus"}, logical = Logical.OR)
+    @RequiresPermissions(value = {Auth.SYS_NOTICE_EDIT, Auth.SYS_NOTICE_EDIT_STATUS}, logical = Logical.OR)
     @Log(title = "通知公告管理", businessType = BusinessType.UPDATE_STATUS)
     public AjaxResult editStatus(@RequestBody SysNoticeDto notice) {
         return super.editStatus(notice);
@@ -100,7 +101,7 @@ public class SysNoticeController extends BaseController<SysNoticeDto, ISysNotice
      */
     @Override
     @DeleteMapping("/batch/{idList}")
-    @RequiresPermissions("system:notice:delete")
+    @RequiresPermissions(Auth.SYS_NOTICE_DELETE)
     @Log(title = "通知公告管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);

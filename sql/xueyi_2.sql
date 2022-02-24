@@ -23,7 +23,7 @@ create table sys_dept (
   del_flag		            tinyint             not null default 0                      comment '删除标志(0正常 1删除)',
   tenant_id		            bigint	            not null                                comment '租户Id',
   primary key (id)
-) engine=innodb comment = '部门表';
+) engine=innodb comment = '部门信息表';
 
 -- ----------------------------
 -- 初始化-部门表数据

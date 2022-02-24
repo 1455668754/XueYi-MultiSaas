@@ -135,4 +135,21 @@ public interface SystemConstants {
     String SYS_DICT_EXPORT = "dict:dict:export";
     /** 系统 - 字典管理 - 缓存更新 */
     String SYS_DICT_CACHE = "dict:dict:cache";
+
+    /** 系统 - 通知公告 - 列表 */
+    String SYS_NOTICE_LIST = "system:notice:list";
+    /** 系统 - 通知公告 - 详情 */
+    String SYS_NOTICE_SINGLE = "system:notice:single";
+    /** 系统 - 通知公告 - 新增 */
+    String SYS_NOTICE_ADD = "system:notice:add";
+    /** 系统 - 通知公告 - 修改 */
+    String SYS_NOTICE_EDIT = "system:notice:edit";
+    /** 系统 - 通知公告 - 修改状态 */
+    String SYS_NOTICE_EDIT_STATUS = "system:notice:editStatus";
+    /** 系统 - 通知公告 - 删除 */
+    String SYS_NOTICE_DELETE = "system:notice:delete";
+    /** 系统 - 通知公告 - 导入 */
+    String SYS_NOTICE_IMPORT = "system:notice:import";
+    /** 系统 - 通知公告 - 导出 */
+    String SYS_NOTICE_EXPORT = "system:notice:export";
 }
