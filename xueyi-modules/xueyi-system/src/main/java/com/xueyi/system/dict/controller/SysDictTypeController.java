@@ -117,23 +117,34 @@ public class SysDictTypeController extends SubBaseController<SysDictTypeDto, ISy
     }
 
     /**
+     * 字典类型强制批量删除
+     */
+    @Override
+    @DeleteMapping("/batch/force/{idList}")
+    @RequiresPermissions(Auth.SYS_DICT_DELETE)
+    @Log(title = "字典类型管理", businessType = BusinessType.DELETE_FORCE)
+    public AjaxResult batchRemoveForce(@PathVariable List<Long> idList) {
+        return super.batchRemoveForce(idList);
+    }
+
+    /**
+     * 刷新字典缓存
+     */
+    @RequiresPermissions(Auth.SYS_DICT_EDIT)
+    @Log(title = "字典类型", businessType = BusinessType.CLEAN)
+    @GetMapping("/refresh")
+    public AjaxResult refreshCache() {
+        baseService.resetDictCache();
+        return AjaxResult.success();
+    }
+
+    /**
      * 获取字典类型选择框列表
      */
     @Override
     @GetMapping("/option")
     public AjaxResult option() {
         return super.option();
-    }
-
-    /**
-     * 刷新字典缓存
-     */
-    @RequiresPermissions(Auth.SYS_DICT_CACHE)
-    @Log(title = "字典类型", businessType = BusinessType.CLEAN)
-    @DeleteMapping("/refreshCache")
-    public AjaxResult refreshCache() {
-        baseService.resetDictCache();
-        return AjaxResult.success();
     }
 
     /**

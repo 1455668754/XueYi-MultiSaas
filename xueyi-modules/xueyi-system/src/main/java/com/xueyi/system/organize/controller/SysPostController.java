@@ -161,15 +161,6 @@ public class SysPostController extends BaseController<SysPostDto, ISysPostServic
     public AjaxResult option() {
         return super.option();
     }
-//    /**
-//     * 修改岗位-角色关系
-//     */
-//    @RequiresPermissions("system:role:set")
-//    @Log(title = "岗位管理", businessType = BusinessType.UPDATE)
-//    @PutMapping("/changePostRole")
-//    public AjaxResult editPostRole(@Validated @RequestBody SysPost post) {
-//        return toAjax(postService.updatePostRole(post));
-//    }
 
     /**
      * 前置校验 （强制）增加/修改

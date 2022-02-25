@@ -14,17 +14,17 @@ public interface ISysDictTypeService extends ISubBaseService<SysDictTypeDto, Sys
     /**
      * 加载字典缓存数据
      */
-    public void loadingDictCache();
+    void loadingDictCache();
 
     /**
      * 清空字典缓存数据
      */
-    public void clearDictCache();
+    void clearDictCache();
 
     /**
      * 重置字典缓存数据
      */
-    public void resetDictCache();
+    void resetDictCache();
 
     /**
      * 校验字典编码是否唯一

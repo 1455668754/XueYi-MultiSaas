@@ -133,8 +133,8 @@ public interface SystemConstants {
     String SYS_DICT_IMPORT = "dict:dict:import";
     /** 系统 - 字典管理 - 导出 */
     String SYS_DICT_EXPORT = "dict:dict:export";
-    /** 系统 - 字典管理 - 缓存更新 */
-    String SYS_DICT_CACHE = "dict:dict:cache";
+    /** 系统 - 字典管理 - 字典管理 */
+    String SYS_DICT_DICT = "dict:dict:dict";
 
     /** 系统 - 通知公告 - 列表 */
     String SYS_NOTICE_LIST = "system:notice:list";

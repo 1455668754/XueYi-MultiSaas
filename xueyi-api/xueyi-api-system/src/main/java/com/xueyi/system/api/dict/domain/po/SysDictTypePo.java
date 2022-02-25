@@ -7,10 +7,10 @@ import com.xueyi.common.core.web.entity.base.SubBaseEntity;
 /**
  * 字典类型 持久化对象
  *
- * @param <B> SubDto
+ * @param <S> SubDto
  * @author xueyi
  */
-public class SysDictTypePo<B> extends SubBaseEntity<B> {
+public class SysDictTypePo<S> extends SubBaseEntity<S> {
 
     private static final long serialVersionUID = 1L;
 

@@ -1,9 +1,6 @@
 package com.xueyi.common.core.web.entity.base;
 
-import com.baomidou.mybatisplus.annotation.FieldStrategy;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
@@ -33,6 +30,7 @@ public class BaseEntity extends BasisEntity {
 
     /** 显示顺序 */
     @TableField("sort")
+    @OrderBy(asc = true, sort = 20)
     protected Integer sort;
 
     /** 备注 */
@@ -44,6 +42,7 @@ public class BaseEntity extends BasisEntity {
     private Long createBy;
 
     /** 创建时间 */
+    @OrderBy(asc = true, sort = 10)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @TableField(value = "create_time", insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER)
     private Date createTime;

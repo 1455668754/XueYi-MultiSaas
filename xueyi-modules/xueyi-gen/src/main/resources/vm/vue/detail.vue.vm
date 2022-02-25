@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, onMounted, ref } from 'vue'
 import { get${BusinessName}Api } from '@service/${moduleName}/${authorityName}/${businessName}'
 import { Description, useDescription } from '@/components/Description'
 import { detailSchema } from './${businessName}.data'
@@ -38,14 +38,13 @@ export default defineComponent({
 #set($IdType = 'any')
 #end
 
-    async function create() {
+    onMounted(async () => {
       const ${pkColumn.javaField} = route.params.${pkColumn.javaField} as ${IdType}
       const data = await get${BusinessName}Api(${pkColumn.javaField})
       setDescProps({ data: data })
       getTitle.value = '${functionName}详情:' + data?.#if($nameColumn)${nameColumn.javaField}#else${pkColumn.javaField}#end
-      setTitle('${functionName}详情:' + getTitle.value)
-    }
-    create()
+      setTitle(getTitle.value)
+    })
 
     /** 返回${functionName}主页 */
     function goBack() {

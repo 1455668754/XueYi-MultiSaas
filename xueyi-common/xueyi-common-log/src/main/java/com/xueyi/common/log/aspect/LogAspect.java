@@ -123,11 +123,11 @@ public class LogAspect {
      */
     public void getControllerMethodDescription(JoinPoint joinPoint, Log log, SysOperateLogDto operationLog, Object jsonResult) throws Exception {
         // 设置action动作
-        operationLog.setBusinessType(String.valueOf(log.businessType().ordinal()));
+        operationLog.setBusinessType(String.valueOf(log.businessType().getCode()));
         // 设置标题
         operationLog.setTitle(log.title());
         // 设置操作人类别
-        operationLog.setOperateType(String.valueOf(log.operatorType().ordinal()));
+        operationLog.setOperateType(String.valueOf(log.operatorType().getCode()));
         // 是否需要保存request，参数和值
         if (log.isSaveRequestData()) {
             // 获取参数的信息，传入到数据库中。

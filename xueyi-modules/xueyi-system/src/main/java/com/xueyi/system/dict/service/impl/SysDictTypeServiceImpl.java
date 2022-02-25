@@ -8,7 +8,6 @@ import com.xueyi.common.redis.service.RedisService;
 import com.xueyi.common.web.entity.service.impl.SubBaseServiceImpl;
 import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
 import com.xueyi.system.api.dict.domain.dto.SysDictTypeDto;
-import com.xueyi.system.dict.manager.SysDictDataManager;
 import com.xueyi.system.dict.manager.SysDictTypeManager;
 import com.xueyi.system.dict.mapper.SysDictDataMapper;
 import com.xueyi.system.dict.mapper.SysDictTypeMapper;
@@ -37,9 +36,6 @@ public class SysDictTypeServiceImpl extends SubBaseServiceImpl<SysDictTypeDto, S
 
     @Autowired
     private RedisService redisService;
-
-    @Autowired
-    private SysDictDataManager dictDataManager;
 
     /**
      * 项目启动时，初始化字典到缓存
@@ -70,9 +66,8 @@ public class SysDictTypeServiceImpl extends SubBaseServiceImpl<SysDictTypeDto, S
      */
     @Override
     public int deleteByIds(Collection<? extends Serializable> idList) {
-        List<SysDictTypeDto> configList = baseManager.selectListByIds(idList);
-        for (SysDictTypeDto dictType : configList)
-            deleteDictCache(dictType.getCode());
+        List<SysDictTypeDto> dictList = baseManager.selectListByIds(idList);
+        dictList.forEach(item -> deleteDictCache(item.getCode()));
         return baseManager.deleteByIds(idList);
     }
 
@@ -81,11 +76,10 @@ public class SysDictTypeServiceImpl extends SubBaseServiceImpl<SysDictTypeDto, S
      */
     @Override
     public void loadingDictCache() {
-        List<SysDictTypeDto> dictTypeList = baseManager.selectList(null);
+        List<SysDictTypeDto> dictTypeList = baseManager.selectListExtra(null);
         Map<String, List<SysDictDataDto>> dataMap = new HashMap<>();
-        for (SysDictTypeDto dictType : dictTypeList)
-            dataMap.put(dictType.getCode(), dictDataManager.selectListByCode(dictType.getCode()));
-        setDictCache(dataMap);
+        dictTypeList.forEach(item -> dataMap.put(item.getCode(), item.getSubList()));
+        redisService.setCacheMap(CacheConstants.SYS_DICT_KEY, dataMap);
     }
 
     /**
@@ -93,7 +87,7 @@ public class SysDictTypeServiceImpl extends SubBaseServiceImpl<SysDictTypeDto, S
      */
     @Override
     public void clearDictCache() {
-        deleteAllDictCache();
+        redisService.deleteObject(CacheConstants.SYS_DICT_KEY);
     }
 
     /**
@@ -118,22 +112,6 @@ public class SysDictTypeServiceImpl extends SubBaseServiceImpl<SysDictTypeDto, S
     }
 
     /**
-     * 字典缓存存储
-     *
-     * @param dictMap 字典Map
-     */
-    private void setDictCache(Map<String, List<SysDictDataDto>> dictMap) {
-        redisService.setCacheMap(CacheConstants.SYS_DICT_KEY, dictMap);
-    }
-
-    /**
-     * 删除全部字典缓存
-     */
-    private void deleteAllDictCache() {
-        redisService.deleteObject(CacheConstants.SYS_DICT_KEY);
-    }
-
-    /**
      * 根据编码删除字典缓存
      */
     private void deleteDictCache(String code) {
@@ -144,11 +122,11 @@ public class SysDictTypeServiceImpl extends SubBaseServiceImpl<SysDictTypeDto, S
      * 设置子数据的外键值
      */
     @Override
-    protected void setForeignKey(Collection<SysDictDataDto> dictDataList, SysDictDataDto dictData, SysDictTypeDto dictType, Serializable code) {
-        String dictCode = ObjectUtil.isNotNull(dictType) ? dictType.getCode() : (String) code;
+    protected void setForeignKey(Collection<SysDictDataDto> dictDataList, SysDictDataDto dictData, SysDictTypeDto dictType, Serializable key) {
+        String code = ObjectUtil.isNotNull(dictType) ? dictType.getCode() : (String) key;
         if (ObjectUtil.isNotNull(dictData))
-            dictData.setCode(dictCode);
+            dictData.setCode(code);
         else
-            dictDataList.forEach(sub -> sub.setCode(dictCode));
+            dictDataList.forEach(sub -> sub.setCode(code));
     }
 }

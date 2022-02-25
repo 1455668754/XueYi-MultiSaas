@@ -22,18 +22,18 @@ public class SysDictDataDto extends SysDictDataPo {
                 .append("code", getCode())
                 .append("value", getValue())
                 .append("label", getLabel())
+                .append("sort", getSort())
+                .append("isDefault", getIsDefault())
                 .append("cssClass", getCssClass())
                 .append("listClass", getListClass())
-                .append("isDefault", getIsDefault())
                 .append("status", getStatus())
-                .append("sort", getSort())
+                .append("remark", getRemark())
                 .append("createBy", getCreateBy())
                 .append("createName", getCreateName())
                 .append("createTime", getCreateTime())
                 .append("updateBy", getUpdateBy())
                 .append("updateName", getUpdateName())
                 .append("updateTime", getUpdateTime())
-                .append("remark", getRemark())
                 .toString();
     }
 }

@@ -21,14 +21,17 @@ public class SysDictTypeDto extends SysDictTypePo<SysDictDataDto> {
                 .append("id", getId())
                 .append("name", getName())
                 .append("code", getCode())
+                .append("sort", getSort())
                 .append("status", getStatus())
+                .append("remark", getRemark())
                 .append("createBy", getCreateBy())
                 .append("createName", getCreateName())
                 .append("createTime", getCreateTime())
                 .append("updateBy", getUpdateBy())
                 .append("updateName", getUpdateName())
                 .append("updateTime", getUpdateTime())
-                .append("remark", getRemark())
+                .append("subList", getSubList())
                 .toString();
     }
+
 }

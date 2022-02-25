@@ -73,8 +73,8 @@ public class SysDeptController extends SubTreeController<SysDeptDto, ISysDeptSer
      */
     @GetMapping("/list/exclude")
     @RequiresPermissions(Auth.SYS_DEPT_LIST)
-    public AjaxResult listExNodes(SysDeptDto dept) {
-        return super.listExNodes(dept);
+    public AjaxResult listExNodesExtra(SysDeptDto dept) {
+        return super.listExNodesExtra(dept);
     }
 
     /**
@@ -168,16 +168,6 @@ public class SysDeptController extends SubTreeController<SysDeptDto, ISysDeptSer
     public AjaxResult option() {
         return super.option();
     }
-
-//    /**
-//     * 修改部门-角色关系
-//     */
-//    @RequiresPermissions("system:role:set")
-//    @Log(title = "部门管理", businessType = BusinessType.UPDATE)
-//    @PutMapping("/changeDeptRole")
-//    public AjaxResult editDeptRole(@Validated @RequestBody SysDept dept) {
-//        return toAjax(deptService.updateDeptRole(dept));
-//    }
 
     /**
      * 前置校验 （强制）增加/修改

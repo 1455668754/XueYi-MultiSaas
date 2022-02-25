@@ -1,20 +1,16 @@
 package com.xueyi.common.web.entity.controller;
 
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
-import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.core.utils.TreeUtils;
 import com.xueyi.common.core.web.entity.base.TreeEntity;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.web.entity.controller.handle.TreeHandleController;
 import com.xueyi.common.web.entity.service.ITreeService;
-import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -36,6 +32,17 @@ public abstract class TreeController<D extends TreeEntity<D>, DS extends ITreeSe
     }
 
     /**
+     * 查询树列表（排除节点）
+     */
+    public AjaxResult listExNodes(D d) {
+        Serializable id = d.getId();
+        d.setId(null);
+        List<D> list = baseService.selectList(d);
+        SHandleExNodes(list, id);
+        return AjaxResult.success(TreeUtils.buildTree(list));
+    }
+
+    /**
      * 查询树列表 | 附加数据
      */
     @Override
@@ -45,19 +52,13 @@ public abstract class TreeController<D extends TreeEntity<D>, DS extends ITreeSe
     }
 
     /**
-     * 查询树列表（排除节点）
+     * 查询树列表（排除节点） | 附加数据
      */
-    public AjaxResult listExNodes(D d) {
+    public AjaxResult listExNodesExtra(D d) {
         Serializable id = d.getId();
         d.setId(null);
         List<D> list = baseService.selectListExtra(d);
-        Iterator<D> it = list.iterator();
-        while (it.hasNext()) {
-            D next = (D) it.next();
-            if (ObjectUtil.equals(next.getId(),id) ||
-                    ArrayUtils.contains(StringUtils.split(next.getAncestors(), StrUtil.COMMA), id + StrUtil.EMPTY))
-                it.remove();
-        }
+        SHandleExNodes(list, id);
         return AjaxResult.success(TreeUtils.buildTree(list));
     }
 

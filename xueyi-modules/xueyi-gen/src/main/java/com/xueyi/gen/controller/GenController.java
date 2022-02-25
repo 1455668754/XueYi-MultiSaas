@@ -139,7 +139,7 @@ public class GenController extends SubBaseController<GenTableDto, IGenTableServi
      * 生成代码（下载方式）
      */
     @RequiresPermissions("generate:gen:code")
-    @Log(title = "代码生成", businessType = BusinessType.GENCODE)
+    @Log(title = "代码生成", businessType = BusinessType.GEN_CODE)
     @GetMapping("/download/{tableId}")
     public void download(HttpServletResponse response, @PathVariable("tableId") Long tableId) throws IOException {
         byte[] data = baseService.downloadCode(tableId);
@@ -150,7 +150,7 @@ public class GenController extends SubBaseController<GenTableDto, IGenTableServi
      * 生成代码（自定义路径）
      */
     @RequiresPermissions("generate:gen:code")
-    @Log(title = "代码生成", businessType = BusinessType.GENCODE)
+    @Log(title = "代码生成", businessType = BusinessType.GEN_CODE)
     @GetMapping("/generate/{tableId}")
     public AjaxResult genCode(@PathVariable("tableId") Long tableId) {
         baseService.generatorCode(tableId);
@@ -161,7 +161,7 @@ public class GenController extends SubBaseController<GenTableDto, IGenTableServi
      * 批量生成代码
      */
     @RequiresPermissions("generate:gen:code")
-    @Log(title = "代码生成", businessType = BusinessType.GENCODE)
+    @Log(title = "代码生成", businessType = BusinessType.GEN_CODE)
     @GetMapping("/batchGenCode")
     public void batchGenCode(HttpServletResponse response, Long[] ids) throws IOException {
         byte[] data = baseService.downloadCode(ids);

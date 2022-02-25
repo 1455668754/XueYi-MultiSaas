@@ -2,6 +2,7 @@ package com.xueyi.common.web.entity.manager;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.SqlConstants;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
@@ -23,6 +24,24 @@ import java.util.List;
  * @author xueyi
  */
 public abstract class SubBaseManager<D extends SubBaseEntity<S>, DM extends SubBaseMapper<D, S>, S extends BaseEntity, SM extends BaseMapper<S>> extends SubBaseHandleManager<D, DM, S, SM> {
+
+    /**
+     * 根据Id查询单条数据对象 | 包含子数据
+     *
+     * @param d 数据对象
+     * @return 数据对象集合
+     */
+    // 待优化 联表更新后
+    @Override
+    public List<D> selectListExtra(D d) {
+        List<D> list = baseMapper.selectList(Wrappers.query(d));
+        list.forEach(item -> {
+            LambdaQueryWrapper<S> subQueryWrapper = new LambdaQueryWrapper<>();
+            querySetForeignKey(subQueryWrapper, item);
+            item.setSubList(subMapper.selectList(subQueryWrapper));
+        });
+        return list;
+    }
 
     /**
      * 根据Id查询单条数据对象 | 包含子数据
