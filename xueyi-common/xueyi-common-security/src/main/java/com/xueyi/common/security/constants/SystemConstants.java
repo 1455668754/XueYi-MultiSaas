@@ -136,6 +136,23 @@ public interface SystemConstants {
     /** 系统 - 字典管理 - 字典管理 */
     String SYS_DICT_DICT = "dict:dict:dict";
 
+    /** 系统 - 参数管理 - 列表 */
+    String SYS_CONFIG_LIST = "dict:config:list";
+    /** 系统 - 参数管理 - 详情 */
+    String SYS_CONFIG_SINGLE = "dict:config:single";
+    /** 系统 - 参数管理 - 新增 */
+    String SYS_CONFIG_ADD = "dict:config:add";
+    /** 系统 - 参数管理 - 修改 */
+    String SYS_CONFIG_EDIT = "dict:config:edit";
+    /** 系统 - 参数管理 - 修改状态 */
+    String SYS_CONFIG_EDIT_STATUS = "dict:config:editStatus";
+    /** 系统 - 参数管理 - 删除 */
+    String SYS_CONFIG_DELETE = "dict:config:delete";
+    /** 系统 - 参数管理 - 导入 */
+    String SYS_CONFIG_IMPORT = "dict:config:import";
+    /** 系统 - 参数管理 - 导出 */
+    String SYS_CONFIG_EXPORT = "dict:config:export";
+
     /** 系统 - 通知公告 - 列表 */
     String SYS_NOTICE_LIST = "system:notice:list";
     /** 系统 - 通知公告 - 详情 */

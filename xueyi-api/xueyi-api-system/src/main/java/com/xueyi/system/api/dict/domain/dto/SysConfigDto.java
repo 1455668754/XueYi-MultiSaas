@@ -23,13 +23,14 @@ public class SysConfigDto extends SysConfigPo {
                 .append("code", getCode())
                 .append("value", getValue())
                 .append("type", getType())
+                .append("sort", getSort())
+                .append("remark", getRemark())
                 .append("createBy", getCreateBy())
                 .append("createName", getCreateName())
                 .append("createTime", getCreateTime())
                 .append("updateBy", getUpdateBy())
                 .append("updateName", getUpdateName())
                 .append("updateTime", getUpdateTime())
-                .append("remark", getRemark())
                 .toString();
     }
 }
