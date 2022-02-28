@@ -11,7 +11,7 @@ import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.authority.manager.SysMenuManager;
 import com.xueyi.system.authority.mapper.SysMenuMapper;
 import com.xueyi.system.authority.service.ISysMenuService;
-import com.xueyi.system.utils.route.RouteUtils;
+import com.xueyi.system.utils.RouteUtils;
 import com.xueyi.system.utils.route.RouterVo;
 import org.springframework.stereotype.Service;
 

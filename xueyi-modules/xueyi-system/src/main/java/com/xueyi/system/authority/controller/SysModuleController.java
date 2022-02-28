@@ -12,12 +12,15 @@ import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.Logical;
 import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.security.auth.Auth;
+import com.xueyi.common.security.service.TokenService;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.entity.controller.SubBaseController;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
+import com.xueyi.system.api.model.LoginUser;
 import com.xueyi.system.authority.service.ISysMenuService;
 import com.xueyi.system.authority.service.ISysModuleService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +37,9 @@ import java.util.List;
 @RequestMapping("/module")
 public class SysModuleController extends SubBaseController<SysModuleDto, ISysModuleService, SysMenuDto, ISysMenuService> {
 
+    @Autowired
+    private TokenService tokenService;
+
     /** 定义节点名称 */
     @Override
     protected String getNodeName() {
@@ -46,13 +52,18 @@ public class SysModuleController extends SubBaseController<SysModuleDto, ISysMod
         return "菜单";
     }
 
-//    /**
-//     * 查询首页可展示模块信息列表
-//     */
-//    @GetMapping("/getRoutes")
-//    public AjaxResult getRoutes() {
-//        return AjaxResult.success(baseService.getRoutes());
-//    }
+    /**
+     * 查询首页可展示模块信息列表
+     */
+    @GetMapping("/getRoutes")
+    public AjaxResult getRoutes() {
+        LoginUser loginUser = tokenService.getLoginUser();
+        if (ObjectUtil.isNull(loginUser.getModuleRoute())) {
+            loginUser.setModuleRoute(baseService.getRoutes());
+            tokenService.setLoginUser(loginUser);
+        }
+        return AjaxResult.success(loginUser.getModuleRoute());
+    }
 
     /**
      * 查询模块列表
@@ -151,7 +162,7 @@ public class SysModuleController extends SubBaseController<SysModuleDto, ISysMod
             if (ObjectUtil.isNull(original))
                 throw new ServiceException("数据不存在！");
             if (SecurityUtils.isNotAdminTenant() && original.isCommon())
-                    throw new ServiceException(StrUtil.format("{}{}{}失败，无操作权限！", operate.getInfo(), getNodeName(), module.getName()));
+                throw new ServiceException(StrUtil.format("{}{}{}失败，无操作权限！", operate.getInfo(), getNodeName(), module.getName()));
             if (!StringUtils.equals(module.getIsCommon(), original.getIsCommon()))
                 throw new ServiceException(StrUtil.format("{}{}{}失败，公共{}属性禁止变更！", operate.getInfo(), getNodeName(), module.getName(), getNodeName()));
         }

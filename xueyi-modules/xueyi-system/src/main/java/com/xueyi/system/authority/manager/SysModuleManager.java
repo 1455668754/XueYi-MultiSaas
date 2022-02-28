@@ -12,6 +12,7 @@ import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.entity.manager.SubBaseManager;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
+import com.xueyi.system.api.model.LoginUser;
 import com.xueyi.system.authority.domain.merge.SysRoleModuleMerge;
 import com.xueyi.system.authority.domain.merge.SysTenantModuleMerge;
 import com.xueyi.system.authority.mapper.SysMenuMapper;
@@ -40,6 +41,46 @@ public class SysModuleManager extends SubBaseManager<SysModuleDto, SysModuleMapp
 
     @Autowired
     private SysRoleModuleMergeMapper roleModuleMergeMapper;
+
+    /**
+     * 当前用户首页可展示的模块路由
+     *
+     * @param loginUser 登录用户信息
+     * @return 模块集合
+     */
+    public List<SysModuleDto> getRoutes(LoginUser loginUser) {
+        // 超管用户 ? 租管租户 ? 查所有公共 + 所有私有模块 : 查权限内的公共 + 所有私有 : 根据拥有的角色查询权限
+        if (SecurityUtils.isAdminUser()) {
+            if (SecurityUtils.isAdminTenant()) {
+                return baseMapper.selectList(
+                        Wrappers.<SysModuleDto>query().lambda()
+                                .eq(SysModuleDto::getStatus, BaseConstants.Status.NORMAL.getCode()));
+            } else {
+                List<SysTenantModuleMerge> tenantModuleMerges = tenantModuleMergeMapper.selectList(Wrappers.query());
+                return baseMapper.selectList(
+                        Wrappers.<SysModuleDto>query().lambda()
+                                .eq(SysModuleDto::getStatus, BaseConstants.Status.NORMAL.getCode())
+                                .and(i ->
+                                        i.eq(SysModuleDto::getIsCommon, DictConstants.DicCommonPrivate.PRIVATE.getCode())
+                                                .or().and(j ->
+                                                        j.eq(SysModuleDto::getIsCommon, DictConstants.DicCommonPrivate.COMMON.getCode())
+                                                                .func(k -> {
+                                                                    if (CollUtil.isNotEmpty(tenantModuleMerges))
+                                                                        k.eq(SysModuleDto::getId, tenantModuleMerges.stream().map(SysTenantModuleMerge::getModuleId).collect(Collectors.toList()));
+                                                                }))));
+            }
+        } else {
+            List<SysRoleModuleMerge> roleModuleMerges = roleModuleMergeMapper.selectList(
+                    Wrappers.<SysRoleModuleMerge>query().lambda()
+                            .in(SysRoleModuleMerge::getRoleId, loginUser.getRoleIds()));
+            return CollUtil.isNotEmpty(roleModuleMerges)
+                    ? baseMapper.selectList(
+                    Wrappers.<SysModuleDto>query().lambda()
+                            .eq(SysModuleDto::getStatus, BaseConstants.Status.NORMAL.getCode())
+                            .in(SysModuleDto::getId, roleModuleMerges.stream().map(SysRoleModuleMerge::getModuleId).collect(Collectors.toList())))
+                    : new ArrayList<>();
+        }
+    }
 
     /**
      * 获取企业有权限的状态正常公共模块

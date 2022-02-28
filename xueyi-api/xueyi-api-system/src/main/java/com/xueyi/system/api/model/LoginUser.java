@@ -5,6 +5,7 @@ import com.xueyi.system.api.organize.domain.dto.SysUserDto;
 import com.xueyi.system.api.source.domain.Source;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -59,8 +60,14 @@ public class LoginUser implements Serializable {
     /** 角色Id列表 */
     private Set<Long> roleIds;
 
+    /** 模块路由列表 */
+    private Object moduleRoute;
+
+    /** 菜单路由列表 */
+    private Map<String, Object> menuRoute;
+
     /** 路由路径映射列表 */
-    private Map<String,String> routeMap;
+    private Map<String, String> routeURL;
 
     /** 源策略组 */
     private Source source;
@@ -183,12 +190,28 @@ public class LoginUser implements Serializable {
         this.roleIds = roleIds;
     }
 
-    public Map<String, String> getRouteMap() {
-        return routeMap;
+    public Object getModuleRoute() {
+        return moduleRoute;
     }
 
-    public void setRouteMap(Map<String, String> routeMap) {
-        this.routeMap = routeMap;
+    public void setModuleRoute(Object moduleRoute) {
+        this.moduleRoute = moduleRoute;
+    }
+
+    public Map<String, Object> getMenuRoute() {
+        return menuRoute == null ? new HashMap<>() : menuRoute;
+    }
+
+    public void setMenuRoute(Map<String, Object> menuRoute) {
+        this.menuRoute = menuRoute;
+    }
+
+    public Map<String, String> getRouteURL() {
+        return routeURL;
+    }
+
+    public void setRouteURL(Map<String, String> routeURL) {
+        this.routeURL = routeURL;
     }
 
     public Source getSource() {

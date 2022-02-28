@@ -1,7 +1,5 @@
 package com.xueyi.system.utils.route;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-
 /**
  * 菜单标签配置信息
  *

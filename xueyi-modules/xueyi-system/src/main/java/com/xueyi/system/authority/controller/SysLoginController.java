@@ -74,7 +74,7 @@ public class SysLoginController extends BasisController {
         loginUser.setRoles(roles);
         loginUser.setRoleIds(roleIds);
         loginUser.setPermissions(permissions);
-        loginUser.setRouteMap(routeMap);
+        loginUser.setRouteURL(routeMap);
         return R.ok(loginUser);
     }
 }

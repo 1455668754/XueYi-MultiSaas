@@ -17,10 +17,12 @@ import com.xueyi.common.security.annotation.InnerAuth;
 import com.xueyi.common.security.annotation.Logical;
 import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.security.auth.Auth;
+import com.xueyi.common.security.service.TokenService;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.entity.controller.TreeController;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
+import com.xueyi.system.api.model.LoginUser;
 import com.xueyi.system.authority.service.ISysMenuService;
 import com.xueyi.system.authority.service.ISysModuleService;
 import org.apache.commons.lang3.ArrayUtils;
@@ -31,6 +33,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 菜单管理 业务处理
@@ -42,9 +45,13 @@ import java.util.List;
 public class SysMenuController extends TreeController<SysMenuDto, ISysMenuService> {
 
     @Autowired
+    private TokenService tokenService;
+
+    @Autowired
     private ISysModuleService moduleService;
 
     /** 定义节点名称 */
+    @Override
     protected String getNodeName() {
         return "菜单";
     }
@@ -61,6 +68,21 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
     @GetMapping("/inner/{id}")
     public R<SysMenuDto> getInfoInner(@PathVariable Serializable id) {
         return R.ok(baseService.selectById(id));
+    }
+
+    /**
+     * 获取路由信息
+     */
+    @GetMapping("/getRouters/{moduleId}")
+    public AjaxResult getRouters(@PathVariable Long moduleId) {
+        LoginUser loginUser = tokenService.getLoginUser();
+        Map<String, Object> menuMap = loginUser.getMenuRoute();
+        if (ObjectUtil.isNull(menuMap.get(moduleId.toString()))) {
+            List<SysMenuDto> menus = baseService.getRoutes(moduleId);
+            menuMap.put(moduleId.toString(), baseService.buildMenus(TreeUtils.buildTree(menus)));
+            tokenService.setLoginUser(loginUser);
+        }
+        return AjaxResult.success(menuMap.get(moduleId.toString()));
     }
 
     /**
@@ -90,15 +112,6 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
     @RequiresPermissions(Auth.SYS_MENU_SINGLE)
     public AjaxResult getInfoExtra(@PathVariable Serializable id) {
         return super.getInfoExtra(id);
-    }
-
-    /**
-     * 获取路由信息
-     */
-    @GetMapping("/getRouters/{moduleId}")
-    public AjaxResult getRouters(@PathVariable Long moduleId) {
-        List<SysMenuDto> menus = baseService.getRoutes(moduleId);
-        return AjaxResult.success(baseService.buildMenus(TreeUtils.buildTree(menus)));
     }
 
     /**

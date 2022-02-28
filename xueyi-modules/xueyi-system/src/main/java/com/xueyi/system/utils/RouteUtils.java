@@ -1,4 +1,4 @@
-package com.xueyi.system.utils.route;
+package com.xueyi.system.utils;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -6,6 +6,9 @@ import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
+import com.xueyi.system.utils.route.MetaVo;
+import com.xueyi.system.utils.route.RouterVo;
+import com.xueyi.system.utils.route.TagVo;
 
 import java.util.ArrayList;
 import java.util.List;
