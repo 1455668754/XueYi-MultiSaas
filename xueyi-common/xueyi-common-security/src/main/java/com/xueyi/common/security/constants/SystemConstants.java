@@ -148,6 +148,8 @@ public interface SystemConstants {
     String SYS_CONFIG_EDIT_STATUS = "dict:config:editStatus";
     /** 系统 - 参数管理 - 删除 */
     String SYS_CONFIG_DELETE = "dict:config:delete";
+    /** 系统 - 参数管理 - 强制删除 */
+    String SYS_CONFIG_FORCE_DELETE = "dict:config:delForce";
     /** 系统 - 参数管理 - 导入 */
     String SYS_CONFIG_IMPORT = "dict:config:import";
     /** 系统 - 参数管理 - 导出 */

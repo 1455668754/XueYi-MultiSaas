@@ -139,32 +139,6 @@ public class SysMenuManager extends TreeManager<SysMenuDto, SysMenuMapper> {
                     }));
         }
     }
-    
-    /**
-     * 校验菜单是否存在租户
-     *
-     * @param id 菜单Id
-     * @return 菜单对象
-     */
-    public SysTenantMenuMerge checkMenuExistTenant(Long id) {
-        return tenantMenuMergeMapper.selectOne(
-                Wrappers.<SysTenantMenuMerge>query().lambda()
-                        .eq(SysTenantMenuMerge::getMenuId, id)
-                        .last(SqlConstants.LIMIT_ONE));
-    }
-
-    /**
-     * 校验菜单是否存在角色
-     *
-     * @param id 菜单Id
-     * @return 菜单对象
-     */
-    public SysRoleMenuMerge checkMenuExistRole(Long id) {
-        return roleMenuMergeMapper.selectOne(
-                Wrappers.<SysRoleMenuMerge>query().lambda()
-                        .eq(SysRoleMenuMerge::getMenuId, id)
-                        .last(SqlConstants.LIMIT_ONE));
-    }
 
     /**
      * 根据模块Id查询菜单路由 | 不查默认菜单
@@ -318,5 +292,31 @@ public class SysMenuManager extends TreeManager<SysMenuDto, SysMenuMapper> {
                             .in(SysRoleMenuMerge::getMenuId, idSet));
         }
         return super.deleteChildren(id);
+    }
+
+    /**
+     * 校验菜单是否存在租户
+     *
+     * @param id 菜单Id
+     * @return 菜单对象
+     */
+    public SysTenantMenuMerge checkMenuExistTenant(Long id) {
+        return tenantMenuMergeMapper.selectOne(
+                Wrappers.<SysTenantMenuMerge>query().lambda()
+                        .eq(SysTenantMenuMerge::getMenuId, id)
+                        .last(SqlConstants.LIMIT_ONE));
+    }
+
+    /**
+     * 校验菜单是否存在角色
+     *
+     * @param id 菜单Id
+     * @return 菜单对象
+     */
+    public SysRoleMenuMerge checkMenuExistRole(Long id) {
+        return roleMenuMergeMapper.selectOne(
+                Wrappers.<SysRoleMenuMerge>query().lambda()
+                        .eq(SysRoleMenuMerge::getMenuId, id)
+                        .last(SqlConstants.LIMIT_ONE));
     }
 }

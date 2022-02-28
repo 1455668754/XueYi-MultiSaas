@@ -125,6 +125,7 @@ public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuDto, SysMenuManag
      * @param id 菜单Id
      * @return 结果 | true/false 有/无
      */
+    @Override
     public boolean checkMenuExistTenant(Long id) {
         return ObjectUtil.isNotNull(baseManager.checkMenuExistTenant(id));
     }
@@ -135,6 +136,7 @@ public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuDto, SysMenuManag
      * @param id 菜单Id
      * @return 结果 | true/false 有/无
      */
+    @Override
     public boolean checkMenuExistRole(Long id) {
         return ObjectUtil.isNotNull(baseManager.checkMenuExistRole(id));
     }
@@ -145,6 +147,7 @@ public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuDto, SysMenuManag
      * @param menus 菜单列表
      * @return 路由列表
      */
+    @Override
     public List<RouterVo> buildMenus(List<SysMenuDto> menus) {
         return RouteUtils.buildMenus(menus);
     }

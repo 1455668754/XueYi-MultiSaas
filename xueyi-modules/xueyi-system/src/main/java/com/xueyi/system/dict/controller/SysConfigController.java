@@ -126,6 +126,18 @@ public class SysConfigController extends BaseController<SysConfigDto, ISysConfig
     }
 
     /**
+     * 参数强制批量删除
+     */
+    @Override
+    @DeleteMapping("/batch/force/{idList}")
+    @RequiresPermissions(Auth.SYS_CONFIG_FORCE_DELETE)
+    @Log(title = "参数管理", businessType = BusinessType.DELETE_FORCE)
+    public AjaxResult batchRemoveForce(@PathVariable List<Long> idList) {
+        return super.batchRemoveForce(idList);
+    }
+
+
+    /**
      * 刷新参数缓存
      */
     @RequiresPermissions(Auth.SYS_CONFIG_EDIT)
@@ -152,17 +164,19 @@ public class SysConfigController extends BaseController<SysConfigDto, ISysConfig
      */
     @Override
     protected void RHandleValidated(BaseConstants.Operate operate, List<Long> idList) {
-        int size = idList.size();
-        // remove oneself or admin
-        for (int i = idList.size() - 1; i >= 0; i--) {
-            if (baseService.checkIsBuiltIn(idList.get(i)))
-                idList.remove(i);
-        }
-        if (CollUtil.isEmpty(idList)) {
-            throw new ServiceException(StrUtil.format("{}失败，不能删除内置参数！", operate.getInfo()));
-        } else if (idList.size() != size) {
-            baseService.deleteByIds(idList);
-            throw new ServiceException(StrUtil.format("成功{}除内置参数外的所有参数！", operate.getInfo()));
+        if (operate.isDelete()) {
+            int size = idList.size();
+            // remove oneself or admin
+            for (int i = idList.size() - 1; i >= 0; i--) {
+                if (baseService.checkIsBuiltIn(idList.get(i)))
+                    idList.remove(i);
+            }
+            if (CollUtil.isEmpty(idList)) {
+                throw new ServiceException(StrUtil.format("{}失败，不能删除内置参数！", operate.getInfo()));
+            } else if (idList.size() != size) {
+                baseService.deleteByIds(idList);
+                throw new ServiceException(StrUtil.format("成功{}除内置参数外的所有参数！", operate.getInfo()));
+            }
         }
     }
 }

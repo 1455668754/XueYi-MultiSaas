@@ -10,6 +10,7 @@
         >
           新增
         </a-button>
+#if($api.batchRemove || $api.batchRemoveForce)
         <a-button
           :preIcon="IconEnum.DELETE"
           v-auth="${BusinessName}Auth.DELETE"
@@ -19,6 +20,7 @@
         >
           删除
         </a-button>
+#end
 #if($table.tree || $table.subTree)
         <a-button type="primary" @click="expandAll">展开全部</a-button>
         <a-button type="primary" @click="collapseAll">折叠全部</a-button>
@@ -39,6 +41,7 @@
               auth: ${BusinessName}Auth.EDIT,
               onClick: handleEdit.bind(null, record),
             },
+#if($api.batchRemove || $api.batchRemoveForce)
             {
               icon: IconEnum.DELETE,
               tooltip: '删除',
@@ -46,6 +49,7 @@
               color: 'error',
               onClick: handleDelete.bind(null, record),
             },
+#end
           ]"
         />
       </template>
@@ -55,7 +59,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue'
+import { defineComponent#if($api.batchRemove || $api.batchRemoveForce), reactive#end } from 'vue'
 import { list${BusinessName}Api, del${BusinessName}Api } from '@service/${moduleName}/${authorityName}/${businessName}'
 import { useModal } from '@/components/Modal'
 import { useMessage } from '@/hooks/web/useMessage'
@@ -73,6 +77,7 @@ export default defineComponent({
   setup() {
     const { createMessage, createConfirm } = useMessage()
     const [registerModal, { openModal }] = useModal()
+#if($api.batchRemove || $api.batchRemoveForce)
     const state = reactive<{
       ${pkColumn.javaField}s: (string | number)[]
       ${pkColumn.javaField}Names: string
@@ -80,6 +85,7 @@ export default defineComponent({
       ${pkColumn.javaField}s: [],
       ${pkColumn.javaField}Names: '',
     })
+#end
     const [registerTable, { reload#if($table.tree || $table.subTree), expandAll, collapseAll#end }] = useTable({
       title: '${functionName}列表',
       api: list${BusinessName}Api,
@@ -108,6 +114,7 @@ export default defineComponent({
         dataIndex: 'action',
         slots: { customRender: 'action' },
       },
+#if($api.batchRemove || $api.batchRemoveForce)
       rowSelection: {
         onChange: (selectedRowKeys, selectRows) => {
           state.${pkColumn.javaField}s = selectedRowKeys
@@ -118,6 +125,7 @@ export default defineComponent({
             .join(',')
         },
       },
+#end
     })
 
     /** 查看按钮 */
@@ -139,6 +147,7 @@ export default defineComponent({
         isUpdate: true,
       })
     }
+#if($api.batchRemove || $api.batchRemoveForce)
 
     /** 删除按钮 */
     function handleDelete(record: Recordable) {
@@ -152,13 +161,21 @@ export default defineComponent({
           title: '提示',
           content: '是否确定要删除' + delNames + '?',
           onOk: () =>
+#if($api.batchRemove)
             del${BusinessName}Api(delIds).then(() => {
               createMessage.success('删除' + delNames + '成功！')
               reload()
             }),
+#elseif($api.batchRemoveForce)
+            delForce${BusinessName}Api(delIds).then(() => {
+              createMessage.success('删除' + delNames + '成功！')
+              reload()
+            }),
+#end
         })
       }
     }
+#end
 
     function handleSuccess() {
       reload()
@@ -172,7 +189,9 @@ export default defineComponent({
       handleView,
       handleCreate,
       handleEdit,
+#if($api.batchRemove || $api.batchRemoveForce)
       handleDelete,
+#end
       handleSuccess,
 #if($table.tree || $table.subTree)
       expandAll,

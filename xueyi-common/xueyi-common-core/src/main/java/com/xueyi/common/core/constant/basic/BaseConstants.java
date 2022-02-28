@@ -54,13 +54,21 @@ public class BaseConstants {
         public boolean isEdit(){
             return StrUtil.equalsAny(name(), Operate.EDIT.name(), Operate.EDIT_FORCE.name());
         }
-        /** 是否为修改状态 | 强制修改状态 */
-        public boolean isEditStatus(){
-            return StrUtil.equalsAny(name(), Operate.EDIT_STATUS.name(), Operate.EDIT_STATUS_FORCE.name());
+        /** 是否为修改状态 */
+        public boolean isES(){
+            return StrUtil.equals(name(), Operate.EDIT_STATUS.name());
         }
-        /** 是否为删除 | 强制删除 */
+        /** 是否为强制修改状态 */
+        public boolean isESForce(){
+            return StrUtil.equals(name(), Operate.EDIT_STATUS_FORCE.name());
+        }
+        /** 是否为删除 */
         public boolean isDelete(){
-            return StrUtil.equalsAny(name(), Operate.DELETE.name(), Operate.DELETE_FORCE.name());
+            return StrUtil.equals(name(), Operate.DELETE.name());
+        }
+        /** 是否为强制删除 */
+        public boolean isDelForce(){
+            return StrUtil.equals(name(), Operate.DELETE_FORCE.name());
         }
     }
 

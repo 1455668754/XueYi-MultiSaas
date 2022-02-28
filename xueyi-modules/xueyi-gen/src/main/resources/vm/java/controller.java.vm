@@ -128,7 +128,7 @@ public class ${ClassName}Controller extends ${Entity}Controller${generics} {
      */
     @Override
     @PostMapping("/force")
-    @RequiresPermissions("${authorityName}:${businessName}:add")
+    @RequiresPermissions("${authorityName}:${businessName}:addForce")
     @Log(title = "${functionName}管理", businessType = BusinessType.INSERT_FORCE)
     public AjaxResult addForce(@Validated @RequestBody ${ClassName}Dto ${classNameNoPrefix}) {
         return super.addForce(${classNameNoPrefix});
@@ -150,11 +150,11 @@ public class ${ClassName}Controller extends ${Entity}Controller${generics} {
 #if($api.editForce)
 
     /**
-     * ${functionName}修改
+     * ${functionName}强制修改
      */
     @Override
     @PutMapping("/force")
-    @RequiresPermissions("${authorityName}:${businessName}:edit")
+    @RequiresPermissions("${authorityName}:${businessName}:editForce")
     @Log(title = "${functionName}管理", businessType = BusinessType.UPDATE_FORCE)
     public AjaxResult editForce(@Validated @RequestBody ${ClassName}Dto ${classNameNoPrefix}) {
         return super.editForce(${classNameNoPrefix});
@@ -167,7 +167,7 @@ public class ${ClassName}Controller extends ${Entity}Controller${generics} {
      */
     @Override
     @PutMapping("/status")
-    @RequiresPermissions(value = {"${authorityName}:${businessName}:edit", "${authorityName}:${businessName}:editStatus"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"${authorityName}:${businessName}:edit", "${authorityName}:${businessName}:es"}, logical = Logical.OR)
     @Log(title = "${functionName}管理", businessType = BusinessType.UPDATE_STATUS)
     public AjaxResult editStatus(@RequestBody ${ClassName}Dto ${classNameNoPrefix}) {
         return super.editStatus(${classNameNoPrefix});
@@ -180,7 +180,7 @@ public class ${ClassName}Controller extends ${Entity}Controller${generics} {
      */
     @Override
     @PutMapping("/force/status")
-    @RequiresPermissions(value = {"${authorityName}:${businessName}:edit", "${authorityName}:${businessName}:editStatus"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"${authorityName}:${businessName}:editForce", "${authorityName}:${businessName}:esForce"}, logical = Logical.OR)
     @Log(title = "${functionName}管理", businessType = BusinessType.UPDATE_STATUS_FORCE)
     public AjaxResult editStatusForce(@RequestBody ${ClassName}Dto ${classNameNoPrefix}) {
         return super.editStatusForce(${classNameNoPrefix});
@@ -206,7 +206,7 @@ public class ${ClassName}Controller extends ${Entity}Controller${generics} {
      */
     @Override
     @DeleteMapping("/batch/force/{idList}")
-    @RequiresPermissions("${authorityName}:${businessName}:delete")
+    @RequiresPermissions("${authorityName}:${businessName}:delForce")
     @Log(title = "${functionName}管理", businessType = BusinessType.DELETE_FORCE)
     public AjaxResult batchRemoveForce(@PathVariable List<Long> idList) {
         return super.batchRemoveForce(idList);
