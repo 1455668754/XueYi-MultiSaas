@@ -55,11 +55,11 @@ public class SysModuleController extends SubBaseController<SysModuleDto, ISysMod
     /**
      * 查询首页可展示模块信息列表
      */
-    @GetMapping("/getRoutes")
+    @GetMapping("/getRouters")
     public AjaxResult getRoutes() {
         LoginUser loginUser = tokenService.getLoginUser();
         if (ObjectUtil.isNull(loginUser.getModuleRoute())) {
-            loginUser.setModuleRoute(baseService.getRoutes());
+            loginUser.setModuleRoute(baseService.getRoutes(loginUser));
             tokenService.setLoginUser(loginUser);
         }
         return AjaxResult.success(loginUser.getModuleRoute());

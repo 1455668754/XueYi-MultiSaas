@@ -54,12 +54,14 @@ public class SysModuleManager extends SubBaseManager<SysModuleDto, SysModuleMapp
             if (SecurityUtils.isAdminTenant()) {
                 return baseMapper.selectList(
                         Wrappers.<SysModuleDto>query().lambda()
-                                .eq(SysModuleDto::getStatus, BaseConstants.Status.NORMAL.getCode()));
+                                .eq(SysModuleDto::getStatus, BaseConstants.Status.NORMAL.getCode())
+                                .eq(SysModuleDto::getHideModule, DictConstants.DicShowHide.SHOW.getCode()));
             } else {
                 List<SysTenantModuleMerge> tenantModuleMerges = tenantModuleMergeMapper.selectList(Wrappers.query());
                 return baseMapper.selectList(
                         Wrappers.<SysModuleDto>query().lambda()
                                 .eq(SysModuleDto::getStatus, BaseConstants.Status.NORMAL.getCode())
+                                .eq(SysModuleDto::getHideModule, DictConstants.DicShowHide.SHOW.getCode())
                                 .and(i ->
                                         i.eq(SysModuleDto::getIsCommon, DictConstants.DicCommonPrivate.PRIVATE.getCode())
                                                 .or().and(j ->
@@ -77,6 +79,7 @@ public class SysModuleManager extends SubBaseManager<SysModuleDto, SysModuleMapp
                     ? baseMapper.selectList(
                     Wrappers.<SysModuleDto>query().lambda()
                             .eq(SysModuleDto::getStatus, BaseConstants.Status.NORMAL.getCode())
+                            .eq(SysModuleDto::getHideModule, DictConstants.DicShowHide.SHOW.getCode())
                             .in(SysModuleDto::getId, roleModuleMerges.stream().map(SysRoleModuleMerge::getModuleId).collect(Collectors.toList())))
                     : new ArrayList<>();
         }

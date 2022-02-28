@@ -2,8 +2,6 @@ package com.xueyi.system.authority.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.dynamic.datasource.annotation.DS;
-import com.xueyi.common.core.exception.ServiceException;
-import com.xueyi.common.security.service.TokenService;
 import com.xueyi.common.web.entity.service.impl.SubBaseServiceImpl;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
@@ -13,7 +11,6 @@ import com.xueyi.system.authority.mapper.SysMenuMapper;
 import com.xueyi.system.authority.mapper.SysModuleMapper;
 import com.xueyi.system.authority.service.ISysMenuService;
 import com.xueyi.system.authority.service.ISysModuleService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
@@ -31,19 +28,14 @@ import static com.xueyi.common.core.constant.basic.TenantConstants.ISOLATE;
 @DS(ISOLATE)
 public class SysModuleServiceImpl extends SubBaseServiceImpl<SysModuleDto, SysModuleManager, SysModuleMapper, SysMenuDto, ISysMenuService, SysMenuMapper> implements ISysModuleService {
 
-    @Autowired
-    private TokenService tokenService;
-
     /**
      * 当前用户首页可展示的模块路由
      *
+     * @param loginUser 登录用户信息
      * @return 模块集合
      */
     @Override
-    public List<SysModuleDto> getRoutes() {
-        LoginUser loginUser = tokenService.getLoginUser();
-        if (ObjectUtil.isNull(loginUser))
-            throw new ServiceException("请先登录！");
+    public List<SysModuleDto> getRoutes(LoginUser loginUser) {
         return baseManager.getRoutes(loginUser);
     }
 
