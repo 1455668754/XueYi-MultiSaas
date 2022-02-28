@@ -1,5 +1,6 @@
 package com.xueyi.system.api.dict.domain.po;
 
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.xueyi.common.core.annotation.Excel;
 import com.xueyi.common.core.annotation.Excel.ColumnType;
@@ -16,7 +17,7 @@ public class SysDictDataPo extends BaseEntity {
 
     /** 字典编码 */
     @Excel(name = "字典编码", cellType = ColumnType.NUMERIC)
-    @TableField("code")
+    @TableField(value = "code", updateStrategy = FieldStrategy.NEVER)
     private String code;
 
     /** 数据键值 */

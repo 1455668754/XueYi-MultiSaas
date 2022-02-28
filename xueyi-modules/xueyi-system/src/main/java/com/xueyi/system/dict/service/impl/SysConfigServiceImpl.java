@@ -17,8 +17,9 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 import static com.xueyi.common.core.constant.basic.TenantConstants.MASTER;
 
@@ -84,8 +85,11 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigDto, SysConfi
      */
     @Override
     public int deleteById(Serializable id) {
-        SysConfigDto configDto = baseManager.selectById(id);
-        return deleteCache(baseManager.deleteById(id), configDto.getCode());
+        SysConfigDto config = baseManager.selectById(id);
+        int row = baseManager.deleteById(id);
+        if (row > 0)
+            redisService.deleteCacheMapHKey(CacheConstants.SYS_CONFIG_KEY, config.getCode());
+        return row;
     }
 
     /**
@@ -97,8 +101,10 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigDto, SysConfi
     @Override
     public int deleteByIds(Collection<? extends Serializable> idList) {
         List<SysConfigDto> configList = baseManager.selectListByIds(idList);
-        return deleteCache(baseManager.deleteByIds(idList),
-                configList.stream().map(SysConfigDto::getCode).collect(Collectors.toList()));
+        int rows = baseManager.deleteByIds(idList);
+        if (rows > 0)
+            configList.forEach(config -> redisService.deleteCacheMapHKey(CacheConstants.SYS_CONFIG_KEY, config.getCode()));
+        return rows;
     }
 
     /**
@@ -129,9 +135,10 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigDto, SysConfi
      */
     @Override
     public void loadingConfigCache() {
-        List<SysConfigDto> configsList = baseManager.selectList(null);
-        for (SysConfigDto config : configsList)
-            redisService.setCacheObject(getCacheKey(config.getCode()), config.getValue());
+        Map<String, String> dataMap = new HashMap<>();
+        List<SysConfigDto> configList = baseManager.selectList(null);
+        configList.forEach(config -> dataMap.put(config.getCode(), config.getValue()));
+        redisService.setCacheMap(CacheConstants.SYS_CONFIG_KEY, dataMap);
     }
 
     /**
@@ -139,8 +146,7 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigDto, SysConfi
      */
     @Override
     public void clearConfigCache() {
-        Collection<String> keys = redisService.keys(CacheConstants.SYS_CONFIG_KEY + "*");
-        redisService.deleteObject(keys);
+        redisService.deleteObject(CacheConstants.SYS_CONFIG_KEY);
     }
 
     /**
@@ -153,16 +159,6 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigDto, SysConfi
     }
 
     /**
-     * 设置缓存键
-     *
-     * @param code 参数编码
-     * @return 缓存key
-     */
-    private String getCacheKey(String code) {
-        return CacheConstants.SYS_CONFIG_KEY + code;
-    }
-
-    /**
      * 新增/修改缓存
      *
      * @param rows  结果
@@ -172,34 +168,7 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigDto, SysConfi
      */
     private int refreshCache(int rows, String code, String value) {
         if (rows > 0)
-            redisService.setCacheObject(getCacheKey(code), value);
-        return rows;
-    }
-
-    /**
-     * 删除缓存
-     *
-     * @param rows 结果
-     * @param code 参数编码
-     * @return 结果
-     */
-    private int deleteCache(int rows, String code) {
-        if (rows > 0)
-            redisService.deleteObject(getCacheKey(code));
-        return rows;
-    }
-
-    /**
-     * 批量删除缓存
-     *
-     * @param rows  结果
-     * @param codes 参数编码集合
-     * @return 结果
-     */
-    private int deleteCache(int rows, List<String> codes) {
-        if (rows > 0)
-            for (String code : codes)
-                redisService.deleteObject(getCacheKey(code));
+            redisService.setCacheMapValue(CacheConstants.SYS_CONFIG_KEY, code, value);
         return rows;
     }
 }

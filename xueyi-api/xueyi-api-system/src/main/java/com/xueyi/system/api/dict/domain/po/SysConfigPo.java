@@ -1,5 +1,6 @@
 package com.xueyi.system.api.dict.domain.po;
 
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.xueyi.common.core.annotation.Excel;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
@@ -14,7 +15,7 @@ public class SysConfigPo extends BaseEntity {
 
     /** 参数键名 */
     @Excel(name = "参数键名")
-    @TableField("code")
+    @TableField(value = "code", updateStrategy = FieldStrategy.NEVER)
     private String code;
 
     /** 参数键值 */
@@ -24,7 +25,7 @@ public class SysConfigPo extends BaseEntity {
 
     /** 系统内置（Y是 N否） */
     @Excel(name = "系统内置", readConverterExp = "Y=是,N=否")
-    @TableField("type")
+    @TableField(value = "type", updateStrategy = FieldStrategy.NEVER)
     private String type;
 
     public String getCode() {

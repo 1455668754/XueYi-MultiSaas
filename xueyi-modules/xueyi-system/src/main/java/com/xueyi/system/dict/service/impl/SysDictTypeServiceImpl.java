@@ -2,6 +2,7 @@ package com.xueyi.system.dict.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.dynamic.datasource.annotation.DS;
+import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.CacheConstants;
 import com.xueyi.common.redis.service.RedisService;
@@ -46,6 +47,21 @@ public class SysDictTypeServiceImpl extends SubBaseServiceImpl<SysDictTypeDto, S
     }
 
     /**
+     * 新增数据对象
+     *
+     * @param dictType 数据对象
+     * @return 结果
+     */
+    @Override
+    @DSTransactional
+    public int insert(SysDictTypeDto dictType) {
+        int row = super.insert(dictType);
+        if (row > 0)
+            redisService.setCacheMapValue(CacheConstants.SYS_DICT_KEY, dictType.getCode(), dictType.getSubList());
+        return row;
+    }
+
+    /**
      * 根据Id删除参数对象
      *
      * @param id Id
@@ -53,8 +69,8 @@ public class SysDictTypeServiceImpl extends SubBaseServiceImpl<SysDictTypeDto, S
      */
     @Override
     public int deleteById(Serializable id) {
-        SysDictTypeDto configDto = baseManager.selectById(id);
-        deleteDictCache(configDto.getCode());
+        SysDictTypeDto dict = baseManager.selectById(id);
+        deleteDictCache(dict.getCode());
         return baseManager.deleteById(id);
     }
 

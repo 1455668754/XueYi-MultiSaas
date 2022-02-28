@@ -124,7 +124,7 @@ public class SysConfigController extends BaseController<SysConfigDto, ISysConfig
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);
     }
-    
+
     /**
      * 刷新参数缓存
      */
@@ -158,11 +158,11 @@ public class SysConfigController extends BaseController<SysConfigDto, ISysConfig
             if (baseService.checkIsBuiltIn(idList.get(i)))
                 idList.remove(i);
         }
-        if (CollUtil.isEmpty(idList))
-            throw new ServiceException(StrUtil.format("{}失败，不能删除内置参数！",operate.getInfo()));
-        else if (idList.size() != size) {
+        if (CollUtil.isEmpty(idList)) {
+            throw new ServiceException(StrUtil.format("{}失败，不能删除内置参数！", operate.getInfo()));
+        } else if (idList.size() != size) {
             baseService.deleteByIds(idList);
-            throw new ServiceException(StrUtil.format("成功{}除内置参数外的所有参数！",operate.getInfo()));
+            throw new ServiceException(StrUtil.format("成功{}除内置参数外的所有参数！", operate.getInfo()));
         }
     }
 }

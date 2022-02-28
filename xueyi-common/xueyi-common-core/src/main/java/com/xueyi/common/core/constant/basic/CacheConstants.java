@@ -25,39 +25,7 @@ public class CacheConstants {
     /** 字典管理 cache key */
     public static final String SYS_DICT_KEY = "system:dict";
 
-
-    // 以下待修改
     /** 参数管理 cache key */
     public static final String SYS_CONFIG_KEY = "system:config";
 
-    /** 登录验证-企业信息 cache key */
-    public static final String LOGIN_ENTERPRISE_KEY = "login_enterprise:";
-
-    /** 企业管理 cache key */
-    public static final String SYS_ENTERPRISE_KEY = "sys_enterprise:";
-
-    /** 企业信息 cache key */
-    public static final String ENTERPRISE_KEY = "enterprise";
-
-    /** 企业源策略 cache key */
-    public static final String STRATEGY_KEY = "strategy";
-
-
-
-
-     // 以下待移除
-    /** 模块-路由 cache key */
-    public static final String ROUTE_KEY = "route";
-
-    /** 菜单 cache key */
-    public static final String MENU_KEY = "menu";
-
-    /** 模块 cache key */
-    public static final String SYSTEM_KEY = "system";
-
-    /** 模块-菜单 cache key */
-    public static final String SYSTEM_MENU_KEY = "system_menu";
-
-    /** 角色 cache key */
-    public static final String ROLE_KEY = "role";
 }
