@@ -1,7 +1,7 @@
 package com.xueyi.common.core.constant.system;
 
+import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
-import com.xueyi.common.core.utils.StringUtils;
 
 /**
  * 权限通用常量
@@ -90,7 +90,7 @@ public class AuthorityConstants {
 
         public static DataScope getValue(String code){
             for(DataScope scope : values()){
-                if(StringUtils.equals(code, scope.getCode())){
+                if(StrUtil.equals(code, scope.getCode())){
                     return scope;
                 }
             }
@@ -148,7 +148,7 @@ public class AuthorityConstants {
 
         public static MenuType getValue(String code) {
             for (MenuType one : values())
-                if (StringUtils.equals(code, one.getCode()))
+                if (StrUtil.equals(code, one.getCode()))
                     return one;
             return null;
         }

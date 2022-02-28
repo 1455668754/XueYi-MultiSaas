@@ -1,5 +1,6 @@
 package com.xueyi.common.core.utils;
 
+import cn.hutool.core.util.StrUtil;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.io.PrintWriter;
@@ -25,11 +26,11 @@ public class ExceptionUtil {
         Throwable root = ExceptionUtils.getRootCause(e);
         root = (root == null ? e : root);
         if (root == null) {
-            return "";
+            return StrUtil.EMPTY;
         }
         String msg = root.getMessage();
         if (msg == null) {
-            return "null";
+            return StrUtil.NULL;
         }
         return StringUtils.defaultString(msg);
     }

@@ -11,7 +11,6 @@ import com.xueyi.common.core.constant.system.OrganizeConstants;
 import com.xueyi.common.core.domain.R;
 import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.ServletUtils;
-import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.core.utils.ip.IpUtils;
 import com.xueyi.system.api.authority.feign.RemoteLoginService;
 import com.xueyi.system.api.log.domain.dto.SysLoginLogDto;
@@ -46,7 +45,7 @@ public class SysLoginService {
      */
     public LoginUser login(String enterpriseName, String userName, String password) {
         // 企业账号||员工账号||密码为空 错误
-        if (StringUtils.isAnyBlank(enterpriseName, userName, password)) {
+        if (StrUtil.hasBlank(enterpriseName, userName, password)) {
             recordLoginInfo(enterpriseName, userName, Constants.LOGIN_FAIL, "企业账号/员工账号/密码必须填写");
             throw new ServiceException("企业账号/员工账号/密码必须填写");
         }
@@ -174,7 +173,7 @@ public class SysLoginService {
         loginInfo.setIpaddr(IpUtils.getIpAddr(ServletUtils.getRequest()));
         loginInfo.setMsg(message);
         // 日志状态
-        if (StringUtils.equalsAny(status, Constants.LOGIN_SUCCESS, Constants.LOGOUT, Constants.REGISTER)) {
+        if (StrUtil.equalsAny(status, Constants.LOGIN_SUCCESS, Constants.LOGOUT, Constants.REGISTER)) {
             loginInfo.setStatus(BaseConstants.Status.NORMAL.getCode());
         } else if (Constants.LOGIN_FAIL.equals(status)) {
             loginInfo.setStatus(BaseConstants.Status.DISABLE.getCode());

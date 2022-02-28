@@ -241,7 +241,7 @@ public class TreeUtils {
                 Id.setAccessible(true);
                 Field FId = depthRecursive(n, checkAttribute(n, FIdName, 0)).getDeclaredField(FIdName);
                 FId.setAccessible(true);
-                if (StringUtils.isNotNull((Long) FId.get(n)) && ((Long) FId.get(n)).longValue() == ((Long) Id.get(t)).longValue()) {
+                if (ObjectUtil.isNotNull((Long) FId.get(n)) && ((Long) FId.get(n)).longValue() == ((Long) Id.get(t)).longValue()) {
                     tList.add(n);
                 }
             }

@@ -1,8 +1,11 @@
 package com.xueyi.common.security.service;
 
+import cn.hutool.core.util.IdUtil;
 import com.xueyi.common.core.constant.basic.CacheConstants;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
-import com.xueyi.common.core.utils.*;
+import com.xueyi.common.core.utils.JwtUtils;
+import com.xueyi.common.core.utils.ServletUtils;
+import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.core.utils.ip.IpUtils;
 import com.xueyi.common.redis.service.RedisService;
 import com.xueyi.common.security.utils.SecurityUtils;
@@ -40,7 +43,7 @@ public class TokenService {
      * 创建令牌
      */
     public Map<String, Object> createToken(LoginUser loginUser) {
-        String token = IdUtils.fastUUID();
+        String token = IdUtil.fastUUID();
 
         Long enterpriseId = loginUser.getEnterprise().getId();
         String enterpriseName = loginUser.getEnterprise().getName();

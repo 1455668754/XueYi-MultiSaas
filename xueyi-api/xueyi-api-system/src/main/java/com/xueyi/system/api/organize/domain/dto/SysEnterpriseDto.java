@@ -1,8 +1,8 @@
 package com.xueyi.system.api.organize.domain.dto;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
-import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.system.api.organize.domain.po.SysEnterprisePo;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -22,7 +22,7 @@ public class SysEnterpriseDto extends SysEnterprisePo {
     }
 
     public static boolean isAdmin(String isLessor) {
-        return StringUtils.equals(AuthorityConstants.TenantType.ADMIN.getCode(), isLessor);
+        return StrUtil.equals(AuthorityConstants.TenantType.ADMIN.getCode(), isLessor);
     }
 
     @Override

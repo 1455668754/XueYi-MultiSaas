@@ -5,7 +5,6 @@ import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.system.OrganizeConstants;
 import com.xueyi.common.core.exception.ServiceException;
-import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
@@ -166,7 +165,7 @@ public class TeTenantController extends BaseController<TeTenantDto, ITeTenantSer
         String userName = tenantRegister.getUser().getUserName();
         String password = tenantRegister.getUser().getPassword();
         // 企业账号为空 错误
-        if (StringUtils.isBlank(enterpriseName)) {
+        if (StrUtil.isBlank(enterpriseName)) {
             throw new ServiceException("企业账号必须填写");
         }
         if (enterpriseName.length() < OrganizeConstants.ENTERPRISE_NAME_MIN_LENGTH
@@ -175,7 +174,7 @@ public class TeTenantController extends BaseController<TeTenantDto, ITeTenantSer
         }
 
         // 用户名或密码为空 错误
-        if (StringUtils.isAnyBlank(userName, password)) {
+        if (StrUtil.hasBlank(userName, password)) {
             throw new ServiceException("用户账号/密码必须填写");
         }
         if (userName.length() < OrganizeConstants.USERNAME_MIN_LENGTH

@@ -1,6 +1,6 @@
 package com.xueyi.common.core.utils.file;
 
-import com.xueyi.common.core.utils.StringUtils;
+import cn.hutool.core.util.StrUtil;
 import org.apache.commons.lang3.ArrayUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -103,7 +103,7 @@ public class FileUtils {
      */
     public static boolean checkAllowDownload(String resource) {
         // 禁止目录上跳级别
-        if (StringUtils.contains(resource, "..")) {
+        if (StrUtil.contains(resource, "..")) {
             return false;
         }
 

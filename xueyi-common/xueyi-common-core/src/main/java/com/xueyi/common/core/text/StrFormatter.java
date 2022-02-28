@@ -1,6 +1,7 @@
 package com.xueyi.common.core.text;
 
-import com.xueyi.common.core.utils.StringUtils;
+import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.StrUtil;
 
 /**
  * 字符串格式化
@@ -28,7 +29,7 @@ public class StrFormatter {
      * @return 结果
      */
     public static String format(final String strPattern, final Object... argArray) {
-        if (StringUtils.isEmpty(strPattern) || StringUtils.isEmpty(argArray)) {
+        if (StrUtil.isEmpty(strPattern) || ArrayUtil.isEmpty(argArray)) {
             return strPattern;
         }
         final int strPatternLength = strPattern.length();

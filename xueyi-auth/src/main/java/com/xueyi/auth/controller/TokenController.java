@@ -1,11 +1,12 @@
 package com.xueyi.auth.controller;
 
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.xueyi.auth.form.LoginBody;
 import com.xueyi.auth.form.RegisterBody;
 import com.xueyi.auth.service.SysLoginService;
 import com.xueyi.common.core.domain.R;
 import com.xueyi.common.core.utils.JwtUtils;
-import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.security.auth.AuthUtil;
 import com.xueyi.common.security.service.TokenService;
 import com.xueyi.common.security.utils.SecurityUtils;
@@ -43,7 +44,7 @@ public class TokenController {
     @DeleteMapping("logout")
     public R<?> logout(HttpServletRequest request) {
         String token = SecurityUtils.getToken(request);
-        if (StringUtils.isNotEmpty(token)) {
+        if (StrUtil.isNotEmpty(token)) {
             LoginUser loginUser = tokenService.getLoginUser(request);
             String sourceName = JwtUtils.getSourceName(token);
             Long enterpriseId = Long.valueOf(JwtUtils.getEnterpriseId(token));
@@ -62,7 +63,7 @@ public class TokenController {
     @PostMapping("refresh")
     public R<?> refresh(HttpServletRequest request) {
         LoginUser loginUser = tokenService.getLoginUser(request);
-        if (StringUtils.isNotNull(loginUser)) {
+        if (ObjectUtil.isNotNull(loginUser)) {
             // 刷新令牌有效期
             tokenService.refreshToken(loginUser);
             return R.ok();

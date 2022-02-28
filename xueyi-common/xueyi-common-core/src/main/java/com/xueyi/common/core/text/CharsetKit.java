@@ -1,6 +1,6 @@
 package com.xueyi.common.core.text;
 
-import com.xueyi.common.core.utils.StringUtils;
+import cn.hutool.core.util.StrUtil;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -33,7 +33,7 @@ public class CharsetKit {
      * @return Charset
      */
     public static Charset charset(String charset) {
-        return StringUtils.isEmpty(charset) ? Charset.defaultCharset() : Charset.forName(charset);
+        return StrUtil.isEmpty(charset) ? Charset.defaultCharset() : Charset.forName(charset);
     }
 
     /**
@@ -65,7 +65,7 @@ public class CharsetKit {
             destCharset = StandardCharsets.UTF_8;
         }
 
-        if (StringUtils.isEmpty(source) || srcCharset.equals(destCharset)) {
+        if (StrUtil.isEmpty(source) || srcCharset.equals(destCharset)) {
             return source;
         }
         return new String(source.getBytes(srcCharset), destCharset);

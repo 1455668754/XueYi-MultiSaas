@@ -1,12 +1,12 @@
 package com.xueyi.system.api.organize.domain.dto;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.common.core.annotation.Excel;
 import com.xueyi.common.core.annotation.Excel.Type;
 import com.xueyi.common.core.annotation.Excels;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
-import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
 import com.xueyi.system.api.organize.domain.po.SysUserPo;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -96,7 +96,7 @@ public class SysUserDto extends SysUserPo {
     }
 
     public static boolean isAdmin(String userType) {
-        return StringUtils.equals(AuthorityConstants.UserType.ADMIN.getCode(), userType);
+        return StrUtil.equals(AuthorityConstants.UserType.ADMIN.getCode(), userType);
     }
 
     @Override

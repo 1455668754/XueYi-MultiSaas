@@ -1,5 +1,6 @@
 package com.xueyi.common.core.utils;
 
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.xueyi.common.core.constant.basic.HttpConstants;
 import com.xueyi.common.core.domain.R;
@@ -114,8 +115,8 @@ public class ServletUtils {
 
     public static String getHeader(HttpServletRequest request, String name) {
         String value = request.getHeader(name);
-        if (StringUtils.isEmpty(value)) {
-            return StringUtils.EMPTY;
+        if (StrUtil.isEmpty(value)) {
+            return StrUtil.EMPTY;
         }
         return urlDecode(value);
     }
@@ -185,7 +186,7 @@ public class ServletUtils {
         try {
             return URLEncoder.encode(str, HttpConstants.Character.UTF8.getCode());
         } catch (UnsupportedEncodingException e) {
-            return StringUtils.EMPTY;
+            return StrUtil.EMPTY;
         }
     }
 
@@ -199,7 +200,7 @@ public class ServletUtils {
         try {
             return URLDecoder.decode(str, HttpConstants.Character.UTF8.getCode());
         } catch (UnsupportedEncodingException e) {
-            return StringUtils.EMPTY;
+            return StrUtil.EMPTY;
         }
     }
 

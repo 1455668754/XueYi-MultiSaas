@@ -1,10 +1,10 @@
 package com.xueyi.gateway.service.impl;
 
+import cn.hutool.core.util.IdUtil;
 import com.google.code.kaptcha.Producer;
 import com.xueyi.common.core.constant.basic.CacheConstants;
 import com.xueyi.common.core.constant.basic.Constants;
 import com.xueyi.common.core.exception.CaptchaException;
-import com.xueyi.common.core.utils.IdUtils;
 import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.core.utils.sign.Base64;
 import com.xueyi.common.core.web.result.AjaxResult;
@@ -55,7 +55,7 @@ public class ValidateCodeServiceImpl implements ValidateCodeService {
         }
 
         // 保存验证码信息
-        String uuid = IdUtils.simpleUUID();
+        String uuid = IdUtil.simpleUUID();
         String verifyKey = CacheConstants.CAPTCHA_CODE_KEY + uuid;
 
         String capStr = null, code = null;

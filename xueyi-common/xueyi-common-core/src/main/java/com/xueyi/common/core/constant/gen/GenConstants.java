@@ -1,6 +1,6 @@
 package com.xueyi.common.core.constant.gen;
 
-import com.xueyi.common.core.utils.StringUtils;
+import cn.hutool.core.util.StrUtil;
 
 /**
  * 代码生成通用常量
@@ -131,7 +131,7 @@ public class GenConstants {
 
         public static GenField getValue(String code) {
             for (GenField one : values())
-                if (StringUtils.equals(code, one.getCode()))
+                if (StrUtil.equals(code, one.getCode()))
                     return one;
             return null;
         }
@@ -195,7 +195,7 @@ public class GenConstants {
 
         public static OptionField getValue(String code) {
             for (OptionField one : values())
-                if (StringUtils.equals(code, one.getCode()))
+                if (StrUtil.equals(code, one.getCode()))
                     return one;
             return null;
         }
@@ -232,7 +232,7 @@ public class GenConstants {
 
         public static TemplateType getValue(String code) {
             for (TemplateType one : values())
-                if (StringUtils.equals(code, one.getCode()))
+                if (StrUtil.equals(code, one.getCode()))
                     return one;
             return null;
         }

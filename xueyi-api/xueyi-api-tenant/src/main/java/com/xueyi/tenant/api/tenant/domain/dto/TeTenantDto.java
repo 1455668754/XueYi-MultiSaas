@@ -1,5 +1,6 @@
 package com.xueyi.tenant.api.tenant.domain.dto;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
@@ -27,7 +28,7 @@ public class TeTenantDto extends TeTenantPo {
     private Long[] authIds;
 
     public static boolean isAdmin(String isLessor) {
-        return StringUtils.equals(AuthorityConstants.TenantType.ADMIN.getCode(), isLessor);
+        return StrUtil.equals(AuthorityConstants.TenantType.ADMIN.getCode(), isLessor);
     }
 
     public TeStrategyDto getStrategy() {

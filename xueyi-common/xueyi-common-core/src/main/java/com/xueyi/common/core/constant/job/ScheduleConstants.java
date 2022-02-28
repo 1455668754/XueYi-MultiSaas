@@ -1,6 +1,6 @@
 package com.xueyi.common.core.constant.job;
 
-import com.xueyi.common.core.utils.StringUtils;
+import cn.hutool.core.util.StrUtil;
 
 /**
  * 任务调度通用常量
@@ -69,7 +69,7 @@ public class ScheduleConstants {
 
         public static Misfire getValue(String code){
             for(Misfire misfire : values()){
-                if(StringUtils.equals(code, misfire.getCode())){
+                if(StrUtil.equals(code, misfire.getCode())){
                     return misfire;
                 }
             }
