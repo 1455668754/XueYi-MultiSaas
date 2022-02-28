@@ -187,4 +187,9 @@ public interface SystemConstants {
     String SYS_OPERATE_LOG_DELETE = "monitor:operateLog:delete";
     /** 系统 - 操作日志 - 导出 */
     String SYS_OPERATE_LOG_EXPORT = "monitor:operateLog:export";
+
+    /** 系统 - 在线用户 - 列表 */
+    String SYS_ONLINE_LIST = "monitor:online:list";
+    /** 系统 - 在线用户 - 强退 */
+    String SYS_ONLINE_FORCE_LOGOUT = "monitor:online:forceLogout";
 }
