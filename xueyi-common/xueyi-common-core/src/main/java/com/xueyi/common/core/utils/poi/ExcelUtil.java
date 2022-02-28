@@ -27,6 +27,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -273,7 +275,7 @@ public class ExcelUtil<T> {
                         } else {
                             String dateFormat = field.getAnnotation(Excel.class).dateFormat();
                             if (StringUtils.isNotEmpty(dateFormat)) {
-                                val = DateUtils.parseDateToStr(dateFormat, (Date) val);
+                                val = this.parseDateToStr(dateFormat, (Date) val);
                             } else {
                                 val = Convert.toStr(val);
                             }
@@ -607,7 +609,7 @@ public class ExcelUtil<T> {
                 String readConverterExp = attr.readConverterExp();
                 String separator = attr.separator();
                 if (StringUtils.isNotEmpty(dateFormat) && StringUtils.isNotNull(value)) {
-                    cell.setCellValue(DateUtils.parseDateToStr(dateFormat, (Date) value));
+                    cell.setCellValue(this.parseDateToStr(dateFormat, (Date) value));
                 } else if (StringUtils.isNotEmpty(readConverterExp) && StringUtils.isNotNull(value)) {
                     cell.setCellValue(convertByExp(Convert.toStr(value), readConverterExp, separator));
                 } else if (value instanceof BigDecimal && -1 != attr.scale()) {
@@ -898,7 +900,7 @@ public class ExcelUtil<T> {
      * 判断是否是空行
      *
      * @param row 判断的行
-     * @return
+     * @return 结果
      */
     private boolean isRowEmpty(Row row) {
         if (row == null) {
@@ -911,5 +913,31 @@ public class ExcelUtil<T> {
             }
         }
         return true;
+    }
+
+
+    /**
+     * 增加ExcelUtil对java8 日期的支持
+     * 格式化日期，日期可能是：{@link Date}、{@link LocalDateTime}、 {@link LocalDate} 其他日期暂不支持
+     * @param dateFormat 日期格式
+     * @param val 被格式化的日期对象
+     * @see DateUtils#parseDateToStr(String, Date)
+     */
+    private String parseDateToStr(final String dateFormat, Object val)
+    {
+        if (val == null) {
+            return "";
+        }
+        String str;
+        if (val instanceof Date) {
+            str = DateUtils.parseDateToStr(dateFormat, (Date) val);
+        } else if (val instanceof LocalDateTime) {
+            str = DateUtils.parseDateToStr(dateFormat, DateUtils.toDate((LocalDateTime) val));
+        } else if (val instanceof LocalDate) {
+            str = DateUtils.parseDateToStr(dateFormat, DateUtils.toDate((LocalDate) val));
+        } else {
+            str = val.toString();
+        }
+        return str;
     }
 }
