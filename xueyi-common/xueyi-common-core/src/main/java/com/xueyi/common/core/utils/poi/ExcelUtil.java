@@ -1,5 +1,6 @@
 package com.xueyi.common.core.utils.poi;
 
+import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.annotation.Excel;
 import com.xueyi.common.core.annotation.Excel.ColumnType;
 import com.xueyi.common.core.annotation.Excel.Type;
@@ -275,7 +276,7 @@ public class ExcelUtil<T> {
                         } else {
                             String dateFormat = field.getAnnotation(Excel.class).dateFormat();
                             if (StringUtils.isNotEmpty(dateFormat)) {
-                                val = this.parseDateToStr(dateFormat, (Date) val);
+                                val = parseDateToStr(dateFormat, (Date) val);
                             } else {
                                 val = Convert.toStr(val);
                             }
@@ -570,7 +571,7 @@ public class ExcelUtil<T> {
      * 创建表格样式
      */
     public void setDataValidation(Excel attr, Row row, int column) {
-        if (attr.name().indexOf("注：") >= 0) {
+        if (attr.name().contains("注：")) {
             sheet.setColumnWidth(column, 6000);
         } else {
             // 设置列宽
@@ -609,7 +610,7 @@ public class ExcelUtil<T> {
                 String readConverterExp = attr.readConverterExp();
                 String separator = attr.separator();
                 if (StringUtils.isNotEmpty(dateFormat) && StringUtils.isNotNull(value)) {
-                    cell.setCellValue(this.parseDateToStr(dateFormat, (Date) value));
+                    cell.setCellValue(parseDateToStr(dateFormat, (Date) value));
                 } else if (StringUtils.isNotEmpty(readConverterExp) && StringUtils.isNotNull(value)) {
                     cell.setCellValue(convertByExp(Convert.toStr(value), readConverterExp, separator));
                 } else if (value instanceof BigDecimal && -1 != attr.scale()) {
@@ -864,9 +865,9 @@ public class ExcelUtil<T> {
      */
     public Object getCellValue(Row row, int column) {
         if (row == null) {
-            return row;
+            return null;
         }
-        Object val = "";
+        Object val = StrUtil.EMPTY;
         try {
             Cell cell = row.getCell(column);
             if (StringUtils.isNotNull(cell)) {
@@ -917,16 +918,15 @@ public class ExcelUtil<T> {
 
 
     /**
-     * 增加ExcelUtil对java8 日期的支持
-     * 格式化日期，日期可能是：{@link Date}、{@link LocalDateTime}、 {@link LocalDate} 其他日期暂不支持
+     * 格式化不同类型的日期对象
+     *
      * @param dateFormat 日期格式
-     * @param val 被格式化的日期对象
-     * @see DateUtils#parseDateToStr(String, Date)
+     * @param val        被格式化的日期对象
+     * @return 格式化后的日期字符
      */
-    private String parseDateToStr(final String dateFormat, Object val)
-    {
+    public String parseDateToStr(String dateFormat, Object val) {
         if (val == null) {
-            return "";
+            return StrUtil.EMPTY;
         }
         String str;
         if (val instanceof Date) {
