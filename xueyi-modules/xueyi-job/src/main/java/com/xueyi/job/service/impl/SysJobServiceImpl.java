@@ -3,7 +3,6 @@ package com.xueyi.job.service.impl;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.xueyi.common.core.constant.job.ScheduleConstants;
 import com.xueyi.common.core.exception.job.TaskException;
-import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.job.domain.dto.SysJobDto;
 import com.xueyi.job.manager.SysJobManager;
@@ -179,7 +178,6 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobDto, SysJobManager,
      */
     @Override
     @DSTransactional
-    @DataScope(ueAlias = "empty")
     public int insertJob(SysJobDto job) throws SchedulerException, TaskException {
         job.setStatus(ScheduleConstants.Status.PAUSE.getCode());
         int rows = jobMapper.insertJob(job);

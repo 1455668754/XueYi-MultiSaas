@@ -1,7 +1,9 @@
 package com.xueyi.common.web.config;
 
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.DataPermissionInterceptor;
 import com.github.pagehelper.PageInterceptor;
+import com.xueyi.common.datascope.interceptor.XueYiDataScopeInterceptor;
 import com.xueyi.common.web.handler.XueYiTenantLineHandler;
 import com.xueyi.common.web.injector.CustomizedSqlInjector;
 import com.xueyi.common.web.interceptor.XueYiTenantLineInnerInterceptor;
@@ -32,6 +34,14 @@ public class XueYiMyBatisPlusConfig {
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+
+        // 添加数据权限插件
+        DataPermissionInterceptor dataPermissionInterceptor = new DataPermissionInterceptor();
+        XueYiDataScopeInterceptor dataScopeAspect = new XueYiDataScopeInterceptor();
+        // 添加自定义的数据权限处理器
+        dataPermissionInterceptor.setDataPermissionHandler(dataScopeAspect);
+        interceptor.addInnerInterceptor(dataPermissionInterceptor);
+
         interceptor.addInnerInterceptor(new XueYiTenantLineInnerInterceptor(new XueYiTenantLineHandler()));
         return interceptor;
     }

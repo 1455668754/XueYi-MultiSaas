@@ -60,15 +60,6 @@ public class LoginUser implements Serializable {
     /** 角色Id列表 */
     private Set<Long> roleIds;
 
-    /** 模块路由列表 */
-    private Object moduleRoute;
-
-    /** 菜单路由列表 */
-    private Map<String, Object> menuRoute;
-
-    /** 路由路径映射列表 */
-    private Map<String, String> routeURL;
-
     /** 源策略组 */
     private Source source;
 
@@ -77,6 +68,18 @@ public class LoginUser implements Serializable {
 
     /** 用户信息 */
     private SysUserDto user;
+
+    /** 数据权限 */
+    private DataScope dataScope;
+
+    /** 模块路由列表 */
+    private Object moduleRoute;
+
+    /** 菜单路由列表 */
+    private Map<String, Object> menuRoute;
+
+    /** 路由路径映射列表 */
+    private Map<String, String> routeURL;
 
     public String getToken() {
         return token;
@@ -190,30 +193,6 @@ public class LoginUser implements Serializable {
         this.roleIds = roleIds;
     }
 
-    public Object getModuleRoute() {
-        return moduleRoute;
-    }
-
-    public void setModuleRoute(Object moduleRoute) {
-        this.moduleRoute = moduleRoute;
-    }
-
-    public Map<String, Object> getMenuRoute() {
-        return menuRoute == null ? new HashMap<>() : menuRoute;
-    }
-
-    public void setMenuRoute(Map<String, Object> menuRoute) {
-        this.menuRoute = menuRoute;
-    }
-
-    public Map<String, String> getRouteURL() {
-        return routeURL;
-    }
-
-    public void setRouteURL(Map<String, String> routeURL) {
-        this.routeURL = routeURL;
-    }
-
     public Source getSource() {
         return source;
     }
@@ -236,5 +215,37 @@ public class LoginUser implements Serializable {
 
     public void setUser(SysUserDto user) {
         this.user = user;
+    }
+
+    public DataScope getDataScope() {
+        return dataScope;
+    }
+
+    public void setDataScope(DataScope dataScope) {
+        this.dataScope = dataScope;
+    }
+
+    public Object getModuleRoute() {
+        return moduleRoute;
+    }
+
+    public void setModuleRoute(Object moduleRoute) {
+        this.moduleRoute = moduleRoute;
+    }
+
+    public Map<String, Object> getMenuRoute() {
+        return menuRoute == null ? new HashMap<>() : menuRoute;
+    }
+
+    public void setMenuRoute(Map<String, Object> menuRoute) {
+        this.menuRoute = menuRoute;
+    }
+
+    public Map<String, String> getRouteURL() {
+        return routeURL;
+    }
+
+    public void setRouteURL(Map<String, String> routeURL) {
+        this.routeURL = routeURL;
     }
 }

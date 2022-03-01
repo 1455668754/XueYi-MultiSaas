@@ -17,6 +17,12 @@
 
     <dependencies>
 
+        <!-- 权限范围 -->
+        <dependency>
+            <groupId>com.xueyi</groupId>
+            <artifactId>xueyi-common-datascope</artifactId>
+        </dependency>
+
         <!-- XueYi Common DataSource -->
         <dependency>
             <groupId>com.xueyi</groupId>

@@ -78,12 +78,6 @@
             <artifactId>xueyi-common-web</artifactId>
         </dependency>
 
-        <!-- XueYi Common DataScope -->
-        <dependency>
-            <groupId>com.xueyi</groupId>
-            <artifactId>xueyi-common-datascope</artifactId>
-        </dependency>
-
         <!-- XueYi Common Swagger -->
         <dependency>
             <groupId>com.xueyi</groupId>

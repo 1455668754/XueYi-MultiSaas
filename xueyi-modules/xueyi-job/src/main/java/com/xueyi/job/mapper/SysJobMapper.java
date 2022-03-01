@@ -1,6 +1,5 @@
 package com.xueyi.job.mapper;
 
-import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.web.entity.mapper.BaseMapper;
 import com.xueyi.job.domain.dto.SysJobDto;
 
@@ -19,7 +18,6 @@ public interface SysJobMapper extends BaseMapper<SysJobDto> {
      * @param job 调度信息
      * @return 操作日志集合
      */
-    @DataScope(eAlias = "j")
     public List<SysJobDto> selectJobList(SysJobDto job);
 
     /**

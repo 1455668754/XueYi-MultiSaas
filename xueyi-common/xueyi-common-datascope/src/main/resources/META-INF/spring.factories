@@ -1,4 +1,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.xueyi.common.datascope.aspect.DataScopeAspect
+  com.xueyi.common.datascope.interceptor.XueYiDataScopeInterceptor
 
   
