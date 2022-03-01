@@ -50,12 +50,39 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDto, SysUserManag
     /**
      * 修改用户基本信息
      *
-     * @param user 用户信息
+     * @param id       用户Id
+     * @param nickName 用户昵称
+     * @param sex      用户性别
+     * @param profile  个人简介
      * @return 结果
      */
     @Override
-    public int updateUserProfile(SysUserDto user) {
-        return baseManager.update(user);
+    public int updateUserProfile(Long id, String nickName, String sex, String profile) {
+        return baseManager.updateUserProfile(id, nickName, sex, profile);
+    }
+
+    /**
+     * 更新用户邮箱
+     *
+     * @param id    用户Id
+     * @param email 邮箱
+     * @return 结果
+     */
+    @Override
+    public int updateEmail(Long id, String email) {
+        return baseManager.updateEmail(id, email);
+    }
+
+    /**
+     * 更新用户手机号
+     *
+     * @param id    用户Id
+     * @param phone 手机号
+     * @return 结果
+     */
+    @Override
+    public int updatePhone(Long id, String phone) {
+        return baseManager.updatePhone(id, phone);
     }
 
     /**

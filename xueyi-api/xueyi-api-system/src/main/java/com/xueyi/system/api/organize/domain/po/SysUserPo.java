@@ -1,5 +1,6 @@
 package com.xueyi.system.api.organize.domain.po;
 
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.xueyi.common.core.annotation.Excel;
@@ -23,12 +24,12 @@ public class SysUserPo extends TBaseEntity {
 
     /** 用户编码 */
     @Excel(name = "用户编码(*)")
-    @TableField("code")
+    @TableField(value = "code", updateStrategy = FieldStrategy.NEVER)
     private String code;
 
     /** 用户账号 */
     @Excel(name = "登录名称")
-    @TableField("user_name")
+    @TableField(value = "user_name", updateStrategy = FieldStrategy.NEVER)
     private String userName;
 
     /** 用户昵称 */
@@ -37,7 +38,7 @@ public class SysUserPo extends TBaseEntity {
     private String nickName;
 
     /** 用户标识（00超级管理员） */
-    @TableField("user_type")
+    @TableField(value = "user_type", updateStrategy = FieldStrategy.NEVER)
     private String userType;
 
     /** 手机号码 */
@@ -64,7 +65,7 @@ public class SysUserPo extends TBaseEntity {
     private String profile;
 
     /** 密码 */
-    @TableField("password")
+    @TableField(value = "password", updateStrategy = FieldStrategy.NEVER)
     private String password;
 
     /** 最后登录IP */

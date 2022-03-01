@@ -13,8 +13,8 @@ public interface ISysUserService extends IBaseService<SysUserDto> {
     /**
      * 用户登录校验 | 查询用户信息
      *
-     * @param userName   用户账号
-     * @param password   密码
+     * @param userName 用户账号
+     * @param password 密码
      * @return 用户对象
      */
     SysUserDto userLogin(String userName, String password);
@@ -30,10 +30,31 @@ public interface ISysUserService extends IBaseService<SysUserDto> {
     /**
      * 修改用户基本信息
      *
-     * @param user 用户信息
+     * @param id       用户Id
+     * @param nickName 用户昵称
+     * @param sex      用户性别
+     * @param profile  个人简介
      * @return 结果
      */
-    int updateUserProfile(SysUserDto user);
+    int updateUserProfile(Long id, String nickName, String sex, String profile);
+
+    /**
+     * 更新用户邮箱
+     *
+     * @param id    用户Id
+     * @param email 邮箱
+     * @return 结果
+     */
+    int updateEmail(Long id, String email);
+
+    /**
+     * 更新用户手机号
+     *
+     * @param id    用户Id
+     * @param phone 手机号
+     * @return 结果
+     */
+    int updatePhone(Long id, String phone);
 
     /**
      * 修改用户头像

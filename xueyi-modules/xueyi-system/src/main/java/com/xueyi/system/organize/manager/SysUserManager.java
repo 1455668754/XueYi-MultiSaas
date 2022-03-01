@@ -10,13 +10,13 @@ import com.xueyi.common.web.entity.manager.BaseManager;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
-import com.xueyi.system.organize.domain.merge.SysOrganizeRoleMerge;
 import com.xueyi.system.authority.mapper.SysRoleMapper;
-import com.xueyi.system.organize.mapper.merge.SysOrganizeRoleMergeMapper;
+import com.xueyi.system.organize.domain.merge.SysOrganizeRoleMerge;
 import com.xueyi.system.organize.domain.merge.SysUserPostMerge;
 import com.xueyi.system.organize.mapper.SysDeptMapper;
 import com.xueyi.system.organize.mapper.SysPostMapper;
 import com.xueyi.system.organize.mapper.SysUserMapper;
+import com.xueyi.system.organize.mapper.merge.SysOrganizeRoleMergeMapper;
 import com.xueyi.system.organize.mapper.merge.SysUserPostMergeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -51,8 +51,8 @@ public class SysUserManager extends BaseManager<SysUserDto, SysUserMapper> {
     /**
      * 用户登录校验 | 查询用户信息
      *
-     * @param userName     用户账号
-     * @param password     用户密码
+     * @param userName 用户账号
+     * @param password 用户密码
      * @return 用户对象
      */
 
@@ -104,44 +104,90 @@ public class SysUserManager extends BaseManager<SysUserDto, SysUserMapper> {
     }
 
     /**
+     * 修改用户基本信息
+     *
+     * @param id       用户Id
+     * @param nickName 用户昵称
+     * @param sex      用户性别
+     * @param profile  个人简介
+     * @return 结果
+     */
+    public int updateUserProfile(Long id, String nickName, String sex, String profile) {
+        return baseMapper.update(null,
+                Wrappers.<SysUserDto>update().lambda()
+                        .set(SysUserDto::getNickName, nickName)
+                        .set(SysUserDto::getSex, sex)
+                        .set(SysUserDto::getProfile, profile)
+                        .eq(SysUserDto::getId, id));
+    }
+
+    /**
+     * 更新用户邮箱
+     *
+     * @param id    用户Id
+     * @param email 邮箱
+     * @return 结果
+     */
+    public int updateEmail(Long id, String email) {
+        return baseMapper.update(null,
+                Wrappers.<SysUserDto>update().lambda()
+                        .set(SysUserDto::getEmail, email)
+                        .eq(SysUserDto::getId, id));
+    }
+
+    /**
+     * 更新用户手机号
+     *
+     * @param id    用户Id
+     * @param phone 手机号
+     * @return 结果
+     */
+    public int updatePhone(Long id, String phone) {
+        return baseMapper.update(null,
+                Wrappers.<SysUserDto>update().lambda()
+                        .set(SysUserDto::getPhone, phone)
+                        .eq(SysUserDto::getId, id));
+    }
+
+    /**
      * 修改用户头像
      *
-     * @param Id     用户Id
+     * @param id     用户Id
      * @param avatar 头像地址
      * @return 结果
      */
-    public int updateUserAvatar(Long Id, String avatar) {
+    public int updateUserAvatar(Long id, String avatar) {
         return baseMapper.update(null,
                 Wrappers.<SysUserDto>update().lambda()
                         .set(SysUserDto::getAvatar, avatar)
-                        .eq(SysUserDto::getId, Id));
+                        .eq(SysUserDto::getId, id));
     }
 
     /**
      * 重置用户密码
      *
-     * @param Id       用户Id
+     * @param id       用户Id
      * @param password 密码
      * @return 结果
      */
-    public int resetUserPassword(Long Id, String password) {
+    public int resetUserPassword(Long id, String password) {
         return baseMapper.update(null,
                 Wrappers.<SysUserDto>update().lambda()
                         .set(SysUserDto::getPassword, password)
-                        .eq(SysUserDto::getId, Id));
+                        .eq(SysUserDto::getId, id));
     }
 
     /**
      * 校验用户编码是否唯一
      *
-     * @param Id   用户Id
+     * @param id   用户Id
      * @param code 用户编码
      * @return 用户对象
      */
-    public SysUserDto checkUserCodeUnique(Long Id, String code) {
+    public SysUserDto checkUserCodeUnique(Long id, String code) {
         return baseMapper.selectOne(
                 Wrappers.<SysUserDto>query().lambda()
-                        .ne(SysUserDto::getId, Id)
+                        .ne(SysUserDto::getId, id)
                         .eq(SysUserDto::getCode, code)
                         .last(SqlConstants.LIMIT_ONE));
     }
@@ -165,14 +211,14 @@ public class SysUserManager extends BaseManager<SysUserDto, SysUserMapper> {
     /**
      * 校验手机号码是否唯一
      *
-     * @param Id    用户Id
+     * @param id    用户Id
      * @param phone 手机号码
      * @return 用户对象
      */
-    public SysUserDto checkPhoneUnique(Long Id, String phone) {
+    public SysUserDto checkPhoneUnique(Long id, String phone) {
         return baseMapper.selectOne(
                 Wrappers.<SysUserDto>query().lambda()
-                        .ne(SysUserDto::getId, Id)
+                        .ne(SysUserDto::getId, id)
                         .eq(SysUserDto::getPhone, phone)
                         .last(SqlConstants.LIMIT_ONE));
     }
@@ -180,14 +226,14 @@ public class SysUserManager extends BaseManager<SysUserDto, SysUserMapper> {
     /**
      * 校验email是否唯一
      *
-     * @param Id    用户Id
+     * @param id    用户Id
      * @param email email
      * @return 用户对象
      */
-    public SysUserDto checkEmailUnique(Long Id, String email) {
+    public SysUserDto checkEmailUnique(Long id, String email) {
         return baseMapper.selectOne(
                 Wrappers.<SysUserDto>query().lambda()
-                        .ne(SysUserDto::getId, Id)
+                        .ne(SysUserDto::getId, id)
                         .eq(SysUserDto::getEmail, email)
                         .last(SqlConstants.LIMIT_ONE));
     }
