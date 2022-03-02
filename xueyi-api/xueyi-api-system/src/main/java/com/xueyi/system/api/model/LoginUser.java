@@ -70,7 +70,7 @@ public class LoginUser implements Serializable {
     private SysUserDto user;
 
     /** 数据权限 */
-    private DataScope dataScope;
+    private DataScope scope;
 
     /** 模块路由列表 */
     private Object moduleRoute;
@@ -217,12 +217,12 @@ public class LoginUser implements Serializable {
         this.user = user;
     }
 
-    public DataScope getDataScope() {
-        return dataScope;
+    public DataScope getScope() {
+        return scope;
     }
 
-    public void setDataScope(DataScope dataScope) {
-        this.dataScope = dataScope;
+    public void setScope(DataScope scope) {
+        this.scope = scope;
     }
 
     public Object getModuleRoute() {

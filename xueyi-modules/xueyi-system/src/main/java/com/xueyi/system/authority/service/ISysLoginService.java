@@ -1,6 +1,7 @@
 package com.xueyi.system.authority.service;
 
 import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
+import com.xueyi.system.api.model.DataScope;
 import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
 
@@ -49,6 +50,15 @@ public interface ISysLoginService {
      * @return 菜单权限信息
      */
     Set<String> getMenuPermission(Set<Long> roleIds, String userType);
+
+    /**
+     * 登录校验 | 获取数据数据权限
+     *
+     * @param roleList 角色信息集合
+     * @param user     用户对象
+     * @return 数据权限对象
+     */
+    DataScope getDataScope(List<SysRoleDto> roleList, SysUserDto user);
 
     /**
      * 登录校验 | 获取路由路径集合

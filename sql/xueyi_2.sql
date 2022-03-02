@@ -115,19 +115,21 @@ values (-2, -1, '001', 'admin', 'admin', '00', 'https://images.gitee.com/uploads
 -- ----------------------------
 drop table if exists sys_user_post_merge;
 create table sys_user_post_merge (
+  id                        bigint	            not null                                comment 'id',
   user_id                   bigint	            not null                                comment '用户Id',
   post_id		            bigint	            not null                                comment '职位Id',
   tenant_id		            bigint	            not null                                comment '租户Id',
-  primary key (user_id, post_id)
+  primary key (id),
+  unique (user_id, post_id)
 ) engine=innodb comment = '用户-岗位关联表';
 
 -- ----------------------------
 -- 初始化-用户-岗位关联表数据
 -- ----------------------------
-insert into sys_user_post_merge (user_id, post_id, tenant_id)
-values (-2, -3, -1),
-       ( 2,  2,  1),
-       ( 3,  2,  1);
+insert into sys_user_post_merge (id, user_id, post_id, tenant_id)
+values (1, -2, -3, -1),
+       (2,  2,  2,  1),
+       (3,  3,  2,  1);
 
 -- ----------------------------
 -- 4、角色信息表
@@ -163,42 +165,44 @@ values (1, 1, '001', '超级管理员', 'admin', '超级管理员'),
 -- ----------------------------
 drop table if exists sys_tenant_module_merge;
 create table sys_tenant_module_merge (
+  id                        bigint              not null                                comment 'id',
   module_id                 bigint              not null                                comment '模块Id',
   tenant_id		            bigint	            not null                                comment '租户Id',
-  primary key(module_id, tenant_id)
+  primary key (id),
+  unique (module_id, tenant_id)
 ) engine=innodb comment = '租户和模块关联表';
 
 -- ----------------------------
 -- 初始化-租户和模块关联表数据
 -- ----------------------------
-insert into sys_tenant_module_merge (module_id, tenant_id)
-values (0, 1);
 
 -- ----------------------------
 -- 6、租户和菜单关联表
 -- ----------------------------
 drop table if exists sys_tenant_menu_merge;
 create table sys_tenant_menu_merge (
+  id                        bigint              not null                                comment 'id',
   menu_id                   bigint              not null                                comment '菜单Id',
   tenant_id		            bigint	            not null                                comment '租户Id',
-  primary key(menu_id, tenant_id)
+  primary key (id),
+  unique (menu_id, tenant_id)
 ) engine=innodb comment = '租户和菜单关联表';
 
 -- ----------------------------
 -- 初始化-租户和菜单关联表数据
 -- ----------------------------
-insert into sys_tenant_menu_merge (menu_id, tenant_id)
-values (0, 1);
 
 -- ----------------------------
 -- 7、角色和模块关联表
 -- ----------------------------
 drop table if exists sys_role_module_merge;
 create table sys_role_module_merge (
+  id                        bigint              not null                                comment 'id',
   role_id                   bigint              not null                                comment '角色Id',
   module_id                 bigint              not null                                comment '模块Id',
   tenant_id		            bigint	            not null                                comment '租户Id',
-  primary key(role_id, module_id)
+  primary key (id),
+  unique (role_id, module_id)
 ) engine=innodb comment = '角色和模块关联表';
 
 -- ----------------------------
@@ -206,21 +210,37 @@ create table sys_role_module_merge (
 -- ----------------------------
 drop table if exists sys_role_menu_merge;
 create table sys_role_menu_merge (
+  id                        bigint              not null                                comment 'id',
   role_id                   bigint              not null                                comment '角色Id',
   menu_id                   bigint              not null                                comment '菜单Id',
   tenant_id		            bigint	            not null                                comment '租户Id',
-  primary key(role_id, menu_id)
+  primary key (id),
+  unique (role_id, menu_id)
 ) engine=innodb comment = '角色和菜单关联表';
 
 -- ----------------------------
--- 9、角色和组织关联表（权限范围）
+-- 9、角色和部门关联表（权限范围）
 -- ----------------------------
-drop table if exists sys_role_organize_merge;
-create table sys_role_organize_merge (
+drop table if exists sys_role_dept_merge;
+create table sys_role_dept_merge (
+  id                        bigint              not null                                comment 'id',
   role_id                   bigint              not null                                comment '角色Id',
-  organize_id               bigint              not null                                comment '组织Id（部门 | 岗位混合Id）',
+  dept_id                   bigint              not null                                comment '部门Id',
   tenant_id		            bigint	            not null                                comment '租户Id',
-  primary key(role_id, organize_id)
+  primary key(id),
+  unique (role_id, dept_id)
+) engine=innodb comment = '角色和部门-岗位关联表';
+
+-- ----------------------------
+-- 10、角色和岗位关联表（权限范围）
+-- ----------------------------
+drop table if exists sys_role_post_merge;
+create table sys_role_post_merge (
+  id                        bigint              not null                                comment 'id',
+  role_id                   bigint              not null                                comment '角色Id',
+  post_id                   bigint              not null                                comment '岗位Id',
+  tenant_id		            bigint	            not null                                comment '租户Id',
+  primary key(role_id, post_id)
 ) engine=innodb comment = '角色和部门-岗位关联表';
 
 -- ----------------------------
@@ -357,6 +377,7 @@ create table sys_notice (
 -- ----------------------------
 drop table if exists sys_notice_log;
 create table sys_notice_log (
+  id                        bigint              not null                                comment 'id',
   notice_id                 bigint              not null                                comment '公告Id',
   user_id                   bigint              not null                                comment '用户Id',
   receive_status            char(1)             not null                                comment '发送状态（0成功 1失败）',
@@ -365,5 +386,6 @@ create table sys_notice_log (
   create_time               datetime            default current_timestamp               comment '创建时间',
   del_flag		            tinyint             not null default 0                      comment '删除标志(0正常 1删除)',
   tenant_id		            bigint	            not null                                comment '租户Id',
-  primary key (notice_id,user_id)
+  primary key (id),
+  unique (notice_id, user_id)
 ) engine=innodb comment = '通知公告记录表';

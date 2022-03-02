@@ -7,7 +7,9 @@ import com.xueyi.system.organize.service.ISysOrganizeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import static com.xueyi.common.core.constant.basic.TenantConstants.ISOLATE;
 
@@ -22,6 +24,39 @@ public class SysOrganizeServiceImpl implements ISysOrganizeService {
 
     @Autowired
     private SysOrganizeManager organizeManager;
+
+    /**
+     * 登录校验 | 根据角色Ids获取关联部门
+     *
+     * @param roleIds 角色Ids
+     * @return 部门Id集合
+     */
+    @Override
+    public Set<Long> selectRoleDeptSetByRoleIds(Collection<Long> roleIds) {
+        return organizeManager.selectRoleDeptSetByRoleIds(roleIds);
+    }
+
+    /**
+     * 登录校验 | 根据角色Ids获取关联岗位
+     *
+     * @param roleIds 角色Ids
+     * @return 岗位Id集合
+     */
+    @Override
+    public Set<Long> selectRolePostSetByRoleIds(Collection<Long> roleIds) {
+        return organizeManager.selectRolePostSetByRoleIds(roleIds);
+    }
+
+    /**
+     * 登录校验 | 根据岗位Ids获取归属用户Ids集合
+     *
+     * @param postIds 岗位Ids
+     * @return 用户Ids集合
+     */
+    @Override
+    public Set<Long> selectUserSetByPostIds(Collection<Long> postIds) {
+        return organizeManager.selectUserSetByPostIds(postIds);
+    }
 
     /**
      * 获取企业部门|岗位树

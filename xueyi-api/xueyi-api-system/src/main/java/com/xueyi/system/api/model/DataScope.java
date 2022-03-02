@@ -1,6 +1,9 @@
 package com.xueyi.system.api.model;
 
+import cn.hutool.core.collection.CollUtil;
+
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -33,7 +36,7 @@ public class DataScope implements Serializable {
     }
 
     public Set<Long> getDeptScope() {
-        return deptScope;
+        return CollUtil.isEmpty(deptScope) ? new HashSet<>() : deptScope;
     }
 
     public void setDeptScope(Set<Long> deptScope) {
@@ -41,7 +44,7 @@ public class DataScope implements Serializable {
     }
 
     public Set<Long> getPostScope() {
-        return postScope;
+        return CollUtil.isEmpty(postScope) ? new HashSet<>() : postScope;
     }
 
     public void setPostScope(Set<Long> postScope) {
@@ -49,7 +52,7 @@ public class DataScope implements Serializable {
     }
 
     public Set<Long> getUserScope() {
-        return userScope;
+        return CollUtil.isEmpty(userScope) ? new HashSet<>() : userScope;
     }
 
     public void setUserScope(Set<Long> userScope) {

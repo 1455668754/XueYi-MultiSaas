@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
+import java.util.List;
+
 import static com.xueyi.common.core.constant.basic.TenantConstants.ISOLATE;
 
 /**
@@ -22,6 +25,17 @@ import static com.xueyi.common.core.constant.basic.TenantConstants.ISOLATE;
 @Service
 @DS(ISOLATE)
 public class SysPostServiceImpl extends BaseServiceImpl<SysPostDto, SysPostManager, SysPostMapper> implements ISysPostService {
+
+    /**
+     * 用户登录校验 | 根据部门Ids获取归属岗位对象集合
+     *
+     * @param deptIds 部门Ids
+     * @return 岗位对象集合
+     */
+    @Override
+    public List<SysPostDto> selectListByDeptIds(Collection<Long> deptIds) {
+        return baseManager.selectListByDeptIds(deptIds);
+    }
 
     /**
      * 新增岗位 | 内部调用

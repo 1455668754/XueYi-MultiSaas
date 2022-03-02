@@ -1,17 +1,18 @@
 package com.xueyi.system.organize.domain.merge;
 
+
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.common.core.web.tenant.base.TBasisEntity;
 import com.xueyi.common.security.utils.SecurityUtils;
 
 /**
- * 角色-组织关联（权限范围） 持久化对象
+ * 角色-部门关联（权限范围） 持久化对象
  *
  * @author xueyi
  */
-@TableName("sys_role_organize_merge")
-public class SysRoleOrganizeMerge extends TBasisEntity {
+@TableName("sys_role_dept_merge")
+public class SysRoleDeptMerge extends TBasisEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -19,16 +20,16 @@ public class SysRoleOrganizeMerge extends TBasisEntity {
     @TableField("role_id")
     private Long roleId;
 
-    /** 组织Id（部门 | 岗位混合Id） */
-    @TableField("organize_id")
-    private Long organizeId;
+    /** 部门Id */
+    @TableField("dept_id")
+    private Long deptId;
 
-    public SysRoleOrganizeMerge() {
+    public SysRoleDeptMerge() {
     }
 
-    public SysRoleOrganizeMerge(Long roleId, Long organizeId) {
+    public SysRoleDeptMerge(Long roleId, Long deptId) {
         setRoleId(roleId);
-        setOrganizeId(organizeId);
+        setDeptId(deptId);
         setEnterpriseId(SecurityUtils.getEnterpriseId());
     }
 
@@ -40,11 +41,11 @@ public class SysRoleOrganizeMerge extends TBasisEntity {
         this.roleId = roleId;
     }
 
-    public Long getOrganizeId() {
-        return organizeId;
+    public Long getDeptId() {
+        return deptId;
     }
 
-    public void setOrganizeId(Long organizeId) {
-        this.organizeId = organizeId;
+    public void setDeptId(Long deptId) {
+        this.deptId = deptId;
     }
 }

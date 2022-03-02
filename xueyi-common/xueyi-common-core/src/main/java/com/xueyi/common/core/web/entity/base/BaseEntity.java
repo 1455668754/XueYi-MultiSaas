@@ -16,10 +16,6 @@ public class BaseEntity extends BasisEntity {
 
     private static final long serialVersionUID = 1L;
 
-    /** Id */
-    @TableId("id")
-    private Long id;
-
     /** 名称 */
     @TableField(value = "name", condition = LIKE)
     private String name;
@@ -68,14 +64,6 @@ public class BaseEntity extends BasisEntity {
     /** 创建者 */
     @TableField(exist = false)
     private String updateName;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

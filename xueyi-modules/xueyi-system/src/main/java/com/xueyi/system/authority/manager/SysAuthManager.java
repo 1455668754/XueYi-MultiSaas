@@ -237,19 +237,19 @@ public class SysAuthManager {
      * @param authIds 权限Ids
      */
     public void addRoleAuth(Long roleId, Long[] authIds) {
-        List<Long> menuIdList = new ArrayList<>(Arrays.asList(authIds));
-        if (CollUtil.isNotEmpty(menuIdList)) {
-            List<SysModuleDto> moduleList = moduleManager.selectListByIds(menuIdList);
+        List<Long> authIdList = new ArrayList<>(Arrays.asList(authIds));
+        if (CollUtil.isNotEmpty(authIdList)) {
+            List<SysModuleDto> moduleList = moduleManager.selectListByIds(authIdList);
             if (CollUtil.isNotEmpty(moduleList)) {
                 // 1.权限Ids中的模块Ids与菜单Ids分开
                 List<Long> moduleIdList = moduleList.stream().map(SysModuleDto::getId).collect(Collectors.toList());
-                menuIdList.removeAll(moduleIdList);
+                authIdList.removeAll(moduleIdList);
                 // 2.存储角色与模块的关联数据
                 List<SysRoleModuleMerge> roleModuleMerges = moduleIdList.stream().map(moduleId -> new SysRoleModuleMerge(roleId, moduleId)).collect(Collectors.toList());
                 roleModuleMergeMapper.insertBatch(roleModuleMerges);
             }
             // 3.存储角色与菜单的关联数据
-            List<SysRoleMenuMerge> roleMenuMerges = menuIdList.stream().map(menuId -> new SysRoleMenuMerge(roleId, menuId)).collect(Collectors.toList());
+            List<SysRoleMenuMerge> roleMenuMerges = authIdList.stream().map(menuId -> new SysRoleMenuMerge(roleId, menuId)).collect(Collectors.toList());
             roleMenuMergeMapper.insertBatch(roleMenuMerges);
         }
     }
@@ -261,14 +261,14 @@ public class SysAuthManager {
      * @param authIds 权限Ids
      */
     public void editRoleAuth(Long roleId, Long[] authIds) {
-        List<Long> menuIdList = new ArrayList<>(Arrays.asList(authIds));
+        List<Long> authIdList = new ArrayList<>(Arrays.asList(authIds));
         // 1.校验authIds是否为空? 删除不存在的,增加新增的 : 删除所有
-        if (CollUtil.isNotEmpty(menuIdList)) {
+        if (CollUtil.isNotEmpty(authIdList)) {
             // 2.查询authIds中的模块Id，分离menuIds与moduleIds
-            List<SysModuleDto> moduleList = moduleManager.selectListByIds(menuIdList);
+            List<SysModuleDto> moduleList = moduleManager.selectListByIds(authIdList);
             if (CollUtil.isNotEmpty(moduleList)) {
                 List<Long> moduleIdList = moduleList.stream().map(SysModuleDto::getId).collect(Collectors.toList());
-                menuIdList.removeAll(moduleIdList);
+                authIdList.removeAll(moduleIdList);
                 // 3.查询原始的角色与模块关联数据,新增/删除差异关联数据
                 List<SysRoleModuleMerge> originalModuleList = roleModuleMergeMapper.selectList(
                         Wrappers.<SysRoleModuleMerge>query().lambda()
@@ -297,17 +297,17 @@ public class SysAuthManager {
             if (CollUtil.isNotEmpty(originalMenuList)) {
                 List<Long> originalMenuIds = originalMenuList.stream().map(SysRoleMenuMerge::getMenuId).collect(Collectors.toList());
                 List<Long> delMenuIds = new ArrayList<>(originalMenuIds);
-                delMenuIds.removeAll(menuIdList);
+                delMenuIds.removeAll(authIdList);
                 if (CollUtil.isNotEmpty(delMenuIds)) {
                     roleMenuMergeMapper.delete(
                             Wrappers.<SysRoleMenuMerge>query().lambda()
                                     .eq(SysRoleMenuMerge::getRoleId, roleId)
                                     .in(SysRoleMenuMerge::getMenuId, delMenuIds));
                 }
-                menuIdList.removeAll(originalMenuIds);
+                authIdList.removeAll(originalMenuIds);
             }
-            if (CollUtil.isNotEmpty(menuIdList)) {
-                List<SysRoleMenuMerge> roleMenuMerges = menuIdList.stream().map(menuId -> new SysRoleMenuMerge(roleId, menuId)).collect(Collectors.toList());
+            if (CollUtil.isNotEmpty(authIdList)) {
+                List<SysRoleMenuMerge> roleMenuMerges = authIdList.stream().map(menuId -> new SysRoleMenuMerge(roleId, menuId)).collect(Collectors.toList());
                 roleMenuMergeMapper.insertBatch(roleMenuMerges);
             }
         } else {

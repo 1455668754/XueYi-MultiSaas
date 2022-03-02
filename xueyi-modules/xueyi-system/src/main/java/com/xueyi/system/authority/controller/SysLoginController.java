@@ -7,6 +7,7 @@ import com.xueyi.common.security.annotation.InnerAuth;
 import com.xueyi.common.security.utils.SourceUtils;
 import com.xueyi.common.web.entity.controller.BasisController;
 import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
+import com.xueyi.system.api.model.DataScope;
 import com.xueyi.system.api.model.LoginUser;
 import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
@@ -67,6 +68,8 @@ public class SysLoginController extends BasisController {
                 : new HashSet<>();
         // 菜单权限标识
         Set<String> permissions = loginService.getMenuPermission(roleIds, user.getUserType());
+        //
+        DataScope dataScope = loginService.getDataScope(user.getRoles(), user);
         // 路由路径集合
         Map<String, String> routeMap = loginService.getMenuRouteMap(roleIds, user.getUserType());
         LoginUser loginUser = new LoginUser();
@@ -74,6 +77,7 @@ public class SysLoginController extends BasisController {
         loginUser.setRoles(roles);
         loginUser.setRoleIds(roleIds);
         loginUser.setPermissions(permissions);
+        loginUser.setScope(dataScope);
         loginUser.setRouteURL(routeMap);
         return R.ok(loginUser);
     }

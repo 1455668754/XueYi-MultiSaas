@@ -11,9 +11,11 @@ import com.xueyi.system.authority.mapper.SysRoleMapper;
 import com.xueyi.system.authority.mapper.merge.SysRoleMenuMergeMapper;
 import com.xueyi.system.authority.mapper.merge.SysRoleModuleMergeMapper;
 import com.xueyi.system.organize.domain.merge.SysOrganizeRoleMerge;
-import com.xueyi.system.organize.domain.merge.SysRoleOrganizeMerge;
+import com.xueyi.system.organize.domain.merge.SysRoleDeptMerge;
+import com.xueyi.system.organize.domain.merge.SysRolePostMerge;
 import com.xueyi.system.organize.mapper.merge.SysOrganizeRoleMergeMapper;
-import com.xueyi.system.organize.mapper.merge.SysRoleOrganizeMergeMapper;
+import com.xueyi.system.organize.mapper.merge.SysRoleDeptMergeMapper;
+import com.xueyi.system.organize.mapper.merge.SysRolePostMergeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -35,7 +37,10 @@ public class SysRoleManager extends BaseManager<SysRoleDto, SysRoleMapper> {
     private SysRoleMenuMergeMapper roleMenuMergeMapper;
 
     @Autowired
-    private SysRoleOrganizeMergeMapper roleOrganizeMergeMapper;
+    private SysRoleDeptMergeMapper roleDeptMergeMapper;
+
+    @Autowired
+    private SysRolePostMergeMapper rolePostMergeMapper;
 
     @Autowired
     private SysOrganizeRoleMergeMapper organizeRoleMergeMapper;
@@ -103,9 +108,12 @@ public class SysRoleManager extends BaseManager<SysRoleDto, SysRoleMapper> {
             roleMenuMergeMapper.delete(
                     Wrappers.<SysRoleMenuMerge>update().lambda()
                             .eq(SysRoleMenuMerge::getRoleId, id));
-            roleOrganizeMergeMapper.delete(
-                    Wrappers.<SysRoleOrganizeMerge>update().lambda()
-                            .eq(SysRoleOrganizeMerge::getRoleId, id));
+            roleDeptMergeMapper.delete(
+                    Wrappers.<SysRoleDeptMerge>update().lambda()
+                            .eq(SysRoleDeptMerge::getRoleId, id));
+            rolePostMergeMapper.delete(
+                    Wrappers.<SysRolePostMerge>update().lambda()
+                            .eq(SysRolePostMerge::getRoleId, id));
             organizeRoleMergeMapper.delete(
                     Wrappers.<SysOrganizeRoleMerge>update().lambda()
                             .eq(SysOrganizeRoleMerge::getRoleId, id));
@@ -130,9 +138,12 @@ public class SysRoleManager extends BaseManager<SysRoleDto, SysRoleMapper> {
             roleMenuMergeMapper.delete(
                     Wrappers.<SysRoleMenuMerge>update().lambda()
                             .in(SysRoleMenuMerge::getRoleId, idList));
-            roleOrganizeMergeMapper.delete(
-                    Wrappers.<SysRoleOrganizeMerge>update().lambda()
-                            .in(SysRoleOrganizeMerge::getRoleId, idList));
+            roleDeptMergeMapper.delete(
+                    Wrappers.<SysRoleDeptMerge>update().lambda()
+                            .in(SysRoleDeptMerge::getRoleId, idList));
+            rolePostMergeMapper.delete(
+                    Wrappers.<SysRolePostMerge>update().lambda()
+                            .in(SysRolePostMerge::getRoleId, idList));
             organizeRoleMergeMapper.delete(
                     Wrappers.<SysOrganizeRoleMerge>update().lambda()
                             .in(SysOrganizeRoleMerge::getRoleId, idList));

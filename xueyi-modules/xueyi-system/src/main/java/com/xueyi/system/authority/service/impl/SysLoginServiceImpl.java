@@ -2,21 +2,21 @@ package com.xueyi.system.authority.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.dynamic.datasource.annotation.DS;
+import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
+import com.xueyi.system.api.model.DataScope;
+import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
 import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
+import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
 import com.xueyi.system.authority.service.ISysLoginService;
 import com.xueyi.system.authority.service.ISysMenuService;
-import com.xueyi.system.organize.service.ISysEnterpriseService;
-import com.xueyi.system.organize.service.ISysUserService;
+import com.xueyi.system.organize.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.xueyi.common.core.constant.basic.TenantConstants.ISOLATE;
@@ -34,10 +34,19 @@ public class SysLoginServiceImpl implements ISysLoginService {
     ISysEnterpriseService enterpriseService;
 
     @Autowired
+    ISysDeptService deptService;
+
+    @Autowired
+    ISysPostService postService;
+
+    @Autowired
     ISysUserService userService;
 
     @Autowired
     ISysMenuService menuService;
+
+    @Autowired
+    private ISysOrganizeService organizeService;
 
     /**
      * 登录校验 | 根据企业账号查询企业信息
@@ -104,6 +113,95 @@ public class SysLoginServiceImpl implements ISysLoginService {
             perms.addAll(set.stream().filter(StrUtil::isNotBlank).collect(Collectors.toSet()));
         }
         return perms;
+    }
+
+    /**
+     * 登录校验 | 获取数据数据权限
+     *
+     * @param roleList 角色信息集合
+     * @param user     用户对象
+     * @return 数据权限对象
+     */
+    @Override
+    public DataScope getDataScope(List<SysRoleDto> roleList, SysUserDto user) {
+        DataScope scope = new DataScope();
+        // 1.判断是否为超管用户
+        if (user.isAdmin()) {
+            scope.setDataScope(AuthorityConstants.DataScope.ALL.getCode());
+            return scope;
+        }
+        // 2.判断有无全部数据权限角色
+        for (SysRoleDto role : roleList) {
+            if (StrUtil.equals(role.getDataScope(), AuthorityConstants.DataScope.ALL.getCode())) {
+                scope.setDataScope(AuthorityConstants.DataScope.ALL.getCode());
+                return scope;
+            }
+        }
+        // 3.组建权限集
+        Set<Long> deptScope, postScope, userScope, customRoleId;
+        int isCustom, isDept, isDeptAndChild, isPost, isSelf;
+        deptScope = postScope = userScope = customRoleId = new HashSet<>();
+        isCustom = isDept = isDeptAndChild = isPost = isSelf = 0;
+        for (SysRoleDto role : roleList) {
+            switch (Objects.requireNonNull(AuthorityConstants.DataScope.getValue(role.getDataScope()))) {
+                case CUSTOM:
+                    isCustom++;
+                    customRoleId.add(role.getId());
+                    break;
+                case DEPT:
+                    if (isDept++ == 0)
+                        deptScope.addAll(user.getPosts().stream().map(post -> post.getDept().getId()).collect(Collectors.toSet()));
+                    break;
+                case DEPT_AND_CHILD:
+                    if (isDeptAndChild++ == 0) {
+                        Set<Long> deptIds = user.getPosts().stream().map(post -> post.getDept().getId()).collect(Collectors.toSet());
+                        List<SysDeptDto> deptList;
+                        for (Long deptId : deptIds) {
+                            deptList = deptService.selectAncestorsListById(deptId);
+                            deptScope.addAll(deptList.stream().map(SysDeptDto::getId).collect(Collectors.toSet()));
+                        }
+                    }
+                    break;
+                case POST:
+                    if (isPost++ == 0)
+                        postScope.addAll(user.getPosts().stream().map(SysPostDto::getId).collect(Collectors.toSet()));
+                    break;
+                case SELF:
+                    if (isSelf++ == 0)
+                        userScope.add(user.getId());
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        if (isCustom > 0) {
+            deptScope.addAll(organizeService.selectRoleDeptSetByRoleIds(customRoleId));
+            postScope.addAll(organizeService.selectRolePostSetByRoleIds(customRoleId));
+        }
+        scope.setDeptScope(deptScope);
+        List<SysPostDto> postList = postService.selectListByDeptIds(deptScope);
+        postScope.addAll(postList.stream().map(SysPostDto::getId).collect(Collectors.toSet()));
+        scope.setPostScope(postScope);
+        userScope.addAll(organizeService.selectUserSetByPostIds(postScope));
+        scope.setUserScope(userScope);
+        if (isCustom > 0) {
+            scope.setDataScope(AuthorityConstants.DataScope.CUSTOM.getCode());
+            return scope;
+        } else if (isDeptAndChild > 0) {
+            scope.setDataScope(AuthorityConstants.DataScope.DEPT_AND_CHILD.getCode());
+            return scope;
+        } else if (isDept > 0) {
+            scope.setDataScope(AuthorityConstants.DataScope.DEPT.getCode());
+            return scope;
+        } else if (isPost > 0) {
+            scope.setDataScope(AuthorityConstants.DataScope.POST.getCode());
+            return scope;
+        } else if (isSelf > 0) {
+            scope.setDataScope(AuthorityConstants.DataScope.SELF.getCode());
+            return scope;
+        }
+        return scope;
     }
 
     /**
