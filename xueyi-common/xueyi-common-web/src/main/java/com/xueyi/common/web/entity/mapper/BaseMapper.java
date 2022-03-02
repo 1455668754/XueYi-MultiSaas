@@ -1,9 +1,12 @@
 package com.xueyi.common.web.entity.mapper;
 
+import com.baomidou.mybatisplus.annotation.InterceptorIgnore;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.xueyi.common.core.web.entity.base.BasisEntity;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * 数据层 基类通用数据处理
