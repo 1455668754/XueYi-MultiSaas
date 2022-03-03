@@ -54,7 +54,7 @@ public class SysRoleManager extends BaseManager<SysRoleDto, SysRoleMapper> {
      * @return 结果
      */
     public int updateDataScope(Long id, String roleKey, String dataScope) {
-        return baseMapper.update(null,
+        return baseMapper.update(new SysRoleDto(),
                 Wrappers.<SysRoleDto>update().lambda()
                         .set(SysRoleDto::getDataScope, dataScope)
                         .set(SysRoleDto::getRoleKey, roleKey)

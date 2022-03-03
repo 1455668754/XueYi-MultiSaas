@@ -60,7 +60,7 @@ public class GenTableManager extends SubBaseManager<GenTableDto, GenTableMapper,
      * @return 结果
      */
     public int updateOptions(Serializable id, String options) {
-        return baseMapper.update(null,
+        return baseMapper.update(new GenTableDto(),
                 Wrappers.<GenTableDto>update().lambda()
                         .set(GenTableDto::getOptions, options)
                         .eq(GenTableDto::getId, id));

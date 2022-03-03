@@ -113,7 +113,7 @@ public class SysUserManager extends BaseManager<SysUserDto, SysUserMapper> {
      * @return 结果
      */
     public int updateUserProfile(Long id, String nickName, String sex, String profile) {
-        return baseMapper.update(null,
+        return baseMapper.update(new SysUserDto(),
                 Wrappers.<SysUserDto>update().lambda()
                         .set(SysUserDto::getNickName, nickName)
                         .set(SysUserDto::getSex, sex)
@@ -129,7 +129,7 @@ public class SysUserManager extends BaseManager<SysUserDto, SysUserMapper> {
      * @return 结果
      */
     public int updateEmail(Long id, String email) {
-        return baseMapper.update(null,
+        return baseMapper.update(new SysUserDto(),
                 Wrappers.<SysUserDto>update().lambda()
                         .set(SysUserDto::getEmail, email)
                         .eq(SysUserDto::getId, id));
@@ -143,7 +143,7 @@ public class SysUserManager extends BaseManager<SysUserDto, SysUserMapper> {
      * @return 结果
      */
     public int updatePhone(Long id, String phone) {
-        return baseMapper.update(null,
+        return baseMapper.update(new SysUserDto(),
                 Wrappers.<SysUserDto>update().lambda()
                         .set(SysUserDto::getPhone, phone)
                         .eq(SysUserDto::getId, id));
@@ -157,7 +157,7 @@ public class SysUserManager extends BaseManager<SysUserDto, SysUserMapper> {
      * @return 结果
      */
     public int updateUserAvatar(Long id, String avatar) {
-        return baseMapper.update(null,
+        return baseMapper.update(new SysUserDto(),
                 Wrappers.<SysUserDto>update().lambda()
                         .set(SysUserDto::getAvatar, avatar)
                         .eq(SysUserDto::getId, id));
@@ -171,7 +171,7 @@ public class SysUserManager extends BaseManager<SysUserDto, SysUserMapper> {
      * @return 结果
      */
     public int resetUserPassword(Long id, String password) {
-        return baseMapper.update(null,
+        return baseMapper.update(new SysUserDto(),
                 Wrappers.<SysUserDto>update().lambda()
                         .set(SysUserDto::getPassword, password)
                         .eq(SysUserDto::getId, id));

@@ -1,9 +1,11 @@
 package com.xueyi.common.web.config;
 
+import com.baomidou.mybatisplus.core.config.GlobalConfig;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.DataPermissionInterceptor;
 import com.github.pagehelper.PageInterceptor;
 import com.xueyi.common.datascope.interceptor.XueYiDataScopeHandler;
+import com.xueyi.common.web.handler.XueYiMetaObjectHandler;
 import com.xueyi.common.web.handler.XueYiTenantLineHandler;
 import com.xueyi.common.web.injector.CustomizedSqlInjector;
 import com.xueyi.common.web.interceptor.XueYiTenantLineInnerInterceptor;
@@ -33,7 +35,25 @@ public class XueYiMyBatisPlusConfig {
     }
 
     /**
-     * 多租户配置
+     * 批量新增|修改
+     */
+    @Bean
+    public CustomizedSqlInjector customizedSqlInjector() {
+        return new CustomizedSqlInjector();
+    }
+
+    /**
+     * 自动填充
+     */
+    @Bean
+    public GlobalConfig globalConfig() {
+        GlobalConfig globalConfig = new GlobalConfig();
+        globalConfig.setMetaObjectHandler(new XueYiMetaObjectHandler());
+        return globalConfig;
+    }
+
+    /**
+     * 多租户 && 数据权限
      */
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
@@ -43,16 +63,7 @@ public class XueYiMyBatisPlusConfig {
         // 添加自定义的数据权限处理器
         dataPermissionInterceptor.setDataPermissionHandler(dataScopeAspect);
         interceptor.addInnerInterceptor(dataPermissionInterceptor);
-
         interceptor.addInnerInterceptor(new XueYiTenantLineInnerInterceptor(new XueYiTenantLineHandler()));
         return interceptor;
-    }
-
-    /**
-     * 批量新增|修改
-     */
-    @Bean
-    public CustomizedSqlInjector customizedSqlInjector() {
-        return new CustomizedSqlInjector();
     }
 }

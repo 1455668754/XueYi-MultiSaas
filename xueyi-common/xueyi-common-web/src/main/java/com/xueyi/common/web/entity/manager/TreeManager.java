@@ -47,7 +47,7 @@ public class TreeManager<D extends TreeEntity<D>, DM extends TreeMapper<D>> exte
      * @return 结果
      */
     public int updateChildrenStatus(Serializable id, String status) {
-        return baseMapper.update(null,
+        return baseMapper.update(newBaseObject(),
                 Wrappers.<D>update().lambda()
                         .set(D::getStatus, status)
                         .apply(ANCESTORS_FIND, id));
@@ -62,7 +62,7 @@ public class TreeManager<D extends TreeEntity<D>, DM extends TreeMapper<D>> exte
      * @return 结果
      */
     public int updateChildrenAncestors(Serializable id, String newAncestors, String oldAncestors) {
-        return baseMapper.update(null,
+        return baseMapper.update(newBaseObject(),
                 Wrappers.<D>update().lambda()
                         .setSql(StrUtil.format("{} = insert({},{},{},'{}')", SqlConstants.Entity.ANCESTORS.getCode(), SqlConstants.Entity.ANCESTORS.getCode(), 1, oldAncestors.length(), newAncestors))
                         .apply(ANCESTORS_FIND, id));
@@ -78,7 +78,7 @@ public class TreeManager<D extends TreeEntity<D>, DM extends TreeMapper<D>> exte
      * @return 结果
      */
     public int updateChildren(Serializable id, String status, String newAncestors, String oldAncestors) {
-        return baseMapper.update(null,
+        return baseMapper.update(newBaseObject(),
                 Wrappers.<D>update().lambda()
                         .set(D::getStatus, status)
                         .setSql(StrUtil.format("{} = insert({},{},{},{})", SqlConstants.Entity.ANCESTORS.getCode(), SqlConstants.Entity.ANCESTORS.getCode(), 1, oldAncestors.length(), newAncestors))

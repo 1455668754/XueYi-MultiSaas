@@ -52,6 +52,9 @@ public class SecurityConstants {
     /** 内部请求 */
     public static final String INNER = "inner";
 
-    /** 数据权限 - 用户控制 */
+    /** 数据权限 - 创建者 */
     public static final String CREATE_BY = "create_by";
+
+    /** 数据权限 - 更新者 */
+    public static final String UPDATE_BY = "update_by";
 }

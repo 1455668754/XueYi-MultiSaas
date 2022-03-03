@@ -122,7 +122,7 @@ public class BaseManager<D extends BaseEntity, DM extends BaseMapper<D>> extends
      * @return 结果
      */
     public int updateStatus(Serializable id, String status) {
-        return baseMapper.update(null,
+        return baseMapper.update(newBaseObject(),
                 Wrappers.<D>update().lambda()
                         .set(D::getStatus, status)
                         .eq(D::getId, id));

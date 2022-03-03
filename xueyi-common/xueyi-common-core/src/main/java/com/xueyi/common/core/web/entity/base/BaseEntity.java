@@ -34,7 +34,7 @@ public class BaseEntity extends BasisEntity {
     private String remark;
 
     /** 创建者Id */
-    @TableField(value = "create_by", updateStrategy = FieldStrategy.NEVER)
+    @TableField(value = "create_by", fill = FieldFill.INSERT, updateStrategy = FieldStrategy.NEVER)
     private Long createBy;
 
     /** 创建时间 */
@@ -44,7 +44,7 @@ public class BaseEntity extends BasisEntity {
     private Date createTime;
 
     /** 更新者Id */
-    @TableField(value = "update_by", insertStrategy = FieldStrategy.NEVER)
+    @TableField(value = "update_by", fill = FieldFill.UPDATE, insertStrategy = FieldStrategy.NEVER)
     private Long updateBy;
 
     /** 更新时间 */
