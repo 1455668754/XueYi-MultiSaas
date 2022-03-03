@@ -1,8 +1,8 @@
 package com.xueyi.common.datascope.interceptor;
 
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.ttl.TransmittableThreadLocal;
 import com.baomidou.mybatisplus.extension.plugins.handler.DataPermissionHandler;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.datascope.annotation.DataScope;
@@ -23,6 +23,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -39,7 +40,7 @@ public class XueYiDataScopeHandler implements DataPermissionHandler {
     /**
      * 通过ThreadLocal记录权限相关的属性值
      */
-    public TransmittableThreadLocal<DataScope> threadLocal = new TransmittableThreadLocal<>();
+    public ThreadLocal<DataScope> threadLocal = new ThreadLocal<>();
 
     /**
      * 清空当前线程上次保存的权限信息
@@ -68,6 +69,13 @@ public class XueYiDataScopeHandler implements DataPermissionHandler {
     public Expression getSqlSegment(Expression where, String mappedStatementId) {
         DataScope dataScope = threadLocal.get();
         if (ObjectUtil.isNull(dataScope) || (StrUtil.isAllEmpty(dataScope.deptAlias(), dataScope.postAlias(), dataScope.userAlias())))
+            return where;
+        List<String> split = StrUtil.split(mappedStatementId, '.');
+        int index = split.size();
+        String method = split.get(index - 1);
+        String mapper = split.get(index - 2);
+        if (!((ArrayUtil.isEmpty(dataScope.mapperScope()) || ArrayUtil.contains(dataScope.mapperScope(), mapper))
+                && (ArrayUtil.isEmpty(dataScope.methodScope()) || ArrayUtil.contains(dataScope.methodScope(), method))))
             return where;
         if (where == null)
             where = new HexValue(" 1 = 1 ");

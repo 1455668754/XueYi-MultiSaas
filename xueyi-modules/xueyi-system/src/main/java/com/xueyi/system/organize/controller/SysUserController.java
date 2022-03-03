@@ -80,8 +80,8 @@ public class SysUserController extends BaseController<SysUserDto, ISysUserServic
     @Override
     @GetMapping("/list")
     @RequiresPermissions(Auth.SYS_USER_LIST)
-    public AjaxResult listExtra(SysUserDto user) {
-        return super.listExtra(user);
+    public AjaxResult list(SysUserDto user) {
+        return super.list(user);
     }
 
     /**

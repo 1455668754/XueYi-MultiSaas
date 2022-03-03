@@ -47,6 +47,17 @@ public class BaseServiceImpl<D extends BaseEntity, DG extends BaseManager<D, DM>
     }
 
     /**
+     * 查询数据对象列表 | 数据权限 | 附加数据
+     *
+     * @param d 数据对象
+     * @return 数据对象集合
+     */
+    @Override
+    public List<D> selectListScope(D d) {
+        return baseManager.selectListExtra(d);
+    }
+
+    /**
      * 根据Id集合查询数据对象列表
      *
      * @param idList Id集合

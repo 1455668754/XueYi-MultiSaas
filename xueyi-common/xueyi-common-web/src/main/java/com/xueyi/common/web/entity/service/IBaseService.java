@@ -32,6 +32,14 @@ public interface IBaseService<D extends BaseEntity> {
     List<D> selectListExtra(D d);
 
     /**
+     * 查询数据对象列表 | 数据权限 | 附加数据
+     *
+     * @param d 数据对象
+     * @return 数据对象集合
+     */
+    List<D> selectListScope(D d);
+
+    /**
      * 根据Id集合查询数据对象列表
      *
      * @param idList Id集合

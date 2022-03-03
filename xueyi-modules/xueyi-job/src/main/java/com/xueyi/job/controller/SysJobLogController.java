@@ -36,7 +36,7 @@ public class SysJobLogController extends BaseController<SysJobLogDto, ISysJobLog
      */
     @RequiresPermissions("monitor:job:list")
     @GetMapping("/list")
-    public AjaxResult listExtra(SysJobLogDto sysJobLogDto) {
+    public AjaxResult list(SysJobLogDto sysJobLogDto) {
         startPage();
         List<SysJobLogDto> list = jobLogService.selectJobLogList(sysJobLogDto);
         return getDataTable(list);

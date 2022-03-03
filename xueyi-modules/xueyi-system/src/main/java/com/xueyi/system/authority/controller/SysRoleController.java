@@ -51,8 +51,8 @@ public class SysRoleController extends BaseController<SysRoleDto, ISysRoleServic
     @Override
     @GetMapping("/list")
     @RequiresPermissions(Auth.SYS_ROLE_LIST)
-    public AjaxResult listExtra(SysRoleDto role) {
-        return super.listExtra(role);
+    public AjaxResult list(SysRoleDto role) {
+        return super.list(role);
     }
 
     /**

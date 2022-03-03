@@ -3,6 +3,7 @@ package com.xueyi.system.organize.service.impl;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.xueyi.common.core.constant.basic.BaseConstants;
+import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 import com.xueyi.system.organize.manager.SysPostManager;
@@ -49,6 +50,18 @@ public class SysPostServiceImpl extends BaseServiceImpl<SysPostDto, SysPostManag
         return baseManager.insert(post);
     }
 
+    /**
+     * 查询岗位对象列表 | 数据权限 | 附加数据
+     *
+     * @param post 岗位对象
+     * @return 岗位对象集合
+     */
+    @Override
+    @DataScope(postAlias = "id", mapperScope = {"SysPostMapper"})
+    public List<SysPostDto> selectListScope(SysPostDto post) {
+        return baseManager.selectListExtra(post);
+    }
+    
     /**
      * 校验岗位编码是否唯一
      *

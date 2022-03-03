@@ -27,7 +27,7 @@ public abstract class TreeController<D extends TreeEntity<D>, DS extends ITreeSe
      */
     @Override
     public AjaxResult list(D d) {
-        List<D> list = baseService.selectList(d);
+        List<D> list = baseService.selectListScope(d);
         return AjaxResult.success(TreeUtils.buildTree(list));
     }
 
@@ -37,27 +37,7 @@ public abstract class TreeController<D extends TreeEntity<D>, DS extends ITreeSe
     public AjaxResult listExNodes(D d) {
         Serializable id = d.getId();
         d.setId(null);
-        List<D> list = baseService.selectList(d);
-        SHandleExNodes(list, id);
-        return AjaxResult.success(TreeUtils.buildTree(list));
-    }
-
-    /**
-     * 查询树列表 | 附加数据
-     */
-    @Override
-    public AjaxResult listExtra(D d) {
-        List<D> list = baseService.selectListExtra(d);
-        return AjaxResult.success(TreeUtils.buildTree(list));
-    }
-
-    /**
-     * 查询树列表（排除节点） | 附加数据
-     */
-    public AjaxResult listExNodesExtra(D d) {
-        Serializable id = d.getId();
-        d.setId(null);
-        List<D> list = baseService.selectListExtra(d);
+        List<D> list = baseService.selectListScope(d);
         SHandleExNodes(list, id);
         return AjaxResult.success(TreeUtils.buildTree(list));
     }

@@ -47,8 +47,8 @@ public class TeSourceController extends BaseController<TeSourceDto, ITeSourceSer
     @Override
     @GetMapping("/list")
     @RequiresPermissions(Auth.TE_SOURCE_LIST)
-    public AjaxResult listExtra(TeSourceDto source) {
-        return super.listExtra(source);
+    public AjaxResult list(TeSourceDto source) {
+        return super.list(source);
     }
 
     /**

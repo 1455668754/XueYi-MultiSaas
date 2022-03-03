@@ -57,8 +57,8 @@ public class SysConfigController extends BaseController<SysConfigDto, ISysConfig
     @Override
     @GetMapping("/list")
     @RequiresPermissions(Auth.SYS_CONFIG_LIST)
-    public AjaxResult listExtra(SysConfigDto config) {
-        return super.listExtra(config);
+    public AjaxResult list(SysConfigDto config) {
+        return super.list(config);
     }
 
     /**

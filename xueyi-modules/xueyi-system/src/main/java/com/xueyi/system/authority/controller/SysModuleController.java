@@ -71,8 +71,8 @@ public class SysModuleController extends SubBaseController<SysModuleDto, ISysMod
     @Override
     @GetMapping("/list")
     @RequiresPermissions(Auth.SYS_MODULE_LIST)
-    public AjaxResult listExtra(SysModuleDto module) {
-        return super.listExtra(module);
+    public AjaxResult list(SysModuleDto module) {
+        return super.list(module);
     }
 
     /**

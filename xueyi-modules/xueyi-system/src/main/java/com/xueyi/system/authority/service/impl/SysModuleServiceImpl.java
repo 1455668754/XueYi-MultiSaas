@@ -2,6 +2,7 @@ package com.xueyi.system.authority.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.dynamic.datasource.annotation.DS;
+import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.web.entity.service.impl.SubBaseServiceImpl;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
@@ -17,6 +18,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
+import static com.xueyi.common.core.constant.basic.SecurityConstants.CREATE_BY;
 import static com.xueyi.common.core.constant.basic.TenantConstants.ISOLATE;
 
 /**
@@ -39,6 +41,18 @@ public class SysModuleServiceImpl extends SubBaseServiceImpl<SysModuleDto, SysMo
         return baseManager.getRoutes(loginUser);
     }
 
+    /**
+     * 查询模块对象列表 | 数据权限 | 附加数据
+     *
+     * @param module 模块对象
+     * @return 模块对象集合
+     */
+    @Override
+    @DataScope(userAlias = CREATE_BY, mapperScope = {"SysModuleMapper"})
+    public List<SysModuleDto> selectListScope(SysModuleDto module) {
+        return baseManager.selectListExtra(module);
+    }
+    
     /**
      * 设置子数据的外键值
      */

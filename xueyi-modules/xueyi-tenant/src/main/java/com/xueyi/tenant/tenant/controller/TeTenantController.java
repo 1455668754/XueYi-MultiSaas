@@ -43,8 +43,8 @@ public class TeTenantController extends BaseController<TeTenantDto, ITeTenantSer
     @Override
     @GetMapping("/list")
     @RequiresPermissions(Auth.TE_TENANT_LIST)
-    public AjaxResult listExtra(TeTenantDto tenant) {
-        return super.listExtra(tenant);
+    public AjaxResult list(TeTenantDto tenant) {
+        return super.list(tenant);
     }
 
     /**

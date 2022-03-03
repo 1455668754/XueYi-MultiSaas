@@ -48,8 +48,8 @@ public class SysDictTypeController extends SubBaseController<SysDictTypeDto, ISy
     @Override
     @GetMapping("/list")
     @RequiresPermissions(Auth.SYS_DICT_LIST)
-    public AjaxResult listExtra(SysDictTypeDto dictType) {
-        return super.listExtra(dictType);
+    public AjaxResult list(SysDictTypeDto dictType) {
+        return super.list(dictType);
     }
 
     /**

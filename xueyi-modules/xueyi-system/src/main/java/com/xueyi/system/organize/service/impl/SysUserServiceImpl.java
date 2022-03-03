@@ -3,6 +3,7 @@ package com.xueyi.system.organize.service.impl;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.xueyi.common.core.constant.basic.BaseConstants;
+import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
 import com.xueyi.system.organize.manager.SysUserManager;
@@ -11,6 +12,8 @@ import com.xueyi.system.organize.service.ISysUserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static com.xueyi.common.core.constant.basic.TenantConstants.ISOLATE;
 
@@ -47,6 +50,18 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDto, SysUserManag
         return baseManager.insert(user);
     }
 
+    /**
+     * 查询用户对象列表 | 数据权限 | 附加数据
+     *
+     * @param user 用户对象
+     * @return 用户对象集合
+     */
+    @Override
+    @DataScope(userAlias = "id", mapperScope = {"SysUserMapper"})
+    public List<SysUserDto> selectListScope(SysUserDto user) {
+        return baseManager.selectListExtra(user);
+    }
+    
     /**
      * 修改用户基本信息
      *

@@ -46,8 +46,8 @@ public class GenController extends SubBaseController<GenTableDto, IGenTableServi
     @Override
     @GetMapping("/list")
     @RequiresPermissions("generate:gen:list")
-    public AjaxResult listExtra(GenTableDto table) {
-        return super.listExtra(table);
+    public AjaxResult list(GenTableDto table) {
+        return super.list(table);
     }
 
     /**

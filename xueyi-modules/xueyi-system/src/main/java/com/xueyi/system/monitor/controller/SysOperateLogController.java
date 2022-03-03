@@ -42,8 +42,8 @@ public class SysOperateLogController extends BaseController<SysOperateLogDto, IS
     @Override
     @GetMapping("/list")
     @RequiresPermissions(Auth.SYS_OPERATE_LOG_LIST)
-    public AjaxResult listExtra(SysOperateLogDto operateLog) {
-        return super.listExtra(operateLog);
+    public AjaxResult list(SysOperateLogDto operateLog) {
+        return super.list(operateLog);
     }
 
     /**

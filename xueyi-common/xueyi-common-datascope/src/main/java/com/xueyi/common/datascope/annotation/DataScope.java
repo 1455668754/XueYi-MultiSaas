@@ -20,4 +20,10 @@ public @interface DataScope {
 
     /** 用户级控制 - 字段名 */
     String userAlias() default "";
+
+    /** 方法限制 - 方法名 */
+    String[] methodScope() default {};
+
+    /** 映像限制 - 映像器名 */
+    String[] mapperScope() default {};
 }

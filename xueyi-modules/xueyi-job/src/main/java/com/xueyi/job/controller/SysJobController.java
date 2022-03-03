@@ -43,7 +43,7 @@ public class SysJobController extends BaseController<SysJobDto, ISysJobService> 
      */
     @RequiresPermissions("monitor:job:list")
     @GetMapping("/list")
-    public AjaxResult listExtra(SysJobDto sysJob) {
+    public AjaxResult list(SysJobDto sysJob) {
         startPage();
         List<SysJobDto> list = jobService.selectJobList(sysJob);
         return getDataTable(list);

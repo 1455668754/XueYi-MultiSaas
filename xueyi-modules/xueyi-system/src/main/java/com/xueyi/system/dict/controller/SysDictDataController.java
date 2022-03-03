@@ -63,8 +63,8 @@ public class SysDictDataController extends BaseController<SysDictDataDto, ISysDi
     @Override
     @GetMapping("/list")
     @RequiresPermissions(Auth.SYS_DICT_DICT)
-    public AjaxResult listExtra(SysDictDataDto dictData) {
-        return super.listExtra(dictData);
+    public AjaxResult list(SysDictDataDto dictData) {
+        return super.list(dictData);
     }
 
     /**

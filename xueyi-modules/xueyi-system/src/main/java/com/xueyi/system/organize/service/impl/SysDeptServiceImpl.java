@@ -3,6 +3,7 @@ package com.xueyi.system.organize.service.impl;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.xueyi.common.core.constant.basic.BaseConstants;
+import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.web.entity.service.impl.SubTreeServiceImpl;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 
 import static com.xueyi.common.core.constant.basic.TenantConstants.ISOLATE;
 
@@ -41,6 +43,18 @@ public class SysDeptServiceImpl extends SubTreeServiceImpl<SysDeptDto, SysDeptMa
         return baseManager.insert(dept);
     }
 
+    /**
+     * 查询部门对象列表 | 数据权限 | 附加数据
+     *
+     * @param dept 部门对象
+     * @return 部门对象集合
+     */
+    @Override
+    @DataScope(deptAlias = "id", mapperScope = {"SysDeptMapper"})
+    public List<SysDeptDto> selectListScope(SysDeptDto dept) {
+        return baseManager.selectListExtra(dept);
+    }
+    
     /**
      * 校验部门编码是否唯一
      *

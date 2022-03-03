@@ -6,6 +6,7 @@ import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.core.constant.basic.BaseConstants;
+import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
 import com.xueyi.system.authority.manager.SysRoleManager;
@@ -16,6 +17,9 @@ import com.xueyi.system.organize.service.ISysOrganizeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+import static com.xueyi.common.core.constant.basic.SecurityConstants.CREATE_BY;
 import static com.xueyi.common.core.constant.basic.TenantConstants.ISOLATE;
 
 /**
@@ -32,6 +36,18 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleDto, SysRoleManag
 
     @Autowired
     private ISysOrganizeService organizeService;
+
+    /**
+     * 查询角色对象列表 | 数据权限 | 附加数据
+     *
+     * @param role 角色对象
+     * @return 角色对象集合
+     */
+    @Override
+    @DataScope(userAlias = CREATE_BY, mapperScope = {"SysRoleMapper"})
+    public List<SysRoleDto> selectListScope(SysRoleDto role) {
+        return baseManager.selectListExtra(role);
+    }
 
     /**
      * 新增角色对象

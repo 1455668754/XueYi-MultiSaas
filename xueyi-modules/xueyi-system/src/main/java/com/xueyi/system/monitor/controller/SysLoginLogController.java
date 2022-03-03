@@ -42,8 +42,8 @@ public class SysLoginLogController extends BaseController<SysLoginLogDto, ISysLo
     @Override
     @GetMapping("/list")
     @RequiresPermissions(Auth.SYS_LOGIN_LOG_LIST)
-    public AjaxResult listExtra(SysLoginLogDto loginLog) {
-        return super.listExtra(loginLog);
+    public AjaxResult list(SysLoginLogDto loginLog) {
+        return super.list(loginLog);
     }
 
     /**

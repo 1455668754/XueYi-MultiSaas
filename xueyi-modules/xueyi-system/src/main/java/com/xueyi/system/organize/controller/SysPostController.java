@@ -66,8 +66,8 @@ public class SysPostController extends BaseController<SysPostDto, ISysPostServic
     @Override
     @GetMapping("/list")
     @RequiresPermissions(Auth.SYS_POST_LIST)
-    public AjaxResult listExtra(SysPostDto post) {
-        return super.listExtra(post);
+    public AjaxResult list(SysPostDto post) {
+        return super.list(post);
     }
 
     /**

@@ -6,6 +6,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.core.utils.TreeUtils;
+import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.web.entity.service.impl.TreeServiceImpl;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.authority.manager.SysMenuManager;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.xueyi.common.core.constant.basic.SecurityConstants.CREATE_BY;
 import static com.xueyi.common.core.constant.basic.TenantConstants.MASTER;
 
 /**
@@ -96,6 +98,18 @@ public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuDto, SysMenuManag
         return buildRoutePath(menuList);
     }
 
+    /**
+     * 查询菜单对象列表 | 数据权限 | 附加数据
+     *
+     * @param menu 菜单对象
+     * @return 菜单对象集合
+     */
+    @Override
+    @DataScope(userAlias = CREATE_BY, mapperScope = {"SysMenuMapper"})
+    public List<SysMenuDto> selectListScope(SysMenuDto menu) {
+        return baseManager.selectListExtra(menu);
+    }
+    
     /**
      * 根据模块Id查询菜单路由
      *

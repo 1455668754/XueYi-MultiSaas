@@ -29,16 +29,7 @@ public abstract class BaseController<D extends BaseEntity, DS extends IBaseServi
      */
     public AjaxResult list(D d) {
         startPage();
-        List<D> list = baseService.selectList(d);
-        return getDataTable(list);
-    }
-
-    /**
-     * 查询列表 | 附加数据
-     */
-    public AjaxResult listExtra(D d) {
-        startPage();
-        List<D> list = baseService.selectListExtra(d);
+        List<D> list = baseService.selectListScope(d);
         return getDataTable(list);
     }
 

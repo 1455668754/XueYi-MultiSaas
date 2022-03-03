@@ -39,8 +39,8 @@ public class SysNoticeController extends BaseController<SysNoticeDto, ISysNotice
     @Override
     @GetMapping("/list")
     @RequiresPermissions(Auth.SYS_NOTICE_LIST)
-    public AjaxResult listExtra(SysNoticeDto notice) {
-        return super.listExtra(notice);
+    public AjaxResult list(SysNoticeDto notice) {
+        return super.list(notice);
     }
 
     /**

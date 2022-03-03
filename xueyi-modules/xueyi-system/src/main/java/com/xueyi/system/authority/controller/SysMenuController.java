@@ -91,8 +91,8 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
     @Override
     @GetMapping("/list")
     @RequiresPermissions(Auth.SYS_MENU_LIST)
-    public AjaxResult listExtra(SysMenuDto menu) {
-        return super.listExtra(menu);
+    public AjaxResult list(SysMenuDto menu) {
+        return super.list(menu);
     }
 
     /**

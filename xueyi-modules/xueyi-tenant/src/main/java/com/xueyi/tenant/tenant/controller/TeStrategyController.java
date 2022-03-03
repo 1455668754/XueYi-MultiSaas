@@ -52,8 +52,8 @@ public class TeStrategyController extends BaseController<TeStrategyDto, ITeStrat
     @Override
     @GetMapping("/list")
     @RequiresPermissions(Auth.TE_STRATEGY_LIST)
-    public AjaxResult listExtra(TeStrategyDto strategy) {
-        return super.listExtra(strategy);
+    public AjaxResult list(TeStrategyDto strategy) {
+        return super.list(strategy);
     }
 
     /**
