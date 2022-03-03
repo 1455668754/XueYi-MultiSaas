@@ -123,8 +123,8 @@ create table sys_module (
 # 初始化-模块信息表数据
 # ----------------------------
 insert into sys_module (id, name, type, path, param_path, is_default, hide_module, logo, remark, is_common, tenant_id)
-values (1, '默认系统' ,    '0', '', '', 'Y', '0', 'https://images.gitee.com/uploads/images/2021/1101/141155_f3dfce1d_7382127.jpeg', '默认系统', '0', 0),
-       (2, '租户管理系统' , '0', '', '', 'Y', '0', 'https://images.gitee.com/uploads/images/2021/1101/141601_d68e92a4_7382127.jpeg', '租户管理系统', '1', -1);
+values (1, '基础平台' ,    '0', '', '', 'Y', '0', 'https://images.gitee.com/uploads/images/2021/1101/141155_f3dfce1d_7382127.jpeg', '基础平台', '0', 0),
+       (2, '开发者平台' , '0', '', '', 'Y', '0', 'https://images.gitee.com/uploads/images/2021/1101/141601_d68e92a4_7382127.jpeg', '开发者平台', '1', -1);
 
 -- ----------------------------
 -- 7、菜单权限表

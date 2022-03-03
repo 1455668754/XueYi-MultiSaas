@@ -77,14 +77,14 @@ public class SysMenuManager extends TreeManager<SysMenuDto, SysMenuMapper> {
      */
     public List<SysMenuDto> loginMenuList(Set<Long> roleIds) {
         // 1.获取用户可使用角色集内的所有菜单Ids
-        List<SysRoleMenuMerge> roleModuleMenuMerges = roleMenuMergeMapper.selectList(
+        List<SysRoleMenuMerge> roleMenuMerges = roleMenuMergeMapper.selectList(
                 Wrappers.<SysRoleMenuMerge>query().lambda()
                         .in(SysRoleMenuMerge::getRoleId, roleIds));
         // 2.获取用户可使用的菜单
-        return CollUtil.isNotEmpty(roleModuleMenuMerges)
+        return CollUtil.isNotEmpty(roleMenuMerges)
                 ? baseMapper.selectList(
                 Wrappers.<SysMenuDto>query().lambda()
-                        .in(SysMenuDto::getId, roleModuleMenuMerges))
+                        .in(SysMenuDto::getId, roleMenuMerges.stream().map(SysRoleMenuMerge::getMenuId).collect(Collectors.toSet())))
                 : new ArrayList<>();
     }
 

@@ -8,6 +8,7 @@ import com.xueyi.common.web.handler.XueYiTenantLineHandler;
 import com.xueyi.common.web.injector.CustomizedSqlInjector;
 import com.xueyi.common.web.interceptor.XueYiTenantLineInnerInterceptor;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -19,6 +20,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @MapperScan("com.xueyi.**.mapper")
 public class XueYiMyBatisPlusConfig {
+
+    @Autowired
+    private XueYiDataScopeHandler dataScopeAspect;
 
     /**
      * PageHelper分页配置
@@ -36,7 +40,6 @@ public class XueYiMyBatisPlusConfig {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
         // 添加数据权限插件
         DataPermissionInterceptor dataPermissionInterceptor = new DataPermissionInterceptor();
-        XueYiDataScopeHandler dataScopeAspect = new XueYiDataScopeHandler();
         // 添加自定义的数据权限处理器
         dataPermissionInterceptor.setDataPermissionHandler(dataScopeAspect);
         interceptor.addInnerInterceptor(dataPermissionInterceptor);

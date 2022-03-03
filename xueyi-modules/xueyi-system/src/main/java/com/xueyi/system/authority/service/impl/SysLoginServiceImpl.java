@@ -201,6 +201,7 @@ public class SysLoginServiceImpl implements ISysLoginService {
             scope.setDataScope(AuthorityConstants.DataScope.SELF.getCode());
             return scope;
         }
+        scope.setDataScope(AuthorityConstants.DataScope.NONE.getCode());
         return scope;
     }
 

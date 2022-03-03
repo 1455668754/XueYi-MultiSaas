@@ -65,6 +65,7 @@ public class AuthorityConstants {
     /** 数据范围 */
     public enum DataScope {
 
+        NONE("0","无数据权限"),
         ALL("1","全部数据权限"),
         CUSTOM("2","自定义数据权限"),
         DEPT("3","本部门数据权限"),
