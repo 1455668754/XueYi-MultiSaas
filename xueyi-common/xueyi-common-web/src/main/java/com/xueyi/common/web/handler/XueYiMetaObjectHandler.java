@@ -15,18 +15,12 @@ public class XueYiMetaObjectHandler implements MetaObjectHandler {
 
     @Override
     public void insertFill(MetaObject metaObject) {
-        System.out.println("-------|||||-----");
-        System.out.println(metaObject.hasSetter("updateBy"));
-        // 先判断是否存在该字段
         if (metaObject.hasSetter("createBy"))
-            this.strictUpdateFill(metaObject, "createBy", SecurityUtils::getUserId, Long.class);
+            this.strictInsertFill(metaObject, "createBy", SecurityUtils::getUserId, Long.class);
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
-        System.out.println("--------------------");
-        System.out.println(metaObject.hasSetter("updateBy"));
-        // 先判断是否存在该字段
         if (metaObject.hasSetter("updateBy"))
             this.strictUpdateFill(metaObject, "updateBy", SecurityUtils::getUserId, Long.class);
     }
