@@ -38,6 +38,6 @@ public class SysOrganizeController extends BasisController {
      */
     @GetMapping("/option")
     public AjaxResult option() {
-        return AjaxResult.success(organizeService.selectOrganizeScope());
+        return AjaxResult.success(organizeService.selectOrganizeTreeExDeptNode());
     }
 }

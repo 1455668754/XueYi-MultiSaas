@@ -12,6 +12,7 @@ import com.xueyi.system.api.organize.domain.po.SysUserPo;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 /**
@@ -67,6 +68,7 @@ public class SysUserDto extends SysUserPo {
         this.roles = roles;
     }
 
+    @NotEmpty(message = "归属岗位不能为空")
     public Long[] getPostIds() {
         return postIds;
     }

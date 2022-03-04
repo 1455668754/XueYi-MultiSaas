@@ -45,6 +45,13 @@ public interface ISysOrganizeService {
     List<SysOrganizeTree> selectOrganizeScope();
 
     /**
+     * 获取企业部门|岗位树 | 移除无归属岗位的部门叶子节点
+     *
+     * @return 组织对象集合
+     */
+    List<SysOrganizeTree> selectOrganizeTreeExDeptNode();
+
+    /**
      * 获取角色组织Ids
      *
      * @param roleId 角色Id

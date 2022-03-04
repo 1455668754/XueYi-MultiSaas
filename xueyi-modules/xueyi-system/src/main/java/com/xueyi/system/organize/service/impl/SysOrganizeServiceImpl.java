@@ -1,6 +1,10 @@
 package com.xueyi.system.organize.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.dynamic.datasource.annotation.DS;
+import com.xueyi.common.core.constant.system.OrganizeConstants;
+import com.xueyi.common.core.utils.TreeUtils;
 import com.xueyi.system.organize.domain.vo.SysOrganizeTree;
 import com.xueyi.system.organize.manager.SysOrganizeManager;
 import com.xueyi.system.organize.service.ISysOrganizeService;
@@ -66,6 +70,18 @@ public class SysOrganizeServiceImpl implements ISysOrganizeService {
     @Override
     public List<SysOrganizeTree> selectOrganizeScope() {
         return organizeManager.selectOrganizeScope();
+    }
+
+    /**
+     * 获取企业部门|岗位树 | 移除无归属岗位的部门叶子节点
+     *
+     * @return 组织对象集合
+     */
+    @Override
+    public List<SysOrganizeTree> selectOrganizeTreeExDeptNode() {
+        List<SysOrganizeTree> organizeTrees = TreeUtils.buildTree(organizeManager.selectOrganizeScope());
+        recursionDelLeaf(organizeTrees);
+        return organizeTrees;
     }
 
     /**
@@ -166,5 +182,20 @@ public class SysOrganizeServiceImpl implements ISysOrganizeService {
     @Override
     public void editUserRoleMerge(Long userId, Long[] roleIds) {
         organizeManager.editUserRoleMerge(userId, roleIds);
+    }
+
+    /**
+     * 递归列表 | 移除无归属岗位的部门叶子节点
+     */
+    private void recursionDelLeaf(List<SysOrganizeTree> treeList) {
+        SysOrganizeTree treeNode;
+        for (int i = treeList.size() - 1; i >= 0; i--) {
+            treeNode = treeList.get(i);
+            if (CollUtil.isNotEmpty(treeNode.getChildren()))
+                recursionDelLeaf(treeNode.getChildren());
+            if (StrUtil.equals(treeNode.getType(), OrganizeConstants.OrganizeType.DEPT.getCode())
+                    && CollUtil.isEmpty(treeNode.getChildren()))
+                treeList.remove(i);
+        }
     }
 }
