@@ -76,6 +76,8 @@ public class SysMenuManager extends TreeManager<SysMenuDto, SysMenuMapper> {
      * @return 菜单集合
      */
     public List<SysMenuDto> loginMenuList(Set<Long> roleIds) {
+        if(CollUtil.isEmpty(roleIds))
+            return new ArrayList<>();
         // 1.获取用户可使用角色集内的所有菜单Ids
         List<SysRoleMenuMerge> roleMenuMerges = roleMenuMergeMapper.selectList(
                 Wrappers.<SysRoleMenuMerge>query().lambda()

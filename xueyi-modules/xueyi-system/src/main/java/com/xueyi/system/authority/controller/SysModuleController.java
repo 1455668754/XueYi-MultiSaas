@@ -59,7 +59,7 @@ public class SysModuleController extends SubBaseController<SysModuleDto, ISysMod
     public AjaxResult getRoutes() {
         LoginUser loginUser = tokenService.getLoginUser();
         if (ObjectUtil.isNull(loginUser.getModuleRoute())) {
-            loginUser.setModuleRoute(baseService.getRoutes(loginUser));
+            loginUser.setModuleRoute(baseService.getRoutes(loginUser.getRoleIds()));
             tokenService.setLoginUser(loginUser);
         }
         return AjaxResult.success(loginUser.getModuleRoute());

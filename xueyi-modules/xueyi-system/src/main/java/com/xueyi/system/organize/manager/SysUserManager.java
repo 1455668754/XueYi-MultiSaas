@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -102,8 +103,9 @@ public class SysUserManager extends BaseManager<SysUserDto, SysUserMapper> {
                     .or().in(SysOrganizeRoleMerge::getDeptId, deptIds);
 
         List<SysOrganizeRoleMerge> organizeRoleMerges = organizeRoleMergeMapper.selectList(organizeRoleMergeQueryWrapper);
-        if (CollUtil.isNotEmpty(organizeRoleMerges))
-            userDto.setRoles(roleMapper.selectBatchIds(organizeRoleMerges.stream().map(SysOrganizeRoleMerge::getRoleId).collect(Collectors.toList())));
+        userDto.setRoles(CollUtil.isNotEmpty(organizeRoleMerges)
+                ? roleMapper.selectBatchIds(organizeRoleMerges.stream().map(SysOrganizeRoleMerge::getRoleId).collect(Collectors.toList()))
+                : new ArrayList<>());
         return userDto;
     }
 
@@ -115,7 +117,7 @@ public class SysUserManager extends BaseManager<SysUserDto, SysUserMapper> {
      */
     public SysUserDto selectByIdExtra(Serializable id) {
         SysUserDto user = baseMapper.selectById(id);
-        if(ObjectUtil.isNotNull(user)){
+        if (ObjectUtil.isNotNull(user)) {
             List<SysUserPostMerge> userPostMerges = userPostMergeMapper.selectList(
                     Wrappers.<SysUserPostMerge>query().lambda()
                             .eq(SysUserPostMerge::getUserId, user.getId()));
@@ -321,7 +323,7 @@ public class SysUserManager extends BaseManager<SysUserDto, SysUserMapper> {
      * @param userName 用户账号
      * @return 结果 | true/false 唯一/不唯一
      */
-    public SysUserDto checkUserNameUnique(Serializable id, String userName){
+    public SysUserDto checkUserNameUnique(Serializable id, String userName) {
         return baseMapper.selectOne(
                 Wrappers.<SysUserDto>query().lambda()
                         .ne(SysUserDto::getId, id)

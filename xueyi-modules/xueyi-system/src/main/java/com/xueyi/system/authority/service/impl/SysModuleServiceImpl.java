@@ -6,7 +6,6 @@ import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.web.entity.service.impl.SubBaseServiceImpl;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
-import com.xueyi.system.api.model.LoginUser;
 import com.xueyi.system.authority.manager.SysModuleManager;
 import com.xueyi.system.authority.mapper.SysMenuMapper;
 import com.xueyi.system.authority.mapper.SysModuleMapper;
@@ -17,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import static com.xueyi.common.core.constant.basic.SecurityConstants.CREATE_BY;
 import static com.xueyi.common.core.constant.basic.TenantConstants.ISOLATE;
@@ -33,12 +33,12 @@ public class SysModuleServiceImpl extends SubBaseServiceImpl<SysModuleDto, SysMo
     /**
      * 当前用户首页可展示的模块路由
      *
-     * @param loginUser 登录用户信息
+     * @param roleIds 角色Ids
      * @return 模块集合
      */
     @Override
-    public List<SysModuleDto> getRoutes(LoginUser loginUser) {
-        return baseManager.getRoutes(loginUser);
+    public List<SysModuleDto> getRoutes(Set<Long> roleIds) {
+        return baseManager.getRoutes(roleIds);
     }
 
     /**

@@ -12,7 +12,6 @@ import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.entity.manager.SubBaseManager;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
-import com.xueyi.system.api.model.LoginUser;
 import com.xueyi.system.authority.domain.merge.SysRoleModuleMerge;
 import com.xueyi.system.authority.domain.merge.SysTenantModuleMerge;
 import com.xueyi.system.authority.mapper.SysMenuMapper;
@@ -26,6 +25,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -45,10 +45,10 @@ public class SysModuleManager extends SubBaseManager<SysModuleDto, SysModuleMapp
     /**
      * 当前用户首页可展示的模块路由
      *
-     * @param loginUser 登录用户信息
+     * @param roleIds 角色Ids
      * @return 模块集合
      */
-    public List<SysModuleDto> getRoutes(LoginUser loginUser) {
+    public List<SysModuleDto> getRoutes(Set<Long> roleIds) {
         // 超管用户 ? 租管租户 ? 查所有公共 + 所有私有模块 : 查权限内的公共 + 所有私有 : 根据拥有的角色查询权限
         if (SecurityUtils.isAdminUser()) {
             if (SecurityUtils.isAdminTenant()) {
@@ -72,9 +72,11 @@ public class SysModuleManager extends SubBaseManager<SysModuleDto, SysModuleMapp
                                                                 }))));
             }
         } else {
+            if(CollUtil.isEmpty(roleIds))
+                return new ArrayList<>();
             List<SysRoleModuleMerge> roleModuleMerges = roleModuleMergeMapper.selectList(
                     Wrappers.<SysRoleModuleMerge>query().lambda()
-                            .in(SysRoleModuleMerge::getRoleId, loginUser.getRoleIds()));
+                            .in(SysRoleModuleMerge::getRoleId, roleIds));
             return CollUtil.isNotEmpty(roleModuleMerges)
                     ? baseMapper.selectList(
                     Wrappers.<SysModuleDto>query().lambda()
