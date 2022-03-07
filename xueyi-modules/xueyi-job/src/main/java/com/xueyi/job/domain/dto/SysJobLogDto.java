@@ -1,7 +1,8 @@
 package com.xueyi.job.domain.dto;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.xueyi.common.core.annotation.Excel;
-import com.xueyi.common.core.web.entity.base.BaseEntity;
+import com.xueyi.common.core.web.tenant.base.TBaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -12,17 +13,39 @@ import java.util.Date;
  * 
  * @author xueyi
  */
-public class SysJobLogDto extends BaseEntity
-{
+public class SysJobLogDto extends TBaseEntity {
     private static final long serialVersionUID = 1L;
 
-    /** ID */
-    @Excel(name = "日志序号")
-    private Long jobLogId;
+    /** 任务组名 */
+    @Excel(name = "任务组名")
+    @TableField("job_group")
+    private String jobGroup;
 
-    /** 任务名称 */
-    @Excel(name = "任务名称")
-    private String jobName;
+    /** 调用目标字符串 */
+    @Excel(name = "调用目标字符串")
+    @TableField("invoke_target")
+    private String invokeTarget;
+
+    /** cron执行表达式 */
+    @Excel(name = "cron执行表达式")
+    @TableField("cron_expression")
+    private String cronExpression;
+
+    /** 计划执行错误策略（0立即执行 1执行一次 2放弃执行） */
+    @Excel(name = "计划执行错误策略", readConverterExp = "0=立即执行,1=执行一次,2=放弃执行")
+    @TableField("misfire_policy")
+    private String misfirePolicy;
+
+    /** 是否并发执行（0允许 1禁止） */
+    @Excel(name = "是否并发执行", readConverterExp = "0=允许,1=禁止")
+    @TableField("concurrent")
+    private String concurrent;
+
+    /** 状态（0正常 1暂停） */
+    @Excel(name = "状态", readConverterExp = "0=正常,1=暂停")
+    @TableField("status")
+    private String status;
+
 
     /** 任务组名 */
     @Excel(name = "任务组名")

@@ -8,7 +8,6 @@ import com.xueyi.job.domain.dto.SysJobDto;
 import com.xueyi.job.manager.SysJobManager;
 import com.xueyi.job.mapper.SysJobMapper;
 import com.xueyi.job.service.ISysJobService;
-import com.xueyi.job.util.CronUtils;
 import com.xueyi.job.util.ScheduleUtils;
 import org.quartz.JobDataMap;
 import org.quartz.JobKey;
@@ -31,41 +30,15 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobDto, SysJobManager,
     @Autowired
     private Scheduler scheduler;
 
-    @Autowired
-    private SysJobMapper jobMapper;
-
     /**
      * 项目启动时，初始化定时器 主要是防止手动修改数据库导致未同步到定时任务处理（注：不能手动修改数据库Id和任务组名，否则会导致脏数据）
      */
     @PostConstruct
     public void init() throws SchedulerException, TaskException {
         scheduler.clear();
-        List<SysJobDto> jobList = jobMapper.selectJobAll();
-        for (SysJobDto job : jobList) {
+        List<SysJobDto> jobList = baseManager.selectList(null);
+        for (SysJobDto job : jobList)
             ScheduleUtils.createScheduleJob(scheduler, job);
-        }
-    }
-
-    /**
-     * 获取quartz调度器的计划任务列表
-     *
-     * @param job 调度信息
-     * @return
-     */
-    @Override
-    public List<SysJobDto> selectJobList(SysJobDto job) {
-        return jobMapper.selectJobList(job);
-    }
-
-    /**
-     * 通过调度任务Id查询调度信息
-     *
-     * @param jobId 调度任务Id
-     * @return 调度任务对象信息
-     */
-    @Override
-    public SysJobDto selectJobById(Long jobId) {
-        return jobMapper.selectJobById(jobId);
     }
 
     /**
@@ -79,7 +52,7 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobDto, SysJobManager,
         Long jobId = job.getJobId();
         String jobGroup = job.getJobGroup();
         job.setStatus(ScheduleConstants.Status.PAUSE.getCode());
-        int rows = jobMapper.updateJob(job);
+        int rows = baseManager.update(job);
         if (rows > 0) {
             scheduler.pauseJob(ScheduleUtils.getJobKey(jobId, jobGroup));
         }
@@ -97,7 +70,7 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobDto, SysJobManager,
         Long jobId = job.getJobId();
         String jobGroup = job.getJobGroup();
         job.setStatus(ScheduleConstants.Status.NORMAL.getCode());
-        int rows = jobMapper.updateJob(job);
+        int rows = baseManager.update(job);
         if (rows > 0) {
             scheduler.resumeJob(ScheduleUtils.getJobKey(jobId, jobGroup));
         }
@@ -114,7 +87,7 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobDto, SysJobManager,
     public int deleteJob(SysJobDto job) throws SchedulerException {
         Long jobId = job.getJobId();
         String jobGroup = job.getJobGroup();
-        int rows = jobMapper.deleteJobById(jobId);
+        int rows = baseManager.deleteById(jobId);
         if (rows > 0) {
             scheduler.deleteJob(ScheduleUtils.getJobKey(jobId, jobGroup));
         }
@@ -130,7 +103,7 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobDto, SysJobManager,
     @DSTransactional
     public void deleteJobByIds(Long[] jobIds) throws SchedulerException {
         for (Long jobId : jobIds) {
-            SysJobDto job = jobMapper.selectJobById(jobId);
+            SysJobDto job = baseManager.selectById(jobId);
             deleteJob(job);
         }
     }
@@ -163,7 +136,7 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobDto, SysJobManager,
     public void run(SysJobDto job) throws SchedulerException {
         Long jobId = job.getJobId();
         String jobGroup = job.getJobGroup();
-        SysJobDto properties = selectJobById(job.getJobId());
+        SysJobDto properties = baseManager.selectById(job.getJobId());
         // 参数
         JobDataMap dataMap = new JobDataMap();
         dataMap.put(ScheduleConstants.TASK_PROPERTIES, properties);
@@ -180,7 +153,7 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobDto, SysJobManager,
     @DSTransactional
     public int insertJob(SysJobDto job) throws SchedulerException, TaskException {
         job.setStatus(ScheduleConstants.Status.PAUSE.getCode());
-        int rows = jobMapper.insertJob(job);
+        int rows = baseManager.insert(job);
         if (rows > 0) {
             ScheduleUtils.createScheduleJob(scheduler, job);
         }
@@ -195,8 +168,8 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobDto, SysJobManager,
     @Override
     @DSTransactional
     public int updateJob(SysJobDto job) throws SchedulerException, TaskException {
-        SysJobDto properties = selectJobById(job.getJobId());
-        int rows = jobMapper.updateJob(job);
+        SysJobDto properties = baseManager.selectById(job.getJobId());
+        int rows = baseManager.update(job);
         if (rows > 0) {
             updateSchedulerJob(job, properties.getJobGroup());
         }
@@ -218,16 +191,5 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobDto, SysJobManager,
             scheduler.deleteJob(jobKey);
         }
         ScheduleUtils.createScheduleJob(scheduler, job);
-    }
-
-    /**
-     * 校验cron表达式是否有效
-     *
-     * @param cronExpression 表达式
-     * @return 结果
-     */
-    @Override
-    public boolean checkCronExpressionIsValid(String cronExpression) {
-        return CronUtils.isValid(cronExpression);
     }
 }

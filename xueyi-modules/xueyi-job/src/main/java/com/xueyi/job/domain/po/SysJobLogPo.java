@@ -1,47 +1,45 @@
 package com.xueyi.job.domain.po;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.xueyi.common.core.annotation.Excel;
-import com.xueyi.common.core.web.entity.base.BaseEntity;
+import com.xueyi.common.core.web.tenant.base.TBaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.Date;
 
 /**
- * 定时任务调度日志表 sys_job_log
- * 
+ * 定时任务调度日志 持久化对象
+ *
  * @author xueyi
  */
-public class SysJobLogPo extends BaseEntity
-{
+public class SysJobLogPo extends TBaseEntity {
+
     private static final long serialVersionUID = 1L;
-
-    /** ID */
-    @Excel(name = "日志序号")
-    private Long jobLogId;
-
-    /** 任务名称 */
-    @Excel(name = "任务名称")
-    private String jobName;
 
     /** 任务组名 */
     @Excel(name = "任务组名")
+    @TableField("job_group")
     private String jobGroup;
 
     /** 调用目标字符串 */
     @Excel(name = "调用目标字符串")
+    @TableField("invoke_target")
     private String invokeTarget;
 
     /** 日志信息 */
     @Excel(name = "日志信息")
+    @TableField("job_message")
     private String jobMessage;
 
     /** 执行状态（0正常 1失败） */
     @Excel(name = "执行状态", readConverterExp = "0=正常,1=失败")
+    @TableField("status")
     private String status;
 
     /** 异常信息 */
     @Excel(name = "异常信息")
+    @TableField("exception_info")
     private String exceptionInfo;
 
     /** 开始时间 */
