@@ -7,7 +7,7 @@ drop table if exists te_tenant;
 create table te_tenant (
   id		                bigint	            not null                                comment '租户Id',
   strategy_id		        bigint	            not null                                comment '策略Id',
-  name		                varchar(50)	        not null unique	                        comment '租户账号',
+  name		                varchar(50)	        not null	                            comment '租户账号',
   system_name		        varchar(50)	        not null 	                            comment '系统名称',
   nick		                varchar(50)	        not null 	                            comment '租户名称',
   logo		                varchar(200)	    default ''	                            comment '租户logo',
@@ -22,9 +22,8 @@ create table te_tenant (
   update_time               datetime            on update current_timestamp             comment '更新时间',
   is_default                char(1)             not null default 'N'	                comment '默认租户（Y是 N否）',
   del_flag		            tinyint             not null default 0                      comment '删除标志（0正常 1删除）',
-  primary key (id),
-  unique key (name)
-) engine=innodb comment = '租户信息表';
+  primary key (id)
+) engine = innodb comment = '租户信息表';
 
 -- ----------------------------
 -- 初始化-租户信息表数据
@@ -51,8 +50,8 @@ create table te_strategy (
   update_time               datetime            on update current_timestamp             comment '更新时间',
   is_default                char(1)             not null default 'N'	                comment '默认策略（Y是 N否）',
   del_flag		            tinyint             not null default 0                      comment '删除标志（0正常 1删除）',
-primary key (id)
-) engine=innodb comment = '数据源策略表';
+  primary key (id)
+) engine = innodb comment = '数据源策略表';
 
 -- ----------------------------
 -- 初始化-策略信息表数据
@@ -82,10 +81,8 @@ create table te_source (
   update_time               datetime            on update current_timestamp             comment '更新时间',
   is_default                char(1)             not null default 'N'	                comment '默认数据源（Y是 N否）',
   del_flag		            tinyint             not null default 0                      comment '删除标志（0正常 1删除）',
-primary key (id),
-unique key (name),
-unique key (slave)
-) engine=innodb comment = '数据源表';
+  primary key (id)
+) engine = innodb comment = '数据源表';
 
 -- ----------------------------
 -- 初始化-数据源表数据 | 这条数据为我的基础库，实际使用时调整成自己的库即可
@@ -117,7 +114,7 @@ create table sys_module (
   del_flag		            tinyint             not null default 0                      comment '删除标志（0正常 1删除）',
   tenant_id		            bigint	            not null                                comment '租户Id',
   primary key (id)
-) engine=innodb comment = '模块信息表';
+) engine = innodb comment = '模块信息表';
 
 # ----------------------------
 # 初始化-模块信息表数据
@@ -170,7 +167,7 @@ create table sys_menu (
   tenant_id                 bigint              not null                                comment '租户Id',
   primary key (id),
   unique (name)
-) engine=innodb comment = '菜单权限表';
+) engine = innodb comment = '菜单权限表';
 
 insert into sys_menu (id, parent_id, name, title, ancestors, path, frame_src, component, param_path, transition_name, ignore_route, is_cache, is_affix, is_disabled, frame_type, menu_type, hide_tab, hide_menu, hide_breadcrumb, hide_children, hide_path_for_children, dynamic_level, real_path, perms, icon, sort, remark, is_common, is_default, module_id, tenant_id)
 values (0, 0, 'd346c7dbf265416086dbe2951a7465b2', '默认菜单', '', 'default', null, null, null, null, 'N', 'N', 'N', 'N', '0', 'M', '0', '0', '0', '0', '0', 1, null, null, '', 1, '目录:默认菜单', '0', 'Y', 1, 0),
@@ -500,9 +497,8 @@ create table sys_dict_type (
   create_time               datetime            default current_timestamp               comment '创建时间',
   update_by                 bigint              default null                            comment '更新者',
   update_time               datetime            on update current_timestamp             comment '更新时间',
-  primary key (id),
-  unique (code)
-) engine=innodb auto_increment=100 comment = '字典类型表';
+  primary key (id)
+) engine = innodb auto_increment = 100 comment = '字典类型表';
 
 insert into sys_dict_type (name, code, remark)
 values ( '用户性别', 'sys_user_sex', '用户性别列表'),
@@ -553,7 +549,7 @@ create table sys_dict_data (
   update_by                 bigint              default null                            comment '更新者',
   update_time               datetime            on update current_timestamp             comment '更新时间',
   primary key (id)
-) engine=innodb auto_increment=1 comment = '字典数据表';
+) engine = innodb auto_increment = 1 comment = '字典数据表';
 
 insert into sys_dict_data (sort, label, value, code, css_class, list_class, is_default, remark)
 values (1, '男', '0', 'sys_user_sex', '', '', 'Y', '性别男'),
@@ -684,7 +680,7 @@ values (1, '男', '0', 'sys_user_sex', '', '', 'Y', '性别男'),
 -- ----------------------------
 drop table if exists sys_config;
 create table sys_config (
-  id                        bigint              not null                                comment '参数主键',
+  id                        bigint              not null                                comment '参数Id',
   name                      varchar(100)        default ''                              comment '参数名称',
   code                      varchar(100)        default ''                              comment '参数编码',
   value                     varchar(500)        default ''                              comment '参数键值',
@@ -696,7 +692,7 @@ create table sys_config (
   update_by                 bigint              default null                            comment '更新者',
   update_time               datetime            on update current_timestamp             comment '更新时间',
   primary key (id)
-) engine=innodb comment = '参数配置表';
+) engine = innodb comment = '参数配置表';
 
 insert into sys_config (id, name, code, value, type, remark)
 values (1, '主框架页-默认皮肤样式名称',           'sys.index.skinName',               'skin-blue',       'Y',    '蓝色 skin-blue、绿色 skin-green、紫色 skin-purple、红色 skin-red、黄色 skin-yellow'),
@@ -709,8 +705,8 @@ values (1, '主框架页-默认皮肤样式名称',           'sys.index.skinNam
 -- ----------------------------
 drop table if exists sys_job;
 create table sys_job (
-  job_id                    bigint              not null                                comment '任务Id',
-  job_name                  varchar(64)         default ''                              comment '任务名称',
+  id                        bigint              not null                                comment '任务Id',
+  name                      varchar(64)         default ''                              comment '任务名称',
   job_group                 varchar(64)         default 'DEFAULT'                       comment '任务组名',
   invoke_target             varchar(500)        not null                                comment '调用目标字符串',
   cron_expression           varchar(255)        default ''                              comment 'cron执行表达式',
@@ -724,10 +720,10 @@ create table sys_job (
   update_time               datetime            on update current_timestamp             comment '更新时间',
   del_flag		            tinyint             not null default 0                      comment '删除标志(0正常 1删除)',
   tenant_id		            bigint	            not null                                comment '租户Id',
-  primary key (job_id, job_name, job_group)
-) engine=innodb auto_increment=100 comment = '定时任务调度表';
+  primary key (id)
+) engine = innodb auto_increment = 100 comment = '定时任务调度表';
 
-insert into sys_job (job_id, job_name, job_group, invoke_target, cron_expression, misfire_policy, concurrent, status, tenant_id)
+insert into sys_job (id, name, job_group, invoke_target, cron_expression, misfire_policy, concurrent, status, tenant_id)
 values (1, '系统默认（无参）', 'DEFAULT', 'ryTask.ryNoParams',        '0/10 * * * * ?', '3', '1', '1', 0),
        (2, '系统默认（有参）', 'DEFAULT', 'ryTask.ryParams(\'ry\')',  '0/15 * * * * ?', '3', '1', '1', 0),
        (3, '系统默认（多参）', 'DEFAULT', 'ryTask.ryMultipleParams(\'ry\', true, 2000L, 316.50D, 100)',  '0/20 * * * * ?', '3', '1', '1', 0);
@@ -737,8 +733,8 @@ values (1, '系统默认（无参）', 'DEFAULT', 'ryTask.ryNoParams',        '0
 -- ----------------------------
 drop table if exists sys_job_log;
 create table sys_job_log (
-  job_log_id                bigint              not null auto_increment                 comment '任务日志Id',
-  job_name                  varchar(64)         not null                                comment '任务名称',
+  id                        bigint              not null auto_increment                 comment '任务日志Id',
+  name                      varchar(64)         not null                                comment '任务名称',
   job_group                 varchar(64)         not null                                comment '任务组名',
   invoke_target             varchar(500)        not null                                comment '调用目标字符串',
   job_message               varchar(500)                                                comment '日志信息',
@@ -748,8 +744,8 @@ create table sys_job_log (
   del_time                  datetime            on update current_timestamp             comment '删除时间',
   del_flag		            tinyint             not null default 0                      comment '删除标志(0正常 1删除)',
   tenant_id		            bigint	            not null                                comment '租户Id',
-  primary key (job_log_id)
-) engine=innodb comment = '定时任务调度日志表';
+  primary key (id)
+) engine = innodb comment = '定时任务调度日志表';
 
 -- ----------------------------
 -- 13、代码生成业务表

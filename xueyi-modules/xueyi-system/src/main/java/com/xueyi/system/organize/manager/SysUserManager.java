@@ -315,6 +315,21 @@ public class SysUserManager extends BaseManager<SysUserDto, SysUserMapper> {
     }
 
     /**
+     * 校验用户账号是否唯一
+     *
+     * @param id       Id
+     * @param userName 用户账号
+     * @return 结果 | true/false 唯一/不唯一
+     */
+    public SysUserDto checkUserNameUnique(Serializable id, String userName){
+        return baseMapper.selectOne(
+                Wrappers.<SysUserDto>query().lambda()
+                        .ne(SysUserDto::getId, id)
+                        .eq(SysUserDto::getUserName, userName)
+                        .last(SqlConstants.LIMIT_ONE));
+    }
+
+    /**
      * 校验用户名称是否唯一
      *
      * @param id       用户Id

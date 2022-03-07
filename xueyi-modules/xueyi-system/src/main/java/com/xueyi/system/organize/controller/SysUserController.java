@@ -206,8 +206,6 @@ public class SysUserController extends BaseController<SysUserDto, ISysUserServic
         // 防止修改操作更替密码
         if (BaseConstants.Operate.ADD == operate)
             user.setPassword(SecurityUtils.encryptPassword(user.getPassword()));
-        else
-            user.setPassword(null);
     }
 
     /**
