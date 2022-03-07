@@ -204,6 +204,20 @@ public class SysUserManager extends BaseManager<SysUserDto, SysUserMapper> {
     }
 
     /**
+     * 更新用户账号
+     *
+     * @param id       用户Id
+     * @param userName 用户账号
+     * @return 结果
+     */
+    public int updateUserName(Long id, String userName) {
+        return baseMapper.update(new SysUserDto(),
+                Wrappers.<SysUserDto>update().lambda()
+                        .set(SysUserDto::getUserName, userName)
+                        .eq(SysUserDto::getId, id));
+    }
+
+    /**
      * 更新用户邮箱
      *
      * @param id    用户Id

@@ -64,8 +64,7 @@ public class SysUserController extends BaseController<SysUserDto, ISysUserServic
     @GetMapping("/getInfo")
     public AjaxResult getInfo() {
         LoginUser loginUser = SecurityUtils.getLoginUser();
-        // 密码禁传
-        loginUser.getUser().setPassword(null);
+        baseService.userDesensitized(loginUser.getUser());
         HashMap<String, Object> map = new HashMap<>();
         map.put("user", loginUser.getUser());
         map.put("roles", loginUser.getRoles());
@@ -81,7 +80,10 @@ public class SysUserController extends BaseController<SysUserDto, ISysUserServic
     @GetMapping("/list")
     @RequiresPermissions(Auth.SYS_USER_LIST)
     public AjaxResult list(SysUserDto user) {
-        return super.list(user);
+        startPage();
+        List<SysUserDto> list = baseService.selectListScope(user);
+        list.forEach(item -> baseService.userDesensitized(item));
+        return getDataTable(list);
     }
 
     /**
@@ -178,7 +180,6 @@ public class SysUserController extends BaseController<SysUserDto, ISysUserServic
         return toAjax(baseService.resetUserPassword(user.getId(), SecurityUtils.encryptPassword(user.getPassword())));
     }
 
-
     /**
      * 获取用户选择框列表
      */
@@ -197,7 +198,7 @@ public class SysUserController extends BaseController<SysUserDto, ISysUserServic
             adminValidated(user.getId());
         if (baseService.checkUserCodeUnique(user.getId(), user.getCode()))
             throw new ServiceException(StrUtil.format("{}{}{}失败，用户编码已存在", operate.getInfo(), getNodeName(), user.getNickName()));
-        else if (baseService.checkNameUnique(user.getId(), user.getName()))
+        else if (baseService.checkUserNameUnique(user.getId(), user.getUserName()))
             throw new ServiceException(StrUtil.format("{}{}{}失败，用户账号已存在", operate.getInfo(), getNodeName(), user.getNickName()));
         else if (StringUtils.isNotEmpty(user.getEmail()) && baseService.checkPhoneUnique(user.getId(), user.getCode()))
             throw new ServiceException(StrUtil.format("{}{}{}失败，手机号码已存在", operate.getInfo(), getNodeName(), user.getNickName()));

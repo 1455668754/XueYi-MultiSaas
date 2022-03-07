@@ -41,6 +41,15 @@ public interface ISysUserService extends IBaseService<SysUserDto> {
     int updateUserProfile(Long id, String nickName, String sex, String profile);
 
     /**
+     * 更新用户账号
+     *
+     * @param id       用户Id
+     * @param userName 用户账号
+     * @return 结果
+     */
+    int updateUserName(Long id, String userName);
+
+    /**
      * 更新用户邮箱
      *
      * @param id    用户Id
@@ -119,4 +128,11 @@ public interface ISysUserService extends IBaseService<SysUserDto> {
      * @return 结果 | true/false 允许/禁止
      */
     boolean checkUserAllowed(Long id);
+
+    /**
+     * 用户数据脱敏
+     *
+     * @param user 用户对象
+     */
+    void userDesensitized(SysUserDto user);
 }

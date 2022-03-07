@@ -1,6 +1,8 @@
 package com.xueyi.system.organize.service.impl;
 
+import cn.hutool.core.util.DesensitizedUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.datascope.annotation.DataScope;
@@ -75,6 +77,18 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDto, SysUserManag
     @Override
     public int updateUserProfile(Long id, String nickName, String sex, String profile) {
         return baseManager.updateUserProfile(id, nickName, sex, profile);
+    }
+
+    /**
+     * 更新用户账号
+     *
+     * @param id       用户Id
+     * @param userName 用户账号
+     * @return 结果
+     */
+    @Override
+    public int updateUserName(Long id, String userName){
+        return baseManager.updateUserName(id, userName);
     }
 
     /**
@@ -183,5 +197,17 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDto, SysUserManag
     public boolean checkUserAllowed(Long id) {
         SysUserDto user = baseManager.selectById(id);
         return SysUserDto.isNotAdmin(user.getUserType());
+    }
+
+    /**
+     * 用户数据脱敏
+     *
+     * @param user 用户对象
+     */
+    @Override
+    public void userDesensitized(SysUserDto user){
+        user.setPhone(DesensitizedUtil.mobilePhone(user.getPhone()));
+        user.setEmail(DesensitizedUtil.email(user.getEmail()));
+        user.setPassword(StrUtil.EMPTY);
     }
 }

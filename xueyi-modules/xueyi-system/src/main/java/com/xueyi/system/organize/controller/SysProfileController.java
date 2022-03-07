@@ -43,7 +43,7 @@ public class SysProfileController extends BasisController {
     @GetMapping
     public AjaxResult profile() {
         LoginUser loginUser = SecurityUtils.getLoginUser();
-        loginUser.getUser().setPassword(null);
+        userService.userDesensitized(loginUser.getUser());
         return AjaxResult.success(loginUser.getUser());
     }
 
@@ -63,6 +63,28 @@ public class SysProfileController extends BasisController {
             return AjaxResult.success();
         }
         return AjaxResult.error("修改个人信息异常，请联系管理员！");
+    }
+
+    /**
+     * 修改账号
+     */
+    @PutMapping("/userName")
+    @Log(title = "个人信息管理 - 修改账号", businessType = BusinessType.UPDATE)
+    public AjaxResult editUserName(String userName) {
+        LoginUser loginUser = SecurityUtils.getLoginUser();
+        if (StrUtil.isNotEmpty(userName))
+            return AjaxResult.error("不能设置为空账号！");
+        else if (StrUtil.equals(userName, loginUser.getUser().getUserName()))
+            return AjaxResult.error("该账号为当前使用账号，无需更换！");
+        else if (userService.checkUserNameUnique(loginUser.getUserId(), userName))
+            return AjaxResult.error("该账号已被使用！");
+        if (userService.updateUserName(loginUser.getUserId(), userName) > 0) {
+            // 更新缓存
+            loginUser.getUser().setUserName(userName);
+            tokenService.setLoginUser(loginUser);
+            return AjaxResult.success();
+        }
+        return AjaxResult.error("更绑邮箱异常，请联系管理员！");
     }
 
     /**
