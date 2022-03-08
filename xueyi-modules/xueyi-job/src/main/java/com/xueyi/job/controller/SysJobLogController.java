@@ -32,7 +32,7 @@ public class SysJobLogController extends BaseController<SysJobLogDto, ISysJobLog
      */
     @Override
     @GetMapping("/list")
-    @RequiresPermissions(Auth.JOB_JOB_SINGLE)
+    @RequiresPermissions(Auth.SCHEDULE_JOB_SINGLE)
     public AjaxResult list(SysJobLogDto jobLog) {
         return super.list(jobLog);
     }
@@ -42,7 +42,7 @@ public class SysJobLogController extends BaseController<SysJobLogDto, ISysJobLog
      */
     @Override
     @PostMapping("/export")
-    @RequiresPermissions(Auth.JOB_JOB_EXPORT)
+    @RequiresPermissions(Auth.SCHEDULE_JOB_EXPORT)
     @Log(title = "调度日志管理", businessType = BusinessType.EXPORT)
     public void export(HttpServletResponse response, SysJobLogDto jobLog) {
         super.export(response, jobLog);
@@ -51,7 +51,7 @@ public class SysJobLogController extends BaseController<SysJobLogDto, ISysJobLog
     /**
      * 清空调度日志
      */
-    @RequiresPermissions(Auth.JOB_JOB_DELETE)
+    @RequiresPermissions(Auth.SCHEDULE_JOB_DELETE)
     @Log(title = "调度日志管理", businessType = BusinessType.CLEAN)
     @DeleteMapping("/clean")
     public AjaxResult clean() {

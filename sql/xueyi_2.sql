@@ -28,18 +28,18 @@ create table sys_dept (
 -- ----------------------------
 -- 初始化-部门表数据
 -- ----------------------------
-insert into sys_dept (id, tenant_id, code, parent_id, ancestors, name)
-values (-4, -1, '-4', 0, '0', '雪忆科技'),
-       (100, 1, '100', 0, '0', '雪忆科技'),
-       (101, 1, '101', 100, '0,100', '深圳总公司'),
-       (102, 1, '102',  100, '0,100', '长沙分公司'),
-       (103, 1, '103',  101, '0,100,101', '研发部门'),
-       (104, 1, '104',  101, '0,100,101', '市场部门'),
-       (105, 1, '105',  101, '0,100,101', '测试部门'),
-       (106, 1, '106',  101, '0,100,101', '财务部门'),
-       (107, 1, '107',  101, '0,100,101', '运维部门'),
-       (108, 1, '108',  102, '0,100,102', '市场部门'),
-       (109, 1, '109',  102, '0,100,102', '财务部门');
+insert into sys_dept (id, code, parent_id, ancestors, name, tenant_id)
+values (99, '99', 0, '0', '雪忆科技', 1),
+       (100, '100', 0, '0', '雪忆科技', 2),
+       (101, '101', 100, '0,100', '深圳总公司', 2),
+       (102, '102',  100, '0,100', '长沙分公司', 2),
+       (103, '103',  101, '0,100,101', '研发部门', 2),
+       (104, '104',  101, '0,100,101', '市场部门', 2),
+       (105, '105',  101, '0,100,101', '测试部门', 2),
+       (106, '106',  101, '0,100,101', '财务部门', 2),
+       (107, '107',  101, '0,100,101', '运维部门', 2),
+       (108, '108',  102, '0,100,102', '市场部门', 2),
+       (109, '109',  102, '0,100,102', '财务部门', 2);
 
 -- ----------------------------
 -- 2、岗位信息表
@@ -65,12 +65,12 @@ create table sys_post (
 -- ----------------------------
 -- 初始化-岗位信息表数据
 -- ----------------------------
-insert into sys_post (id, tenant_id, dept_id, code, name)
-values (-3, -1, -4, 'ceo', '超级管理员'),
-       (2, 1, 100, 'ceo', '董事长'),
-       (3, 1, 100, 'se', '项目经理'),
-       (4, 1, 100, 'hr', '人力资源'),
-       (5, 1, 100, 'user', '普通员工');
+insert into sys_post (id, dept_id, code, name, tenant_id)
+values (1, 99, 'ceo', '超级管理员', 1),
+       (2, 100, 'ceo', '董事长', 2),
+       (3, 100, 'se', '项目经理', 2),
+       (4, 100, 'hr', '人力资源', 2),
+       (5, 100, 'user', '普通员工', 2);
 
 -- ----------------------------
 -- 3、用户信息表
@@ -105,10 +105,10 @@ create table sys_user (
 -- ----------------------------
 -- 初始化-用户信息表数据
 -- ----------------------------
-insert into sys_user (id, tenant_id, code, user_name, nick_name,user_type, avatar, password, remark)
-values (-2, -1, '001', 'admin', 'admin', '00', 'https://images.gitee.com/uploads/images/2021/1101/141155_f3dfce1d_7382127.jpeg', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '超级管理员'),
-       ( 2,  1, '001', 'admin', 'admin', '00', 'https://images.gitee.com/uploads/images/2021/1101/141155_f3dfce1d_7382127.jpeg', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '系统管理员'),
-       ( 3,  1, '002', 'xy', 'xy', '01', 'https://images.gitee.com/uploads/images/2021/1101/141155_f3dfce1d_7382127.jpeg', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '管理员');
+insert into sys_user (id, code, user_name, nick_name,user_type, avatar, password, remark, tenant_id)
+values (1, '001', 'admin', 'admin', '00', 'https://images.gitee.com/uploads/images/2021/1101/141155_f3dfce1d_7382127.jpeg', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '超级管理员', 1),
+       (2, '001', 'admin', 'admin', '00', 'https://images.gitee.com/uploads/images/2021/1101/141155_f3dfce1d_7382127.jpeg', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '系统管理员', 2),
+       (3, '002', 'xy', 'xy', '01', 'https://images.gitee.com/uploads/images/2021/1101/141155_f3dfce1d_7382127.jpeg', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '管理员', 2);
 
 -- ----------------------------
 -- 4、用户-岗位关联表
@@ -127,9 +127,9 @@ create table sys_user_post_merge (
 -- 初始化-用户-岗位关联表数据
 -- ----------------------------
 insert into sys_user_post_merge (id, user_id, post_id, tenant_id)
-values (1, -2, -3, -1),
-       (2,  2,  2,  1),
-       (3,  3,  2,  1);
+values (1, 1, 1, 1),
+       (2, 2, 2, 2),
+       (3, 3, 3, 2);
 
 -- ----------------------------
 -- 5、角色信息表

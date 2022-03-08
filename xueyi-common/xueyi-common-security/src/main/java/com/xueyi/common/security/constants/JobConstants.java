@@ -8,19 +8,19 @@ package com.xueyi.common.security.constants;
 public interface JobConstants {
 
     /** 定时任务 - 调度任务管理 - 列表 */
-    String JOB_JOB_LIST = "monitor:job:list";
+    String SCHEDULE_JOB_LIST = "schedule:job:list";
     /** 定时任务 - 调度任务管理 - 详情 */
-    String JOB_JOB_SINGLE = "monitor:job:single";
+    String SCHEDULE_JOB_SINGLE = "schedule:job:single";
     /** 定时任务 - 调度任务管理 - 新增 */
-    String JOB_JOB_ADD = "monitor:job:add";
+    String SCHEDULE_JOB_ADD = "schedule:job:add";
     /** 定时任务 - 调度任务管理 - 修改 */
-    String JOB_JOB_EDIT = "monitor:job:edit";
+    String SCHEDULE_JOB_EDIT = "schedule:job:edit";
     /** 定时任务 - 调度任务管理 - 修改状态 */
-    String JOB_JOB_EDIT_STATUS = "monitor:job:es";
+    String SCHEDULE_JOB_EDIT_STATUS = "schedule:job:es";
     /** 定时任务 - 调度任务管理 - 删除 */
-    String JOB_JOB_DELETE = "monitor:job:delete";
+    String SCHEDULE_JOB_DELETE = "schedule:job:delete";
     /** 定时任务 - 调度任务管理 - 导入 */
-    String JOB_JOB_IMPORT = "monitor:job:import";
+    String SCHEDULE_JOB_IMPORT = "schedule:job:import";
     /** 定时任务 - 调度任务管理 - 导出 */
-    String JOB_JOB_EXPORT = "monitor:job:export";
+    String SCHEDULE_JOB_EXPORT = "schedule:job:export";
 }

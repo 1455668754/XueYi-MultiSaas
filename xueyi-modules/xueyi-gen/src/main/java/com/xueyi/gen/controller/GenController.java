@@ -7,6 +7,7 @@ import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.RequiresPermissions;
+import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.web.entity.controller.SubBaseController;
 import com.xueyi.gen.domain.dto.GenTableColumnDto;
 import com.xueyi.gen.domain.dto.GenTableDto;
@@ -31,11 +32,13 @@ import java.util.List;
 public class GenController extends SubBaseController<GenTableDto, IGenTableService, GenTableColumnDto, IGenTableColumnService> {
 
     /** 定义节点名称 */
+    @Override
     protected String getNodeName() {
         return "业务表";
     }
 
     /** 定义子数据名称 */
+    @Override
     protected String getSubName() {
         return "业务字段";
     }
@@ -45,7 +48,7 @@ public class GenController extends SubBaseController<GenTableDto, IGenTableServi
      */
     @Override
     @GetMapping("/list")
-    @RequiresPermissions("generate:gen:list")
+    @RequiresPermissions(Auth.GENERATE_GEN_LIST)
     public AjaxResult list(GenTableDto table) {
         return super.list(table);
     }
@@ -54,7 +57,7 @@ public class GenController extends SubBaseController<GenTableDto, IGenTableServi
      * 查询数据库列表
      */
     @GetMapping("/db/list")
-    @RequiresPermissions(value = "generate:gen:list")
+    @RequiresPermissions(Auth.GENERATE_GEN_LIST)
     public AjaxResult dataList(GenTableDto table) {
         startPage();
         List<GenTableDto> list = baseService.selectDbTableList(table);
@@ -66,6 +69,7 @@ public class GenController extends SubBaseController<GenTableDto, IGenTableServi
      */
     @Override
     @GetMapping(value = "/{id}")
+    @RequiresPermissions(Auth.GENERATE_GEN_SINGLE)
     public AjaxResult getInfo(@PathVariable Serializable id) {
         return AjaxResult.success(baseService.selectById(id));
     }
@@ -75,6 +79,7 @@ public class GenController extends SubBaseController<GenTableDto, IGenTableServi
      */
     @Override
     @GetMapping(value = "/sub/{id}")
+    @RequiresPermissions(Auth.GENERATE_GEN_SINGLE)
     public AjaxResult getInfoExtra(@PathVariable Serializable id) {
         return super.getInfoExtra(id);
     }
@@ -83,7 +88,7 @@ public class GenController extends SubBaseController<GenTableDto, IGenTableServi
      * 预览代码
      */
     @GetMapping("/preview/{tableId}")
-    @RequiresPermissions("generate:gen:preview")
+    @RequiresPermissions(Auth.GENERATE_GEN_PREVIEW)
     public AjaxResult preview(@PathVariable("tableId") Long tableId) {
         List<JSONObject> dataMap = baseService.previewCode(tableId);
         return AjaxResult.success(dataMap);
@@ -93,6 +98,7 @@ public class GenController extends SubBaseController<GenTableDto, IGenTableServi
      * 查询数据表字段列表
      */
     @GetMapping(value = "/column/{tableId}")
+    @RequiresPermissions(Auth.GENERATE_GEN_LIST)
     public AjaxResult columnList(@PathVariable Long tableId) {
         startPage();
         List<GenTableColumnDto> list = baseService.selectSubByForeignKey(tableId);
@@ -103,7 +109,7 @@ public class GenController extends SubBaseController<GenTableDto, IGenTableServi
      * 导入表结构（保存）
      */
     @PostMapping("/importTable")
-    @RequiresPermissions("generate:gen:import")
+    @RequiresPermissions(Auth.GENERATE_GEN_IMPORT)
     @Log(title = "代码生成", businessType = BusinessType.IMPORT)
     public AjaxResult importTableSave(String tables) {
         String[] tableNames = Convert.toStrArray(tables);
@@ -118,7 +124,7 @@ public class GenController extends SubBaseController<GenTableDto, IGenTableServi
      */
     @Override
     @PutMapping
-    @RequiresPermissions("generate:gen:edit")
+    @RequiresPermissions(Auth.GENERATE_GEN_EDIT)
     @Log(title = "代码生成管理", businessType = BusinessType.UPDATE)
     public AjaxResult edit(@Validated @RequestBody GenTableDto table) {
         return super.edit(table);
@@ -128,7 +134,7 @@ public class GenController extends SubBaseController<GenTableDto, IGenTableServi
      * 同步数据库 | 未实装
      */
     @GetMapping("/syncDb/{tableName}")
-    @RequiresPermissions("generate:gen:sync")
+    @RequiresPermissions(Auth.GENERATE_GEN_SYNC)
     @Log(title = "代码生成", businessType = BusinessType.UPDATE)
     public AjaxResult syncDb(@PathVariable("tableName") String tableName) {
         baseService.syncDb(tableName);
@@ -138,7 +144,7 @@ public class GenController extends SubBaseController<GenTableDto, IGenTableServi
     /**
      * 生成代码（下载方式）
      */
-    @RequiresPermissions("generate:gen:code")
+    @RequiresPermissions(Auth.GENERATE_GEN_CODE)
     @Log(title = "代码生成", businessType = BusinessType.GEN_CODE)
     @GetMapping("/download/{tableId}")
     public void download(HttpServletResponse response, @PathVariable("tableId") Long tableId) throws IOException {
@@ -149,7 +155,7 @@ public class GenController extends SubBaseController<GenTableDto, IGenTableServi
     /**
      * 生成代码（自定义路径）
      */
-    @RequiresPermissions("generate:gen:code")
+    @RequiresPermissions(Auth.GENERATE_GEN_CODE)
     @Log(title = "代码生成", businessType = BusinessType.GEN_CODE)
     @GetMapping("/generate/{tableId}")
     public AjaxResult genCode(@PathVariable("tableId") Long tableId) {
@@ -160,7 +166,7 @@ public class GenController extends SubBaseController<GenTableDto, IGenTableServi
     /**
      * 批量生成代码
      */
-    @RequiresPermissions("generate:gen:code")
+    @RequiresPermissions(Auth.GENERATE_GEN_CODE)
     @Log(title = "代码生成", businessType = BusinessType.GEN_CODE)
     @GetMapping("/batchGenCode")
     public void batchGenCode(HttpServletResponse response, Long[] ids) throws IOException {
@@ -173,7 +179,7 @@ public class GenController extends SubBaseController<GenTableDto, IGenTableServi
      */
     @Override
     @DeleteMapping("/batch/force/{idList}")
-    @RequiresPermissions("generate:gen:delete")
+    @RequiresPermissions(Auth.GENERATE_GEN_DELETE)
     @Log(title = "代码生成管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemoveForce(@PathVariable List<Long> idList) {
         return super.batchRemoveForce(idList);

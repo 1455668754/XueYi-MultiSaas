@@ -45,16 +45,11 @@ public class SysJobController extends BasisController {
         return "调度任务";
     }
 
-    /** 定义子数据名称 */
-    protected String getSubName() {
-        return "调度日志";
-    }
-
     /**
      * 查询定时任务列表
      */
     @GetMapping("/list")
-    @RequiresPermissions(Auth.JOB_JOB_LIST)
+    @RequiresPermissions(Auth.SCHEDULE_JOB_LIST)
     public AjaxResult list(SysJobDto job) {
         startPage();
         List<SysJobDto> list = baseService.selectListScope(job);
@@ -65,7 +60,7 @@ public class SysJobController extends BasisController {
      * 查询调度任务详细
      */
     @GetMapping(value = "/{id}")
-    @RequiresPermissions(Auth.JOB_JOB_SINGLE)
+    @RequiresPermissions(Auth.SCHEDULE_JOB_SINGLE)
     public AjaxResult getInfo(@PathVariable Long id) {
         return AjaxResult.success(baseService.selectById(id));
     }
@@ -74,7 +69,7 @@ public class SysJobController extends BasisController {
      * 调度任务导出
      */
     @PostMapping("/export")
-    @RequiresPermissions(Auth.JOB_JOB_EXPORT)
+    @RequiresPermissions(Auth.SCHEDULE_JOB_EXPORT)
     public void export(HttpServletResponse response, SysJobDto job) {
         List<SysJobDto> list = baseService.selectListScope(job);
         ExcelUtil<SysJobDto> util = new ExcelUtil<>(SysJobDto.class);
@@ -85,7 +80,7 @@ public class SysJobController extends BasisController {
      * 调度任务新增
      */
     @PostMapping
-    @RequiresPermissions(Auth.JOB_JOB_ADD)
+    @RequiresPermissions(Auth.SCHEDULE_JOB_ADD)
     @Log(title = "调度任务管理", businessType = BusinessType.INSERT)
     public AjaxResult add(@Validated @RequestBody SysJobDto job) throws SchedulerException, TaskException {
         AEHandleValidated(BaseConstants.Operate.ADD, job);
@@ -96,7 +91,7 @@ public class SysJobController extends BasisController {
      * 调度任务修改
      */
     @PutMapping
-    @RequiresPermissions(Auth.JOB_JOB_EDIT)
+    @RequiresPermissions(Auth.SCHEDULE_JOB_EDIT)
     @Log(title = "调度任务管理", businessType = BusinessType.UPDATE)
     public AjaxResult edit(@Validated @RequestBody SysJobDto job) throws SchedulerException, TaskException {
         AEHandleValidated(BaseConstants.Operate.EDIT, job);
@@ -107,7 +102,7 @@ public class SysJobController extends BasisController {
      * 调度任务修改状态
      */
     @PutMapping("/status")
-    @RequiresPermissions(value = {Auth.JOB_JOB_EDIT, Auth.JOB_JOB_EDIT_STATUS}, logical = Logical.OR)
+    @RequiresPermissions(value = {Auth.SCHEDULE_JOB_EDIT, Auth.SCHEDULE_JOB_EDIT_STATUS}, logical = Logical.OR)
     @Log(title = "调度任务管理", businessType = BusinessType.UPDATE_STATUS)
     public AjaxResult editStatus(@RequestBody SysJobDto job) throws SchedulerException {
         return toAjax(baseService.updateStatus(job.getId(), job.getStatus()));
@@ -117,7 +112,7 @@ public class SysJobController extends BasisController {
      * 定时任务立即执行一次
      */
     @PutMapping("/run")
-    @RequiresPermissions(Auth.JOB_JOB_EDIT)
+    @RequiresPermissions(Auth.SCHEDULE_JOB_EDIT)
     @Log(title = "定时任务", businessType = BusinessType.UPDATE)
     public AjaxResult run(@RequestBody SysJobDto job) throws SchedulerException {
         baseService.run(job);
@@ -128,7 +123,7 @@ public class SysJobController extends BasisController {
      * 调度任务批量删除
      */
     @DeleteMapping("/batch/{idList}")
-    @RequiresPermissions(Auth.JOB_JOB_DELETE)
+    @RequiresPermissions(Auth.SCHEDULE_JOB_DELETE)
     @Log(title = "调度任务管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) throws SchedulerException {
         if (CollUtil.isEmpty(idList))

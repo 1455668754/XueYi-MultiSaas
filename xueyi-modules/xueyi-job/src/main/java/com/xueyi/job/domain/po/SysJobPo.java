@@ -1,10 +1,10 @@
 package com.xueyi.job.domain.po;
 
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.xueyi.common.core.annotation.Excel;
-import com.xueyi.common.core.constant.job.ScheduleConstants;
 import com.xueyi.common.core.web.tenant.base.TSubBaseEntity;
 import com.xueyi.job.util.CronUtils;
 
@@ -32,6 +32,10 @@ public class SysJobPo<S> extends TSubBaseEntity<S> {
     @TableField("invoke_target")
     private String invokeTarget;
 
+    /** 调用租户字符串 */
+    @TableField(value = "invoke_tenant", updateStrategy = FieldStrategy.NEVER)
+    private String invokeTenant;
+
     /** cron执行表达式 */
     @Excel(name = "cron执行表达式")
     @TableField("cron_expression")
@@ -40,7 +44,7 @@ public class SysJobPo<S> extends TSubBaseEntity<S> {
     /** 计划执行错误策略（0默认 1立即执行 2执行一次 3放弃执行） */
     @Excel(name = "计划执行错误策略", readConverterExp = "0=默认,1=立即执行,2=执行一次,3=放弃执行")
     @TableField("misfire_policy")
-    private String misfirePolicy = ScheduleConstants.Misfire.DEFAULT.getCode();
+    private String misfirePolicy;
 
     /** 是否并发执行（0允许 1禁止） */
     @Excel(name = "是否并发执行", readConverterExp = "0=允许,1=禁止")
@@ -75,6 +79,14 @@ public class SysJobPo<S> extends TSubBaseEntity<S> {
 
     public void setInvokeTarget(String invokeTarget) {
         this.invokeTarget = invokeTarget;
+    }
+
+    public String getInvokeTenant() {
+        return invokeTenant;
+    }
+
+    public void setInvokeTenant(String invokeTenant) {
+        this.invokeTenant = invokeTenant;
     }
 
     @NotBlank(message = "Cron执行表达式不能为空")

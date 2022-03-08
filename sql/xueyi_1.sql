@@ -29,8 +29,8 @@ create table te_tenant (
 -- 初始化-租户信息表数据
 -- ----------------------------
 insert into te_tenant (id, is_lessor, is_default, strategy_id,  name, system_name, nick, logo)
-values (-1, 'Y', 'Y', 1, 'administrator', '租管租户', 'xueYi1', 'https://images.gitee.com/uploads/images/2021/1101/141601_d68e92a4_7382127.jpeg'),
-       ( 1, 'N', 'N', 1, 'xueYi', '雪忆科技', 'xueYi1', 'https://images.gitee.com/uploads/images/2021/1101/141601_d68e92a4_7382127.jpeg');
+values (1, 'Y', 'Y', 1, 'administrator', '租管租户', 'xueYi1', 'https://images.gitee.com/uploads/images/2021/1101/141601_d68e92a4_7382127.jpeg'),
+       (2, 'N', 'N', 1, 'xueYi', '雪忆科技', 'xueYi1', 'https://images.gitee.com/uploads/images/2021/1101/141601_d68e92a4_7382127.jpeg');
 
 -- ----------------------------
 -- 2、策略信息表
@@ -121,7 +121,7 @@ create table sys_module (
 # ----------------------------
 insert into sys_module (id, name, type, path, param_path, is_default, hide_module, logo, remark, is_common, tenant_id)
 values (1, '基础平台' ,    '0', '', '', 'Y', '0', 'https://images.gitee.com/uploads/images/2021/1101/141155_f3dfce1d_7382127.jpeg', '基础平台', '0', 0),
-       (2, '开发者平台' , '0', '', '', 'Y', '0', 'https://images.gitee.com/uploads/images/2021/1101/141601_d68e92a4_7382127.jpeg', '开发者平台', '1', -1);
+       (2, '开发者平台' , '0', '', '', 'Y', '0', 'https://images.gitee.com/uploads/images/2021/1101/141601_d68e92a4_7382127.jpeg', '开发者平台', '1', 1);
 
 -- ----------------------------
 -- 7、菜单权限表
@@ -232,14 +232,14 @@ values (0, 0, 'd346c7dbf265416086dbe2951a7465b2', '默认菜单', '', 'default',
                (15010600, 15010000, 'fb58b0e282154fe8802342fd4c0e14cf', '通知公告导入', '0,15000000,15010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'system:notice:import', null, 7, '按钮:通知公告导入', '0', 'Y', 1, 0),
                (15010700, 15010000, '257064a1e547431bbfec47d5be281e67', '通知公告导出', '0,15000000,15010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'system:notice:export', null, 8, '按钮:通知公告导出', '0', 'Y', 1, 0),
        (16000000, 0, 'fa8965418a3540a99a62c805a4616e59', '系统管理', '0', 'system', null, '', null, null, 'N', 'N', 'N', 'N', '0', 'M', '0', '0', '0', '0', '0', 1, null, '', 'ant-design:control-outlined', 4, '目录:系统管理', '0', 'Y', 1, 0),
-           (16010000, 16000000, '60a02b15ddcf45eab582a0c57af6ae62', '调度任务管理', '0,16000000', 'job', null, 'system/system/job/index', null, null, 'N', 'N', 'N', 'N', '0', 'C', '0', '0', '0', '0', '0', 1, null, 'job:job:list', 'xy_organization', 1, '菜单:调度任务管理', '0', 'Y', 1, 0),
-               (16010100, 16010000, '101aeea275ce4c61b0652491f75125c0', '调度任务详情', '0,16000000,16010000', 'jobDetail/:id', null, 'system/system/job/JobDetail', null, null, 'N', 'Y', 'N', 'N', '0', 'X', '0', '1', '0', '0', '0', 5, null, 'job:job:single', null, 2, '详情:调度任务详情', '0', 'Y', 1, 0),
-               (16010200, 16010000, '099a0d943a604d0198516e5f6766ac04', '调度任务新增', '0,16000000,16010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'job:job:add', null, 3, '按钮:调度任务新增', '0', 'Y', 1, 0),
-               (16010300, 16010000, '0acf6076acca4ff689f3df52161099e7', '调度任务修改', '0,16000000,16010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'job:job:edit', null, 4, '按钮:调度任务修改', '0', 'Y', 1, 0),
-               (16010400, 16010000, '83398a4cd3ce4aa1a26a00b0b8a7612b', '调度任务修改状态', '0,16000000,16010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'job:job:es', null, 5, '按钮:调度任务修改状态', '0', 'Y', 1, 0),
-               (16010500, 16010000, '96bdff8d31be422b89cafb64d22ffd2c', '调度任务删除', '0,16000000,16010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'job:job:delete', null, 6, '按钮:调度任务删除', '0', 'Y', 1, 0),
-               (16010600, 16010000, 'f53b8a8b511b470f836bc2b92450e641', '调度任务导入', '0,16000000,16010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'job:job:import', null, 7, '按钮:调度任务导入', '0', 'Y', 1, 0),
-               (16010700, 16010000, 'd693fa7ca6b74ee9a2b4c87d0b3a2e8a', '调度任务导出', '0,16000000,16010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'job:job:export', null, 8, '按钮:调度任务导出', '0', 'Y', 1, 0),
+           (16010000, 16000000, '60a02b15ddcf45eab582a0c57af6ae62', '定时任务', '0,16000000', 'job', null, 'system/system/job/index', null, null, 'N', 'N', 'N', 'N', '0', 'C', '0', '0', '0', '0', '0', 1, null, 'job:job:list', 'xy_organization', 1, '菜单:定时任务管理', '0', 'Y', 1, 0),
+               (16010100, 16010000, '101aeea275ce4c61b0652491f75125c0', '定时任务详情', '0,16000000,16010000', 'jobDetail/:id', null, 'system/system/job/JobDetail', null, null, 'N', 'Y', 'N', 'N', '0', 'X', '0', '1', '0', '0', '0', 5, null, 'job:job:single', null, 2, '详情:定时任务详情', '0', 'Y', 1, 0),
+               (16010200, 16010000, '099a0d943a604d0198516e5f6766ac04', '定时任务新增', '0,16000000,16010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'job:job:add', null, 3, '按钮:定时任务新增', '0', 'Y', 1, 0),
+               (16010300, 16010000, '0acf6076acca4ff689f3df52161099e7', '定时任务修改', '0,16000000,16010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'job:job:edit', null, 4, '按钮:定时任务修改', '0', 'Y', 1, 0),
+               (16010400, 16010000, '83398a4cd3ce4aa1a26a00b0b8a7612b', '定时任务修改状态', '0,16000000,16010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'job:job:es', null, 5, '按钮:定时任务修改状态', '0', 'Y', 1, 0),
+               (16010500, 16010000, '96bdff8d31be422b89cafb64d22ffd2c', '定时任务删除', '0,16000000,16010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'job:job:delete', null, 6, '按钮:定时任务删除', '0', 'Y', 1, 0),
+               (16010600, 16010000, 'f53b8a8b511b470f836bc2b92450e641', '定时任务导入', '0,16000000,16010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'job:job:import', null, 7, '按钮:定时任务导入', '0', 'Y', 1, 0),
+               (16010700, 16010000, 'd693fa7ca6b74ee9a2b4c87d0b3a2e8a', '定时任务导出', '0,16000000,16010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'job:job:export', null, 8, '按钮:定时任务导出', '0', 'Y', 1, 0),
        (17000000, 0, 'e24afc855afc485d961b865d5d999811', '系统监控', '0', 'monitor', null, '', null, null, 'N', 'N', 'N', 'N', '0', 'M', '0', '0', '0', '0', '0', 1, null, '', 'ant-design:eye-outlined', 4, '目录:系统监控', '0', 'Y', 1, 0),
            (17010000, 17000000, 'f4a053ab18c84a82be6b2f04d3adaaac', '在线用户', '0,17000000', 'online', null, 'system/monitor/online/index', null, null, 'N', 'N', 'N', 'N', '0', 'C', '0', '0', '0', '0', '0', 1, null, 'monitor:online:list', 'ant-design:contacts-outlined', 1, '菜单:在线用户管理', '0', 'Y', 1, 0),
                (17010100, 17010000, '6829ff5c29894306b2d4fa0d6769e6e6', '在线用户强退', '0,17000000,17010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'monitor:online:forceLogout', null, 6, '按钮:在线用户强退', '0', 'Y', 1, 0),
@@ -302,6 +302,9 @@ values (0, 0, 'd346c7dbf265416086dbe2951a7465b2', '默认菜单', '', 'default',
                (22020500, 22020000, '0f86293fc6904e26bc22410611faaad5', '参数强制删除', '0,22000000,22020000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'dict:config:delForce', null, 6, '按钮:参数强制删除', '0', 'Y', 2, 0),
                (22020600, 22020000, 'b03f82fb6e1148329c03816a1a892b32', '参数导入', '0,22000000,22020000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'dict:config:import', null, 7, '按钮:参数导入', '0', 'Y', 2, 0),
                (22020700, 22020000, '72db9651b40e4bd6bc6ff5e3f6dcc1d1', '参数导出', '0,22000000,22020000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'dict:config:export', null, 8, '按钮:参数导出', '0', 'Y', 2, 0);
+
+
+
 # (10000000, 0, 'SysOrganize', '组织管理', '0', 'organize', null, null, null, null, 'N', 'N', 'N', 'N', '0', 'M', '0', '0', '0', '0', '0', 1, null, null, null, 'xy_organization', 1, '目录:组织管理', '0', 'Y', 0, 0),
 # (10010000, 10000000, 'SysDept', '部门管理', '0,10000000', 'dept', null, 'system/organize/dept/index', null, null, 'N', 'N', 'N', 'N', '0', 'C', '0', '0', '0', '0', '0', 1, null, null, 'system:dept:list', 'xy_organization', 1, '菜单:部门管理', '0', 'Y', 0, 0),
 # (10020000, 10000000, 'SysPost', '岗位管理', '0,10000000', 'post', null, 'system/organize/post/index', null, null, 'N', 'N', 'N', 'N', '0', 'C', '0', '0', '0', '0', '0', 1, null, null, 'system:post:list', 'xy_organization', 2, '菜单:岗位管理', '0', 'Y', 0, 0),
@@ -574,9 +577,9 @@ values (1, '男', '0', 'sys_user_sex', '', '', 'Y', '性别男'),
        (1, '正常', '0', 'sys_job_status', '', 'blue', 'Y', '正常状态'),
        (2, '暂停', '1', 'sys_job_status', '', 'red', 'N', '停用状态'),
        (1, '默认', '0', 'sys_job_policy', '', 'blue', 'N', '任务策略：默认'),
-       (1, '立即执行', '1', 'sys_job_policy', '', 'green', 'N', '任务策略：立即执行'),
-       (2, '执行一次', '2', 'sys_job_policy', '', 'cyan', 'N', '任务策略：执行一次'),
-       (3, '放弃执行', '3', 'sys_job_policy', '', 'purple', 'N', '任务策略：放弃执行'),
+       (2, '立即执行', '1', 'sys_job_policy', '', 'green', 'N', '任务策略：立即执行'),
+       (3, '执行一次', '2', 'sys_job_policy', '', 'cyan', 'N', '任务策略：执行一次'),
+       (4, '放弃执行', '3', 'sys_job_policy', '', 'purple', 'N', '任务策略：放弃执行'),
        (1, '允许', '0', 'sys_job_concurrent', '', 'blue', 'N', '任务并发：允许'),
        (2, '禁止', '1', 'sys_job_concurrent', '', 'red', 'N', '任务并发：禁止'),
        (1, '默认', 'DEFAULT', 'sys_job_group', '', '', 'Y', '默认分组'),
@@ -725,6 +728,7 @@ create table sys_job (
   name                      varchar(64)         default ''                              comment '任务名称',
   job_group                 varchar(64)         default 'DEFAULT'                       comment '任务组名',
   invoke_target             varchar(500)        not null                                comment '调用目标字符串',
+  invoke_tenant             varchar(500)        not null                                comment '调用租户字符串',
   cron_expression           varchar(255)        default ''                              comment 'cron执行表达式',
   misfire_policy            varchar(20)         default '3'                             comment '计划执行错误策略（0默认 1立即执行 2执行一次 3放弃执行）',
   concurrent                char(1)             default '1'                             comment '是否并发执行（0允许 1禁止）',
@@ -739,10 +743,10 @@ create table sys_job (
   primary key (id)
 ) engine = innodb auto_increment = 100 comment = '定时任务调度表';
 
-insert into sys_job (id, name, job_group, invoke_target, cron_expression, misfire_policy, concurrent, status, tenant_id)
-values (1, '系统默认（无参）', 'DEFAULT', 'ryTask.ryNoParams',        '0/10 * * * * ?', '3', '1', '1', 0),
-       (2, '系统默认（有参）', 'DEFAULT', 'ryTask.ryParams(\'ry\')',  '0/15 * * * * ?', '3', '1', '1', 0),
-       (3, '系统默认（多参）', 'DEFAULT', 'ryTask.ryMultipleParams(\'ry\', true, 2000L, 316.50D, 100)',  '0/20 * * * * ?', '3', '1', '1', 0);
+insert into sys_job (id, name, job_group, invoke_target, invoke_tenant, cron_expression, misfire_policy, concurrent, status, tenant_id)
+values (1, '系统默认（无参）', 'DEFAULT', 'ryTask.ryNoParams',   '1, Y',     '0/10 * * * * ?', '3', '1', '1', 1),
+       (2, '系统默认（有参）', 'DEFAULT', 'ryTask.ryParams(\'ry\')',   '1, Y',  '0/15 * * * * ?', '3', '1', '1', 1),
+       (3, '系统默认（多参）', 'DEFAULT', 'ryTask.ryMultipleParams(\'ry\', true, 2000L, 316.50D, 100)',   '1, Y',  '0/20 * * * * ?', '3', '1', '1', 1);
 
 -- ----------------------------
 -- 12、定时任务调度日志表
