@@ -283,7 +283,7 @@ public class ExcelUtil<T> {
                         }
                     } else if ((Integer.TYPE == fieldType || Integer.class == fieldType) && StringUtils.isNumeric(Convert.toStr(val))) {
                         val = Convert.toInt(val);
-                    } else if (Long.TYPE == fieldType || Long.class == fieldType) {
+                    } else if ((Long.TYPE == fieldType || Long.class == fieldType) && StringUtils.isNumeric(Convert.toStr(val))) {
                         val = Convert.toLong(val);
                     } else if (Double.TYPE == fieldType || Double.class == fieldType) {
                         val = Convert.toDouble(val);
