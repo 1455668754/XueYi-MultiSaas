@@ -13,12 +13,13 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 
 /**
- * 定时任务调度 持久化对象
+ * 调度任务 持久化对象
  *
  * @param <S> SubDto
  * @author xueyi
  */
 public class SysJobPo<S> extends TSubBaseEntity<S> {
+
     private static final long serialVersionUID = 1L;
 
     /** 任务组名 */

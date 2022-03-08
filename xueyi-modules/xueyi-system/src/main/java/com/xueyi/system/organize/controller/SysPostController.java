@@ -95,6 +95,7 @@ public class SysPostController extends BaseController<SysPostDto, ISysPostServic
     @Override
     @PostMapping("/export")
     @RequiresPermissions(Auth.SYS_POST_EXPORT)
+    @Log(title = "岗位管理", businessType = BusinessType.EXPORT)
     public void export(HttpServletResponse response, SysPostDto post) {
         super.export(response, post);
     }

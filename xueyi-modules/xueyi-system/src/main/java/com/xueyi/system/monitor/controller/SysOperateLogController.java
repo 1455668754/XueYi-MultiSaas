@@ -62,6 +62,7 @@ public class SysOperateLogController extends BaseController<SysOperateLogDto, IS
     @Override
     @PostMapping("/export")
     @RequiresPermissions(Auth.SYS_OPERATE_LOG_EXPORT)
+    @Log(title = "操作日志", businessType = BusinessType.EXPORT)
     public void export(HttpServletResponse response, SysOperateLogDto operateLog) {
         super.export(response, operateLog);
     }

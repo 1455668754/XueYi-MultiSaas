@@ -91,6 +91,7 @@ public class SysModuleController extends SubBaseController<SysModuleDto, ISysMod
     @Override
     @PostMapping("/export")
     @RequiresPermissions(Auth.SYS_MODULE_EXPORT)
+    @Log(title = "模块管理", businessType = BusinessType.EXPORT)
     public void export(HttpServletResponse response, SysModuleDto module) {
         super.export(response, module);
     }

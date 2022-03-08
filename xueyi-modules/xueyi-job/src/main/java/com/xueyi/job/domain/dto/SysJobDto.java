@@ -6,12 +6,13 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * 定时任务调度 数据传输对象
+ * 调度任务 数据传输对象
  *
  * @author xueyi
  */
 @TableName(value = "sys_job", excludeProperty = {"sort"})
 public class SysJobDto extends SysJobPo<SysJobLogDto> {
+
     private static final long serialVersionUID = 1L;
 
     @Override
@@ -32,6 +33,7 @@ public class SysJobDto extends SysJobPo<SysJobLogDto> {
                 .append("updateBy", getUpdateBy())
                 .append("updateName", getUpdateName())
                 .append("updateTime", getUpdateTime())
+                .append("subList", getSubList())
                 .toString();
     }
 }

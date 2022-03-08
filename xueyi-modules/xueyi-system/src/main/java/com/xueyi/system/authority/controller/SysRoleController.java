@@ -90,6 +90,7 @@ public class SysRoleController extends BaseController<SysRoleDto, ISysRoleServic
     @Override
     @PostMapping("/export")
     @RequiresPermissions(Auth.SYS_ROLE_EXPORT)
+    @Log(title = "角色管理", businessType = BusinessType.EXPORT)
     public void export(HttpServletResponse response, SysRoleDto role) {
         super.export(response, role);
     }

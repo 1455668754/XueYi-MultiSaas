@@ -68,6 +68,7 @@ public class SysDictTypeController extends SubBaseController<SysDictTypeDto, ISy
     @Override
     @PostMapping("/export")
     @RequiresPermissions(Auth.SYS_DICT_EXPORT)
+    @Log(title = "字典类型管理", businessType = BusinessType.EXPORT)
     public void export(HttpServletResponse response, SysDictTypeDto dictType) {
         super.export(response, dictType);
     }

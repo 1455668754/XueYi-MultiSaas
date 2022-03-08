@@ -1,16 +1,66 @@
 package com.xueyi.job.service;
 
 import com.xueyi.common.core.exception.job.TaskException;
-import com.xueyi.common.web.entity.service.IBaseService;
 import com.xueyi.job.domain.dto.SysJobDto;
 import org.quartz.SchedulerException;
+
+import java.util.List;
 
 /**
  * 调度任务管理 服务层
  *
  * @author xueyi
  */
-public interface ISysJobService extends IBaseService<SysJobDto> {
+public interface ISysJobService {
+
+    /**
+     * 查询调度任务对象列表 | 数据权限 | 附加数据
+     *
+     * @param job 调度任务对象
+     * @return 调度任务对象集合
+     */
+    List<SysJobDto> selectListScope(SysJobDto job);
+
+    /**
+     * 根据Id查询单条调度任务对象
+     *
+     * @param id Id
+     * @return 调度任务对象
+     */
+    SysJobDto selectById(Long id);
+
+    /**
+     * 新增调度任务对象
+     *
+     * @param job 调度任务对象
+     * @return 结果
+     */
+    int insert(SysJobDto job) throws SchedulerException, TaskException;
+
+    /**
+     * 修改调度任务对象
+     *
+     * @param job 调度任务对象
+     * @return 结果
+     */
+    int update(SysJobDto job) throws SchedulerException, TaskException;
+
+    /**
+     * 修改调度任务对象状态
+     *
+     * @param id     Id
+     * @param status 状态
+     * @return 结果
+     */
+    int updateStatus(Long id, String status) throws SchedulerException;
+
+    /**
+     * 根据Id集合删除调度任务对象
+     *
+     * @param idList Id集合
+     * @return 结果
+     */
+    int deleteByIds(List<Long> idList) throws SchedulerException;
 
     /**
      * 暂停任务
@@ -29,49 +79,10 @@ public interface ISysJobService extends IBaseService<SysJobDto> {
     int resumeJob(SysJobDto job) throws SchedulerException;
 
     /**
-     * 删除任务后，所对应的trigger也将被删除
-     *
-     * @param job 调度信息
-     * @return 结果
-     */
-    int deleteJob(SysJobDto job) throws SchedulerException;
-
-    /**
-     * 批量删除调度信息
-     *
-     * @param jobIds 需要删除的任务ID
-     */
-    void deleteJobByIds(Long[] jobIds) throws SchedulerException;
-
-    /**
-     * 任务调度状态修改
-     *
-     * @param job 调度信息
-     * @return 结果
-     */
-    int changeStatus(SysJobDto job) throws SchedulerException;
-
-    /**
      * 立即运行任务
      *
      * @param job 调度信息
      */
     void run(SysJobDto job) throws SchedulerException;
-
-    /**
-     * 新增任务
-     *
-     * @param job 调度信息
-     * @return 结果
-     */
-    int insertJob(SysJobDto job) throws SchedulerException, TaskException;
-
-    /**
-     * 更新任务
-     *
-     * @param job 调度信息
-     * @return 结果
-     */
-    int updateJob(SysJobDto job) throws SchedulerException, TaskException;
 
 }

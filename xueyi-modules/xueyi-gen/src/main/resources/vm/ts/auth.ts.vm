@@ -10,7 +10,7 @@ export enum ${BusinessName}Auth {
   EDIT = '${authorityName}:${businessName}:edit',
 #if($api.editStatus || $api.editStatusForce)
   // 修改${functionName}状态
-  EDIT_STATUS = '${authorityName}:${businessName}:editStatus',
+  EDIT_STATUS = '${authorityName}:${businessName}:es',
 #end
   // 删除${functionName}
   DELETE = '${authorityName}:${businessName}:delete',

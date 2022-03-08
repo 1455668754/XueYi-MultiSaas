@@ -5,7 +5,6 @@ import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.domain.R;
 import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.web.result.AjaxResult;
-import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.InnerAuth;
@@ -64,7 +63,6 @@ public class SysDeptController extends SubTreeController<SysDeptDto, ISysDeptSer
      */
     @Override
     @GetMapping("/list")
-    @DataScope(userAlias = "create_by")
     @RequiresPermissions(Auth.SYS_DEPT_LIST)
     public AjaxResult list(SysDeptDto dept) {
         return super.list(dept);
@@ -104,6 +102,7 @@ public class SysDeptController extends SubTreeController<SysDeptDto, ISysDeptSer
     @Override
     @PostMapping("/export")
     @RequiresPermissions(Auth.SYS_DEPT_EXPORT)
+    @Log(title = "部门管理", businessType = BusinessType.EXPORT)
     public void export(HttpServletResponse response, SysDeptDto dept) {
         super.export(response, dept);
     }

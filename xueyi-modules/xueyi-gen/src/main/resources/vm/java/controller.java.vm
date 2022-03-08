@@ -69,8 +69,8 @@ public class ${ClassName}Controller extends ${Entity}Controller${generics} {
     @Override
     @GetMapping("/list")
     @RequiresPermissions("${authorityName}:${businessName}:list")
-    public AjaxResult listExtra(${ClassName}Dto ${classNameNoPrefix}) {
-        return super.listExtra(${classNameNoPrefix});
+    public AjaxResult list(${ClassName}Dto ${classNameNoPrefix}) {
+        return super.list(${classNameNoPrefix});
     }
 #if($table.tree || $table.subTree)
 
@@ -104,6 +104,7 @@ public class ${ClassName}Controller extends ${Entity}Controller${generics} {
     @Override
     @PostMapping("/export")
     @RequiresPermissions("${authorityName}:${businessName}:export")
+    @Log(title = "${functionName}管理", businessType = BusinessType.EXPORT)
     public void export(HttpServletResponse response, ${ClassName}Dto ${classNameNoPrefix}) {
         super.export(response, ${classNameNoPrefix});
     }

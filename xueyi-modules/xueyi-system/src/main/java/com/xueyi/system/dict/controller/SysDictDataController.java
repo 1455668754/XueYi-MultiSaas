@@ -83,6 +83,7 @@ public class SysDictDataController extends BaseController<SysDictDataDto, ISysDi
     @Override
     @PostMapping("/export")
     @RequiresPermissions(Auth.SYS_DICT_DICT)
+    @Log(title = "字典数据管理", businessType = BusinessType.EXPORT)
     public void export(HttpServletResponse response, SysDictDataDto dictData) {
         super.export(response, dictData);
     }

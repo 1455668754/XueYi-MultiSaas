@@ -77,6 +77,7 @@ public class SysConfigController extends BaseController<SysConfigDto, ISysConfig
     @Override
     @PostMapping("/export")
     @RequiresPermissions(Auth.SYS_CONFIG_EXPORT)
+    @Log(title = "参数管理", businessType = BusinessType.EXPORT)
     public void export(HttpServletResponse response, SysConfigDto config) {
         super.export(response, config);
     }

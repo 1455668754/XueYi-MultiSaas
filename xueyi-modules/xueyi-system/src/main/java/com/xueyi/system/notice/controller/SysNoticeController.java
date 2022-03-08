@@ -59,6 +59,7 @@ public class SysNoticeController extends BaseController<SysNoticeDto, ISysNotice
     @Override
     @PostMapping("/export")
     @RequiresPermissions(Auth.SYS_NOTICE_EXPORT)
+    @Log(title = "通知公告管理", businessType = BusinessType.EXPORT)
     public void export(HttpServletResponse response, SysNoticeDto notice) {
         super.export(response, notice);
     }

@@ -111,6 +111,7 @@ public class SysUserController extends BaseController<SysUserDto, ISysUserServic
     @Override
     @PostMapping("/export")
     @RequiresPermissions(Auth.SYS_USER_EXPORT)
+    @Log(title = "用户管理", businessType = BusinessType.EXPORT)
     public void export(HttpServletResponse response, SysUserDto user) {
         super.export(response, user);
     }

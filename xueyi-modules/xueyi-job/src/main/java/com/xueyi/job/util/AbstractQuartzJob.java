@@ -65,24 +65,24 @@ public abstract class AbstractQuartzJob implements Job {
         Date startTime = threadLocal.get();
         threadLocal.remove();
 
-        final SysJobLogDto sysJobLogDto = new SysJobLogDto();
-        sysJobLogDto.setJobName(sysJob.getJobName());
-        sysJobLogDto.setJobGroup(sysJob.getJobGroup());
-        sysJobLogDto.setInvokeTarget(sysJob.getInvokeTarget());
-        sysJobLogDto.setStartTime(startTime);
-        sysJobLogDto.setStopTime(new Date());
-//        sysJobLogDto.setEnterpriseId(sysJob.getEnterpriseId());
-        long runMs = sysJobLogDto.getStopTime().getTime() - sysJobLogDto.getStartTime().getTime();
-        sysJobLogDto.setJobMessage(sysJobLogDto.getJobName() + " 总共耗时：" + runMs + "毫秒");
+        final SysJobLogDto jobLog = new SysJobLogDto();
+        jobLog.setName(sysJob.getName());
+        jobLog.setJobGroup(sysJob.getJobGroup());
+        jobLog.setInvokeTarget(sysJob.getInvokeTarget());
+        jobLog.setStartTime(startTime);
+        jobLog.setStopTime(new Date());
+//        jobLog.setEnterpriseId(sysJob.getEnterpriseId());
+        long runMs = jobLog.getStopTime().getTime() - jobLog.getStartTime().getTime();
+        jobLog.setJobMessage(jobLog.getName() + " 总共耗时：" + runMs + "毫秒");
         if (e != null) {
-            sysJobLogDto.setStatus("1");
+            jobLog.setStatus("1");
             String errorMsg = StringUtils.substring(ExceptionUtil.getExceptionMessage(e), 0, 2000);
-            sysJobLogDto.setExceptionInfo(errorMsg);
+            jobLog.setExceptionInfo(errorMsg);
         } else {
-            sysJobLogDto.setStatus("0");
+            jobLog.setStatus("0");
         }
         // 写入数据库当中
-        SpringUtils.getBean(ISysJobLogService.class).addJobLog(sysJobLogDto);
+        SpringUtils.getBean(ISysJobLogService.class).insert(jobLog);
     }
 
     /**

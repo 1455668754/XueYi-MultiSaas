@@ -52,6 +52,7 @@ public class SysLoginLogController extends BaseController<SysLoginLogDto, ISysLo
     @Override
     @PostMapping("/export")
     @RequiresPermissions(Auth.SYS_LOGIN_LOG_EXPORT)
+    @Log(title = "访问日志", businessType = BusinessType.EXPORT)
     public void export(HttpServletResponse response, SysLoginLogDto loginLog) {
         super.export(response, loginLog);
     }

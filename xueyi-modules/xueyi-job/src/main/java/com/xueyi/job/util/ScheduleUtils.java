@@ -55,7 +55,7 @@ public class ScheduleUtils {
     public static void createScheduleJob(Scheduler scheduler, SysJobDto job) throws SchedulerException, TaskException {
         Class<? extends Job> jobClass = getQuartzJobClass(job);
         // 构建job信息
-        Long jobId = job.getJobId();
+        Long jobId = job.getId();
         String jobGroup = job.getJobGroup();
         JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(getJobKey(jobId, jobGroup)).build();
 

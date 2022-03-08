@@ -37,7 +37,7 @@ public abstract class BaseController<D extends BaseEntity, DS extends IBaseServi
      * 导出
      */
     public void export(HttpServletResponse response, D d) {
-        List<D> list = baseService.selectListExtra(d);
+        List<D> list = baseService.selectListScope(d);
         ExcelUtil<D> util = new ExcelUtil<D>(getClazz());
         util.exportExcel(response, list, StrUtil.format("{}数据", getNodeName()));
     }
