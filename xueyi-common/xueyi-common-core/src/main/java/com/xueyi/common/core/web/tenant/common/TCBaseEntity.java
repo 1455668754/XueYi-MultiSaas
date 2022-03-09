@@ -1,5 +1,6 @@
 package com.xueyi.common.core.web.tenant.common;
 
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.xueyi.common.core.web.entity.common.CBaseEntity;
 
@@ -15,7 +16,7 @@ public class TCBaseEntity extends CBaseEntity {
     private static final long serialVersionUID = 1L;
 
     /** 租户Id */
-    @TableField(value = TENANT_ID, select = false)
+    @TableField(value = TENANT_ID, updateStrategy = FieldStrategy.NEVER, select = false)
     private Long enterpriseId;
 
     public Long getEnterpriseId() {

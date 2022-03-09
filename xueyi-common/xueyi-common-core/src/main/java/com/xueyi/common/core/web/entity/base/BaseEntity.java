@@ -30,7 +30,7 @@ public class BaseEntity extends BasisEntity {
     protected Integer sort;
 
     /** 备注 */
-    @TableField("remark")
+    @TableField(value = "remark", updateStrategy = FieldStrategy.IGNORED)
     private String remark;
 
     /** 创建者Id */
