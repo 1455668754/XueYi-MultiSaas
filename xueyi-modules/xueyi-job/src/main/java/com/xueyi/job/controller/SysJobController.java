@@ -132,6 +132,14 @@ public class SysJobController extends BasisController {
     }
 
     /**
+     * 获取调度任务选择框列表
+     */
+    @GetMapping("/option")
+    public AjaxResult option() {
+        return list(null);
+    }
+
+    /**
      * 前置校验 （强制）增加/修改
      */
     protected void AEHandleValidated(BaseConstants.Operate operate, SysJobDto job) {

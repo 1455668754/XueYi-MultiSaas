@@ -13,6 +13,7 @@ import com.xueyi.job.service.ISysJobLogService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.Serializable;
 
 /**
  * 调度日志管理 业务处理
@@ -44,9 +45,19 @@ public class SysJobLogController extends BaseController<SysJobLogDto, ISysJobLog
      */
     @Override
     @GetMapping("/list")
-    @RequiresPermissions(Auth.SCHEDULE_JOB_SINGLE)
+    @RequiresPermissions(Auth.SCHEDULE_JOB_LIST)
     public AjaxResult list(SysJobLogDto jobLog) {
         return super.list(jobLog);
+    }
+
+    /**
+     * 查询调度日志详细
+     */
+    @Override
+    @GetMapping(value = "/{id}")
+    @RequiresPermissions(Auth.SCHEDULE_JOB_SINGLE)
+    public AjaxResult getInfoExtra(@PathVariable Serializable id) {
+        return super.getInfoExtra(id);
     }
 
     /**
