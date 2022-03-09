@@ -9,6 +9,7 @@ import cn.hutool.core.util.StrUtil;
  */
 public class ScheduleConstants {
 
+    /** 执行目标name */
     public static final String TASK_CLASS_NAME = "TASK_CLASS_NAME";
 
     /** 执行目标key */

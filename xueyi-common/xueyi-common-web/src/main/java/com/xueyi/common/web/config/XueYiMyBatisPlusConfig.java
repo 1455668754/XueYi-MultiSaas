@@ -26,6 +26,9 @@ public class XueYiMyBatisPlusConfig {
     @Autowired
     private XueYiDataScopeHandler dataScopeAspect;
 
+    @Autowired
+    private XueYiTenantLineHandler tenantLineHandler;
+
     /**
      * PageHelper分页配置
      */
@@ -63,7 +66,7 @@ public class XueYiMyBatisPlusConfig {
         // 添加自定义的数据权限处理器
         dataPermissionInterceptor.setDataPermissionHandler(dataScopeAspect);
         interceptor.addInnerInterceptor(dataPermissionInterceptor);
-        interceptor.addInnerInterceptor(new XueYiTenantLineInnerInterceptor(new XueYiTenantLineHandler()));
+        interceptor.addInnerInterceptor(new XueYiTenantLineInnerInterceptor(tenantLineHandler));
         return interceptor;
     }
 }

@@ -17,7 +17,6 @@ import net.sf.jsqlparser.expression.operators.relational.ExpressionList;
 import net.sf.jsqlparser.expression.operators.relational.InExpression;
 import net.sf.jsqlparser.expression.operators.relational.ItemsList;
 import net.sf.jsqlparser.schema.Column;
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -46,7 +45,7 @@ public class XueYiDataScopeHandler implements DataPermissionHandler {
      * 清空当前线程上次保存的权限信息
      */
     @After("@annotation(controllerDataScope)")
-    public void clearThreadLocal(JoinPoint point, DataScope controllerDataScope) {
+    public void clearThreadLocal(DataScope controllerDataScope) {
         threadLocal.remove();
     }
 
@@ -54,7 +53,7 @@ public class XueYiDataScopeHandler implements DataPermissionHandler {
      * 是否存在注解，如果存在就获取
      */
     @Before("@annotation(controllerDataScope)")
-    public void doBefore(JoinPoint point, DataScope controllerDataScope) {
+    public void doBefore(DataScope controllerDataScope) {
         // 获得注解
         if (controllerDataScope != null)
             threadLocal.set(controllerDataScope);

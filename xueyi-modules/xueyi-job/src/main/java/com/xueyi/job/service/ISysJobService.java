@@ -81,8 +81,8 @@ public interface ISysJobService {
     /**
      * 立即运行任务
      *
-     * @param job 调度信息
+     * @param id Id
      */
-    void run(SysJobDto job) throws SchedulerException;
+    void run(Long id) throws SchedulerException;
 
 }

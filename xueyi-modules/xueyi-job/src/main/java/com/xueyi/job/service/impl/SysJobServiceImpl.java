@@ -45,7 +45,7 @@ public class SysJobServiceImpl implements ISysJobService {
     @PostConstruct
     public void init() throws SchedulerException, TaskException {
         scheduler.clear();
-        List<SysJobDto> jobList = baseManager.selectList(null);
+        List<SysJobDto> jobList = baseManager.initScheduler();
         for (SysJobDto job : jobList)
             ScheduleUtils.createScheduleJob(scheduler, job);
     }
@@ -177,18 +177,15 @@ public class SysJobServiceImpl implements ISysJobService {
     /**
      * 立即运行任务
      *
-     * @param job 调度信息
+     * @param id Id
      */
     @Override
     @DSTransactional
-    public void run(SysJobDto job) throws SchedulerException {
-        Long Id = job.getId();
-        String jobGroup = job.getJobGroup();
-        SysJobDto properties = baseManager.selectById(Id);
-        // 参数
+    public void run(Long id) throws SchedulerException {
+        SysJobDto job = baseManager.selectById(id);
         JobDataMap dataMap = new JobDataMap();
-        dataMap.put(ScheduleConstants.TASK_PROPERTIES, properties);
-        scheduler.triggerJob(ScheduleUtils.getJobKey(Id, jobGroup), dataMap);
+        dataMap.put(ScheduleConstants.TASK_PROPERTIES, job);
+        scheduler.triggerJob(ScheduleUtils.getJobKey(job.getId(), job.getJobGroup()), dataMap);
     }
 
 

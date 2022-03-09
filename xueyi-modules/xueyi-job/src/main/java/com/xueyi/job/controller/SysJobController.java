@@ -111,11 +111,11 @@ public class SysJobController extends BasisController {
     /**
      * 定时任务立即执行一次
      */
-    @PutMapping("/run")
+    @GetMapping("/run/{id}")
     @RequiresPermissions(Auth.SCHEDULE_JOB_EDIT)
-    @Log(title = "定时任务", businessType = BusinessType.UPDATE)
-    public AjaxResult run(@RequestBody SysJobDto job) throws SchedulerException {
-        baseService.run(job);
+    @Log(title = "定时任务 - 执行一次", businessType = BusinessType.UPDATE)
+    public AjaxResult run(@PathVariable Long id) throws SchedulerException {
+        baseService.run(id);
         return AjaxResult.success();
     }
 
