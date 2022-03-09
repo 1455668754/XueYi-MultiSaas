@@ -1,7 +1,7 @@
 package com.xueyi.job.service;
 
 import com.xueyi.common.web.entity.service.IBaseService;
-import com.xueyi.job.domain.dto.SysJobLogDto;
+import com.xueyi.job.api.domain.dto.SysJobLogDto;
 
 /**
  * 调度日志管理 服务层

@@ -14,7 +14,7 @@ import org.quartz.TriggerKey;
 import com.xueyi.common.core.constant.job.ScheduleConstants;
 import com.xueyi.common.core.exception.job.TaskException;
 import com.xueyi.common.core.exception.job.TaskException.Code;
-import com.xueyi.job.domain.dto.SysJobDto;
+import com.xueyi.job.api.domain.dto.SysJobDto;
 
 import java.util.Objects;
 

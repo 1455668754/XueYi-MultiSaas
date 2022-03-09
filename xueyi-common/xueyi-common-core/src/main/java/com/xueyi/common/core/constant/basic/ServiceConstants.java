@@ -10,12 +10,15 @@ public class ServiceConstants {
     /** 认证服务的serviceId */
     public static final String AUTH_SERVICE = "xueyi-auth";
 
-    /** 系统模块的serviceId */
-    public static final String SYSTEM_SERVICE = "xueyi-system";
-
     /** 文件服务的serviceId */
     public static final String FILE_SERVICE = "xueyi-file";
 
+    /** 系统模块的serviceId */
+    public static final String SYSTEM_SERVICE = "xueyi-system";
+
     /** 租管模块的serviceId */
     public static final String TENANT_SERVICE = "xueyi-tenant";
+
+    /** 定时任务模块的serviceId */
+    public static final String JOB_SERVICE = "xueyi-job";
 }

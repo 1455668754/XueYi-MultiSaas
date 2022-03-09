@@ -6,8 +6,8 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.web.annotation.TenantIgnore;
 import com.xueyi.common.web.entity.manager.SubBaseManager;
-import com.xueyi.job.domain.dto.SysJobDto;
-import com.xueyi.job.domain.dto.SysJobLogDto;
+import com.xueyi.job.api.domain.dto.SysJobDto;
+import com.xueyi.job.api.domain.dto.SysJobLogDto;
 import com.xueyi.job.mapper.SysJobLogMapper;
 import com.xueyi.job.mapper.SysJobMapper;
 import org.springframework.stereotype.Component;
@@ -24,7 +24,7 @@ import java.util.List;
 public class SysJobManager extends SubBaseManager<SysJobDto, SysJobMapper, SysJobLogDto, SysJobLogMapper> {
 
     /**
-     * 设置主子表中子表外键值
+     * 项目启动时
      */
     @TenantIgnore(tenantLine = true)
     public List<SysJobDto> initScheduler() {

@@ -1,4 +1,4 @@
-package com.xueyi.job.util;
+package com.xueyi.job.api.utils;
 
 import org.quartz.CronExpression;
 

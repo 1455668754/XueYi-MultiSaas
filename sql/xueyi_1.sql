@@ -232,7 +232,7 @@ values (0, 0, 'd346c7dbf265416086dbe2951a7465b2', '默认菜单', '', 'default',
                (15010600, 15010000, 'fb58b0e282154fe8802342fd4c0e14cf', '通知公告导入', '0,15000000,15010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'system:notice:import', null, 7, '按钮:通知公告导入', '0', 'Y', 1, 0),
                (15010700, 15010000, '257064a1e547431bbfec47d5be281e67', '通知公告导出', '0,15000000,15010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'system:notice:export', null, 8, '按钮:通知公告导出', '0', 'Y', 1, 0),
        (16000000, 0, 'fa8965418a3540a99a62c805a4616e59', '系统管理', '0', 'system', null, '', null, null, 'N', 'N', 'N', 'N', '0', 'M', '0', '0', '0', '0', '0', 1, null, '', 'ant-design:control-outlined', 4, '目录:系统管理', '0', 'Y', 1, 0),
-           (16010000, 16000000, '60a02b15ddcf45eab582a0c57af6ae62', '定时任务', '0,16000000', 'job', null, 'system/system/job/index', null, null, 'N', 'N', 'N', 'N', '0', 'C', '0', '0', '0', '0', '0', 1, null, 'job:job:list', 'xy_organization', 1, '菜单:定时任务管理', '0', 'Y', 1, 0),
+           (16010000, 16000000, '60a02b15ddcf45eab582a0c57af6ae62', '定时任务', '0,16000000', 'job', null, 'system/system/job/index', null, null, 'N', 'N', 'N', 'N', '0', 'C', '0', '0', '0', '0', '0', 1, null, 'job:job:list', 'ant-design:field-time-outlined', 1, '菜单:定时任务管理', '0', 'Y', 1, 0),
                (16010100, 16010000, '101aeea275ce4c61b0652491f75125c0', '定时任务详情', '0,16000000,16010000', 'jobDetail/:id', null, 'system/system/job/JobDetail', null, null, 'N', 'Y', 'N', 'N', '0', 'X', '0', '1', '0', '0', '0', 5, null, 'job:job:single', null, 2, '详情:定时任务详情', '0', 'Y', 1, 0),
                (16010200, 16010000, '099a0d943a604d0198516e5f6766ac04', '定时任务新增', '0,16000000,16010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'job:job:add', null, 3, '按钮:定时任务新增', '0', 'Y', 1, 0),
                (16010300, 16010000, '0acf6076acca4ff689f3df52161099e7', '定时任务修改', '0,16000000,16010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'job:job:edit', null, 4, '按钮:定时任务修改', '0', 'Y', 1, 0),
@@ -744,9 +744,9 @@ create table sys_job (
 ) engine = innodb auto_increment = 100 comment = '定时任务调度表';
 
 insert into sys_job (id, name, job_group, invoke_target, invoke_tenant, cron_expression, misfire_policy, concurrent, status, tenant_id)
-values (1, '系统默认（无参）', 'DEFAULT', 'ryTask.ryNoParams',   '1, Y',     '0/10 * * * * ?', '3', '1', '1', 1),
-       (2, '系统默认（有参）', 'DEFAULT', 'ryTask.ryParams(\'ry\')',   '1, Y',  '0/15 * * * * ?', '3', '1', '1', 1),
-       (3, '系统默认（多参）', 'DEFAULT', 'ryTask.ryMultipleParams(\'ry\', true, 2000L, 316.50D, 100)',   '1, Y',  '0/20 * * * * ?', '3', '1', '1', 1);
+values (1, '系统默认（无参）', 'DEFAULT', 'ryTask.ryNoParams',   '1L, \'Y\', \'slave\'',     '0/10 * * * * ?', '3', '1', '1', 1),
+       (2, '系统默认（有参）', 'DEFAULT', 'ryTask.ryParams(\'ry\')',   '1L, \'Y\', \'slave\'',  '0/15 * * * * ?', '3', '1', '1', 1),
+       (3, '系统默认（多参）', 'DEFAULT', 'ryTask.ryMultipleParams(\'ry\', true, 2000L, 316.50D, 100)',   '1L, \'Y\', \'slave\'',  '0/20 * * * * ?', '3', '1', '1', 1);
 
 -- ----------------------------
 -- 12、定时任务调度日志表
@@ -754,9 +754,11 @@ values (1, '系统默认（无参）', 'DEFAULT', 'ryTask.ryNoParams',   '1, Y',
 drop table if exists sys_job_log;
 create table sys_job_log (
   id                        bigint              not null auto_increment                 comment '任务日志Id',
+  job_id                    bigint              not null                                comment '任务Id',
   name                      varchar(64)         not null                                comment '任务名称',
   job_group                 varchar(64)         not null                                comment '任务组名',
   invoke_target             varchar(500)        not null                                comment '调用目标字符串',
+  invoke_tenant             varchar(500)        not null                                comment '调用租户字符串',
   job_message               varchar(500)                                                comment '日志信息',
   status                    char(1)             not null default '0'                    comment '执行状态（0正常 1失败）',
   exception_info            varchar(2000)       default ''                              comment '异常信息',

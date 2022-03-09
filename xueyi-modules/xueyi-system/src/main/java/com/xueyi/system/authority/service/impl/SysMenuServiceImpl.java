@@ -28,7 +28,6 @@ import static com.xueyi.common.core.constant.basic.TenantConstants.MASTER;
  * @author xueyi
  */
 @Service
-@DS(MASTER)
 public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuDto, SysMenuManager, SysMenuMapper> implements ISysMenuService {
 
     /**

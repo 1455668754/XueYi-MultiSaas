@@ -18,7 +18,6 @@ import static com.xueyi.common.core.constant.basic.TenantConstants.ISOLATE;
  * @author xueyi
  */
 @Service
-@DS(ISOLATE)
 public class SysAuthServiceImpl implements ISysAuthService {
 
     @Autowired

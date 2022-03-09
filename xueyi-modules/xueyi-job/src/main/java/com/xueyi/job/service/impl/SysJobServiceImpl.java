@@ -1,13 +1,12 @@
 package com.xueyi.job.service.impl;
 
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.xueyi.common.core.constant.job.ScheduleConstants;
 import com.xueyi.common.core.exception.job.TaskException;
 import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.security.utils.SecurityUtils;
-import com.xueyi.job.domain.dto.SysJobDto;
+import com.xueyi.job.api.domain.dto.SysJobDto;
 import com.xueyi.job.manager.SysJobManager;
 import com.xueyi.job.service.ISysJobService;
 import com.xueyi.job.util.ScheduleUtils;
@@ -22,7 +21,6 @@ import javax.annotation.PostConstruct;
 import java.util.List;
 
 import static com.xueyi.common.core.constant.basic.SecurityConstants.CREATE_BY;
-import static com.xueyi.common.core.constant.basic.TenantConstants.MASTER;
 
 /**
  * 调度任务管理 服务层实现
@@ -30,7 +28,6 @@ import static com.xueyi.common.core.constant.basic.TenantConstants.MASTER;
  * @author xueyi
  */
 @Service
-@DS(MASTER)
 public class SysJobServiceImpl implements ISysJobService {
 
     @Autowired
@@ -83,7 +80,7 @@ public class SysJobServiceImpl implements ISysJobService {
     @DSTransactional
     public int insert(SysJobDto job) throws SchedulerException, TaskException {
         job.setStatus(ScheduleConstants.Status.PAUSE.getCode());
-        job.setInvokeTenant(SecurityUtils.getEnterpriseId() + StrUtil.COMMA + SecurityUtils.getIsLessor() + StrUtil.COMMA + SecurityUtils.getSourceName());
+        initInvokeTenant(job);
         int rows = baseManager.insert(job);
         if (rows > 0)
             ScheduleUtils.createScheduleJob(scheduler, job);
@@ -100,10 +97,11 @@ public class SysJobServiceImpl implements ISysJobService {
     @DSTransactional
     public int update(SysJobDto job) throws SchedulerException, TaskException {
         SysJobDto properties = baseManager.selectById(job.getId());
-        job.setInvokeTenant(SecurityUtils.getEnterpriseId() + StrUtil.COMMA + SecurityUtils.getIsLessor() + StrUtil.COMMA + SecurityUtils.getSourceName());
         int rows = baseManager.update(job);
-        if (rows > 0)
+        if (rows > 0) {
+            job.setInvokeTenant(properties.getInvokeTenant());
             updateSchedulerJob(job, properties.getJobGroup());
+        }
         return rows;
     }
 
@@ -195,12 +193,21 @@ public class SysJobServiceImpl implements ISysJobService {
      * @param job      任务对象
      * @param jobGroup 任务组名
      */
-    public void updateSchedulerJob(SysJobDto job, String jobGroup) throws SchedulerException, TaskException {
+    private void updateSchedulerJob(SysJobDto job, String jobGroup) throws SchedulerException, TaskException {
         // 判断是否存在
         JobKey jobKey = ScheduleUtils.getJobKey(job.getId(), jobGroup);
         // 防止创建时存在数据问题 先移除，然后在执行创建操作
         if (scheduler.checkExists(jobKey))
             scheduler.deleteJob(jobKey);
         ScheduleUtils.createScheduleJob(scheduler, job);
+    }
+
+    /**
+     * 初始化调用租户字符串
+     *
+     * @param job 任务对象
+     */
+    private void initInvokeTenant(SysJobDto job) {
+        job.setInvokeTenant(SecurityUtils.getEnterpriseId() + "L, '" + SecurityUtils.getIsLessor() + "', '" + SecurityUtils.getSourceName() + "'");
     }
 }

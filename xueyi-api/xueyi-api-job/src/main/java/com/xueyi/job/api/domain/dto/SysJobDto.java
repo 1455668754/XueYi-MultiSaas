@@ -1,7 +1,7 @@
-package com.xueyi.job.domain.dto;
+package com.xueyi.job.api.domain.dto;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.xueyi.job.domain.po.SysJobPo;
+import com.xueyi.job.api.domain.po.SysJobPo;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 

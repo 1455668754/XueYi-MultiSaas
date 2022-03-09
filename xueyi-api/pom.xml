@@ -11,6 +11,7 @@
     <modules>
         <module>xueyi-api-system</module>
         <module>xueyi-api-tenant</module>
+        <module>xueyi-api-job</module>
     </modules>
 
     <artifactId>xueyi-api</artifactId>

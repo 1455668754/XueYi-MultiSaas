@@ -1,7 +1,6 @@
 package com.xueyi.system.authority.service.impl;
 
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.dynamic.datasource.annotation.DS;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
@@ -19,15 +18,12 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.xueyi.common.core.constant.basic.TenantConstants.ISOLATE;
-
 /**
  * 登录管理 服务层处理
  *
  * @author xueyi
  */
 @Service
-@DS(ISOLATE)
 public class SysLoginServiceImpl implements ISysLoginService {
 
     @Autowired

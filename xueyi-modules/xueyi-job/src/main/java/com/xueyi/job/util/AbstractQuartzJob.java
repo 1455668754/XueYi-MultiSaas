@@ -1,14 +1,16 @@
 package com.xueyi.job.util;
 
 import cn.hutool.core.util.ObjectUtil;
+import com.xueyi.common.core.constant.basic.DictConstants;
+import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.job.ScheduleConstants;
 import com.xueyi.common.core.utils.ExceptionUtil;
 import com.xueyi.common.core.utils.SpringUtils;
 import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.core.utils.bean.BeanUtils;
-import com.xueyi.job.domain.dto.SysJobDto;
-import com.xueyi.job.domain.dto.SysJobLogDto;
-import com.xueyi.job.service.ISysJobLogService;
+import com.xueyi.job.api.domain.dto.SysJobDto;
+import com.xueyi.job.api.domain.dto.SysJobLogDto;
+import com.xueyi.job.api.feign.RemoteJobLogService;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -59,30 +61,38 @@ public abstract class AbstractQuartzJob implements Job {
      * 执行后
      *
      * @param context 工作执行上下文对象
-     * @param sysJob  系统计划任务
+     * @param job  系统计划任务
      */
-    protected void after(JobExecutionContext context, SysJobDto sysJob, Exception e) {
+    protected void after(JobExecutionContext context, SysJobDto job, Exception e) {
         Date startTime = threadLocal.get();
         threadLocal.remove();
 
         final SysJobLogDto jobLog = new SysJobLogDto();
-        jobLog.setName(sysJob.getName());
-        jobLog.setJobGroup(sysJob.getJobGroup());
-        jobLog.setInvokeTarget(sysJob.getInvokeTarget());
+        jobLog.setJobId(job.getId());
+        jobLog.setName(job.getName());
+        jobLog.setJobGroup(job.getJobGroup());
+        jobLog.setInvokeTarget(job.getInvokeTarget());
+        jobLog.setInvokeTenant(job.getInvokeTenant());
         jobLog.setStartTime(startTime);
         jobLog.setStopTime(new Date());
-//        jobLog.setEnterpriseId(sysJob.getEnterpriseId());
         long runMs = jobLog.getStopTime().getTime() - jobLog.getStartTime().getTime();
         jobLog.setJobMessage(jobLog.getName() + " 总共耗时：" + runMs + "毫秒");
         if (e != null) {
-            jobLog.setStatus("1");
+            jobLog.setStatus(DictConstants.DicStatus.FAIL.getCode());
             String errorMsg = StringUtils.substring(ExceptionUtil.getExceptionMessage(e), 0, 2000);
             jobLog.setExceptionInfo(errorMsg);
         } else {
-            jobLog.setStatus("0");
+            jobLog.setStatus(DictConstants.DicStatus.NORMAL.getCode());
         }
+        String[] methodParams = jobLog.getInvokeTenant().split(",(?=([^\"']*[\"'][^\"']*[\"'])*[^\"']*$)");
+        String enterpriseIdStr = StringUtils.trimToEmpty(methodParams[0]);
+        Long enterpriseId = Long.valueOf(StringUtils.substring(enterpriseIdStr, 0, enterpriseIdStr.length() - 1));
+        String isLessorStr = StringUtils.trimToEmpty(methodParams[1]);
+        String isLessor = StringUtils.substring(isLessorStr, 1, isLessorStr.length() - 1);
+        String sourceNameStr = StringUtils.trimToEmpty(methodParams[2]);
+        String sourceName = StringUtils.substring(sourceNameStr, 1, sourceNameStr.length() - 1);
         // 写入数据库当中
-        SpringUtils.getBean(ISysJobLogService.class).insert(jobLog);
+        SpringUtils.getBean(RemoteJobLogService.class).saveJobLog(jobLog, enterpriseId, isLessor, sourceName, SecurityConstants.INNER);
     }
 
     /**

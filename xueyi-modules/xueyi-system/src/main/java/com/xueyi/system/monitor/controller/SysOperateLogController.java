@@ -1,5 +1,6 @@
 package com.xueyi.system.monitor.controller;
 
+import com.xueyi.common.core.domain.R;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
@@ -29,11 +30,14 @@ public class SysOperateLogController extends BaseController<SysOperateLogDto, IS
         return "操作日志";
     }
 
-    @Override
+    /**
+     * 新增操作日志 | 内部调用
+     */
     @InnerAuth
     @PostMapping
-    public AjaxResult add(@RequestBody SysOperateLogDto operationLog) {
-        return super.add(operationLog);
+    public R<Boolean> addInner(@RequestBody SysOperateLogDto operateLog) {
+        baseService.insert(operateLog);
+        return R.ok();
     }
 
     /**

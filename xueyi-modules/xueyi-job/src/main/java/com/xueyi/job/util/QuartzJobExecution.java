@@ -1,6 +1,6 @@
 package com.xueyi.job.util;
 
-import com.xueyi.job.domain.dto.SysJobDto;
+import com.xueyi.job.api.domain.dto.SysJobDto;
 import org.quartz.JobExecutionContext;
 
 /**

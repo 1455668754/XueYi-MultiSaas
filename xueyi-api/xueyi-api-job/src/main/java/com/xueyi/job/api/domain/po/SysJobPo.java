@@ -1,4 +1,4 @@
-package com.xueyi.job.domain.po;
+package com.xueyi.job.api.domain.po;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.xueyi.common.core.annotation.Excel;
 import com.xueyi.common.core.web.tenant.base.TSubBaseEntity;
-import com.xueyi.job.util.CronUtils;
+import com.xueyi.job.api.utils.CronUtils;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;

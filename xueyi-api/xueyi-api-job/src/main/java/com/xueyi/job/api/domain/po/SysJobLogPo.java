@@ -1,4 +1,4 @@
-package com.xueyi.job.domain.po;
+package com.xueyi.job.api.domain.po;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.xueyi.common.core.annotation.Excel;
@@ -13,6 +13,10 @@ public class SysJobLogPo extends TBaseEntity {
 
     private static final long serialVersionUID = 1L;
 
+    /** 任务Id */
+    @TableField("job_id")
+    private Long jobId;
+
     /** 任务组名 */
     @Excel(name = "任务组名")
     @TableField("job_group")
@@ -22,6 +26,10 @@ public class SysJobLogPo extends TBaseEntity {
     @Excel(name = "调用目标字符串")
     @TableField("invoke_target")
     private String invokeTarget;
+
+    /** 调用租户字符串 */
+    @TableField(value = "invoke_tenant")
+    private String invokeTenant;
 
     /** 日志信息 */
     @Excel(name = "日志信息")
@@ -38,6 +46,14 @@ public class SysJobLogPo extends TBaseEntity {
     @TableField("exception_info")
     private String exceptionInfo;
 
+    public Long getJobId() {
+        return jobId;
+    }
+
+    public void setJobId(Long jobId) {
+        this.jobId = jobId;
+    }
+
     public String getJobGroup() {
         return jobGroup;
     }
@@ -52,6 +68,14 @@ public class SysJobLogPo extends TBaseEntity {
 
     public void setInvokeTarget(String invokeTarget) {
         this.invokeTarget = invokeTarget;
+    }
+
+    public String getInvokeTenant() {
+        return invokeTenant;
+    }
+
+    public void setInvokeTenant(String invokeTenant) {
+        this.invokeTenant = invokeTenant;
     }
 
     public String getJobMessage() {

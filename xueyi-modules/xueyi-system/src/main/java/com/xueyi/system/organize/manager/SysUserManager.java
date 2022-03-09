@@ -80,7 +80,7 @@ public class SysUserManager extends BaseManager<SysUserDto, SysUserMapper> {
         if (CollUtil.isNotEmpty(userPostMerges)) {
             userDto.setPosts(postMapper.selectBatchIds(postIds));
             if (CollUtil.isNotEmpty(userDto.getPosts())) {
-                deptIds = userDto.getPosts().stream().map(SysPostDto::getId).collect(Collectors.toList());
+                deptIds = userDto.getPosts().stream().map(SysPostDto::getDeptId).collect(Collectors.toList());
                 List<SysDeptDto> depts = deptMapper.selectBatchIds(deptIds);
                 for (SysDeptDto deptDto : depts) {
                     for (int i = 0; i < userDto.getPosts().size(); i++) {

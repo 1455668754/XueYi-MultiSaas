@@ -389,3 +389,24 @@ create table sys_notice_log (
   tenant_id		            bigint	            not null                                comment '租户Id',
   primary key (id)
 ) engine = innodb comment = '通知公告记录表';
+
+-- ----------------------------
+-- 19、定时任务调度日志表
+-- ----------------------------
+drop table if exists sys_job_log;
+create table sys_job_log (
+  id                        bigint              not null auto_increment                 comment '任务日志Id',
+  job_id                    bigint              not null                                comment '任务Id',
+  name                      varchar(64)         not null                                comment '任务名称',
+  job_group                 varchar(64)         not null                                comment '任务组名',
+  invoke_target             varchar(500)        not null                                comment '调用目标字符串',
+  invoke_tenant             varchar(500)        not null                                comment '调用租户字符串',
+  job_message               varchar(500)                                                comment '日志信息',
+  status                    char(1)             not null default '0'                    comment '执行状态（0正常 1失败）',
+  exception_info            varchar(2000)       default ''                              comment '异常信息',
+  create_time               datetime            default current_timestamp               comment '创建时间',
+  del_time                  datetime            on update current_timestamp             comment '删除时间',
+  del_flag		            tinyint             not null default 0                      comment '删除标志(0正常 1删除)',
+  tenant_id		            bigint	            not null                                comment '租户Id',
+  primary key (id)
+) engine = innodb comment = '定时任务调度日志表';

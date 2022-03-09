@@ -2,8 +2,8 @@ package com.xueyi.job.mapper;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.xueyi.common.web.entity.mapper.SubBaseMapper;
-import com.xueyi.job.domain.dto.SysJobDto;
-import com.xueyi.job.domain.dto.SysJobLogDto;
+import com.xueyi.job.api.domain.dto.SysJobDto;
+import com.xueyi.job.api.domain.dto.SysJobLogDto;
 
 import static com.xueyi.common.core.constant.basic.TenantConstants.MASTER;
 

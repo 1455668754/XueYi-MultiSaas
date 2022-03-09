@@ -1,12 +1,14 @@
 package com.xueyi.job.controller;
 
+import com.xueyi.common.core.domain.R;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
+import com.xueyi.common.security.annotation.InnerAuth;
 import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.web.entity.controller.BaseController;
-import com.xueyi.job.domain.dto.SysJobLogDto;
+import com.xueyi.job.api.domain.dto.SysJobLogDto;
 import com.xueyi.job.service.ISysJobLogService;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +27,16 @@ public class SysJobLogController extends BaseController<SysJobLogDto, ISysJobLog
     @Override
     protected String getNodeName() {
         return "调度日志";
+    }
+
+    /**
+     * 新增调度日志 | 内部调用
+     */
+    @InnerAuth
+    @PostMapping
+    public R<Boolean> addInner(@RequestBody SysJobLogDto jobLog) {
+        baseService.insert(jobLog);
+        return R.ok();
     }
 
     /**
@@ -51,9 +63,9 @@ public class SysJobLogController extends BaseController<SysJobLogDto, ISysJobLog
     /**
      * 清空调度日志
      */
+    @DeleteMapping("/clean")
     @RequiresPermissions(Auth.SCHEDULE_JOB_DELETE)
     @Log(title = "调度日志管理", businessType = BusinessType.CLEAN)
-    @DeleteMapping("/clean")
     public AjaxResult clean() {
         baseService.cleanLog();
         return AjaxResult.success();

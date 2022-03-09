@@ -1,7 +1,7 @@
 package com.xueyi.job.service;
 
 import com.xueyi.common.core.exception.job.TaskException;
-import com.xueyi.job.domain.dto.SysJobDto;
+import com.xueyi.job.api.domain.dto.SysJobDto;
 import org.quartz.SchedulerException;
 
 import java.util.List;

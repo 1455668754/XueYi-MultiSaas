@@ -1,7 +1,6 @@
 package com.xueyi.system.authority.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
-import com.baomidou.dynamic.datasource.annotation.DS;
 import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.web.entity.service.impl.SubBaseServiceImpl;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
@@ -19,7 +18,6 @@ import java.util.List;
 import java.util.Set;
 
 import static com.xueyi.common.core.constant.basic.SecurityConstants.CREATE_BY;
-import static com.xueyi.common.core.constant.basic.TenantConstants.ISOLATE;
 
 /**
  * 模块管理 服务层处理
@@ -27,7 +25,6 @@ import static com.xueyi.common.core.constant.basic.TenantConstants.ISOLATE;
  * @author xueyi
  */
 @Service
-@DS(ISOLATE)
 public class SysModuleServiceImpl extends SubBaseServiceImpl<SysModuleDto, SysModuleManager, SysModuleMapper, SysMenuDto, ISysMenuService, SysMenuMapper> implements ISysModuleService {
 
     /**

@@ -101,4 +101,27 @@ public class DictConstants {
             return info;
         }
     }
+
+    /** 常规：状态列表（0正常 1失败） */
+    public enum DicStatus {
+
+        NORMAL("0", "正常"),
+        FAIL("1", "失败");
+
+        private final String code;
+        private final String info;
+
+        DicStatus(String code, String info) {
+            this.code = code;
+            this.info = info;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public String getInfo() {
+            return info;
+        }
+    }
 }

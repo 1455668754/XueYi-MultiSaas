@@ -2,7 +2,7 @@ package com.xueyi.job.manager;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.web.entity.manager.BaseManager;
-import com.xueyi.job.domain.dto.SysJobLogDto;
+import com.xueyi.job.api.domain.dto.SysJobLogDto;
 import com.xueyi.job.mapper.SysJobLogMapper;
 import org.springframework.stereotype.Component;
 

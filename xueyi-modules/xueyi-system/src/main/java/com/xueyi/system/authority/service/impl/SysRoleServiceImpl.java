@@ -2,7 +2,6 @@ package com.xueyi.system.authority.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
@@ -20,7 +19,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static com.xueyi.common.core.constant.basic.SecurityConstants.CREATE_BY;
-import static com.xueyi.common.core.constant.basic.TenantConstants.ISOLATE;
 
 /**
  * 角色管理 服务层处理
@@ -28,7 +26,6 @@ import static com.xueyi.common.core.constant.basic.TenantConstants.ISOLATE;
  * @author xueyi
  */
 @Service
-@DS(ISOLATE)
 public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleDto, SysRoleManager, SysRoleMapper> implements ISysRoleService {
 
     @Autowired

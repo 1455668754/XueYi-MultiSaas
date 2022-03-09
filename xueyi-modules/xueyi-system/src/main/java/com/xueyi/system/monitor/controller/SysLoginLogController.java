@@ -1,5 +1,6 @@
 package com.xueyi.system.monitor.controller;
 
+import com.xueyi.common.core.domain.R;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
@@ -29,11 +30,14 @@ public class SysLoginLogController extends BaseController<SysLoginLogDto, ISysLo
         return "访问日志";
     }
 
-    @Override
+    /**
+     * 新增访问日志 | 内部调用
+     */
     @InnerAuth
     @PostMapping
-    public AjaxResult add(@RequestBody SysLoginLogDto loginInfo) {
-        return super.add(loginInfo);
+    public R<Boolean> addInner(@RequestBody SysLoginLogDto loginInfo) {
+        baseService.insert(loginInfo);
+        return R.ok();
     }
 
     /**
@@ -68,9 +72,9 @@ public class SysLoginLogController extends BaseController<SysLoginLogDto, ISysLo
         return super.batchRemove(idList);
     }
 
+    @DeleteMapping("/clean")
     @RequiresPermissions(Auth.SYS_LOGIN_LOG_DELETE)
     @Log(title = "访问日志", businessType = BusinessType.CLEAN)
-    @DeleteMapping("/clean")
     public AjaxResult clean() {
         baseService.cleanLoginLog();
         return AjaxResult.success();

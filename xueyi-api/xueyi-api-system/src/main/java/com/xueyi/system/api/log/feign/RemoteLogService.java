@@ -22,7 +22,10 @@ public interface RemoteLogService {
     /**
      * 保存系统日志
      *
-     * @param operateLog 日志实体
+     * @param operateLog   日志实体
+     * @param enterpriseId 企业Id
+     * @param sourceName   数据源
+     * @param source       请求来源
      * @return 结果
      */
     @PostMapping("/operateLog")
@@ -31,8 +34,10 @@ public interface RemoteLogService {
     /**
      * 保存访问记录
      *
-     * @param loginInfo 访问实体
-     * @param source    请求来源
+     * @param loginInfo    访问实体
+     * @param enterpriseId 企业Id
+     * @param sourceName   数据源
+     * @param source       请求来源
      * @return 结果
      */
     @PostMapping("/loginLog")
