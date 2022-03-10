@@ -160,7 +160,7 @@ public class AuthorityConstants {
 
         LAYOUT("LAYOUT", "Layout"),
         PARENT_VIEW("ParentView", "ParentView"),
-        INNER_LINK("InnerLink", "InnerLink");
+        IFRAME("IFrame", "IFrame");
 
         private final String code;
         private final String info;

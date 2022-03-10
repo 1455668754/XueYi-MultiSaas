@@ -64,6 +64,21 @@ public class SysMenuDto extends SysMenuPo<SysMenuDto> {
     }
 
     /**
+     * 校验页面类型是否为内链
+     */
+    public boolean isEmbedded() {
+        return StrUtil.equals(AuthorityConstants.FrameType.EMBEDDED.getCode(), getFrameType());
+    }
+
+    /**
+     * 校验页面类型是否为外链
+     */
+    public boolean isExternalLinks() {
+        return StrUtil.equals(AuthorityConstants.FrameType.EXTERNAL_LINKS.getCode(), getFrameType());
+    }
+
+
+    /**
      * 移除详情菜单动态后缀
      */
     public String getDetailsSuffix() {

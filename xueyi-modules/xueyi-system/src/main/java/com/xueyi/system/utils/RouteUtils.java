@@ -3,8 +3,8 @@ package com.xueyi.system.utils;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.core.constant.basic.DictConstants;
+import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.utils.route.MetaVo;
 import com.xueyi.system.utils.route.RouterVo;
@@ -35,7 +35,7 @@ public class RouteUtils {
         SysMenuDto menu = new SysMenuDto();
         menu.setFullPath(StrUtil.EMPTY);
         menu.setChildren(menus);
-        return recursionFn(menu,  LEVEL_0);
+        return recursionFn(menu, LEVEL_0);
     }
 
     /**
@@ -133,7 +133,7 @@ public class RouteUtils {
         }
         meta.setIgnoreKeepAlive(StrUtil.equals(DictConstants.DicYesNo.YES.getCode(), menu.getIsCache()));
         meta.setAffix(StrUtil.equals(DictConstants.DicYesNo.YES.getCode(), menu.getIsAffix()));
-        if (StrUtil.equals(AuthorityConstants.FrameType.EMBEDDED.getCode(), menu.getFrameType()))
+        if (menu.isEmbedded())
             meta.setFrameSrc(menu.getFrameSrc());
         meta.setTransitionName(menu.getTransitionName());
         meta.setHideBreadcrumb(StrUtil.equals(DictConstants.DicShowHide.HIDE.getCode(), menu.getHideBreadcrumb()));
@@ -142,7 +142,7 @@ public class RouteUtils {
         meta.setHideTab(StrUtil.equals(DictConstants.DicShowHide.HIDE.getCode(), menu.getHideTab()));
         meta.setHideMenu(StrUtil.equals(DictConstants.DicShowHide.HIDE.getCode(), menu.getHideMenu()));
         meta.setHideChildrenInMenu(StrUtil.equals(DictConstants.DicShowHide.HIDE.getCode(), menu.getHideChildren()));
-        if (StrUtil.equals(AuthorityConstants.FrameType.EXTERNAL_LINKS.getCode(), menu.getFrameType()))
+        if (menu.isExternalLinks())
             meta.setLink(true);
         meta.setOrderNo(menu.getSort());
         meta.setIgnoreRoute(StrUtil.equals(DictConstants.DicYesNo.YES.getCode(), menu.getIgnoreRoute()));
@@ -173,9 +173,8 @@ public class RouteUtils {
      * @return 组件信息
      */
     private static String getComponent(SysMenuDto menu) {
-        if (ObjectUtil.equals(AuthorityConstants.MENU_TOP_NODE, menu.getParentId())
-                || StrUtil.equals(AuthorityConstants.FrameType.EXTERNAL_LINKS.getCode(), menu.getFrameType()))
-            return AuthorityConstants.ComponentType.LAYOUT.getCode();
-        return menu.getComponent();
+        return ObjectUtil.equals(AuthorityConstants.MENU_TOP_NODE, menu.getParentId()) || menu.isExternalLinks()
+                ? AuthorityConstants.ComponentType.LAYOUT.getCode()
+                : menu.getComponent();
     }
 }
