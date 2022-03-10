@@ -3,10 +3,7 @@ package com.xueyi.auth.service;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.auth.form.RegisterBody;
-import com.xueyi.common.core.constant.basic.BaseConstants;
-import com.xueyi.common.core.constant.basic.Constants;
-import com.xueyi.common.core.constant.basic.SecurityConstants;
-import com.xueyi.common.core.constant.basic.TenantConstants;
+import com.xueyi.common.core.constant.basic.*;
 import com.xueyi.common.core.constant.system.OrganizeConstants;
 import com.xueyi.common.core.domain.R;
 import com.xueyi.common.core.exception.ServiceException;
@@ -174,9 +171,9 @@ public class SysLoginService {
         loginInfo.setMsg(message);
         // 日志状态
         if (StrUtil.equalsAny(status, Constants.LOGIN_SUCCESS, Constants.LOGOUT, Constants.REGISTER)) {
-            loginInfo.setStatus(BaseConstants.Status.NORMAL.getCode());
+            loginInfo.setStatus(DictConstants.DicStatus.NORMAL.getCode());
         } else if (Constants.LOGIN_FAIL.equals(status)) {
-            loginInfo.setStatus(BaseConstants.Status.DISABLE.getCode());
+            loginInfo.setStatus(DictConstants.DicStatus.FAIL.getCode());
         }
         remoteLogService.saveLoginInfo(loginInfo, enterpriseId, sourceName, SecurityConstants.INNER);
     }
