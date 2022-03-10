@@ -153,7 +153,7 @@ public class SysLoginServiceImpl implements ISysLoginService {
                         Set<Long> deptIds = user.getPosts().stream().map(post -> post.getDept().getId()).collect(Collectors.toSet());
                         List<SysDeptDto> deptList;
                         for (Long deptId : deptIds) {
-                            deptList = deptService.selectAncestorsListById(deptId);
+                            deptList = deptService.selectChildListById(deptId);
                             deptScope.addAll(deptList.stream().map(SysDeptDto::getId).collect(Collectors.toSet()));
                         }
                     }

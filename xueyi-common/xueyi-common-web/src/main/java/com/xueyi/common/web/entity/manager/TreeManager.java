@@ -40,6 +40,19 @@ public class TreeManager<D extends TreeEntity<D>, DM extends TreeMapper<D>> exte
     }
 
     /**
+     * 根据Id查询本节点及其所有子节点
+     *
+     * @param id Id
+     * @return 本节点及其所有子节点数据对象集合
+     */
+    public List<D> selectChildListById(Serializable id) {
+        return baseMapper.selectList(
+                Wrappers.<D>query().lambda()
+                        .eq(D::getId, id)
+                        .or().apply(ANCESTORS_FIND, id));
+    }
+
+    /**
      * 根据Id修改其子节点的状态
      *
      * @param id     Id

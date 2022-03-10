@@ -38,6 +38,17 @@ public class TreeServiceImpl<D extends TreeEntity<D>, DG extends TreeManager<D, 
     }
 
     /**
+     * 根据Id查询本节点及其所有子节点
+     *
+     * @param id Id
+     * @return 本节点及其所有子节点数据对象集合
+     */
+    @Override
+    public List<D> selectChildListById(Serializable id) {
+        return baseManager.selectChildListById(id);
+    }
+
+    /**
      * 新增修改数据对象
      * 同步启用父节点
      *

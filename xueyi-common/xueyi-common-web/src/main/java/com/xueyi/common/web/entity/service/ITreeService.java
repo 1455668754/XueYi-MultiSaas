@@ -23,6 +23,14 @@ public interface ITreeService<D extends TreeEntity<D>> extends IBaseService<D> {
     List<D> selectAncestorsListById(Serializable id);
 
     /**
+     * 根据Id查询本节点及其所有子节点
+     *
+     * @param id Id
+     * @return 本节点及其所有子节点数据对象集合
+     */
+    List<D> selectChildListById(Serializable id);
+
+    /**
      * 根据Id及祖籍修改其子节点的状态
      *
      * @param id     Id
