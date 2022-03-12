@@ -153,7 +153,7 @@ public class SysMenuManager extends TreeManager<SysMenuDto, SysMenuMapper> {
         if (SecurityUtils.isAdminUser()) {
             if (SecurityUtils.isNotAdminTenant()) {
                 // 1.获取租户授权的公共菜单Ids
-                List<SysTenantMenuMerge> tenantMenuMerges = tenantMenuMergeMapper.selectList(new LambdaQueryWrapper<>());
+                List<SysTenantMenuMerge> tenantMenuMerges = tenantMenuMergeMapper.selectList(Wrappers.query());
                 // 2.获取租户全部可使用的菜单
                 if (CollUtil.isNotEmpty(tenantMenuMerges)) {
                     menuQueryWrapper
@@ -169,13 +169,13 @@ public class SysMenuManager extends TreeManager<SysMenuDto, SysMenuMapper> {
             if (CollUtil.isEmpty(roleIds))
                 return new ArrayList<>();
             // 1.获取用户可使用角色集内的所有菜单Ids
-            List<SysRoleMenuMerge> roleModuleMenuMerges = roleMenuMergeMapper.selectList(
+            List<SysRoleMenuMerge> roleMenuMerges = roleMenuMergeMapper.selectList(
                     Wrappers.<SysRoleMenuMerge>query().lambda()
                             .in(SysRoleMenuMerge::getRoleId, loginUser.getRoleIds()));
             // 2.获取用户可使用的菜单
-            if (CollUtil.isNotEmpty(roleModuleMenuMerges)) {
+            if (CollUtil.isNotEmpty(roleMenuMerges)) {
                 menuQueryWrapper
-                        .in(SysMenuDto::getId, roleModuleMenuMerges.stream().map(SysRoleMenuMerge::getMenuId).collect(Collectors.toSet()));
+                        .in(SysMenuDto::getId, roleMenuMerges.stream().map(SysRoleMenuMerge::getMenuId).collect(Collectors.toSet()));
             } else {
                 return new ArrayList<>();
             }
