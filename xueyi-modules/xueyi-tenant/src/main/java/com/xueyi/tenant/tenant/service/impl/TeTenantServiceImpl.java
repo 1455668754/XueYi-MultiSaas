@@ -5,8 +5,10 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
+import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.core.domain.R;
 import com.xueyi.common.core.exception.ServiceException;
+import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.authority.feign.RemoteAuthService;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
@@ -156,6 +158,8 @@ public class TeTenantServiceImpl extends BaseServiceImpl<TeTenantDto, TeTenantMa
         if (postR.isFail())
             throw new ServiceException("新增失败，请检查！");
         tenantRegister.getUser().setPostIds(new Long[]{postR.getResult().getId()});
+        tenantRegister.getUser().setUserType(AuthorityConstants.UserType.ADMIN.getCode());
+        tenantRegister.getUser().setPassword(SecurityUtils.encryptPassword(tenantRegister.getUser().getPassword()));
         R<SysUserDto> userR = userService.addInner(tenantRegister.getUser(), enterpriseId, sourceName, SecurityConstants.INNER);
         if (userR.isFail())
             throw new ServiceException("新增失败，请检查！");
