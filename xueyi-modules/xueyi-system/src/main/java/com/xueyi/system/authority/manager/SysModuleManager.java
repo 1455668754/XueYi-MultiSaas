@@ -62,17 +62,19 @@ public class SysModuleManager extends SubBaseManager<SysModuleDto, SysModuleMapp
                         Wrappers.<SysModuleDto>query().lambda()
                                 .eq(SysModuleDto::getStatus, BaseConstants.Status.NORMAL.getCode())
                                 .eq(SysModuleDto::getHideModule, DictConstants.DicShowHide.SHOW.getCode())
-                                .and(i ->
-                                        i.eq(SysModuleDto::getIsCommon, DictConstants.DicCommonPrivate.PRIVATE.getCode())
-                                                .or().and(j ->
-                                                        j.eq(SysModuleDto::getIsCommon, DictConstants.DicCommonPrivate.COMMON.getCode())
-                                                                .func(k -> {
-                                                                    if (CollUtil.isNotEmpty(tenantModuleMerges))
-                                                                        k.eq(SysModuleDto::getId, tenantModuleMerges.stream().map(SysTenantModuleMerge::getModuleId).collect(Collectors.toList()));
-                                                                }))));
+                                .and(i -> i.
+                                        eq(SysModuleDto::getIsCommon, DictConstants.DicCommonPrivate.PRIVATE.getCode())
+                                        .func(j -> {
+                                            if (CollUtil.isNotEmpty(tenantModuleMerges)) {
+                                                j.or(k -> k.
+                                                        eq(SysModuleDto::getIsCommon, DictConstants.DicCommonPrivate.COMMON.getCode())
+                                                        .in(SysModuleDto::getId, tenantModuleMerges.stream().map(SysTenantModuleMerge::getModuleId).collect(Collectors.toList())));
+                                            }
+                                        })
+                                ));
             }
         } else {
-            if(CollUtil.isEmpty(roleIds))
+            if (CollUtil.isEmpty(roleIds))
                 return new ArrayList<>();
             List<SysRoleModuleMerge> roleModuleMerges = roleModuleMergeMapper.selectList(
                     Wrappers.<SysRoleModuleMerge>query().lambda()
