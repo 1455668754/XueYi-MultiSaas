@@ -33,7 +33,7 @@ public class TreeSelect<T extends TreeEntity<T>> implements Serializable {
     public TreeSelect(T t) {
         this.id = t.getId();
         this.label = t.getName();
-        this.children = CollUtil.isNotEmpty(t.getChildren()) ? t.getChildren().stream().map(TreeSelect::new).collect(Collectors.toList()) : null;
+        this.children = CollUtil.isNotEmpty(t.getChildren()) ? t.getChildren().stream().map(TreeSelect<T>::new).collect(Collectors.toList()) : null;
     }
 
     public Long getId() {

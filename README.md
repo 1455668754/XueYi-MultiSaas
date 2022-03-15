@@ -1,6 +1,8 @@
-<h1 align="center">XueYi-MultiSaas</h1>
+<div style="text-align:center">
+    <span style="font-size:40px" >XueYi-MultiSaas</span>
+</div>
 
-<p align="center">
+<p style="text-align:center">
     <a>
        <img src="https://img.shields.io/badge/XueYi--MultiSaas-v2.1.3-brightgreen" alt="xueYi-MultiSaas">
     </a>
@@ -62,6 +64,7 @@
 - **视频**
   >https://space.bilibili.com/479745149
 
+## 结构
 ~~~
 com.xueyi     
 ├── xueyi-gateway         // 网关模块 [8080]
@@ -105,29 +108,29 @@ com.xueyi
 ## 演示
 <table>
     <tr>
-        <td><img src="https://gitee.com/xueyitiantang/images/raw/master/1.png"/></td>
-        <td><img src="https://gitee.com/xueyitiantang/images/raw/master/2.png"/></td>
+        <td><img src="https://gitee.com/xueyitiantang/images/raw/master/1.png" alt=""/></td>
+        <td><img src="https://gitee.com/xueyitiantang/images/raw/master/2.png" alt=""/></td>
     </tr>
     <tr>
-        <td><img src="https://gitee.com/xueyitiantang/images/raw/master/3.png"/></td>
-        <td><img src="https://gitee.com/xueyitiantang/images/raw/master/4.png"/></td>
+        <td><img src="https://gitee.com/xueyitiantang/images/raw/master/3.png" alt=""/></td>
+        <td><img src="https://gitee.com/xueyitiantang/images/raw/master/4.png" alt=""/></td>
     </tr>
     <tr>
-        <td><img src="https://gitee.com/xueyitiantang/images/raw/master/5.png"/></td>
-        <td><img src="https://gitee.com/xueyitiantang/images/raw/master/6.png"/></td>
+        <td><img src="https://gitee.com/xueyitiantang/images/raw/master/5.png" alt=""/></td>
+        <td><img src="https://gitee.com/xueyitiantang/images/raw/master/6.png" alt=""/></td>
     </tr>
     <tr>
-        <td><img src="https://gitee.com/xueyitiantang/images/raw/master/7.png"/></td>
-        <td><img src="https://gitee.com/xueyitiantang/images/raw/master/8.png"/></td>
+        <td><img src="https://gitee.com/xueyitiantang/images/raw/master/7.png" alt=""/></td>
+        <td><img src="https://gitee.com/xueyitiantang/images/raw/master/8.png" alt=""/></td>
     </tr>
     <tr>
-        <td><img src="https://gitee.com/xueyitiantang/images/raw/master/9.png"/></td>
-        <td><img src="https://gitee.com/xueyitiantang/images/raw/master/10.png"/></td>
+        <td><img src="https://gitee.com/xueyitiantang/images/raw/master/9.png" alt=""/></td>
+        <td><img src="https://gitee.com/xueyitiantang/images/raw/master/10.png" alt=""/></td>
     </tr>
 </table>
 
 ## 开源
 **源于开源，回归开源**
-* 感谢若依开源的[RuoYi-Cloud](https://gitee.com/y_project/RuoYi-Cloud)
+* 感谢Vben开源的[vue-vben-admin](https://github.com/vbenjs/vue-vben-admin)
 * 感谢苞米豆开源的[mybatis-plus](https://github.com/baomidou/mybatis-plus)
 * 感谢小锅盖开源的[dynamic](https://gitee.com/baomidou/dynamic-datasource-spring-boot-starter)
