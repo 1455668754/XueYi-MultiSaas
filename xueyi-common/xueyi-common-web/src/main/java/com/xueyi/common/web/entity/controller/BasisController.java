@@ -44,7 +44,7 @@ public class BasisController {
         }
         String url = Objects.requireNonNull(ServletUtils.getRequest()).getRequestURI();
         // 需要放开的url
-        if (StringUtils.isNotEmpty(url) && (url.contains("/demo") || url.contains("/tool/gen")))
+        if (StringUtils.isNotEmpty(url) && (url.contains("/demo") || url.contains("/tool/gen") || url.contains("/operateLog") || url.contains("/loginLog")))
             return;
         // 增删改 请求
         if ("DELETE".equals(httpServletRequest.getMethod()) || "POST".equals(httpServletRequest.getMethod())

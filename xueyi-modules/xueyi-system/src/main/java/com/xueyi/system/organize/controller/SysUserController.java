@@ -139,7 +139,7 @@ public class SysUserController extends BaseController<SysUserDto, ISysUserServic
     }
 
     /**
-     * 查询用户关联的角色Id集
+     * 修改用户关联的角色Id集
      */
     @PutMapping(value = "/auth")
     @RequiresPermissions(Auth.SYS_USER_AUTH)
