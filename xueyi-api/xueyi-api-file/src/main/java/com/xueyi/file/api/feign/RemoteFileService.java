@@ -1,15 +1,16 @@
-package com.xueyi.system.api.file.feign;
+package com.xueyi.file.api.feign;
 
-import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.multipart.MultipartFile;
 import com.xueyi.common.core.constant.basic.ServiceConstants;
 import com.xueyi.common.core.domain.R;
-import com.xueyi.system.api.file.domain.SysFile;
-import com.xueyi.system.api.file.feign.factory.RemoteFileFallbackFactory;
+import com.xueyi.file.api.domain.SysFile;
+import com.xueyi.file.api.feign.factory.RemoteFileFallbackFactory;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 文件服务
@@ -25,15 +26,15 @@ public interface RemoteFileService {
      * @param file 文件信息
      * @return 结果
      */
-    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/inner/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     R<SysFile> upload(@RequestPart(value = "file") MultipartFile file);
 
     /**
-     * 上传文件
+     * 删除文件
      *
      * @param url 文件地址
      * @return 结果
      */
-    @PostMapping(value = "/delete")
-    R<Boolean> delete(@RequestParam(value = "url") String url);
+    @DeleteMapping(value = "/inner/delete/{url}")
+    R<Boolean> delete(@PathVariable("url") String url);
 }

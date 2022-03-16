@@ -36,6 +36,10 @@ public class SysLoginController extends BasisController {
     @Autowired
     ISysLoginService loginService;
 
+    /**
+     * 获取当前企业信息 | 内部调用
+     */
+    @InnerAuth
     @GetMapping("/inner/enterpriseInfo/{enterpriseName}")
     R<LoginUser> getEnterpriseInfo(@PathVariable("enterpriseName") String enterpriseName) {
         SysEnterpriseDto enterprise = loginService.loginByEnterpriseName(enterpriseName);
@@ -51,7 +55,7 @@ public class SysLoginController extends BasisController {
 
 
     /**
-     * 获取当前用户信息
+     * 获取当前用户信息 | 内部调用
      */
     @InnerAuth
     @GetMapping("/inner/userInfo/{userName}/{password}")

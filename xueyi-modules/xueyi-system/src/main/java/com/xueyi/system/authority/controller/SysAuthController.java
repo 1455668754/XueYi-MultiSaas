@@ -28,7 +28,7 @@ public class SysAuthController extends BasisController {
     private ISysAuthService authService;
 
     /**
-     * 获取租户权限 | 叶子节点
+     * 获取租户权限 | 叶子节点 | 内部调用
      */
     @InnerAuth
     @GetMapping("/inner/getTenantAuth")
@@ -38,7 +38,7 @@ public class SysAuthController extends BasisController {
     }
 
     /**
-     * 新增租户权限
+     * 新增租户权限 | 内部调用
      */
     @InnerAuth
     @PostMapping("/inner/addTenantAuth")
@@ -48,7 +48,7 @@ public class SysAuthController extends BasisController {
     }
 
     /**
-     * 修改租户权限
+     * 修改租户权限 | 内部调用
      */
     @InnerAuth
     @PostMapping("/inner/editTenantAuth")

@@ -72,6 +72,12 @@
             <artifactId>xueyi-common-swagger</artifactId>
         </dependency>
 
+        <!-- XueYi Api File -->
+        <dependency>
+            <groupId>com.xueyi</groupId>
+            <artifactId>xueyi-api-file</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

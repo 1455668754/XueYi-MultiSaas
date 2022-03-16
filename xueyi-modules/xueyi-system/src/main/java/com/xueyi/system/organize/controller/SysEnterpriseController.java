@@ -28,7 +28,7 @@ public class SysEnterpriseController extends BaseController<SysEnterpriseDto, IS
     }
 
     /**
-     * 获取企业信息
+     * 获取企业信息 | 内部调用
      */
     @InnerAuth
     @GetMapping("/infoById/{enterpriseId}")

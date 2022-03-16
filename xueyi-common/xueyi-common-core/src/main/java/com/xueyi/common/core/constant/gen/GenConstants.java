@@ -323,7 +323,7 @@ public class GenConstants {
         RADIO_GROUP("RadioGroup", "复选框"),
         DATE_PICKER("DatePicker", "日期控件"),
         TIME_PICKER("TimePicker", "时间控件"),
-        IMAGE_UPLOAD("imageUpload", "图片上传"),
+        IMAGE_UPLOAD("ImageUpload", "图片上传"),
         FILE_UPLOAD("Upload", "文件上传"),
         TINYMCE("tinymce", "富文本控件"),
         MARKDOWN("markdown", "MarkDown控件");

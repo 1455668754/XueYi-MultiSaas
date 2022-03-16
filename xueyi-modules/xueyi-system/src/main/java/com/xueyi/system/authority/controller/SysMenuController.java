@@ -62,7 +62,7 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
     }
 
     /**
-     * 获取当前节点及其祖籍信息
+     * 获取当前节点及其祖籍信息 | 内部调用
      */
     @InnerAuth
     @GetMapping("/inner/{id}")

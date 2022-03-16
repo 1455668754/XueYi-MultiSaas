@@ -72,6 +72,7 @@
             <artifactId>xueyi-common-swagger</artifactId>
         </dependency>
 
+        <!-- XueYi Api Job -->
         <dependency>
             <groupId>com.xueyi</groupId>
             <artifactId>xueyi-api-job</artifactId>

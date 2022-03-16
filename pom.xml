@@ -255,6 +255,13 @@
                 <version>${xueyi.version}</version>
             </dependency>
 
+            <!-- 文件管理接口 -->
+            <dependency>
+                <groupId>com.xueyi</groupId>
+                <artifactId>xueyi-api-file</artifactId>
+                <version>${xueyi.version}</version>
+            </dependency>
+
             <!-- 定时任务接口 -->
             <dependency>
                 <groupId>com.xueyi</groupId>

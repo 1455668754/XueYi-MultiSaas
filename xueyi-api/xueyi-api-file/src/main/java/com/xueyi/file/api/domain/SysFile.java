@@ -1,14 +1,16 @@
-package com.xueyi.system.api.file.domain;
+package com.xueyi.file.api.domain;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
+import java.io.Serializable;
 
 /**
  * 文件信息
  *
  * @author xueyi
  */
-public class SysFile {
+public class SysFile implements Serializable {
 
     /** 文件Id */
     private Long id;
