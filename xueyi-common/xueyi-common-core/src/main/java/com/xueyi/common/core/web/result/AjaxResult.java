@@ -1,7 +1,8 @@
 package com.xueyi.common.core.web.result;
 
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.HttpConstants;
-import com.xueyi.common.core.utils.StringUtils;
 
 import java.util.HashMap;
 
@@ -58,8 +59,25 @@ public class AjaxResult extends HashMap<String, Object> {
         super.put(CODE_TAG, code);
         super.put(TYPE_TAG, type);
         super.put(MSG_TAG, msg);
-        if (StringUtils.isNotNull(data)) {
+        if (ObjectUtil.isNotNull(data)) {
             super.put(RESULT_TAG, data);
+        }
+    }
+
+    /**
+     * 初始化一个新创建的 AjaxResult 对象
+     *
+     * @param code 状态码
+     * @param type 返回类型
+     * @param msg  返回内容
+     * @param url 返回地址
+     */
+    public AjaxResult(int code, String type, String msg, String url) {
+        super.put(CODE_TAG, code);
+        super.put(TYPE_TAG, type);
+        super.put(MSG_TAG, msg);
+        if (StrUtil.isNotEmpty(url)) {
+            super.put(URL_TAG, url);
         }
     }
 
@@ -112,6 +130,17 @@ public class AjaxResult extends HashMap<String, Object> {
      */
     public static AjaxResult success(String msg, Object data) {
         return new AjaxResult(HttpConstants.Status.SUCCESS.getCode(), HttpConstants.ResultType.SUCCESS.getCode(), msg, data);
+    }
+
+    /**
+     * 返回成功消息
+     *
+     * @param msg  返回内容
+     * @param url 数据对象
+     * @return 成功消息
+     */
+    public static AjaxResult success(String msg, String url) {
+        return new AjaxResult(HttpConstants.Status.SUCCESS.getCode(), HttpConstants.ResultType.SUCCESS.getCode(), msg, url);
     }
 
     /**
