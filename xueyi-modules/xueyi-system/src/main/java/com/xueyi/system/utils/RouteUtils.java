@@ -174,7 +174,26 @@ public class RouteUtils {
      */
     private static String getComponent(SysMenuDto menu) {
         return ObjectUtil.equals(AuthorityConstants.MENU_TOP_NODE, menu.getParentId()) || menu.isExternalLinks()
-                ? AuthorityConstants.ComponentType.LAYOUT.getCode()
+                ? ComponentType.LAYOUT.getCode()
                 : menu.getComponent();
+    }
+
+    /** 组件标识 */
+    private enum ComponentType {
+
+        LAYOUT("LAYOUT"),
+        PARENT_VIEW("ParentView"),
+        IFRAME("IFrame");
+
+        private final String code;
+
+        ComponentType(String code) {
+            this.code = code;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
     }
 }

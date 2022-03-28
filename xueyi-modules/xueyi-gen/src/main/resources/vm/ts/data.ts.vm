@@ -1,10 +1,44 @@
 import { FormSchema } from '@/components/Form'
 import { BasicColumn } from '@/components/Table'
 import { DescItem } from '@/components/Description'
+#set($hasDict = false)
 #if($dictMap)
+#set($hasDict = true)
+#end
+#set($hasEmpty = false)
+#foreach ($column in $columns)
+#set($justOperate = false)
+#set($justEdit = false)
+#set($justInsert = false)
+#set($show = true)
+#if((($table.tree || $table.subTree) && $column.javaField == $treeMap.parentIdColumn.javaField))
+#set($show = false)
+#end
+#foreach($item in $mustHideField)
+#if($column.javaField == $item && !$column.isPk())
+#set($show = false)
+#break
+#end
+#end
+#if($column.isInsert() == false && $column.isEdit() == false && !$column.isPk())
+#set($show = false)
+#elseif($column.isInsert() == false || $column.isEdit() == false && !$column.isPk())
+#if($show == true)
+#set($hasEmpty = true)
+#break
+#end
+#end
+#end
+#if($hasDict == true && $hasEmpty == true)
+import { dicDictList } from '@service/sys/dict'
+import { dictConversion, isEmpty } from '@admin/utils'
+#elseif($hasDict == true)
 import { dicDictList } from '@service/sys/dict'
 import { dictConversion } from '@admin/utils'
+#elseif($hasEmpty == true)
+import { isEmpty } from '@admin/utils'
 #end
+
 #set($InputNumber = false)
 #set($tinymce = false)
 #set($markdown = false)
@@ -17,6 +51,7 @@ import { dictConversion } from '@admin/utils'
 #set($markdown = true)
 #end
 #end
+
 #if($tinymce || $markdown)
 import { h } from 'vue'
 #end
@@ -55,17 +90,17 @@ export const dict: any = {
 /** 表格数据 */
 export const columns: BasicColumn[] = [
 #foreach ($column in $columns)
-#set($hide = true)
+#set($show = true)
 #foreach($item in $mustHideField)
 #if($column.javaField == $item)
-#set($hide = false)
+#set($show = false)
 #break
 #end
 #end
 #if($column.isList() == false)
-#set($hide = false)
+#set($show = false)
 #end
-#if($hide)
+#if($show)
     {
         title: '${column.readNameNoSuffix()}',
         dataIndex: '${column.javaField}',
@@ -124,6 +159,9 @@ export const searchFormSchema: FormSchema[] = [
 /** 表单数据 */
 export const formSchema: FormSchema[] = [
 #foreach ($column in $columns)
+#set($justOperate = false)
+#set($justEdit = false)
+#set($justInsert = false)
 #if(($table.tree || $table.subTree) && $column.javaField == $treeMap.parentIdColumn.javaField)
     {
         label: '${treeMap.parentIdColumn.readNameNoSuffix()}',
@@ -150,8 +188,16 @@ export const formSchema: FormSchema[] = [
 #break
 #end
 #end
-#if($column.isInsert() == false && !$column.isPk())
+#if($column.isInsert() == false && $column.isEdit() == false && !$column.isPk())
 #set($show = false)
+#elseif($column.isInsert() == false || $column.isEdit() == false && !$column.isPk())
+#set($justOperate = true)
+#if($column.isInsert() == false)
+#set($justEdit = true)
+#if($column.isEdit() == false)
+#set($justInsert = true)
+#end
+#end
 #end
 #if($show)
     {
@@ -194,11 +240,13 @@ export const formSchema: FormSchema[] = [
 #end
 #if($column.isPk())
         show: false,
+#elseif($justOperate == true)
+        ifShow: ({ values }) => #if($justEdit == true)!#endisEmpty(values.${pkColumn.javaField}),
 #end
 #if($column.isRequired())
         required: true,
 #end
-#if($column.htmlType == 'InputTextArea' || $column.htmlType == 'tinymce' || $column.htmlType == 'markdown')
+#if($column.htmlType == 'ImageUpload' || $column.htmlType == 'Upload' || $column.htmlType == 'InputTextArea' || $column.htmlType == 'tinymce' || $column.htmlType == 'markdown')
         colProps: { span: 24 },
 #else
         colProps: { span: 12 },
