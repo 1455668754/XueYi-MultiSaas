@@ -286,7 +286,6 @@
         <module>xueyi-modules</module>
         <module>xueyi-api</module>
         <module>xueyi-common</module>
-        <module>yunsense-match</module>
     </modules>
     <packaging>pom</packaging>
 
