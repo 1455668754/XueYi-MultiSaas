@@ -241,7 +241,11 @@ export const formSchema: FormSchema[] = [
 #if($column.isPk())
         show: false,
 #elseif($justOperate == true)
-        ifShow: ({ values }) => #if($justEdit == true)!#endisEmpty(values.${pkColumn.javaField}),
+#set($isEmptyStr = 'isEmpty')
+#if($justEdit == true)
+#set($isEmptyStr = '!isEmpty')
+#end
+        ifShow: ({ values }) => ${isEmptyStr}(values.${pkColumn.javaField}),
 #end
 #if($column.isRequired())
         required: true,
