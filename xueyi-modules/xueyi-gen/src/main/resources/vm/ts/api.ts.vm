@@ -1,4 +1,4 @@
-import { ${BusinessName}IM,#if($table.tree || $table.subTree || $api.export) ${BusinessName}PM,#end#if(!($table.tree || $table.subTree)) ${BusinessName}PPM,#end#if($table.tree || $table.subTree) ${BusinessName}LM#else ${BusinessName}LRM#end } from '@admin/types/modules/${moduleName}'
+import { ${BusinessName}IM,#if($table.tree || $table.subTree || $api.export) ${BusinessName}PM,#end#if(!($table.tree || $table.subTree)) ${BusinessName}PPM,#end#if($table.tree || $table.subTree) ${BusinessName}LM#else ${BusinessName}LRM#end } from '@admin/types/modules/${moduleName}/${authorityName}/${businessName}'
 import { defaultRequest } from '../../../request'
 #if($api.export)
 import { formatToDateTime } from '@admin/utils'

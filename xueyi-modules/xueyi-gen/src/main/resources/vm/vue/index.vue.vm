@@ -76,13 +76,13 @@ import { useModal } from '@/components/Modal'
 import { useMessage } from '@/hooks/web/useMessage'
 import { IconEnum } from '@admin/tokens'
 import { BasicTable, TableAction, useTable } from '@/components/Table'
-import { ${BusinessName}Auth } from '@auth/${moduleName}'
+import { ${BusinessName}Auth } from '@auth/${moduleName}/${authorityName}/${businessName}.auth'
 import { columns, searchFormSchema } from './${businessName}.data'
-import { ${BusinessName}DetailGo } from '@enums/${moduleName}'
+import { ${BusinessName}DetailGo } from '@enums/${moduleName}/${authorityName}/${businessName}.enum'
 import ${BusinessName}Modal from './${BusinessName}Modal.vue'
 import { useUserStore } from '@/store/user'
 #if($api.export)
-import { ${BusinessName}PM } from '@type/${moduleName}'
+import { ${BusinessName}PM } from '@type/${moduleName}/${authorityName}/${businessName}'
 #end
 
 export default defineComponent({
