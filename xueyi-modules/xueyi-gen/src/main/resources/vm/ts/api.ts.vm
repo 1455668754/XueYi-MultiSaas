@@ -1,5 +1,8 @@
-import { ${BusinessName}IM,#if($table.tree || $table.subTree) ${BusinessName}PM#else ${BusinessName}PPM#end,#if($table.tree || $table.subTree) ${BusinessName}LM#else ${BusinessName}LRM#end } from '@admin/types/modules/${moduleName}'
+import { ${BusinessName}IM,#if($table.tree || $table.subTree || $api.export) ${BusinessName}PM,#end#if(!($table.tree || $table.subTree)) ${BusinessName}PPM,#end#if($table.tree || $table.subTree) ${BusinessName}LM#else ${BusinessName}LRM#end } from '@admin/types/modules/${moduleName}/${authorityName}/${businessName}'
 import { defaultRequest } from '../../../request'
+#if($api.export)
+import { formatToDateTime } from '@admin/utils'
+#end
 
 enum Api {
 #if($api.list)
@@ -17,6 +20,9 @@ enum Api {
 #end
     DEL_BATCH_${BUSINESSName} = '/${moduleName}/${businessName}/batch/',
     DEL_BATCH_FORCE_${BUSINESSName} = '/${moduleName}/${businessName}/batch/force/',
+#if($api.export)
+    EXPORT_${BUSINESSName} = '/${moduleName}/${businessName}/export',
+#end
 }
 
 #set($IdName = $pkColumn.javaField)
@@ -83,4 +89,13 @@ export const del${BusinessName}Api = (${IdName}s: #if($IdType == 'string | numbe
 /** 强制删除${functionName} */
 export const delForce${BusinessName}Api = (${IdName}s: #if($IdType == 'string | number')(${IdType}) | (${IdType})[]#else${IdType} | ${IdType}[]#end) =>
     defaultRequest.delete({ url: Api.DEL_BATCH_FORCE_${BUSINESSName}, params: ${IdName}s.toString() })
+#end
+
+#if($api.export)
+/** 导出${functionName} */
+export const export${BusinessName}Api = async (params?: ${BusinessName}PM) =>
+  defaultRequest.export<any>(
+    { url: Api.EXPORT_${BUSINESSName}, params: params },
+    '${functionName}_' + formatToDateTime(new Date()) + '.xlsx',
+  )
 #end

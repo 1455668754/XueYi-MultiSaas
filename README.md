@@ -1,42 +1,29 @@
-<div style="text-align:center">
-    <span style="font-size:40px" >XueYi-MultiSaas</span>
-</div>
-
-<p style="text-align:center">
-    <a>
+<h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">XueYi-MultiSaas</h1>
+<h4 align="center">基于 Vue3/TypeScript/Ant-Design UI 和 Spring Cloud & Alibaba/Mybatis-Plus 的多租户SaaS开发框架。</h4>
+<p align="center">
+    <a style="margin-right: 5px">
        <img src="https://img.shields.io/badge/XueYi--MultiSaas-v2.1.3-brightgreen" alt="xueYi-MultiSaas">
     </a>
-    <a>
-       <img src="https://img.shields.io/badge/Spring%20Cloud%20%26%20Alibaba-2021.1-brightgreen" alt="xueYi-MultiSaas">
-    </a>
-    <a>
-       <img src="https://img.shields.io/badge/Vue3-Ant--Design--Vue-green" alt="xueYi-MultiSaas">
-    </a>
-    <a>
-       <img src="https://img.shields.io/badge/vite2-TypeScript-green" alt="xueYi-MultiSaas">
-    </a>
-    <a>
-       <img src="https://img.shields.io/badge/Mybatis--Plus-3.4.0%2B-brightgreen" alt="xueYi-MultiSaas">
-    </a>
-    <a>
+    <a style="margin-right: 5px">
        <img src="https://gitee.com/xueyitiantang/XueYi-MultiSaas/badge/star.svg?theme=dark" alt="xueYi-MultiSaas">
     </a>
-    <a>
+    <a style="margin-right: 5px">
        <img src="https://gitee.com/xueyitiantang/XueYi-MultiSaas/badge/fork.svg?theme=dark" alt="xueYi-MultiSaas">
     </a>
 </p>
 
 ## 简介
-基于SpringBoot | Spring Cloud & Alibaba | Mybatis-Plus | Vue3 | vite2 | TypeScript | Ant-Design-Vue UI的多租户SaaS开发框架，为企业级多租户Saas及集团化应用提供快速开发解决方案。
+基于SpringBoot | Spring Cloud & Alibaba | Mybatis-Plus | Vue3 | vite2 | TypeScript | Ant-Design-Vue UI 的微服务多租户SaaS开发框架，为企业级多租户Saas及集团化应用提供快速开发解决方案。
 
 ## 特性
-- **多租户Saas**： 物理隔离&&逻辑隔离 --- 共享多租户&&隔离多租户
-- **动态多源策略**：租户-策略-数据源 --- 动态源增减与租户策略配置
-- **素材管理模块**：素材集中管理 --- 文件&&图片统一管理，配置
-- **权限控制优化**：角色-模块-菜单,自定义拦截器 --- 优化角色控制逻辑
-- **租户菜单层级**：租管可动态指定租户可用模块或菜单
-- **组织管理优化**：部门-岗位-用户 --- 更完善的组织架构操作与管理逻辑
-- **微聚合多前端**：前端素材&&组件公用 --- 降低系统重复冗余
+
+- **多重隔离控制**：物理隔离&&逻辑隔离，共享多租户&&隔离多租户
+- **动态多源策略**：动态源增减&&租户动态识别源
+- **租户控制优化**：通用数据&&混合租户&&独立租户多种租户模式，自动拦截，开发无感知
+- **权限控制优化**：部门&&岗位&&用户多级可控，自动拦截，开发无感知
+- **租户可配菜单**：多种混合模式控制租户菜单
+- **组织管理优化**：更完善的组织架构操作与管理逻辑
+- **微聚合多前端**：公共抽离，降低系统重复冗余
 
 ## UI
 前端地址： [MultiSaas-UI](https://gitee.com/xueyitiantang/MultiSaas-UI)
@@ -58,11 +45,11 @@
   密码：admin123
 
 - **演示**
-  >https://multi.xueyitt.cn
+  >[multi.xueyitt.cn](https://multi.xueyitt.cn)
 - **文档**
-  >https://doc.xueyitt.cn
+  >[doc.xueyitt.cn](https://doc.xueyitt.cn)
 - **视频**
-  >https://space.bilibili.com/479745149
+  >[space.bilibili.com](https://space.bilibili.com/479745149)
 
 ## 结构
 * 采用前后端分离的模式，微服务版本前端。

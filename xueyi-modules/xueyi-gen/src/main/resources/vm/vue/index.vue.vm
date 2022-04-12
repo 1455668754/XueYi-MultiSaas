@@ -21,6 +21,17 @@
           删除
         </a-button>
 #end
+#if($api.export)
+        <a-button
+          :preIcon="IconEnum.EXPORT"
+          v-auth="UserAuth.EXPORT"
+          @click="handleExport"
+          type="primary"
+          color="warning"
+        >
+          导出
+        </a-button>
+#end
 #if($table.tree || $table.subTree)
         <a-button type="primary" @click="expandAll">展开全部</a-button>
         <a-button type="primary" @click="collapseAll">折叠全部</a-button>
@@ -60,16 +71,19 @@
 
 <script lang="ts">
 import { defineComponent#if($api.batchRemove || $api.batchRemoveForce), reactive#end } from 'vue'
-import { list${BusinessName}Api, del${BusinessName}Api } from '@service/${moduleName}/${authorityName}/${businessName}'
+import { list${BusinessName}Api, del${BusinessName}Api#if($api.export), export${BusinessName}Api#end } from '@service/${moduleName}/${authorityName}/${businessName}'
 import { useModal } from '@/components/Modal'
 import { useMessage } from '@/hooks/web/useMessage'
 import { IconEnum } from '@admin/tokens'
 import { BasicTable, TableAction, useTable } from '@/components/Table'
-import { ${BusinessName}Auth } from '@auth/${moduleName}'
+import { ${BusinessName}Auth } from '@auth/${moduleName}/${authorityName}/${businessName}.auth'
 import { columns, searchFormSchema } from './${businessName}.data'
-import { ${BusinessName}DetailGo } from '@enums/${moduleName}'
+import { ${BusinessName}DetailGo } from '@enums/${moduleName}/${authorityName}/${businessName}.enum'
 import ${BusinessName}Modal from './${BusinessName}Modal.vue'
 import { useUserStore } from '@/store/user'
+#if($api.export)
+import { ${BusinessName}PM } from '@type/${moduleName}/${authorityName}/${businessName}'
+#end
 
 export default defineComponent({
   name: '${BusinessName}Management',
@@ -86,7 +100,7 @@ export default defineComponent({
       ${pkColumn.javaField}Names: '',
     })
 #end
-    const [registerTable, { reload#if($table.tree || $table.subTree), expandAll, collapseAll#end }] = useTable({
+    const [registerTable, { reload#if($table.tree || $table.subTree), expandAll, collapseAll#end#if($api.export), getForm#end }] = useTable({
       title: '${functionName}列表',
       api: list${BusinessName}Api,
       striped: false,
@@ -176,6 +190,14 @@ export default defineComponent({
       }
     }
 #end
+#if($api.export)
+
+    /** 导出按钮 */
+    function handleExport() {
+      const value = getForm().getFieldsValue() as ${BusinessName}PM
+      export${BusinessName}Api(value)
+    }
+#end
 
     function handleSuccess() {
       reload()
@@ -191,6 +213,9 @@ export default defineComponent({
       handleEdit,
 #if($api.batchRemove || $api.batchRemoveForce)
       handleDelete,
+#end
+#if($api.export)
+      handleExport,
 #end
       handleSuccess,
 #if($table.tree || $table.subTree)

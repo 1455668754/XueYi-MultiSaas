@@ -10,7 +10,7 @@ import { get${BusinessName}Api } from '@service/${moduleName}/${authorityName}/$
 import { Description, useDescription } from '@/components/Description'
 import { detailSchema } from './${businessName}.data'
 import { useRoute } from 'vue-router'
-import { ${BusinessName}IndexGo } from '@enums/${moduleName}'
+import { ${BusinessName}IndexGo } from '@enums/${moduleName}/${authorityName}/${businessName}.enum'
 import { useTabs } from '@/hooks/web/useTabs'
 import { PageWrapper } from '@/components/Page'
 import { useUserStore } from '@/store/user'
