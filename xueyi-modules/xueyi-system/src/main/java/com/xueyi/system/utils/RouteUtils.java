@@ -184,7 +184,6 @@ public class RouteUtils {
     private enum ComponentType {
 
         LAYOUT("LAYOUT"),
-        PARENT_VIEW("ParentView"),
         IFRAME("IFrame");
 
         private final String code;
