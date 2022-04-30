@@ -24,7 +24,7 @@
 #if($api.export)
         <a-button
           :preIcon="IconEnum.EXPORT"
-          v-auth="UserAuth.EXPORT"
+          v-auth="${BusinessName}Auth.EXPORT"
           @click="handleExport"
           type="primary"
           color="warning"

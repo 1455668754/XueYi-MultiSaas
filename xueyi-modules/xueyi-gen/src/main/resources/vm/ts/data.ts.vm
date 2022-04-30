@@ -22,7 +22,7 @@ import { DescItem } from '@/components/Description'
 #end
 #if($column.isInsert() == false && $column.isEdit() == false && !$column.isPk())
 #set($show = false)
-#elseif($column.isInsert() == false || $column.isEdit() == false && !$column.isPk())
+#elseif($column.isInsert() != $column.isEdit() && !$column.isPk())
 #if($show == true)
 #set($hasEmpty = true)
 #break
@@ -38,7 +38,6 @@ import { dictConversion } from '@admin/utils'
 #elseif($hasEmpty == true)
 import { isEmpty } from '@admin/utils'
 #end
-
 #set($InputNumber = false)
 #set($tinymce = false)
 #set($markdown = false)
@@ -66,7 +65,7 @@ import { MarkDown } from '@/components/Markdown'
 #end
 #foreach ($column in $columns)
 #if($column.dictType && $column.dictName)
-import { ${BusinessName}IM } from '@type/${moduleName}'
+import { ${BusinessName}IM } from '@type/${moduleName}/${authorityName}/${businessName}'
 #break
 #end
 #end
@@ -82,7 +81,7 @@ export const dictMap = await dicDictList([
 /** 字典表 */
 export const dict: any = {
 #foreach($item in ${dictMap.entrySet()})
-    ${item.value}: dictMap['${item.key}'],
+  ${item.value}: dictMap['${item.key}'],
 #end
 }
 
@@ -101,20 +100,20 @@ export const columns: BasicColumn[] = [
 #set($show = false)
 #end
 #if($show)
-    {
-        title: '${column.readNameNoSuffix()}',
-        dataIndex: '${column.javaField}',
-        width: 220,
+  {
+    title: '${column.readNameNoSuffix()}',
+    dataIndex: '${column.javaField}',
+    width: 220,
 #if($table.tree && $column.javaField == $nameColumn.javaField)
-        align: 'left',
+    align: 'left',
 #end
 #if($column.dictType && $column.dictName)
-        customRender: ({ record }) => {
-            const data = record as ${BusinessName}IM
-            return dictConversion(dict.${column.dictName}, data.${column.javaField})
-        },
-#end
+    customRender: ({ record }) => {
+      const data = record as ${BusinessName}IM
+      return dictConversion(dict.${column.dictName}, data.${column.javaField})
     },
+#end
+  },
 #end
 #end
 ]
@@ -133,25 +132,25 @@ export const searchFormSchema: FormSchema[] = [
 #set($show = false)
 #end
 #if($show)
-    {
-        label: '${column.readNameNoSuffix()}',
-        field: '${column.javaField}',
+  {
+    label: '${column.readNameNoSuffix()}',
+    field: '${column.javaField}',
 #if($column.htmlType == 'DatePicker' && ($column.queryType == 'between' || $column.queryType == 'notBetween'))
-        component: 'RangePicker',
+    component: 'RangePicker',
 #elseif($column.dictType && $column.dictName)
-        component: 'Select',
-        componentProps: {
-            options: dict.${column.dictName},
-            showSearch: true,
-            optionFilterProp: 'label',
-        },
-#elseif($column.htmlType == 'tinymce' || $column.htmlType == 'markdown')
-        component: 'Input',
-#else
-        component: '${column.htmlType}',
-#end
-        colProps: { span: 6 },
+    component: 'Select',
+    componentProps: {
+      options: dict.${column.dictName},
+      showSearch: true,
+      optionFilterProp: 'label',
     },
+#elseif($column.htmlType == 'tinymce' || $column.htmlType == 'markdown')
+    component: 'Input',
+#else
+    component: '${column.htmlType}',
+#end
+    colProps: { span: 6 },
+  },
 #end
 #end
 ]
@@ -163,23 +162,23 @@ export const formSchema: FormSchema[] = [
 #set($justEdit = false)
 #set($justInsert = false)
 #if(($table.tree || $table.subTree) && $column.javaField == $treeMap.parentIdColumn.javaField)
-    {
-        label: '${treeMap.parentIdColumn.readNameNoSuffix()}',
-        field: '${treeMap.parentIdColumn.javaField}',
-        component: 'TreeSelect',
-        componentProps: {
-            showSearch: true,
-            treeNodeFilterProp: 'title',
-            fieldNames: {
-                label: '${treeMap.nameColumn.javaField}',
-                key: '${treeMap.idColumn.javaField}',
-                value: '${treeMap.idColumn.javaField}',
-            },
-            getPopupContainer: () => document.body,
-        },
-        required: true,
-        colProps: { span: 24 },
+  {
+    label: '${treeMap.parentIdColumn.readNameNoSuffix()}',
+    field: '${treeMap.parentIdColumn.javaField}',
+    component: 'TreeSelect',
+    componentProps: {
+      showSearch: true,
+      treeNodeFilterProp: 'title',
+      fieldNames: {
+      label: '${treeMap.nameColumn.javaField}',
+      key: '${treeMap.idColumn.javaField}',
+      value: '${treeMap.idColumn.javaField}',
+      },
+      getPopupContainer: () => document.body,
     },
+    required: true,
+    colProps: { span: 24 },
+  },
 #else
 #set($show = true)
 #foreach($item in $mustHideField)
@@ -200,62 +199,62 @@ export const formSchema: FormSchema[] = [
 #end
 #end
 #if($show)
-    {
-        label: '${column.readNameNoSuffix()}',
-        field: '${column.javaField}',
+  {
+    label: '${column.readNameNoSuffix()}',
+    field: '${column.javaField}',
 #if($column.htmlType == 'tinymce')
-        component: 'Input',
-        render: ({ model, field }) => {
-            return h(Tinymce, {
-                value: model[field],
-                onChange: (value: string) => {
-                    model[field] = value
-                },
-            })
+    component: 'Input',
+    render: ({ model, field }) => {
+      return h(Tinymce, {
+        value: model[field],
+        onChange: (value: string) => {
+          model[field] = value
         },
+      })
+    },
 #elseif($column.htmlType == 'markdown')
-        component: 'Input',
-        render: ({ model, field }) => {
-            return h(MarkDown, {
-                value: model[field],
-                onChange: (value: string) => {
-                    model[field] = value
-                },
-            })
+    component: 'Input',
+    render: ({ model, field }) => {
+      return h(MarkDown, {
+        value: model[field],
+        onChange: (value: string) => {
+          model[field] = value
         },
+      })
+    },
 #else
-        component: '${column.htmlType}',
+    component: '${column.htmlType}',
 #if($column.htmlType == 'InputNumber')
-        defaultValue: DicSortEnum.ZERO,
+    defaultValue: DicSortEnum.ZERO,
 #end
 #if($column.dictType && $column.dictName)
-        componentProps: {
-            options: dict.${column.dictName},
+    componentProps: {
+      options: dict.${column.dictName},
 #if($column.htmlType == 'Select')
-            showSearch: true,
-            optionFilterProp: 'label',
+      showSearch: true,
+      optionFilterProp: 'label',
 #end
-        },
+    },
 #end
 #end
 #if($column.isPk())
-        show: false,
+    show: false,
 #elseif($justOperate == true)
 #set($isEmptyStr = 'isEmpty')
 #if($justEdit == true)
 #set($isEmptyStr = '!isEmpty')
 #end
-        ifShow: ({ values }) => ${isEmptyStr}(values.${pkColumn.javaField}),
+    ifShow: ({ values }) => ${isEmptyStr}(values.${pkColumn.javaField}),
 #end
 #if($column.isRequired())
-        required: true,
+    required: true,
 #end
 #if($column.htmlType == 'ImageUpload' || $column.htmlType == 'Upload' || $column.htmlType == 'InputTextArea' || $column.htmlType == 'tinymce' || $column.htmlType == 'markdown')
-        colProps: { span: 24 },
+    colProps: { span: 24 },
 #else
-        colProps: { span: 12 },
+    colProps: { span: 12 },
 #end
-    },
+  },
 #end
 #end
 #end
@@ -275,16 +274,16 @@ export const detailSchema: DescItem[] = [
 #set($hide = false)
 #end
 #if($hide)
-    {
-        label: '${column.readNameNoSuffix()}',
-        field: '${column.javaField}',
+  {
+    label: '${column.readNameNoSuffix()}',
+    field: '${column.javaField}',
 #if($column.dictType && $column.dictName)
-        render: (val) => {
-            return dictConversion(dict.${column.dictName}, val)
-        },
-#end
-        span: 8,
+    render: (val) => {
+      return dictConversion(dict.${column.dictName}, val)
     },
+#end
+    span: 8,
+  },
 #end
 #end
 ]

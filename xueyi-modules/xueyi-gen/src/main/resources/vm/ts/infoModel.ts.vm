@@ -37,7 +37,7 @@ export interface ${BusinessName}IM extends ${Entity}Entity${generics} {
 #else
 #set($columnType = 'any')
 #end
-   ${columnName}: ${columnType}
+  ${columnName}: ${columnType}
 #end
 #end
 }
