@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -124,7 +123,6 @@ public abstract class BaseController<D extends BaseEntity, DS extends IBaseServi
      * @see #RHandleEmptyValidated (List)  基类 空校验
      */
     public AjaxResult batchRemoveForce(@PathVariable List<Long> idList) {
-        List<Long> s = new ArrayList<>();
         RHandleEmptyValidated(idList);
         RHandleValidated(BaseConstants.Operate.DELETE_FORCE, idList);
         return toAjax(baseService.deleteByIds(idList));
