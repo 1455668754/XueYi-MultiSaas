@@ -5,8 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
-import com.xueyi.common.web.entity.manager.BaseManager;
-import com.xueyi.common.web.entity.mapper.BaseMapper;
+import com.xueyi.common.web.entity.manager.IBaseManager;
 import com.xueyi.common.web.entity.service.IBaseService;
 import com.xueyi.common.web.entity.service.impl.handle.BaseHandleServiceImpl;
 
@@ -17,44 +16,44 @@ import java.util.List;
 /**
  * 服务层 基类实现通用数据处理
  *
- * @param <D>  Dto
- * @param <DG> DtoManager
- * @param <DM> DtoMapper
+ * @param <Q>   Query
+ * @param <D>   Dto
+ * @param <IDG> DtoIManager
  * @author xueyi
  */
-public class BaseServiceImpl<D extends BaseEntity, DG extends BaseManager<D, DM>, DM extends BaseMapper<D>> extends BaseHandleServiceImpl<D, DG, DM> implements IBaseService<D> {
+public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG extends IBaseManager<Q, D>> extends BaseHandleServiceImpl<Q, D, IDG> implements IBaseService<Q, D> {
 
     /**
      * 查询数据对象列表
      *
-     * @param d 数据对象
+     * @param query 数据查询对象
      * @return 数据对象集合
      */
     @Override
-    public List<D> selectList(D d) {
-        return baseManager.selectList(d);
+    public List<D> selectList(Q query) {
+        return baseManager.selectList(query);
     }
 
     /**
      * 查询数据对象列表 | 附加数据
      *
-     * @param d 数据对象
+     * @param query 数据查询对象
      * @return 数据对象集合
      */
     @Override
-    public List<D> selectListExtra(D d) {
-        return baseManager.selectListExtra(d);
+    public List<D> selectListExtra(Q query) {
+        return baseManager.selectListExtra(query);
     }
 
     /**
      * 查询数据对象列表 | 数据权限 | 附加数据
      *
-     * @param d 数据对象
+     * @param query 数据查询对象
      * @return 数据对象集合
      */
     @Override
-    public List<D> selectListScope(D d) {
-        return baseManager.selectListExtra(d);
+    public List<D> selectListScope(Q query) {
+        return baseManager.selectListExtra(query);
     }
 
     /**

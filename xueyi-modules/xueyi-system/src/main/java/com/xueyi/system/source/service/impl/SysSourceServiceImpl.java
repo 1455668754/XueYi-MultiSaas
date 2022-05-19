@@ -2,10 +2,8 @@ package com.xueyi.system.source.service.impl;
 
 import com.xueyi.common.core.constant.basic.CacheConstants;
 import com.xueyi.common.redis.service.RedisService;
-import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.source.domain.Source;
-import com.xueyi.system.source.manager.SysSourceManager;
-import com.xueyi.system.source.mapper.SysSourceMapper;
+import com.xueyi.system.source.manager.impl.SysSourceManager;
 import com.xueyi.system.source.service.ISysSourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +20,10 @@ import java.util.Map;
  * @author xueyi
  */
 @Service
-public class SysSourceServiceImpl extends BaseServiceImpl<Source, SysSourceManager, SysSourceMapper> implements ISysSourceService {
+public class SysSourceServiceImpl implements ISysSourceService {
+
+    @Autowired
+    private SysSourceManager baseManager;
 
     @Autowired
     private RedisService redisService;

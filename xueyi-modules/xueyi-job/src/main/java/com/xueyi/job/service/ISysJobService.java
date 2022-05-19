@@ -2,6 +2,7 @@ package com.xueyi.job.service;
 
 import com.xueyi.common.core.exception.job.TaskException;
 import com.xueyi.job.api.domain.dto.SysJobDto;
+import com.xueyi.job.api.domain.query.SysJobQuery;
 import org.quartz.SchedulerException;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public interface ISysJobService {
      * @param job 调度任务对象
      * @return 调度任务对象集合
      */
-    List<SysJobDto> selectListScope(SysJobDto job);
+    List<SysJobDto> selectListScope(SysJobQuery job);
 
     /**
      * 根据Id查询单条调度任务对象

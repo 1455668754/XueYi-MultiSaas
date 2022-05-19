@@ -2,26 +2,31 @@ package ${packageName}.service.impl;
 
 #if($table.base)
 #set($Entity="Base")
-#set($generics = "<"+${ClassName}+"Dto, "+${ClassName}+"Manager, "+${ClassName}+"Mapper>")
+#set($generics = "<"+${ClassName}+"Query, "+${ClassName}+"Dto, "+${ClassName}+"Manager>")
 #elseif($table.tree)
 #set($Entity="Tree")
-#set($generics = "<"+${ClassName}+"Dto, "+${ClassName}+"Manager, "+${ClassName}+"Mapper>")
+#set($generics = "<"+${ClassName}+"Query, "+${ClassName}+"Dto, "+${ClassName}+"Manager>")
 #elseif($table.subBase)
 #set($Entity="SubBase")
-#set($generics = "<"+${ClassName}+"Dto, "+${ClassName}+"Manager, "+${ClassName}+"Mapper, "+${subClassName}+"Dto, I"+${subClassName}+"Service, "+${subClassName}+"Mapper>")
+#set($generics =
+"<"+${ClassName}+"Query, "+${ClassName}+"Dto, "+${ClassName}+"Manager, "+${subClassName}+"Query, "+${subClassName}+
+"Dto, I"+${subClassName}+"Service>")
 #elseif($table.subTree)
 #set($Entity="SubTree")
-#set($generics = "<"+${ClassName}+"Dto, "+${ClassName}+"Manager, "+${ClassName}+"Mapper, "+${subClassName}+"Dto, I"+${subClassName}+"Service, "+${subClassName}+"Mapper>")
+#set($generics =
+"<"+${ClassName}+"Query, "+${ClassName}+"Dto, "+${ClassName}+"Manager, "+${subClassName}+"Query, "+${subClassName}+
+"Dto, I"+${subClassName}+"Service>")
 #end
+import ${packageName}.domain.query.${ClassName}Query;
 import ${packageName}.domain.dto.${ClassName}Dto;
 import ${packageName}.service.I${ClassName}Service;
 import ${packageName}.manager.${ClassName}Manager;
-import ${packageName}.mapper.${ClassName}Mapper;
 #if($table.subBase || $table.subTree)
+import ${subPackageName}.domain.query.${subClassName}Query;
 import ${subPackageName}.domain.dto.${subClassName}Dto;
 import ${subPackageName}.service.I${subClassName}Service;
-import ${subPackageName}.mapper.${subClassName}Mapper;
 import cn.hutool.core.util.ObjectUtil;
+
 import java.io.Serializable;
 import java.util.Collection;
 #end
@@ -46,7 +51,7 @@ public class ${ClassName}ServiceImpl extends ${Entity}ServiceImpl${generics} imp
      */
     @Override
     //@DataScope(userAlias = "createBy", mapperScope = {"${ClassName}Mapper"})
-    public List<${ClassName}Dto> selectListScope(${ClassName}Dto ${classNameNoPrefix}) {
+    public List<${ClassName}Dto> selectListScope(${ClassName}Query ${classNameNoPrefix}) {
         return baseManager.selectListExtra(${classNameNoPrefix});
     }
 
@@ -69,11 +74,13 @@ public class ${ClassName}ServiceImpl extends ${Entity}ServiceImpl${generics} imp
      */
     @Override
     protected void setForeignKey(Collection<${subClassName}Dto> ${subclassNameNoPrefix}List, ${subClassName}Dto ${subclassNameNoPrefix}, ${ClassName}Dto ${classNameNoPrefix}, Serializable key) {
-        ${subForeignColumn.javaType} ${subForeignColumn.javaField} = ObjectUtil.isNotNull(${classNameNoPrefix}) ? ${classNameNoPrefix}.get${field}() : (${subForeignColumn.javaType}) key;
+    ${subForeignColumn.javaType} ${subForeignColumn.javaField} =
+        ObjectUtil.isNotNull(${classNameNoPrefix}) ? ${classNameNoPrefix}.get${field}() :(${subForeignColumn.javaType})
+        key;
         if (ObjectUtil.isNotNull(${subclassNameNoPrefix}))
-            ${subclassNameNoPrefix}.set${subField}(${subForeignColumn.javaField});
+    ${subclassNameNoPrefix}.set${subField}(${subForeignColumn.javaField});
         else
-            ${subclassNameNoPrefix}List.forEach(sub -> sub.set${subField}(${subForeignColumn.javaField}));
+    ${subclassNameNoPrefix}List.forEach(sub -> sub.set${subField}(${subForeignColumn.javaField}));
     }
 #end
 }

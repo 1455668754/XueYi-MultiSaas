@@ -5,8 +5,8 @@ import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.tenant.api.tenant.domain.dto.TeStrategyDto;
-import com.xueyi.tenant.tenant.manager.TeStrategyManager;
-import com.xueyi.tenant.tenant.mapper.TeStrategyMapper;
+import com.xueyi.tenant.api.tenant.domain.query.TeStrategyQuery;
+import com.xueyi.tenant.tenant.manager.ITeStrategyManager;
 import com.xueyi.tenant.tenant.service.ITeStrategyService;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
  * @author xueyi
  */
 @Service
-public class TeStrategyServiceImpl extends BaseServiceImpl<TeStrategyDto, TeStrategyManager, TeStrategyMapper> implements ITeStrategyService {
+public class TeStrategyServiceImpl extends BaseServiceImpl<TeStrategyQuery, TeStrategyDto, ITeStrategyManager> implements ITeStrategyService {
 
     /**
      * 校验数据源是否被使用

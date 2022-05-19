@@ -5,7 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.system.OrganizeConstants;
 import com.xueyi.common.core.utils.TreeUtils;
 import com.xueyi.system.organize.domain.vo.SysOrganizeTree;
-import com.xueyi.system.organize.manager.SysOrganizeManager;
+import com.xueyi.system.organize.manager.impl.SysOrganizeManager;
 import com.xueyi.system.organize.service.ISysOrganizeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

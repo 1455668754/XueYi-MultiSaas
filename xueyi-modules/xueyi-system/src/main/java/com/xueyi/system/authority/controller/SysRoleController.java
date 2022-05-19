@@ -14,6 +14,7 @@ import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
+import com.xueyi.system.api.authority.domain.query.SysRoleQuery;
 import com.xueyi.system.authority.domain.vo.SysAuthTree;
 import com.xueyi.system.authority.service.ISysAuthService;
 import com.xueyi.system.authority.service.ISysRoleService;
@@ -33,7 +34,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/role")
-public class SysRoleController extends BaseController<SysRoleDto, ISysRoleService> {
+public class SysRoleController extends BaseController<SysRoleQuery, SysRoleDto, ISysRoleService> {
 
     @Autowired
     private ISysAuthService authService;
@@ -53,7 +54,7 @@ public class SysRoleController extends BaseController<SysRoleDto, ISysRoleServic
     @Override
     @GetMapping("/list")
     @RequiresPermissions(Auth.SYS_ROLE_LIST)
-    public AjaxResult list(SysRoleDto role) {
+    public AjaxResult list(SysRoleQuery role) {
         return super.list(role);
     }
 
@@ -93,7 +94,7 @@ public class SysRoleController extends BaseController<SysRoleDto, ISysRoleServic
     @PostMapping("/export")
     @RequiresPermissions(Auth.SYS_ROLE_EXPORT)
     @Log(title = "角色管理", businessType = BusinessType.EXPORT)
-    public void export(HttpServletResponse response, SysRoleDto role) {
+    public void export(HttpServletResponse response, SysRoleQuery role) {
         super.export(response, role);
     }
 
@@ -156,7 +157,7 @@ public class SysRoleController extends BaseController<SysRoleDto, ISysRoleServic
      */
     @Override
     @DeleteMapping("/batch/{idList}")
-    @RequiresPermissions(Auth.SYS_ROLE_DELETE)
+    @RequiresPermissions(Auth.SYS_ROLE_DEL)
     @Log(title = "角色管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);

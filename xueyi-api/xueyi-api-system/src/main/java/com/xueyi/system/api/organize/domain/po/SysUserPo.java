@@ -2,6 +2,7 @@ package com.xueyi.system.api.organize.domain.po;
 
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.xueyi.common.core.annotation.Excel;
 import com.xueyi.common.core.annotation.Excel.Type;
@@ -18,6 +19,7 @@ import java.util.Date;
  *
  * @author xueyi
  */
+@TableName(value = "sys_user", excludeProperty = {"name"})
 public class SysUserPo extends TBaseEntity {
 
     private static final long serialVersionUID = 1L;

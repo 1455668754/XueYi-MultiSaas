@@ -1,8 +1,9 @@
 package com.xueyi.tenant.api.tenant.domain.po;
 
-import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.common.core.annotation.Excel;
+import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.core.xss.Xss;
 
 import javax.validation.constraints.NotBlank;
@@ -13,6 +14,7 @@ import javax.validation.constraints.Size;
  *
  * @author xueyi
  */
+@TableName("te_tenant")
 public class TeTenantPo extends BaseEntity {
 
     private static final long serialVersionUID = 1L;

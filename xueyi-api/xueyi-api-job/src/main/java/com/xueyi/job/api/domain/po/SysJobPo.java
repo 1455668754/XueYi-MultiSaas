@@ -3,9 +3,11 @@ package com.xueyi.job.api.domain.po;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.xueyi.common.core.annotation.Excel;
 import com.xueyi.common.core.web.tenant.base.TSubBaseEntity;
+import com.xueyi.job.api.domain.dto.SysJobLogDto;
 import com.xueyi.job.api.utils.CronUtils;
 
 import javax.validation.constraints.NotBlank;
@@ -15,10 +17,10 @@ import java.util.Date;
 /**
  * 调度任务 持久化对象
  *
- * @param <S> SubDto
  * @author xueyi
  */
-public class SysJobPo<S> extends TSubBaseEntity<S> {
+@TableName(value = "sys_job", excludeProperty = {"sort"})
+public class SysJobPo extends TSubBaseEntity<SysJobLogDto> {
 
     private static final long serialVersionUID = 1L;
 

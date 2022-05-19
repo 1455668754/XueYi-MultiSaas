@@ -5,9 +5,7 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.core.web.entity.base.SubTreeEntity;
-import com.xueyi.common.web.entity.manager.SubTreeManager;
-import com.xueyi.common.web.entity.mapper.BaseMapper;
-import com.xueyi.common.web.entity.mapper.SubTreeMapper;
+import com.xueyi.common.web.entity.manager.ISubTreeManager;
 import com.xueyi.common.web.entity.service.IBaseService;
 import com.xueyi.common.web.entity.service.ISubTreeService;
 import com.xueyi.common.web.entity.service.impl.handle.SubTreeHandleServiceImpl;
@@ -19,15 +17,15 @@ import java.util.List;
 /**
  * 服务层 主子树型实现通用数据处理
  *
- * @param <D>  Dto
- * @param <DG> DtoManager
- * @param <DM> DtoMapper
- * @param <S>  SubDto
- * @param <SS> SubService
- * @param <SM> SubMapper
+ * @param <Q>   Query
+ * @param <D>   Dto
+ * @param <IDG> DtoIManager
+ * @param <SQ>  SubQuery
+ * @param <SD>  SubDto
+ * @param <ISS> SubIService
  * @author xueyi
  */
-public abstract class SubTreeServiceImpl<D extends SubTreeEntity<D, S>, DG extends SubTreeManager<D, DM, S, SM>, DM extends SubTreeMapper<D, S>, S extends BaseEntity, SS extends IBaseService<S>, SM extends BaseMapper<S>> extends SubTreeHandleServiceImpl<D, DG, DM, S, SS, SM> implements ISubTreeService<D, S> {
+public abstract class SubTreeServiceImpl<Q extends SubTreeEntity<D, SD>, D extends SubTreeEntity<D, SD>, IDG extends ISubTreeManager<Q, D, SQ, SD>, SQ extends BaseEntity, SD extends BaseEntity, ISS extends IBaseService<SQ, SD>> extends SubTreeHandleServiceImpl<Q, D, IDG, SQ, SD, ISS> implements ISubTreeService<Q, D, SQ, SD> {
 
     /**
      * 根据外键查询子数据对象集合 | 子数据
@@ -36,7 +34,7 @@ public abstract class SubTreeServiceImpl<D extends SubTreeEntity<D, S>, DG exten
      * @return 子数据对象集合
      */
     @Override
-    public List<S> selectSubByForeignKey(Serializable foreignKey) {
+    public List<SD> selectSubByForeignKey(Serializable foreignKey) {
         return baseManager.selectSubByForeignKey(foreignKey);
     }
 

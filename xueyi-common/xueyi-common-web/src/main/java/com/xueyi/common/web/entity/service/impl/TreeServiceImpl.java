@@ -6,8 +6,7 @@ import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.utils.TreeUtils;
 import com.xueyi.common.core.web.entity.base.TreeEntity;
 import com.xueyi.common.core.web.vo.TreeSelect;
-import com.xueyi.common.web.entity.manager.TreeManager;
-import com.xueyi.common.web.entity.mapper.TreeMapper;
+import com.xueyi.common.web.entity.manager.ITreeManager;
 import com.xueyi.common.web.entity.service.ITreeService;
 import com.xueyi.common.web.entity.service.impl.handle.TreeHandleServiceImpl;
 
@@ -19,12 +18,12 @@ import java.util.stream.Collectors;
 /**
  * 服务层 树型实现通用数据处理
  *
- * @param <D>  Dto
- * @param <DG> DtoManager
- * @param <DM> DtoMapper
+ * @param <Q>   Query
+ * @param <D>   Dto
+ * @param <IDG> DtoIManager
  * @author xueyi
  */
-public class TreeServiceImpl<D extends TreeEntity<D>, DG extends TreeManager<D, DM>, DM extends TreeMapper<D>> extends TreeHandleServiceImpl<D, DG, DM> implements ITreeService<D> {
+public class TreeServiceImpl<Q extends TreeEntity<D>, D extends TreeEntity<D>, IDG extends ITreeManager<Q, D>> extends TreeHandleServiceImpl<Q, D, IDG> implements ITreeService<Q, D> {
 
     /**
      * 根据Id查询本节点及其所有祖籍节点

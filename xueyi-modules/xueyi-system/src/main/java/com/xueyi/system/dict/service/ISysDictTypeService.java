@@ -3,13 +3,15 @@ package com.xueyi.system.dict.service;
 import com.xueyi.common.web.entity.service.ISubBaseService;
 import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
 import com.xueyi.system.api.dict.domain.dto.SysDictTypeDto;
+import com.xueyi.system.api.dict.domain.query.SysDictDataQuery;
+import com.xueyi.system.api.dict.domain.query.SysDictTypeQuery;
 
 /**
  * 字典类型管理 服务层
  *
  * @author xueyi
  */
-public interface ISysDictTypeService extends ISubBaseService<SysDictTypeDto, SysDictDataDto> {
+public interface ISysDictTypeService extends ISubBaseService<SysDictTypeQuery, SysDictTypeDto, SysDictDataQuery, SysDictDataDto> {
 
     /**
      * 加载字典缓存数据

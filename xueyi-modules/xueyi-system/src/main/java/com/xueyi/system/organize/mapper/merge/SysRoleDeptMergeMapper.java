@@ -1,7 +1,7 @@
 package com.xueyi.system.organize.mapper.merge;
 
 import com.xueyi.common.datasource.annotation.Isolate;
-import com.xueyi.common.web.entity.mapper.BaseMapper;
+import com.xueyi.common.web.entity.mapper.BasicMapper;
 import com.xueyi.system.organize.domain.merge.SysRoleDeptMerge;
 
 /**
@@ -10,5 +10,5 @@ import com.xueyi.system.organize.domain.merge.SysRoleDeptMerge;
  * @author xueyi
  */
 @Isolate
-public interface SysRoleDeptMergeMapper extends BaseMapper<SysRoleDeptMerge> {
+public interface SysRoleDeptMergeMapper extends BasicMapper<SysRoleDeptMerge> {
 }

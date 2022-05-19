@@ -1,6 +1,7 @@
 package com.xueyi.system.api.organize.domain.po;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.common.core.annotation.Excel;
 import com.xueyi.common.core.web.tenant.base.TBaseEntity;
 import com.xueyi.common.core.xss.Xss;
@@ -14,6 +15,7 @@ import javax.validation.constraints.Size;
  *
  * @author xueyi
  */
+@TableName("sys_post")
 public class SysPostPo extends TBaseEntity {
 
     private static final long serialVersionUID = 1L;

@@ -16,43 +16,46 @@ import java.util.List;
 /**
  * 操作层 操作方法 基类通用数据处理
  *
- * @param <D>  Dto
- * @param <DS> DtoService
+ * @param <Q>   Query
+ * @param <D>   Dto
+ * @param <IDS> DtoService
  * @author xueyi
  */
-public abstract class BaseHandleController<D extends BaseEntity, DS extends IBaseService<D>> extends BasisController {
+public abstract class BaseHandleController<Q extends BaseEntity, D extends BaseEntity, IDS extends IBaseService<Q, D>> extends BasisController {
 
     @Autowired
-    protected DS baseService;
+    protected IDS baseService;
+
+    /** Query泛型的类型 */
+    @SuppressWarnings("unchecked")
+    private final Class<Q> QClass = (Class<Q>) getClazz(0);
+
+    /** Dto泛型的类型 */
+    @SuppressWarnings("unchecked")
+    private final Class<D> DClass = (Class<D>) getClazz(1);
 
     /** 定义节点名称 */
     protected abstract String getNodeName();
 
-    /**
-     * 获取D.class
-     *
-     * @return class
-     */
-    protected Class<D> getClazz() {
-        Type type = getClass().getGenericSuperclass();
-        if (type instanceof ParameterizedType) {
-            ParameterizedType pType = (ParameterizedType) type;
-            return (Class<D>) pType.getActualTypeArguments()[0];
-        }
-        return null;
+    public Class<Q> getQClass() {
+        return QClass;
+    }
+
+    public Class<D> getDClass() {
+        return DClass;
     }
 
     /**
-     * new D
+     * 获取class
      *
-     * @return D
+     * @return class
      */
-    protected D newBaseObject() {
-        Class<D> clazz = getClazz();
-        try {
-            if(clazz != null)
-                return clazz.newInstance();
-        }catch (Exception ignored){}
+    protected Type getClazz(int index) {
+        Type type = this.getClass().getGenericSuperclass();
+        if (type instanceof ParameterizedType) {
+            ParameterizedType pType = (ParameterizedType) type;
+            return pType.getActualTypeArguments()[index];
+        }
         return null;
     }
 

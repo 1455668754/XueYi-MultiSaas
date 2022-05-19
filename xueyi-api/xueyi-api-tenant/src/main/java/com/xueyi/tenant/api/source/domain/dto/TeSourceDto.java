@@ -1,8 +1,6 @@
 package com.xueyi.tenant.api.source.domain.dto;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.xueyi.tenant.api.source.domain.po.TeSourcePo;
-import com.baomidou.mybatisplus.annotation.TableName;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -11,13 +9,11 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  * @author xueyi
  */
-@TableName("te_source")
 public class TeSourceDto extends TeSourcePo {
 
     private static final long serialVersionUID = 1L;
 
     /** 源同步策略（0不变 1刷新 2启动 3删除） */
-    @TableField(exist = false)
     private String syncType;
 
     public String getSyncType() {

@@ -7,7 +7,8 @@ import com.xueyi.common.core.exception.job.TaskException;
 import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.job.api.domain.dto.SysJobDto;
-import com.xueyi.job.manager.SysJobManager;
+import com.xueyi.job.api.domain.query.SysJobQuery;
+import com.xueyi.job.manager.impl.SysJobManager;
 import com.xueyi.job.service.ISysJobService;
 import com.xueyi.job.util.ScheduleUtils;
 import org.quartz.JobDataMap;
@@ -55,7 +56,7 @@ public class SysJobServiceImpl implements ISysJobService {
      */
     @Override
     @DataScope(userAlias = CREATE_BY, mapperScope = "SysJobMapper")
-    public List<SysJobDto> selectListScope(SysJobDto job) {
+    public List<SysJobDto> selectListScope(SysJobQuery job) {
         return baseManager.selectList(job);
     }
 

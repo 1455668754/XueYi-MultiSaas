@@ -9,6 +9,7 @@ import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.system.api.log.domain.dto.SysLoginLogDto;
+import com.xueyi.system.api.log.domain.query.SysLoginLogQuery;
 import com.xueyi.system.monitor.service.ISysLoginLogService;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +23,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/loginLog")
-public class SysLoginLogController extends BaseController<SysLoginLogDto, ISysLoginLogService> {
+public class SysLoginLogController extends BaseController<SysLoginLogQuery, SysLoginLogDto, ISysLoginLogService> {
 
     /** 定义节点名称 */
     @Override
@@ -46,7 +47,7 @@ public class SysLoginLogController extends BaseController<SysLoginLogDto, ISysLo
     @Override
     @GetMapping("/list")
     @RequiresPermissions(Auth.SYS_LOGIN_LOG_LIST)
-    public AjaxResult list(SysLoginLogDto loginLog) {
+    public AjaxResult list(SysLoginLogQuery loginLog) {
         return super.list(loginLog);
     }
 
@@ -57,7 +58,7 @@ public class SysLoginLogController extends BaseController<SysLoginLogDto, ISysLo
     @PostMapping("/export")
     @RequiresPermissions(Auth.SYS_LOGIN_LOG_EXPORT)
     @Log(title = "访问日志", businessType = BusinessType.EXPORT)
-    public void export(HttpServletResponse response, SysLoginLogDto loginLog) {
+    public void export(HttpServletResponse response, SysLoginLogQuery loginLog) {
         super.export(response, loginLog);
     }
 
@@ -66,14 +67,14 @@ public class SysLoginLogController extends BaseController<SysLoginLogDto, ISysLo
      */
     @Override
     @DeleteMapping("/batch/{idList}")
-    @RequiresPermissions(Auth.SYS_LOGIN_LOG_DELETE)
+    @RequiresPermissions(Auth.SYS_LOGIN_LOG_DEL)
     @Log(title = "访问日志", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);
     }
 
     @DeleteMapping("/clean")
-    @RequiresPermissions(Auth.SYS_LOGIN_LOG_DELETE)
+    @RequiresPermissions(Auth.SYS_LOGIN_LOG_DEL)
     @Log(title = "访问日志", businessType = BusinessType.CLEAN)
     public AjaxResult clean() {
         baseService.cleanLoginLog();

@@ -3,6 +3,8 @@ package com.xueyi.gen.mapper;
 import com.baomidou.mybatisplus.annotation.InterceptorIgnore;
 import com.xueyi.common.web.entity.mapper.BaseMapper;
 import com.xueyi.gen.domain.dto.GenTableColumnDto;
+import com.xueyi.gen.domain.po.GenTableColumnPo;
+import com.xueyi.gen.domain.query.GenTableColumnQuery;
 
 import java.util.List;
 
@@ -11,7 +13,7 @@ import java.util.List;
  *
  * @author xueyi
  */
-public interface GenTableColumnMapper extends BaseMapper<GenTableColumnDto> {
+public interface GenTableColumnMapper extends BaseMapper<GenTableColumnQuery, GenTableColumnDto, GenTableColumnPo> {
 
     /**
      * 根据表名称查询数据库表列信息

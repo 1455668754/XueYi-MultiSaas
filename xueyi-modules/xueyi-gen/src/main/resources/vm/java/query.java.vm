@@ -1,0 +1,13 @@
+package ${packageName}.domain.query;
+
+import ${packageName}.domain.po.${ClassName}Po;
+
+/**
+ * ${functionName} 数据查询对象
+ *
+ * @author ${author}
+ */
+public class ${ClassName}Query extends ${ClassName}Po {
+
+    private static final long serialVersionUID = 1L;
+}

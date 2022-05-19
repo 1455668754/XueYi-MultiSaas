@@ -16,6 +16,8 @@ import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.web.entity.controller.SubTreeController;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
+import com.xueyi.system.api.organize.domain.query.SysDeptQuery;
+import com.xueyi.system.api.organize.domain.query.SysPostQuery;
 import com.xueyi.system.organize.service.ISysDeptService;
 import com.xueyi.system.organize.service.ISysOrganizeService;
 import com.xueyi.system.organize.service.ISysPostService;
@@ -34,7 +36,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/dept")
-public class SysDeptController extends SubTreeController<SysDeptDto, ISysDeptService, SysPostDto, ISysPostService> {
+public class SysDeptController extends SubTreeController<SysDeptQuery, SysDeptDto, ISysDeptService, SysPostQuery, SysPostDto, ISysPostService> {
 
     @Autowired
     private ISysOrganizeService organizeService;
@@ -66,7 +68,7 @@ public class SysDeptController extends SubTreeController<SysDeptDto, ISysDeptSer
     @Override
     @GetMapping("/list")
     @RequiresPermissions(Auth.SYS_DEPT_LIST)
-    public AjaxResult list(SysDeptDto dept) {
+    public AjaxResult list(SysDeptQuery dept) {
         return super.list(dept);
     }
 
@@ -75,7 +77,7 @@ public class SysDeptController extends SubTreeController<SysDeptDto, ISysDeptSer
      */
     @GetMapping("/list/exclude")
     @RequiresPermissions(Auth.SYS_DEPT_LIST)
-    public AjaxResult listExNodes(SysDeptDto dept) {
+    public AjaxResult listExNodes(SysDeptQuery dept) {
         return super.listExNodes(dept);
     }
 
@@ -97,7 +99,7 @@ public class SysDeptController extends SubTreeController<SysDeptDto, ISysDeptSer
     public AjaxResult getRoleAuth(@PathVariable Long id) {
         return AjaxResult.success(organizeService.selectDeptRoleMerge(id));
     }
-    
+
     /**
      * 部门导出
      */
@@ -105,7 +107,7 @@ public class SysDeptController extends SubTreeController<SysDeptDto, ISysDeptSer
     @PostMapping("/export")
     @RequiresPermissions(Auth.SYS_DEPT_EXPORT)
     @Log(title = "部门管理", businessType = BusinessType.EXPORT)
-    public void export(HttpServletResponse response, SysDeptDto dept) {
+    public void export(HttpServletResponse response, SysDeptQuery dept) {
         super.export(response, dept);
     }
 
@@ -157,7 +159,7 @@ public class SysDeptController extends SubTreeController<SysDeptDto, ISysDeptSer
      */
     @Override
     @DeleteMapping("/batch/{idList}")
-    @RequiresPermissions(Auth.SYS_DEPT_DELETE)
+    @RequiresPermissions(Auth.SYS_DEPT_DEL)
     @Log(title = "部门管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);

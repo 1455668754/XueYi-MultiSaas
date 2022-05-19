@@ -15,6 +15,7 @@ import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.tenant.api.source.domain.dto.TeSourceDto;
+import com.xueyi.tenant.api.source.domain.query.TeSourceQuery;
 import com.xueyi.tenant.source.service.ITeSourceService;
 import com.xueyi.tenant.tenant.service.ITeStrategyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/source")
-public class TeSourceController extends BaseController<TeSourceDto, ITeSourceService> {
+public class TeSourceController extends BaseController<TeSourceQuery, TeSourceDto, ITeSourceService> {
 
     @Autowired
     private ITeStrategyService strategyService;
@@ -49,7 +50,7 @@ public class TeSourceController extends BaseController<TeSourceDto, ITeSourceSer
     @Override
     @GetMapping("/list")
     @RequiresPermissions(Auth.TE_SOURCE_LIST)
-    public AjaxResult list(TeSourceDto source) {
+    public AjaxResult list(TeSourceQuery source) {
         return super.list(source);
     }
 
@@ -69,7 +70,7 @@ public class TeSourceController extends BaseController<TeSourceDto, ITeSourceSer
     @Override
     @PostMapping("/export")
     @RequiresPermissions(Auth.TE_SOURCE_EXPORT)
-    public void export(HttpServletResponse response, TeSourceDto source) {
+    public void export(HttpServletResponse response, TeSourceQuery source) {
         super.export(response, source);
     }
 
@@ -120,7 +121,7 @@ public class TeSourceController extends BaseController<TeSourceDto, ITeSourceSer
      */
     @Override
     @DeleteMapping("/batch/{idList}")
-    @RequiresPermissions(Auth.TE_SOURCE_DELETE)
+    @RequiresPermissions(Auth.TE_SOURCE_DEL)
     @Log(title = "数据源管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);

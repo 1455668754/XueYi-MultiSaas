@@ -1,11 +1,11 @@
 package com.xueyi.system.api.dict.feign.factory;
 
+import com.xueyi.common.core.domain.R;
 import com.xueyi.system.api.dict.feign.RemoteConfigService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
-import com.xueyi.common.core.domain.R;
 
 /**
  * 参数服务 降级处理

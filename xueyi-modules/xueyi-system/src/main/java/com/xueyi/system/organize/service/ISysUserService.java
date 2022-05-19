@@ -2,6 +2,7 @@ package com.xueyi.system.organize.service;
 
 import com.xueyi.common.web.entity.service.IBaseService;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
+import com.xueyi.system.api.organize.domain.query.SysUserQuery;
 
 import java.io.Serializable;
 
@@ -10,7 +11,7 @@ import java.io.Serializable;
  *
  * @author xueyi
  */
-public interface ISysUserService extends IBaseService<SysUserDto> {
+public interface ISysUserService extends IBaseService<SysUserQuery, SysUserDto> {
 
     /**
      * 用户登录校验 | 查询用户信息

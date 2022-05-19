@@ -1,0 +1,25 @@
+package ${packageName}.domain.model;
+
+#if($table.base)
+#set($Entity="BaseConverter")
+#elseif($table.tree)
+#set($Entity="TreeConverter")
+#elseif($table.subBase)
+#set($Entity="SubBaseConverter")
+#elseif($table.subTree)
+#set($Entity="SubTreeConverter")
+#end
+import com.xueyi.common.core.web.entity.model.${Entity};
+import ${packageName}.domain.dto.${ClassName}Dto;
+import ${packageName}.domain.po.${ClassName}Po;
+import ${packageName}.domain.query.${ClassName}Query;
+import org.mapstruct.Mapper;
+
+/**
+ * ${functionName} 对象映射器
+ *
+ * @author ${author}
+ */
+@Mapper(componentModel = "spring")
+public interface ${ClassName}Converter extends ${Entity}<${ClassName}Query, ${ClassName}Dto, ${ClassName}Po> {
+        }

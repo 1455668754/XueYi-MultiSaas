@@ -17,13 +17,15 @@ import java.util.List;
 /**
  * 操作层 主子树型通用数据处理
  *
- * @param <D>  Dto
- * @param <DS> DtoService
- * @param <S>  SubDto
- * @param <SS> SubService
+ * @param <Q>   Query
+ * @param <D>   Dto
+ * @param <IDS> DtoService
+ * @param <SQ>  SubQuery
+ * @param <SD>  SubDto
+ * @param <ISS> SubService
  * @author xueyi
  */
-public abstract class SubTreeController<D extends SubTreeEntity<D, S>, DS extends ISubTreeService<D, S>, S extends BaseEntity, SS extends IBaseService<S>> extends SubTreeHandleController<D, DS, S, SS> {
+public abstract class SubTreeController<Q extends SubTreeEntity<D, SD>, D extends SubTreeEntity<D, SD>, IDS extends ISubTreeService<Q, D, SQ, SD>, SQ extends BaseEntity, SD extends BaseEntity, ISS extends IBaseService<SQ, SD>> extends SubTreeHandleController<Q, D, IDS, SQ, SD, ISS> {
 
     /**
      * 主子树型 修改

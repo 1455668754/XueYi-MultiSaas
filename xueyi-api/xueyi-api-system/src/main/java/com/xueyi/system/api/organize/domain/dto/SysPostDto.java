@@ -1,7 +1,5 @@
 package com.xueyi.system.api.organize.domain.dto;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.common.core.annotation.Excel;
 import com.xueyi.common.core.annotation.Excel.Type;
 import com.xueyi.common.core.annotation.Excels;
@@ -17,7 +15,6 @@ import java.util.List;
  *
  * @author xueyi
  */
-@TableName("sys_post")
 public class SysPostDto extends SysPostPo {
 
     private static final long serialVersionUID = 1L;
@@ -28,15 +25,12 @@ public class SysPostDto extends SysPostPo {
             @Excel(name = "部门负责人", targetAttr = "leader", type = Type.EXPORT),
             @Excel(name = "部门编码(*)", targetAttr = "deptCode", type = Type.IMPORT)
     })
-    @TableField(exist = false)
     private SysDeptDto dept;
 
     /** 角色对象 */
-    @TableField(exist = false)
     private List<SysRoleDto> roles;
 
     /** 角色组 */
-    @TableField(exist = false)
     private Long[] roleIds;
 
     public SysDeptDto getDept() {

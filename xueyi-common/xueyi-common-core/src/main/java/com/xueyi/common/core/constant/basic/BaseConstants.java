@@ -47,28 +47,66 @@ public class BaseConstants {
         }
 
         /** 是否为新增 | 强制新增 */
-        public boolean isAdd(){
+        public boolean isAdd() {
             return StrUtil.equalsAny(name(), Operate.ADD.name(), Operate.ADD_FORCE.name());
         }
+
         /** 是否为修改 | 强制修改 */
-        public boolean isEdit(){
+        public boolean isEdit() {
             return StrUtil.equalsAny(name(), Operate.EDIT.name(), Operate.EDIT_FORCE.name());
         }
+
         /** 是否为修改状态 */
-        public boolean isES(){
+        public boolean isES() {
             return StrUtil.equals(name(), Operate.EDIT_STATUS.name());
         }
+
         /** 是否为强制修改状态 */
-        public boolean isESForce(){
+        public boolean isESForce() {
             return StrUtil.equals(name(), Operate.EDIT_STATUS_FORCE.name());
         }
+
         /** 是否为删除 */
-        public boolean isDelete(){
+        public boolean isDelete() {
             return StrUtil.equals(name(), Operate.DELETE.name());
         }
+
         /** 是否为强制删除 */
-        public boolean isDelForce(){
+        public boolean isDelForce() {
             return StrUtil.equals(name(), Operate.DELETE_FORCE.name());
+        }
+    }
+
+    /** 查询类型 */
+    public enum SelectType {
+
+        NORMAL("normal", "正常查询"),
+        EXTRA("extra", "附加查询");
+
+        private final String code;
+        private final String info;
+
+        SelectType(String code, String info) {
+            this.code = code;
+            this.info = info;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public String getInfo() {
+            return info;
+        }
+
+        /** 是否为正常查询 */
+        public boolean isNormal() {
+            return StrUtil.equalsAny(name(), SelectType.NORMAL.name());
+        }
+
+        /** 是否为附加查询 */
+        public boolean isExtra() {
+            return StrUtil.equalsAny(name(), SelectType.EXTRA.name());
         }
     }
 

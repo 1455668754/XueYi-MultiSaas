@@ -4,8 +4,7 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.web.entity.base.TreeEntity;
-import com.xueyi.common.web.entity.manager.TreeManager;
-import com.xueyi.common.web.entity.mapper.TreeMapper;
+import com.xueyi.common.web.entity.manager.ITreeManager;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 
 import java.io.Serializable;
@@ -13,12 +12,12 @@ import java.io.Serializable;
 /**
  * 服务层 操作方法 树型实现通用数据处理
  *
- * @param <D>  Dto
- * @param <DG> DtoManager
- * @param <DM> DtoMapper
+ * @param <Q>   Query
+ * @param <D>   Dto
+ * @param <IDG> DtoIManager
  * @author xueyi
  */
-public class TreeHandleServiceImpl<D extends TreeEntity<D>, DG extends TreeManager<D, DM>, DM extends TreeMapper<D>> extends BaseServiceImpl<D, DG, DM> {
+public class TreeHandleServiceImpl<Q extends TreeEntity<D>, D extends TreeEntity<D>, IDG extends ITreeManager<Q, D>> extends BaseServiceImpl<Q, D, IDG> {
 
     /**
      * 新增/修改 树型 检查父级状态

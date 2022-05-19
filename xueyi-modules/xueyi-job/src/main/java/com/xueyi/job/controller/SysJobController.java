@@ -19,6 +19,7 @@ import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.web.entity.controller.BasisController;
 import com.xueyi.job.api.domain.dto.SysJobDto;
+import com.xueyi.job.api.domain.query.SysJobQuery;
 import com.xueyi.job.api.utils.CronUtils;
 import com.xueyi.job.service.ISysJobService;
 import com.xueyi.job.util.ScheduleUtils;
@@ -52,7 +53,7 @@ public class SysJobController extends BasisController {
      */
     @GetMapping("/list")
     @RequiresPermissions(Auth.SCHEDULE_JOB_LIST)
-    public AjaxResult list(SysJobDto job) {
+    public AjaxResult list(SysJobQuery job) {
         startPage();
         List<SysJobDto> list = baseService.selectListScope(job);
         return getDataTable(list);
@@ -72,7 +73,7 @@ public class SysJobController extends BasisController {
      */
     @PostMapping("/export")
     @RequiresPermissions(Auth.SCHEDULE_JOB_EXPORT)
-    public void export(HttpServletResponse response, SysJobDto job) {
+    public void export(HttpServletResponse response, SysJobQuery job) {
         List<SysJobDto> list = baseService.selectListScope(job);
         ExcelUtil<SysJobDto> util = new ExcelUtil<>(SysJobDto.class);
         util.exportExcel(response, list, "定时任务");
@@ -125,7 +126,7 @@ public class SysJobController extends BasisController {
      * 调度任务批量删除
      */
     @DeleteMapping("/batch/{idList}")
-    @RequiresPermissions(Auth.SCHEDULE_JOB_DELETE)
+    @RequiresPermissions(Auth.SCHEDULE_JOB_DEL)
     @Log(title = "调度任务管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) throws SchedulerException {
         if (CollUtil.isEmpty(idList))

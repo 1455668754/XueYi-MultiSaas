@@ -17,13 +17,15 @@ import java.util.List;
 /**
  * 操作层 主子基类通用数据处理
  *
- * @param <D>  Dto
- * @param <DS> DtoService
- * @param <S>  SubDto
- * @param <SS> SubService
+ * @param <Q>   Query
+ * @param <D>   Dto
+ * @param <IDS> DtoService
+ * @param <SQ>  SubQuery
+ * @param <SD>  SubDto
+ * @param <ISS> SubService
  * @author xueyi
  */
-public abstract class SubBaseController<D extends SubBaseEntity<S>, DS extends ISubBaseService<D, S>, S extends BaseEntity, SS extends IBaseService<S>> extends SubBaseHandleController<D, DS, S, SS> {
+public abstract class SubBaseController<Q extends SubBaseEntity<SD>, D extends SubBaseEntity<SD>, IDS extends ISubBaseService<Q, D, SQ, SD>, SQ extends BaseEntity, SD extends BaseEntity, ISS extends IBaseService<SQ, SD>> extends SubBaseHandleController<Q, D, IDS, SQ, SD, ISS> {
 
     /**
      * 主子型 修改

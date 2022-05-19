@@ -2,13 +2,14 @@ package com.xueyi.system.dict.service;
 
 import com.xueyi.common.web.entity.service.IBaseService;
 import com.xueyi.system.api.dict.domain.dto.SysConfigDto;
+import com.xueyi.system.api.dict.domain.query.SysConfigQuery;
 
 /**
  * 参数配置管理 服务层
  *
  * @author xueyi
  */
-public interface ISysConfigService extends IBaseService<SysConfigDto> {
+public interface ISysConfigService extends IBaseService<SysConfigQuery, SysConfigDto> {
 
     /**
      * 根据参数编码查询参数值

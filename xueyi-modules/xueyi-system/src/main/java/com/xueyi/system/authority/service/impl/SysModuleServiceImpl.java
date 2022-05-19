@@ -5,9 +5,9 @@ import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.web.entity.service.impl.SubBaseServiceImpl;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
-import com.xueyi.system.authority.manager.SysModuleManager;
-import com.xueyi.system.authority.mapper.SysMenuMapper;
-import com.xueyi.system.authority.mapper.SysModuleMapper;
+import com.xueyi.system.api.authority.domain.query.SysMenuQuery;
+import com.xueyi.system.api.authority.domain.query.SysModuleQuery;
+import com.xueyi.system.authority.manager.ISysModuleManager;
 import com.xueyi.system.authority.service.ISysMenuService;
 import com.xueyi.system.authority.service.ISysModuleService;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ import static com.xueyi.common.core.constant.basic.SecurityConstants.CREATE_BY;
  * @author xueyi
  */
 @Service
-public class SysModuleServiceImpl extends SubBaseServiceImpl<SysModuleDto, SysModuleManager, SysModuleMapper, SysMenuDto, ISysMenuService, SysMenuMapper> implements ISysModuleService {
+public class SysModuleServiceImpl extends SubBaseServiceImpl<SysModuleQuery, SysModuleDto, ISysModuleManager, SysMenuQuery, SysMenuDto, ISysMenuService> implements ISysModuleService {
 
     /**
      * 当前用户首页可展示的模块路由
@@ -46,10 +46,10 @@ public class SysModuleServiceImpl extends SubBaseServiceImpl<SysModuleDto, SysMo
      */
     @Override
     @DataScope(userAlias = CREATE_BY, mapperScope = {"SysModuleMapper"})
-    public List<SysModuleDto> selectListScope(SysModuleDto module) {
+    public List<SysModuleDto> selectListScope(SysModuleQuery module) {
         return baseManager.selectListExtra(module);
     }
-    
+
     /**
      * 设置子数据的外键值
      */

@@ -1,6 +1,8 @@
 package com.xueyi.system.api.log.domain.po;
 
+import com.baomidou.mybatisplus.annotation.OrderBy;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.xueyi.common.core.annotation.Excel;
 import com.xueyi.common.core.web.tenant.base.TBaseEntity;
@@ -12,6 +14,7 @@ import java.util.Date;
  *
  * @author xueyi
  */
+@TableName(value = "sys_operate_log",excludeProperty = {"name","sort","createBy","createTime","updateBy","updateTime","remark"})
 public class SysOperateLogPo extends TBaseEntity {
 
     private static final long serialVersionUID = 1L;

@@ -9,10 +9,11 @@ import java.util.List;
 /**
  * 服务层 树型通用数据处理
  *
+ * @param <Q> Query
  * @param <D> Dto
  * @author xueyi
  */
-public interface ITreeService<D extends TreeEntity<D>> extends IBaseService<D> {
+public interface ITreeService<Q extends TreeEntity<D>, D extends TreeEntity<D>> extends IBaseService<Q, D> {
 
     /**
      * 根据Id查询本节点及其所有祖籍节点

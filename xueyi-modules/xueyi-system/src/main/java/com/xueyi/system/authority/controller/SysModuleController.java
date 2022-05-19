@@ -18,6 +18,8 @@ import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.entity.controller.SubBaseController;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
+import com.xueyi.system.api.authority.domain.query.SysMenuQuery;
+import com.xueyi.system.api.authority.domain.query.SysModuleQuery;
 import com.xueyi.system.api.model.LoginUser;
 import com.xueyi.system.authority.service.ISysMenuService;
 import com.xueyi.system.authority.service.ISysModuleService;
@@ -36,7 +38,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/module")
-public class SysModuleController extends SubBaseController<SysModuleDto, ISysModuleService, SysMenuDto, ISysMenuService> {
+public class SysModuleController extends SubBaseController<SysModuleQuery, SysModuleDto, ISysModuleService, SysMenuQuery, SysMenuDto, ISysMenuService> {
 
     @Autowired
     private TokenService tokenService;
@@ -72,7 +74,7 @@ public class SysModuleController extends SubBaseController<SysModuleDto, ISysMod
     @Override
     @GetMapping("/list")
     @RequiresPermissions(Auth.SYS_MODULE_LIST)
-    public AjaxResult list(SysModuleDto module) {
+    public AjaxResult list(SysModuleQuery module) {
         return super.list(module);
     }
 
@@ -93,7 +95,7 @@ public class SysModuleController extends SubBaseController<SysModuleDto, ISysMod
     @PostMapping("/export")
     @RequiresPermissions(Auth.SYS_MODULE_EXPORT)
     @Log(title = "模块管理", businessType = BusinessType.EXPORT)
-    public void export(HttpServletResponse response, SysModuleDto module) {
+    public void export(HttpServletResponse response, SysModuleQuery module) {
         super.export(response, module);
     }
 
@@ -135,7 +137,7 @@ public class SysModuleController extends SubBaseController<SysModuleDto, ISysMod
      */
     @Override
     @DeleteMapping("/batch/{idList}")
-    @RequiresPermissions(Auth.SYS_MODULE_DELETE)
+    @RequiresPermissions(Auth.SYS_MODULE_DEL)
     @Log(title = "模块管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);

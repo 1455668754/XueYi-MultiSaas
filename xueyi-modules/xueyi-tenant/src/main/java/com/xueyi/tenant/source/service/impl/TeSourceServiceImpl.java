@@ -5,8 +5,8 @@ import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.tenant.api.source.domain.dto.TeSourceDto;
-import com.xueyi.tenant.source.manager.TeSourceManager;
-import com.xueyi.tenant.source.mapper.TeSourceMapper;
+import com.xueyi.tenant.api.source.domain.query.TeSourceQuery;
+import com.xueyi.tenant.source.manager.impl.TeSourceManager;
 import com.xueyi.tenant.source.service.ITeSourceService;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
  * @author xueyi
  */
 @Service
-public class TeSourceServiceImpl extends BaseServiceImpl<TeSourceDto, TeSourceManager, TeSourceMapper> implements ITeSourceService {
+public class TeSourceServiceImpl extends BaseServiceImpl<TeSourceQuery, TeSourceDto, TeSourceManager> implements ITeSourceService {
 
     /**
      * 校验数据源是否为默认数据源

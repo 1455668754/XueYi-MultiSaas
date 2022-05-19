@@ -14,6 +14,8 @@ import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.web.entity.controller.SubBaseController;
 import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
 import com.xueyi.system.api.dict.domain.dto.SysDictTypeDto;
+import com.xueyi.system.api.dict.domain.query.SysDictDataQuery;
+import com.xueyi.system.api.dict.domain.query.SysDictTypeQuery;
 import com.xueyi.system.dict.service.ISysDictDataService;
 import com.xueyi.system.dict.service.ISysDictTypeService;
 import org.springframework.validation.annotation.Validated;
@@ -30,7 +32,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/dict/type")
-public class SysDictTypeController extends SubBaseController<SysDictTypeDto, ISysDictTypeService, SysDictDataDto, ISysDictDataService> {
+public class SysDictTypeController extends SubBaseController<SysDictTypeQuery, SysDictTypeDto, ISysDictTypeService, SysDictDataQuery, SysDictDataDto, ISysDictDataService> {
 
     /** 定义节点名称 */
     @Override
@@ -50,7 +52,7 @@ public class SysDictTypeController extends SubBaseController<SysDictTypeDto, ISy
     @Override
     @GetMapping("/list")
     @RequiresPermissions(Auth.SYS_DICT_LIST)
-    public AjaxResult list(SysDictTypeDto dictType) {
+    public AjaxResult list(SysDictTypeQuery dictType) {
         return super.list(dictType);
     }
 
@@ -71,7 +73,7 @@ public class SysDictTypeController extends SubBaseController<SysDictTypeDto, ISy
     @PostMapping("/export")
     @RequiresPermissions(Auth.SYS_DICT_EXPORT)
     @Log(title = "字典类型管理", businessType = BusinessType.EXPORT)
-    public void export(HttpServletResponse response, SysDictTypeDto dictType) {
+    public void export(HttpServletResponse response, SysDictTypeQuery dictType) {
         super.export(response, dictType);
     }
 
@@ -113,7 +115,7 @@ public class SysDictTypeController extends SubBaseController<SysDictTypeDto, ISy
      */
     @Override
     @DeleteMapping("/batch/{idList}")
-    @RequiresPermissions(Auth.SYS_DICT_DELETE)
+    @RequiresPermissions(Auth.SYS_DICT_DEL)
     @Log(title = "字典类型管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);
@@ -124,7 +126,7 @@ public class SysDictTypeController extends SubBaseController<SysDictTypeDto, ISy
      */
     @Override
     @DeleteMapping("/batch/force/{idList}")
-    @RequiresPermissions(Auth.SYS_DICT_DELETE)
+    @RequiresPermissions(Auth.SYS_DICT_DEL)
     @Log(title = "字典类型管理", businessType = BusinessType.DELETE_FORCE)
     public AjaxResult batchRemoveForce(@PathVariable List<Long> idList) {
         return super.batchRemoveForce(idList);

@@ -4,6 +4,10 @@ import com.xueyi.common.datasource.annotation.Master;
 import com.xueyi.common.web.entity.mapper.SubBaseMapper;
 import com.xueyi.job.api.domain.dto.SysJobDto;
 import com.xueyi.job.api.domain.dto.SysJobLogDto;
+import com.xueyi.job.api.domain.po.SysJobLogPo;
+import com.xueyi.job.api.domain.po.SysJobPo;
+import com.xueyi.job.api.domain.query.SysJobLogQuery;
+import com.xueyi.job.api.domain.query.SysJobQuery;
 
 /**
  * 调度任务管理 数据层
@@ -11,5 +15,5 @@ import com.xueyi.job.api.domain.dto.SysJobLogDto;
  * @author xueyi
  */
 @Master
-public interface SysJobMapper extends SubBaseMapper<SysJobDto, SysJobLogDto> {
+public interface SysJobMapper extends SubBaseMapper<SysJobQuery, SysJobDto, SysJobPo, SysJobLogQuery, SysJobLogDto, SysJobLogPo> {
 }

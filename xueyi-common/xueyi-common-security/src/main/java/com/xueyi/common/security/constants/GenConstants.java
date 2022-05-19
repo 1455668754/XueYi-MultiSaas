@@ -6,7 +6,7 @@ package com.xueyi.common.security.constants;
  * @author xueyi
  */
 public interface GenConstants {
-    
+
     /** 代码生成 - 代码生成管理 - 列表 */
     String GENERATE_GEN_LIST = "generate:gen:list";
     /** 代码生成 - 代码生成管理 - 详情 */
@@ -16,7 +16,7 @@ public interface GenConstants {
     /** 代码生成 - 代码生成管理 - 修改 */
     String GENERATE_GEN_EDIT = "generate:gen:edit";
     /** 代码生成 - 代码生成管理 - 删除 */
-    String GENERATE_GEN_DELETE = "generate:gen:delete";
+    String GENERATE_GEN_DEL = "generate:gen:delete";
     /** 代码生成 - 代码生成管理 - 导入 */
     String GENERATE_GEN_IMPORT = "generate:gen:import";
     /** 代码生成 - 代码生成管理 - 生成 */

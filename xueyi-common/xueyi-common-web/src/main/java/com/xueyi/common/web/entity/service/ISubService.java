@@ -9,11 +9,13 @@ import java.util.List;
  * 服务层 主子类通用数据处理
  * 该接口不用于调用
  *
- * @param <D> Dto
- * @param <S> SubDto
+ * @param <Q>  Query
+ * @param <D>  Dto
+ * @param <SQ> SubQuery
+ * @param <SD> SubDto
  * @author xueyi
  */
-public interface ISubService<D extends BaseEntity, S extends BaseEntity> {
+public interface ISubService<Q extends BaseEntity, D extends BaseEntity, SQ extends BaseEntity, SD extends BaseEntity> {
 
     /**
      * 根据外键查询子数据对象集合 | 子数据
@@ -21,7 +23,7 @@ public interface ISubService<D extends BaseEntity, S extends BaseEntity> {
      * @param foreignKey 外键
      * @return 子数据对象集合
      */
-    List<S> selectSubByForeignKey(Serializable foreignKey);
+    List<SD> selectSubByForeignKey(Serializable foreignKey);
 
     /**
      * 根据Id修改其归属数据的状态

@@ -2,8 +2,8 @@ package com.xueyi.job.service.impl;
 
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.job.api.domain.dto.SysJobLogDto;
-import com.xueyi.job.manager.SysJobLogManager;
-import com.xueyi.job.mapper.SysJobLogMapper;
+import com.xueyi.job.api.domain.query.SysJobLogQuery;
+import com.xueyi.job.manager.impl.SysJobLogManager;
 import com.xueyi.job.service.ISysJobLogService;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
  * @author xueyi
  */
 @Service
-public class SysJobLogServiceImpl extends BaseServiceImpl<SysJobLogDto, SysJobLogManager, SysJobLogMapper> implements ISysJobLogService {
+public class SysJobLogServiceImpl extends BaseServiceImpl<SysJobLogQuery, SysJobLogDto, SysJobLogManager> implements ISysJobLogService {
 
     /**
      * 清空任务日志

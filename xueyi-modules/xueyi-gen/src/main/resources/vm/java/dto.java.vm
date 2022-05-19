@@ -1,16 +1,5 @@
 package ${packageName}.domain.dto;
 
-#if($table.base)
-#elseif($table.tree)
-#set($generics = "<"+${ClassName}+"Dto>")
-#elseif($table.subBase)
-#set($generics = "<"+${subClassName}+"Dto>")
-#elseif($table.subTree)
-#set($generics = "<D"+${ClassName}+"Dto, "+${subClassName}+"Dto>")
-#end
-#if($table.subBase || $table.subTree)
-import ${subPackageName}.domain.dto.${subClassName}Dto;
-#end
 import ${packageName}.domain.po.${ClassName}Po;
 import com.baomidou.mybatisplus.annotation.TableName;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -21,8 +10,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  * @author ${author}
  */
-@TableName(#if(${excludeProperty.size()} > 0 )value = "${tableName}", excludeProperty = {#set($times = true)#foreach($field in $excludeProperty)#if($times)#set($times = false)#else,#end"${field}"#end}#else"${tableName}"#end)
-public class ${ClassName}Dto extends ${ClassName}Po#if($generics)${generics}#end {
+public class ${ClassName}Dto extends ${ClassName}Po {
 
     private static final long serialVersionUID = 1L;
 

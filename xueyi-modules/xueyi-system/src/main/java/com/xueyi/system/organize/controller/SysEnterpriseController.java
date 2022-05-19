@@ -5,8 +5,9 @@ import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.security.annotation.InnerAuth;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.entity.controller.BaseController;
-import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
 import com.xueyi.system.api.model.LoginUser;
+import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
+import com.xueyi.system.api.organize.domain.query.SysEnterpriseQuery;
 import com.xueyi.system.organize.service.ISysEnterpriseService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/enterprise")
-public class SysEnterpriseController extends BaseController<SysEnterpriseDto, ISysEnterpriseService> {
+public class SysEnterpriseController extends BaseController<SysEnterpriseQuery, SysEnterpriseDto, ISysEnterpriseService> {
 
     /** 定义节点名称 */
     protected String getNodeName() {

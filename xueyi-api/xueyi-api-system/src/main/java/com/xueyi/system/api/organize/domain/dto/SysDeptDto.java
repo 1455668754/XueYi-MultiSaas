@@ -1,7 +1,5 @@
 package com.xueyi.system.api.organize.domain.dto;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
 import com.xueyi.system.api.organize.domain.po.SysDeptPo;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -14,17 +12,14 @@ import java.util.List;
  *
  * @author xueyi
  */
-@TableName("sys_dept")
-public class SysDeptDto extends SysDeptPo<SysDeptDto, SysPostDto> {
+public class SysDeptDto extends SysDeptPo {
 
     private static final long serialVersionUID = 1L;
 
     /** 角色对象 */
-    @TableField(exist = false)
     private List<SysRoleDto> roles;
 
     /** 角色组 */
-    @TableField(exist = false)
     private Long[] roleIds;
 
     public List<SysRoleDto> getRoles() {

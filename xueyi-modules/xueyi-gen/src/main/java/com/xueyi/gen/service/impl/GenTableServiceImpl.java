@@ -17,9 +17,9 @@ import com.xueyi.common.web.entity.service.impl.SubBaseServiceImpl;
 import com.xueyi.gen.config.GenConfig;
 import com.xueyi.gen.domain.dto.GenTableColumnDto;
 import com.xueyi.gen.domain.dto.GenTableDto;
-import com.xueyi.gen.manager.GenTableManager;
-import com.xueyi.gen.mapper.GenTableColumnMapper;
-import com.xueyi.gen.mapper.GenTableMapper;
+import com.xueyi.gen.domain.query.GenTableColumnQuery;
+import com.xueyi.gen.domain.query.GenTableQuery;
+import com.xueyi.gen.manager.IGenTableManager;
 import com.xueyi.gen.service.IGenTableColumnService;
 import com.xueyi.gen.service.IGenTableService;
 import com.xueyi.gen.util.GenUtils;
@@ -52,7 +52,7 @@ import java.util.zip.ZipOutputStream;
  * @author xueyi
  */
 @Service
-public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTableManager, GenTableMapper, GenTableColumnDto, IGenTableColumnService, GenTableColumnMapper> implements IGenTableService {
+public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableQuery, GenTableDto, IGenTableManager, GenTableColumnQuery, GenTableColumnDto, IGenTableColumnService> implements IGenTableService {
 
     private static final Logger log = LoggerFactory.getLogger(GenTableServiceImpl.class);
 
@@ -69,9 +69,11 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
     public static String getGenPath(GenTableDto table, String template) {
         String genPath = table.getGenPath();
         if (StringUtils.equals(genPath, StrUtil.SLASH)) {
-            return System.getProperty("user.dir") + File.separator + "src" + File.separator + VelocityUtils.getFileName(template, table);
+            String prefixPath = System.getProperty("user.dir") + File.separator + "src" + File.separator;
+            return prefixPath + VelocityUtils.getFileName(prefixPath, template, table);
         }
-        return genPath + File.separator + VelocityUtils.getFileName(template, table);
+        String prefixPath = genPath + File.separator;
+        return prefixPath + VelocityUtils.getFileName(prefixPath, template, table);
     }
 
     /**
@@ -83,10 +85,12 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
      */
     public static String getUiPath(GenTableDto table, String template) {
         String uiPath = table.getUiPath();
-        if (StringUtils.equals(uiPath, StrUtil.SLASH)) {
-            return System.getProperty("user.dir") + File.separator + "MultiSaas-UI" + File.separator + VelocityUtils.getFileName(template, table);
+        if (StrUtil.equals(uiPath, StrUtil.SLASH)) {
+            String prefixPath = System.getProperty("user.dir") + File.separator + "MultiSaas-UI" + File.separator;
+            return prefixPath + VelocityUtils.getFileName(prefixPath, template, table);
         }
-        return uiPath + File.separator + VelocityUtils.getFileName(template, table);
+        String prefixPath = uiPath + File.separator;
+        return prefixPath + VelocityUtils.getFileName(prefixPath, template, table);
     }
 
     /**
@@ -217,7 +221,7 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
 
         // 获取模板列表
         List<String> templates = VelocityUtils.getTemplateList(table.getTplCategory());
-        String[] genFiles = {"merge.java.vm", "mergeMapper.java.vm", "dto.java.vm", "po.java.vm", "controller.java.vm", "service.java.vm", "serviceImpl.java.vm", "manager.java.vm", "mapper.java.vm", "sql.sql.vm"};
+        String[] genFiles = {"merge.java.vm", "mergeMapper.java.vm", "query.java.vm", "dto.java.vm", "po.java.vm", "converter.java.vm", "controller.java.vm", "service.java.vm", "serviceImpl.java.vm", "manager.java.vm", "managerImpl.java.vm", "manager.java.vm", "mapper.java.vm", "sql.sql.vm"};
         for (String template : templates) {
             // 渲染模板
             StringWriter sw = new StringWriter();
@@ -301,7 +305,7 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableDto, GenTabl
             tpl.merge(context, sw);
             try {
                 // 添加到zip
-                zip.putNextEntry(new ZipEntry(VelocityUtils.getFileName(template, table)));
+                zip.putNextEntry(new ZipEntry(VelocityUtils.getFileName(StrUtil.EMPTY, template, table)));
                 IOUtils.write(sw.toString(), zip, HttpConstants.Character.UTF8.getCode());
                 IOUtils.closeQuietly(sw);
                 zip.flush();

@@ -2,6 +2,7 @@ package com.xueyi.system.organize.service;
 
 import com.xueyi.common.web.entity.service.IBaseService;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
+import com.xueyi.system.api.organize.domain.query.SysPostQuery;
 
 import java.util.Collection;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
  *
  * @author xueyi
  */
-public interface ISysPostService extends IBaseService<SysPostDto> {
+public interface ISysPostService extends IBaseService<SysPostQuery, SysPostDto> {
 
     /**
      * 用户登录校验 | 根据部门Ids获取归属岗位对象集合

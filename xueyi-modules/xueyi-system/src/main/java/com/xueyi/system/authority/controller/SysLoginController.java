@@ -2,6 +2,7 @@ package com.xueyi.system.authority.controller;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
+import com.xueyi.common.core.context.SecurityContextHolder;
 import com.xueyi.common.core.domain.R;
 import com.xueyi.common.security.annotation.InnerAuth;
 import com.xueyi.common.security.utils.SourceUtils;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.xueyi.common.core.context.SecurityContextHolder;
 
 import java.util.HashSet;
 import java.util.Map;

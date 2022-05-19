@@ -2,18 +2,20 @@ package com.xueyi.system.api.authority.domain.po;
 
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.common.core.annotation.Excel;
 import com.xueyi.common.core.web.tenant.common.TCTreeEntity;
+import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 
 import javax.validation.constraints.NotNull;
 
 /**
  * 菜单 持久化对象
  *
- * @param <D> Dto
  * @author xueyi
  */
-public class SysMenuPo<D> extends TCTreeEntity<D> {
+@TableName("sys_menu")
+public class SysMenuPo extends TCTreeEntity<SysMenuDto> {
 
     private static final long serialVersionUID = 1L;
 

@@ -4,8 +4,8 @@ import com.xueyi.common.core.constant.basic.CacheConstants;
 import com.xueyi.common.redis.service.RedisService;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
-import com.xueyi.system.dict.manager.SysDictDataManager;
-import com.xueyi.system.dict.mapper.SysDictDataMapper;
+import com.xueyi.system.api.dict.domain.query.SysDictDataQuery;
+import com.xueyi.system.dict.manager.ISysDictDataManager;
 import com.xueyi.system.dict.service.ISysDictDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
  * @author xueyi
  */
 @Service
-public class SysDictDataServiceImpl extends BaseServiceImpl<SysDictDataDto, SysDictDataManager, SysDictDataMapper> implements ISysDictDataService {
+public class SysDictDataServiceImpl extends BaseServiceImpl<SysDictDataQuery, SysDictDataDto, ISysDictDataManager> implements ISysDictDataService {
 
     @Autowired
     private RedisService redisService;

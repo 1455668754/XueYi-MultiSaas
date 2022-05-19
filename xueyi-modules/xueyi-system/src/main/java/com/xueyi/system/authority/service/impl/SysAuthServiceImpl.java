@@ -2,7 +2,7 @@ package com.xueyi.system.authority.service.impl;
 
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.xueyi.system.authority.domain.vo.SysAuthTree;
-import com.xueyi.system.authority.manager.SysAuthManager;
+import com.xueyi.system.authority.manager.ISysAuthManager;
 import com.xueyi.system.authority.service.ISysAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ import java.util.List;
 public class SysAuthServiceImpl implements ISysAuthService {
 
     @Autowired
-    private SysAuthManager authManager;
+    private ISysAuthManager authManager;
 
     /**
      * 获取公共模块|菜单权限树

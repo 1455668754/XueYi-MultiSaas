@@ -15,6 +15,7 @@ import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.tenant.api.tenant.domain.dto.TeTenantDto;
+import com.xueyi.tenant.api.tenant.domain.query.TeTenantQuery;
 import com.xueyi.tenant.tenant.domain.model.TeTenantRegister;
 import com.xueyi.tenant.tenant.service.ITeTenantService;
 import org.springframework.validation.annotation.Validated;
@@ -31,7 +32,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/tenant")
-public class TeTenantController extends BaseController<TeTenantDto, ITeTenantService> {
+public class TeTenantController extends BaseController<TeTenantQuery, TeTenantDto, ITeTenantService> {
 
     /** 定义节点名称 */
     @Override
@@ -45,7 +46,7 @@ public class TeTenantController extends BaseController<TeTenantDto, ITeTenantSer
     @Override
     @GetMapping("/list")
     @RequiresPermissions(Auth.TE_TENANT_LIST)
-    public AjaxResult list(TeTenantDto tenant) {
+    public AjaxResult list(TeTenantQuery tenant) {
         return super.list(tenant);
     }
 
@@ -74,7 +75,7 @@ public class TeTenantController extends BaseController<TeTenantDto, ITeTenantSer
     @Override
     @PostMapping("/export")
     @RequiresPermissions(Auth.TE_TENANT_EXPORT)
-    public void export(HttpServletResponse response, TeTenantDto tenant) {
+    public void export(HttpServletResponse response, TeTenantQuery tenant) {
         super.export(response, tenant);
     }
 
@@ -127,7 +128,7 @@ public class TeTenantController extends BaseController<TeTenantDto, ITeTenantSer
      */
     @Override
     @DeleteMapping("/batch/{idList}")
-    @RequiresPermissions(Auth.TE_TENANT_DELETE)
+    @RequiresPermissions(Auth.TE_TENANT_DEL)
     @Log(title = "租户管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);
@@ -162,7 +163,7 @@ public class TeTenantController extends BaseController<TeTenantDto, ITeTenantSer
     /**
      * 租户新增/注册校验
      */
-    private void registerValidated(TeTenantRegister tenantRegister){
+    private void registerValidated(TeTenantRegister tenantRegister) {
         String enterpriseName = tenantRegister.getTenant().getName();
         String userName = tenantRegister.getUser().getUserName();
         String password = tenantRegister.getUser().getPassword();

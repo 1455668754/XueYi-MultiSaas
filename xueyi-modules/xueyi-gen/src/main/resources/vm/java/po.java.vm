@@ -7,16 +7,13 @@ import ${import};
 #set($Entity="BaseEntity")
 #elseif($table.tree)
 #set($Entity="TreeEntity")
-#set($paramNotes = " * @param <D> Dto")
-#set($generics = "<D>")
+#set($generics = "<"+${ClassName}+"Dto>")
 #elseif($table.subBase)
 #set($Entity="SubBaseEntity")
-#set($paramNotes = " * @param <S> SubDto")
-#set($generics = "<S>")
+#set($generics = "<"+${subClassName}+"Dto>")
 #elseif($table.subTree)
 #set($Entity="SubTreeEntity")
-#set($paramNotes = " * @param <D> Dto\r\n * @param <S> SubDto")
-#set($generics = "<D, S>")
+#set($generics = "<D"+${ClassName}+"Dto, "+${subClassName}+"Dto>")
 #end
 #if($isTenant)
 #set($Entity = "T" + $Entity)
@@ -24,18 +21,20 @@ import com.xueyi.common.core.web.tenant.base.${Entity};
 #else
 import com.xueyi.common.core.web.entity.base.${Entity};
 #end
+#if($table.subBase || $table.subTree)
+import ${subPackageName}.domain.dto.${subClassName}Dto;
+#end
+import ${packageName}.domain.dto.${ClassName}Dto;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.xueyi.common.core.annotation.Excel;
 
 /**
  * ${functionName} 持久化对象
  *
-#if($paramNotes)
-${paramNotes}
-#end
  * @author ${author}
  */
-public class ${ClassName}Po#if($generics)${generics}#end extends ${Entity}#if($generics)${generics}#end {
+@TableName(#if(${excludeProperty.size()} > 0 )value = "${tableName}", excludeProperty = {#set($times = true)#foreach($field in $excludeProperty)#if($times)#set($times = false)#else,#end"${field}"#end}#else"${tableName}"#end)
+public class ${ClassName}Po extends ${Entity}#if($generics)${generics}#end {
 
     private static final long serialVersionUID = 1L;
 
@@ -63,20 +62,20 @@ public class ${ClassName}Po#if($generics)${generics}#end extends ${Entity}#if($g
 #set($comment=$column.comment)
 #end
 #if($parentheseIndex != -1)
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+@Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
 #elseif($column.javaType == 'Date')
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @Excel(name = "${comment}", width = 30, dateFormat = "yyyy-MM-dd")
+@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+@Excel(name = "${comment}", width = 30, dateFormat = "yyyy-MM-dd")
 #else
-    @Excel(name = "${comment}")
+@Excel(name = "${comment}")
 #end
 #end
 #if($column.isPk())
-    @TableId("${column.name}")
+@TableId("${column.name}")
 #else
-    @TableField("${column.name}")
+@TableField("${column.name}")
 #end
-    private $column.javaType $column.javaField;
+private $column.javaType $column.javaField;
 
 #end
 #end
@@ -109,18 +108,18 @@ public class ${ClassName}Po#if($generics)${generics}#end extends ${Entity}#if($g
 #set($field=$AttrName.substring(0,1).toUpperCase() + ${AttrName.substring(1)})
 #end
 #if($cover)
-    @Override
+@Override
 #end
-    public void set${field}($column.javaType $AttrName) {
-        this.$AttrName = $AttrName;
-    }
+public void set${field}($column.javaType $AttrName) {
+    this.$AttrName = $AttrName;
+}
 
 #if($cover)
-    @Override
+@Override
 #end
-    public $column.javaType get${field}() {
-        return $AttrName;
-    }
+public $column.javaType get${field}() {
+    return $AttrName;
+}
 
 #end
 #end

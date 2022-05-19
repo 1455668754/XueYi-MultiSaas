@@ -2,13 +2,14 @@ package com.xueyi.system.authority.service;
 
 import com.xueyi.common.web.entity.service.IBaseService;
 import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
+import com.xueyi.system.api.authority.domain.query.SysRoleQuery;
 
 /**
  * 角色管理 服务层
  *
  * @author xueyi
  */
-public interface ISysRoleService extends IBaseService<SysRoleDto> {
+public interface ISysRoleService extends IBaseService<SysRoleQuery, SysRoleDto> {
 
     /**
      * 修改角色组织权限

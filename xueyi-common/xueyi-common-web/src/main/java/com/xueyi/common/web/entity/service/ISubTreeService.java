@@ -6,9 +6,11 @@ import com.xueyi.common.core.web.entity.base.SubTreeEntity;
 /**
  * 服务层 主子树型通用数据处理
  *
- * @param <D> Dto
- * @param <S> SubDto
+ * @param <Q>  Query
+ * @param <D>  Dto
+ * @param <SQ> SubQuery
+ * @param <SD> SubDto
  * @author xueyi
  */
-public interface ISubTreeService<D extends SubTreeEntity<D, S>, S extends BaseEntity> extends ITreeService<D>, ISubService<D, S> {
+public interface ISubTreeService<Q extends SubTreeEntity<D, SD>, D extends SubTreeEntity<D, SD>, SQ extends BaseEntity, SD extends BaseEntity> extends ITreeService<Q, D>, ISubService<Q, D, SQ, SD> {
 }

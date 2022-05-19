@@ -12,6 +12,7 @@ import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.system.notice.domain.dto.SysNoticeDto;
+import com.xueyi.system.notice.domain.query.SysNoticeQuery;
 import com.xueyi.system.notice.service.ISysNoticeService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/notice")
-public class SysNoticeController extends BaseController<SysNoticeDto, ISysNoticeService> {
+public class SysNoticeController extends BaseController<SysNoticeQuery, SysNoticeDto, ISysNoticeService> {
 
     /** 定义节点名称 */
     @Override
@@ -41,7 +42,7 @@ public class SysNoticeController extends BaseController<SysNoticeDto, ISysNotice
     @Override
     @GetMapping("/list")
     @RequiresPermissions(Auth.SYS_NOTICE_LIST)
-    public AjaxResult list(SysNoticeDto notice) {
+    public AjaxResult list(SysNoticeQuery notice) {
         return super.list(notice);
     }
 
@@ -62,7 +63,7 @@ public class SysNoticeController extends BaseController<SysNoticeDto, ISysNotice
     @PostMapping("/export")
     @RequiresPermissions(Auth.SYS_NOTICE_EXPORT)
     @Log(title = "通知公告管理", businessType = BusinessType.EXPORT)
-    public void export(HttpServletResponse response, SysNoticeDto notice) {
+    public void export(HttpServletResponse response, SysNoticeQuery notice) {
         super.export(response, notice);
     }
 
@@ -104,7 +105,7 @@ public class SysNoticeController extends BaseController<SysNoticeDto, ISysNotice
      */
     @Override
     @DeleteMapping("/batch/{idList}")
-    @RequiresPermissions(Auth.SYS_NOTICE_DELETE)
+    @RequiresPermissions(Auth.SYS_NOTICE_DEL)
     @Log(title = "通知公告管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);
@@ -125,7 +126,7 @@ public class SysNoticeController extends BaseController<SysNoticeDto, ISysNotice
     @Override
     protected void AEHandleValidated(BaseConstants.Operate operate, SysNoticeDto notice) {
         // 初始化发送状态
-        if(operate.isAdd())
+        if (operate.isAdd())
             notice.setStatus(NoticeConstants.NoticeStatus.READY.getCode());
     }
 }

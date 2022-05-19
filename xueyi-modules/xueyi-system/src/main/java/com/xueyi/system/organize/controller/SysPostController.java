@@ -16,6 +16,7 @@ import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
+import com.xueyi.system.api.organize.domain.query.SysPostQuery;
 import com.xueyi.system.organize.service.ISysDeptService;
 import com.xueyi.system.organize.service.ISysOrganizeService;
 import com.xueyi.system.organize.service.ISysPostService;
@@ -34,7 +35,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/post")
-public class SysPostController extends BaseController<SysPostDto, ISysPostService> {
+public class SysPostController extends BaseController<SysPostQuery, SysPostDto, ISysPostService> {
 
     @Autowired
     private ISysOrganizeService organizeService;
@@ -68,7 +69,7 @@ public class SysPostController extends BaseController<SysPostDto, ISysPostServic
     @Override
     @GetMapping("/list")
     @RequiresPermissions(Auth.SYS_POST_LIST)
-    public AjaxResult list(SysPostDto post) {
+    public AjaxResult list(SysPostQuery post) {
         return super.list(post);
     }
 
@@ -98,7 +99,7 @@ public class SysPostController extends BaseController<SysPostDto, ISysPostServic
     @PostMapping("/export")
     @RequiresPermissions(Auth.SYS_POST_EXPORT)
     @Log(title = "岗位管理", businessType = BusinessType.EXPORT)
-    public void export(HttpServletResponse response, SysPostDto post) {
+    public void export(HttpServletResponse response, SysPostQuery post) {
         super.export(response, post);
     }
 
@@ -150,7 +151,7 @@ public class SysPostController extends BaseController<SysPostDto, ISysPostServic
      */
     @Override
     @DeleteMapping("/batch/{idList}")
-    @RequiresPermissions(Auth.SYS_POST_DELETE)
+    @RequiresPermissions(Auth.SYS_POST_DEL)
     @Log(title = "岗位管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);

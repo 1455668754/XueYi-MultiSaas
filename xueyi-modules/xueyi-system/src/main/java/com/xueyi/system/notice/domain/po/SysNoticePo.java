@@ -1,6 +1,7 @@
 package com.xueyi.system.notice.domain.po;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.common.core.annotation.Excel;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 
@@ -9,6 +10,7 @@ import com.xueyi.common.core.web.entity.base.BaseEntity;
  *
  * @author xueyi
  */
+@TableName(value = "sys_notice",excludeProperty = {"sort"})
 public class SysNoticePo extends BaseEntity {
 
     private static final long serialVersionUID = 1L;

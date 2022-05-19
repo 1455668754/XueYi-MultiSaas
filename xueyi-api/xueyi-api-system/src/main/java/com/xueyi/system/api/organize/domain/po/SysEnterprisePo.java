@@ -1,6 +1,7 @@
 package com.xueyi.system.api.organize.domain.po;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.core.xss.Xss;
 
@@ -12,6 +13,7 @@ import javax.validation.constraints.Size;
  *
  * @author xueyi
  */
+@TableName("te_tenant")
 public class SysEnterprisePo extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
@@ -112,4 +114,5 @@ public class SysEnterprisePo extends BaseEntity {
     public void setIsDefault(String isDefault) {
         this.isDefault = isDefault;
     }
+
 }

@@ -2,8 +2,10 @@ package com.xueyi.system.api.dict.domain.po;
 
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.common.core.annotation.Excel;
 import com.xueyi.common.core.web.entity.base.SubBaseEntity;
+import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -12,10 +14,10 @@ import javax.validation.constraints.Size;
 /**
  * 字典类型 持久化对象
  *
- * @param <S> SubDto
  * @author xueyi
  */
-public class SysDictTypePo<S> extends SubBaseEntity<S> {
+@TableName(value = "sys_dict_type", excludeProperty = {"delFlag"})
+public class SysDictTypePo extends SubBaseEntity<SysDictDataDto> {
 
     private static final long serialVersionUID = 1L;
 

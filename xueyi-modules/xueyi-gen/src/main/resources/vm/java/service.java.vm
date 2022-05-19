@@ -2,19 +2,21 @@ package ${packageName}.service;
 
 #if($table.base)
 #set($Entity="Base")
-#set($generics = "<"+${ClassName}+"Dto>")
+#set($generics = "<"+${ClassName}+"Query, "+${ClassName}+"Dto>")
 #elseif($table.tree)
 #set($Entity="Tree")
-#set($generics = "<"+${ClassName}+"Dto>")
+#set($generics = "<"+${ClassName}+"Query, "+${ClassName}+"Dto>")
 #elseif($table.subBase)
 #set($Entity="SubBase")
-#set($generics = "<"+${ClassName}+"Dto, "+${subClassName}+"Dto>")
+#set($generics = "<"+${ClassName}+"Query, "+${ClassName}+"Dto, "+${subClassName}+"Query, "+${subClassName}+"Dto>")
 #elseif($table.subTree)
 #set($Entity="SubTree")
-#set($generics = "<"+${ClassName}+"Dto, "+${subClassName}+"Dto>")
+#set($generics = "<"+${ClassName}+"Query, "+${ClassName}+"Dto, "+${subClassName}+"Query, "+${subClassName}+"Dto>")
 #end
+import ${packageName}.domain.query.${ClassName}Query;
 import ${packageName}.domain.dto.${ClassName}Dto;
 #if($table.subBase || $table.subTree)
+import ${subPackageName}.domain.query.${subClassName}Query;
 import ${subPackageName}.domain.dto.${subClassName}Dto;
 #end
 import com.xueyi.common.web.entity.service.I${Entity}Service;

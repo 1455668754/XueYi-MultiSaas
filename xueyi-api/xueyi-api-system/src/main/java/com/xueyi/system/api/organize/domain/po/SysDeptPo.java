@@ -1,8 +1,11 @@
 package com.xueyi.system.api.organize.domain.po;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.common.core.web.tenant.base.TSubTreeEntity;
 import com.xueyi.common.core.xss.Xss;
+import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
+import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -12,11 +15,10 @@ import javax.validation.constraints.Size;
 /**
  * 部门 持久化对象
  *
- * @param <D> Dto
- * @param <S> SubDto
  * @author xueyi
  */
-public class SysDeptPo<D, S> extends TSubTreeEntity<D, S> {
+@TableName("sys_dept")
+public class SysDeptPo extends TSubTreeEntity<SysDeptDto, SysPostDto> {
 
     private static final long serialVersionUID = 1L;
 

@@ -1,16 +1,18 @@
 package com.xueyi.system.api.authority.domain.po;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.common.core.annotation.Excel;
 import com.xueyi.common.core.web.tenant.common.TCSubBaseEntity;
+import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 
 /**
  * 模块 持久化对象
  *
- * @param <S> SubDto
  * @author xueyi
  */
-public class SysModulePo<S> extends TCSubBaseEntity<S> {
+@TableName("sys_module")
+public class SysModulePo extends TCSubBaseEntity<SysMenuDto> {
 
     private static final long serialVersionUID = 1L;
 

@@ -1,7 +1,7 @@
 package com.xueyi.system.source.mapper;
 
 import com.xueyi.common.datasource.annotation.Master;
-import com.xueyi.common.web.entity.mapper.BaseMapper;
+import com.xueyi.common.web.entity.mapper.BasicMapper;
 import com.xueyi.system.api.source.domain.Source;
 
 /**
@@ -10,5 +10,5 @@ import com.xueyi.system.api.source.domain.Source;
  * @author xueyi
  */
 @Master
-public interface SysSourceMapper extends BaseMapper<Source> {
+public interface SysSourceMapper extends BasicMapper<Source> {
 }

@@ -4,6 +4,10 @@ import com.baomidou.mybatisplus.annotation.InterceptorIgnore;
 import com.xueyi.common.web.entity.mapper.SubBaseMapper;
 import com.xueyi.gen.domain.dto.GenTableColumnDto;
 import com.xueyi.gen.domain.dto.GenTableDto;
+import com.xueyi.gen.domain.po.GenTableColumnPo;
+import com.xueyi.gen.domain.po.GenTablePo;
+import com.xueyi.gen.domain.query.GenTableColumnQuery;
+import com.xueyi.gen.domain.query.GenTableQuery;
 
 import java.util.List;
 
@@ -12,7 +16,7 @@ import java.util.List;
  *
  * @author xueyi
  */
-public interface GenTableMapper extends SubBaseMapper<GenTableDto, GenTableColumnDto> {
+public interface GenTableMapper extends SubBaseMapper<GenTableQuery, GenTableDto, GenTablePo, GenTableColumnQuery, GenTableColumnDto, GenTableColumnPo> {
 
     /**
      * 查询数据库列表

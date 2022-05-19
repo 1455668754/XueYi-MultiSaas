@@ -1,14 +1,16 @@
 package com.xueyi.tenant.api.tenant.domain.po;
 
-import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.common.core.annotation.Excel;
+import com.xueyi.common.core.web.entity.base.BaseEntity;
 
 /**
  * 数据源策略 持久化对象
  *
  * @author xueyi
  */
+@TableName("te_strategy")
 public class TeStrategyPo extends BaseEntity {
 
     private static final long serialVersionUID = 1L;

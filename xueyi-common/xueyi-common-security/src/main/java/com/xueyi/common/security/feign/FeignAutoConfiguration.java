@@ -1,8 +1,8 @@
 package com.xueyi.common.security.feign;
 
+import feign.RequestInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import feign.RequestInterceptor;
 
 /**
  * Feign 配置注册
@@ -10,11 +10,10 @@ import feign.RequestInterceptor;
  * @author xueyi
  **/
 @Configuration
-public class FeignAutoConfiguration
-{
+public class FeignAutoConfiguration {
+
     @Bean
-    public RequestInterceptor requestInterceptor()
-    {
+    public RequestInterceptor requestInterceptor() {
         return new FeignRequestInterceptor();
     }
 }

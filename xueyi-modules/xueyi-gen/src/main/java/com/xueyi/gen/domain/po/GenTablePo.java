@@ -1,7 +1,9 @@
 package com.xueyi.gen.domain.po;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.common.core.web.entity.base.SubBaseEntity;
+import com.xueyi.gen.domain.dto.GenTableColumnDto;
 
 import javax.validation.constraints.NotBlank;
 
@@ -9,10 +11,11 @@ import static com.baomidou.mybatisplus.annotation.SqlCondition.LIKE;
 
 /**
  * 业务 持久化对象
- * @param <S> SubDto
+ *
  * @author xueyi
  */
-public class GenTablePo<S> extends SubBaseEntity<S> {
+@TableName(value = "gen_table", excludeProperty = {"status", "sort", "delFlag"})
+public class GenTablePo extends SubBaseEntity<GenTableColumnDto> {
 
     private static final long serialVersionUID = 1L;
 

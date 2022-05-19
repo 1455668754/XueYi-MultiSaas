@@ -1,9 +1,7 @@
 package com.xueyi.tenant.api.tenant.domain.dto;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.xueyi.tenant.api.source.domain.dto.TeSourceDto;
 import com.xueyi.tenant.api.tenant.domain.po.TeStrategyPo;
-import com.baomidou.mybatisplus.annotation.TableName;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -12,13 +10,11 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  * @author xueyi
  */
-@TableName("te_strategy")
 public class TeStrategyDto extends TeStrategyPo {
 
     private static final long serialVersionUID = 1L;
 
     /** 数据源信息 */
-    @TableField(exist = false)
     private TeSourceDto source;
 
     public TeSourceDto getSource() {

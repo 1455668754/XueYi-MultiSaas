@@ -20,6 +20,7 @@ import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.system.api.model.LoginUser;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
+import com.xueyi.system.api.organize.domain.query.SysUserQuery;
 import com.xueyi.system.organize.service.ISysOrganizeService;
 import com.xueyi.system.organize.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/user")
-public class SysUserController extends BaseController<SysUserDto, ISysUserService> {
+public class SysUserController extends BaseController<SysUserQuery, SysUserDto, ISysUserService> {
 
     @Autowired
     private ISysOrganizeService organizeService;
@@ -81,7 +82,7 @@ public class SysUserController extends BaseController<SysUserDto, ISysUserServic
     @Override
     @GetMapping("/list")
     @RequiresPermissions(Auth.SYS_USER_LIST)
-    public AjaxResult list(SysUserDto user) {
+    public AjaxResult list(SysUserQuery user) {
         startPage();
         List<SysUserDto> list = baseService.selectListScope(user);
         list.forEach(item -> baseService.userDesensitized(item));
@@ -114,7 +115,7 @@ public class SysUserController extends BaseController<SysUserDto, ISysUserServic
     @PostMapping("/export")
     @RequiresPermissions(Auth.SYS_USER_EXPORT)
     @Log(title = "用户管理", businessType = BusinessType.EXPORT)
-    public void export(HttpServletResponse response, SysUserDto user) {
+    public void export(HttpServletResponse response, SysUserQuery user) {
         super.export(response, user);
     }
 
@@ -166,7 +167,7 @@ public class SysUserController extends BaseController<SysUserDto, ISysUserServic
      */
     @Override
     @DeleteMapping("/batch/{idList}")
-    @RequiresPermissions(Auth.SYS_USER_DELETE)
+    @RequiresPermissions(Auth.SYS_USER_DEL)
     @Log(title = "用户管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);

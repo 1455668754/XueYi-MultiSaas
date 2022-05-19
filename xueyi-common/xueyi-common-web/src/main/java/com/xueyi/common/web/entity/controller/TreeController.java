@@ -18,28 +18,29 @@ import java.util.List;
 /**
  * 操作层 树型通用数据处理
  *
- * @param <D>  Dto
- * @param <DS> DtoService
+ * @param <Q>   Query
+ * @param <D>   Dto
+ * @param <IDS> DtoService
  * @author xueyi
  */
-public abstract class TreeController<D extends TreeEntity<D>, DS extends ITreeService<D>> extends TreeHandleController<D, DS> {
+public abstract class TreeController<Q extends TreeEntity<D>, D extends TreeEntity<D>, IDS extends ITreeService<Q, D>> extends TreeHandleController<Q, D, IDS> {
 
     /**
      * 查询树列表
      */
     @Override
-    public AjaxResult list(D d) {
-        List<D> list = baseService.selectListScope(d);
+    public AjaxResult list(Q query) {
+        List<D> list = baseService.selectListScope(query);
         return AjaxResult.success(TreeUtils.buildTree(list));
     }
 
     /**
      * 查询树列表（排除节点）
      */
-    public AjaxResult listExNodes(D d) {
-        Serializable id = d.getId();
-        d.setId(null);
-        List<D> list = baseService.selectListScope(d);
+    public AjaxResult listExNodes(Q query) {
+        Serializable id = query.getId();
+        query.setId(null);
+        List<D> list = baseService.selectListScope(query);
         SHandleExNodes(list, id);
         return AjaxResult.success(TreeUtils.buildTree(list));
     }

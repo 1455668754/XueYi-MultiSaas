@@ -2,6 +2,7 @@ package com.xueyi.system.authority.service;
 
 import com.xueyi.common.web.entity.service.ITreeService;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
+import com.xueyi.system.api.authority.domain.query.SysMenuQuery;
 import com.xueyi.system.utils.route.RouterVo;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.Set;
  *
  * @author xueyi
  */
-public interface ISysMenuService extends ITreeService<SysMenuDto> {
+public interface ISysMenuService extends ITreeService<SysMenuQuery, SysMenuDto> {
 
     /**
      * 登录校验 | 获取租户全部菜单权限标识集合

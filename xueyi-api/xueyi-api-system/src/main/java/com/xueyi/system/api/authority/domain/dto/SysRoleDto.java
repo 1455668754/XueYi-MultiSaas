@@ -1,7 +1,5 @@
 package com.xueyi.system.api.authority.domain.dto;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.system.api.authority.domain.po.SysRolePo;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -11,17 +9,14 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  * @author xueyi
  */
-@TableName("sys_role")
 public class SysRoleDto extends SysRolePo {
 
     private static final long serialVersionUID = 1L;
 
     /** 权限Ids（菜单权限） */
-    @TableField(exist = false)
     private Long[] authIds;
 
     /** 组织Ids（数据权限） */
-    @TableField(exist = false)
     private Long[] organizeIds;
 
     public Long[] getAuthIds() {

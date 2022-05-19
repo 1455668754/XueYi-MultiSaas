@@ -12,6 +12,7 @@ import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.security.utils.DictUtils;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
+import com.xueyi.system.api.dict.domain.query.SysDictDataQuery;
 import com.xueyi.system.dict.service.ISysDictDataService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +30,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/dict/data")
-public class SysDictDataController extends BaseController<SysDictDataDto, ISysDictDataService> {
+public class SysDictDataController extends BaseController<SysDictDataQuery, SysDictDataDto, ISysDictDataService> {
 
     /** 定义节点名称 */
     @Override
@@ -65,7 +66,7 @@ public class SysDictDataController extends BaseController<SysDictDataDto, ISysDi
     @Override
     @GetMapping("/list")
     @RequiresPermissions(Auth.SYS_DICT_DICT)
-    public AjaxResult list(SysDictDataDto dictData) {
+    public AjaxResult list(SysDictDataQuery dictData) {
         return super.list(dictData);
     }
 
@@ -86,7 +87,7 @@ public class SysDictDataController extends BaseController<SysDictDataDto, ISysDi
     @PostMapping("/export")
     @RequiresPermissions(Auth.SYS_DICT_DICT)
     @Log(title = "字典数据管理", businessType = BusinessType.EXPORT)
-    public void export(HttpServletResponse response, SysDictDataDto dictData) {
+    public void export(HttpServletResponse response, SysDictDataQuery dictData) {
         super.export(response, dictData);
     }
 

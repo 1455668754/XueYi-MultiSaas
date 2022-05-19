@@ -1,7 +1,7 @@
 package com.xueyi.system.organize.mapper.merge;
 
 import com.xueyi.common.datasource.annotation.Isolate;
-import com.xueyi.common.web.entity.mapper.BaseMapper;
+import com.xueyi.common.web.entity.mapper.BasicMapper;
 import com.xueyi.system.organize.domain.merge.SysUserPostMerge;
 
 /**
@@ -10,5 +10,5 @@ import com.xueyi.system.organize.domain.merge.SysUserPostMerge;
  * @author xueyi
  */
 @Isolate
-public interface SysUserPostMergeMapper extends BaseMapper<SysUserPostMerge> {
+public interface SysUserPostMergeMapper extends BasicMapper<SysUserPostMerge> {
 }

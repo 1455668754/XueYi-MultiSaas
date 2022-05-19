@@ -1,6 +1,7 @@
 package com.xueyi.system.api.authority.domain.po;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.common.core.annotation.Excel;
 import com.xueyi.common.core.web.tenant.base.TBaseEntity;
 
@@ -12,6 +13,7 @@ import javax.validation.constraints.Size;
  *
  * @author xueyi
  */
+@TableName("sys_role")
 public class SysRolePo extends TBaseEntity {
 
     private static final long serialVersionUID = 1L;

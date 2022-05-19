@@ -1,8 +1,6 @@
 package com.xueyi.system.api.authority.domain.dto;
 
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.system.api.authority.domain.po.SysMenuPo;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -13,17 +11,14 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  * @author xueyi
  */
-@TableName("sys_menu")
-public class SysMenuDto extends SysMenuPo<SysMenuDto> {
+public class SysMenuDto extends SysMenuPo {
 
     private static final long serialVersionUID = 1L;
 
     /** 菜单全路径 */
-    @TableField(exist = false)
     private String fullPath;
 
     /** 详情页激活的菜单 */
-    @TableField(exist = false)
     private String currentActiveMenu;
 
     public String getFullPath() {

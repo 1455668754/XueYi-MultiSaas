@@ -16,13 +16,15 @@ import java.util.List;
 /**
  * 操作层 操作方法 主子树型通用数据处理
  *
- * @param <D>  Dto
- * @param <DS> DtoService
- * @param <S>  SubDto
- * @param <SS> SubService
+ * @param <Q>   Query
+ * @param <D>   Dto
+ * @param <IDS> DtoService
+ * @param <SQ>  SubQuery
+ * @param <SD>  SubDto
+ * @param <ISS> SubService
  * @author xueyi
  */
-public abstract class SubTreeHandleController<D extends SubTreeEntity<D, S>, DS extends ISubTreeService<D, S>, S extends BaseEntity, SS extends IBaseService<S>> extends TreeController<D, DS> {
+public abstract class SubTreeHandleController<Q extends SubTreeEntity<D, SD>, D extends SubTreeEntity<D, SD>, IDS extends ISubTreeService<Q, D, SQ, SD>, SQ extends BaseEntity, SD extends BaseEntity, ISS extends IBaseService<SQ, SD>> extends TreeController<Q, D, IDS> {
 
     /** 定义子数据名称 */
     protected abstract String getSubName();

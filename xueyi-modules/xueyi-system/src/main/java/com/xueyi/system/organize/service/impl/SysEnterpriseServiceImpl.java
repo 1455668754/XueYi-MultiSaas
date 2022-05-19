@@ -2,8 +2,8 @@ package com.xueyi.system.organize.service.impl;
 
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
-import com.xueyi.system.organize.manager.SysEnterpriseManager;
-import com.xueyi.system.organize.mapper.SysEnterpriseMapper;
+import com.xueyi.system.api.organize.domain.query.SysEnterpriseQuery;
+import com.xueyi.system.organize.manager.ISysEnterpriseManager;
 import com.xueyi.system.organize.service.ISysEnterpriseService;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
  * @author xueyi
  */
 @Service
-public class SysEnterpriseServiceImpl extends BaseServiceImpl<SysEnterpriseDto, SysEnterpriseManager, SysEnterpriseMapper> implements ISysEnterpriseService {
+public class SysEnterpriseServiceImpl extends BaseServiceImpl<SysEnterpriseQuery, SysEnterpriseDto, ISysEnterpriseManager> implements ISysEnterpriseService {
 
     /**
      * 根据名称查询状态正常企业对象

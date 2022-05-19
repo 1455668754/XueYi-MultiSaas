@@ -2,6 +2,7 @@ package com.xueyi.gen.service;
 
 import com.xueyi.common.web.entity.service.IBaseService;
 import com.xueyi.gen.domain.dto.GenTableColumnDto;
+import com.xueyi.gen.domain.query.GenTableColumnQuery;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
  *
  * @author xueyi
  */
-public interface IGenTableColumnService extends IBaseService<GenTableColumnDto> {
+public interface IGenTableColumnService extends IBaseService<GenTableColumnQuery, GenTableColumnDto> {
 
     /**
      * 根据表名称查询数据库表列信息

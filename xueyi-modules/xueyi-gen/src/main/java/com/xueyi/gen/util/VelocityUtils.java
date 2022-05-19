@@ -1,6 +1,9 @@
 package com.xueyi.gen.util;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.file.FileReader;
+import cn.hutool.core.io.file.FileWriter;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -15,6 +18,7 @@ import com.xueyi.gen.domain.dto.GenTableColumnDto;
 import com.xueyi.gen.domain.dto.GenTableDto;
 import org.apache.velocity.VelocityContext;
 
+import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -230,6 +234,7 @@ public class VelocityUtils {
      */
     public static List<String> getTemplateList(String tplCategory) {
         List<String> templates = new ArrayList<>();
+
         if (StrUtil.equals(tplCategory, GenConstants.TemplateType.MERGE.getCode())) {
             templates.add("vm/java/merge/merge.java.vm");
             templates.add("vm/java/merge/mergeMapper.java.vm");
@@ -257,7 +262,7 @@ public class VelocityUtils {
     /**
      * 获取文件名
      */
-    public static String getFileName(String template, GenTableDto genTable) {
+    public static String getFileName(String realPath, String template, GenTableDto genTable) {
         // 包路径
         String packageName = genTable.getPackageName();
         // 模块名
@@ -273,10 +278,14 @@ public class VelocityUtils {
 
         String javaPath = PROJECT_PATH + StrUtil.SLASH + StringUtils.replace(packageName, StrUtil.DOT, StrUtil.SLASH);
 
-        if (template.contains("dto.java.vm"))
+        if (template.contains("query.java.vm"))
+            return StringUtils.format("{}/domain/query/{}Query.java", javaPath, className);
+        else if (template.contains("dto.java.vm"))
             return StringUtils.format("{}/domain/dto/{}Dto.java", javaPath, className);
         else if (template.contains("po.java.vm"))
             return StringUtils.format("{}/domain/po/{}Po.java", javaPath, className);
+        else if (template.contains("converter.java.vm"))
+            return StringUtils.format("{}/domain/model/{}Converter.java", javaPath, className);
         else if (template.contains("controller.java.vm"))
             return StringUtils.format("{}/controller/{}Controller.java", javaPath, className);
         else if (template.contains("service.java.vm"))
@@ -284,7 +293,9 @@ public class VelocityUtils {
         else if (template.contains("serviceImpl.java.vm"))
             return StringUtils.format("{}/service/impl/{}ServiceImpl.java", javaPath, className);
         else if (template.contains("manager.java.vm"))
-            return StringUtils.format("{}/manager/{}Manager.java", javaPath, className);
+            return StringUtils.format("{}/manager/I{}Manager.java", javaPath, className);
+        else if (template.contains("managerImpl.java.vm"))
+            return StringUtils.format("{}/manager/impl/{}Manager.java", javaPath, className);
         else if (template.contains("mapper.java.vm"))
             return StringUtils.format("{}/mapper/{}Mapper.java", javaPath, className);
         else if (template.contains("merge.java.vm"))
@@ -295,16 +306,24 @@ public class VelocityUtils {
         else if (template.contains("sql.sql.vm"))
             return StringUtils.format("sql/{}.sql", businessName);
 
-        else if (template.contains("api.ts.vm"))
+        if (template.contains("api.ts.vm"))
             return StringUtils.format("packages/service/modules/{}/{}/{}.ts", moduleName, authorityName, businessName);
-        else if (template.contains("infoModel.ts.vm"))
-            return StringUtils.format("packages/types/modules/{}/{}/{}.ts", moduleName, authorityName, businessName);
-        else if (template.contains("auth.ts.vm"))
-            return StringUtils.format("packages/tokens/auth/{}/{}/{}.auth.ts", moduleName, authorityName, businessName);
-        else if (template.contains("enum.ts.vm"))
-            return StringUtils.format("packages/tokens/enums/{}/{}/{}.enum.ts", moduleName, authorityName, businessName);
-
-        else if (template.contains("data.ts.vm"))
+        else if (template.contains("infoModel.ts.vm")) {
+            String prefixPath = "packages/types/modules" ;
+            String suffixFile = "" ;
+            initIndexFile(realPath, prefixPath, suffixFile, moduleName, authorityName, businessName);
+            return StringUtils.format("{}/{}/{}/{}.ts", prefixPath, moduleName, authorityName, businessName);
+        } else if (template.contains("auth.ts.vm")) {
+            String prefixPath = "packages/tokens/auth" ;
+            String suffixFile = ".auth" ;
+            initIndexFile(realPath, prefixPath, suffixFile, moduleName, authorityName, businessName);
+            return StringUtils.format("{}/{}/{}/{}{}.ts", prefixPath, moduleName, authorityName, businessName, suffixFile);
+        } else if (template.contains("enum.ts.vm")) {
+            String prefixPath = "packages/tokens/enums" ;
+            String suffixFile = ".enum" ;
+            initIndexFile(realPath, prefixPath, suffixFile, moduleName, authorityName, businessName);
+            return StringUtils.format("{}/{}/{}/{}{}.ts", prefixPath, moduleName, authorityName, businessName, suffixFile);
+        } else if (template.contains("data.ts.vm"))
             return StringUtils.format("admin/src/views/{}/{}/{}/{}.data.ts", moduleName, authorityName, businessName, businessName);
         else if (template.contains("index.vue.vm"))
             return StringUtils.format("admin/src/views/{}/{}/{}/index.vue", moduleName, authorityName, businessName);
@@ -580,5 +599,46 @@ public class VelocityUtils {
                 ? StrUtil.DOT
                 : StrUtil.DOUBLE_DOT + StrUtil.SLASH + subTable.getAuthorityName()
                 : StrUtil.DOUBLE_DOT + StrUtil.SLASH + StrUtil.DOUBLE_DOT + StrUtil.SLASH + subTable.getAuthorityName();
+    }
+
+    /**
+     * 生成前端index文件
+     *
+     * @param realPath      项目路径
+     * @param prefixPath    路径前缀
+     * @param suffixFile    文件后缀
+     * @param moduleName    生成模块路径
+     * @param authorityName 生成权限名
+     * @param businessName  生成业务名
+     */
+    public static void initIndexFile(String realPath, String prefixPath, String suffixFile, String moduleName, String authorityName, String businessName) {
+        if (StrUtil.isEmpty(realPath))
+            return;
+        String indexName = "index.ts" ;
+        String importSentence = "export * from './{}'" ;
+        StringBuilder sb = new StringBuilder(realPath + prefixPath + File.separator + moduleName + File.separator);
+        outIndexFile(sb + indexName, StrUtil.format(importSentence, authorityName));
+        sb.append(authorityName).append(File.separator);
+        outIndexFile(sb + indexName, StrUtil.format(importSentence, businessName + suffixFile));
+    }
+
+    /**
+     * 生成前端index文件
+     *
+     * @param path     文件地址
+     * @param sentence 校验语句
+     */
+    public static void outIndexFile(String path, String sentence) {
+        if (FileUtil.exist(path)) {
+            FileReader fileReader = new FileReader(path);
+            if (!StrUtil.contains(fileReader.readString(), sentence)) {
+                FileWriter writer = new FileWriter(path);
+                writer.append(sentence + "\r\n");
+            }
+        } else {
+            FileUtil.touch(path);
+            FileWriter writer = new FileWriter(path);
+            writer.write(sentence + "\r\n");
+        }
     }
 }

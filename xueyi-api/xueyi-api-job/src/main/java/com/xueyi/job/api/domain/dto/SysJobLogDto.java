@@ -1,7 +1,5 @@
 package com.xueyi.job.api.domain.dto;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.job.api.domain.po.SysJobLogPo;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -13,17 +11,14 @@ import java.util.Date;
  *
  * @author xueyi
  */
-@TableName(value = "sys_job_log", excludeProperty = {"createBy","updateBy","remark","updateTime","sort"})
 public class SysJobLogDto extends SysJobLogPo {
 
     private static final long serialVersionUID = 1L;
 
     /** 开始时间 */
-    @TableField(exist = false)
     private Date startTime;
 
     /** 停止时间 */
-    @TableField(exist = false)
     private Date stopTime;
 
     public Date getStartTime() {

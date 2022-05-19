@@ -7,8 +7,8 @@ import com.xueyi.common.core.constant.basic.CacheConstants;
 import com.xueyi.common.redis.service.RedisService;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.dict.domain.dto.SysConfigDto;
-import com.xueyi.system.dict.manager.SysConfigManager;
-import com.xueyi.system.dict.mapper.SysConfigMapper;
+import com.xueyi.system.api.dict.domain.query.SysConfigQuery;
+import com.xueyi.system.dict.manager.ISysConfigManager;
 import com.xueyi.system.dict.service.ISysConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ import java.util.Map;
  * @author xueyi
  */
 @Service
-public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigDto, SysConfigManager, SysConfigMapper> implements ISysConfigService {
+public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigQuery, SysConfigDto, ISysConfigManager> implements ISysConfigService {
 
     @Autowired
     private RedisService redisService;

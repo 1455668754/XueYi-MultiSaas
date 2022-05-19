@@ -3,8 +3,8 @@ package com.xueyi.system.notice.service.impl;
 import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.notice.domain.dto.SysNoticeDto;
-import com.xueyi.system.notice.manager.SysNoticeManager;
-import com.xueyi.system.notice.mapper.SysNoticeMapper;
+import com.xueyi.system.notice.domain.query.SysNoticeQuery;
+import com.xueyi.system.notice.manager.ISysNoticeManager;
 import com.xueyi.system.notice.service.ISysNoticeService;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ import java.util.List;
  * @author xueyi
  */
 @Service
-public class SysNoticeServiceImpl extends BaseServiceImpl<SysNoticeDto, SysNoticeManager, SysNoticeMapper> implements ISysNoticeService {
+public class SysNoticeServiceImpl extends BaseServiceImpl<SysNoticeQuery, SysNoticeDto, ISysNoticeManager> implements ISysNoticeService {
 
     /**
      * 查询通知公告对象列表 | 数据权限 | 附加数据
@@ -26,7 +26,7 @@ public class SysNoticeServiceImpl extends BaseServiceImpl<SysNoticeDto, SysNotic
      */
     @Override
     @DataScope(userAlias = "createBy", mapperScope = {"SysNoticeMapper"})
-    public List<SysNoticeDto> selectListScope(SysNoticeDto notice) {
+    public List<SysNoticeDto> selectListScope(SysNoticeQuery notice) {
         return baseManager.selectListExtra(notice);
     }
 }

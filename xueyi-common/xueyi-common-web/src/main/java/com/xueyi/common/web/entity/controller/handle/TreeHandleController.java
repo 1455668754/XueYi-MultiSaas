@@ -13,33 +13,27 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 /**
  * 操作层 操作方法 树型通用数据处理
  *
- * @param <D>  Dto
- * @param <DS> DtoService
+ * @param <Q>   Query
+ * @param <D>   Dto
+ * @param <IDS> DtoService
  * @author xueyi
  */
-public abstract class TreeHandleController<D extends TreeEntity<D>, DS extends ITreeService<D>> extends BaseController<D, DS> {
+public abstract class TreeHandleController<Q extends TreeEntity<D>, D extends TreeEntity<D>, IDS extends ITreeService<Q, D>> extends BaseController<Q, D, IDS> {
 
     /**
      * 树型 新增 根据祖籍字段排除自己及子节点
      *
      * @param list 待排除数据对象集合
      * @see com.xueyi.common.web.entity.controller.TreeController#listExNodes(TreeEntity)
-     * @see com.xueyi.common.web.entity.controller.TreeController#listExNodesExtra(TreeEntity)
      */
     protected void SHandleExNodes(Collection<D> list, Serializable id) {
-        Iterator<D> it = list.iterator();
-        while (it.hasNext()) {
-            D next = (D) it.next();
-            if (ObjectUtil.equals(next.getId(),id) ||
-                    ArrayUtils.contains(StringUtils.split(next.getAncestors(), StrUtil.COMMA), id + StrUtil.EMPTY))
-                it.remove();
-        }
+        list.removeIf(next -> ObjectUtil.equals(next.getId(), id) ||
+                ArrayUtils.contains(StringUtils.split(next.getAncestors(), StrUtil.COMMA), id + StrUtil.EMPTY));
     }
 
     /**

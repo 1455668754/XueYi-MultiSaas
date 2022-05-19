@@ -1,6 +1,5 @@
 package com.xueyi.system.api.dict.domain.dto;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.system.api.dict.domain.po.SysDictTypePo;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -10,8 +9,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  * @author xueyi
  */
-@TableName(value = "sys_dict_type", excludeProperty = {"delFlag"})
-public class SysDictTypeDto extends SysDictTypePo<SysDictDataDto> {
+public class SysDictTypeDto extends SysDictTypePo {
 
     private static final long serialVersionUID = 1L;
 
@@ -33,5 +31,4 @@ public class SysDictTypeDto extends SysDictTypePo<SysDictDataDto> {
                 .append("subList", getSubList())
                 .toString();
     }
-
 }

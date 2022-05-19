@@ -12,6 +12,8 @@ import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.web.entity.controller.SubBaseController;
 import com.xueyi.gen.domain.dto.GenTableColumnDto;
 import com.xueyi.gen.domain.dto.GenTableDto;
+import com.xueyi.gen.domain.query.GenTableColumnQuery;
+import com.xueyi.gen.domain.query.GenTableQuery;
 import com.xueyi.gen.service.IGenTableColumnService;
 import com.xueyi.gen.service.IGenTableService;
 import org.apache.commons.io.IOUtils;
@@ -30,7 +32,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/gen")
-public class GenController extends SubBaseController<GenTableDto, IGenTableService, GenTableColumnDto, IGenTableColumnService> {
+public class GenController extends SubBaseController<GenTableQuery, GenTableDto, IGenTableService, GenTableColumnQuery, GenTableColumnDto, IGenTableColumnService> {
 
     /** 定义节点名称 */
     @Override
@@ -50,7 +52,7 @@ public class GenController extends SubBaseController<GenTableDto, IGenTableServi
     @Override
     @GetMapping("/list")
     @RequiresPermissions(Auth.GENERATE_GEN_LIST)
-    public AjaxResult list(GenTableDto table) {
+    public AjaxResult list(GenTableQuery table) {
         return super.list(table);
     }
 
@@ -180,7 +182,7 @@ public class GenController extends SubBaseController<GenTableDto, IGenTableServi
      */
     @Override
     @DeleteMapping("/batch/force/{idList}")
-    @RequiresPermissions(Auth.GENERATE_GEN_DELETE)
+    @RequiresPermissions(Auth.GENERATE_GEN_DEL)
     @Log(title = "代码生成管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemoveForce(@PathVariable List<Long> idList) {
         return super.batchRemoveForce(idList);

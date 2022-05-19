@@ -40,6 +40,7 @@
         <commons-collections.version>3.2.2</commons-collections.version>
         <hutool-all.version>5.7.16</hutool-all.version>
         <jjwt.version>0.9.1</jjwt.version>
+        <mapstruct.version>1.4.2.Final</mapstruct.version>
         <transmittable-thread-local.version>2.12.2</transmittable-thread-local.version>
     </properties>
 
@@ -107,6 +108,13 @@
                 <groupId>com.github.pagehelper</groupId>
                 <artifactId>pagehelper</artifactId>
                 <version>${pagehelper.version}</version>
+            </dependency>
+
+            <!-- mapstruct 转换器 -->
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${mapstruct.version}</version>
             </dependency>
 
             <!-- Swagger 依赖配置 -->
@@ -307,6 +315,13 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${mapstruct.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>

@@ -1,7 +1,7 @@
 package com.xueyi.system.authority.mapper.merge;
 
 import com.xueyi.common.datasource.annotation.Isolate;
-import com.xueyi.common.web.entity.mapper.BaseMapper;
+import com.xueyi.common.web.entity.mapper.BasicMapper;
 import com.xueyi.system.authority.domain.merge.SysTenantMenuMerge;
 
 /**
@@ -10,5 +10,5 @@ import com.xueyi.system.authority.domain.merge.SysTenantMenuMerge;
  * @author xueyi
  */
 @Isolate
-public interface SysTenantMenuMergeMapper extends BaseMapper<SysTenantMenuMerge> {
+public interface SysTenantMenuMergeMapper extends BasicMapper<SysTenantMenuMerge> {
 }

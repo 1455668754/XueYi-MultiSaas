@@ -1,6 +1,7 @@
 package com.xueyi.gen.domain.po;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 
 import javax.validation.constraints.NotBlank;
@@ -10,6 +11,7 @@ import javax.validation.constraints.NotBlank;
  *
  * @author xueyi
  */
+@TableName(value = "gen_table_column", excludeProperty = {"status", "remark", "delFlag"})
 public class GenTableColumnPo extends BaseEntity {
 
     private static final long serialVersionUID = 1L;

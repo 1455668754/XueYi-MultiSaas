@@ -7,9 +7,9 @@ import com.xueyi.common.datasource.annotation.Isolate;
 import com.xueyi.common.web.entity.service.impl.SubTreeServiceImpl;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
-import com.xueyi.system.organize.manager.SysDeptManager;
-import com.xueyi.system.organize.mapper.SysDeptMapper;
-import com.xueyi.system.organize.mapper.SysPostMapper;
+import com.xueyi.system.api.organize.domain.query.SysDeptQuery;
+import com.xueyi.system.api.organize.domain.query.SysPostQuery;
+import com.xueyi.system.organize.manager.ISysDeptManager;
 import com.xueyi.system.organize.service.ISysDeptService;
 import com.xueyi.system.organize.service.ISysPostService;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ import java.util.List;
  */
 @Service
 @Isolate
-public class SysDeptServiceImpl extends SubTreeServiceImpl<SysDeptDto, SysDeptManager, SysDeptMapper, SysPostDto, ISysPostService, SysPostMapper> implements ISysDeptService {
+public class SysDeptServiceImpl extends SubTreeServiceImpl<SysDeptQuery, SysDeptDto, ISysDeptManager, SysPostQuery, SysPostDto, ISysPostService> implements ISysDeptService {
 
     /**
      * 新增部门 | 内部调用
@@ -49,10 +49,10 @@ public class SysDeptServiceImpl extends SubTreeServiceImpl<SysDeptDto, SysDeptMa
      */
     @Override
     @DataScope(deptAlias = "id", mapperScope = {"SysDeptMapper"})
-    public List<SysDeptDto> selectListScope(SysDeptDto dept) {
+    public List<SysDeptDto> selectListScope(SysDeptQuery dept) {
         return baseManager.selectListExtra(dept);
     }
-    
+
     /**
      * 校验部门编码是否唯一
      *

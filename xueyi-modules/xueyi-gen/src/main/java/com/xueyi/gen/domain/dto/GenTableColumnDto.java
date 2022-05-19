@@ -1,8 +1,6 @@
 package com.xueyi.gen.domain.dto;
 
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.gen.domain.po.GenTableColumnPo;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -13,13 +11,11 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  * @author xueyi
  */
-@TableName(value = "gen_table_column", excludeProperty = {"status", "remark", "delFlag"})
 public class GenTableColumnDto extends GenTableColumnPo {
 
     private static final long serialVersionUID = 1L;
 
     /** 字典名称 */
-    @TableField(exist = false)
     private String dictName;
 
     public String getDictName() {

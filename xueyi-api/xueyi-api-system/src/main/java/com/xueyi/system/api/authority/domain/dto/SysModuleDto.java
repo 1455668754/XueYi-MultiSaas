@@ -1,6 +1,5 @@
 package com.xueyi.system.api.authority.domain.dto;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.system.api.authority.domain.po.SysModulePo;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -10,8 +9,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  * @author xueyi
  */
-@TableName("sys_module")
-public class SysModuleDto extends SysModulePo<SysMenuDto> {
+public class SysModuleDto extends SysModulePo {
 
     private static final long serialVersionUID = 1L;
 

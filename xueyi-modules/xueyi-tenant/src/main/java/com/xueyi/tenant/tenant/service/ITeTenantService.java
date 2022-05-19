@@ -2,6 +2,7 @@ package com.xueyi.tenant.tenant.service;
 
 import com.xueyi.common.web.entity.service.IBaseService;
 import com.xueyi.tenant.api.tenant.domain.dto.TeTenantDto;
+import com.xueyi.tenant.api.tenant.domain.query.TeTenantQuery;
 import com.xueyi.tenant.tenant.domain.model.TeTenantRegister;
 
 /**
@@ -9,7 +10,7 @@ import com.xueyi.tenant.tenant.domain.model.TeTenantRegister;
  *
  * @author xueyi
  */
-public interface ITeTenantService extends IBaseService<TeTenantDto> {
+public interface ITeTenantService extends IBaseService<TeTenantQuery, TeTenantDto> {
 
     /**
      * 获取租户权限

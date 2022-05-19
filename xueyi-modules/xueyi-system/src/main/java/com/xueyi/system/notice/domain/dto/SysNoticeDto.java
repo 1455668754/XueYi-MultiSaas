@@ -1,6 +1,5 @@
 package com.xueyi.system.notice.domain.dto;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.system.notice.domain.po.SysNoticePo;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -10,7 +9,6 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  * @author xueyi
  */
-@TableName(value = "sys_notice",excludeProperty = {"sort"})
 public class SysNoticeDto extends SysNoticePo {
 
     private static final long serialVersionUID = 1L;

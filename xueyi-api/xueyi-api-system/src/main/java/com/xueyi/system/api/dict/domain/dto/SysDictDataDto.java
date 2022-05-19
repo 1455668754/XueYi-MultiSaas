@@ -1,6 +1,5 @@
 package com.xueyi.system.api.dict.domain.dto;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.system.api.dict.domain.po.SysDictDataPo;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -10,7 +9,6 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  * @author xueyi
  */
-@TableName(value = "sys_dict_data", excludeProperty = {"name", "delFlag"})
 public class SysDictDataDto extends SysDictDataPo {
 
     private static final long serialVersionUID = 1L;

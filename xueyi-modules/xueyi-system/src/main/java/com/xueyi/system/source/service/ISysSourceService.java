@@ -1,14 +1,11 @@
 package com.xueyi.system.source.service;
 
-import com.xueyi.common.web.entity.service.IBaseService;
-import com.xueyi.system.api.source.domain.Source;
-
 /**
  * 策略组管理 服务层
  *
  * @author xueyi
  */
-public interface ISysSourceService extends IBaseService<Source> {
+public interface ISysSourceService {
 
     /**
      * 加载策略组缓存数据

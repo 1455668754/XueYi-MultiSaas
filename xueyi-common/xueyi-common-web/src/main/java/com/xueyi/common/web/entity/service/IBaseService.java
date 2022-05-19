@@ -10,34 +10,35 @@ import java.util.List;
 /**
  * 服务层 基类通用数据处理
  *
+ * @param <Q> Query
  * @param <D> Dto
  * @author xueyi
  */
-public interface IBaseService<D extends BaseEntity> {
+public interface IBaseService<Q extends BaseEntity, D extends BaseEntity> {
 
     /**
      * 查询数据对象列表
      *
-     * @param d 数据对象
+     * @param query 数据查询对象
      * @return 数据对象集合
      */
-    List<D> selectList(D d);
+    List<D> selectList(Q query);
 
     /**
      * 查询数据对象列表 | 附加数据
      *
-     * @param d 数据对象
+     * @param query 数据查询对象
      * @return 数据对象集合
      */
-    List<D> selectListExtra(D d);
+    List<D> selectListExtra(Q query);
 
     /**
      * 查询数据对象列表 | 数据权限 | 附加数据
      *
-     * @param d 数据对象
+     * @param query 数据查询对象
      * @return 数据对象集合
      */
-    List<D> selectListScope(D d);
+    List<D> selectListScope(Q query);
 
     /**
      * 根据Id集合查询数据对象列表

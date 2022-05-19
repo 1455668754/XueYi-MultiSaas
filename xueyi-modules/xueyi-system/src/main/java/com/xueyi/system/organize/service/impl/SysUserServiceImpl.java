@@ -8,8 +8,8 @@ import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.datasource.annotation.Isolate;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
-import com.xueyi.system.organize.manager.SysUserManager;
-import com.xueyi.system.organize.mapper.SysUserMapper;
+import com.xueyi.system.api.organize.domain.query.SysUserQuery;
+import com.xueyi.system.organize.manager.impl.SysUserManager;
 import com.xueyi.system.organize.service.ISysUserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -25,7 +25,7 @@ import java.util.List;
  */
 @Service
 @Isolate
-public class SysUserServiceImpl extends BaseServiceImpl<SysUserDto, SysUserManager, SysUserMapper> implements ISysUserService {
+public class SysUserServiceImpl extends BaseServiceImpl<SysUserQuery, SysUserDto, SysUserManager> implements ISysUserService {
 
     /**
      * 用户登录校验 | 查询用户信息
@@ -59,10 +59,10 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDto, SysUserManag
      */
     @Override
     @DataScope(userAlias = "id", mapperScope = {"SysUserMapper"})
-    public List<SysUserDto> selectListScope(SysUserDto user) {
+    public List<SysUserDto> selectListScope(SysUserQuery user) {
         return baseManager.selectListExtra(user);
     }
-    
+
     /**
      * 修改用户基本信息
      *
@@ -85,7 +85,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDto, SysUserManag
      * @return 结果
      */
     @Override
-    public int updateUserName(Long id, String userName){
+    public int updateUserName(Long id, String userName) {
         return baseManager.updateUserName(id, userName);
     }
 
@@ -157,7 +157,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDto, SysUserManag
      * @return 结果 | true/false 唯一/不唯一
      */
     @Override
-    public boolean checkUserNameUnique(Serializable id, String userName){
+    public boolean checkUserNameUnique(Serializable id, String userName) {
         return ObjectUtil.isNotNull(baseManager.checkUserNameUnique(ObjectUtil.isNull(id) ? BaseConstants.NONE_ID : id, userName));
     }
 
@@ -203,7 +203,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDto, SysUserManag
      * @param user 用户对象
      */
     @Override
-    public void userDesensitized(SysUserDto user){
+    public void userDesensitized(SysUserDto user) {
         user.setPhone(DesensitizedUtil.mobilePhone(user.getPhone()));
         user.setEmail(DesensitizedUtil.email(user.getEmail()));
         user.setPassword(StrUtil.EMPTY);

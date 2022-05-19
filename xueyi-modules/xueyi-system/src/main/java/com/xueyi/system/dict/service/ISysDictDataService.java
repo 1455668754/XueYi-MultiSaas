@@ -2,6 +2,7 @@ package com.xueyi.system.dict.service;
 
 import com.xueyi.common.web.entity.service.IBaseService;
 import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
+import com.xueyi.system.api.dict.domain.query.SysDictDataQuery;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
  *
  * @author xueyi
  */
-public interface ISysDictDataService extends IBaseService<SysDictDataDto> {
+public interface ISysDictDataService extends IBaseService<SysDictDataQuery, SysDictDataDto> {
 
     /**
      * 查询字典数据对象列表

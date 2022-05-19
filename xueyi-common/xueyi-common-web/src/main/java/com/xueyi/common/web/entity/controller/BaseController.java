@@ -20,27 +20,28 @@ import java.util.List;
 /**
  * 操作层 基类通用数据处理
  *
- * @param <D>  Dto
- * @param <DS> DtoService
+ * @param <Q>   Query
+ * @param <D>   Dto
+ * @param <IDS> DtoService
  * @author xueyi
  */
-public abstract class BaseController<D extends BaseEntity, DS extends IBaseService<D>> extends BaseHandleController<D, DS> {
+public abstract class BaseController<Q extends BaseEntity, D extends BaseEntity, IDS extends IBaseService<Q, D>> extends BaseHandleController<Q, D, IDS> {
 
     /**
      * 查询列表
      */
-    public AjaxResult list(D d) {
+    public AjaxResult list(Q query) {
         startPage();
-        List<D> list = baseService.selectListScope(d);
+        List<D> list = baseService.selectListScope(query);
         return getDataTable(list);
     }
 
     /**
      * 导出
      */
-    public void export(HttpServletResponse response, D d) {
-        List<D> list = baseService.selectListScope(d);
-        ExcelUtil<D> util = new ExcelUtil<D>(getClazz());
+    public void export(HttpServletResponse response, Q query) {
+        List<D> list = baseService.selectListScope(query);
+        ExcelUtil<D> util = new ExcelUtil<>(getDClass());
         util.exportExcel(response, list, StrUtil.format("{}数据", getNodeName()));
     }
 
@@ -132,8 +133,12 @@ public abstract class BaseController<D extends BaseEntity, DS extends IBaseServi
      * 获取选择框列表
      */
     public AjaxResult option() {
-        D d = newBaseObject();
-        d.setStatus(BaseConstants.Status.NORMAL.getCode());
-        return list(d);
+        try {
+            Q query = getQClass().newInstance();
+            query.setStatus(BaseConstants.Status.NORMAL.getCode());
+            return list(query);
+        } catch (Exception ignored) {
+        }
+        return AjaxResult.error();
     }
 }

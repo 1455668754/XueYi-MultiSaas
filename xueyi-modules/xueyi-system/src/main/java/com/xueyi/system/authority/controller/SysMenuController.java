@@ -23,6 +23,7 @@ import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.entity.controller.TreeController;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
+import com.xueyi.system.api.authority.domain.query.SysMenuQuery;
 import com.xueyi.system.api.model.LoginUser;
 import com.xueyi.system.authority.service.ISysMenuService;
 import com.xueyi.system.authority.service.ISysModuleService;
@@ -43,7 +44,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/menu")
-public class SysMenuController extends TreeController<SysMenuDto, ISysMenuService> {
+public class SysMenuController extends TreeController<SysMenuQuery, SysMenuDto, ISysMenuService> {
 
     @Autowired
     private TokenService tokenService;
@@ -92,7 +93,7 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
     @Override
     @GetMapping("/list")
     @RequiresPermissions(Auth.SYS_MENU_LIST)
-    public AjaxResult list(SysMenuDto menu) {
+    public AjaxResult list(SysMenuQuery menu) {
         return super.list(menu);
     }
 
@@ -101,7 +102,7 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
      */
     @GetMapping("/list/exclude")
     @RequiresPermissions(Auth.SYS_MENU_LIST)
-    public AjaxResult listExNodes(SysMenuDto menu) {
+    public AjaxResult listExNodes(SysMenuQuery menu) {
         return super.listExNodes(menu);
     }
 
@@ -182,7 +183,7 @@ public class SysMenuController extends TreeController<SysMenuDto, ISysMenuServic
      */
     @Override
     @DeleteMapping("/batch/{idList}")
-    @RequiresPermissions(Auth.SYS_MENU_DELETE)
+    @RequiresPermissions(Auth.SYS_MENU_DEL)
     @Log(title = "菜单管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);

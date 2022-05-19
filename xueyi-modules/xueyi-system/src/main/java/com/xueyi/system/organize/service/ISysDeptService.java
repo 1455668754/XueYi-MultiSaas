@@ -3,13 +3,15 @@ package com.xueyi.system.organize.service;
 import com.xueyi.common.web.entity.service.ISubTreeService;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
+import com.xueyi.system.api.organize.domain.query.SysDeptQuery;
+import com.xueyi.system.api.organize.domain.query.SysPostQuery;
 
 /**
  * 部门管理 服务层
  *
  * @author xueyi
  */
-public interface ISysDeptService extends ISubTreeService<SysDeptDto, SysPostDto> {
+public interface ISysDeptService extends ISubTreeService<SysDeptQuery, SysDeptDto, SysPostQuery, SysPostDto> {
 
     /**
      * 新增部门 | 内部调用

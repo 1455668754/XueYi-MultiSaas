@@ -20,7 +20,7 @@ public interface SystemConstants {
     /** 系统 - 部门管理 - 修改状态 */
     String SYS_DEPT_ES = "organize:dept:es";
     /** 系统 - 部门管理 - 删除 */
-    String SYS_DEPT_DELETE = "organize:dept:delete";
+    String SYS_DEPT_DEL = "organize:dept:delete";
     /** 系统 - 部门管理 - 导入 */
     String SYS_DEPT_IMPORT = "organize:dept:import";
     /** 系统 - 部门管理 - 导出 */
@@ -39,7 +39,7 @@ public interface SystemConstants {
     /** 系统 - 岗位管理 - 修改状态 */
     String SYS_POST_ES = "organize:post:es";
     /** 系统 - 岗位管理 - 删除 */
-    String SYS_POST_DELETE = "organize:post:delete";
+    String SYS_POST_DEL = "organize:post:delete";
     /** 系统 - 岗位管理 - 导入 */
     String SYS_POST_IMPORT = "organize:post:import";
     /** 系统 - 岗位管理 - 导出 */
@@ -53,14 +53,14 @@ public interface SystemConstants {
     String SYS_USER_ADD = "organize:user:add";
     /** 系统 - 用户管理 - 修改 */
     String SYS_USER_EDIT = "organize:user:edit";
-    /** 系统 - 用户管理 - 密码修改 */
-    String SYS_USER_RESET_PASSWORD = "organize:user:rp";
     /** 系统 - 用户管理 - 权限 */
     String SYS_USER_AUTH = "organize:user:auth";
     /** 系统 - 用户管理 - 修改状态 */
     String SYS_USER_ES = "organize:user:es";
+    /** 系统 - 用户管理 - 密码修改 */
+    String SYS_USER_RESET_PASSWORD = "organize:user:rp";
     /** 系统 - 用户管理 - 删除 */
-    String SYS_USER_DELETE = "organize:user:delete";
+    String SYS_USER_DEL = "organize:user:delete";
     /** 系统 - 用户管理 - 导入 */
     String SYS_USER_IMPORT = "organize:user:import";
     /** 系统 - 用户管理 - 导出 */
@@ -77,7 +77,7 @@ public interface SystemConstants {
     /** 系统 - 模块管理 - 修改状态 */
     String SYS_MODULE_ES = "authority:module:es";
     /** 系统 - 模块管理 - 删除 */
-    String SYS_MODULE_DELETE = "authority:module:delete";
+    String SYS_MODULE_DEL = "authority:module:delete";
     /** 系统 - 模块管理 - 导入 */
     String SYS_MODULE_IMPORT = "authority:module:import";
     /** 系统 - 模块管理 - 导出 */
@@ -94,7 +94,7 @@ public interface SystemConstants {
     /** 系统 - 菜单管理 - 修改状态 */
     String SYS_MENU_ES = "authority:menu:es";
     /** 系统 - 菜单管理 - 删除 */
-    String SYS_MENU_DELETE = "authority:menu:delete";
+    String SYS_MENU_DEL = "authority:menu:delete";
     /** 系统 - 菜单管理 - 导入 */
     String SYS_MENU_IMPORT = "authority:menu:import";
     /** 系统 - 菜单管理 - 导出 */
@@ -113,7 +113,7 @@ public interface SystemConstants {
     /** 系统 - 角色管理 - 修改状态 */
     String SYS_ROLE_ES = "authority:role:es";
     /** 系统 - 角色管理 - 删除 */
-    String SYS_ROLE_DELETE = "authority:role:delete";
+    String SYS_ROLE_DEL = "authority:role:delete";
     /** 系统 - 角色管理 - 导入 */
     String SYS_ROLE_IMPORT = "authority:role:import";
     /** 系统 - 角色管理 - 导出 */
@@ -130,7 +130,7 @@ public interface SystemConstants {
     /** 系统 - 字典管理 - 修改状态 */
     String SYS_DICT_ES = "dict:dict:es";
     /** 系统 - 字典管理 - 删除 */
-    String SYS_DICT_DELETE = "dict:dict:delete";
+    String SYS_DICT_DEL = "dict:dict:delete";
     /** 系统 - 字典管理 - 导入 */
     String SYS_DICT_IMPORT = "dict:dict:import";
     /** 系统 - 字典管理 - 导出 */
@@ -149,9 +149,9 @@ public interface SystemConstants {
     /** 系统 - 参数管理 - 修改状态 */
     String SYS_CONFIG_ES = "dict:config:es";
     /** 系统 - 参数管理 - 删除 */
-    String SYS_CONFIG_DELETE = "dict:config:delete";
+    String SYS_CONFIG_DEL = "dict:config:delete";
     /** 系统 - 参数管理 - 强制删除 */
-    String SYS_CONFIG_FORCE_DELETE = "dict:config:delForce";
+    String SYS_CONFIG_DEL_FORCE = "dict:config:delForce";
     /** 系统 - 参数管理 - 导入 */
     String SYS_CONFIG_IMPORT = "dict:config:import";
     /** 系统 - 参数管理 - 导出 */
@@ -168,7 +168,7 @@ public interface SystemConstants {
     /** 系统 - 通知公告 - 修改状态 */
     String SYS_NOTICE_ES = "system:notice:es";
     /** 系统 - 通知公告 - 删除 */
-    String SYS_NOTICE_DELETE = "system:notice:delete";
+    String SYS_NOTICE_DEL = "system:notice:delete";
     /** 系统 - 通知公告 - 导入 */
     String SYS_NOTICE_IMPORT = "system:notice:import";
     /** 系统 - 通知公告 - 导出 */
@@ -177,7 +177,7 @@ public interface SystemConstants {
     /** 系统 - 访问日志 - 列表 */
     String SYS_LOGIN_LOG_LIST = "monitor:loginLog:list";
     /** 系统 - 访问日志 - 删除 */
-    String SYS_LOGIN_LOG_DELETE = "monitor:loginLog:delete";
+    String SYS_LOGIN_LOG_DEL = "monitor:loginLog:delete";
     /** 系统 - 访问日志 - 导出 */
     String SYS_LOGIN_LOG_EXPORT = "monitor:loginLog:export";
 
@@ -186,7 +186,7 @@ public interface SystemConstants {
     /** 系统 - 操作日志 - 详情 */
     String SYS_OPERATE_LOG_SINGLE = "monitor:operateLog:single";
     /** 系统 - 操作日志 - 删除 */
-    String SYS_OPERATE_LOG_DELETE = "monitor:operateLog:delete";
+    String SYS_OPERATE_LOG_DEL = "monitor:operateLog:delete";
     /** 系统 - 操作日志 - 导出 */
     String SYS_OPERATE_LOG_EXPORT = "monitor:operateLog:export";
 

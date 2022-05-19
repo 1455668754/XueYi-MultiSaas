@@ -4,9 +4,7 @@ import cn.hutool.core.util.ObjectUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.core.web.entity.base.SubBaseEntity;
-import com.xueyi.common.web.entity.manager.SubBaseManager;
-import com.xueyi.common.web.entity.mapper.BaseMapper;
-import com.xueyi.common.web.entity.mapper.SubBaseMapper;
+import com.xueyi.common.web.entity.manager.ISubBaseManager;
 import com.xueyi.common.web.entity.service.IBaseService;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,18 +15,18 @@ import java.util.Collection;
 /**
  * 服务层 操作方法 主子基类实现通用数据处理
  *
- * @param <D>  Dto
- * @param <DG> DtoManager
- * @param <DM> DtoMapper
- * @param <S>  SubDto
- * @param <SS> SubService
- * @param <SM> SubMapper
+ * @param <Q>   Query
+ * @param <D>   Dto
+ * @param <IDG> DtoIManager
+ * @param <SQ>  SubQuery
+ * @param <SD>  SubDto
+ * @param <ISS> SubIService
  * @author xueyi
  */
-public abstract class SubBaseHandleServiceImpl<D extends SubBaseEntity<S>, DG extends SubBaseManager<D, DM, S, SM>, DM extends SubBaseMapper<D, S>, S extends BaseEntity, SS extends IBaseService<S>, SM extends BaseMapper<S>> extends BaseServiceImpl<D, DG, DM> {
+public abstract class SubBaseHandleServiceImpl<Q extends SubBaseEntity<SD>, D extends SubBaseEntity<SD>, IDG extends ISubBaseManager<Q, D, SQ, SD>, SQ extends BaseEntity, SD extends BaseEntity, ISS extends IBaseService<SQ, SD>> extends BaseServiceImpl<Q, D, IDG> {
 
     @Autowired
-    protected SS subService;
+    protected ISS subService;
 
     /**
      * 修改/修改状态 主子树型 检查归属数据状态
@@ -53,7 +51,7 @@ public abstract class SubBaseHandleServiceImpl<D extends SubBaseEntity<S>, DG ex
      * @param subList 子数据集合
      * @param d       数据对象
      */
-    protected void setForeignKey(Collection<S> subList, D d) {
+    protected void setForeignKey(Collection<SD> subList, D d) {
         setForeignKey(subList, null, d, null);
     }
 
@@ -63,7 +61,7 @@ public abstract class SubBaseHandleServiceImpl<D extends SubBaseEntity<S>, DG ex
      * @param sub 子数据
      * @param d   数据对象
      */
-    protected void setForeignKey(S sub, D d) {
+    protected void setForeignKey(SD sub, D d) {
         setForeignKey(null, sub, d, null);
     }
 
@@ -73,7 +71,7 @@ public abstract class SubBaseHandleServiceImpl<D extends SubBaseEntity<S>, DG ex
      * @param subList    子数据集合
      * @param foreignKey 子表外键值
      */
-    protected void setForeignKey(Collection<S> subList, Serializable foreignKey) {
+    protected void setForeignKey(Collection<SD> subList, Serializable foreignKey) {
         setForeignKey(subList, null, null, foreignKey);
     }
 
@@ -83,7 +81,7 @@ public abstract class SubBaseHandleServiceImpl<D extends SubBaseEntity<S>, DG ex
      * @param sub        子数据
      * @param foreignKey 子表外键值
      */
-    protected void setForeignKey(S sub, Serializable foreignKey) {
+    protected void setForeignKey(SD sub, Serializable foreignKey) {
         setForeignKey(null, sub, null, foreignKey);
     }
 
@@ -95,5 +93,5 @@ public abstract class SubBaseHandleServiceImpl<D extends SubBaseEntity<S>, DG ex
      * @param d          数据对象
      * @param foreignKey 子表外键值
      */
-    protected abstract void setForeignKey(Collection<S> subList, S sub, D d, Serializable foreignKey);
+    protected abstract void setForeignKey(Collection<SD> subList, SD sub, D d, Serializable foreignKey);
 }

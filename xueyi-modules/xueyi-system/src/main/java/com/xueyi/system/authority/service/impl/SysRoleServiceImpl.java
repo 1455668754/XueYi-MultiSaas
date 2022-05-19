@@ -8,8 +8,8 @@ import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
-import com.xueyi.system.authority.manager.SysRoleManager;
-import com.xueyi.system.authority.mapper.SysRoleMapper;
+import com.xueyi.system.api.authority.domain.query.SysRoleQuery;
+import com.xueyi.system.authority.manager.ISysRoleManager;
 import com.xueyi.system.authority.service.ISysAuthService;
 import com.xueyi.system.authority.service.ISysRoleService;
 import com.xueyi.system.organize.service.ISysOrganizeService;
@@ -26,7 +26,7 @@ import static com.xueyi.common.core.constant.basic.SecurityConstants.CREATE_BY;
  * @author xueyi
  */
 @Service
-public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleDto, SysRoleManager, SysRoleMapper> implements ISysRoleService {
+public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleQuery, SysRoleDto, ISysRoleManager> implements ISysRoleService {
 
     @Autowired
     private ISysAuthService authService;
@@ -42,7 +42,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleDto, SysRoleManag
      */
     @Override
     @DataScope(userAlias = CREATE_BY, mapperScope = {"SysRoleMapper"})
-    public List<SysRoleDto> selectListScope(SysRoleDto role) {
+    public List<SysRoleDto> selectListScope(SysRoleQuery role) {
         return baseManager.selectListExtra(role);
     }
 

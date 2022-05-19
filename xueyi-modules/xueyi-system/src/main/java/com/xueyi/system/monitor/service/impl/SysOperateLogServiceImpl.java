@@ -2,8 +2,8 @@ package com.xueyi.system.monitor.service.impl;
 
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.log.domain.dto.SysOperateLogDto;
-import com.xueyi.system.monitor.manager.SysOperateLogManager;
-import com.xueyi.system.monitor.mapper.SysOperateLogMapper;
+import com.xueyi.system.api.log.domain.query.SysOperateLogQuery;
+import com.xueyi.system.monitor.manager.ISysOperateLogManager;
 import com.xueyi.system.monitor.service.ISysOperateLogService;
 import org.springframework.stereotype.Service;
 
@@ -13,18 +13,7 @@ import org.springframework.stereotype.Service;
  * @author xueyi
  */
 @Service
-public class SysOperateLogServiceImpl extends BaseServiceImpl<SysOperateLogDto, SysOperateLogManager, SysOperateLogMapper> implements ISysOperateLogService {
-
-    /**
-     * 新增操作日志
-     *
-     * @param operationLog 操作日志对象
-     * @return 结果
-     */
-    @Override
-    public int insert(SysOperateLogDto operationLog) {
-        return baseManager.insert(operationLog);
-    }
+public class SysOperateLogServiceImpl extends BaseServiceImpl<SysOperateLogQuery, SysOperateLogDto, ISysOperateLogManager> implements ISysOperateLogService {
 
     /**
      * 清空操作日志

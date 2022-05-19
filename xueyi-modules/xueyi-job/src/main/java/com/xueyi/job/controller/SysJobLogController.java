@@ -9,6 +9,7 @@ import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.job.api.domain.dto.SysJobLogDto;
+import com.xueyi.job.api.domain.query.SysJobLogQuery;
 import com.xueyi.job.service.ISysJobLogService;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +23,7 @@ import java.io.Serializable;
  */
 @RestController
 @RequestMapping("/job/log")
-public class SysJobLogController extends BaseController<SysJobLogDto, ISysJobLogService> {
+public class SysJobLogController extends BaseController<SysJobLogQuery, SysJobLogDto, ISysJobLogService> {
 
     /** 定义节点名称 */
     @Override
@@ -46,7 +47,7 @@ public class SysJobLogController extends BaseController<SysJobLogDto, ISysJobLog
     @Override
     @GetMapping("/list")
     @RequiresPermissions(Auth.SCHEDULE_JOB_LIST)
-    public AjaxResult list(SysJobLogDto jobLog) {
+    public AjaxResult list(SysJobLogQuery jobLog) {
         return super.list(jobLog);
     }
 
@@ -67,7 +68,7 @@ public class SysJobLogController extends BaseController<SysJobLogDto, ISysJobLog
     @PostMapping("/export")
     @RequiresPermissions(Auth.SCHEDULE_JOB_EXPORT)
     @Log(title = "调度日志管理", businessType = BusinessType.EXPORT)
-    public void export(HttpServletResponse response, SysJobLogDto jobLog) {
+    public void export(HttpServletResponse response, SysJobLogQuery jobLog) {
         super.export(response, jobLog);
     }
 
@@ -75,7 +76,7 @@ public class SysJobLogController extends BaseController<SysJobLogDto, ISysJobLog
      * 清空调度日志
      */
     @DeleteMapping("/clean")
-    @RequiresPermissions(Auth.SCHEDULE_JOB_DELETE)
+    @RequiresPermissions(Auth.SCHEDULE_JOB_DEL)
     @Log(title = "调度日志管理", businessType = BusinessType.CLEAN)
     public AjaxResult clean() {
         baseService.cleanLog();

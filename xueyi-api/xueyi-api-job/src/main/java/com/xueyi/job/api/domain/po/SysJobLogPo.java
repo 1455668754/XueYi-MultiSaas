@@ -1,6 +1,7 @@
 package com.xueyi.job.api.domain.po;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.common.core.annotation.Excel;
 import com.xueyi.common.core.web.tenant.base.TBaseEntity;
 
@@ -9,6 +10,7 @@ import com.xueyi.common.core.web.tenant.base.TBaseEntity;
  *
  * @author xueyi
  */
+@TableName(value = "sys_job_log", excludeProperty = {"createBy","updateBy","remark","updateTime","sort"})
 public class SysJobLogPo extends TBaseEntity {
 
     private static final long serialVersionUID = 1L;

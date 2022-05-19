@@ -16,6 +16,7 @@ import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.tenant.api.source.domain.dto.TeSourceDto;
 import com.xueyi.tenant.api.tenant.domain.dto.TeStrategyDto;
+import com.xueyi.tenant.api.tenant.domain.query.TeStrategyQuery;
 import com.xueyi.tenant.source.service.ITeSourceService;
 import com.xueyi.tenant.tenant.service.ITeStrategyService;
 import com.xueyi.tenant.tenant.service.ITeTenantService;
@@ -34,7 +35,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/strategy")
-public class TeStrategyController extends BaseController<TeStrategyDto, ITeStrategyService> {
+public class TeStrategyController extends BaseController<TeStrategyQuery, TeStrategyDto, ITeStrategyService> {
 
     @Autowired
     private ITeTenantService tenantService;
@@ -54,7 +55,7 @@ public class TeStrategyController extends BaseController<TeStrategyDto, ITeStrat
     @Override
     @GetMapping("/list")
     @RequiresPermissions(Auth.TE_STRATEGY_LIST)
-    public AjaxResult list(TeStrategyDto strategy) {
+    public AjaxResult list(TeStrategyQuery strategy) {
         return super.list(strategy);
     }
 
@@ -74,7 +75,7 @@ public class TeStrategyController extends BaseController<TeStrategyDto, ITeStrat
     @Override
     @PostMapping("/export")
     @RequiresPermissions(Auth.TE_STRATEGY_EXPORT)
-    public void export(HttpServletResponse response, TeStrategyDto strategy) {
+    public void export(HttpServletResponse response, TeStrategyQuery strategy) {
         super.export(response, strategy);
     }
 
@@ -116,7 +117,7 @@ public class TeStrategyController extends BaseController<TeStrategyDto, ITeStrat
      */
     @Override
     @DeleteMapping("/batch/{idList}")
-    @RequiresPermissions(Auth.TE_STRATEGY_DELETE)
+    @RequiresPermissions(Auth.TE_STRATEGY_DEL)
     @Log(title = "数据源策略管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);

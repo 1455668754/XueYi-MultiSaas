@@ -6,8 +6,8 @@ import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.datasource.annotation.Isolate;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
-import com.xueyi.system.organize.manager.SysPostManager;
-import com.xueyi.system.organize.mapper.SysPostMapper;
+import com.xueyi.system.api.organize.domain.query.SysPostQuery;
+import com.xueyi.system.organize.manager.impl.SysPostManager;
 import com.xueyi.system.organize.service.ISysPostService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -23,7 +23,7 @@ import java.util.List;
  */
 @Service
 @Isolate
-public class SysPostServiceImpl extends BaseServiceImpl<SysPostDto, SysPostManager, SysPostMapper> implements ISysPostService {
+public class SysPostServiceImpl extends BaseServiceImpl<SysPostQuery, SysPostDto, SysPostManager> implements ISysPostService {
 
     /**
      * 用户登录校验 | 根据部门Ids获取归属岗位对象集合
@@ -56,10 +56,10 @@ public class SysPostServiceImpl extends BaseServiceImpl<SysPostDto, SysPostManag
      */
     @Override
     @DataScope(postAlias = "id", mapperScope = {"SysPostMapper"})
-    public List<SysPostDto> selectListScope(SysPostDto post) {
+    public List<SysPostDto> selectListScope(SysPostQuery post) {
         return baseManager.selectListExtra(post);
     }
-    
+
     /**
      * 校验岗位编码是否唯一
      *

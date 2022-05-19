@@ -20,7 +20,7 @@ public interface TenantConstants {
     /** 租户 - 租户管理 - 修改状态 */
     String TE_TENANT_ES = "tenant:tenant:es";
     /** 租户 - 租户管理 - 删除 */
-    String TE_TENANT_DELETE = "tenant:tenant:delete";
+    String TE_TENANT_DEL = "tenant:tenant:delete";
     /** 租户 - 租户管理 - 导入 */
     String TE_TENANT_IMPORT = "tenant:tenant:import";
     /** 租户 - 租户管理 - 导出 */
@@ -37,7 +37,7 @@ public interface TenantConstants {
     /** 租户 - 数据源策略管理 - 修改状态 */
     String TE_STRATEGY_ES = "tenant:strategy:es";
     /** 租户 - 数据源策略管理 - 删除 */
-    String TE_STRATEGY_DELETE = "tenant:strategy:delete";
+    String TE_STRATEGY_DEL = "tenant:strategy:delete";
     /** 租户 - 数据源策略管理 - 导入 */
     String TE_STRATEGY_IMPORT = "tenant:strategy:import";
     /** 租户 - 数据源策略管理 - 导出 */
@@ -54,7 +54,7 @@ public interface TenantConstants {
     /** 租户 - 数据源管理 - 修改状态 */
     String TE_SOURCE_ES = "tenant:source:es";
     /** 租户 - 数据源管理 - 删除 */
-    String TE_SOURCE_DELETE = "tenant:source:delete";
+    String TE_SOURCE_DEL = "tenant:source:delete";
     /** 租户 - 数据源管理 - 导入 */
     String TE_SOURCE_IMPORT = "tenant:source:import";
     /** 租户 - 数据源管理 - 导出 */

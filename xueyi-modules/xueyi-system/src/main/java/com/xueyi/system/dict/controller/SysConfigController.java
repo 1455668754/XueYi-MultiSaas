@@ -15,6 +15,7 @@ import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.system.api.dict.domain.dto.SysConfigDto;
+import com.xueyi.system.api.dict.domain.query.SysConfigQuery;
 import com.xueyi.system.dict.service.ISysConfigService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/config")
-public class SysConfigController extends BaseController<SysConfigDto, ISysConfigService> {
+public class SysConfigController extends BaseController<SysConfigQuery, SysConfigDto, ISysConfigService> {
 
     /** 定义节点名称 */
     protected String getNodeName() {
@@ -59,7 +60,7 @@ public class SysConfigController extends BaseController<SysConfigDto, ISysConfig
     @Override
     @GetMapping("/list")
     @RequiresPermissions(Auth.SYS_CONFIG_LIST)
-    public AjaxResult list(SysConfigDto config) {
+    public AjaxResult list(SysConfigQuery config) {
         return super.list(config);
     }
 
@@ -80,7 +81,7 @@ public class SysConfigController extends BaseController<SysConfigDto, ISysConfig
     @PostMapping("/export")
     @RequiresPermissions(Auth.SYS_CONFIG_EXPORT)
     @Log(title = "参数管理", businessType = BusinessType.EXPORT)
-    public void export(HttpServletResponse response, SysConfigDto config) {
+    public void export(HttpServletResponse response, SysConfigQuery config) {
         super.export(response, config);
     }
 
@@ -122,7 +123,7 @@ public class SysConfigController extends BaseController<SysConfigDto, ISysConfig
      */
     @Override
     @DeleteMapping("/batch/{idList}")
-    @RequiresPermissions(Auth.SYS_CONFIG_DELETE)
+    @RequiresPermissions(Auth.SYS_CONFIG_DEL)
     @Log(title = "参数管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);
@@ -133,7 +134,7 @@ public class SysConfigController extends BaseController<SysConfigDto, ISysConfig
      */
     @Override
     @DeleteMapping("/batch/force/{idList}")
-    @RequiresPermissions(Auth.SYS_CONFIG_FORCE_DELETE)
+    @RequiresPermissions(Auth.SYS_CONFIG_DEL_FORCE)
     @Log(title = "参数管理", businessType = BusinessType.DELETE_FORCE)
     public AjaxResult batchRemoveForce(@PathVariable List<Long> idList) {
         return super.batchRemoveForce(idList);

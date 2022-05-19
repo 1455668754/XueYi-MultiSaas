@@ -8,9 +8,9 @@ import com.xueyi.common.redis.service.RedisService;
 import com.xueyi.common.web.entity.service.impl.SubBaseServiceImpl;
 import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
 import com.xueyi.system.api.dict.domain.dto.SysDictTypeDto;
-import com.xueyi.system.dict.manager.SysDictTypeManager;
-import com.xueyi.system.dict.mapper.SysDictDataMapper;
-import com.xueyi.system.dict.mapper.SysDictTypeMapper;
+import com.xueyi.system.api.dict.domain.query.SysDictDataQuery;
+import com.xueyi.system.api.dict.domain.query.SysDictTypeQuery;
+import com.xueyi.system.dict.manager.ISysDictTypeManager;
 import com.xueyi.system.dict.service.ISysDictDataService;
 import com.xueyi.system.dict.service.ISysDictTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ import java.util.Map;
  * @author xueyi
  */
 @Service
-public class SysDictTypeServiceImpl extends SubBaseServiceImpl<SysDictTypeDto, SysDictTypeManager, SysDictTypeMapper, SysDictDataDto, ISysDictDataService, SysDictDataMapper> implements ISysDictTypeService {
+public class SysDictTypeServiceImpl extends SubBaseServiceImpl<SysDictTypeQuery, SysDictTypeDto, ISysDictTypeManager, SysDictDataQuery, SysDictDataDto, ISysDictDataService> implements ISysDictTypeService {
 
     @Autowired
     private RedisService redisService;
