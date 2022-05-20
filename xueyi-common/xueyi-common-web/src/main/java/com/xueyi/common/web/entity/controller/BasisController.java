@@ -1,7 +1,9 @@
 package com.xueyi.common.web.entity.controller;
 
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.LocalDateTimeUtil;
+import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageInfo;
-import com.xueyi.common.core.utils.DateUtils;
 import com.xueyi.common.core.utils.PageUtils;
 import com.xueyi.common.core.web.page.TableDataInfo;
 import com.xueyi.common.core.web.result.AjaxResult;
@@ -11,7 +13,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 
 import java.beans.PropertyEditorSupport;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -28,11 +30,11 @@ public class BasisController {
      */
     @InitBinder
     public void initBinder(WebDataBinder binder) {
-        // Date 类型转换
-        binder.registerCustomEditor(Date.class, new PropertyEditorSupport() {
+        // LocalDateTime 类型转换
+        binder.registerCustomEditor(LocalDateTime.class, new PropertyEditorSupport() {
             @Override
             public void setAsText(String text) {
-                setValue(DateUtils.parseDate(text));
+                setValue(getLocalDateTime(text));
             }
         });
     }
@@ -60,6 +62,16 @@ public class BasisController {
         rspData.setItems(list);
         rspData.setTotal(new PageInfo(list).getTotal());
         return AjaxResult.success(rspData);
+    }
+
+    /**
+     * 获取LocalDateTime
+     */
+    private LocalDateTime getLocalDateTime(String text) {
+        if (StrUtil.isNotEmpty(text) && text.length() <= 10)
+            return LocalDateTimeUtil.parse(text, DatePattern.NORM_DATE_PATTERN);
+        else
+            return LocalDateTimeUtil.parse(text, DatePattern.NORM_DATETIME_PATTERN);
     }
 
     /**

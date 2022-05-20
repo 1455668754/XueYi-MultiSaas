@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.xueyi.common.core.annotation.Excel;
 import com.xueyi.common.core.web.tenant.base.TBaseEntity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import static com.baomidou.mybatisplus.annotation.SqlCondition.LIKE;
 
@@ -16,7 +16,7 @@ import static com.baomidou.mybatisplus.annotation.SqlCondition.LIKE;
  *
  * @author xueyi
  */
-@TableName(value = "sys_login_log",excludeProperty = {"name","sort","createBy","createTime","updateBy","updateTime","remark"})
+@TableName(value = "sys_login_log", excludeProperty = {"name", "sort", "createBy", "createTime", "updateBy", "updateTime", "remark"})
 public class SysLoginLogPo extends TBaseEntity {
 
     private static final long serialVersionUID = 1L;
@@ -60,7 +60,7 @@ public class SysLoginLogPo extends TBaseEntity {
     @TableField("access_time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @Excel(name = "访问时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
-    private Date accessTime;
+    private LocalDateTime accessTime;
 
     public String getEnterpriseName() {
         return enterpriseName;
@@ -120,11 +120,11 @@ public class SysLoginLogPo extends TBaseEntity {
         this.msg = msg;
     }
 
-    public Date getAccessTime() {
+    public LocalDateTime getAccessTime() {
         return accessTime;
     }
 
-    public void setAccessTime(Date accessTime) {
+    public void setAccessTime(LocalDateTime accessTime) {
         this.accessTime = accessTime;
     }
 }

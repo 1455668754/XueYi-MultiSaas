@@ -12,7 +12,7 @@ import com.xueyi.common.core.xss.Xss;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 用户 持久化对象
@@ -78,7 +78,7 @@ public class SysUserPo extends TBaseEntity {
     /** 最后登录时间 */
     @Excel(name = "最后登录时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss", type = Type.EXPORT)
     @TableField("login_date")
-    private Date loginDate;
+    private LocalDateTime loginDate;
 
     @Xss(message = "用户编码不能包含脚本字符")
     @NotBlank(message = "用户编码不能为空")
@@ -181,11 +181,11 @@ public class SysUserPo extends TBaseEntity {
         this.loginIp = loginIp;
     }
 
-    public Date getLoginDate() {
+    public LocalDateTime getLoginDate() {
         return loginDate;
     }
 
-    public void setLoginDate(Date loginDate) {
+    public void setLoginDate(LocalDateTime loginDate) {
         this.loginDate = loginDate;
     }
 

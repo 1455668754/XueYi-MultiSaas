@@ -1,5 +1,6 @@
 package com.xueyi.job.util;
 
+import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
@@ -17,7 +18,8 @@ import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Date;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 /**
  * 抽象quartz调用
@@ -30,7 +32,7 @@ public abstract class AbstractQuartzJob implements Job {
     /**
      * 线程本地变量
      */
-    private static ThreadLocal<Date> threadLocal = new ThreadLocal<>();
+    private static ThreadLocal<LocalDateTime> threadLocal = new ThreadLocal<>();
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
@@ -54,7 +56,7 @@ public abstract class AbstractQuartzJob implements Job {
      * @param sysJob  系统计划任务
      */
     protected void before(JobExecutionContext context, SysJobDto sysJob) {
-        threadLocal.set(new Date());
+        threadLocal.set(LocalDateTime.now());
     }
 
     /**
@@ -64,7 +66,7 @@ public abstract class AbstractQuartzJob implements Job {
      * @param job  系统计划任务
      */
     protected void after(JobExecutionContext context, SysJobDto job, Exception e) {
-        Date startTime = threadLocal.get();
+        LocalDateTime startTime = threadLocal.get();
         threadLocal.remove();
 
         final SysJobLogDto jobLog = new SysJobLogDto();
@@ -74,9 +76,9 @@ public abstract class AbstractQuartzJob implements Job {
         jobLog.setInvokeTarget(job.getInvokeTarget());
         jobLog.setInvokeTenant(job.getInvokeTenant());
         jobLog.setStartTime(startTime);
-        jobLog.setStopTime(new Date());
-        long runMs = jobLog.getStopTime().getTime() - jobLog.getStartTime().getTime();
-        jobLog.setJobMessage(jobLog.getName() + " 总共耗时：" + runMs + "毫秒");
+        jobLog.setStopTime(LocalDateTime.now());
+        Duration between = LocalDateTimeUtil.between(jobLog.getStopTime(), jobLog.getStartTime());
+        jobLog.setJobMessage(jobLog.getName() + " 总共耗时：" + between.toMillis() + "毫秒");
         if (e != null) {
             jobLog.setStatus(DictConstants.DicStatus.FAIL.getCode());
             String errorMsg = StringUtils.substring(ExceptionUtil.getExceptionMessage(e), 0, 2000);

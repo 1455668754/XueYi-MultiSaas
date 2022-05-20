@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.xueyi.common.core.annotation.Excel;
 import com.xueyi.common.core.web.tenant.base.TBaseEntity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 操作日志 持久化对象
@@ -98,7 +98,7 @@ public class SysOperateLogPo extends TBaseEntity {
     @TableField("operate_time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @Excel(name = "操作时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
-    private Date operateTime;
+    private LocalDateTime operateTime;
 
     public String getTitle() {
         return title;
@@ -222,11 +222,11 @@ public class SysOperateLogPo extends TBaseEntity {
         this.errorMsg = errorMsg;
     }
 
-    public Date getOperateTime() {
+    public LocalDateTime getOperateTime() {
         return operateTime;
     }
 
-    public void setOperateTime(Date operateTime) {
+    public void setOperateTime(LocalDateTime operateTime) {
         this.operateTime = operateTime;
     }
 }

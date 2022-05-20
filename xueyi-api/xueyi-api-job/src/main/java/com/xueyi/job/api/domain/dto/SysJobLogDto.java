@@ -4,7 +4,7 @@ import com.xueyi.job.api.domain.po.SysJobLogPo;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 调度日志 数据传输对象
@@ -16,25 +16,25 @@ public class SysJobLogDto extends SysJobLogPo {
     private static final long serialVersionUID = 1L;
 
     /** 开始时间 */
-    private Date startTime;
+    private LocalDateTime startTime;
 
     /** 停止时间 */
-    private Date stopTime;
+    private LocalDateTime stopTime;
 
-    public Date getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
     
-    public Date getStopTime()
+    public LocalDateTime getStopTime()
     {
         return stopTime;
     }
 
-    public void setStopTime(Date stopTime)
+    public void setStopTime(LocalDateTime stopTime)
     {
         this.stopTime = stopTime;
     }
