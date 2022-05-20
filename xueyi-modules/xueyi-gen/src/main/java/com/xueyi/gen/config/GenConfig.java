@@ -3,7 +3,7 @@ package com.xueyi.gen.config;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author xueyi
  */
-@Component
+@Configuration
 @ConfigurationProperties(prefix = "gen", ignoreUnknownFields = false)
 public class GenConfig {
 
