@@ -59,13 +59,12 @@ public class TenantLineHandler implements BasicLineHandler {
      *
      * @return 租户值
      */
-    @Override
     public Expression getTenantId() {
         return new LongValue(SecurityUtils.getEnterpriseId());
     }
 
     /**
-     * 忽略商户控制
+     * 忽略租户控制
      *
      * @return 结果
      */

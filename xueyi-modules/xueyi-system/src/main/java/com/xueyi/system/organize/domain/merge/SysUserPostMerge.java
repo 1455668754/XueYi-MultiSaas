@@ -3,7 +3,6 @@ package com.xueyi.system.organize.domain.merge;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.common.core.web.tenant.base.TBasisEntity;
-import com.xueyi.common.security.utils.SecurityUtils;
 
 /**
  * 用户-岗位关联 持久化对象
@@ -29,7 +28,6 @@ public class SysUserPostMerge extends TBasisEntity {
     public SysUserPostMerge(Long userId, Long postId) {
         setUserId(userId);
         setPostId(postId);
-        setEnterpriseId(SecurityUtils.getEnterpriseId());
     }
 
     public Long getUserId() {

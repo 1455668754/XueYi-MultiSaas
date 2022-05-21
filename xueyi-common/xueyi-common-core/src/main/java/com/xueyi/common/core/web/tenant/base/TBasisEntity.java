@@ -23,5 +23,4 @@ public class TBasisEntity extends BasisEntity {
     public void setEnterpriseId(Long enterpriseId) {
         this.enterpriseId = enterpriseId;
     }
-
 }

@@ -41,7 +41,7 @@ public class TeSourceServiceImpl extends BaseServiceImpl<TeSourceQuery, TeSource
      * @return 结果
      */
     @Override
-    public boolean insertBatch(Collection<TeSourceDto> sourceList) {
+    public int insertBatch(Collection<TeSourceDto> sourceList) {
         if (CollUtil.isNotEmpty(sourceList))
             sourceList.forEach(source -> source.setSlave(IdUtil.simpleUUID()));
         return super.insertBatch(sourceList);

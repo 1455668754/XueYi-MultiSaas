@@ -7,6 +7,7 @@ import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.SqlConstants;
 import com.xueyi.common.core.web.entity.base.TreeEntity;
 import com.xueyi.common.core.web.entity.model.BaseConverter;
+import com.xueyi.common.web.annotation.TenantIgnore;
 import com.xueyi.common.web.entity.manager.ITreeManager;
 import com.xueyi.common.web.entity.manager.impl.handle.TreeHandleManager;
 import com.xueyi.common.web.entity.mapper.TreeMapper;
@@ -180,6 +181,7 @@ public class TreeManager<Q extends P, D extends P, P extends TreeEntity<D>, PM e
      * @return 数据对象
      */
     @Override
+    @TenantIgnore(tenantLine = true)
     public D checkNameUnique(Serializable id, Serializable parentId, String name) {
         P po = baseMapper.selectOne(
                 Wrappers.<P>query().lambda()

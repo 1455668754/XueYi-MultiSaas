@@ -138,7 +138,7 @@ public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuQuery, SysMenuDto
      * @return 结果
      */
     @Override
-    public boolean insertBatch(Collection<SysMenuDto> menuList) {
+    public int insertBatch(Collection<SysMenuDto> menuList) {
         if (CollUtil.isNotEmpty(menuList))
             menuList.forEach(menu -> menu.setName(IdUtil.simpleUUID()));
         return super.insertBatch(menuList);
