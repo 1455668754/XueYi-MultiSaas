@@ -1,6 +1,5 @@
 package com.xueyi.system.organize.manager.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -94,11 +93,12 @@ public class SysDeptManager extends SubTreeManager<SysDeptQuery, SysDeptDto, Sys
      */
     @Override
     public SysDeptDto checkDeptCodeUnique(Long Id, String code) {
-        return BeanUtil.copyProperties(baseMapper.selectOne(
+        SysDeptPo dept = baseMapper.selectOne(
                 Wrappers.<SysDeptPo>query().lambda()
                         .ne(SysDeptPo::getId, Id)
                         .eq(SysDeptPo::getCode, code)
-                        .last(SqlConstants.LIMIT_ONE)), SysDeptDto.class);
+                        .last(SqlConstants.LIMIT_ONE));
+        return baseConverter.mapperDto(dept);
     }
 
     /**

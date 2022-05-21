@@ -1,6 +1,7 @@
 package com.xueyi.system.authority.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
@@ -128,6 +129,19 @@ public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuQuery, SysMenuDto
     @Override
     public List<SysMenuDto> getMenuByMenuType(Long moduleId, String menuType) {
         return baseManager.getMenuByMenuType(moduleId, menuType);
+    }
+
+    /**
+     * 新增菜单对象（批量）
+     *
+     * @param menuList 菜单对象集合
+     * @return 结果
+     */
+    @Override
+    public boolean insertBatch(Collection<SysMenuDto> menuList) {
+        if (CollUtil.isNotEmpty(menuList))
+            menuList.forEach(menu -> menu.setName(IdUtil.simpleUUID()));
+        return super.insertBatch(menuList);
     }
 
     /**

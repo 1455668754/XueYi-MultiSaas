@@ -1,6 +1,5 @@
 package com.xueyi.system.dict.manager.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.web.entity.manager.impl.BaseManager;
 import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
@@ -29,8 +28,9 @@ public class SysDictDataManager extends BaseManager<SysDictDataQuery, SysDictDat
      */
     @Override
     public List<SysDictDataDto> selectListByCode(String code) {
-        return BeanUtil.copyToList(baseMapper.selectList(
+        List<SysDictDataPo> dictDataList = baseMapper.selectList(
                 Wrappers.<SysDictDataPo>query().lambda()
-                        .eq(SysDictDataPo::getCode, code)), SysDictDataDto.class);
+                        .eq(SysDictDataPo::getCode, code));
+        return baseConverter.mapperDto(dictDataList);
     }
 }

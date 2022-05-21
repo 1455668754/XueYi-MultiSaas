@@ -1,6 +1,5 @@
 package com.xueyi.system.organize.manager.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -9,10 +8,12 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.basic.SqlConstants;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.entity.manager.impl.BaseManager;
-import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
+import com.xueyi.system.api.authority.domain.model.SysRoleConverter;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
+import com.xueyi.system.api.organize.domain.model.SysDeptConverter;
+import com.xueyi.system.api.organize.domain.model.SysPostConverter;
 import com.xueyi.system.api.organize.domain.model.SysUserConverter;
 import com.xueyi.system.api.organize.domain.po.SysUserPo;
 import com.xueyi.system.api.organize.domain.query.SysUserQuery;
@@ -53,10 +54,19 @@ public class SysUserManager extends BaseManager<SysUserQuery, SysUserDto, SysUse
     SysPostMapper postMapper;
 
     @Autowired
+    SysPostConverter postConverter;
+
+    @Autowired
     SysDeptMapper deptMapper;
 
     @Autowired
+    SysDeptConverter deptConverter;
+
+    @Autowired
     SysRoleMapper roleMapper;
+
+    @Autowired
+    SysRoleConverter roleConverter;
 
     /**
      * 用户登录校验 | 查询用户信息
@@ -67,9 +77,9 @@ public class SysUserManager extends BaseManager<SysUserQuery, SysUserDto, SysUse
      */
     @Override
     public SysUserDto userLogin(String userName, String password) {
-        SysUserDto userDto = BeanUtil.copyProperties(baseMapper.selectOne(
+        SysUserDto userDto = baseConverter.mapperDto(baseMapper.selectOne(
                 Wrappers.<SysUserPo>query().lambda()
-                        .eq(SysUserPo::getUserName, userName)), SysUserDto.class);
+                        .eq(SysUserPo::getUserName, userName)));
         // check password is true
         if (ObjectUtil.isNull(userDto) || !SecurityUtils.matchesPassword(password, userDto.getPassword()))
             return null;
@@ -83,10 +93,10 @@ public class SysUserManager extends BaseManager<SysUserQuery, SysUserDto, SysUse
         List<Long> deptIds = null;
         // if exist posts, must exist depts
         if (CollUtil.isNotEmpty(userPostMerges)) {
-            userDto.setPosts(BeanUtil.copyToList(postMapper.selectBatchIds(postIds), SysPostDto.class));
+            userDto.setPosts(postConverter.mapperDto(postMapper.selectBatchIds(postIds)));
             if (CollUtil.isNotEmpty(userDto.getPosts())) {
                 deptIds = userDto.getPosts().stream().map(SysPostDto::getDeptId).collect(Collectors.toList());
-                List<SysDeptDto> depts = BeanUtil.copyToList(deptMapper.selectBatchIds(deptIds), SysDeptDto.class);
+                List<SysDeptDto> depts = deptConverter.mapperDto(deptMapper.selectBatchIds(deptIds));
                 for (SysDeptDto deptDto : depts) {
                     for (int i = 0; i < userDto.getPosts().size(); i++) {
                         if (ObjectUtil.equal(userDto.getPosts().get(i).getDeptId(), deptDto.getId())) {
@@ -115,7 +125,7 @@ public class SysUserManager extends BaseManager<SysUserQuery, SysUserDto, SysUse
                                     i.or().in(SysOrganizeRoleMerge::getDeptId, finalDeptIds);
                             }));
             userDto.setRoles(CollUtil.isNotEmpty(organizeRoleMerges)
-                    ? BeanUtil.copyToList(roleMapper.selectBatchIds(organizeRoleMerges.stream().map(SysOrganizeRoleMerge::getRoleId).collect(Collectors.toList())), SysRoleDto.class)
+                    ? roleConverter.mapperDto(roleMapper.selectBatchIds(organizeRoleMerges.stream().map(SysOrganizeRoleMerge::getRoleId).collect(Collectors.toList())))
                     : new ArrayList<>());
         }
         return userDto;
@@ -129,7 +139,7 @@ public class SysUserManager extends BaseManager<SysUserQuery, SysUserDto, SysUse
      */
     @Override
     public SysUserDto selectByIdExtra(Serializable id) {
-        SysUserDto user = BeanUtil.copyProperties(baseMapper.selectById(id), SysUserDto.class);
+        SysUserDto user = baseConverter.mapperDto(baseMapper.selectById(id));
         if (ObjectUtil.isNotNull(user)) {
             List<SysUserPostMerge> userPostMerges = userPostMergeMapper.selectList(
                     Wrappers.<SysUserPostMerge>query().lambda()
@@ -343,11 +353,11 @@ public class SysUserManager extends BaseManager<SysUserQuery, SysUserDto, SysUse
      */
     @Override
     public SysUserDto checkUserCodeUnique(Long id, String code) {
-        return BeanUtil.copyProperties(baseMapper.selectOne(
+        return baseConverter.mapperDto(baseMapper.selectOne(
                 Wrappers.<SysUserPo>query().lambda()
                         .ne(SysUserPo::getId, id)
                         .eq(SysUserPo::getCode, code)
-                        .last(SqlConstants.LIMIT_ONE)), SysUserDto.class);
+                        .last(SqlConstants.LIMIT_ONE)));
     }
 
     /**
@@ -359,11 +369,11 @@ public class SysUserManager extends BaseManager<SysUserQuery, SysUserDto, SysUse
      */
     @Override
     public SysUserDto checkUserNameUnique(Serializable id, String userName) {
-        return BeanUtil.copyProperties(baseMapper.selectOne(
+        return baseConverter.mapperDto(baseMapper.selectOne(
                 Wrappers.<SysUserPo>query().lambda()
                         .ne(SysUserPo::getId, id)
                         .eq(SysUserPo::getUserName, userName)
-                        .last(SqlConstants.LIMIT_ONE)), SysUserDto.class);
+                        .last(SqlConstants.LIMIT_ONE)));
     }
 
     /**
@@ -375,11 +385,11 @@ public class SysUserManager extends BaseManager<SysUserQuery, SysUserDto, SysUse
      */
     @Override
     public SysUserDto checkNameUnique(Serializable id, String userName) {
-        return BeanUtil.copyProperties(baseMapper.selectOne(
+        return baseConverter.mapperDto(baseMapper.selectOne(
                 Wrappers.<SysUserPo>query().lambda()
                         .ne(SysUserPo::getId, id)
                         .eq(SysUserPo::getUserName, userName)
-                        .last(SqlConstants.LIMIT_ONE)), SysUserDto.class);
+                        .last(SqlConstants.LIMIT_ONE)));
     }
 
     /**
@@ -391,11 +401,11 @@ public class SysUserManager extends BaseManager<SysUserQuery, SysUserDto, SysUse
      */
     @Override
     public SysUserDto checkPhoneUnique(Long id, String phone) {
-        return BeanUtil.copyProperties(baseMapper.selectOne(
+        return baseConverter.mapperDto(baseMapper.selectOne(
                 Wrappers.<SysUserPo>query().lambda()
                         .ne(SysUserPo::getId, id)
                         .eq(SysUserPo::getPhone, phone)
-                        .last(SqlConstants.LIMIT_ONE)), SysUserDto.class);
+                        .last(SqlConstants.LIMIT_ONE)));
     }
 
     /**
@@ -407,10 +417,10 @@ public class SysUserManager extends BaseManager<SysUserQuery, SysUserDto, SysUse
      */
     @Override
     public SysUserDto checkEmailUnique(Long id, String email) {
-        return BeanUtil.copyProperties(baseMapper.selectOne(
+        return baseConverter.mapperDto(baseMapper.selectOne(
                 Wrappers.<SysUserPo>query().lambda()
                         .ne(SysUserPo::getId, id)
                         .eq(SysUserPo::getEmail, email)
-                        .last(SqlConstants.LIMIT_ONE)), SysUserDto.class);
+                        .last(SqlConstants.LIMIT_ONE)));
     }
 }

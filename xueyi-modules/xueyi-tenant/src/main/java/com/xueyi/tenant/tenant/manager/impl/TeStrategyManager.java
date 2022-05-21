@@ -1,6 +1,5 @@
 package com.xueyi.tenant.tenant.manager.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.basic.SqlConstants;
 import com.xueyi.common.web.entity.manager.impl.BaseManager;
@@ -29,9 +28,10 @@ public class TeStrategyManager extends BaseManager<TeStrategyQuery, TeStrategyDt
      */
     @Override
     public TeStrategyDto checkSourceExist(Long sourceId) {
-        return BeanUtil.copyProperties(baseMapper.selectOne(
+        TeStrategyPo strategy = baseMapper.selectOne(
                 Wrappers.<TeStrategyPo>query().lambda()
                         .eq(TeStrategyPo::getSourceId, sourceId)
-                        .last(SqlConstants.LIMIT_ONE)), TeStrategyDto.class);
+                        .last(SqlConstants.LIMIT_ONE));
+        return baseConverter.mapperDto(strategy);
     }
 }

@@ -1,6 +1,5 @@
 package com.xueyi.system.authority.manager.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
@@ -61,13 +60,14 @@ public class SysModuleManager extends SubBaseManager<SysModuleQuery, SysModuleDt
         // 超管用户 ? 租管租户 ? 查所有公共 + 所有私有模块 : 查权限内的公共 + 所有私有 : 根据拥有的角色查询权限
         if (SecurityUtils.isAdminUser()) {
             if (SecurityUtils.isAdminTenant()) {
-                return BeanUtil.copyToList(baseMapper.selectList(
+                List<SysModulePo> moduleList = baseMapper.selectList(
                         Wrappers.<SysModulePo>query().lambda()
                                 .eq(SysModulePo::getStatus, BaseConstants.Status.NORMAL.getCode())
-                                .eq(SysModulePo::getHideModule, DictConstants.DicShowHide.SHOW.getCode())), SysModuleDto.class);
+                                .eq(SysModulePo::getHideModule, DictConstants.DicShowHide.SHOW.getCode()));
+                return baseConverter.mapperDto(moduleList);
             } else {
                 List<SysTenantModuleMerge> tenantModuleMerges = tenantModuleMergeMapper.selectList(Wrappers.query());
-                return BeanUtil.copyToList(baseMapper.selectList(
+                List<SysModulePo> moduleList = baseMapper.selectList(
                         Wrappers.<SysModulePo>query().lambda()
                                 .eq(SysModulePo::getStatus, BaseConstants.Status.NORMAL.getCode())
                                 .eq(SysModulePo::getHideModule, DictConstants.DicShowHide.SHOW.getCode())
@@ -80,7 +80,8 @@ public class SysModuleManager extends SubBaseManager<SysModuleQuery, SysModuleDt
                                                         .in(SysModulePo::getId, tenantModuleMerges.stream().map(SysTenantModuleMerge::getModuleId).collect(Collectors.toList())));
                                             }
                                         })
-                                )), SysModuleDto.class);
+                                ));
+                return baseConverter.mapperDto(moduleList);
             }
         } else {
             if (CollUtil.isEmpty(roleIds))
@@ -89,11 +90,11 @@ public class SysModuleManager extends SubBaseManager<SysModuleQuery, SysModuleDt
                     Wrappers.<SysRoleModuleMerge>query().lambda()
                             .in(SysRoleModuleMerge::getRoleId, roleIds));
             return CollUtil.isNotEmpty(roleModuleMerges)
-                    ? BeanUtil.copyToList(baseMapper.selectList(
+                    ? baseConverter.mapperDto(baseMapper.selectList(
                     Wrappers.<SysModulePo>query().lambda()
                             .eq(SysModulePo::getStatus, BaseConstants.Status.NORMAL.getCode())
                             .eq(SysModulePo::getHideModule, DictConstants.DicShowHide.SHOW.getCode())
-                            .in(SysModulePo::getId, roleModuleMerges.stream().map(SysRoleModuleMerge::getModuleId).collect(Collectors.toList()))), SysModuleDto.class)
+                            .in(SysModulePo::getId, roleModuleMerges.stream().map(SysRoleModuleMerge::getModuleId).collect(Collectors.toList()))))
                     : new ArrayList<>();
         }
     }
@@ -107,16 +108,17 @@ public class SysModuleManager extends SubBaseManager<SysModuleQuery, SysModuleDt
     public List<SysModuleDto> selectCommonList() {
         // 校验租管租户 ? 查询所有 : 查询租户-模块关联表,校验是否有数据 ? 查有关联权限的公共模块 : 返回空集合
         if (SecurityUtils.isAdminTenant()) {
-            return BeanUtil.copyToList(baseMapper.selectList(Wrappers.<SysModulePo>query().lambda()
+            List<SysModulePo> moduleList = baseMapper.selectList(Wrappers.<SysModulePo>query().lambda()
                     .eq(SysModulePo::getIsCommon, DictConstants.DicCommonPrivate.COMMON.getCode())
-                    .eq(SysModulePo::getStatus, BaseConstants.Status.NORMAL.getCode())), SysModuleDto.class);
+                    .eq(SysModulePo::getStatus, BaseConstants.Status.NORMAL.getCode()));
+            return baseConverter.mapperDto(moduleList);
         } else {
             List<SysTenantModuleMerge> tenantModuleMerges = tenantModuleMergeMapper.selectList(Wrappers.query());
             return CollUtil.isNotEmpty(tenantModuleMerges)
-                    ? BeanUtil.copyToList(baseMapper.selectList(Wrappers.<SysModulePo>query().lambda()
+                    ? baseConverter.mapperDto(baseMapper.selectList(Wrappers.<SysModulePo>query().lambda()
                     .eq(SysModulePo::getIsCommon, DictConstants.DicCommonPrivate.COMMON.getCode())
                     .eq(SysModulePo::getStatus, BaseConstants.Status.NORMAL.getCode())
-                    .in(SysModulePo::getId, tenantModuleMerges.stream().map(SysTenantModuleMerge::getModuleId).collect(Collectors.toList()))), SysModuleDto.class)
+                    .in(SysModulePo::getId, tenantModuleMerges.stream().map(SysTenantModuleMerge::getModuleId).collect(Collectors.toList()))))
                     : new ArrayList<>();
         }
     }
@@ -130,11 +132,12 @@ public class SysModuleManager extends SubBaseManager<SysModuleQuery, SysModuleDt
     public List<SysModuleDto> selectTenantList() {
         // 校验租管租户 ? 查询所有 : 查询租户-模块关联表,校验是否有数据 ? 查有关联权限的公共模块与所有私有模块 : 查询所有私有模块
         if (SecurityUtils.isAdminTenant()) {
-            return BeanUtil.copyToList(baseMapper.selectList(Wrappers.<SysModulePo>query().lambda()
-                    .eq(SysModulePo::getStatus, BaseConstants.Status.NORMAL.getCode())), SysModuleDto.class);
+            List<SysModulePo> moduleList = baseMapper.selectList(Wrappers.<SysModulePo>query().lambda()
+                    .eq(SysModulePo::getStatus, BaseConstants.Status.NORMAL.getCode()));
+            return baseConverter.mapperDto(moduleList);
         } else {
             List<SysTenantModuleMerge> tenantModuleMerges = tenantModuleMergeMapper.selectList(Wrappers.query());
-            return BeanUtil.copyToList(baseMapper.selectList(Wrappers.<SysModulePo>query().lambda()
+            List<SysModulePo> moduleList = baseMapper.selectList(Wrappers.<SysModulePo>query().lambda()
                     .eq(SysModulePo::getStatus, BaseConstants.Status.NORMAL.getCode())
                     .func(i -> {
                         if (CollUtil.isNotEmpty(tenantModuleMerges))
@@ -144,7 +147,8 @@ public class SysModuleManager extends SubBaseManager<SysModuleQuery, SysModuleDt
                             );
                         else
                             i.eq(SysModulePo::getIsCommon, DictConstants.DicCommonPrivate.PRIVATE.getCode());
-                    })), SysModuleDto.class);
+                    }));
+            return baseConverter.mapperDto(moduleList);
         }
     }
 

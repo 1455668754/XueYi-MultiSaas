@@ -1,6 +1,5 @@
 package com.xueyi.system.organize.manager.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.web.entity.manager.impl.BaseManager;
@@ -28,9 +27,10 @@ public class SysEnterpriseManager extends BaseManager<SysEnterpriseQuery, SysEnt
      */
     @Override
     public SysEnterpriseDto selectByName(String name) {
-        return BeanUtil.copyProperties(baseMapper.selectOne(
+        SysEnterprisePo enterprise = baseMapper.selectOne(
                 Wrappers.<SysEnterprisePo>query().lambda()
                         .eq(SysEnterprisePo::getName, name)
-                        .eq(SysEnterprisePo::getStatus, BaseConstants.Status.NORMAL.getCode())), SysEnterpriseDto.class);
+                        .eq(SysEnterprisePo::getStatus, BaseConstants.Status.NORMAL.getCode()));
+        return baseConverter.mapperDto(enterprise);
     }
 }

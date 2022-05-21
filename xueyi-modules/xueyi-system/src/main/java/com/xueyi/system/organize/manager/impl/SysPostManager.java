@@ -1,6 +1,5 @@
 package com.xueyi.system.organize.manager.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -90,9 +89,10 @@ public class SysPostManager extends BaseManager<SysPostQuery, SysPostDto, SysPos
     public List<SysPostDto> selectListByDeptIds(Collection<Long> deptIds) {
         if (CollUtil.isEmpty(deptIds))
             return new ArrayList<>();
-        return BeanUtil.copyToList(baseMapper.selectList(
+        List<SysPostPo> postList = baseMapper.selectList(
                 Wrappers.<SysPostPo>query().lambda()
-                        .in(SysPostPo::getDeptId, deptIds)), SysPostDto.class);
+                        .in(SysPostPo::getDeptId, deptIds));
+        return baseConverter.mapperDto(postList);
     }
 
     /**
@@ -104,10 +104,11 @@ public class SysPostManager extends BaseManager<SysPostQuery, SysPostDto, SysPos
      */
     @Override
     public SysPostDto checkPostCodeUnique(Long Id, String code) {
-        return BeanUtil.copyProperties(baseMapper.selectOne(
+        SysPostPo post = baseMapper.selectOne(
                 Wrappers.<SysPostPo>query().lambda()
                         .ne(SysPostPo::getId, Id)
                         .eq(SysPostPo::getCode, code)
-                        .last(SqlConstants.LIMIT_ONE)), SysPostDto.class);
+                        .last(SqlConstants.LIMIT_ONE));
+        return baseConverter.mapperDto(post);
     }
 }

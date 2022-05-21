@@ -1,6 +1,5 @@
 package com.xueyi.system.dict.manager.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
@@ -39,11 +38,12 @@ public class SysDictTypeManager extends SubBaseManager<SysDictTypeQuery, SysDict
      */
     @Override
     public SysDictTypeDto checkDictCodeUnique(Long Id, String code) {
-        return BeanUtil.copyProperties(baseMapper.selectOne(
+        SysDictTypePo dictType = baseMapper.selectOne(
                 Wrappers.<SysDictTypePo>query().lambda()
                         .ne(SysDictTypePo::getId, Id)
                         .eq(SysDictTypePo::getCode, code)
-                        .last(SqlConstants.LIMIT_ONE)), SysDictTypeDto.class);
+                        .last(SqlConstants.LIMIT_ONE));
+        return baseConverter.mapperDto(dictType);
     }
 
     /**

@@ -1,6 +1,5 @@
 package com.xueyi.system.authority.manager.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.basic.SqlConstants;
@@ -76,11 +75,12 @@ public class SysRoleManager extends BaseManager<SysRoleQuery, SysRoleDto, SysRol
      */
     @Override
     public SysRoleDto checkRoleCodeUnique(Long Id, String code) {
-        return BeanUtil.copyProperties(baseMapper.selectOne(
+        SysRolePo role = baseMapper.selectOne(
                 Wrappers.<SysRolePo>query().lambda()
                         .ne(SysRolePo::getId, Id)
                         .eq(SysRolePo::getCode, code)
-                        .last(SqlConstants.LIMIT_ONE)), SysRoleDto.class);
+                        .last(SqlConstants.LIMIT_ONE));
+        return baseConverter.mapperDto(role);
     }
 
     /**
@@ -92,11 +92,12 @@ public class SysRoleManager extends BaseManager<SysRoleQuery, SysRoleDto, SysRol
      */
     @Override
     public SysRoleDto checkRoleKeyUnique(Long Id, String roleKey) {
-        return BeanUtil.copyProperties(baseMapper.selectOne(
+        SysRolePo role = baseMapper.selectOne(
                 Wrappers.<SysRolePo>query().lambda()
                         .ne(SysRolePo::getId, Id)
                         .eq(SysRolePo::getRoleKey, roleKey)
-                        .last(SqlConstants.LIMIT_ONE)), SysRoleDto.class);
+                        .last(SqlConstants.LIMIT_ONE));
+        return baseConverter.mapperDto(role);
     }
 
     /**

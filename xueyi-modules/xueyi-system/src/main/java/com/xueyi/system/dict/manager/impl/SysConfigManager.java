@@ -1,6 +1,5 @@
 package com.xueyi.system.dict.manager.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.SqlConstants;
@@ -29,10 +28,11 @@ public class SysConfigManager extends BaseManager<SysConfigQuery, SysConfigDto, 
      */
     @Override
     public SysConfigDto selectConfigByCode(String code) {
-        return BeanUtil.copyProperties(baseMapper.selectOne(
+        SysConfigPo config = baseMapper.selectOne(
                 Wrappers.<SysConfigPo>query().lambda()
                         .eq(SysConfigPo::getCode, code)
-                        .last(SqlConstants.LIMIT_ONE)), SysConfigDto.class);
+                        .last(SqlConstants.LIMIT_ONE));
+        return baseConverter.mapperDto(config);
     }
 
     /**
@@ -44,11 +44,12 @@ public class SysConfigManager extends BaseManager<SysConfigQuery, SysConfigDto, 
      */
     @Override
     public SysConfigDto checkConfigCodeUnique(Long Id, String code) {
-        return BeanUtil.copyProperties(baseMapper.selectOne(
+        SysConfigPo config = baseMapper.selectOne(
                 Wrappers.<SysConfigPo>query().lambda()
                         .ne(SysConfigPo::getId, Id)
                         .eq(SysConfigPo::getCode, code)
-                        .last(SqlConstants.LIMIT_ONE)), SysConfigDto.class);
+                        .last(SqlConstants.LIMIT_ONE));
+        return baseConverter.mapperDto(config);
     }
 
     /**
@@ -59,10 +60,11 @@ public class SysConfigManager extends BaseManager<SysConfigQuery, SysConfigDto, 
      */
     @Override
     public SysConfigDto checkIsBuiltIn(Long Id) {
-        return BeanUtil.copyProperties(baseMapper.selectOne(
+        SysConfigPo config = baseMapper.selectOne(
                 Wrappers.<SysConfigPo>query().lambda()
                         .eq(SysConfigPo::getId, Id)
                         .eq(SysConfigPo::getType, BaseConstants.Whether.YES.getCode())
-                        .last(SqlConstants.LIMIT_ONE)), SysConfigDto.class);
+                        .last(SqlConstants.LIMIT_ONE));
+        return baseConverter.mapperDto(config);
     }
 }

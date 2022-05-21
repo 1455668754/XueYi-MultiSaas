@@ -1,6 +1,5 @@
 package com.xueyi.system.authority.manager.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.IdUtil;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
@@ -54,7 +53,7 @@ public class SysMenuManager extends TreeManager<SysMenuQuery, SysMenuDto, SysMen
     @Override
     public List<SysMenuDto> loginLessorMenuList() {
         // 1.获取超管租户超管用户可使用的菜单
-        return BeanUtil.copyToList(baseMapper.selectList(Wrappers.query()), SysMenuDto.class);
+        return baseConverter.mapperDto(baseMapper.selectList(Wrappers.query()));
     }
 
     /**
@@ -66,14 +65,15 @@ public class SysMenuManager extends TreeManager<SysMenuQuery, SysMenuDto, SysMen
     public List<SysMenuDto> loginMenuList() {
         // 1.获取租户授权的公共菜单Ids
         List<SysTenantMenuMerge> tenantMenuMerges = tenantMenuMergeMapper.selectList(Wrappers.query());
-        // 2.获取租户全部可使用的菜单
-        return BeanUtil.copyToList(baseMapper.selectList(Wrappers.<SysMenuPo>query().lambda()
+        List<SysMenuPo> menuList = baseMapper.selectList(Wrappers.<SysMenuPo>query().lambda()
                 .eq(SysMenuPo::getIsCommon, DictConstants.DicCommonPrivate.PRIVATE.getCode())
                 .func(i -> {
                     if (CollUtil.isNotEmpty(tenantMenuMerges)) {
                         i.or().in(SysMenuPo::getId, tenantMenuMerges.stream().map(SysTenantMenuMerge::getMenuId).collect(Collectors.toSet()));
                     }
-                })), SysMenuDto.class);
+                }));
+        // 2.获取租户全部可使用的菜单
+        return baseConverter.mapperDto(menuList);
     }
 
     /**
@@ -92,9 +92,9 @@ public class SysMenuManager extends TreeManager<SysMenuQuery, SysMenuDto, SysMen
                         .in(SysRoleMenuMerge::getRoleId, roleIds));
         // 2.获取用户可使用的菜单
         return CollUtil.isNotEmpty(roleMenuMerges)
-                ? BeanUtil.copyToList(baseMapper.selectList(
+                ? baseConverter.mapperDto(baseMapper.selectList(
                 Wrappers.<SysMenuPo>query().lambda()
-                        .in(SysMenuPo::getId, roleMenuMerges.stream().map(SysRoleMenuMerge::getMenuId).collect(Collectors.toSet()))), SysMenuDto.class)
+                        .in(SysMenuPo::getId, roleMenuMerges.stream().map(SysRoleMenuMerge::getMenuId).collect(Collectors.toSet()))))
                 : new ArrayList<>();
     }
 
@@ -107,18 +107,19 @@ public class SysMenuManager extends TreeManager<SysMenuQuery, SysMenuDto, SysMen
     public List<SysMenuDto> selectCommonList() {
         // 校验租管租户 ? 查询所有 : 查询租户-菜单关联表,校验是否有数据 ? 查有关联权限的公共菜单与所有私有菜单 : 查询所有私有菜单
         if (SecurityUtils.isAdminTenant()) {
-            return BeanUtil.copyToList(baseMapper.selectList(Wrappers.<SysMenuPo>query().lambda()
+            List<SysMenuPo> menuList = baseMapper.selectList(Wrappers.<SysMenuPo>query().lambda()
                     .ne(SysMenuPo::getId, AuthorityConstants.MENU_TOP_NODE)
                     .eq(SysMenuPo::getIsCommon, DictConstants.DicCommonPrivate.COMMON.getCode())
-                    .eq(SysMenuPo::getStatus, BaseConstants.Status.NORMAL.getCode())), SysMenuDto.class);
+                    .eq(SysMenuPo::getStatus, BaseConstants.Status.NORMAL.getCode()));
+            return baseConverter.mapperDto(menuList);
         } else {
             List<SysTenantMenuMerge> tenantMenuMerges = tenantMenuMergeMapper.selectList(Wrappers.query());
             return CollUtil.isNotEmpty(tenantMenuMerges)
-                    ? BeanUtil.copyToList(baseMapper.selectList(Wrappers.<SysMenuPo>query().lambda()
+                    ? baseConverter.mapperDto(baseMapper.selectList(Wrappers.<SysMenuPo>query().lambda()
                     .ne(SysMenuPo::getId, AuthorityConstants.MENU_TOP_NODE)
                     .eq(SysMenuPo::getIsCommon, DictConstants.DicCommonPrivate.COMMON.getCode())
                     .eq(SysMenuPo::getStatus, BaseConstants.Status.NORMAL.getCode())
-                    .in(SysMenuPo::getId, tenantMenuMerges.stream().map(SysTenantMenuMerge::getMenuId).collect(Collectors.toList()))), SysMenuDto.class)
+                    .in(SysMenuPo::getId, tenantMenuMerges.stream().map(SysTenantMenuMerge::getMenuId).collect(Collectors.toList()))))
                     : new ArrayList<>();
         }
     }
@@ -132,12 +133,13 @@ public class SysMenuManager extends TreeManager<SysMenuQuery, SysMenuDto, SysMen
     public List<SysMenuDto> selectTenantList() {
         // 校验租管租户 ? 查询所有 : 查询租户-菜单关联表,校验是否有数据 ? 查有关联权限的公共菜单 : 返回空集合
         if (SecurityUtils.isAdminTenant()) {
-            return BeanUtil.copyToList(baseMapper.selectList(Wrappers.<SysMenuPo>query().lambda()
+            List<SysMenuPo> menuList = baseMapper.selectList(Wrappers.<SysMenuPo>query().lambda()
                     .ne(SysMenuPo::getId, AuthorityConstants.MENU_TOP_NODE)
-                    .eq(SysMenuPo::getStatus, BaseConstants.Status.NORMAL.getCode())), SysMenuDto.class);
+                    .eq(SysMenuPo::getStatus, BaseConstants.Status.NORMAL.getCode()));
+            return baseConverter.mapperDto(menuList);
         } else {
             List<SysTenantMenuMerge> tenantMenuMerges = tenantMenuMergeMapper.selectList(Wrappers.query());
-            return BeanUtil.copyToList(baseMapper.selectList(Wrappers.<SysMenuPo>query().lambda()
+            List<SysMenuPo> menuList = baseMapper.selectList(Wrappers.<SysMenuPo>query().lambda()
                     .ne(SysMenuPo::getId, AuthorityConstants.MENU_TOP_NODE)
                     .eq(SysMenuPo::getStatus, BaseConstants.Status.NORMAL.getCode())
                     .func(i -> {
@@ -148,7 +150,8 @@ public class SysMenuManager extends TreeManager<SysMenuQuery, SysMenuDto, SysMen
                             );
                         else
                             i.eq(SysMenuPo::getIsCommon, DictConstants.DicCommonPrivate.PRIVATE.getCode());
-                    })), SysMenuDto.class);
+                    }));
+            return baseConverter.mapperDto(menuList);
         }
     }
 
@@ -198,7 +201,7 @@ public class SysMenuManager extends TreeManager<SysMenuQuery, SysMenuDto, SysMen
                         .eq(SysMenuPo::getMenuType, AuthorityConstants.MenuType.DIR.getCode())
                         .or().eq(SysMenuPo::getMenuType, AuthorityConstants.MenuType.MENU.getCode())
                         .or().eq(SysMenuPo::getMenuType, AuthorityConstants.MenuType.DETAILS.getCode()));
-        return BeanUtil.copyToList(baseMapper.selectList(menuQueryWrapper), SysMenuDto.class);
+        return baseConverter.mapperDto(baseMapper.selectList(menuQueryWrapper));
     }
 
     /**
@@ -231,7 +234,7 @@ public class SysMenuManager extends TreeManager<SysMenuQuery, SysMenuDto, SysMen
             default:
                 return new ArrayList<>();
         }
-        return BeanUtil.copyToList(baseMapper.selectList(queryWrapper), SysMenuDto.class);
+        return baseConverter.mapperDto(baseMapper.selectList(queryWrapper));
     }
 
     /**
@@ -244,20 +247,6 @@ public class SysMenuManager extends TreeManager<SysMenuQuery, SysMenuDto, SysMen
     public int insert(SysMenuDto menu) {
         menu.setName(IdUtil.simpleUUID());
         return baseMapper.insert(menu);
-    }
-
-    /**
-     * 新增菜单对象（批量）
-     *
-     * @param menuList 菜单对象集合
-     * @return 结果
-     */
-    @Override
-    @DSTransactional
-    public int insertBatch(Collection<SysMenuDto> menuList) {
-        if (CollUtil.isNotEmpty(menuList))
-            menuList.forEach(menu -> menu.setName(IdUtil.simpleUUID()));
-        return baseMapper.insertBatch(BeanUtil.copyToList(menuList, SysMenuPo.class));
     }
 
     /**

@@ -1,6 +1,5 @@
 package com.xueyi.job.manager.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
@@ -37,7 +36,8 @@ public class SysJobManager extends SubBaseManager<SysJobQuery, SysJobDto, SysJob
     @Override
     @TenantIgnore(tenantLine = true)
     public List<SysJobDto> initScheduler() {
-        return BeanUtil.copyToList(baseMapper.selectList(Wrappers.query()), SysJobDto.class);
+        List<SysJobPo> jobList = baseMapper.selectList(Wrappers.query());
+        return baseConverter.mapperDto(jobList);
     }
 
     /**
