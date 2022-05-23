@@ -2,7 +2,7 @@
 <h4 align="center">基于 Vue3/TypeScript/Ant-Design UI 和 Spring Cloud & Alibaba/Mybatis-Plus 的多租户SaaS开发框架。</h4>
 <p align="center">
     <a style="margin-right: 5px">
-       <img src="https://img.shields.io/badge/XueYi--MultiSaas-v2.1.3-brightgreen" alt="xueYi-MultiSaas">
+       <img src="https://img.shields.io/badge/XueYi--MultiSaas-v2.2.1-brightgreen" alt="xueYi-MultiSaas">
     </a>
     <a style="margin-right: 5px">
        <img src="https://gitee.com/xueyitiantang/XueYi-MultiSaas/badge/star.svg?theme=dark" alt="xueYi-MultiSaas">
