@@ -164,7 +164,6 @@ public class SysUserPo extends TBaseEntity {
         this.profile = profile;
     }
 
-    @JsonProperty
     public String getPassword() {
         return password;
     }
