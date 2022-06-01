@@ -29,14 +29,13 @@ import java.util.stream.Collectors;
  */
 public class VelocityUtils {
 
-    /** 项目空间路径 */
-    private static final String PROJECT_PATH = "main/java" ;
+    private static final String PROJECT_PATH = "main/java";
 
     /** 隐藏字段数组 */
-    private static final String HIDE = "hide" ;
+    private static final String HIDE = "hide";
 
     /** 覆写字段数组 */
-    private static final String COVER = "cover" ;
+    private static final String COVER = "cover";
 
     /**
      * 设置模板变量信息
@@ -239,12 +238,14 @@ public class VelocityUtils {
             templates.add("vm/java/merge/merge.java.vm");
             templates.add("vm/java/merge/mergeMapper.java.vm");
         } else {
+            templates.add("vm/java/query.java.vm");
             templates.add("vm/java/dto.java.vm");
             templates.add("vm/java/po.java.vm");
             templates.add("vm/java/controller.java.vm");
             templates.add("vm/java/service.java.vm");
             templates.add("vm/java/serviceImpl.java.vm");
             templates.add("vm/java/manager.java.vm");
+            templates.add("vm/java/managerImpl.java.vm");
             templates.add("vm/java/mapper.java.vm");
             templates.add("vm/sql/sql.sql.vm");
             templates.add("vm/ts/api.ts.vm");
@@ -303,24 +304,23 @@ public class VelocityUtils {
         else if (template.contains("mergeMapper.java.vm"))
             return StringUtils.format("{}/mapper/merge/{}Mapper.java", javaPath, className);
 
-        else if (template.contains("sql.sql.vm"))
-            return StringUtils.format("sql/{}.sql", businessName);
+        else if (template.contains("sql.sql.vm")) return StringUtils.format("sql/{}.sql", businessName);
 
         if (template.contains("api.ts.vm"))
             return StringUtils.format("packages/service/modules/{}/{}/{}.ts", moduleName, authorityName, businessName);
         else if (template.contains("infoModel.ts.vm")) {
-            String prefixPath = "packages/types/modules" ;
-            String suffixFile = "" ;
+            String prefixPath = "packages/types/modules";
+            String suffixFile = "";
             initIndexFile(realPath, prefixPath, suffixFile, moduleName, authorityName, businessName);
             return StringUtils.format("{}/{}/{}/{}.ts", prefixPath, moduleName, authorityName, businessName);
         } else if (template.contains("auth.ts.vm")) {
-            String prefixPath = "packages/tokens/auth" ;
-            String suffixFile = ".auth" ;
+            String prefixPath = "packages/tokens/auth";
+            String suffixFile = ".auth";
             initIndexFile(realPath, prefixPath, suffixFile, moduleName, authorityName, businessName);
             return StringUtils.format("{}/{}/{}/{}{}.ts", prefixPath, moduleName, authorityName, businessName, suffixFile);
         } else if (template.contains("enum.ts.vm")) {
-            String prefixPath = "packages/tokens/enums" ;
-            String suffixFile = ".enum" ;
+            String prefixPath = "packages/tokens/enums";
+            String suffixFile = ".enum";
             initIndexFile(realPath, prefixPath, suffixFile, moduleName, authorityName, businessName);
             return StringUtils.format("{}/{}/{}/{}{}.ts", prefixPath, moduleName, authorityName, businessName, suffixFile);
         } else if (template.contains("data.ts.vm"))
@@ -331,7 +331,7 @@ public class VelocityUtils {
             return StringUtils.format("admin/src/views/{}/{}/{}/{}Detail.vue", moduleName, authorityName, businessName, BusinessName);
         else if (template.contains("modal.vue.vm"))
             return StringUtils.format("admin/src/views/{}/{}/{}/{}Modal.vue", moduleName, authorityName, businessName, BusinessName);
-        return "" ;
+        return "";
     }
 
     /**
@@ -501,9 +501,7 @@ public class VelocityUtils {
     public static Map<String, String> getDictMap(GenTableDto genTable) {
         Set<String> dictTypeSet = new HashSet<>();
         for (GenTableColumnDto column : genTable.getSubList()) {
-            if (StringUtils.isNotEmpty(column.getDictType()) && StringUtils.equalsAny(
-                    column.getHtmlType(),
-                    new String[]{GenConstants.DisplayType.SELECT.getCode(), GenConstants.DisplayType.CHECKBOX_GROUP.getCode(), GenConstants.DisplayType.RADIO_BUTTON_GROUP.getCode(), GenConstants.DisplayType.RADIO_GROUP.getCode()})) {
+            if (StringUtils.isNotEmpty(column.getDictType()) && StringUtils.equalsAny(column.getHtmlType(), new String[]{GenConstants.DisplayType.SELECT.getCode(), GenConstants.DisplayType.CHECKBOX_GROUP.getCode(), GenConstants.DisplayType.RADIO_BUTTON_GROUP.getCode(), GenConstants.DisplayType.RADIO_GROUP.getCode()})) {
                 dictTypeSet.add(column.getDictType());
                 column.setDictName(getDictName(column.getDictType()));
             }
@@ -569,9 +567,7 @@ public class VelocityUtils {
      * @return 归属模块Id字段
      */
     public static Long getParentModuleId(JSONObject optionsObj) {
-        return optionsObj.containsKey(GenConstants.OptionField.PARENT_MODULE_ID.getCode())
-                ? optionsObj.getLong(GenConstants.OptionField.PARENT_MODULE_ID.getCode())
-                : AuthorityConstants.MODULE_DEFAULT_NODE;
+        return optionsObj.containsKey(GenConstants.OptionField.PARENT_MODULE_ID.getCode()) ? optionsObj.getLong(GenConstants.OptionField.PARENT_MODULE_ID.getCode()) : AuthorityConstants.MODULE_DEFAULT_NODE;
     }
 
     /**
@@ -581,9 +577,7 @@ public class VelocityUtils {
      * @return 上级菜单Id字段
      */
     public static Long getParentMenuId(JSONObject optionsObj) {
-        return optionsObj.containsKey(GenConstants.OptionField.PARENT_MENU_ID.getCode())
-                ? optionsObj.getLong(GenConstants.OptionField.PARENT_MENU_ID.getCode())
-                : AuthorityConstants.MENU_TOP_NODE;
+        return optionsObj.containsKey(GenConstants.OptionField.PARENT_MENU_ID.getCode()) ? optionsObj.getLong(GenConstants.OptionField.PARENT_MENU_ID.getCode()) : AuthorityConstants.MENU_TOP_NODE;
     }
 
     /**
@@ -594,11 +588,7 @@ public class VelocityUtils {
      * @return 生成相对路径
      */
     public static String getRelativePath(GenTableDto table, GenTableDto subTable) {
-        return StrUtil.equals(table.getModuleName(), subTable.getModuleName())
-                ? StrUtil.equals(table.getAuthorityName(), subTable.getAuthorityName())
-                ? StrUtil.DOT
-                : StrUtil.DOUBLE_DOT + StrUtil.SLASH + subTable.getAuthorityName()
-                : StrUtil.DOUBLE_DOT + StrUtil.SLASH + StrUtil.DOUBLE_DOT + StrUtil.SLASH + subTable.getAuthorityName();
+        return StrUtil.equals(table.getModuleName(), subTable.getModuleName()) ? StrUtil.equals(table.getAuthorityName(), subTable.getAuthorityName()) ? StrUtil.DOT : StrUtil.DOUBLE_DOT + StrUtil.SLASH + subTable.getAuthorityName() : StrUtil.DOUBLE_DOT + StrUtil.SLASH + StrUtil.DOUBLE_DOT + StrUtil.SLASH + subTable.getAuthorityName();
     }
 
     /**
@@ -612,10 +602,9 @@ public class VelocityUtils {
      * @param businessName  生成业务名
      */
     public static void initIndexFile(String realPath, String prefixPath, String suffixFile, String moduleName, String authorityName, String businessName) {
-        if (StrUtil.isEmpty(realPath))
-            return;
-        String indexName = "index.ts" ;
-        String importSentence = "export * from './{}'" ;
+        if (StrUtil.isEmpty(realPath)) return;
+        String indexName = "index.ts";
+        String importSentence = "export * from './{}'";
         StringBuilder sb = new StringBuilder(realPath + prefixPath + File.separator + moduleName + File.separator);
         outIndexFile(sb + indexName, StrUtil.format(importSentence, authorityName));
         sb.append(authorityName).append(File.separator);

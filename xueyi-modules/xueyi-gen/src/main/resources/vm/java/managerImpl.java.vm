@@ -41,7 +41,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 #end
 import com.xueyi.common.web.entity.manager.impl.${Entity}Manager;
-import ${packageName}.manager.${ClassName}Manager;
+import ${packageName}.manager.I${ClassName}Manager;
 import org.springframework.stereotype.Component;
 
 /**
