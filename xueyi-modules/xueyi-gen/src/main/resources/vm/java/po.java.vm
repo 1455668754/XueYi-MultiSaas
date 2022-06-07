@@ -25,6 +25,25 @@ import com.xueyi.common.core.web.entity.base.${Entity};
 import ${subPackageName}.domain.dto.${subClassName}Dto;
 #end
 import ${packageName}.domain.dto.${ClassName}Dto;
+#foreach ($column in $columns)
+#set($hide = true)
+#foreach($item in $mustHideField)
+#if($column.javaField == $item)
+#set($hide = false)
+#break
+#end
+#end
+#foreach($item in $hideField)
+#if($column.javaField == $item)
+#set($hide = false)
+#break
+#end
+#end
+#if($hide && $column.isPk())
+import com.baomidou.mybatisplus.annotation.TableId;
+#break
+#end
+#end
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.xueyi.common.core.annotation.Excel;
 
