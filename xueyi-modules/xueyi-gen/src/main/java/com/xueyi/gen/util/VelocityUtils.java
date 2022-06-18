@@ -8,7 +8,8 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
 import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.constant.gen.GenConstants;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
@@ -29,13 +30,17 @@ import java.util.stream.Collectors;
  */
 public class VelocityUtils {
 
-    private static final String PROJECT_PATH = "main/java";
+    private static final String PROJECT_PATH = "main/java" ;
 
-    /** 隐藏字段数组 */
-    private static final String HIDE = "hide";
+    /**
+     * 隐藏字段数组
+     */
+    private static final String HIDE = "hide" ;
 
-    /** 覆写字段数组 */
-    private static final String COVER = "cover";
+    /**
+     * 覆写字段数组
+     */
+    private static final String COVER = "cover" ;
 
     /**
      * 设置模板变量信息
@@ -47,7 +52,7 @@ public class VelocityUtils {
         String packageName = genTable.getPackageName();
         String tplCategory = genTable.getTplCategory();
         String functionName = genTable.getFunctionName();
-        JSONObject optionsObj = JSONObject.parseObject(genTable.getOptions());
+        JSONObject optionsObj = JSON.parseObject(genTable.getOptions());
         Map<String, Set<String>> domainMap = getCoverMap(genTable);
 
         VelocityContext velocityContext = new VelocityContext();
@@ -309,18 +314,18 @@ public class VelocityUtils {
         if (template.contains("api.ts.vm"))
             return StringUtils.format("packages/service/modules/{}/{}/{}.ts", moduleName, authorityName, businessName);
         else if (template.contains("infoModel.ts.vm")) {
-            String prefixPath = "packages/types/modules";
-            String suffixFile = "";
+            String prefixPath = "packages/types/modules" ;
+            String suffixFile = "" ;
             initIndexFile(realPath, prefixPath, suffixFile, moduleName, authorityName, businessName);
             return StringUtils.format("{}/{}/{}/{}.ts", prefixPath, moduleName, authorityName, businessName);
         } else if (template.contains("auth.ts.vm")) {
-            String prefixPath = "packages/tokens/auth";
-            String suffixFile = ".auth";
+            String prefixPath = "packages/tokens/auth" ;
+            String suffixFile = ".auth" ;
             initIndexFile(realPath, prefixPath, suffixFile, moduleName, authorityName, businessName);
             return StringUtils.format("{}/{}/{}/{}{}.ts", prefixPath, moduleName, authorityName, businessName, suffixFile);
         } else if (template.contains("enum.ts.vm")) {
-            String prefixPath = "packages/tokens/enums";
-            String suffixFile = ".enum";
+            String prefixPath = "packages/tokens/enums" ;
+            String suffixFile = ".enum" ;
             initIndexFile(realPath, prefixPath, suffixFile, moduleName, authorityName, businessName);
             return StringUtils.format("{}/{}/{}/{}{}.ts", prefixPath, moduleName, authorityName, businessName, suffixFile);
         } else if (template.contains("data.ts.vm"))
@@ -331,7 +336,7 @@ public class VelocityUtils {
             return StringUtils.format("admin/src/views/{}/{}/{}/{}Detail.vue", moduleName, authorityName, businessName, BusinessName);
         else if (template.contains("modal.vue.vm"))
             return StringUtils.format("admin/src/views/{}/{}/{}/{}Modal.vue", moduleName, authorityName, businessName, BusinessName);
-        return "";
+        return "" ;
     }
 
     /**
@@ -341,7 +346,7 @@ public class VelocityUtils {
      * @return 外键关联的主表字段对象
      */
     public static GenTableColumnDto getForeignMainColumn(GenTableDto genTable) {
-        JSONObject optionsObj = JSONObject.parseObject(genTable.getOptions());
+        JSONObject optionsObj = JSON.parseObject(genTable.getOptions());
         for (GenTableColumnDto column : genTable.getSubList()) {
             if (ObjectUtil.equals(column.getId(), optionsObj.getLong(GenConstants.OptionField.FOREIGN_ID.getCode()))) {
                 return column;
@@ -357,7 +362,7 @@ public class VelocityUtils {
      * @return 外键对象
      */
     public static GenTableColumnDto getForeignColumn(GenTableDto genTable) {
-        JSONObject optionsObj = JSONObject.parseObject(genTable.getOptions());
+        JSONObject optionsObj = JSON.parseObject(genTable.getOptions());
         for (GenTableColumnDto subColumn : genTable.getSubTable().getSubList()) {
             if (ObjectUtil.equals(subColumn.getId(), optionsObj.getLong(GenConstants.OptionField.SUB_FOREIGN_ID.getCode()))) {
                 return subColumn;
@@ -418,7 +423,7 @@ public class VelocityUtils {
      * @return 是否为多租户
      */
     public static boolean isTenant(GenTableDto genTable) {
-        JSONObject optionsObj = JSONObject.parseObject(genTable.getOptions());
+        JSONObject optionsObj = JSON.parseObject(genTable.getOptions());
         return StrUtil.equals(optionsObj.getString(GenConstants.OptionField.IS_TENANT.getCode()), DictConstants.DicYesNo.YES.getCode());
     }
 
@@ -462,7 +467,7 @@ public class VelocityUtils {
      * @return 是否为多租户
      */
     public static boolean isMasterSource(GenTableDto genTable) {
-        JSONObject optionsObj = JSONObject.parseObject(genTable.getOptions());
+        JSONObject optionsObj = JSON.parseObject(genTable.getOptions());
         return StrUtil.equals(optionsObj.getString(GenConstants.OptionField.SOURCE_MODE.getCode()), GenConstants.SourceMode.MASTER.getCode());
     }
 
@@ -603,8 +608,8 @@ public class VelocityUtils {
      */
     public static void initIndexFile(String realPath, String prefixPath, String suffixFile, String moduleName, String authorityName, String businessName) {
         if (StrUtil.isEmpty(realPath)) return;
-        String indexName = "index.ts";
-        String importSentence = "export * from './{}'";
+        String indexName = "index.ts" ;
+        String importSentence = "export * from './{}'" ;
         StringBuilder sb = new StringBuilder(realPath + prefixPath + File.separator + moduleName + File.separator);
         outIndexFile(sb + indexName, StrUtil.format(importSentence, authorityName));
         sb.append(authorityName).append(File.separator);
