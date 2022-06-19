@@ -1,7 +1,7 @@
 package com.xueyi.system.authority.manager.impl;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -238,15 +238,21 @@ public class SysMenuManager extends TreeManager<SysMenuQuery, SysMenuDto, SysMen
     }
 
     /**
-     * 新增菜单对象
+     * 根据Id修改其子节点的祖籍
      *
-     * @param menu 菜单对象
+     * @param id           Id
+     * @param newAncestors 新祖籍
+     * @param oldAncestors 旧祖籍
+     * @param moduleId     模块Id
      * @return 结果
      */
     @Override
-    public int insert(SysMenuDto menu) {
-        menu.setName(IdUtil.simpleUUID());
-        return baseMapper.insert(menu);
+    public int updateChildrenAncestors(Serializable id, String newAncestors, String oldAncestors, Long moduleId) {
+        return baseMapper.update(null,
+                Wrappers.<SysMenuPo>update().lambda()
+                        .set(SysMenuPo::getModuleId, moduleId)
+                        .setSql(StrUtil.format("{} = insert({},{},{},'{}')", SqlConstants.Entity.ANCESTORS.getCode(), SqlConstants.Entity.ANCESTORS.getCode(), 1, oldAncestors.length(), newAncestors))
+                        .apply(ANCESTORS_FIND, id));
     }
 
     /**
