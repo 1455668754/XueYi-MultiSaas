@@ -73,9 +73,9 @@ public class ${ClassName}Manager extends ${Entity}Manager${generics} implements 
         Serializable ${subForeignColumn.javaField} = ObjectUtil.isNotNull(${classNameNoPrefix}) ? ${classNameNoPrefix}.
         get${field}() :key;
         if (ObjectUtil.isNotNull(queryWrapper))
-            queryWrapper.eq(${subClassName}Dto::get${subField}, ${subForeignColumn.javaField});
+            queryWrapper.eq(${subClassName}Po::get${subField}, ${subForeignColumn.javaField});
         else
-            updateWrapper.eq(${subClassName}Dto::get${subField}, ${subForeignColumn.javaField});
+            updateWrapper.eq(${subClassName}Po::get${subField}, ${subForeignColumn.javaField});
     }
 #end
 }
