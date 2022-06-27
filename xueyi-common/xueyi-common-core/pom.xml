@@ -41,6 +41,12 @@
             <artifactId>spring-web</artifactId>
         </dependency>
 
+        <!-- mapstruct 转换器 -->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+        </dependency>
+
         <!-- Transmittable ThreadLocal -->
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -57,12 +63,6 @@
         <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper</artifactId>
-        </dependency>
-
-        <!-- mapstruct 转换器 -->
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
         </dependency>
 
         <!-- Hibernate Validator -->
@@ -123,12 +123,6 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-        </dependency>
-
-        <!-- Swagger -->
-        <dependency>
-            <groupId>io.swagger</groupId>
-            <artifactId>swagger-annotations</artifactId>
         </dependency>
 
         <!-- huTool 工具类库-->
