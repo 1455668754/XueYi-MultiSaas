@@ -25,8 +25,7 @@
         <spring-boot-admin.version>2.6.7</spring-boot-admin.version>
         <spring-boot.mybatis-plus>3.5.1</spring-boot.mybatis-plus>
         <netty.version>4.1.67.Final</netty.version>
-        <swagger.fox.version>3.0.0</swagger.fox.version>
-        <swagger.core.version>1.6.2</swagger.core.version>
+        <swagger.doc.version>1.6.9</swagger.doc.version>
         <tobato.version>1.27.2</tobato.version>
         <kaptcha.version>2.3.2</kaptcha.version>
         <pagehelper.version>5.3.0</pagehelper.version>
@@ -123,19 +122,6 @@
                 <groupId>org.mapstruct</groupId>
                 <artifactId>mapstruct</artifactId>
                 <version>${mapstruct.version}</version>
-            </dependency>
-
-            <!-- Swagger 依赖配置 -->
-            <dependency>
-                <groupId>io.swagger</groupId>
-                <artifactId>swagger-models</artifactId>
-                <version>${swagger.core.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>io.swagger</groupId>
-                <artifactId>swagger-annotations</artifactId>
-                <version>${swagger.core.version}</version>
             </dependency>
 
             <!-- 验证码 -->

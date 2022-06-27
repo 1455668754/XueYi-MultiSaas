@@ -8,27 +8,27 @@
         <version>2.2.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    
+
     <artifactId>xueyi-common-swagger</artifactId>
-	
+
     <description>
         xueyi-common-swagger系统接口
     </description>
 
-	<dependencies>
-	    
+    <dependencies>
+
         <!-- SpringBoot Web -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-		
-        <!-- Swagger -->
+
+        <!-- Swagger 依赖配置 -->
         <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>${swagger.fox.version}</version>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>${swagger.doc.version}</version>
         </dependency>
-		
-	</dependencies>
+
+    </dependencies>
 </project>

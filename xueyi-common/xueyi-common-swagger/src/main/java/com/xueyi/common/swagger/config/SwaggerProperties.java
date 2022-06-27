@@ -1,344 +1,266 @@
 package com.xueyi.common.swagger.config;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * swagger 配置读取
+ *
+ * @author xueyi
+ */
 @Component
 @ConfigurationProperties("swagger")
-public class SwaggerProperties
-{
-    /**
-     * 是否开启swagger
-     */
+public class SwaggerProperties {
+
+    /** 是否开启swagger */
     private Boolean enabled;
 
-    /**
-     * swagger会解析的包路径
-     **/
+    /** swagger会解析的包路径 **/
     private String basePackage = "";
 
-    /**
-     * swagger会解析的url规则
-     **/
+    /** swagger会解析的url规则 **/
     private List<String> basePath = new ArrayList<>();
 
-    /**
-     * 在basePath基础上需要排除的url规则
-     **/
+    /** 在basePath基础上需要排除的url规则 **/
     private List<String> excludePath = new ArrayList<>();
 
-    /**
-     * 标题
-     **/
+    /** 标题 **/
     private String title = "";
 
-    /**
-     * 描述
-     **/
+    /** 描述 **/
     private String description = "";
 
-    /**
-     * 版本
-     **/
+    /** 版本 **/
     private String version = "";
 
-    /**
-     * 许可证
-     **/
+    /** 许可证 **/
     private String license = "";
 
-    /**
-     * 许可证URL
-     **/
+    /** 许可证URL **/
     private String licenseUrl = "";
 
-    /**
-     * 服务条款URL
-     **/
+    /** 服务条款URL **/
     private String termsOfServiceUrl = "";
 
-    /**
-     * host信息
-     **/
+    /** host信息 **/
     private String host = "";
 
-    /**
-     * 联系人信息
-     */
+    /** 联系人信息 */
     private Contact contact = new Contact();
 
-    /**
-     * 全局统一鉴权配置
-     **/
+    /** 全局统一鉴权配置 **/
     private Authorization authorization = new Authorization();
 
-    public Boolean getEnabled()
-    {
+    public Boolean getEnabled() {
         return enabled;
     }
 
-    public void setEnabled(Boolean enabled)
-    {
+    public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
 
-    public String getBasePackage()
-    {
+    public String getBasePackage() {
         return basePackage;
     }
 
-    public void setBasePackage(String basePackage)
-    {
+    public void setBasePackage(String basePackage) {
         this.basePackage = basePackage;
     }
 
-    public List<String> getBasePath()
-    {
+    public List<String> getBasePath() {
         return basePath;
     }
 
-    public void setBasePath(List<String> basePath)
-    {
+    public void setBasePath(List<String> basePath) {
         this.basePath = basePath;
     }
 
-    public List<String> getExcludePath()
-    {
+    public List<String> getExcludePath() {
         return excludePath;
     }
 
-    public void setExcludePath(List<String> excludePath)
-    {
+    public void setExcludePath(List<String> excludePath) {
         this.excludePath = excludePath;
     }
 
-    public String getTitle()
-    {
+    public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title)
-    {
+    public void setTitle(String title) {
         this.title = title;
     }
 
-    public String getDescription()
-    {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description)
-    {
+    public void setDescription(String description) {
         this.description = description;
     }
 
-    public String getVersion()
-    {
+    public String getVersion() {
         return version;
     }
 
-    public void setVersion(String version)
-    {
+    public void setVersion(String version) {
         this.version = version;
     }
 
-    public String getLicense()
-    {
+    public String getLicense() {
         return license;
     }
 
-    public void setLicense(String license)
-    {
+    public void setLicense(String license) {
         this.license = license;
     }
 
-    public String getLicenseUrl()
-    {
+    public String getLicenseUrl() {
         return licenseUrl;
     }
 
-    public void setLicenseUrl(String licenseUrl)
-    {
+    public void setLicenseUrl(String licenseUrl) {
         this.licenseUrl = licenseUrl;
     }
 
-    public String getTermsOfServiceUrl()
-    {
+    public String getTermsOfServiceUrl() {
         return termsOfServiceUrl;
     }
 
-    public void setTermsOfServiceUrl(String termsOfServiceUrl)
-    {
+    public void setTermsOfServiceUrl(String termsOfServiceUrl) {
         this.termsOfServiceUrl = termsOfServiceUrl;
     }
 
-    public String getHost()
-    {
+    public String getHost() {
         return host;
     }
 
-    public void setHost(String host)
-    {
+    public void setHost(String host) {
         this.host = host;
     }
 
-    public Contact getContact()
-    {
+    public Contact getContact() {
         return contact;
     }
 
-    public void setContact(Contact contact)
-    {
+    public void setContact(Contact contact) {
         this.contact = contact;
     }
 
-    public Authorization getAuthorization()
-    {
+    public Authorization getAuthorization() {
         return authorization;
     }
 
-    public void setAuthorization(Authorization authorization)
-    {
+    public void setAuthorization(Authorization authorization) {
         this.authorization = authorization;
     }
 
-    public static class Contact
-    {
-        /**
-         * 联系人
-         **/
+    public static class Contact {
+
+        /** 联系人 **/
         private String name = "";
-        /**
-         * 联系人url
-         **/
+
+        /** 联系人url **/
         private String url = "";
-        /**
-         * 联系人email
-         **/
+
+        /** 联系人email **/
         private String email = "";
 
-        public String getName()
-        {
+        public String getName() {
             return name;
         }
 
-        public void setName(String name)
-        {
+        public void setName(String name) {
             this.name = name;
         }
 
-        public String getUrl()
-        {
+        public String getUrl() {
             return url;
         }
 
-        public void setUrl(String url)
-        {
+        public void setUrl(String url) {
             this.url = url;
         }
 
-        public String getEmail()
-        {
+        public String getEmail() {
             return email;
         }
 
-        public void setEmail(String email)
-        {
+        public void setEmail(String email) {
             this.email = email;
         }
     }
 
-    public static class Authorization
-    {
-        /**
-         * 鉴权策略ID，需要和SecurityReferences ID保持一致
-         */
+    public static class Authorization {
+
+        /** 鉴权策略ID，需要和SecurityReferences ID保持一致 */
         private String name = "";
 
-        /**
-         * 需要开启鉴权URL的正则
-         */
+        /** 需要开启鉴权URL的正则 */
         private String authRegex = "^.*$";
 
-        /**
-         * 鉴权作用域列表
-         */
+        /** 鉴权作用域列表 */
         private List<AuthorizationScope> authorizationScopeList = new ArrayList<>();
 
         private List<String> tokenUrlList = new ArrayList<>();
 
-        public String getName()
-        {
+        public String getName() {
             return name;
         }
 
-        public void setName(String name)
-        {
+        public void setName(String name) {
             this.name = name;
         }
 
-        public String getAuthRegex()
-        {
+        public String getAuthRegex() {
             return authRegex;
         }
 
-        public void setAuthRegex(String authRegex)
-        {
+        public void setAuthRegex(String authRegex) {
             this.authRegex = authRegex;
         }
 
-        public List<AuthorizationScope> getAuthorizationScopeList()
-        {
+        public List<AuthorizationScope> getAuthorizationScopeList() {
             return authorizationScopeList;
         }
 
-        public void setAuthorizationScopeList(List<AuthorizationScope> authorizationScopeList)
-        {
+        public void setAuthorizationScopeList(List<AuthorizationScope> authorizationScopeList) {
             this.authorizationScopeList = authorizationScopeList;
         }
 
-        public List<String> getTokenUrlList()
-        {
+        public List<String> getTokenUrlList() {
             return tokenUrlList;
         }
 
-        public void setTokenUrlList(List<String> tokenUrlList)
-        {
+        public void setTokenUrlList(List<String> tokenUrlList) {
             this.tokenUrlList = tokenUrlList;
         }
     }
 
-    public static class AuthorizationScope
-    {
-        /**
-         * 作用域名称
-         */
+    public static class AuthorizationScope {
+
+        /** 作用域名称 */
         private String scope = "";
 
-        /**
-         * 作用域描述
-         */
+        /** 作用域描述 */
         private String description = "";
 
-        public String getScope()
-        {
+        public String getScope() {
             return scope;
         }
 
-        public void setScope(String scope)
-        {
+        public void setScope(String scope) {
             this.scope = scope;
         }
 
-        public String getDescription()
-        {
+        public String getDescription() {
             return description;
         }
 
-        public void setDescription(String description)
-        {
+        public void setDescription(String description) {
             this.description = description;
         }
     }

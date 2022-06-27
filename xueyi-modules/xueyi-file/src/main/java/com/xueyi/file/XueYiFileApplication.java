@@ -1,6 +1,6 @@
 package com.xueyi.file;
 
-import com.xueyi.common.swagger.annotation.EnableCustomSwagger2;
+import com.xueyi.common.swagger.annotation.EnableCustomSwagger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
  *
  * @author xueyi
  */
-@EnableCustomSwagger2
+@EnableCustomSwagger
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 public class XueYiFileApplication {
     public static void main(String[] args) {
