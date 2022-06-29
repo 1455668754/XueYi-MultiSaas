@@ -16,6 +16,7 @@
         <xueyi.version>2.2.1</xueyi.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
         <java.version>1.8</java.version>
         <spring-boot.version>2.6.8</spring-boot.version>
         <spring-cloud.version>2021.0.1</spring-cloud.version>
@@ -40,7 +41,7 @@
         <commons-collections.version>3.2.2</commons-collections.version>
         <hutool-all.version>5.7.16</hutool-all.version>
         <jjwt.version>0.9.1</jjwt.version>
-        <mapstruct.version>1.4.2.Final</mapstruct.version>
+        <mapstruct.version>1.5.2.Final</mapstruct.version>
         <transmittable-thread-local.version>2.12.2</transmittable-thread-local.version>
     </properties>
 
@@ -299,6 +300,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
