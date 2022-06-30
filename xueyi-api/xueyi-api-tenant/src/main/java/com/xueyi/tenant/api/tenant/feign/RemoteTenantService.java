@@ -26,5 +26,5 @@ public interface RemoteTenantService {
      * @return 结果
      */
     @PostMapping("/tenant/register")
-    public R<Boolean> registerTenantInfo(@RequestBody JSONObject register, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+    R<Boolean> registerTenantInfo(@RequestBody JSONObject register, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
 }

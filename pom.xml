@@ -24,7 +24,7 @@
         <alibaba.nacos.version>2.0.4</alibaba.nacos.version>
         <alibaba.seata.version>1.5.1</alibaba.seata.version>
         <spring-boot-admin.version>2.6.7</spring-boot-admin.version>
-        <spring-boot.mybatis-plus>3.5.1</spring-boot.mybatis-plus>
+        <mybatis-plus.version>3.5.1</mybatis-plus.version>
         <netty.version>4.1.67.Final</netty.version>
         <swagger.doc.version>1.6.9</swagger.doc.version>
         <tobato.version>1.27.2</tobato.version>
@@ -39,7 +39,7 @@
         <minio.version>8.2.2</minio.version>
         <poi.version>4.1.2</poi.version>
         <commons-collections.version>3.2.2</commons-collections.version>
-        <hutool-all.version>5.7.16</hutool-all.version>
+        <hutool.version>5.8.4</hutool.version>
         <jjwt.version>0.9.1</jjwt.version>
         <mapstruct.version>1.5.2.Final</mapstruct.version>
         <transmittable-thread-local.version>2.12.2</transmittable-thread-local.version>
@@ -101,7 +101,7 @@
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
-                <version>${spring-boot.mybatis-plus}</version>
+                <version>${mybatis-plus.version}</version>
             </dependency>
 
             <!-- pageHelper 分页插件 -->
@@ -268,8 +268,10 @@
             <!-- huTool 工具类库-->
             <dependency>
                 <groupId>cn.hutool</groupId>
-                <artifactId>hutool-all</artifactId>
-                <version>${hutool-all.version}</version>
+                <artifactId>hutool-bom</artifactId>
+                <version>${hutool.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
 
         </dependencies>
