@@ -92,16 +92,22 @@ public class XueYiDataScopeHandler implements DataPermissionHandler {
             case POST:
                 if (StrUtil.isNotEmpty(dataScope.userAlias())) {
                     Set<Long> userScope = loginUser.getScope().getUserScope();
+                    if(ArrayUtil.isEmpty(userScope))
+                        break;
                     ItemsList itemsList = new ExpressionList(userScope.stream().map(LongValue::new).collect(Collectors.toList()));
                     InExpression userInExpression = new InExpression(new Column(dataScope.userAlias()), itemsList);
                     return new AndExpression(where, userInExpression);
                 } else if (StrUtil.isNotEmpty(dataScope.postAlias())) {
                     Set<Long> postScope = loginUser.getScope().getPostScope();
+                    if(ArrayUtil.isEmpty(postScope))
+                        break;
                     ItemsList itemsList = new ExpressionList(postScope.stream().map(LongValue::new).collect(Collectors.toList()));
                     InExpression postInExpression = new InExpression(new Column(dataScope.postAlias()), itemsList);
                     return new AndExpression(where, postInExpression);
                 } else if (StrUtil.isNotEmpty(dataScope.deptAlias())) {
                     Set<Long> deptScope = loginUser.getScope().getDeptScope();
+                    if(ArrayUtil.isEmpty(deptScope))
+                        break;
                     ItemsList itemsList = new ExpressionList(deptScope.stream().map(LongValue::new).collect(Collectors.toList()));
                     InExpression deptInExpression = new InExpression(new Column(dataScope.deptAlias()), itemsList);
                     return new AndExpression(where, deptInExpression);
