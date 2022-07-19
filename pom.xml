@@ -42,7 +42,7 @@
         <hutool-all.version>5.7.16</hutool-all.version>
         <jjwt.version>0.9.1</jjwt.version>
         <mapstruct.version>1.5.2.Final</mapstruct.version>
-        <transmittable-thread-local.version>2.12.2</transmittable-thread-local.version>
+        <transmittable-thread-local.version>2.13.2</transmittable-thread-local.version>
     </properties>
 
     <!-- 依赖声明 -->
