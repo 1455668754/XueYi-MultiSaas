@@ -161,9 +161,9 @@ public class SysProfileController extends BasisController {
         if (!file.isEmpty()) {
             LoginUser loginUser = SecurityUtils.getLoginUser();
             R<SysFile> fileResult = remoteFileService.upload(file);
-            if (StringUtils.isNull(fileResult) || StringUtils.isNull(fileResult.getResult()))
+            if (StringUtils.isNull(fileResult) || StringUtils.isNull(fileResult.getData()))
                 return AjaxResult.error("文件服务异常，请联系管理员！");
-            String url = fileResult.getResult().getUrl();
+            String url = fileResult.getData().getUrl();
             if (userService.updateUserAvatar(SecurityUtils.getUserId(), url) > 0) {
                 String oldAvatarUrl = loginUser.getUser().getAvatar();
                 if (StringUtils.isNotEmpty(oldAvatarUrl))

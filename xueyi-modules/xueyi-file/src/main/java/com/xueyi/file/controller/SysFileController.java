@@ -67,7 +67,7 @@ public class SysFileController {
     public AjaxResult upload(MultipartFile file) {
         R<SysFile> R = uploadInner(file);
         return R.isOk()
-                ? AjaxResult.success("上传成功！", R.getResult().getUrl())
+                ? AjaxResult.success("上传成功！", R.getData().getUrl())
                 : AjaxResult.error("上传失败！");
     }
 }

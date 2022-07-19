@@ -21,9 +21,9 @@ public class R<T> implements Serializable {
 
     private int code;
 
-    private String message;
+    private String msg;
 
-    private T result;
+    private T data;
 
     public static <T> R<T> ok() {
         return restResult(null, SUCCESS, null);
@@ -60,8 +60,8 @@ public class R<T> implements Serializable {
     private static <T> R<T> restResult(T data, int code, String msg) {
         R<T> apiResult = new R<>();
         apiResult.setCode(code);
-        apiResult.setResult(data);
-        apiResult.setMessage(msg);
+        apiResult.setData(data);
+        apiResult.setMsg(msg);
         return apiResult;
     }
 
@@ -73,20 +73,20 @@ public class R<T> implements Serializable {
         this.code = code;
     }
 
-    public String getMessage() {
-        return message;
+    public String getMsg() {
+        return msg;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
-    public T getResult() {
-        return result;
+    public T getData() {
+        return data;
     }
 
-    public void setResult(T result) {
-        this.result = result;
+    public void setData(T data) {
+        this.data = data;
     }
 
     public boolean isOk() {

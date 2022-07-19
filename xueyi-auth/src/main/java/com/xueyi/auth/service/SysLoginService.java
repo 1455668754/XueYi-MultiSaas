@@ -68,11 +68,11 @@ public class SysLoginService {
         R<LoginUser> loginInfoResult = remoteLoginService.getLoginInfoInner(enterpriseName, userName, password, SecurityConstants.INNER);
         if (loginInfoResult.isFail()) {
             throw new ServiceException("当前访问人数过多，请稍后再试！");
-        } else if (ObjectUtil.isNull(loginInfoResult.getResult())) {
-            recordLoginInfo(enterpriseName, userName, Constants.LOGIN_FAIL, loginInfoResult.getMessage());
+        } else if (ObjectUtil.isNull(loginInfoResult.getData())) {
+            recordLoginInfo(enterpriseName, userName, Constants.LOGIN_FAIL, loginInfoResult.getMsg());
             throw new ServiceException("企业账号/员工账号/密码错误，请检查！");
         }
-        LoginUser loginUser = loginInfoResult.getResult();
+        LoginUser loginUser = loginInfoResult.getData();
         Long enterpriseId = loginUser.getEnterpriseId();
         String sourceName = loginUser.getSourceName();
         SysUserDto user = loginUser.getUser();
@@ -102,7 +102,7 @@ public class SysLoginService {
         // 注册租户信息
         R<?> registerResult = remoteTenantService.registerTenantInfo(registerBody.buildJson(), SecurityConstants.INNER);
         if (R.FAIL == registerResult.getCode()) {
-            throw new ServiceException(registerResult.getMessage());
+            throw new ServiceException(registerResult.getMsg());
         }
         // 注册逻辑补充完整后再增加日志
 //        recordLoginInfo(TenantConstants.Source.SLAVE.getCode(), SecurityConstants.EMPTY_TENANT_ID, registerBody.getTenant().getName(), SecurityConstants.EMPTY_USER_ID, registerBody.getUser().getUserName(), Constants.REGISTER, "注册成功");

@@ -481,12 +481,12 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableQuery, GenTa
         R<SysMenuDto> result = remoteMenuService.getInfoInner(menuId, SecurityConstants.INNER);
         if (result.isFail())
             throw new ServiceException("菜单服务异常，请联系管理员！");
-        else if (ObjectUtil.isNull(result.getResult()))
+        else if (ObjectUtil.isNull(result.getData()))
             throw new ServiceException("该服务对应的菜单已被删除，请先修改后再生成代码！");
-        if (StrUtil.isEmpty(result.getResult().getAncestors()))
-            optionsObj.put(OptionField.PARENT_MENU_ANCESTORS.getCode(), result.getResult().getId());
+        if (StrUtil.isEmpty(result.getData().getAncestors()))
+            optionsObj.put(OptionField.PARENT_MENU_ANCESTORS.getCode(), result.getData().getId());
         else
-            optionsObj.put(OptionField.PARENT_MENU_ANCESTORS.getCode(), result.getResult().getAncestors() + "," + result.getResult().getId());
+            optionsObj.put(OptionField.PARENT_MENU_ANCESTORS.getCode(), result.getData().getAncestors() + "," + result.getData().getId());
         table.setOptions(optionsObj.toString());
     }
 
