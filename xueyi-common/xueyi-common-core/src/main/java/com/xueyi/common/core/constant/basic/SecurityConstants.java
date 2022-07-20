@@ -76,9 +76,6 @@ public class SecurityConstants {
     /** 路由路径映射列表 */
     public static final String ROUTE_URL = "route_url";
 
-    /** 登录时间 */
-    public static final String LOGIN_TIME = "login_time";
-
     /** 过期时间 */
     public static final String EXPIRE_TIME = "expire_time";
 

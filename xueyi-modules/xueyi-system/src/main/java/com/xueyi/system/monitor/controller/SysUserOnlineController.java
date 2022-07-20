@@ -1,7 +1,9 @@
 package com.xueyi.system.monitor.controller;
 
 import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.CacheConstants;
+import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.log.annotation.Log;
@@ -9,7 +11,7 @@ import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.redis.service.RedisService;
 import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.security.auth.Auth;
-import com.xueyi.common.security.service.TokenService;
+import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.entity.controller.BasisController;
 import com.xueyi.system.api.model.LoginUser;
 import com.xueyi.system.monitor.domain.SysUserOnline;
@@ -37,33 +39,27 @@ public class SysUserOnlineController extends BasisController {
     @Autowired
     private RedisService redisService;
 
-    @Autowired
-    private TokenService tokenService;
-
     @GetMapping("/list")
     @RequiresPermissions(Auth.SYS_ONLINE_LIST)
     public AjaxResult list(String ipaddr, String userName) {
-        Collection<String> keys = redisService.keys(CacheConstants.LOGIN_TOKEN_KEY + "*");
+        Collection<String> keys = redisService.keys(CacheConstants.LOGIN_TOKEN_KEY + SecurityUtils.getEnterpriseId() + StrUtil.COLON + "*");
         List<SysUserOnline> userOnlineList = new ArrayList<>();
-        LoginUser mine = tokenService.getLoginUser();
         for (String key : keys) {
-            LoginUser user = redisService.getCacheObject(key);
-            if (mine.getEnterpriseId().equals(user.getEnterpriseId())) {
-                if (StringUtils.isNotEmpty(ipaddr) && StringUtils.isNotEmpty(userName)) {
-                    if (StringUtils.equals(ipaddr, user.getIpaddr()) && StringUtils.equals(userName, user.getUserName())) {
-                        userOnlineList.add(userOnlineService.selectOnlineByInfo(ipaddr, userName, user));
-                    }
-                } else if (StringUtils.isNotEmpty(ipaddr)) {
-                    if (StringUtils.equals(ipaddr, user.getIpaddr())) {
-                        userOnlineList.add(userOnlineService.selectOnlineByIpaddr(ipaddr, user));
-                    }
-                } else if (StringUtils.isNotEmpty(userName)) {
-                    if (StringUtils.equals(userName, user.getUserName())) {
-                        userOnlineList.add(userOnlineService.selectOnlineByUserName(userName, user));
-                    }
-                } else {
-                    userOnlineList.add(userOnlineService.loginUserToUserOnline(user));
+            LoginUser loginUser = redisService.getCacheMapValue(key, SecurityConstants.LOGIN_USER);
+            if (StringUtils.isNotEmpty(ipaddr) && StringUtils.isNotEmpty(userName)) {
+                if (StringUtils.equals(ipaddr, loginUser.getIpaddr()) && StringUtils.equals(userName, loginUser.getUserName())) {
+                    userOnlineList.add(userOnlineService.selectOnlineByInfo(ipaddr, userName, loginUser));
                 }
+            } else if (StringUtils.isNotEmpty(ipaddr)) {
+                if (StringUtils.equals(ipaddr, loginUser.getIpaddr())) {
+                    userOnlineList.add(userOnlineService.selectOnlineByIpaddr(ipaddr, loginUser));
+                }
+            } else if (StringUtils.isNotEmpty(userName)) {
+                if (StringUtils.equals(userName, loginUser.getUserName())) {
+                    userOnlineList.add(userOnlineService.selectOnlineByUserName(userName, loginUser));
+                }
+            } else {
+                userOnlineList.add(userOnlineService.loginUserToUserOnline(loginUser));
             }
         }
         Collections.reverse(userOnlineList);

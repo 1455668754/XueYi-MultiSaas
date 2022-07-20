@@ -72,7 +72,7 @@ public class TokenService {
         loginUser.setSourceName(sourceName);
         loginUser.setIpaddr(IpUtils.getIpAddr(ServletUtils.getRequest()));
 
-        long loginTime = System.currentTimeMillis();
+        loginUser.setLoginTime(System.currentTimeMillis());
         // 根据uuid将loginUser缓存
         String userKey = getTokenKey(loginUser.getToken());
         Map<String, Object> loginMap = new HashMap<>();
@@ -82,8 +82,7 @@ public class TokenService {
         loginMap.put(SecurityConstants.SOURCE, loginUser.getSource());
         loginMap.put(SecurityConstants.DATA_SCOPE, loginUser.getDataScope());
         loginMap.put(SecurityConstants.ROUTE_URL, loginUser.getRouteURL());
-        loginMap.put(SecurityConstants.LOGIN_TIME, loginTime);
-        loginMap.put(SecurityConstants.EXPIRE_TIME, loginTime + expireTime * MILLIS_MINUTE);
+        loginMap.put(SecurityConstants.EXPIRE_TIME, getExpireTime(loginUser.getLoginTime()));
         loginUser.initRouteURL();
         loginMap.put(SecurityConstants.LOGIN_USER, loginUser);
         redisService.setCacheMap(userKey, loginMap);
@@ -406,7 +405,7 @@ public class TokenService {
     }
 
     /**
-     * 验证令牌有效期，相差不足120分钟，自动刷新缓存
+     * 验证令牌有效期，自动刷新缓存
      *
      * @param token token
      */
@@ -434,8 +433,7 @@ public class TokenService {
     public void refreshToken(String token) {
         Long loginTime = System.currentTimeMillis();
         String userKey = getTokenKey(token);
-        redisService.setCacheMapValue(userKey, SecurityConstants.LOGIN_TIME, loginTime);
-        redisService.setCacheMapValue(userKey, SecurityConstants.EXPIRE_TIME, loginTime);
+        redisService.setCacheMapValue(userKey, SecurityConstants.EXPIRE_TIME, getExpireTime(loginTime));
         redisService.expire(userKey, expireTime, TimeUnit.MINUTES);
     }
 
@@ -460,5 +458,15 @@ public class TokenService {
             return JwtUtils.getUserKey(token);
         }
         return null;
+    }
+
+    /**
+     * 获取过期时间
+     *
+     * @param loginTime 登录时间
+     * @return 过期时间
+     */
+    private long getExpireTime(long loginTime) {
+        return loginTime + expireTime * MILLIS_MINUTE;
     }
 }

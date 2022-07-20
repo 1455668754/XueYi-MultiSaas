@@ -10,8 +10,8 @@ import java.lang.annotation.*;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface InnerAuth
-{
+public @interface InnerAuth {
+
     /**
      * 是否校验用户信息
      */

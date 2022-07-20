@@ -43,6 +43,9 @@ public class LoginUser implements Serializable {
     /** 主数据源 */
     private String sourceName;
 
+    /** 登录时间 */
+    private Long loginTime;
+
     /** 登录IP地址 */
     private String ipaddr;
 
@@ -131,6 +134,14 @@ public class LoginUser implements Serializable {
 
     public void setSourceName(String sourceName) {
         this.sourceName = sourceName;
+    }
+
+    public Long getLoginTime() {
+        return loginTime;
+    }
+
+    public void setLoginTime(Long loginTime) {
+        this.loginTime = loginTime;
     }
 
     public String getIpaddr() {
