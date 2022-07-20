@@ -81,13 +81,9 @@ public class TokenService {
         loginMap.put(SecurityConstants.USER, loginUser.getUser());
         loginMap.put(SecurityConstants.SOURCE, loginUser.getSource());
         loginMap.put(SecurityConstants.DATA_SCOPE, loginUser.getDataScope());
-        loginMap.put(SecurityConstants.MODULE_ROUTE, loginUser.getModuleRoute());
-        loginMap.put(SecurityConstants.MENU_ROUTE, loginUser.getMenuRoute());
         loginMap.put(SecurityConstants.ROUTE_URL, loginUser.getRouteURL());
         loginMap.put(SecurityConstants.LOGIN_TIME, loginTime);
         loginMap.put(SecurityConstants.EXPIRE_TIME, loginTime + expireTime * MILLIS_MINUTE);
-        loginUser.initModuleRoute();
-        loginUser.initMenuRoute();
         loginUser.initRouteURL();
         loginMap.put(SecurityConstants.LOGIN_USER, loginUser);
         redisService.setCacheMap(userKey, loginMap);

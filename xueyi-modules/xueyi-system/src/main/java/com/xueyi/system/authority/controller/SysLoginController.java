@@ -65,10 +65,16 @@ public class SysLoginController extends BasisController {
         Set<Long> roleIds = CollUtil.isNotEmpty(user.getRoles())
                 ? user.getRoles().stream().map(SysRoleDto::getId).collect(Collectors.toSet())
                 : new HashSet<>();
+
         // 菜单权限标识
         Set<String> permissions = loginService.getMenuPermission(roleIds, user.getUserType());
-        //
+
+        // 权限范围
         DataScope dataScope = loginService.getDataScope(user.getRoles(), user);
+        dataScope.setRoles(roles);
+        dataScope.setRoleIds(roleIds);
+        dataScope.setPermissions(permissions);
+
         // 路由路径集合
         Map<String, String> routeMap = loginService.getMenuRouteMap(roleIds, user.getUserType());
         LoginUser loginUser = new LoginUser();
@@ -82,9 +88,6 @@ public class SysLoginController extends BasisController {
         loginUser.setUserId(user.getId());
         loginUser.setUserName(user.getUserName());
         loginUser.setUserType(user.getUserType());
-        loginUser.setRoles(roles);
-        loginUser.setRoleIds(roleIds);
-        loginUser.setPermissions(permissions);
         loginUser.setScope(dataScope);
         loginUser.setRouteURL(routeMap);
         return R.ok(loginUser);
