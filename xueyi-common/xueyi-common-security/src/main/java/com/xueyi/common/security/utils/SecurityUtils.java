@@ -7,8 +7,14 @@ import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.basic.TokenConstants;
 import com.xueyi.common.core.context.SecurityContextHolder;
 import com.xueyi.common.core.utils.ServletUtils;
+import com.xueyi.common.core.utils.SpringUtils;
 import com.xueyi.common.core.utils.StringUtils;
+import com.xueyi.common.security.service.TokenService;
+import com.xueyi.system.api.model.DataScope;
 import com.xueyi.system.api.model.LoginUser;
+import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
+import com.xueyi.system.api.organize.domain.dto.SysUserDto;
+import com.xueyi.system.api.source.domain.Source;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.servlet.http.HttpServletRequest;
@@ -77,10 +83,38 @@ public class SecurityUtils {
     }
 
     /**
+     * 获取企业信息
+     */
+    public static SysEnterpriseDto getEnterprise() {
+        return SpringUtils.getBean(TokenService.class).getEnterprise();
+    }
+
+    /**
+     * 获取用户信息
+     */
+    public static SysUserDto getUser() {
+        return SpringUtils.getBean(TokenService.class).getUser();
+    }
+
+    /**
+     * 获取源策略信息
+     */
+    public static Source getSource() {
+        return SpringUtils.getBean(TokenService.class).getSource();
+    }
+
+    /**
+     * 获取数据权限信息
+     */
+    public static DataScope getDataScope() {
+        return SpringUtils.getBean(TokenService.class).getDataScope();
+    }
+
+    /**
      * 获取登录用户信息
      */
     public static LoginUser getLoginUser() {
-        return SecurityContextHolder.get(SecurityConstants.LOGIN_USER, LoginUser.class);
+        return SpringUtils.getBean(TokenService.class).getLoginUser();
     }
 
     /**
@@ -104,9 +138,7 @@ public class SecurityUtils {
      */
     public static String replaceTokenPrefix(String token) {
         // 如果前端设置了令牌前缀，则裁剪掉前缀
-        return StringUtils.isNotEmpty(token) && token.startsWith(TokenConstants.PREFIX)
-                ? token.replaceFirst(TokenConstants.PREFIX, StrUtil.EMPTY)
-                : token;
+        return StringUtils.isNotEmpty(token) && token.startsWith(TokenConstants.PREFIX) ? token.replaceFirst(TokenConstants.PREFIX, StrUtil.EMPTY) : token;
     }
 
     /**

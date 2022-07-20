@@ -20,7 +20,7 @@ import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
 import com.xueyi.system.api.authority.domain.query.SysMenuQuery;
 import com.xueyi.system.api.authority.domain.query.SysModuleQuery;
-import com.xueyi.system.api.model.LoginUser;
+import com.xueyi.system.api.model.DataScope;
 import com.xueyi.system.authority.service.ISysMenuService;
 import com.xueyi.system.authority.service.ISysModuleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,12 +60,13 @@ public class SysModuleController extends SubBaseController<SysModuleQuery, SysMo
      */
     @GetMapping("/getRouters")
     public AjaxResult getRoutes() {
-        LoginUser loginUser = tokenService.getLoginUser();
-        if (ObjectUtil.isNull(loginUser.getModuleRoute())) {
-            loginUser.setModuleRoute(baseService.getRoutes(loginUser.getRoleIds()));
-            tokenService.setLoginUser(loginUser);
+        Object moduleRoute = tokenService.getModuleRoute();
+        if (ObjectUtil.isNull(moduleRoute)) {
+            DataScope dataScope = tokenService.getDataScope();
+            moduleRoute = baseService.getRoutes(dataScope.getRoleIds());
+            tokenService.setModuleRoute(moduleRoute);
         }
-        return AjaxResult.success(loginUser.getModuleRoute());
+        return AjaxResult.success(moduleRoute);
     }
 
     /**

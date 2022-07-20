@@ -11,6 +11,7 @@ import com.xueyi.common.security.annotation.RequiresLogin;
 import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.security.annotation.RequiresRoles;
 import com.xueyi.common.security.service.TokenService;
+import com.xueyi.system.api.model.DataScope;
 import com.xueyi.system.api.model.LoginUser;
 import org.springframework.util.PatternMatchUtils;
 
@@ -52,7 +53,7 @@ public class AuthLogic {
      * 会话注销，根据指定Token
      */
     public void logoutByToken(String token) {
-        tokenService.delLoginUser(token);
+        tokenService.delLogin(token);
     }
 
     /**
@@ -69,15 +70,29 @@ public class AuthLogic {
      */
     public LoginUser getLoginUser() {
         String token = SecurityUtils.getToken();
-        if (token == null) {
+        if (token == null)
             throw new NotLoginException("未提供token");
-        }
         LoginUser loginUser = SecurityUtils.getLoginUser();
         ;
-        if (loginUser == null) {
+        if (loginUser == null)
+            throw new NotLoginException("无效的token");
+        return loginUser;
+    }
+
+    /**
+     * 获取当前用户权限范围缓存信息, 如果未登录，则抛出异常
+     *
+     * @return 用户权限范围缓存信息
+     */
+    public DataScope getDataScope() {
+        String token = SecurityUtils.getToken();
+        if (token == null)
+            throw new NotLoginException("未提供token");
+        DataScope dataScope = SecurityUtils.getDataScope();
+        if (dataScope == null) {
             throw new NotLoginException("无效的token");
         }
-        return loginUser;
+        return dataScope;
     }
 
     /**
@@ -93,10 +108,10 @@ public class AuthLogic {
     /**
      * 验证当前用户有效期, 如果相差不足360分钟，自动刷新缓存
      *
-     * @param loginUser 当前用户信息
+     * @param token token
      */
-    public void verifyLoginUserExpire(LoginUser loginUser) {
-        tokenService.verifyToken(loginUser);
+    public void verifyLoginUserExpire(String token) {
+        tokenService.verifyToken(token);
     }
 
     /**
@@ -105,8 +120,8 @@ public class AuthLogic {
      * @param permission 权限字符串
      * @return 用户是否具备某权限
      */
-    public boolean hasPermi(String permission) {
-        return hasPermi(getPermiList(), permission);
+    public boolean hasPerm(String permission) {
+        return hasPerm(getPermList(), permission);
     }
 
     /**
@@ -115,8 +130,8 @@ public class AuthLogic {
      * @param permission 权限字符串
      * @return 用户是否具备某权限
      */
-    public void checkPermi(String permission) {
-        if (!hasPermi(getPermiList(), permission)) {
+    public void checkPerm(String permission) {
+        if (!hasPerm(getPermList(), permission)) {
             throw new NotPermissionException(permission);
         }
     }
@@ -126,11 +141,11 @@ public class AuthLogic {
      *
      * @param requiresPermissions 注解对象
      */
-    public void checkPermi(RequiresPermissions requiresPermissions) {
+    public void checkPerm(RequiresPermissions requiresPermissions) {
         if (requiresPermissions.logical() == Logical.AND) {
-            checkPermiAnd(requiresPermissions.value());
+            checkPermAnd(requiresPermissions.value());
         } else {
-            checkPermiOr(requiresPermissions.value());
+            checkPermOr(requiresPermissions.value());
         }
     }
 
@@ -139,10 +154,10 @@ public class AuthLogic {
      *
      * @param permissions 权限列表
      */
-    public void checkPermiAnd(String... permissions) {
-        Set<String> permissionList = getPermiList();
+    public void checkPermAnd(String... permissions) {
+        Set<String> permissionList = getPermList();
         for (String permission : permissions) {
-            if (!hasPermi(permissionList, permission)) {
+            if (!hasPerm(permissionList, permission)) {
                 throw new NotPermissionException(permission);
             }
         }
@@ -153,10 +168,10 @@ public class AuthLogic {
      *
      * @param permissions 权限码数组
      */
-    public void checkPermiOr(String... permissions) {
-        Set<String> permissionList = getPermiList();
+    public void checkPermOr(String... permissions) {
+        Set<String> permissionList = getPermList();
         for (String permission : permissions) {
-            if (hasPermi(permissionList, permission)) {
+            if (hasPerm(permissionList, permission)) {
                 return;
             }
         }
@@ -261,9 +276,9 @@ public class AuthLogic {
     public void checkByAnnotation(RequiresPermissions at) {
         String[] permissionArray = at.value();
         if (at.logical() == Logical.AND) {
-            this.checkPermiAnd(permissionArray);
+            this.checkPermAnd(permissionArray);
         } else {
-            this.checkPermiOr(permissionArray);
+            this.checkPermOr(permissionArray);
         }
     }
 
@@ -274,8 +289,8 @@ public class AuthLogic {
      */
     public Set<String> getRoleList() {
         try {
-            LoginUser loginUser = getLoginUser();
-            return loginUser.getRoles();
+            DataScope dataScope = getDataScope();
+            return dataScope.getRoles();
         } catch (Exception e) {
             return new HashSet<>();
         }
@@ -286,10 +301,10 @@ public class AuthLogic {
      *
      * @return 权限列表
      */
-    public Set<String> getPermiList() {
+    public Set<String> getPermList() {
         try {
-            LoginUser loginUser = getLoginUser();
-            return loginUser.getPermissions();
+            DataScope dataScope = getDataScope();
+            return dataScope.getPermissions();
         } catch (Exception e) {
             return new HashSet<>();
         }
@@ -302,7 +317,7 @@ public class AuthLogic {
      * @param permission  权限字符串
      * @return 用户是否具备某权限
      */
-    public boolean hasPermi(Collection<String> authorities, String permission) {
+    public boolean hasPerm(Collection<String> authorities, String permission) {
         return authorities.stream().filter(StringUtils::hasText)
                 .anyMatch(x -> ALL_PERMISSION.contains(x) || PatternMatchUtils.simpleMatch(x, permission));
     }

@@ -16,8 +16,10 @@ import com.xueyi.common.security.annotation.InnerAuth;
 import com.xueyi.common.security.annotation.Logical;
 import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.security.auth.Auth;
+import com.xueyi.common.security.service.TokenService;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.entity.controller.BaseController;
+import com.xueyi.system.api.model.DataScope;
 import com.xueyi.system.api.model.LoginUser;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
 import com.xueyi.system.api.organize.domain.query.SysUserQuery;
@@ -44,6 +46,9 @@ public class SysUserController extends BaseController<SysUserQuery, SysUserDto, 
     @Autowired
     private ISysOrganizeService organizeService;
 
+    @Autowired
+    private TokenService tokenService;
+
     /** 定义节点名称 */
     @Override
     protected String getNodeName() {
@@ -66,13 +71,15 @@ public class SysUserController extends BaseController<SysUserQuery, SysUserDto, 
      */
     @GetMapping("/getInfo")
     public AjaxResult getInfo() {
-        LoginUser loginUser = SecurityUtils.getLoginUser();
+        LoginUser loginUser = tokenService.getLoginUser();
         baseService.userDesensitized(loginUser.getUser());
         HashMap<String, Object> map = new HashMap<>();
+        map.put("enterprise", loginUser.getEnterprise());
         map.put("user", loginUser.getUser());
-        map.put("roles", loginUser.getRoles());
-        map.put("permissions", loginUser.getPermissions());
-        map.put("routes", loginUser.getRouteURL());
+        DataScope dataScope = tokenService.getDataScope();
+        map.put("roles", dataScope.getRoles());
+        map.put("permissions", dataScope.getPermissions());
+        map.put("routes", tokenService.getRouteURL());
         return AjaxResult.success(map);
     }
 

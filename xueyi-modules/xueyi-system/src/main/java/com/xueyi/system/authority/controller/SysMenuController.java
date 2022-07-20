@@ -24,7 +24,6 @@ import com.xueyi.common.web.entity.controller.TreeController;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
 import com.xueyi.system.api.authority.domain.query.SysMenuQuery;
-import com.xueyi.system.api.model.LoginUser;
 import com.xueyi.system.authority.service.ISysMenuService;
 import com.xueyi.system.authority.service.ISysModuleService;
 import org.apache.commons.lang3.ArrayUtils;
@@ -77,12 +76,11 @@ public class SysMenuController extends TreeController<SysMenuQuery, SysMenuDto, 
      */
     @GetMapping("/getRouters/{moduleId}")
     public AjaxResult getRouters(@PathVariable Long moduleId) {
-        LoginUser loginUser = tokenService.getLoginUser();
-        Map<String, Object> menuMap = loginUser.getMenuRoute();
+        Map<String, Object> menuMap = tokenService.getMenuRoute();
         if (ObjectUtil.isNull(menuMap.get(moduleId.toString()))) {
             List<SysMenuDto> menus = baseService.getRoutes(moduleId);
             menuMap.put(moduleId.toString(), baseService.buildMenus(TreeUtils.buildTree(menus)));
-            tokenService.setLoginUser(loginUser);
+            tokenService.setMenuRoute(menuMap);
         }
         return AjaxResult.success(menuMap.get(moduleId.toString()));
     }

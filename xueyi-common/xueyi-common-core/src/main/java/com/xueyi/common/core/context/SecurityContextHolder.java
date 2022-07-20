@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 获取当前线程变量中的 企业Id | 企业账号 | 租户类型 | 用户id | 用户账号 | 用户类型 | Token等信息
+ * 获取当前线程变量中的 企业Id | 企业账号 | 租户类型 | 用户id | 用户账号 | 用户昵称 | 用户类型 | Token等信息
  * 注意： 必须在网关通过请求头的方法传入，同时在HeaderInterceptor拦截器设置值。 否则这里无法获取
  *
  * @author xueyi
@@ -87,6 +87,21 @@ public class SecurityContextHolder {
      */
     public static void setUserName(String userName) {
         set(SecurityConstants.USER_NAME, userName);
+    }
+
+
+    /**
+     * 获取用户昵称
+     */
+    public static String getNickName() {
+        return get(SecurityConstants.NICK_NAME);
+    }
+
+    /**
+     * 设置用户昵称
+     */
+    public static void setNickName(String nickName) {
+        set(SecurityConstants.NICK_NAME, nickName);
     }
 
     /**

@@ -42,9 +42,9 @@ public class SysProfileController extends BasisController {
      */
     @GetMapping
     public AjaxResult profile() {
-        LoginUser loginUser = SecurityUtils.getLoginUser();
-        userService.userDesensitized(loginUser.getUser());
-        return AjaxResult.success(loginUser.getUser());
+        SysUserDto user = SecurityUtils.getUser();
+        userService.userDesensitized(user);
+        return AjaxResult.success(user);
     }
 
     /**

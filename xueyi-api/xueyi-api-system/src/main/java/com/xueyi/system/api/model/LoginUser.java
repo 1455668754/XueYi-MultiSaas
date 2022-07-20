@@ -36,6 +36,9 @@ public class LoginUser implements Serializable {
     /** 用户名 */
     private String userName;
 
+    /** 用户昵称 */
+    private String nickName;
+
     /** 用户标识 */
     private String userType;
 
@@ -127,6 +130,14 @@ public class LoginUser implements Serializable {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 
     public String getUserType() {
@@ -247,5 +258,32 @@ public class LoginUser implements Serializable {
 
     public void setRouteURL(Map<String, String> routeURL) {
         this.routeURL = routeURL;
+    }
+
+    /** 初始化权限范围 */
+    public DataScope getDataScope() {
+        scope.setEnterpriseId(enterpriseId);
+        scope.setUserId(userId);
+        scope.setIsLessor(isLessor);
+        scope.setUserType(userType);
+        scope.setPermissions(permissions);
+        scope.setRoles(roles);
+        scope.setRoleIds(roleIds);
+        return scope;
+    }
+
+    /** 初始化模块路由列表 */
+    public void initModuleRoute() {
+        moduleRoute = null;
+    }
+
+    /** 初始化菜单路由列表 */
+    public void initMenuRoute() {
+        menuRoute = null;
+    }
+
+    /** 初始化路由路径映射列表 */
+    public void initRouteURL() {
+        routeURL = null;
     }
 }
