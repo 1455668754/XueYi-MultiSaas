@@ -39,7 +39,7 @@
         <minio.version>8.2.2</minio.version>
         <poi.version>4.1.2</poi.version>
         <commons-collections.version>3.2.2</commons-collections.version>
-        <hutool-all.version>5.7.16</hutool-all.version>
+        <hutool.version>5.8.4</hutool.version>
         <jjwt.version>0.9.1</jjwt.version>
         <mapstruct.version>1.5.2.Final</mapstruct.version>
         <transmittable-thread-local.version>2.13.2</transmittable-thread-local.version>
@@ -265,11 +265,13 @@
                 <version>${xueyi.version}</version>
             </dependency>
 
-            <!-- huTool 工具类库-->
+            <!-- huTool 工具类库 -->
             <dependency>
                 <groupId>cn.hutool</groupId>
-                <artifactId>hutool-all</artifactId>
-                <version>${hutool-all.version}</version>
+                <artifactId>hutool-bom</artifactId>
+                <version>${hutool.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
 
         </dependencies>

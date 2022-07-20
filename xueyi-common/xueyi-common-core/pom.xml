@@ -125,10 +125,15 @@
             <artifactId>javax.servlet-api</artifactId>
         </dependency>
 
-        <!-- huTool 工具类库-->
+        <!-- huTool 工具类库 -->
         <dependency>
             <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
+            <artifactId>hutool-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-json</artifactId>
         </dependency>
 
     </dependencies>
