@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 操作日志管理 业务处理
@@ -72,7 +73,20 @@ public class SysOperateLogController extends BaseController<SysOperateLogQuery, 
         super.export(response, operateLog);
     }
 
+    /**
+     * 操作日志批量删除
+     */
+    @Override
+    @DeleteMapping("/batch/{idList}")
+    @RequiresPermissions(Auth.SYS_OPERATE_LOG_DEL)
+    @Log(title = "操作日志", businessType = BusinessType.DELETE)
+    public AjaxResult batchRemove(@PathVariable List<Long> idList) {
+        return super.batchRemove(idList);
+    }
 
+    /**
+     * 操作日志清空
+     */
     @DeleteMapping("/clean")
     @RequiresPermissions(Auth.SYS_OPERATE_LOG_DEL)
     @Log(title = "操作日志", businessType = BusinessType.CLEAN)
