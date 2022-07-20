@@ -70,7 +70,16 @@ public @interface Excel {
     /** 导出类型（0数字 1字符串） */
     public ColumnType cellType() default ColumnType.STRING;
 
-    /** 导出字体颜色 */
+    /** 导出列头背景色 */
+    public IndexedColors headerBackgroundColor() default IndexedColors.GREY_50_PERCENT;
+
+    /** 导出列头字体颜色 */
+    public IndexedColors headerColor() default IndexedColors.WHITE;
+
+    /** 导出单元格背景色 */
+    public IndexedColors backgroundColor() default IndexedColors.WHITE;
+
+    /** 导出单元格字体颜色 */
     public IndexedColors color() default IndexedColors.BLACK;
 
     /** 导出字段对齐方式（0：默认；1：靠左；2：居中；3：靠右） */
