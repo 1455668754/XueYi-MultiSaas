@@ -30,16 +30,13 @@ import java.util.stream.Collectors;
  */
 public class VelocityUtils {
 
+    /** 主目录 */
     private static final String PROJECT_PATH = "main/java" ;
 
-    /**
-     * 隐藏字段数组
-     */
+    /** 隐藏字段数组 */
     private static final String HIDE = "hide" ;
 
-    /**
-     * 覆写字段数组
-     */
+    /** 覆写字段数组 */
     private static final String COVER = "cover" ;
 
     /**
@@ -253,14 +250,14 @@ public class VelocityUtils {
             templates.add("vm/java/managerImpl.java.vm");
             templates.add("vm/java/mapper.java.vm");
             templates.add("vm/sql/sql.sql.vm");
-            templates.add("vm/ts/api.ts.vm");
-            templates.add("vm/ts/data.ts.vm");
-            templates.add("vm/ts/auth.ts.vm");
-            templates.add("vm/ts/enum.ts.vm");
-            templates.add("vm/ts/infoModel.ts.vm");
-            templates.add("vm/vue/detail.vue.vm");
-            templates.add("vm/vue/index.vue.vm");
-            templates.add("vm/vue/modal.vue.vm");
+            templates.add("vm/multi/ts/api.ts.vm");
+            templates.add("vm/multi/ts/data.ts.vm");
+            templates.add("vm/multi/ts/auth.ts.vm");
+            templates.add("vm/multi/ts/enum.ts.vm");
+            templates.add("vm/multi/ts/infoModel.ts.vm");
+            templates.add("vm/multi/vue/detail.vue.vm");
+            templates.add("vm/multi/vue/index.vue.vm");
+            templates.add("vm/multi/vue/modal.vue.vm");
         }
         return templates;
     }

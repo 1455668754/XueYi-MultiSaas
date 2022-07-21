@@ -13,7 +13,7 @@
 #end
 import { BasicFetchResult, BasicPageParams, ${Entity}Entity } from '../../../src'
 #if($table.subBase || $table.subTree)
-import { ${subBusinessName}IM } from '${relativePath}/${subbusinessName}'
+import { ${subBusinessName}IM } from 'vm/multi/ts/infoModel.ts${relativePath}/${subbusinessName}'
 #end
 
 /** ${businessName} info model */

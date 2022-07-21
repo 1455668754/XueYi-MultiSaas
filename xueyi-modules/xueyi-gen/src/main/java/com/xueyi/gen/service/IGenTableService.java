@@ -63,13 +63,6 @@ public interface IGenTableService extends ISubBaseService<GenTableQuery, GenTabl
     void generatorCode(Long id);
 
     /**
-     * 同步数据库
-     *
-     * @param tableName 表名称
-     */
-    void syncDb(String tableName);
-
-    /**
      * 批量生成代码（下载方式）
      *
      * @param ids Ids数组

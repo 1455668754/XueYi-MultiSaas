@@ -43,7 +43,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -235,36 +234,6 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableQuery, GenTa
             } catch (IOException e) {
                 throw new ServiceException("渲染模板失败，表名：" + table.getName());
             }
-        }
-    }
-
-    /**
-     * 同步数据库
-     *
-     * @param tableName 表名称
-     */
-    @Override
-    @DSTransactional
-    public void syncDb(String tableName) {
-        GenTableDto table = baseManager.selectDbTableByName(tableName);
-        List<GenTableColumnDto> columnList = table.getSubList();
-        List<String> columnNames = columnList.stream().map(GenTableColumnDto::getName).collect(Collectors.toList());
-
-        List<GenTableColumnDto> dbTableColumns = subService.selectDbTableColumnsByName(tableName);
-        if (StringUtils.isEmpty(dbTableColumns)) {
-            throw new ServiceException("同步数据失败，原表结构不存在");
-        }
-        List<String> dbTableColumnNames = dbTableColumns.stream().map(GenTableColumnDto::getName).collect(Collectors.toList());
-        dbTableColumns.forEach(column -> {
-            if (!columnNames.contains(column.getName())) {
-                GenUtils.initColumnField(column, table);
-                subService.insert(column);
-            }
-        });
-
-        List<Long> delColumnIds = columnList.stream().filter(column -> !dbTableColumnNames.contains(column.getName())).map(GenTableColumnDto::getId).collect(Collectors.toList());
-        if (StringUtils.isNotEmpty(delColumnIds)) {
-            subService.deleteByIds(delColumnIds);
         }
     }
 

@@ -10,8 +10,6 @@ export const GenAuth = {
   IMPORT: 'generate:gen:import',
   // 修改代码生成
   EDIT: 'generate:gen:edit',
-  // 同步代码生成
-  SYNC: 'generate:gen:sync',
   // 代码生成下载
   CODE: 'generate:gen:code',
   // 删除代码生成

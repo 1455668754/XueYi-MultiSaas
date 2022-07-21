@@ -36,12 +36,6 @@
               onClick: handleEdit.bind(null, record),
             },
             {
-              icon: IconEnum.RESET,
-              tooltip: '同步',
-              auth: GenAuth.SYNC,
-              onClick: handleEdit.bind(null, record),
-            },
-            {
               icon: IconEnum.DOWNLOAD,
               tooltip: '下载',
               auth: GenAuth.CODE,
