@@ -37,7 +37,7 @@ public class BaseManager<Q extends P, D extends P, P extends BaseEntity, PM exte
         LambdaQueryWrapper<P> queryWrapper = new LambdaQueryWrapper<>(query);
         SelectListQuery(BaseConstants.SelectType.NORMAL, queryWrapper, query);
         List<P> poList = baseMapper.selectList(queryWrapper);
-        return baseConverter.mapperDto(poList);
+        return mapperDto(poList);
     }
 
     /**
@@ -51,7 +51,7 @@ public class BaseManager<Q extends P, D extends P, P extends BaseEntity, PM exte
         LambdaQueryWrapper<P> queryWrapper = new LambdaQueryWrapper<>(query);
         SelectListQuery(BaseConstants.SelectType.EXTRA, queryWrapper, query);
         List<P> poList = baseMapper.selectList(queryWrapper);
-        return baseConverter.mapperDto(poList);
+        return mapperDto(poList);
     }
 
     /**
@@ -63,7 +63,7 @@ public class BaseManager<Q extends P, D extends P, P extends BaseEntity, PM exte
     @Override
     public List<D> selectListByIds(Collection<? extends Serializable> idList) {
         List<P> poList = baseMapper.selectBatchIds(idList);
-        return baseConverter.mapperDto(poList);
+        return mapperDto(poList);
     }
 
     /**
@@ -75,7 +75,7 @@ public class BaseManager<Q extends P, D extends P, P extends BaseEntity, PM exte
     @Override
     public D selectById(Serializable id) {
         P po = baseMapper.selectById(id);
-        return baseConverter.mapperDto(po);
+        return mapperDto(po);
     }
 
     /**
@@ -87,7 +87,7 @@ public class BaseManager<Q extends P, D extends P, P extends BaseEntity, PM exte
     @Override
     public D selectByIdExtra(Serializable id) {
         P po = baseMapper.selectById(id);
-        return baseConverter.mapperDto(po);
+        return mapperDto(po);
     }
 
     /**
@@ -110,7 +110,7 @@ public class BaseManager<Q extends P, D extends P, P extends BaseEntity, PM exte
     @Override
     @DSTransactional
     public int insertBatch(Collection<D> entityList) {
-        return baseMapper.insertBatch(baseConverter.mapperPo(entityList));
+        return baseMapper.insertBatch(mapperPo(entityList));
     }
 
     /**
@@ -133,7 +133,7 @@ public class BaseManager<Q extends P, D extends P, P extends BaseEntity, PM exte
     @Override
     @DSTransactional
     public int updateBatch(Collection<D> entityList) {
-        return baseMapper.updateBatch(baseConverter.mapperPo(entityList));
+        return baseMapper.updateBatch(mapperPo(entityList));
     }
 
     /**
@@ -187,6 +187,6 @@ public class BaseManager<Q extends P, D extends P, P extends BaseEntity, PM exte
                         .ne(P::getId, id)
                         .eq(P::getName, name)
                         .last(SqlConstants.LIMIT_ONE));
-        return baseConverter.mapperDto(po);
+        return mapperDto(po);
     }
 }
