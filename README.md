@@ -25,9 +25,6 @@
 - **组织管理优化**：更完善的组织架构操作与管理逻辑
 - **微聚合多前端**：公共抽离，降低系统重复冗余
 
-## UI
-前端地址： [MultiSaas-UI](https://gitee.com/xueyitiantang/MultiSaas-UI)
-
 ## 交流
 - 请移步右上角  **一键三连** :kissing_heart:
 - QQ群：[![加入QQ群](https://img.shields.io/badge/779343138-blue.svg)](https://jq.qq.com/?_wv=1027&k=zw11JJhj)

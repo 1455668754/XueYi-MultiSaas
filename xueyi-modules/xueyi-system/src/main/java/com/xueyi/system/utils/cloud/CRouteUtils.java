@@ -1,4 +1,4 @@
-package com.xueyi.system.utils;
+package com.xueyi.system.utils.cloud;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -6,9 +6,8 @@ import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
-import com.xueyi.system.utils.route.MetaVo;
-import com.xueyi.system.utils.route.RouterVo;
-import com.xueyi.system.utils.route.TagVo;
+import com.xueyi.system.utils.cloud.route.CMetaVo;
+import com.xueyi.system.utils.cloud.route.CRouterVo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,9 +17,10 @@ import java.util.List;
  *
  * @author xueyi
  */
-public class RouteUtils {
+public class CRouteUtils {
 
-    private static final int DYNAMIC_LEVEL = 5;
+    /** 面包屑导航中不可被点击标识 */
+    private static final String NO_REDIRECT = "noRedirect";
 
     /** 路由树初始深度 */
     private static final int LEVEL_0 = 0;
@@ -31,7 +31,7 @@ public class RouteUtils {
      * @param menus 菜单列表
      * @return 路由列表
      */
-    public static List<RouterVo> buildMenus(List<SysMenuDto> menus) {
+    public static List<CRouterVo> buildMenus(List<SysMenuDto> menus) {
         SysMenuDto menu = new SysMenuDto();
         menu.setFullPath(StrUtil.EMPTY);
         menu.setChildren(menus);
@@ -45,13 +45,13 @@ public class RouteUtils {
      * @param level 路由树深度
      * @return 路由树
      */
-    private static List<RouterVo> recursionFn(SysMenuDto menus, int level) {
-        List<RouterVo> routers = new ArrayList<>();
+    private static List<CRouterVo> recursionFn(SysMenuDto menus, int level) {
+        List<CRouterVo> routers = new ArrayList<>();
         if (CollUtil.isNotEmpty(menus.getChildren())) {
-            RouterVo router;
+            CRouterVo router;
             for (SysMenuDto menu : menus.getChildren()) {
                 if (level == LEVEL_0 && menu.isDetails()) {
-                    router = new RouterVo();
+                    router = new CRouterVo();
                     getRoute(menu, router);
                     routers.add(router);
                 }
@@ -59,7 +59,7 @@ public class RouteUtils {
                 if (CollUtil.isNotEmpty(menu.getChildren()))
                     assembleDetails(menu, routers);
                 if (!menu.isDetails()) {
-                    router = new RouterVo();
+                    router = new CRouterVo();
                     if (CollUtil.isNotEmpty(menu.getChildren())) {
                         router.setChildren(recursionFn(menu, ++level));
                     }
@@ -77,12 +77,12 @@ public class RouteUtils {
      * @param menu    菜单对象
      * @param routers 路由列表
      */
-    private static void assembleDetails(SysMenuDto menu, List<RouterVo> routers) {
-        RouterVo router;
+    private static void assembleDetails(SysMenuDto menu, List<CRouterVo> routers) {
+        CRouterVo router;
         for (SysMenuDto detailsMenu : menu.getChildren()) {
             if (detailsMenu.isDetails()) {
                 detailsMenu.setCurrentActiveMenu(menu.getFullPath());
-                router = new RouterVo();
+                router = new CRouterVo();
                 // 详情型菜单上移一级
                 detailsMenu.setParentId(menu.getParentId());
                 getRoute(detailsMenu, router);
@@ -97,23 +97,17 @@ public class RouteUtils {
      * @param menu   菜单信息
      * @param router 路由信息
      */
-    private static void getRoute(SysMenuDto menu, RouterVo router) {
+    private static void getRoute(SysMenuDto menu, CRouterVo router) {
         router.setMeta(getMeta(menu));
         router.setPath(getRouterPath(menu));
         router.setName(menu.getName());
-        router.setDisabled(StrUtil.equals(DictConstants.DicYesNo.YES.getCode(), menu.getIsDisabled()));
-        router.setParamPath(menu.getParamPath());
+        router.setQuery(menu.getParamPath());
+        router.setHidden(StrUtil.equals(DictConstants.DicShowHide.HIDE.getCode(), menu.getHideMenu()));
         router.setComponent(getComponent(menu));
-    }
-
-    /**
-     * 获取菜单标签信息
-     *
-     * @param menu 菜单信息
-     * @return 菜单标签信息
-     */
-    private static TagVo getTag(SysMenuDto menu) {
-        return new TagVo();
+        if (menu.isDir() && CollUtil.isNotEmpty(menu.getChildren())) {
+            router.setAlwaysShow(true);
+            router.setRedirect(NO_REDIRECT);
+        }
     }
 
     /**
@@ -122,31 +116,18 @@ public class RouteUtils {
      * @param menu 菜单信息
      * @return 路由元信息
      */
-    private static MetaVo getMeta(SysMenuDto menu) {
-        MetaVo meta = new MetaVo();
+    private static CMetaVo getMeta(SysMenuDto menu) {
+        CMetaVo meta = new CMetaVo();
         meta.setTitle(menu.getTitle());
         meta.setIcon(menu.getIcon());
-        if (menu.isDetails()) {
-            meta.setDynamicLevel(DYNAMIC_LEVEL);
-            meta.setRealPath(menu.getRealPath());
-            meta.setCurrentActiveMenu(menu.getCurrentActiveMenu());
-        }
-        meta.setIgnoreKeepAlive(StrUtil.equals(DictConstants.DicYesNo.YES.getCode(), menu.getIsCache()));
-        meta.setAffix(StrUtil.equals(DictConstants.DicYesNo.YES.getCode(), menu.getIsAffix()));
+        meta.setNoCache(!StrUtil.equals(DictConstants.DicYesNo.YES.getCode(), menu.getIsCache()));
         if (menu.isEmbedded())
-            meta.setFrameSrc(menu.getFrameSrc());
-        meta.setTransitionName(menu.getTransitionName());
-        meta.setHideBreadcrumb(StrUtil.equals(DictConstants.DicShowHide.HIDE.getCode(), menu.getHideBreadcrumb()));
-        if (StrUtil.isNotEmpty(menu.getParamPath()))
-            meta.setCarryParam(true);
-        meta.setHideTab(StrUtil.equals(DictConstants.DicShowHide.HIDE.getCode(), menu.getHideTab()));
-        meta.setHideMenu(StrUtil.equals(DictConstants.DicShowHide.HIDE.getCode(), menu.getHideMenu()));
-        meta.setHideChildrenInMenu(StrUtil.equals(DictConstants.DicShowHide.HIDE.getCode(), menu.getHideChildren()));
-        if (menu.isExternalLinks())
-            meta.setLink(true);
-        meta.setOrderNo(menu.getSort());
-        meta.setIgnoreRoute(StrUtil.equals(DictConstants.DicYesNo.YES.getCode(), menu.getIgnoreRoute()));
-        meta.setHidePathForChildren(StrUtil.equals(DictConstants.DicShowHide.HIDE.getCode(), menu.getHidePathForChildren()));
+            meta.setLink(menu.getFrameSrc());
+        if (menu.isDetails()) {
+            meta.setActiveMenu(menu.getCurrentActiveMenu());
+        }
+        meta.setAffix(StrUtil.equals(DictConstants.DicYesNo.YES.getCode(), menu.getIsAffix()));
+        meta.setBreadcrumb(!StrUtil.equals(DictConstants.DicShowHide.HIDE.getCode(), menu.getHideBreadcrumb()));
         return meta;
     }
 
@@ -173,18 +154,29 @@ public class RouteUtils {
      * @return 组件信息
      */
     private static String getComponent(SysMenuDto menu) {
-        return menu.isEmbedded() || menu.isExternalLinks()
-                ? ComponentType.IFRAME.getCode()
-                : ObjectUtil.equals(AuthorityConstants.MENU_TOP_NODE, menu.getParentId())
+        return ObjectUtil.equals(AuthorityConstants.MENU_TOP_NODE, menu.getParentId()) || menu.isExternalLinks()
                 ? ComponentType.LAYOUT.getCode()
-                : menu.getComponent();
+                : menu.isEmbedded()
+                ? ComponentType.IFRAME.getCode()
+                : isParentView(menu) ? ComponentType.PARENT_VIEW.getCode() : menu.getComponent();
+    }
+
+    /**
+     * 是否为parent_view组件
+     *
+     * @param menu 菜单信息
+     * @return 结果
+     */
+    public static boolean isParentView(SysMenuDto menu) {
+        return CollUtil.isNotEmpty(menu.getChildren()) && menu.isDir();
     }
 
     /** 组件标识 */
     private enum ComponentType {
 
-        LAYOUT("LAYOUT"),
-        IFRAME("IFrame");
+        LAYOUT("Layout"),
+        PARENT_VIEW("ParentView"),
+        IFRAME("InnerLink");
 
         private final String code;
 
@@ -195,6 +187,5 @@ public class RouteUtils {
         public String getCode() {
             return code;
         }
-
     }
 }

@@ -1,11 +1,11 @@
-package com.xueyi.system.utils.route;
+package com.xueyi.system.utils.multi.route;
 
 /**
  * 路由元信息
  *
  * @author xueyi
  */
-public class MetaVo {
+public class MMetaVo {
 
     /** 设置该路由在侧边栏和面包屑中展示的名字 */
     private String title;

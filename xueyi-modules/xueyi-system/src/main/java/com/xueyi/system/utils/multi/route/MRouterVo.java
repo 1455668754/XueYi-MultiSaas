@@ -1,4 +1,4 @@
-package com.xueyi.system.utils.route;
+package com.xueyi.system.utils.multi.route;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -10,7 +10,7 @@ import java.util.List;
  * @author xueyi
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class RouterVo {
+public class MRouterVo {
 
     /** 路由名字 */
     private String name;
@@ -28,16 +28,16 @@ public class RouterVo {
     private Boolean disabled;
 
     /** 菜单标签设置 */
-    private TagVo tag;
+    private MTagVo tag;
 
     /** 路由参数：如 {"id": 1, "name": "xy"} */
     private String paramPath;
 
     /** 其他元素 */
-    private MetaVo meta;
+    private MMetaVo meta;
 
     /** 子路由 */
-    private List<RouterVo> children;
+    private List<MRouterVo> children;
 
     public String getName() {
         return name;
@@ -79,11 +79,11 @@ public class RouterVo {
         this.disabled = disabled;
     }
 
-    public TagVo getTag() {
+    public MTagVo getTag() {
         return tag;
     }
 
-    public void setTag(TagVo tag) {
+    public void setTag(MTagVo tag) {
         this.tag = tag;
     }
 
@@ -95,19 +95,19 @@ public class RouterVo {
         this.paramPath = paramPath;
     }
 
-    public MetaVo getMeta() {
+    public MMetaVo getMeta() {
         return meta;
     }
 
-    public void setMeta(MetaVo meta) {
+    public void setMeta(MMetaVo meta) {
         this.meta = meta;
     }
 
-    public List<RouterVo> getChildren() {
+    public List<MRouterVo> getChildren() {
         return children;
     }
 
-    public void setChildren(List<RouterVo> children) {
+    public void setChildren(List<MRouterVo> children) {
         this.children = children;
     }
 

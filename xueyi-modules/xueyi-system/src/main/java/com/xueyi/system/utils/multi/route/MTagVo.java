@@ -1,11 +1,11 @@
-package com.xueyi.system.utils.route;
+package com.xueyi.system.utils.multi.route;
 
 /**
  * 菜单标签配置信息
  *
  * @author xueyi
  */
-public class TagVo {
+public class MTagVo {
 
     /** 为true则显示小圆点 */
     private Boolean dot;

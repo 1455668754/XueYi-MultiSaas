@@ -26,12 +26,15 @@ import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
 import com.xueyi.system.api.authority.domain.query.SysMenuQuery;
 import com.xueyi.system.authority.service.ISysMenuService;
 import com.xueyi.system.authority.service.ISysModuleService;
+import com.xueyi.system.utils.cloud.CRouteUtils;
+import com.xueyi.system.utils.multi.MRouteUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -74,15 +77,33 @@ public class SysMenuController extends TreeController<SysMenuQuery, SysMenuDto, 
     /**
      * 获取路由信息
      */
-    @GetMapping("/getRouters/{moduleId}")
-    public AjaxResult getRouters(@PathVariable Long moduleId) {
+    @GetMapping("/getCloudRouters/{moduleId}")
+    public AjaxResult getCloudRouters(@PathVariable Long moduleId) {
         Map<String, Object> menuMap = tokenService.getMenuRoute();
-        if (ObjectUtil.isNull(menuMap.get(moduleId.toString()))) {
+        String moduleKey = "cloud" + moduleId;
+        if (ObjectUtil.isNull(menuMap) || ObjectUtil.isNull(menuMap.get(moduleKey))) {
             List<SysMenuDto> menus = baseService.getRoutes(moduleId);
-            menuMap.put(moduleId.toString(), baseService.buildMenus(TreeUtils.buildTree(menus)));
+            if (ObjectUtil.isNull(menuMap)) menuMap = new HashMap<>();
+            menuMap.put(moduleKey, CRouteUtils.buildMenus(TreeUtils.buildTree(menus)));
             tokenService.setMenuRoute(menuMap);
         }
-        return AjaxResult.success(menuMap.get(moduleId.toString()));
+        return AjaxResult.success(menuMap.get(moduleKey));
+    }
+
+    /**
+     * 获取路由信息
+     */
+    @GetMapping("/getMultiRouters/{moduleId}")
+    public AjaxResult getMultiRouters(@PathVariable Long moduleId) {
+        Map<String, Object> menuMap = tokenService.getMenuRoute();
+        String moduleKey = "multi" + moduleId;
+        if (ObjectUtil.isNull(menuMap) || ObjectUtil.isNull(menuMap.get(moduleKey))) {
+            List<SysMenuDto> menus = baseService.getRoutes(moduleId);
+            if (ObjectUtil.isNull(menuMap)) menuMap = new HashMap<>();
+            menuMap.put(moduleKey, MRouteUtils.buildMenus(TreeUtils.buildTree(menus)));
+            tokenService.setMenuRoute(menuMap);
+        }
+        return AjaxResult.success(menuMap.get(moduleKey));
     }
 
     /**
@@ -136,8 +157,7 @@ public class SysMenuController extends TreeController<SysMenuQuery, SysMenuDto, 
         Iterator<SysMenuDto> it = menus.iterator();
         while (it.hasNext()) {
             SysMenuDto next = (SysMenuDto) it.next();
-            if (ObjectUtil.equals(next.getId(), menu.getId()) ||
-                    ArrayUtils.contains(StringUtils.split(next.getAncestors(), StrUtil.COMMA), menu.getId() + StrUtil.EMPTY))
+            if (ObjectUtil.equals(next.getId(), menu.getId()) || ArrayUtils.contains(StringUtils.split(next.getAncestors(), StrUtil.COMMA), menu.getId() + StrUtil.EMPTY))
                 it.remove();
         }
         return AjaxResult.success(TreeUtils.buildTree((menus)));
@@ -209,8 +229,7 @@ public class SysMenuController extends TreeController<SysMenuQuery, SysMenuDto, 
             throw new ServiceException(StrUtil.format("{}{}{}失败，无操作权限！", operate.getInfo(), getNodeName(), menu.getTitle()));
         if (operate.isEdit()) {
             SysMenuDto original = baseService.selectById(menu.getId());
-            if (ObjectUtil.isNull(original))
-                throw new ServiceException("数据不存在！");
+            if (ObjectUtil.isNull(original)) throw new ServiceException("数据不存在！");
             if (SecurityUtils.isNotAdminTenant() && original.isCommon())
                 throw new ServiceException(StrUtil.format("{}{}{}失败，无操作权限！", operate.getInfo(), getNodeName(), menu.getTitle()));
             if (!StringUtils.equals(menu.getIsCommon(), original.getIsCommon()))
@@ -218,13 +237,11 @@ public class SysMenuController extends TreeController<SysMenuQuery, SysMenuDto, 
         }
         if (menu.isCommon()) {
             SysModuleDto module = moduleService.selectById(menu.getModuleId());
-            if (ObjectUtil.isNull(module))
-                throw new ServiceException("数据不存在！");
+            if (ObjectUtil.isNull(module)) throw new ServiceException("数据不存在！");
             if (module.isNotCommon())
                 throw new ServiceException(StrUtil.format("{}{}{}失败，公共{}必须挂载在公共{}下！", operate.getInfo(), getNodeName(), menu.getTitle(), getNodeName(), getParentName()));
             SysMenuDto parentMenu = baseService.selectById(menu.getParentId());
-            if (ObjectUtil.isNull(parentMenu))
-                throw new ServiceException("数据不存在！");
+            if (ObjectUtil.isNull(parentMenu)) throw new ServiceException("数据不存在！");
             if (parentMenu.isNotCommon())
                 throw new ServiceException(StrUtil.format("{}{}{}失败，公共{}必须挂载在公共{}下！", operate.getInfo(), getNodeName(), menu.getTitle(), getNodeName(), getNodeName()));
         }
@@ -241,9 +258,7 @@ public class SysMenuController extends TreeController<SysMenuQuery, SysMenuDto, 
     protected void RHandleValidated(BaseConstants.Operate operate, List<Long> idList) {
         // remove top node
         for (int i = idList.size() - 1; i >= 0; i--)
-            if (ObjectUtil.equals(idList.get(i), AuthorityConstants.MENU_TOP_NODE))
-                idList.remove(i);
-        if (CollUtil.isEmpty(idList))
-            throw new ServiceException(StrUtil.format("删除失败，无法删除默认{}！", getNodeName()));
+            if (ObjectUtil.equals(idList.get(i), AuthorityConstants.MENU_TOP_NODE)) idList.remove(i);
+        if (CollUtil.isEmpty(idList)) throw new ServiceException(StrUtil.format("删除失败，无法删除默认{}！", getNodeName()));
     }
 }
