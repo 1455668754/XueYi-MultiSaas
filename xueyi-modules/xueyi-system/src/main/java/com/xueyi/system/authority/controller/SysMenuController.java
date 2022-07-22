@@ -5,11 +5,11 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
-import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.core.utils.TreeUtils;
 import com.xueyi.common.core.web.result.AjaxResult;
+import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
@@ -232,7 +232,7 @@ public class SysMenuController extends TreeController<SysMenuQuery, SysMenuDto, 
             if (ObjectUtil.isNull(original)) throw new ServiceException("数据不存在！");
             if (SecurityUtils.isNotAdminTenant() && original.isCommon())
                 throw new ServiceException(StrUtil.format("{}{}{}失败，无操作权限！", operate.getInfo(), getNodeName(), menu.getTitle()));
-            if (!StringUtils.equals(menu.getIsCommon(), original.getIsCommon()))
+            if (!StrUtil.equals(menu.getIsCommon(), original.getIsCommon()))
                 throw new ServiceException(StrUtil.format("{}{}{}失败，公共{}属性禁止变更！", operate.getInfo(), getNodeName(), menu.getTitle(), getNodeName()));
         }
         if (menu.isCommon()) {

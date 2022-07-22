@@ -4,7 +4,6 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.CacheConstants;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
-import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
@@ -46,16 +45,16 @@ public class SysUserOnlineController extends BasisController {
         List<SysUserOnline> userOnlineList = new ArrayList<>();
         for (String key : keys) {
             LoginUser loginUser = redisService.getCacheMapValue(key, SecurityConstants.LOGIN_USER);
-            if (StringUtils.isNotEmpty(ipaddr) && StringUtils.isNotEmpty(userName)) {
-                if (StringUtils.equals(ipaddr, loginUser.getIpaddr()) && StringUtils.equals(userName, loginUser.getUserName())) {
+            if (StrUtil.isNotEmpty(ipaddr) && StrUtil.isNotEmpty(userName)) {
+                if (StrUtil.equals(ipaddr, loginUser.getIpaddr()) && StrUtil.equals(userName, loginUser.getUserName())) {
                     userOnlineList.add(userOnlineService.selectOnlineByInfo(ipaddr, userName, loginUser));
                 }
-            } else if (StringUtils.isNotEmpty(ipaddr)) {
-                if (StringUtils.equals(ipaddr, loginUser.getIpaddr())) {
+            } else if (StrUtil.isNotEmpty(ipaddr)) {
+                if (StrUtil.equals(ipaddr, loginUser.getIpaddr())) {
                     userOnlineList.add(userOnlineService.selectOnlineByIpaddr(ipaddr, loginUser));
                 }
-            } else if (StringUtils.isNotEmpty(userName)) {
-                if (StringUtils.equals(userName, loginUser.getUserName())) {
+            } else if (StrUtil.isNotEmpty(userName)) {
+                if (StrUtil.equals(userName, loginUser.getUserName())) {
                     userOnlineList.add(userOnlineService.selectOnlineByUserName(userName, loginUser));
                 }
             } else {

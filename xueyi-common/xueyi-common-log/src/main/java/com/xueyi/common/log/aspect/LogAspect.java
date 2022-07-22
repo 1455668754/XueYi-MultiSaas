@@ -142,14 +142,14 @@ public class LogAspect {
     /**
      * 获取请求的参数，放到log中
      *
-     * @param operLog 操作日志
+     * @param operateLog 操作日志
      * @throws Exception 异常
      */
-    private void setRequestValue(JoinPoint joinPoint, SysOperateLogDto operLog) throws Exception {
-        String requestMethod = operLog.getRequestMethod();
+    private void setRequestValue(JoinPoint joinPoint, SysOperateLogDto operateLog) throws Exception {
+        String requestMethod = operateLog.getRequestMethod();
         if (HttpMethod.PUT.name().equals(requestMethod) || HttpMethod.POST.name().equals(requestMethod)) {
             String params = argsArrayToString(joinPoint.getArgs());
-            operLog.setParam(StringUtils.substring(params, 0, 2000));
+            operateLog.setParam(StringUtils.substring(params, 0, 2000));
         }
     }
 

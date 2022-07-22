@@ -2,10 +2,9 @@ package com.xueyi.system.organize.controller;
 
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
-import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.core.exception.ServiceException;
-import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.core.web.result.AjaxResult;
+import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
@@ -186,7 +185,7 @@ public class SysPostController extends BaseController<SysPostQuery, SysPostDto, 
      */
     @Override
     protected void ESHandleValidated(BaseConstants.Operate operate, SysPostDto post) {
-        if (StringUtils.equals(BaseConstants.Status.NORMAL.getCode(), post.getStatus())) {
+        if (StrUtil.equals(BaseConstants.Status.NORMAL.getCode(), post.getStatus())) {
             SysPostDto original = baseService.selectById(post.getId());
             if (BaseConstants.Status.DISABLE == deptService.checkStatus(original.getDeptId()))
                 AjaxResult.error(StrUtil.format("启用失败，该{}归属的{}已被禁用！", getNodeName(), getParentName()));

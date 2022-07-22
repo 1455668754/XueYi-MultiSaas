@@ -87,7 +87,6 @@ public class XssFilter implements GlobalFilter, Ordered {
                 httpHeaders.set(HttpHeaders.TRANSFER_ENCODING, "chunked");
                 return httpHeaders;
             }
-
         };
         return serverHttpRequestDecorator;
     }
