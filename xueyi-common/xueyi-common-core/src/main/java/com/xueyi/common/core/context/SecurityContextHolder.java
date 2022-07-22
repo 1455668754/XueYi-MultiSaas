@@ -1,9 +1,9 @@
 package com.xueyi.common.core.context;
 
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.ttl.TransmittableThreadLocal;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
-import com.xueyi.common.core.text.Convert;
 import com.xueyi.common.core.utils.StringUtils;
 
 import java.util.Map;

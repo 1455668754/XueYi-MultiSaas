@@ -3,7 +3,7 @@ package com.xueyi.system.authority.controller;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.xueyi.common.core.context.SecurityContextHolder;
-import com.xueyi.common.core.domain.R;
+import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.security.annotation.InnerAuth;
 import com.xueyi.common.security.utils.SourceUtils;
 import com.xueyi.common.web.entity.controller.BasisController;

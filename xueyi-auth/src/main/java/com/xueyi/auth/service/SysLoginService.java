@@ -5,7 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import com.xueyi.auth.form.RegisterBody;
 import com.xueyi.common.core.constant.basic.*;
 import com.xueyi.common.core.constant.system.OrganizeConstants;
-import com.xueyi.common.core.domain.R;
+import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.ServletUtils;
 import com.xueyi.common.core.utils.ip.IpUtils;

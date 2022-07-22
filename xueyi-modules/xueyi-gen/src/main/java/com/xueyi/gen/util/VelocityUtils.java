@@ -282,57 +282,57 @@ public class VelocityUtils {
         String javaPath = PROJECT_PATH + StrUtil.SLASH + StringUtils.replace(packageName, StrUtil.DOT, StrUtil.SLASH);
 
         if (template.contains("query.java.vm"))
-            return StringUtils.format("{}/domain/query/{}Query.java", javaPath, className);
+            return StrUtil.format("{}/domain/query/{}Query.java", javaPath, className);
         else if (template.contains("dto.java.vm"))
-            return StringUtils.format("{}/domain/dto/{}Dto.java", javaPath, className);
+            return StrUtil.format("{}/domain/dto/{}Dto.java", javaPath, className);
         else if (template.contains("po.java.vm"))
-            return StringUtils.format("{}/domain/po/{}Po.java", javaPath, className);
+            return StrUtil.format("{}/domain/po/{}Po.java", javaPath, className);
         else if (template.contains("converter.java.vm"))
-            return StringUtils.format("{}/domain/model/{}Converter.java", javaPath, className);
+            return StrUtil.format("{}/domain/model/{}Converter.java", javaPath, className);
         else if (template.contains("controller.java.vm"))
-            return StringUtils.format("{}/controller/{}Controller.java", javaPath, className);
+            return StrUtil.format("{}/controller/{}Controller.java", javaPath, className);
         else if (template.contains("service.java.vm"))
-            return StringUtils.format("{}/service/I{}Service.java", javaPath, className);
+            return StrUtil.format("{}/service/I{}Service.java", javaPath, className);
         else if (template.contains("serviceImpl.java.vm"))
-            return StringUtils.format("{}/service/impl/{}ServiceImpl.java", javaPath, className);
+            return StrUtil.format("{}/service/impl/{}ServiceImpl.java", javaPath, className);
         else if (template.contains("manager.java.vm"))
-            return StringUtils.format("{}/manager/I{}Manager.java", javaPath, className);
+            return StrUtil.format("{}/manager/I{}Manager.java", javaPath, className);
         else if (template.contains("managerImpl.java.vm"))
-            return StringUtils.format("{}/manager/impl/{}Manager.java", javaPath, className);
+            return StrUtil.format("{}/manager/impl/{}Manager.java", javaPath, className);
         else if (template.contains("mapper.java.vm"))
-            return StringUtils.format("{}/mapper/{}Mapper.java", javaPath, className);
+            return StrUtil.format("{}/mapper/{}Mapper.java", javaPath, className);
         else if (template.contains("merge.java.vm"))
-            return StringUtils.format("{}/domain/merge/{}.java", javaPath, className);
+            return StrUtil.format("{}/domain/merge/{}.java", javaPath, className);
         else if (template.contains("mergeMapper.java.vm"))
-            return StringUtils.format("{}/mapper/merge/{}Mapper.java", javaPath, className);
+            return StrUtil.format("{}/mapper/merge/{}Mapper.java", javaPath, className);
 
-        else if (template.contains("sql.sql.vm")) return StringUtils.format("sql/{}.sql", businessName);
+        else if (template.contains("sql.sql.vm")) return StrUtil.format("sql/{}.sql", businessName);
 
         if (template.contains("api.ts.vm"))
-            return StringUtils.format("packages/service/modules/{}/{}/{}.ts", moduleName, authorityName, businessName);
+            return StrUtil.format("packages/service/modules/{}/{}/{}.ts", moduleName, authorityName, businessName);
         else if (template.contains("infoModel.ts.vm")) {
             String prefixPath = "packages/types/modules" ;
             String suffixFile = "" ;
             initIndexFile(realPath, prefixPath, suffixFile, moduleName, authorityName, businessName);
-            return StringUtils.format("{}/{}/{}/{}.ts", prefixPath, moduleName, authorityName, businessName);
+            return StrUtil.format("{}/{}/{}/{}.ts", prefixPath, moduleName, authorityName, businessName);
         } else if (template.contains("auth.ts.vm")) {
             String prefixPath = "packages/tokens/auth" ;
             String suffixFile = ".auth" ;
             initIndexFile(realPath, prefixPath, suffixFile, moduleName, authorityName, businessName);
-            return StringUtils.format("{}/{}/{}/{}{}.ts", prefixPath, moduleName, authorityName, businessName, suffixFile);
+            return StrUtil.format("{}/{}/{}/{}{}.ts", prefixPath, moduleName, authorityName, businessName, suffixFile);
         } else if (template.contains("enum.ts.vm")) {
             String prefixPath = "packages/tokens/enums" ;
             String suffixFile = ".enum" ;
             initIndexFile(realPath, prefixPath, suffixFile, moduleName, authorityName, businessName);
-            return StringUtils.format("{}/{}/{}/{}{}.ts", prefixPath, moduleName, authorityName, businessName, suffixFile);
+            return StrUtil.format("{}/{}/{}/{}{}.ts", prefixPath, moduleName, authorityName, businessName, suffixFile);
         } else if (template.contains("data.ts.vm"))
-            return StringUtils.format("admin/src/views/{}/{}/{}/{}.data.ts", moduleName, authorityName, businessName, businessName);
+            return StrUtil.format("admin/src/views/{}/{}/{}/{}.data.ts", moduleName, authorityName, businessName, businessName);
         else if (template.contains("index.vue.vm"))
-            return StringUtils.format("admin/src/views/{}/{}/{}/index.vue", moduleName, authorityName, businessName);
+            return StrUtil.format("admin/src/views/{}/{}/{}/index.vue", moduleName, authorityName, businessName);
         else if (template.contains("detail.vue.vm"))
-            return StringUtils.format("admin/src/views/{}/{}/{}/{}Detail.vue", moduleName, authorityName, businessName, BusinessName);
+            return StrUtil.format("admin/src/views/{}/{}/{}/{}Detail.vue", moduleName, authorityName, businessName, BusinessName);
         else if (template.contains("modal.vue.vm"))
-            return StringUtils.format("admin/src/views/{}/{}/{}/{}Modal.vue", moduleName, authorityName, businessName, BusinessName);
+            return StrUtil.format("admin/src/views/{}/{}/{}/{}Modal.vue", moduleName, authorityName, businessName, BusinessName);
         return "" ;
     }
 

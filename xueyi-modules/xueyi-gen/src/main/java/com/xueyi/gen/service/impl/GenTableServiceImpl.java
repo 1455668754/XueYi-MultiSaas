@@ -1,5 +1,6 @@
 package com.xueyi.gen.service.impl;
 
+import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSON;
@@ -10,9 +11,8 @@ import com.xueyi.common.core.constant.basic.HttpConstants;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.gen.GenConstants.OptionField;
 import com.xueyi.common.core.constant.gen.GenConstants.TemplateType;
-import com.xueyi.common.core.domain.R;
+import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.core.exception.ServiceException;
-import com.xueyi.common.core.text.CharsetKit;
 import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.web.entity.service.impl.SubBaseServiceImpl;
 import com.xueyi.gen.config.GenConfig;
@@ -230,7 +230,7 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableQuery, GenTa
                 String path = StrUtil.containsAny(template, genFiles)
                         ? getGenPath(table, template)
                         : getUiPath(table, template);
-                FileUtils.writeStringToFile(new File(path), sw.toString(), CharsetKit.UTF_8);
+                FileUtils.writeStringToFile(new File(path), sw.toString(), CharsetUtil.UTF_8);
             } catch (IOException e) {
                 throw new ServiceException("渲染模板失败，表名：" + table.getName());
             }

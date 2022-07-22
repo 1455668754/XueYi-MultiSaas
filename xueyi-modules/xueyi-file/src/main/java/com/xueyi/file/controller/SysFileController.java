@@ -1,6 +1,6 @@
 package com.xueyi.file.controller;
 
-import com.xueyi.common.core.domain.R;
+import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.core.utils.file.FileUtils;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.file.api.domain.SysFile;

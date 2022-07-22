@@ -1,9 +1,9 @@
 package com.xueyi.common.security.interceptor;
 
+import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.context.SecurityContextHolder;
 import com.xueyi.common.core.utils.ServletUtils;
-import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.security.auth.AuthUtil;
 import com.xueyi.common.security.utils.SecurityUtils;
 import org.springframework.web.method.HandlerMethod;
@@ -37,7 +37,7 @@ public class HeaderInterceptor implements AsyncHandlerInterceptor {
         SecurityContextHolder.setUserKey(ServletUtils.getHeader(request, SecurityConstants.USER_KEY));
 
         String token = SecurityUtils.getToken();
-        if (StringUtils.isNotEmpty(token)) {
+        if (StrUtil.isNotEmpty(token)) {
             AuthUtil.verifyLoginUserExpire(token);
         }
         return true;

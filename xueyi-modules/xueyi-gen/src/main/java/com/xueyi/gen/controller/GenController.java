@@ -2,7 +2,7 @@ package com.xueyi.gen.controller;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.xueyi.common.core.constant.basic.BaseConstants;
-import com.xueyi.common.core.text.Convert;
+import cn.hutool.core.convert.Convert;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;

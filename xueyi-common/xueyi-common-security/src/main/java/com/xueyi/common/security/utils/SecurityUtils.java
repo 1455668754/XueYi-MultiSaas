@@ -2,13 +2,12 @@ package com.xueyi.common.security.utils;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.basic.TokenConstants;
+import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.core.context.SecurityContextHolder;
 import com.xueyi.common.core.utils.ServletUtils;
 import com.xueyi.common.core.utils.SpringUtils;
-import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.security.service.TokenService;
 import com.xueyi.system.api.model.DataScope;
 import com.xueyi.system.api.model.LoginUser;
@@ -138,7 +137,7 @@ public class SecurityUtils {
      */
     public static String replaceTokenPrefix(String token) {
         // 如果前端设置了令牌前缀，则裁剪掉前缀
-        return StringUtils.isNotEmpty(token) && token.startsWith(TokenConstants.PREFIX) ? token.replaceFirst(TokenConstants.PREFIX, StrUtil.EMPTY) : token;
+        return StrUtil.isNotEmpty(token) && token.startsWith(TokenConstants.PREFIX) ? token.replaceFirst(TokenConstants.PREFIX, StrUtil.EMPTY) : token;
     }
 
     /**
@@ -159,7 +158,7 @@ public class SecurityUtils {
      * 是否为超管租户
      */
     public static boolean isAdminTenant() {
-        return StringUtils.equals(AuthorityConstants.TenantType.ADMIN.getCode(), getIsLessor());
+        return StrUtil.equals(AuthorityConstants.TenantType.ADMIN.getCode(), getIsLessor());
     }
 
     /**
@@ -173,7 +172,7 @@ public class SecurityUtils {
      * 是否为超管用户
      */
     public static boolean isAdminUser() {
-        return StringUtils.equals(AuthorityConstants.UserType.ADMIN.getCode(), getUserType());
+        return StrUtil.equals(AuthorityConstants.UserType.ADMIN.getCode(), getUserType());
     }
 
     /**

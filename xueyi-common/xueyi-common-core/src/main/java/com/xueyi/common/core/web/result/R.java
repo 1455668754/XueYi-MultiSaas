@@ -1,4 +1,4 @@
-package com.xueyi.common.core.domain;
+package com.xueyi.common.core.web.result;
 
 import com.xueyi.common.core.constant.basic.Constants;
 

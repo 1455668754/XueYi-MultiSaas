@@ -1,6 +1,6 @@
 package com.xueyi.system.api.dict.feign.factory;
 
-import com.xueyi.common.core.domain.R;
+import com.xueyi.common.core.web.result.R;
 import com.xueyi.system.api.dict.feign.RemoteConfigService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,7 +1,7 @@
 package com.xueyi.system.organize.controller;
 
 import cn.hutool.core.util.StrUtil;
-import com.xueyi.common.core.domain.R;
+import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.log.annotation.Log;

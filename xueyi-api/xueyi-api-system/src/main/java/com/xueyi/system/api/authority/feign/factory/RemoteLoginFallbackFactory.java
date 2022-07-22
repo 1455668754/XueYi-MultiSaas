@@ -1,6 +1,6 @@
 package com.xueyi.system.api.authority.feign.factory;
 
-import com.xueyi.common.core.domain.R;
+import com.xueyi.common.core.web.result.R;
 import com.xueyi.system.api.authority.feign.RemoteLoginService;
 import com.xueyi.system.api.model.LoginUser;
 import org.slf4j.Logger;

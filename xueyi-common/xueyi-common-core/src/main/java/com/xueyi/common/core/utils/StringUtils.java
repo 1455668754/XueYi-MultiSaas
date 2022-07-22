@@ -1,7 +1,6 @@
 package com.xueyi.common.core.utils;
 
 import com.xueyi.common.core.constant.basic.HttpConstants;
-import com.xueyi.common.core.text.StrFormatter;
 import org.springframework.util.AntPathMatcher;
 
 import java.util.Collection;
@@ -246,10 +245,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      * @return 格式化后的文本
      */
     public static String format(String template, Object... params) {
-        if (isEmpty(params) || isEmpty(template)) {
             return template;
-        }
-        return StrFormatter.format(template, params);
     }
 
     /**

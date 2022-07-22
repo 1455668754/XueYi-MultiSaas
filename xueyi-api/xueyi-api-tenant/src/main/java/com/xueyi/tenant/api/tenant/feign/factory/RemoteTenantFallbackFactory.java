@@ -1,7 +1,7 @@
 package com.xueyi.tenant.api.tenant.feign.factory;
 
 import cn.hutool.json.JSONObject;
-import com.xueyi.common.core.domain.R;
+import com.xueyi.common.core.web.result.R;
 import com.xueyi.tenant.api.tenant.feign.RemoteTenantService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

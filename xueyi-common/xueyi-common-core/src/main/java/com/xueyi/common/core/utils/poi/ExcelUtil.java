@@ -1,15 +1,16 @@
 package com.xueyi.common.core.utils.poi;
 
+import cn.hutool.core.convert.Convert;
+import cn.hutool.core.util.ReflectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.annotation.Excel;
 import com.xueyi.common.core.annotation.Excel.ColumnType;
 import com.xueyi.common.core.annotation.Excel.Type;
 import com.xueyi.common.core.annotation.Excels;
-import com.xueyi.common.core.text.Convert;
 import com.xueyi.common.core.utils.DateUtils;
 import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.core.utils.file.FileTypeUtils;
 import com.xueyi.common.core.utils.file.ImageUtils;
-import com.xueyi.common.core.utils.reflect.ReflectUtils;
 import org.apache.commons.lang3.RegExUtils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -271,7 +272,7 @@ public class ExcelUtil<T> {
                         } else if (!attr.handler().equals(ExcelHandlerAdapter.class)) {
                             val = dataFormatHandlerAdapter(val, attr);
                         }
-                        ReflectUtils.invokeSetter(entity, propertyName, val);
+                        ReflectUtil.setFieldValue(entity, propertyName, val);
                     }
                 }
                 list.add(entity);
@@ -458,7 +459,7 @@ public class ExcelUtil<T> {
         Map<String, CellStyle> headerStyles = new HashMap<String, CellStyle>();
         for (Object[] os : fields) {
             Excel excel = (Excel) os[1];
-            String key = StringUtils.format("header_{}_{}", excel.headerColor(), excel.headerBackgroundColor());
+            String key = StrUtil.format("header_{}_{}", excel.headerColor(), excel.headerBackgroundColor());
             if (!headerStyles.containsKey(key)) {
                 CellStyle style = wb.createCellStyle();
                 style = wb.createCellStyle();
@@ -489,7 +490,7 @@ public class ExcelUtil<T> {
         Map<String, CellStyle> styles = new HashMap<String, CellStyle>();
         for (Object[] os : fields) {
             Excel excel = (Excel) os[1];
-            String key = StringUtils.format("data_{}_{}_{}", excel.align(), excel.color(), excel.backgroundColor());
+            String key = StrUtil.format("data_{}_{}_{}", excel.align(), excel.color(), excel.backgroundColor());
             if (!styles.containsKey(key)) {
                 CellStyle style = wb.createCellStyle();
                 style = wb.createCellStyle();
@@ -525,7 +526,7 @@ public class ExcelUtil<T> {
         // 写入列信息
         cell.setCellValue(attr.name());
         setDataValidation(attr, row, column);
-        cell.setCellStyle(styles.get(StringUtils.format("header_{}_{}", attr.headerColor(), attr.headerBackgroundColor())));
+        cell.setCellStyle(styles.get(StrUtil.format("header_{}_{}", attr.headerColor(), attr.headerBackgroundColor())));
         return cell;
     }
 
@@ -609,7 +610,7 @@ public class ExcelUtil<T> {
             if (attr.isExport()) {
                 // 创建cell
                 cell = row.createCell(column);
-                cell.setCellStyle(styles.get(StringUtils.format("data_{}_{}_{}", attr.align(), attr.color(), attr.backgroundColor())));
+                cell.setCellStyle(styles.get(StrUtil.format("data_{}_{}_{}", attr.align(), attr.color(), attr.backgroundColor())));
 
                 // 用于读取对象中的属性
                 Object value = getTargetValue(vo, field, attr);

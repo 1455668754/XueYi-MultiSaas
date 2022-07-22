@@ -1,5 +1,6 @@
 package com.xueyi.common.datasource.utils;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
 import com.baomidou.dynamic.datasource.creator.DefaultDataSourceCreator;
@@ -8,11 +9,13 @@ import com.baomidou.dynamic.datasource.toolkit.DynamicDataSourceContextHolder;
 import com.xueyi.common.core.constant.basic.TenantConstants;
 import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.SpringUtils;
-import com.xueyi.common.core.utils.bean.BeanUtils;
 import com.xueyi.tenant.api.source.domain.dto.TeSourceDto;
 
 import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -33,7 +36,7 @@ public class DSUtils {
         try {
             DefaultDataSourceCreator dataSourceCreator = SpringUtils.getBean(DefaultDataSourceCreator.class);
             DataSourceProperty dataSourceProperty = new DataSourceProperty();
-            BeanUtils.copyProperties(source, dataSourceProperty);
+            BeanUtil.copyProperties(source, dataSourceProperty);
             DataSource dataSource = SpringUtils.getBean(DataSource.class);
             DynamicRoutingDataSource ds = (DynamicRoutingDataSource) dataSource;
             dataSource = dataSourceCreator.createDataSource(dataSourceProperty);

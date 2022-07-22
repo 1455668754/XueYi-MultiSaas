@@ -2,7 +2,7 @@ package com.xueyi.system.api.authority.feign;
 
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.basic.ServiceConstants;
-import com.xueyi.common.core.domain.R;
+import com.xueyi.common.core.web.result.R;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.authority.feign.factory.RemoteMenuFallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;

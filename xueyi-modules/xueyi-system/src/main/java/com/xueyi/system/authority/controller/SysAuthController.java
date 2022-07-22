@@ -1,6 +1,6 @@
 package com.xueyi.system.authority.controller;
 
-import com.xueyi.common.core.domain.R;
+import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.core.utils.TreeUtils;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.security.annotation.InnerAuth;

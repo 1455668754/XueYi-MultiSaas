@@ -1,6 +1,6 @@
 package com.xueyi.system.api.authority.feign.factory;
 
-import com.xueyi.common.core.domain.R;
+import com.xueyi.common.core.web.result.R;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.authority.feign.RemoteMenuService;
 import org.slf4j.Logger;

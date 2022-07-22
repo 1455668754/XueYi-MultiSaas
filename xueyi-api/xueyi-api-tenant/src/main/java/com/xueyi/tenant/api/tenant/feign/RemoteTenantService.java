@@ -3,7 +3,7 @@ package com.xueyi.tenant.api.tenant.feign;
 import cn.hutool.json.JSONObject;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.basic.ServiceConstants;
-import com.xueyi.common.core.domain.R;
+import com.xueyi.common.core.web.result.R;
 import com.xueyi.tenant.api.tenant.feign.factory.RemoteTenantFallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;

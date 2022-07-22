@@ -1,7 +1,7 @@
 package com.xueyi.file.api.feign;
 
 import com.xueyi.common.core.constant.basic.ServiceConstants;
-import com.xueyi.common.core.domain.R;
+import com.xueyi.common.core.web.result.R;
 import com.xueyi.file.api.domain.SysFile;
 import com.xueyi.file.api.feign.factory.RemoteFileFallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;
