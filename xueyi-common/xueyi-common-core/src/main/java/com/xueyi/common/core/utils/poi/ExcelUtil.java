@@ -1,6 +1,7 @@
 package com.xueyi.common.core.utils.poi;
 
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.annotation.Excel;
@@ -43,82 +44,66 @@ public class ExcelUtil<T> {
 
     private static final Logger log = LoggerFactory.getLogger(ExcelUtil.class);
 
-    public static final String FORMULA_REGEX_STR = "=|-|\\+|@";
+    public static final String FORMULA_REGEX_STR = "=|-|\\+|@" ;
 
     public static final String[] FORMULA_STR = {"=", "-", "+", "@"};
 
-    /**
-     * Excel sheet最大行数，默认65536
-     */
+    /** Excel sheet最大行数，默认65536 */
     public static final int sheetSize = 65536;
 
-    /**
-     * 工作表名称
-     */
+    /** 工作表名称 */
     private String sheetName;
 
-    /**
-     * 导出类型（EXPORT:导出数据；IMPORT：导入模板）
-     */
+    /** 导出类型（EXPORT:导出数据；IMPORT：导入模板） */
     private Type type;
 
-    /**
-     * 工作薄对象
-     */
+    /** 工作薄对象 */
     private Workbook wb;
 
-    /**
-     * 工作表对象
-     */
+    /** 工作表对象 */
     private Sheet sheet;
 
-    /**
-     * 样式列表
-     */
+    /** 样式列表 */
     private Map<String, CellStyle> styles;
 
-    /**
-     * 导入导出数据列表
-     */
+    /** 导入导出数据列表 */
     private List<T> list;
 
-    /**
-     * 注解列表
-     */
+    /** 注解列表 */
     private List<Object[]> fields;
 
-    /**
-     * 当前行号
-     */
+    /** 当前行号 */
     private int rownum;
 
-    /**
-     * 标题
-     */
+    /** 标题 */
     private String title;
 
-    /**
-     * 最大高度
-     */
+    /** 最大高度 */
     private short maxHeight;
 
-    /**
-     * 统计列表
-     */
+    /** 统计列表 */
     private Map<Integer, Double> statistics = new HashMap<>();
 
-    /**
-     * 数字格式
-     */
+    /** 数字格式 */
     private static final DecimalFormat DOUBLE_FORMAT = new DecimalFormat("######0.00");
 
-    /**
-     * 实体对象
-     */
+    /** 需要排除列属性 */
+    public String[] excludeFields;
+
+    /** 实体对象 */
     public Class<T> clazz;
 
     public ExcelUtil(Class<T> clazz) {
         this.clazz = clazz;
+    }
+
+    /**
+     * 隐藏Excel中列属性
+     *
+     * @param fields 列属性名 示例[单个"name"/多个"id","name"]
+     */
+    public void hideColumn(String... fields) {
+        this.excludeFields = fields;
     }
 
     public void init(List<T> list, String sheetName, String title, Type type) {
@@ -842,23 +827,25 @@ public class ExcelUtil<T> {
         tempFields.addAll(Arrays.asList(clazz.getSuperclass().getDeclaredFields()));
         tempFields.addAll(Arrays.asList(clazz.getDeclaredFields()));
         for (Field field : tempFields) {
-            // 单注解
-            if (field.isAnnotationPresent(Excel.class)) {
-                Excel attr = field.getAnnotation(Excel.class);
-                if (attr != null && (attr.type() == Type.ALL || attr.type() == type)) {
-                    field.setAccessible(true);
-                    fields.add(new Object[]{field, attr});
-                }
-            }
-
-            // 多注解
-            if (field.isAnnotationPresent(Excels.class)) {
-                Excels attrs = field.getAnnotation(Excels.class);
-                Excel[] excels = attrs.value();
-                for (Excel attr : excels) {
+            if (!ArrayUtil.contains(this.excludeFields, field.getName())) {
+                // 单注解
+                if (field.isAnnotationPresent(Excel.class)) {
+                    Excel attr = field.getAnnotation(Excel.class);
                     if (attr != null && (attr.type() == Type.ALL || attr.type() == type)) {
                         field.setAccessible(true);
                         fields.add(new Object[]{field, attr});
+                    }
+                }
+
+                // 多注解
+                if (field.isAnnotationPresent(Excels.class)) {
+                    Excels attrs = field.getAnnotation(Excels.class);
+                    Excel[] excels = attrs.value();
+                    for (Excel attr : excels) {
+                        if (attr != null && (attr.type() == Type.ALL || attr.type() == type)) {
+                            field.setAccessible(true);
+                            fields.add(new Object[]{field, attr});
+                        }
                     }
                 }
             }
@@ -914,7 +901,7 @@ public class ExcelUtil<T> {
         if (row == null) {
             return row;
         }
-        Object val = "";
+        Object val = "" ;
         try {
             Cell cell = row.getCell(column);
             if (StringUtils.isNotNull(cell)) {
@@ -972,7 +959,7 @@ public class ExcelUtil<T> {
      */
     public String parseDateToStr(String dateFormat, Object val) {
         if (val == null) {
-            return "";
+            return "" ;
         }
         String str;
         if (val instanceof Date) {
