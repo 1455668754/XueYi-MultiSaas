@@ -1,21 +1,35 @@
 /** ${functionName}权限标识 */
 export enum ${BusinessName}Auth {
+#if($api.list)
   // 查看${functionName}列表
   LIST = '${authorityName}:${businessName}:list',
+#end
+#if($api.single)
   // 查询${functionName}详情
   SINGLE = '${authorityName}:${businessName}:single',
+#end
+#if($api.add || $api.addForce)
   // 新增${functionName}
   ADD = '${authorityName}:${businessName}:add',
+#end
+#if($api.edit || $api.editForce)
   // 修改${functionName}
   EDIT = '${authorityName}:${businessName}:edit',
+#end
 #if($api.editStatus || $api.editStatusForce)
   // 修改${functionName}状态
   EDIT_STATUS = '${authorityName}:${businessName}:es',
 #end
+#if($api.batchRemove || $api.batchRemoveForce)
   // 删除${functionName}
   DELETE = '${authorityName}:${businessName}:delete',
+#end
+#if($api.import)
   // ${functionName}导入
   IMPORT = '${authorityName}:${businessName}:import',
+#end
+#if($api.export)
   // ${functionName}导出
   EXPORT = '${authorityName}:${businessName}:export',
+#end
 }

@@ -9,11 +9,12 @@ import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.constant.basic.HttpConstants;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
+import com.xueyi.common.core.constant.basic.ServiceConstants;
 import com.xueyi.common.core.constant.gen.GenConstants.OptionField;
 import com.xueyi.common.core.constant.gen.GenConstants.TemplateType;
-import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.StringUtils;
+import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.web.entity.service.impl.SubBaseServiceImpl;
 import com.xueyi.gen.config.GenConfig;
 import com.xueyi.gen.domain.dto.GenTableColumnDto;
@@ -62,35 +63,37 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableQuery, GenTa
     /**
      * 获取后端代码生成地址
      *
-     * @param table    业务表信息
-     * @param template 模板文件路径
+     * @param table      业务表信息
+     * @param template   模板文件路径
+     * @param fromSource 访问来源
      * @return 生成地址
      */
-    public static String getGenPath(GenTableDto table, String template) {
+    public static String getGenPath(GenTableDto table, String template, ServiceConstants.FromSource fromSource) {
         String genPath = table.getGenPath();
         if (StringUtils.equals(genPath, StrUtil.SLASH)) {
             String prefixPath = System.getProperty("user.dir") + File.separator + "src" + File.separator;
-            return prefixPath + VelocityUtils.getFileName(prefixPath, template, table);
+            return prefixPath + VelocityUtils.getFileName(prefixPath, template, table, fromSource);
         }
         String prefixPath = genPath + File.separator;
-        return prefixPath + VelocityUtils.getFileName(prefixPath, template, table);
+        return prefixPath + VelocityUtils.getFileName(prefixPath, template, table, fromSource);
     }
 
     /**
      * 获取前端代码生成地址
      *
-     * @param table    业务表信息
-     * @param template 模板文件路径
+     * @param table      业务表信息
+     * @param template   模板文件路径
+     * @param fromSource 访问来源
      * @return 生成地址
      */
-    public static String getUiPath(GenTableDto table, String template) {
+    public static String getUiPath(GenTableDto table, String template, ServiceConstants.FromSource fromSource) {
         String uiPath = table.getUiPath();
         if (StrUtil.equals(uiPath, StrUtil.SLASH)) {
-            String prefixPath = System.getProperty("user.dir") + File.separator + "MultiSaas-UI" + File.separator;
-            return prefixPath + VelocityUtils.getFileName(prefixPath, template, table);
+            String prefixPath = System.getProperty("user.dir") + File.separator;
+            return prefixPath + VelocityUtils.getFileName(prefixPath, template, table, fromSource);
         }
         String prefixPath = uiPath + File.separator;
-        return prefixPath + VelocityUtils.getFileName(prefixPath, template, table);
+        return prefixPath + VelocityUtils.getFileName(prefixPath, template, table, fromSource);
     }
 
     /**
@@ -149,8 +152,7 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableQuery, GenTa
     @DSTransactional
     public int update(GenTableDto table) {
         int row = baseManager.update(table);
-        if (row > 0)
-            GenUtils.updateCheckColumn(table);
+        if (row > 0) GenUtils.updateCheckColumn(table);
         table.getSubList().forEach(column -> subService.update(column));
         return row;
     }
@@ -158,11 +160,12 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableQuery, GenTa
     /**
      * 预览代码
      *
-     * @param id Id
+     * @param id         Id
+     * @param fromSource 访问来源
      * @return 预览数据列表
      */
     @Override
-    public List<JSONObject> previewCode(Long id) {
+    public List<JSONObject> previewCode(Long id, ServiceConstants.FromSource fromSource) {
         List<JSONObject> dataMap = new ArrayList<>();
         // 查询表信息
         GenTableDto table = initTable(id);
@@ -173,7 +176,7 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableQuery, GenTa
 
         // 获取模板列表
         JSONObject data;
-        List<String> templates = VelocityUtils.getTemplateList(table.getTplCategory());
+        List<String> templates = VelocityUtils.getTemplateList(table.getTplCategory(), fromSource);
         for (String template : templates) {
             // 渲染模板
             StringWriter sw = new StringWriter();
@@ -193,14 +196,15 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableQuery, GenTa
     /**
      * 生成代码（下载方式）
      *
-     * @param id Id
+     * @param id         Id
+     * @param fromSource 访问来源
      * @return 数据
      */
     @Override
-    public byte[] downloadCode(Long id) {
+    public byte[] downloadCode(Long id, ServiceConstants.FromSource fromSource) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ZipOutputStream zip = new ZipOutputStream(outputStream);
-        generatorCode(id, zip);
+        generatorCode(id, zip, fromSource);
         IOUtils.closeQuietly(zip);
         return outputStream.toByteArray();
     }
@@ -208,10 +212,11 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableQuery, GenTa
     /**
      * 生成代码（自定义路径）
      *
-     * @param id Id
+     * @param id         Id
+     * @param fromSource 访问来源
      */
     @Override
-    public void generatorCode(Long id) {
+    public void generatorCode(Long id, ServiceConstants.FromSource fromSource) {
         // 查询表信息
         GenTableDto table = initTable(id);
 
@@ -219,7 +224,7 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableQuery, GenTa
         VelocityContext context = VelocityUtils.prepareContext(table);
 
         // 获取模板列表
-        List<String> templates = VelocityUtils.getTemplateList(table.getTplCategory());
+        List<String> templates = VelocityUtils.getTemplateList(table.getTplCategory(), fromSource);
         String[] genFiles = {"merge.java.vm", "mergeMapper.java.vm", "query.java.vm", "dto.java.vm", "po.java.vm", "converter.java.vm", "controller.java.vm", "service.java.vm", "serviceImpl.java.vm", "manager.java.vm", "managerImpl.java.vm", "manager.java.vm", "mapper.java.vm", "sql.sql.vm"};
         for (String template : templates) {
             // 渲染模板
@@ -227,9 +232,7 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableQuery, GenTa
             Template tpl = Velocity.getTemplate(template, HttpConstants.Character.UTF8.getCode());
             tpl.merge(context, sw);
             try {
-                String path = StrUtil.containsAny(template, genFiles)
-                        ? getGenPath(table, template)
-                        : getUiPath(table, template);
+                String path = StrUtil.containsAny(template, genFiles) ? getGenPath(table, template, fromSource) : getUiPath(table, template, fromSource);
                 FileUtils.writeStringToFile(new File(path), sw.toString(), CharsetUtil.UTF_8);
             } catch (IOException e) {
                 throw new ServiceException("渲染模板失败，表名：" + table.getName());
@@ -240,15 +243,16 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableQuery, GenTa
     /**
      * 批量生成代码（下载方式）
      *
-     * @param ids Ids数组
+     * @param ids        Ids数组
+     * @param fromSource 访问来源
      * @return 数据
      */
     @Override
-    public byte[] downloadCode(Long[] ids) {
+    public byte[] downloadCode(Long[] ids, ServiceConstants.FromSource fromSource) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ZipOutputStream zip = new ZipOutputStream(outputStream);
         for (Long id : ids) {
-            generatorCode(id, zip);
+            generatorCode(id, zip, fromSource);
         }
         IOUtils.closeQuietly(zip);
         return outputStream.toByteArray();
@@ -256,8 +260,12 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableQuery, GenTa
 
     /**
      * 查询表信息并生成代码
+     *
+     * @param id         Id
+     * @param zip        压缩包流
+     * @param fromSource 访问来源
      */
-    private void generatorCode(Long id, ZipOutputStream zip) {
+    private void generatorCode(Long id, ZipOutputStream zip, ServiceConstants.FromSource fromSource) {
 
         // 查询表信息
         GenTableDto table = initTable(id);
@@ -266,7 +274,7 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableQuery, GenTa
         VelocityContext context = VelocityUtils.prepareContext(table);
 
         // 获取模板列表
-        List<String> templates = VelocityUtils.getTemplateList(table.getTplCategory());
+        List<String> templates = VelocityUtils.getTemplateList(table.getTplCategory(), fromSource);
         for (String template : templates) {
             // 渲染模板
             StringWriter sw = new StringWriter();
@@ -274,7 +282,7 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableQuery, GenTa
             tpl.merge(context, sw);
             try {
                 // 添加到zip
-                zip.putNextEntry(new ZipEntry(VelocityUtils.getFileName(StrUtil.EMPTY, template, table)));
+                zip.putNextEntry(new ZipEntry(VelocityUtils.getFileName(StrUtil.EMPTY, template, table, fromSource)));
                 IOUtils.write(sw.toString(), zip, HttpConstants.Character.UTF8.getCode());
                 IOUtils.closeQuietly(sw);
                 zip.flush();
@@ -410,8 +418,7 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableQuery, GenTa
      */
     private void setBaseTable(GenTableDto table, JSONObject optionsObj) {
         table.getSubList().forEach(column -> {
-            if (column.isPk())
-                table.setPkColumn(column);
+            if (column.isPk()) table.setPkColumn(column);
         });
     }
 
@@ -434,8 +441,7 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableQuery, GenTa
         table.setSubTable(baseManager.selectByIdExtra(optionsObj.getLong(OptionField.SUB_TABLE_ID.getCode())));
         JSONObject subOptionsObj = JSON.parseObject(table.getSubTable().getOptions());
         setBaseTable(table.getSubTable(), subOptionsObj);
-        if (StrUtil.equalsAny(table.getSubTable().getTplCategory()
-                , TemplateType.TREE.getCode(), TemplateType.SUB_TREE.getCode()))
+        if (StrUtil.equalsAny(table.getSubTable().getTplCategory(), TemplateType.TREE.getCode(), TemplateType.SUB_TREE.getCode()))
             setTreeTable(table, optionsObj);
     }
 
@@ -448,10 +454,8 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableQuery, GenTa
     private void setMenuOptions(GenTableDto table, JSONObject optionsObj) {
         Long menuId = optionsObj.getLong(OptionField.PARENT_MENU_ID.getCode());
         R<SysMenuDto> result = remoteMenuService.getInfoInner(menuId, SecurityConstants.INNER);
-        if (result.isFail())
-            throw new ServiceException("菜单服务异常，请联系管理员！");
-        else if (ObjectUtil.isNull(result.getData()))
-            throw new ServiceException("该服务对应的菜单已被删除，请先修改后再生成代码！");
+        if (result.isFail()) throw new ServiceException("菜单服务异常，请联系管理员！");
+        else if (ObjectUtil.isNull(result.getData())) throw new ServiceException("该服务对应的菜单已被删除，请先修改后再生成代码！");
         if (StrUtil.isEmpty(result.getData().getAncestors()))
             optionsObj.put(OptionField.PARENT_MENU_ANCESTORS.getCode(), result.getData().getId());
         else
@@ -465,9 +469,7 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableQuery, GenTa
     @Override
     protected void setForeignKey(Collection<GenTableColumnDto> columnList, GenTableColumnDto column, GenTableDto table, Serializable id) {
         Long tableId = ObjectUtil.isNotNull(table) ? table.getId() : (Long) id;
-        if (ObjectUtil.isNotNull(column))
-            column.setTableId(tableId);
-        else
-            columnList.forEach(sub -> sub.setTableId(tableId));
+        if (ObjectUtil.isNotNull(column)) column.setTableId(tableId);
+        else columnList.forEach(sub -> sub.setTableId(tableId));
     }
 }

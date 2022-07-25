@@ -2,14 +2,20 @@ package ${packageName}.manager;
 
 #if($table.base)
 #set($Entity="Base")
-#set($generics = "<"+${ClassName}+"Query, "+${ClassName}+"Dto>")
+#set($generics =
+"<"+${ClassName}+"Query, "+${ClassName}+"Dto>")
+#elseif($table.tree)
 #set($Entity="Tree")
-#set($generics = "<"+${ClassName}+"Query, "+${ClassName}+"Dto>")
+#set($generics =
+"<"+${ClassName}+"Query, "+${ClassName}+"Dto>")
+#elseif($table.subBase)
 #set($Entity="SubBase")
-#set($generics = "<"+${ClassName}+"Query, "+${ClassName}+"Dto, "+${subClassName}+"Query, "+${subClassName}+"Dto>")
+#set($generics =
+"<"+${ClassName}+"Query, "+${ClassName}+"Dto, "+${subClassName}+"Query, "+${subClassName}+"Dto>")
 #elseif($table.subTree)
 #set($Entity="SubTree")
-#set($generics = "<"+${ClassName}+"Query, "+${ClassName}+"Dto, "+${subClassName}+"Query, "+${subClassName}+"Dto>")
+#set($generics =
+"<"+${ClassName}+"Query, "+${ClassName}+"Dto, "+${subClassName}+"Query, "+${subClassName}+"Dto>")
 #end
 import ${packageName}.domain.query.${ClassName}Query;
 import ${packageName}.domain.dto.${ClassName}Dto;

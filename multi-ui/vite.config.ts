@@ -45,26 +45,6 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
           find: /\/@\//,
           replacement: pathResolve('src') + '/',
         },
-        // /@service/xxxx => src/api/xxxx
-        {
-          find: /\/@service\//,
-          replacement: pathResolve('src/api') + '/',
-        },
-        // /@model/xxxx => src/model/xxxx
-        {
-          find: /\/@model\//,
-          replacement: pathResolve('src/model') + '/',
-        },
-        // /@auth/xxxx => src/auth/xxxx
-        {
-          find: /\/@auth\//,
-          replacement: pathResolve('src/auth') + '/',
-        },
-        // /@enums/xxxx => src/enums/xxxx
-        {
-          find: /\/@enums\//,
-          replacement: pathResolve('src/enums') + '/',
-        },
         // /#/xxxx => types/xxxx
         {
           find: /\/#\//,

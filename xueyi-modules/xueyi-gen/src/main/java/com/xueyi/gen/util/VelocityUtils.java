@@ -11,6 +11,7 @@ import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.xueyi.common.core.constant.basic.DictConstants;
+import com.xueyi.common.core.constant.basic.ServiceConstants;
 import com.xueyi.common.core.constant.gen.GenConstants;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.core.utils.StringUtils;
@@ -231,9 +232,11 @@ public class VelocityUtils {
     /**
      * 获取模板信息
      *
+     * @param tplCategory 表模板类型
+     * @param fromSource  访问来源
      * @return 模板列表
      */
-    public static List<String> getTemplateList(String tplCategory) {
+    public static List<String> getTemplateList(String tplCategory, ServiceConstants.FromSource fromSource) {
         List<String> templates = new ArrayList<>();
 
         if (StrUtil.equals(tplCategory, GenConstants.TemplateType.MERGE.getCode())) {
@@ -250,22 +253,38 @@ public class VelocityUtils {
             templates.add("vm/java/managerImpl.java.vm");
             templates.add("vm/java/mapper.java.vm");
             templates.add("vm/sql/sql.sql.vm");
-            templates.add("vm/multi/ts/api.ts.vm");
-            templates.add("vm/multi/ts/data.ts.vm");
-            templates.add("vm/multi/ts/auth.ts.vm");
-            templates.add("vm/multi/ts/enum.ts.vm");
-            templates.add("vm/multi/ts/infoModel.ts.vm");
-            templates.add("vm/multi/vue/detail.vue.vm");
-            templates.add("vm/multi/vue/index.vue.vm");
-            templates.add("vm/multi/vue/modal.vue.vm");
+            switch (fromSource) {
+                case CLOUD:
+                    templates.add("vm/cloud/js/api.js.vm");
+                    templates.add("vm/cloud/js/auth.js.vm");
+                    templates.add("vm/cloud/js/enum.js.vm");
+                    templates.add("vm/cloud/vue/index.vue.vm");
+                    break;
+                case MULTI:
+                    templates.add("vm/multi/ts/api.ts.vm");
+                    templates.add("vm/multi/ts/data.ts.vm");
+                    templates.add("vm/multi/ts/auth.ts.vm");
+                    templates.add("vm/multi/ts/enum.ts.vm");
+                    templates.add("vm/multi/ts/infoModel.ts.vm");
+                    templates.add("vm/multi/vue/detail.vue.vm");
+                    templates.add("vm/multi/vue/index.vue.vm");
+                    templates.add("vm/multi/vue/modal.vue.vm");
+                    break;
+                default:
+            }
         }
         return templates;
     }
 
     /**
      * 获取文件名
+     *
+     * @param realPath   物理路径
+     * @param template   文件名
+     * @param genTable   业务表数据传输对象
+     * @param fromSource 访问来源
      */
-    public static String getFileName(String realPath, String template, GenTableDto genTable) {
+    public static String getFileName(String realPath, String template, GenTableDto genTable, ServiceConstants.FromSource fromSource) {
         // 包路径
         String packageName = genTable.getPackageName();
         // 模块名
@@ -285,8 +304,7 @@ public class VelocityUtils {
             return StrUtil.format("{}/domain/query/{}Query.java", javaPath, className);
         else if (template.contains("dto.java.vm"))
             return StrUtil.format("{}/domain/dto/{}Dto.java", javaPath, className);
-        else if (template.contains("po.java.vm"))
-            return StrUtil.format("{}/domain/po/{}Po.java", javaPath, className);
+        else if (template.contains("po.java.vm")) return StrUtil.format("{}/domain/po/{}Po.java", javaPath, className);
         else if (template.contains("converter.java.vm"))
             return StrUtil.format("{}/domain/model/{}Converter.java", javaPath, className);
         else if (template.contains("controller.java.vm"))
@@ -308,31 +326,48 @@ public class VelocityUtils {
 
         else if (template.contains("sql.sql.vm")) return StrUtil.format("sql/{}.sql", businessName);
 
-        if (template.contains("api.ts.vm"))
-            return StrUtil.format("packages/service/modules/{}/{}/{}.ts", moduleName, authorityName, businessName);
-        else if (template.contains("infoModel.ts.vm")) {
-            String prefixPath = "packages/types/modules" ;
-            String suffixFile = "" ;
-            initIndexFile(realPath, prefixPath, suffixFile, moduleName, authorityName, businessName);
-            return StrUtil.format("{}/{}/{}/{}.ts", prefixPath, moduleName, authorityName, businessName);
-        } else if (template.contains("auth.ts.vm")) {
-            String prefixPath = "packages/tokens/auth" ;
-            String suffixFile = ".auth" ;
-            initIndexFile(realPath, prefixPath, suffixFile, moduleName, authorityName, businessName);
-            return StrUtil.format("{}/{}/{}/{}{}.ts", prefixPath, moduleName, authorityName, businessName, suffixFile);
-        } else if (template.contains("enum.ts.vm")) {
-            String prefixPath = "packages/tokens/enums" ;
-            String suffixFile = ".enum" ;
-            initIndexFile(realPath, prefixPath, suffixFile, moduleName, authorityName, businessName);
-            return StrUtil.format("{}/{}/{}/{}{}.ts", prefixPath, moduleName, authorityName, businessName, suffixFile);
-        } else if (template.contains("data.ts.vm"))
-            return StrUtil.format("admin/src/views/{}/{}/{}/{}.data.ts", moduleName, authorityName, businessName, businessName);
-        else if (template.contains("index.vue.vm"))
-            return StrUtil.format("admin/src/views/{}/{}/{}/index.vue", moduleName, authorityName, businessName);
-        else if (template.contains("detail.vue.vm"))
-            return StrUtil.format("admin/src/views/{}/{}/{}/{}Detail.vue", moduleName, authorityName, businessName, BusinessName);
-        else if (template.contains("modal.vue.vm"))
-            return StrUtil.format("admin/src/views/{}/{}/{}/{}Modal.vue", moduleName, authorityName, businessName, BusinessName);
+        switch (fromSource) {
+            case CLOUD:
+                if (template.contains("api.js.vm"))
+                return StringUtils.format("xueyi-ui/src/api/{}/{}/{}.js", moduleName, authorityName, businessName);
+            else if (template.contains("auth.js.vm"))
+                return StringUtils.format("xueyi-ui/src/constants/auth/{}/{}/{}.auth.js", moduleName, authorityName, businessName);
+            else if (template.contains("enum.js.vm"))
+                return StringUtils.format("xueyi-ui/src/constants/enums/{}/{}/{}.enum.js", moduleName, authorityName, businessName);
+
+            else if (template.contains("index.vue.vm"))
+                return StringUtils.format("xueyi-ui/src/views/{}/{}/{}/index.vue", moduleName, authorityName, businessName);
+                break;
+            case MULTI:
+                if (template.contains("api.ts.vm"))
+                    return StrUtil.format("multi-ui/src/api/{}/{}/{}.ts", moduleName, authorityName, businessName);
+                else if (template.contains("infoModel.ts.vm")) {
+                    String prefixPath = "multi-ui/src/model" ;
+                    String suffixFile = "" ;
+                    initIndexFile(realPath, prefixPath, suffixFile, moduleName, authorityName, businessName);
+                    return StrUtil.format("{}/{}/{}/{}.ts", prefixPath, moduleName, authorityName, businessName);
+                } else if (template.contains("auth.ts.vm")) {
+                    String prefixPath = "multi-ui/src/auth" ;
+                    String suffixFile = ".auth" ;
+                    initIndexFile(realPath, prefixPath, suffixFile, moduleName, authorityName, businessName);
+                    return StrUtil.format("{}/{}/{}/{}{}.ts", prefixPath, moduleName, authorityName, businessName, suffixFile);
+                } else if (template.contains("enum.ts.vm")) {
+                    String prefixPath = "multi-ui/src/enums" ;
+                    String suffixFile = ".enum" ;
+                    initIndexFile(realPath, prefixPath, suffixFile, moduleName, authorityName, businessName);
+                    return StrUtil.format("{}/{}/{}/{}{}.ts", prefixPath, moduleName, authorityName, businessName, suffixFile);
+                } else if (template.contains("data.ts.vm"))
+                    return StrUtil.format("multi-ui/src/views/{}/{}/{}/{}.data.ts", moduleName, authorityName, businessName, businessName);
+                else if (template.contains("index.vue.vm"))
+                    return StrUtil.format("multi-ui/src/views/{}/{}/{}/index.vue", moduleName, authorityName, businessName);
+                else if (template.contains("detail.vue.vm"))
+                    return StrUtil.format("multi-ui/src/views/{}/{}/{}/{}Detail.vue", moduleName, authorityName, businessName, BusinessName);
+                else if (template.contains("modal.vue.vm"))
+                    return StrUtil.format("multi-ui/src/views/{}/{}/{}/{}Modal.vue", moduleName, authorityName, businessName, BusinessName);
+                break;
+            default:
+        }
+
         return "" ;
     }
 

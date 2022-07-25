@@ -11,9 +11,9 @@
 #set($Entity="SubTree")
 #set($generics = "<"+${BusinessName}+"IM, "+${subBusinessName}+"IM>")
 #end
-import { BasicFetchResult, BasicPageParams, ${Entity}Entity } from '../../../src'
+import { BasicFetchResult, BasicPageParams, ${Entity}Entity } from '/@/model/src';
 #if($table.subBase || $table.subTree)
-import { ${subBusinessName}IM } from 'vm/multi/ts/infoModel.ts${relativePath}/${subbusinessName}'
+import { ${subBusinessName}IM } from '${relativePath}/${subbusinessName}';
 #end
 
 /** ${businessName} info model */
@@ -37,19 +37,19 @@ export interface ${BusinessName}IM extends ${Entity}Entity${generics} {
 #else
 #set($columnType = 'any')
 #end
-  ${columnName}: ${columnType}
+  ${columnName}: ${columnType};
 #end
 #end
 }
 
 /** ${businessName} list model */
-export type ${BusinessName}LM = ${BusinessName}IM[]
+export type ${BusinessName}LM = ${BusinessName}IM[];
 
 /** ${businessName} param model */
-export type ${BusinessName}PM = ${BusinessName}IM
+export type ${BusinessName}PM = ${BusinessName}IM;
 
 /** ${businessName} page param model */
-export type ${BusinessName}PPM = BasicPageParams & ${BusinessName}PM
+export type ${BusinessName}PPM = BasicPageParams & ${BusinessName}PM;
 
 /** ${businessName} list result model */
-export type ${BusinessName}LRM = BasicFetchResult<${BusinessName}IM>
+export type ${BusinessName}LRM = BasicFetchResult<${BusinessName}IM>;

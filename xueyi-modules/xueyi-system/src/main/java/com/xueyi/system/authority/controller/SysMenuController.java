@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
+import com.xueyi.common.core.constant.basic.ServiceConstants;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.StringUtils;
@@ -80,7 +81,7 @@ public class SysMenuController extends TreeController<SysMenuQuery, SysMenuDto, 
     @GetMapping("/getCloudRouters/{moduleId}")
     public AjaxResult getCloudRouters(@PathVariable Long moduleId) {
         Map<String, Object> menuMap = tokenService.getMenuRoute();
-        String moduleKey = "cloud" + moduleId;
+        String moduleKey = ServiceConstants.FromSource.CLOUD.getCode() + moduleId;
         if (ObjectUtil.isNull(menuMap) || ObjectUtil.isNull(menuMap.get(moduleKey))) {
             List<SysMenuDto> menus = baseService.getRoutes(moduleId);
             if (ObjectUtil.isNull(menuMap)) menuMap = new HashMap<>();
@@ -96,7 +97,7 @@ public class SysMenuController extends TreeController<SysMenuQuery, SysMenuDto, 
     @GetMapping("/getMultiRouters/{moduleId}")
     public AjaxResult getMultiRouters(@PathVariable Long moduleId) {
         Map<String, Object> menuMap = tokenService.getMenuRoute();
-        String moduleKey = "multi" + moduleId;
+        String moduleKey = ServiceConstants.FromSource.MULTI.getCode() + moduleId;
         if (ObjectUtil.isNull(menuMap) || ObjectUtil.isNull(menuMap.get(moduleKey))) {
             List<SysMenuDto> menus = baseService.getRoutes(moduleId);
             if (ObjectUtil.isNull(menuMap)) menuMap = new HashMap<>();
