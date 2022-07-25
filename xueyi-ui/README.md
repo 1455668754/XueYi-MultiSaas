@@ -2,7 +2,7 @@
 
 ```bash
 # 克隆项目
-git clone https://gitee.com/xueyitiantang/XueYi-Cloud.git
+git clone https://gitee.com/xueyitiantang/MultiSaas.git
 
 # 进入项目目录
 cd xueyi-ui
