@@ -6,6 +6,7 @@ import { DicSortEnum, DicStatusEnum } from '/@/enums/basic';
 import { RoleIM } from '/@/model/system';
 import { dictConversion } from '/@/utils/xueyi';
 import { isEmpty } from '/@/utils/is';
+import { DataScopeEnum } from '/@/enums/system';
 
 /** 字典查询 */
 export const dictMap = await dicDictList(['sys_normal_disable', 'auth_data_scope']);
@@ -225,6 +226,7 @@ export const organizeFormSchema: FormSchema[] = [
     field: 'organizeIds',
     slot: 'organize',
     component: 'Input',
+    show: ({ values }) => values.dataScope == DataScopeEnum.CUSTOM,
     colProps: { span: 24 },
   },
 ];

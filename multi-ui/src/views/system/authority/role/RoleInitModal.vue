@@ -88,18 +88,31 @@
         showActionButtonGroup: false,
       });
 
-      const [authRegister, { resetFields: authResetFields, validate: authValidate }] = useForm({
+      const [
+        authRegister,
+        {
+          setFieldsValue: authSetFieldsValue,
+          resetFields: authResetFields,
+          validate: authValidate,
+        },
+      ] = useForm({
         labelWidth: 100,
         schemas: authFormSchema,
         showActionButtonGroup: false,
       });
 
-      const [organizeRegister, { resetFields: organizeResetFields, validate: organizeValidate }] =
-        useForm({
-          labelWidth: 100,
-          schemas: organizeFormSchema,
-          showActionButtonGroup: false,
-        });
+      const [
+        organizeRegister,
+        {
+          setFieldsValue: organizeSetFieldsValue,
+          resetFields: organizeResetFields,
+          validate: organizeValidate,
+        },
+      ] = useForm({
+        labelWidth: 100,
+        schemas: organizeFormSchema,
+        showActionButtonGroup: false,
+      });
 
       const [registerModal, { setModalProps, closeModal }] = useModalInner(async () => {
         current.value = 0;
@@ -127,6 +140,7 @@
         switch (current.value) {
           case 0:
             await roleValidate();
+            await setInitName();
             break;
           case 1:
             await authValidate();
@@ -136,6 +150,13 @@
             break;
         }
         current.value++;
+      }
+
+      /** 重置其他页面值 */
+      async function setInitName() {
+        const { code, name } = await roleValidate();
+        await authSetFieldsValue({ code: code, name: name });
+        await organizeSetFieldsValue({ code: code, name: name });
       }
 
       /** 提交按钮 */

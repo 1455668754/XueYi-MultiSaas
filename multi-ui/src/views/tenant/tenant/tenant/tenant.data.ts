@@ -186,6 +186,7 @@ export const strategyFormSchema: FormSchema[] = [
     },
     helpMessage: '租户使用过程中产生数据所存储数据源对应的源策略',
     required: true,
+    colProps: { span: 24 },
   },
 ];
 
@@ -271,6 +272,7 @@ export const organizeFormSchema: FormSchema[] = [
     label: '组织信息',
     field: '',
     component: 'Divider',
+    colProps: { span: 24 },
   },
   {
     label: '部门名称',
@@ -292,6 +294,7 @@ export const organizeFormSchema: FormSchema[] = [
     label: '管理员信息',
     field: '',
     component: 'Divider',
+    colProps: { span: 24 },
   },
   {
     label: '账号',
@@ -329,6 +332,7 @@ export const authorityFormSchema: FormSchema[] = [
     field: 'authIds',
     slot: 'menu',
     component: 'Input',
+    colProps: { span: 24 },
   },
 ];
 
@@ -452,6 +456,7 @@ export const authFormSchema: FormSchema[] = [
     field: 'authIds',
     slot: 'menu',
     component: 'Input',
+    colProps: { span: 24 },
   },
 ];
 
