@@ -281,8 +281,9 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableQuery, GenTa
             Template tpl = Velocity.getTemplate(template, HttpConstants.Character.UTF8.getCode());
             tpl.merge(context, sw);
             try {
+                String fileUrl = VelocityUtils.getFileName(StrUtil.EMPTY, template, table, fromSource);
                 // 添加到zip
-                zip.putNextEntry(new ZipEntry(VelocityUtils.getFileName(StrUtil.EMPTY, template, table, fromSource)));
+                zip.putNextEntry(new ZipEntry(fileUrl));
                 IOUtils.write(sw.toString(), zip, HttpConstants.Character.UTF8.getCode());
                 IOUtils.closeQuietly(sw);
                 zip.flush();

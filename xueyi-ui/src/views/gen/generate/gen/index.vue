@@ -338,7 +338,7 @@ export default {
           this.$modal.msgSuccess('成功生成到自定义路径：\n后端：' + row.genPath + '\n前端：' + row.uiPath)
         })
       } else {
-        this.$download.zip('/code/gen/download/' + row.id, 'xueyi')
+        this.$download.zip('/code/gen/cloud/download/' + row.id, 'xueyi')
       }
     }
   }

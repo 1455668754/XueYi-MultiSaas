@@ -246,6 +246,7 @@ public class VelocityUtils {
             templates.add("vm/java/query.java.vm");
             templates.add("vm/java/dto.java.vm");
             templates.add("vm/java/po.java.vm");
+            templates.add("vm/java/converter.java.vm");
             templates.add("vm/java/controller.java.vm");
             templates.add("vm/java/service.java.vm");
             templates.add("vm/java/serviceImpl.java.vm");
@@ -329,14 +330,14 @@ public class VelocityUtils {
         switch (fromSource) {
             case CLOUD:
                 if (template.contains("api.js.vm"))
-                return StringUtils.format("xueyi-ui/src/api/{}/{}/{}.js", moduleName, authorityName, businessName);
+                return StrUtil.format("xueyi-ui/src/api/{}/{}/{}.js", moduleName, authorityName, businessName);
             else if (template.contains("auth.js.vm"))
-                return StringUtils.format("xueyi-ui/src/constants/auth/{}/{}/{}.auth.js", moduleName, authorityName, businessName);
+                return StrUtil.format("xueyi-ui/src/constants/auth/{}/{}/{}.auth.js", moduleName, authorityName, businessName);
             else if (template.contains("enum.js.vm"))
-                return StringUtils.format("xueyi-ui/src/constants/enums/{}/{}/{}.enum.js", moduleName, authorityName, businessName);
+                return StrUtil.format("xueyi-ui/src/constants/enums/{}/{}/{}.enum.js", moduleName, authorityName, businessName);
 
             else if (template.contains("index.vue.vm"))
-                return StringUtils.format("xueyi-ui/src/views/{}/{}/{}/index.vue", moduleName, authorityName, businessName);
+                return StrUtil.format("xueyi-ui/src/views/{}/{}/{}/index.vue", moduleName, authorityName, businessName);
                 break;
             case MULTI:
                 if (template.contains("api.ts.vm"))
