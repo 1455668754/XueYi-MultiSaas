@@ -118,8 +118,7 @@ public class SysJobController extends BasisController {
     @RequiresPermissions(Auth.SCHEDULE_JOB_EDIT)
     @Log(title = "定时任务 - 执行一次", businessType = BusinessType.UPDATE)
     public AjaxResult run(@PathVariable Long id) throws SchedulerException {
-        baseService.run(id);
-        return AjaxResult.success();
+        return baseService.run(id) ? success() : error("任务不存在或已过期！");
     }
 
     /**

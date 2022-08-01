@@ -84,6 +84,6 @@ public interface ISysJobService {
      *
      * @param id Id
      */
-    void run(Long id) throws SchedulerException;
+    boolean run(Long id) throws SchedulerException;
 
 }

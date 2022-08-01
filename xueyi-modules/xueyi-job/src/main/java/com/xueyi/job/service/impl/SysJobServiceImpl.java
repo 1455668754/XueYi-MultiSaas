@@ -83,8 +83,7 @@ public class SysJobServiceImpl implements ISysJobService {
         job.setStatus(ScheduleConstants.Status.PAUSE.getCode());
         initInvokeTenant(job);
         int rows = baseManager.insert(job);
-        if (rows > 0)
-            ScheduleUtils.createScheduleJob(scheduler, job);
+        if (rows > 0) ScheduleUtils.createScheduleJob(scheduler, job);
         return rows;
     }
 
@@ -117,11 +116,7 @@ public class SysJobServiceImpl implements ISysJobService {
     @DSTransactional
     public int updateStatus(Long id, String status) throws SchedulerException {
         SysJobDto job = baseManager.selectById(id);
-        return StrUtil.equals(status, ScheduleConstants.Status.NORMAL.getCode())
-                ? resumeJob(job)
-                : StrUtil.equals(status, ScheduleConstants.Status.PAUSE.getCode())
-                ? pauseJob(job)
-                : 0;
+        return StrUtil.equals(status, ScheduleConstants.Status.NORMAL.getCode()) ? resumeJob(job) : StrUtil.equals(status, ScheduleConstants.Status.PAUSE.getCode()) ? pauseJob(job) : 0;
     }
 
     /**
@@ -153,8 +148,7 @@ public class SysJobServiceImpl implements ISysJobService {
     @DSTransactional
     public int pauseJob(SysJobDto job) throws SchedulerException {
         int row = baseManager.updateStatus(job.getId(), ScheduleConstants.Status.PAUSE.getCode());
-        if (row > 0)
-            scheduler.pauseJob(ScheduleUtils.getJobKey(job.getId(), job.getJobGroup()));
+        if (row > 0) scheduler.pauseJob(ScheduleUtils.getJobKey(job.getId(), job.getJobGroup()));
         return row;
     }
 
@@ -168,8 +162,7 @@ public class SysJobServiceImpl implements ISysJobService {
     @DSTransactional
     public int resumeJob(SysJobDto job) throws SchedulerException {
         int row = baseManager.updateStatus(job.getId(), ScheduleConstants.Status.NORMAL.getCode());
-        if (row > 0)
-            scheduler.resumeJob(ScheduleUtils.getJobKey(job.getId(), job.getJobGroup()));
+        if (row > 0) scheduler.resumeJob(ScheduleUtils.getJobKey(job.getId(), job.getJobGroup()));
         return row;
     }
 
@@ -180,11 +173,16 @@ public class SysJobServiceImpl implements ISysJobService {
      */
     @Override
     @DSTransactional
-    public void run(Long id) throws SchedulerException {
+    public boolean run(Long id) throws SchedulerException {
         SysJobDto job = baseManager.selectById(id);
         JobDataMap dataMap = new JobDataMap();
         dataMap.put(ScheduleConstants.TASK_PROPERTIES, job);
-        scheduler.triggerJob(ScheduleUtils.getJobKey(job.getId(), job.getJobGroup()), dataMap);
+        JobKey jobKey = ScheduleUtils.getJobKey(job.getId(), job.getJobGroup());
+        if (scheduler.checkExists(jobKey)) {
+            scheduler.triggerJob(jobKey, dataMap);
+            return true;
+        }
+        return false;
     }
 
 
@@ -198,8 +196,7 @@ public class SysJobServiceImpl implements ISysJobService {
         // 判断是否存在
         JobKey jobKey = ScheduleUtils.getJobKey(job.getId(), jobGroup);
         // 防止创建时存在数据问题 先移除，然后在执行创建操作
-        if (scheduler.checkExists(jobKey))
-            scheduler.deleteJob(jobKey);
+        if (scheduler.checkExists(jobKey)) scheduler.deleteJob(jobKey);
         ScheduleUtils.createScheduleJob(scheduler, job);
     }
 

@@ -1,21 +1,13 @@
 package com.xueyi.job.util;
 
-import com.xueyi.common.core.utils.SpringUtils;
-import com.xueyi.common.core.utils.StringUtils;
-import org.quartz.CronScheduleBuilder;
-import org.quartz.CronTrigger;
-import org.quartz.Job;
-import org.quartz.JobBuilder;
-import org.quartz.JobDetail;
-import org.quartz.JobKey;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.TriggerBuilder;
-import org.quartz.TriggerKey;
 import com.xueyi.common.core.constant.job.ScheduleConstants;
 import com.xueyi.common.core.exception.job.TaskException;
 import com.xueyi.common.core.exception.job.TaskException.Code;
+import com.xueyi.common.core.utils.SpringUtils;
+import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.job.api.domain.dto.SysJobDto;
+import com.xueyi.job.api.utils.CronUtils;
+import org.quartz.*;
 
 import java.util.Objects;
 
@@ -66,8 +58,7 @@ public class ScheduleUtils {
         cronScheduleBuilder = handleCronScheduleMisfirePolicy(job, cronScheduleBuilder);
 
         // 按新的cronExpression表达式构建一个新的trigger
-        CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity(getTriggerKey(jobId, jobGroup))
-                .withSchedule(cronScheduleBuilder).build();
+        CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity(getTriggerKey(jobId, jobGroup)).withSchedule(cronScheduleBuilder).build();
 
         // 放入参数，运行时的方法可以获取
         jobDetail.getJobDataMap().put(ScheduleConstants.TASK_PROPERTIES, job);
@@ -78,7 +69,11 @@ public class ScheduleUtils {
             scheduler.deleteJob(getJobKey(jobId, jobGroup));
         }
 
-        scheduler.scheduleJob(jobDetail, trigger);
+        // 判断任务是否过期
+        if (StringUtils.isNotNull(CronUtils.getNextExecution(job.getCronExpression()))) {
+            // 执行调度任务
+            scheduler.scheduleJob(jobDetail, trigger);
+        }
 
         // 暂停任务
         if (job.getStatus().equals(ScheduleConstants.Status.PAUSE.getCode())) {
@@ -89,8 +84,7 @@ public class ScheduleUtils {
     /**
      * 设置定时任务策略
      */
-    public static CronScheduleBuilder handleCronScheduleMisfirePolicy(SysJobDto job, CronScheduleBuilder cb)
-            throws TaskException {
+    public static CronScheduleBuilder handleCronScheduleMisfirePolicy(SysJobDto job, CronScheduleBuilder cb) throws TaskException {
         switch (Objects.requireNonNull(ScheduleConstants.Misfire.getValue(job.getMisfirePolicy()))) {
             case DEFAULT:
                 return cb;
@@ -101,8 +95,7 @@ public class ScheduleUtils {
             case DO_NOTHING:
                 return cb.withMisfireHandlingInstructionDoNothing();
             default:
-                throw new TaskException("The task misfire policy '" + job.getMisfirePolicy()
-                        + "' cannot be used in cron schedule tasks", Code.CONFIG_ERROR);
+                throw new TaskException("The task misfire policy '" + job.getMisfirePolicy() + "' cannot be used in cron schedule tasks", Code.CONFIG_ERROR);
         }
     }
 
