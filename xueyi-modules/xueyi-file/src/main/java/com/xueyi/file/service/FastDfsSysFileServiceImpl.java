@@ -2,7 +2,7 @@ package com.xueyi.file.service;
 
 import com.github.tobato.fastdfs.domain.fdfs.StorePath;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
-import org.apache.commons.io.FilenameUtils;
+import com.xueyi.common.core.utils.file.FileTypeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -35,7 +35,7 @@ public class FastDfsSysFileServiceImpl implements ISysFileService {
     @Override
     public String uploadFile(MultipartFile file) throws Exception {
         StorePath storePath = storageClient.uploadFile(file.getInputStream(), file.getSize(),
-                FilenameUtils.getExtension(file.getOriginalFilename()), null);
+                FileTypeUtils.getExtension(file), null);
         return domain + "/" + storePath.getFullPath();
     }
 
