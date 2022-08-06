@@ -6,6 +6,7 @@ package com.xueyi.common.security.annotation;
  * @author xueyi
  */
 public enum Logical {
+
     /**
      * 必须具有所有的元素
      */

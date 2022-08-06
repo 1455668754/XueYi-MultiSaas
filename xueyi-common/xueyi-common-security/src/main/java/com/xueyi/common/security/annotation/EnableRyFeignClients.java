@@ -15,6 +15,7 @@ import java.lang.annotation.*;
 @Documented
 @EnableFeignClients
 public @interface EnableRyFeignClients {
+
     String[] value() default {};
 
     String[] basePackages() default {"com.xueyi"};

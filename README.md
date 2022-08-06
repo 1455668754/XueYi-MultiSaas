@@ -2,7 +2,7 @@
 <h4 align="center">基于 Vue3/TypeScript/Ant-Design UI 和 Spring Cloud & Alibaba/Mybatis-Plus 的多租户SaaS开发框架。</h4>
 <p align="center">
     <a style="margin-right: 5px">
-       <img src="https://img.shields.io/badge/XueYi--MultiSaas-v2.2.1-brightgreen" alt="xueYi-MultiSaas">
+       <img src="https://img.shields.io/badge/XueYi--MultiSaas-v2.3.1-brightgreen" alt="xueYi-MultiSaas">
     </a>
     <a style="margin-right: 5px">
        <img src="https://gitee.com/xueyitiantang/XueYi-MultiSaas/badge/star.svg?theme=dark" alt="xueYi-MultiSaas">
@@ -24,9 +24,6 @@
 - **租户可配菜单**：多种混合模式控制租户菜单
 - **组织管理优化**：更完善的组织架构操作与管理逻辑
 - **微聚合多前端**：公共抽离，降低系统重复冗余
-
-## UI
-前端地址： [MultiSaas-UI](https://gitee.com/xueyitiantang/MultiSaas-UI)
 
 ## 交流
 - 请移步右上角  **一键三连** :kissing_heart:

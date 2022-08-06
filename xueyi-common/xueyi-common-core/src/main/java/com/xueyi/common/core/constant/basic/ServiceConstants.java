@@ -21,4 +21,26 @@ public class ServiceConstants {
 
     /** 定时任务模块的serviceId */
     public static final String JOB_SERVICE = "xueyi-job";
+
+    /** 访问来源 */
+    public enum FromSource {
+        CLOUD("cloud", "vue2后台前端"),
+        MULTI("multi", "vue3后台前端");
+
+        private final String code;
+        private final String info;
+
+        FromSource(String code, String info) {
+            this.code = code;
+            this.info = info;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public String getInfo() {
+            return info;
+        }
+    }
 }

@@ -1,11 +1,10 @@
 package com.xueyi.system.organize.controller;
 
-import com.xueyi.common.core.domain.R;
+import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.security.annotation.InnerAuth;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.entity.controller.BaseController;
-import com.xueyi.system.api.model.LoginUser;
 import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
 import com.xueyi.system.api.organize.domain.query.SysEnterpriseQuery;
 import com.xueyi.system.organize.service.ISysEnterpriseService;
@@ -42,8 +41,7 @@ public class SysEnterpriseController extends BaseController<SysEnterpriseQuery, 
      */
     @GetMapping("/getInfo")
     public AjaxResult getInfo() {
-        LoginUser loginUser = SecurityUtils.getLoginUser();
-        return AjaxResult.success(loginUser.getEnterprise());
+        return AjaxResult.success(SecurityUtils.getEnterprise());
     }
 
 //    /**

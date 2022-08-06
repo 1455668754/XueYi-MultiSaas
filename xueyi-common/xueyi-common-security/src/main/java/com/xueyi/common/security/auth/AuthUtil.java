@@ -2,7 +2,6 @@ package com.xueyi.common.security.auth;
 
 import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.security.annotation.RequiresRoles;
-import com.xueyi.system.api.model.LoginUser;
 
 /**
  * Token 权限验证工具类
@@ -40,17 +39,10 @@ public class AuthUtil {
     }
 
     /**
-     * 获取当前登录用户信息
-     */
-    public static LoginUser getLoginUser(String token) {
-        return authLogic.getLoginUser(token);
-    }
-
-    /**
      * 验证当前用户有效期
      */
-    public static void verifyLoginUserExpire(LoginUser loginUser) {
-        authLogic.verifyLoginUserExpire(loginUser);
+    public static void verifyLoginUserExpire(String token) {
+        authLogic.verifyLoginUserExpire(token);
     }
 
     /**
@@ -105,8 +97,8 @@ public class AuthUtil {
      * @param permission 权限码
      * @return 是否含有指定权限
      */
-    public static boolean hasPermi(String permission) {
-        return authLogic.hasPermi(permission);
+    public static boolean hasPerm(String permission) {
+        return authLogic.hasPerm(permission);
     }
 
     /**
@@ -114,8 +106,8 @@ public class AuthUtil {
      *
      * @param permission 权限码
      */
-    public static void checkPermi(String permission) {
-        authLogic.checkPermi(permission);
+    public static void checkPerm(String permission) {
+        authLogic.checkPerm(permission);
     }
 
     /**
@@ -123,8 +115,8 @@ public class AuthUtil {
      *
      * @param requiresPermissions 权限注解
      */
-    public static void checkPermi(RequiresPermissions requiresPermissions) {
-        authLogic.checkPermi(requiresPermissions);
+    public static void checkPerm(RequiresPermissions requiresPermissions) {
+        authLogic.checkPerm(requiresPermissions);
     }
 
     /**
@@ -132,8 +124,8 @@ public class AuthUtil {
      *
      * @param permissions 权限码数组
      */
-    public static void checkPermiAnd(String... permissions) {
-        authLogic.checkPermiAnd(permissions);
+    public static void checkPermAnd(String... permissions) {
+        authLogic.checkPermAnd(permissions);
     }
 
     /**
@@ -141,7 +133,7 @@ public class AuthUtil {
      *
      * @param permissions 权限码数组
      */
-    public static void checkPermiOr(String... permissions) {
-        authLogic.checkPermiOr(permissions);
+    public static void checkPermOr(String... permissions) {
+        authLogic.checkPermOr(permissions);
     }
 }

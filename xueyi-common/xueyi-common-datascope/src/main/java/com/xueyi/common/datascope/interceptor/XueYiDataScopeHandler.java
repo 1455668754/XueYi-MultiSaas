@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.extension.plugins.handler.DataPermissionHandler;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.security.utils.SecurityUtils;
-import com.xueyi.system.api.model.LoginUser;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.HexValue;
 import net.sf.jsqlparser.expression.LongValue;
@@ -55,8 +54,7 @@ public class XueYiDataScopeHandler implements DataPermissionHandler {
     @Before("@annotation(controllerDataScope)")
     public void doBefore(DataScope controllerDataScope) {
         // 获得注解
-        if (controllerDataScope != null)
-            threadLocal.set(controllerDataScope);
+        if (controllerDataScope != null) threadLocal.set(controllerDataScope);
     }
 
     /**
@@ -73,17 +71,14 @@ public class XueYiDataScopeHandler implements DataPermissionHandler {
         int index = split.size();
         String method = split.get(index - 1);
         String mapper = split.get(index - 2);
-        if (!((ArrayUtil.isEmpty(dataScope.mapperScope()) || ArrayUtil.contains(dataScope.mapperScope(), mapper))
-                && (ArrayUtil.isEmpty(dataScope.methodScope()) || ArrayUtil.contains(dataScope.methodScope(), method))))
+        if (!((ArrayUtil.isEmpty(dataScope.mapperScope()) || ArrayUtil.contains(dataScope.mapperScope(), mapper)) && (ArrayUtil.isEmpty(dataScope.methodScope()) || ArrayUtil.contains(dataScope.methodScope(), method))))
             return where;
-        if (where == null)
-            where = new HexValue(" 1 = 1 ");
-        LoginUser loginUser = SecurityUtils.getLoginUser();
-        if (ObjectUtil.isNull(loginUser) || loginUser.getUser().isAdmin())
-            return where;
-        Long userId = loginUser.getUserId();
-        String scope = loginUser.getScope().getDataScope();
-        switch (Objects.requireNonNull(AuthorityConstants.DataScope.getValue(scope))) {
+        if (where == null) where = new HexValue(" 1 = 1 ");
+        com.xueyi.system.api.model.DataScope scope = SecurityUtils.getDataScope();
+        if (ObjectUtil.isNull(scope) || scope.isAdmin()) return where;
+        Long userId = scope.getUserId();
+        String scopeType = scope.getDataScope();
+        switch (Objects.requireNonNull(AuthorityConstants.DataScope.getValue(scopeType))) {
             case ALL:
                 return where;
             case CUSTOM:
@@ -91,17 +86,20 @@ public class XueYiDataScopeHandler implements DataPermissionHandler {
             case DEPT_AND_CHILD:
             case POST:
                 if (StrUtil.isNotEmpty(dataScope.userAlias())) {
-                    Set<Long> userScope = loginUser.getScope().getUserScope();
+                    Set<Long> userScope = scope.getUserScope();
+                    if (ArrayUtil.isEmpty(userScope)) break;
                     ItemsList itemsList = new ExpressionList(userScope.stream().map(LongValue::new).collect(Collectors.toList()));
                     InExpression userInExpression = new InExpression(new Column(dataScope.userAlias()), itemsList);
                     return new AndExpression(where, userInExpression);
                 } else if (StrUtil.isNotEmpty(dataScope.postAlias())) {
-                    Set<Long> postScope = loginUser.getScope().getPostScope();
+                    Set<Long> postScope = scope.getPostScope();
+                    if (ArrayUtil.isEmpty(postScope)) break;
                     ItemsList itemsList = new ExpressionList(postScope.stream().map(LongValue::new).collect(Collectors.toList()));
                     InExpression postInExpression = new InExpression(new Column(dataScope.postAlias()), itemsList);
                     return new AndExpression(where, postInExpression);
                 } else if (StrUtil.isNotEmpty(dataScope.deptAlias())) {
-                    Set<Long> deptScope = loginUser.getScope().getDeptScope();
+                    Set<Long> deptScope = scope.getDeptScope();
+                    if (ArrayUtil.isEmpty(deptScope)) break;
                     ItemsList itemsList = new ExpressionList(deptScope.stream().map(LongValue::new).collect(Collectors.toList()));
                     InExpression deptInExpression = new InExpression(new Column(dataScope.deptAlias()), itemsList);
                     return new AndExpression(where, deptInExpression);

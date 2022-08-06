@@ -1,0 +1,2 @@
+com.xueyi.common.log.service.AsyncLogService
+com.xueyi.common.log.aspect.LogAspect

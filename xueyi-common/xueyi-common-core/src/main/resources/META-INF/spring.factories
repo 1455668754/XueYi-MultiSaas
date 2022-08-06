@@ -1,4 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.xueyi.common.core.utils.SpringUtils
-
-  

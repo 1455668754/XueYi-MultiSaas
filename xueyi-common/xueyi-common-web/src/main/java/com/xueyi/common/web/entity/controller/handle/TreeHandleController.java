@@ -43,7 +43,7 @@ public abstract class TreeHandleController<Q extends TreeEntity<D>, D extends Tr
      * @see com.xueyi.common.web.entity.controller.TreeController#add(D)
      */
     protected void AHandleTreeStatusValidated(D d) {
-        if (StringUtils.equals(BaseConstants.Status.NORMAL.getCode(), d.getStatus())
+        if (StrUtil.equals(BaseConstants.Status.NORMAL.getCode(), d.getStatus())
                 && BaseConstants.Status.DISABLE == baseService.checkStatus(d.getParentId()))
             throw new ServiceException(StrUtil.format("新增{}{}失败，该{}的父级{}已被停用，禁止启用！！", getNodeName(), d.getName(), getNodeName(), getNodeName()));
     }
@@ -69,10 +69,10 @@ public abstract class TreeHandleController<Q extends TreeEntity<D>, D extends Tr
      * @see com.xueyi.common.web.entity.controller.TreeController#edit(D)
      */
     protected void EHandleTreeStatusValidated(D d) {
-        if (StringUtils.equals(BaseConstants.Status.DISABLE.getCode(), d.getStatus())
+        if (StrUtil.equals(BaseConstants.Status.DISABLE.getCode(), d.getStatus())
                 && baseService.checkHasNormalChild(d.getId()))
             throw new ServiceException(StrUtil.format("修改{}{}失败，该{}包含未停用的子{}，禁止停用！", getNodeName(), d.getName(), getNodeName(), getNodeName()));
-        else if (StringUtils.equals(BaseConstants.Status.NORMAL.getCode(), d.getStatus())
+        else if (StrUtil.equals(BaseConstants.Status.NORMAL.getCode(), d.getStatus())
                 && BaseConstants.Status.DISABLE == baseService.checkStatus(d.getParentId()))
             throw new ServiceException(StrUtil.format("修改{}{}失败，该{}的父级{}已被停用，禁止启用！", getNodeName(), d.getName(), getNodeName(), getNodeName()));
     }
@@ -84,10 +84,10 @@ public abstract class TreeHandleController<Q extends TreeEntity<D>, D extends Tr
      * @see com.xueyi.common.web.entity.controller.TreeController#edit(D)
      */
     protected void ESHandleTreeStatusValidated(D d) {
-        if (StringUtils.equals(BaseConstants.Status.DISABLE.getCode(), d.getStatus())
+        if (StrUtil.equals(BaseConstants.Status.DISABLE.getCode(), d.getStatus())
                 && baseService.checkHasNormalChild(d.getId()))
             throw new ServiceException(StrUtil.format("停用失败，该{}包含未停用的子{}！", getNodeName(), getNodeName()));
-        else if (StringUtils.equals(BaseConstants.Status.NORMAL.getCode(), d.getStatus())
+        else if (StrUtil.equals(BaseConstants.Status.NORMAL.getCode(), d.getStatus())
                 && BaseConstants.Status.DISABLE == baseService.checkStatus(d.getParentId()))
             throw new ServiceException(StrUtil.format("启用失败，该{}的父级{}已被停用！", getNodeName(), getNodeName()));
     }

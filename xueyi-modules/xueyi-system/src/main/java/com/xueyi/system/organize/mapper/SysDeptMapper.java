@@ -9,7 +9,6 @@ import com.xueyi.system.api.organize.domain.po.SysPostPo;
 import com.xueyi.system.api.organize.domain.query.SysDeptQuery;
 import com.xueyi.system.api.organize.domain.query.SysPostQuery;
 
-
 /**
  * 部门管理 数据层
  *

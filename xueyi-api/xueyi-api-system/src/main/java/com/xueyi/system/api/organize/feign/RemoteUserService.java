@@ -2,7 +2,7 @@ package com.xueyi.system.api.organize.feign;
 
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.basic.ServiceConstants;
-import com.xueyi.common.core.domain.R;
+import com.xueyi.common.core.web.result.R;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
 import com.xueyi.system.api.organize.feign.factory.RemoteUserFallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;

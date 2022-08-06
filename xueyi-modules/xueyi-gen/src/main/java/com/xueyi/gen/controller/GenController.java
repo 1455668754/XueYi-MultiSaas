@@ -2,7 +2,8 @@ package com.xueyi.gen.controller;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.xueyi.common.core.constant.basic.BaseConstants;
-import com.xueyi.common.core.text.Convert;
+import cn.hutool.core.convert.Convert;
+import com.xueyi.common.core.constant.basic.ServiceConstants;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
@@ -94,10 +95,20 @@ public class GenController extends SubBaseController<GenTableQuery, GenTableDto,
     /**
      * 预览代码
      */
-    @GetMapping("/preview/{tableId}")
+    @GetMapping("/cloud/preview/{tableId}")
     @RequiresPermissions(Auth.GENERATE_GEN_PREVIEW)
-    public AjaxResult preview(@PathVariable("tableId") Long tableId) {
-        List<JSONObject> dataMap = baseService.previewCode(tableId);
+    public AjaxResult previewCloud(@PathVariable("tableId") Long tableId) {
+        List<JSONObject> dataMap = baseService.previewCode(tableId, ServiceConstants.FromSource.CLOUD);
+        return AjaxResult.success(dataMap);
+    }
+
+    /**
+     * 预览代码
+     */
+    @GetMapping("/multi/preview/{tableId}")
+    @RequiresPermissions(Auth.GENERATE_GEN_PREVIEW)
+    public AjaxResult previewMulti(@PathVariable("tableId") Long tableId) {
+        List<JSONObject> dataMap = baseService.previewCode(tableId, ServiceConstants.FromSource.MULTI);
         return AjaxResult.success(dataMap);
     }
 
@@ -138,14 +149,14 @@ public class GenController extends SubBaseController<GenTableQuery, GenTableDto,
     }
 
     /**
-     * 同步数据库 | 未实装
+     * 生成代码（下载方式）
      */
-    @GetMapping("/syncDb/{tableName}")
-    @RequiresPermissions(Auth.GENERATE_GEN_SYNC)
-    @Log(title = "代码生成", businessType = BusinessType.UPDATE)
-    public AjaxResult syncDb(@PathVariable("tableName") String tableName) {
-        baseService.syncDb(tableName);
-        return AjaxResult.success();
+    @RequiresPermissions(Auth.GENERATE_GEN_CODE)
+    @Log(title = "代码生成", businessType = BusinessType.GEN_CODE)
+    @GetMapping("/cloud/download/{tableId}")
+    public void downloadCloud(HttpServletResponse response, @PathVariable("tableId") Long tableId) throws IOException {
+        byte[] data = baseService.downloadCode(tableId, ServiceConstants.FromSource.CLOUD);
+        genCode(response, data);
     }
 
     /**
@@ -153,9 +164,9 @@ public class GenController extends SubBaseController<GenTableQuery, GenTableDto,
      */
     @RequiresPermissions(Auth.GENERATE_GEN_CODE)
     @Log(title = "代码生成", businessType = BusinessType.GEN_CODE)
-    @GetMapping("/download/{tableId}")
-    public void download(HttpServletResponse response, @PathVariable("tableId") Long tableId) throws IOException {
-        byte[] data = baseService.downloadCode(tableId);
+    @GetMapping("/multi/download/{tableId}")
+    public void downloadMulti(HttpServletResponse response, @PathVariable("tableId") Long tableId) throws IOException {
+        byte[] data = baseService.downloadCode(tableId, ServiceConstants.FromSource.MULTI);
         genCode(response, data);
     }
 
@@ -164,9 +175,20 @@ public class GenController extends SubBaseController<GenTableQuery, GenTableDto,
      */
     @RequiresPermissions(Auth.GENERATE_GEN_CODE)
     @Log(title = "代码生成", businessType = BusinessType.GEN_CODE)
-    @GetMapping("/generate/{tableId}")
-    public AjaxResult genCode(@PathVariable("tableId") Long tableId) {
-        baseService.generatorCode(tableId);
+    @GetMapping("/cloud/generate/{tableId}")
+    public AjaxResult genCloudCode(@PathVariable("tableId") Long tableId) {
+        baseService.generatorCode(tableId, ServiceConstants.FromSource.CLOUD);
+        return AjaxResult.success();
+    }
+
+    /**
+     * 生成代码（自定义路径）
+     */
+    @RequiresPermissions(Auth.GENERATE_GEN_CODE)
+    @Log(title = "代码生成", businessType = BusinessType.GEN_CODE)
+    @GetMapping("/multi/generate/{tableId}")
+    public AjaxResult genMultiCode(@PathVariable("tableId") Long tableId) {
+        baseService.generatorCode(tableId, ServiceConstants.FromSource.MULTI);
         return AjaxResult.success();
     }
 
@@ -175,9 +197,20 @@ public class GenController extends SubBaseController<GenTableQuery, GenTableDto,
      */
     @RequiresPermissions(Auth.GENERATE_GEN_CODE)
     @Log(title = "代码生成", businessType = BusinessType.GEN_CODE)
-    @GetMapping("/batchGenCode")
-    public void batchGenCode(HttpServletResponse response, Long[] ids) throws IOException {
-        byte[] data = baseService.downloadCode(ids);
+    @GetMapping("/cloud/batchGenCode")
+    public void batchCloudGenCode(HttpServletResponse response, Long[] ids) throws IOException {
+        byte[] data = baseService.downloadCode(ids, ServiceConstants.FromSource.CLOUD);
+        genCode(response, data);
+    }
+
+    /**
+     * 批量生成代码
+     */
+    @RequiresPermissions(Auth.GENERATE_GEN_CODE)
+    @Log(title = "代码生成", businessType = BusinessType.GEN_CODE)
+    @GetMapping("/multi/batchGenCode")
+    public void batchMultiGenCode(HttpServletResponse response, Long[] ids) throws IOException {
+        byte[] data = baseService.downloadCode(ids, ServiceConstants.FromSource.MULTI);
         genCode(response, data);
     }
 

@@ -1,6 +1,6 @@
 package com.xueyi.system.monitor.controller;
 
-import com.xueyi.common.core.domain.R;
+import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
@@ -73,6 +73,9 @@ public class SysLoginLogController extends BaseController<SysLoginLogQuery, SysL
         return super.batchRemove(idList);
     }
 
+    /**
+     * 系统访问记录清空
+     */
     @DeleteMapping("/clean")
     @RequiresPermissions(Auth.SYS_LOGIN_LOG_DEL)
     @Log(title = "访问日志", businessType = BusinessType.CLEAN)

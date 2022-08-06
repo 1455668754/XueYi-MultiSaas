@@ -33,10 +33,11 @@ public class InnerAuthAspect implements Ordered {
         String isLessor = ServletUtils.getRequest().getHeader(SecurityConstants.IS_LESSOR);
         String userId = ServletUtils.getRequest().getHeader(SecurityConstants.USER_ID);
         String userName = ServletUtils.getRequest().getHeader(SecurityConstants.USER_NAME);
+        String nickName = ServletUtils.getRequest().getHeader(SecurityConstants.NICK_NAME);
         String userType = ServletUtils.getRequest().getHeader(SecurityConstants.USER_TYPE);
         String sourceName = ServletUtils.getRequest().getHeader(SecurityConstants.SOURCE_NAME);
         // 用户信息验证
-        if (innerAuth.isUser() && (StrUtil.hasBlank(enterpriseId, enterpriseName, isLessor, userId, userName, userType, sourceName))) {
+        if (innerAuth.isUser() && (StrUtil.hasBlank(enterpriseId, enterpriseName, isLessor, userId, userName, nickName, userType, sourceName))) {
             throw new InnerAuthException("没有设置用户信息，不允许访问");
         }
         return point.proceed();

@@ -4,7 +4,6 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.exception.ServiceException;
-import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.core.web.entity.base.SubBaseEntity;
 import com.xueyi.common.web.entity.controller.BaseController;
@@ -36,7 +35,7 @@ public abstract class SubBaseHandleController<Q extends SubBaseEntity<SD>, D ext
      * @see com.xueyi.common.web.entity.controller.SubBaseController#edit(D)
      */
     protected void EHandleSubStatusValidated(D d) {
-        if (StringUtils.equals(BaseConstants.Status.DISABLE.getCode(), d.getStatus())
+        if (StrUtil.equals(BaseConstants.Status.DISABLE.getCode(), d.getStatus())
                 && baseService.checkExistNormalSub(d.getId()))
             throw new ServiceException(StrUtil.format("修改{}{}失败，该{}包含未停用的归属{}，禁止停用！", getNodeName(), d.getName(), getNodeName(), getSubName()));
     }
@@ -48,7 +47,7 @@ public abstract class SubBaseHandleController<Q extends SubBaseEntity<SD>, D ext
      * @see com.xueyi.common.web.entity.controller.SubBaseController#editStatus(D)
      */
     protected void ESHandleSubStatusValidated(D d) {
-        if (StringUtils.equals(BaseConstants.Status.DISABLE.getCode(), d.getStatus())
+        if (StrUtil.equals(BaseConstants.Status.DISABLE.getCode(), d.getStatus())
                 && baseService.checkExistNormalSub(d.getId()))
             throw new ServiceException(StrUtil.format("停用失败，该{}包含未停用的归属{}！", getNodeName(), getSubName()));
     }

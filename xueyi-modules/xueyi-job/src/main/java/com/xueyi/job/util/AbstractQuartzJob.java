@@ -1,5 +1,6 @@
 package com.xueyi.job.util;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.xueyi.common.core.constant.basic.DictConstants;
@@ -8,7 +9,6 @@ import com.xueyi.common.core.constant.job.ScheduleConstants;
 import com.xueyi.common.core.utils.ExceptionUtil;
 import com.xueyi.common.core.utils.SpringUtils;
 import com.xueyi.common.core.utils.StringUtils;
-import com.xueyi.common.core.utils.bean.BeanUtils;
 import com.xueyi.job.api.domain.dto.SysJobDto;
 import com.xueyi.job.api.domain.dto.SysJobLogDto;
 import com.xueyi.job.api.feign.RemoteJobLogService;
@@ -37,7 +37,7 @@ public abstract class AbstractQuartzJob implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         SysJobDto sysJob = new SysJobDto();
-        BeanUtils.copyBeanProp(sysJob, context.getMergedJobDataMap().get(ScheduleConstants.TASK_PROPERTIES));
+        BeanUtil.copyProperties(context.getMergedJobDataMap().get(ScheduleConstants.TASK_PROPERTIES), sysJob);
         try {
             before(context, sysJob);
             if (ObjectUtil.isNotNull(sysJob))

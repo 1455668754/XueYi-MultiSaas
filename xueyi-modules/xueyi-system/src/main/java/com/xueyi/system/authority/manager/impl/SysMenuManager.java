@@ -15,7 +15,7 @@ import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.authority.domain.model.SysMenuConverter;
 import com.xueyi.system.api.authority.domain.po.SysMenuPo;
 import com.xueyi.system.api.authority.domain.query.SysMenuQuery;
-import com.xueyi.system.api.model.LoginUser;
+import com.xueyi.system.api.model.DataScope;
 import com.xueyi.system.authority.domain.merge.SysRoleMenuMerge;
 import com.xueyi.system.authority.domain.merge.SysTenantMenuMerge;
 import com.xueyi.system.authority.manager.ISysMenuManager;
@@ -178,14 +178,14 @@ public class SysMenuManager extends TreeManager<SysMenuQuery, SysMenuDto, SysMen
                         });
             }
         } else {
-            LoginUser loginUser = SecurityUtils.getLoginUser();
-            Set<Long> roleIds = loginUser.getRoleIds();
+            DataScope dataScope = SecurityUtils.getDataScope();
+            Set<Long> roleIds = dataScope.getRoleIds();
             if (CollUtil.isEmpty(roleIds))
                 return new ArrayList<>();
             // 1.获取用户可使用角色集内的所有菜单Ids
             List<SysRoleMenuMerge> roleMenuMerges = roleMenuMergeMapper.selectList(
                     Wrappers.<SysRoleMenuMerge>query().lambda()
-                            .in(SysRoleMenuMerge::getRoleId, loginUser.getRoleIds()));
+                            .in(SysRoleMenuMerge::getRoleId, roleIds));
             // 2.获取用户可使用的菜单
             if (CollUtil.isNotEmpty(roleMenuMerges)) {
                 menuQueryWrapper

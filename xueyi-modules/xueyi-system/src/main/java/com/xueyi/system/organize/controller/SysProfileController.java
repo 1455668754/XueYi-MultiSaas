@@ -1,7 +1,9 @@
 package com.xueyi.system.organize.controller;
 
 import cn.hutool.core.util.StrUtil;
-import com.xueyi.common.core.domain.R;
+import com.xueyi.common.core.utils.file.FileTypeUtils;
+import com.xueyi.common.core.utils.file.MimeTypeUtils;
+import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.log.annotation.Log;
@@ -18,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Arrays;
 
 /**
  * 个人信息管理 业务处理
@@ -42,9 +46,9 @@ public class SysProfileController extends BasisController {
      */
     @GetMapping
     public AjaxResult profile() {
-        LoginUser loginUser = SecurityUtils.getLoginUser();
-        userService.userDesensitized(loginUser.getUser());
-        return AjaxResult.success(loginUser.getUser());
+        SysUserDto user = SecurityUtils.getUser();
+        userService.userDesensitized(user);
+        return AjaxResult.success(user);
     }
 
     /**
@@ -72,8 +76,7 @@ public class SysProfileController extends BasisController {
     @Log(title = "个人信息管理 - 修改账号", businessType = BusinessType.UPDATE)
     public AjaxResult editUserName(String userName) {
         LoginUser loginUser = SecurityUtils.getLoginUser();
-        if (StrUtil.isEmpty(userName))
-            return AjaxResult.error("不能设置为空账号！");
+        if (StrUtil.isEmpty(userName)) return AjaxResult.error("不能设置为空账号！");
         else if (StrUtil.equals(userName, loginUser.getUser().getUserName()))
             return AjaxResult.error("该账号为当前使用账号，无需更换！");
         else if (userService.checkUserNameUnique(loginUser.getUserId(), userName))
@@ -94,12 +97,10 @@ public class SysProfileController extends BasisController {
     @Log(title = "个人信息管理 - 更绑邮箱", businessType = BusinessType.UPDATE)
     public AjaxResult editEmail(String email) {
         LoginUser loginUser = SecurityUtils.getLoginUser();
-        if (StrUtil.isEmpty(email))
-            return AjaxResult.error("不能设置为空邮箱！");
+        if (StrUtil.isEmpty(email)) return AjaxResult.error("不能设置为空邮箱！");
         else if (StrUtil.equals(email, loginUser.getUser().getEmail()))
             return AjaxResult.error("该邮箱为当前使用邮箱，无需更换！");
-        else if (userService.checkEmailUnique(loginUser.getUserId(), email))
-            return AjaxResult.error("该邮箱已被使用！");
+        else if (userService.checkEmailUnique(loginUser.getUserId(), email)) return AjaxResult.error("该邮箱已被使用！");
         if (userService.updateEmail(loginUser.getUserId(), email) > 0) {
             // 更新缓存
             loginUser.getUser().setEmail(email);
@@ -116,8 +117,7 @@ public class SysProfileController extends BasisController {
     @Log(title = "个人信息管理 - 更绑手机号", businessType = BusinessType.UPDATE)
     public AjaxResult editPhone(String phone) {
         LoginUser loginUser = SecurityUtils.getLoginUser();
-        if (StrUtil.isEmpty(phone))
-            return AjaxResult.error("不能设置为空手机号！");
+        if (StrUtil.isEmpty(phone)) return AjaxResult.error("不能设置为空手机号！");
         else if (StrUtil.equals(phone, loginUser.getUser().getPhone()))
             return AjaxResult.error("该邮箱为当前使用手机号，无需更换！");
         else if (userService.checkPhoneUnique(loginUser.getUserId(), phone))
@@ -139,10 +139,8 @@ public class SysProfileController extends BasisController {
     public AjaxResult editPassword(String oldPassword, String newPassword) {
         LoginUser loginUser = SecurityUtils.getLoginUser();
         String password = loginUser.getUser().getPassword();
-        if (!SecurityUtils.matchesPassword(oldPassword, password))
-            return AjaxResult.error("修改失败，旧密码错误！");
-        if (SecurityUtils.matchesPassword(newPassword, password))
-            return AjaxResult.error("新旧密码不能相同！");
+        if (!SecurityUtils.matchesPassword(oldPassword, password)) return AjaxResult.error("修改失败，旧密码错误！");
+        if (SecurityUtils.matchesPassword(newPassword, password)) return AjaxResult.error("新旧密码不能相同！");
         if (userService.resetUserPassword(loginUser.getUserId(), SecurityUtils.encryptPassword(newPassword)) > 0) {
             // 更新缓存用户密码
             loginUser.getUser().setPassword(SecurityUtils.encryptPassword(newPassword));
@@ -160,14 +158,19 @@ public class SysProfileController extends BasisController {
     public AjaxResult editAvatar(@RequestParam("file") MultipartFile file) {
         if (!file.isEmpty()) {
             LoginUser loginUser = SecurityUtils.getLoginUser();
+            String extension = FileTypeUtils.getExtension(file);
+            if (!StringUtils.equalsAnyIgnoreCase(extension, MimeTypeUtils.IMAGE_EXTENSION)) {
+                return AjaxResult.error("文件格式不正确，请上传" + Arrays.toString(MimeTypeUtils.IMAGE_EXTENSION) + "格式");
+            }
             R<SysFile> fileResult = remoteFileService.upload(file);
-            if (StringUtils.isNull(fileResult) || StringUtils.isNull(fileResult.getResult()))
+            if (StringUtils.isNull(fileResult) || StringUtils.isNull(fileResult.getData()))
                 return AjaxResult.error("文件服务异常，请联系管理员！");
-            String url = fileResult.getResult().getUrl();
+            String url = fileResult.getData().getUrl();
             if (userService.updateUserAvatar(SecurityUtils.getUserId(), url) > 0) {
                 String oldAvatarUrl = loginUser.getUser().getAvatar();
-                if (StringUtils.isNotEmpty(oldAvatarUrl))
+                if (StringUtils.isNotEmpty(oldAvatarUrl)) {
                     remoteFileService.delete(oldAvatarUrl);
+                }
                 AjaxResult ajax = AjaxResult.success();
                 ajax.put(AjaxResult.URL_TAG, url);
                 // 更新缓存 - 用户头像

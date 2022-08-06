@@ -1,6 +1,6 @@
 package com.xueyi.system.api.organize.feign.factory;
 
-import com.xueyi.common.core.domain.R;
+import com.xueyi.common.core.web.result.R;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
 import com.xueyi.system.api.organize.feign.RemoteDeptService;
 import org.slf4j.Logger;

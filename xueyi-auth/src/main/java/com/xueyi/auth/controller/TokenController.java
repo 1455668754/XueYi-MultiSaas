@@ -48,7 +48,7 @@ public class TokenController {
             LoginUser loginUser = tokenService.getLoginUser(request);
             // 删除用户缓存记录
             AuthUtil.logoutByToken(token);
-            if(ObjectUtil.isNotNull(loginUser)) {
+            if (ObjectUtil.isNotNull(loginUser)) {
                 String sourceName = JwtUtils.getSourceName(token);
                 Long enterpriseId = Long.valueOf(JwtUtils.getEnterpriseId(token));
                 String enterpriseName = JwtUtils.getEnterpriseName(token);
@@ -64,12 +64,7 @@ public class TokenController {
 
     @PostMapping("refresh")
     public AjaxResult refresh(HttpServletRequest request) {
-        LoginUser loginUser = tokenService.getLoginUser(request);
-        if (ObjectUtil.isNotNull(loginUser)) {
-            // 刷新令牌有效期
-            tokenService.refreshToken(loginUser);
-            return AjaxResult.success();
-        }
+        tokenService.refreshToken(request);
         return AjaxResult.success();
     }
 

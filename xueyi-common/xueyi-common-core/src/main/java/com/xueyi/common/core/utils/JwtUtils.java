@@ -2,7 +2,7 @@ package com.xueyi.common.core.utils;
 
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.basic.TokenConstants;
-import com.xueyi.common.core.text.Convert;
+import cn.hutool.core.convert.Convert;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

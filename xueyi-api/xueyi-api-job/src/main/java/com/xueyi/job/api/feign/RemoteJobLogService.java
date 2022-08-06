@@ -2,7 +2,7 @@ package com.xueyi.job.api.feign;
 
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.basic.ServiceConstants;
-import com.xueyi.common.core.domain.R;
+import com.xueyi.common.core.web.result.R;
 import com.xueyi.job.api.domain.dto.SysJobLogDto;
 import com.xueyi.job.api.feign.factory.RemoteJobLogFallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;

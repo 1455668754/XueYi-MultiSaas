@@ -4,10 +4,9 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
-import com.xueyi.common.core.domain.R;
 import com.xueyi.common.core.exception.ServiceException;
-import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.core.web.result.AjaxResult;
+import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
@@ -16,8 +15,10 @@ import com.xueyi.common.security.annotation.InnerAuth;
 import com.xueyi.common.security.annotation.Logical;
 import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.security.auth.Auth;
+import com.xueyi.common.security.service.TokenService;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.entity.controller.BaseController;
+import com.xueyi.system.api.model.DataScope;
 import com.xueyi.system.api.model.LoginUser;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
 import com.xueyi.system.api.organize.domain.query.SysUserQuery;
@@ -44,6 +45,9 @@ public class SysUserController extends BaseController<SysUserQuery, SysUserDto, 
     @Autowired
     private ISysOrganizeService organizeService;
 
+    @Autowired
+    private TokenService tokenService;
+
     /** 定义节点名称 */
     @Override
     protected String getNodeName() {
@@ -66,13 +70,15 @@ public class SysUserController extends BaseController<SysUserQuery, SysUserDto, 
      */
     @GetMapping("/getInfo")
     public AjaxResult getInfo() {
-        LoginUser loginUser = SecurityUtils.getLoginUser();
+        LoginUser loginUser = tokenService.getLoginUser();
         baseService.userDesensitized(loginUser.getUser());
         HashMap<String, Object> map = new HashMap<>();
+        map.put("enterprise", loginUser.getEnterprise());
         map.put("user", loginUser.getUser());
-        map.put("roles", loginUser.getRoles());
-        map.put("permissions", loginUser.getPermissions());
-        map.put("routes", loginUser.getRouteURL());
+        DataScope dataScope = tokenService.getDataScope();
+        map.put("roles", dataScope.getRoles());
+        map.put("permissions", dataScope.getPermissions());
+        map.put("routes", tokenService.getRouteURL());
         return AjaxResult.success(map);
     }
 
@@ -204,9 +210,9 @@ public class SysUserController extends BaseController<SysUserQuery, SysUserDto, 
             throw new ServiceException(StrUtil.format("{}{}{}失败，用户编码已存在", operate.getInfo(), getNodeName(), user.getNickName()));
         else if (baseService.checkUserNameUnique(user.getId(), user.getUserName()))
             throw new ServiceException(StrUtil.format("{}{}{}失败，用户账号已存在", operate.getInfo(), getNodeName(), user.getNickName()));
-        else if (StringUtils.isNotEmpty(user.getEmail()) && baseService.checkPhoneUnique(user.getId(), user.getCode()))
+        else if (StrUtil.isNotEmpty(user.getEmail()) && baseService.checkPhoneUnique(user.getId(), user.getCode()))
             throw new ServiceException(StrUtil.format("{}{}{}失败，手机号码已存在", operate.getInfo(), getNodeName(), user.getNickName()));
-        else if (StringUtils.isNotEmpty(user.getEmail()) && baseService.checkEmailUnique(user.getId(), user.getName()))
+        else if (StrUtil.isNotEmpty(user.getEmail()) && baseService.checkEmailUnique(user.getId(), user.getName()))
             throw new ServiceException(StrUtil.format("{}{}{}失败，邮箱账号已存在", operate.getInfo(), getNodeName(), user.getNickName()));
         // 防止修改操作更替密码
         if (BaseConstants.Operate.ADD == operate)

@@ -1,6 +1,6 @@
 package com.xueyi.system.api.log.feign.factory;
 
-import com.xueyi.common.core.domain.R;
+import com.xueyi.common.core.web.result.R;
 import com.xueyi.system.api.log.domain.dto.SysLoginLogDto;
 import com.xueyi.system.api.log.domain.dto.SysOperateLogDto;
 import com.xueyi.system.api.log.feign.RemoteLogService;

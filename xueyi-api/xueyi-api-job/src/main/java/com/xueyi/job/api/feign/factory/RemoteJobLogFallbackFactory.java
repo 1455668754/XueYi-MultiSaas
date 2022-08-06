@@ -1,6 +1,6 @@
 package com.xueyi.job.api.feign.factory;
 
-import com.xueyi.common.core.domain.R;
+import com.xueyi.common.core.web.result.R;
 import com.xueyi.job.api.domain.dto.SysJobLogDto;
 import com.xueyi.job.api.feign.RemoteJobLogService;
 import org.slf4j.Logger;

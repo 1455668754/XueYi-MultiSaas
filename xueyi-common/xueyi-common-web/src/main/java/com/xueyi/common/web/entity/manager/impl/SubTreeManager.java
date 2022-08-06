@@ -42,7 +42,7 @@ public abstract class SubTreeManager<Q extends P, D extends P, P extends SubTree
         LambdaQueryWrapper<P> queryWrapper = new LambdaQueryWrapper<>(query);
         SelectListQuery(BaseConstants.SelectType.EXTRA, queryWrapper, query);
         List<P> poList = baseMapper.selectList(queryWrapper);
-        List<D> dtoList = baseConverter.mapperDto(poList);
+        List<D> dtoList = mapperDto(poList);
         dtoList.forEach(item -> {
             LambdaQueryWrapper<SP> subQueryWrapper = new LambdaQueryWrapper<>();
             querySetForeignKey(subQueryWrapper, item);
@@ -59,7 +59,7 @@ public abstract class SubTreeManager<Q extends P, D extends P, P extends SubTree
      */
     @Override
     public D selectByIdExtra(Serializable id) {
-        D dto = baseConverter.mapperDto(baseMapper.selectById(id));
+        D dto = mapperDto(baseMapper.selectById(id));
         LambdaQueryWrapper<SP> subQueryWrapper = new LambdaQueryWrapper<>();
         querySetForeignKey(subQueryWrapper, dto);
         dto.setSubList(subConverter.mapperDto(subMapper.selectList(subQueryWrapper)));

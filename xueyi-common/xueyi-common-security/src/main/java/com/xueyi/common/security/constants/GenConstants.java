@@ -21,8 +21,6 @@ public interface GenConstants {
     String GENERATE_GEN_IMPORT = "generate:gen:import";
     /** 代码生成 - 代码生成管理 - 生成 */
     String GENERATE_GEN_PREVIEW = "generate:gen:preview";
-    /** 代码生成 - 代码生成管理 - 同步 */
-    String GENERATE_GEN_SYNC = "generate:gen:sync";
     /** 代码生成 - 代码生成管理 - 下载 */
     String GENERATE_GEN_CODE = "generate:gen:code";
 }

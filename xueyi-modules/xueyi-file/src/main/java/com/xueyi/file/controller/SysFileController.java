@@ -1,6 +1,6 @@
 package com.xueyi.file.controller;
 
-import com.xueyi.common.core.domain.R;
+import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.core.utils.file.FileUtils;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.file.api.domain.SysFile;
@@ -67,7 +67,7 @@ public class SysFileController {
     public AjaxResult upload(MultipartFile file) {
         R<SysFile> R = uploadInner(file);
         return R.isOk()
-                ? AjaxResult.success("上传成功！", R.getResult().getUrl())
+                ? AjaxResult.success("上传成功！", R.getData().getUrl())
                 : AjaxResult.error("上传失败！");
     }
 }

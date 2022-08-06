@@ -13,36 +13,36 @@ public interface ISysUserOnlineService {
     /**
      * 通过登录地址查询信息
      *
-     * @param ipaddr 登录地址
-     * @param user   用户信息
+     * @param ipaddr    登录地址
+     * @param loginUser 用户信息
      * @return 在线用户信息
      */
-    SysUserOnline selectOnlineByIpaddr(String ipaddr, LoginUser user);
+    SysUserOnline selectOnlineByIpaddr(String ipaddr, LoginUser loginUser);
 
     /**
      * 通过用户账号查询信息
      *
-     * @param userName 用户账号
-     * @param user     用户信息
+     * @param userName  用户账号
+     * @param loginUser 用户信息
      * @return 在线用户信息
      */
-    SysUserOnline selectOnlineByUserName(String userName, LoginUser user);
+    SysUserOnline selectOnlineByUserName(String userName, LoginUser loginUser);
 
     /**
      * 通过登录地址/用户账号查询信息
      *
-     * @param ipaddr   登录地址
-     * @param userName 用户账号
-     * @param user     用户信息
+     * @param ipaddr    登录地址
+     * @param userName  用户账号
+     * @param loginUser 用户信息
      * @return 在线用户信息
      */
-    SysUserOnline selectOnlineByInfo(String ipaddr, String userName, LoginUser user);
+    SysUserOnline selectOnlineByInfo(String ipaddr, String userName, LoginUser loginUser);
 
     /**
      * 设置在线用户信息
      *
-     * @param user 用户信息
+     * @param loginUser 用户信息
      * @return 在线用户
      */
-    SysUserOnline loginUserToUserOnline(LoginUser user);
+    SysUserOnline loginUserToUserOnline(LoginUser loginUser);
 }

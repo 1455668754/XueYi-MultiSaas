@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.HttpConstants;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * 操作消息提醒
@@ -19,13 +20,13 @@ public class AjaxResult extends HashMap<String, Object> {
     public static final String CODE_TAG = "code";
 
     /** 返回内容 */
-    public static final String MSG_TAG = "message";
+    public static final String MSG_TAG = "msg";
 
     /** 返回类型 */
     public static final String TYPE_TAG = "type";
 
     /** 数据对象 */
-    public static final String RESULT_TAG = "result";
+    public static final String RESULT_TAG = "data";
 
     /** 图片地址 */
     public static final String URL_TAG = "url";
@@ -70,7 +71,7 @@ public class AjaxResult extends HashMap<String, Object> {
      * @param code 状态码
      * @param type 返回类型
      * @param msg  返回内容
-     * @param url 返回地址
+     * @param url  返回地址
      */
     public AjaxResult(int code, String type, String msg, String url) {
         super.put(CODE_TAG, code);
@@ -79,18 +80,6 @@ public class AjaxResult extends HashMap<String, Object> {
         if (StrUtil.isNotEmpty(url)) {
             super.put(URL_TAG, url);
         }
-    }
-
-    /**
-     * 方便链式调用
-     *
-     * @param key   键
-     * @param value 值
-     */
-    @Override
-    public AjaxResult put(String key, Object value) {
-        super.put(key, value);
-        return this;
     }
 
     /**
@@ -135,7 +124,7 @@ public class AjaxResult extends HashMap<String, Object> {
     /**
      * 返回成功消息
      *
-     * @param msg  返回内容
+     * @param msg 返回内容
      * @param url 数据对象
      * @return 成功消息
      */
@@ -182,5 +171,36 @@ public class AjaxResult extends HashMap<String, Object> {
      */
     public static AjaxResult error(int code, String msg) {
         return new AjaxResult(code, HttpConstants.ResultType.ERROR.getCode(), msg, null);
+    }
+
+    /**
+     * 是否为成功消息
+     *
+     * @return 结果
+     */
+    public boolean isSuccess() {
+        return !isError();
+    }
+
+    /**
+     * 是否为错误消息
+     *
+     * @return 结果
+     */
+    public boolean isError() {
+        return Objects.equals(HttpConstants.ResultType.SUCCESS.getCode(), this.get(CODE_TAG));
+    }
+
+    /**
+     * 方便链式调用
+     *
+     * @param key   键
+     * @param value 值
+     * @return 结果
+     */
+    @Override
+    public AjaxResult put(String key, Object value) {
+        super.put(key, value);
+        return this;
     }
 }

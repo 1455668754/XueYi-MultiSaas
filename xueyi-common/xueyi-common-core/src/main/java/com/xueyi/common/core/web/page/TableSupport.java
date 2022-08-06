@@ -1,6 +1,6 @@
 package com.xueyi.common.core.web.page;
 
-import com.xueyi.common.core.text.Convert;
+import cn.hutool.core.convert.Convert;
 import com.xueyi.common.core.utils.ServletUtils;
 
 /**

@@ -1,6 +1,5 @@
 package com.xueyi.common.web.entity.manager.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.xueyi.common.core.constant.basic.BaseConstants;
@@ -43,7 +42,7 @@ public abstract class SubBaseManager<Q extends P, D extends P, P extends SubBase
         LambdaQueryWrapper<P> queryWrapper = new LambdaQueryWrapper<>(query);
         SelectListQuery(BaseConstants.SelectType.EXTRA, queryWrapper, query);
         List<P> poList = baseMapper.selectList(queryWrapper);
-        List<D> dtoList = BeanUtil.copyToList(poList, getDClass());
+        List<D> dtoList = mapperDto(poList);
         dtoList.forEach(item -> {
             LambdaQueryWrapper<SP> subQueryWrapper = new LambdaQueryWrapper<>();
             querySetForeignKey(subQueryWrapper, item);
@@ -61,7 +60,7 @@ public abstract class SubBaseManager<Q extends P, D extends P, P extends SubBase
     @Override
     public D selectByIdExtra(Serializable id) {
         P po = baseMapper.selectById(id);
-        D dto = baseConverter.mapperDto(po);
+        D dto = mapperDto(po);
         LambdaQueryWrapper<SP> subQueryWrapper = new LambdaQueryWrapper<>();
         querySetForeignKey(subQueryWrapper, dto);
         dto.setSubList(subConverter.mapperDto(subMapper.selectList(subQueryWrapper)));

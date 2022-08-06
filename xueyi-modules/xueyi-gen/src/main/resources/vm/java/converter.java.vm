@@ -22,4 +22,4 @@ import org.mapstruct.Mapper;
  */
 @Mapper(componentModel = "spring")
 public interface ${ClassName}Converter extends ${Entity}<${ClassName}Query, ${ClassName}Dto, ${ClassName}Po> {
-        }
+}

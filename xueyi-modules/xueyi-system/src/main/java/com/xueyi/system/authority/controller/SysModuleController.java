@@ -4,7 +4,6 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.exception.ServiceException;
-import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
@@ -20,7 +19,7 @@ import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
 import com.xueyi.system.api.authority.domain.query.SysMenuQuery;
 import com.xueyi.system.api.authority.domain.query.SysModuleQuery;
-import com.xueyi.system.api.model.LoginUser;
+import com.xueyi.system.api.model.DataScope;
 import com.xueyi.system.authority.service.ISysMenuService;
 import com.xueyi.system.authority.service.ISysModuleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,12 +59,13 @@ public class SysModuleController extends SubBaseController<SysModuleQuery, SysMo
      */
     @GetMapping("/getRouters")
     public AjaxResult getRoutes() {
-        LoginUser loginUser = tokenService.getLoginUser();
-        if (ObjectUtil.isNull(loginUser.getModuleRoute())) {
-            loginUser.setModuleRoute(baseService.getRoutes(loginUser.getRoleIds()));
-            tokenService.setLoginUser(loginUser);
+        Object moduleRoute = tokenService.getModuleRoute();
+        if (ObjectUtil.isNull(moduleRoute)) {
+            DataScope dataScope = tokenService.getDataScope();
+            moduleRoute = baseService.getRoutes(dataScope.getRoleIds());
+            tokenService.setModuleRoute(moduleRoute);
         }
-        return AjaxResult.success(loginUser.getModuleRoute());
+        return AjaxResult.success(moduleRoute);
     }
 
     /**
@@ -167,7 +167,7 @@ public class SysModuleController extends SubBaseController<SysModuleQuery, SysMo
                 throw new ServiceException("数据不存在！");
             if (SecurityUtils.isNotAdminTenant() && original.isCommon())
                 throw new ServiceException(StrUtil.format("{}{}{}失败，无操作权限！", operate.getInfo(), getNodeName(), module.getName()));
-            if (!StringUtils.equals(module.getIsCommon(), original.getIsCommon()))
+            if (!StrUtil.equals(module.getIsCommon(), original.getIsCommon()))
                 throw new ServiceException(StrUtil.format("{}{}{}失败，公共{}属性禁止变更！", operate.getInfo(), getNodeName(), module.getName(), getNodeName()));
         }
     }

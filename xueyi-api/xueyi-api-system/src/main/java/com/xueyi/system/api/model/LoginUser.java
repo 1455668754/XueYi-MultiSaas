@@ -5,9 +5,7 @@ import com.xueyi.system.api.organize.domain.dto.SysUserDto;
 import com.xueyi.system.api.source.domain.Source;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * 用户信息
@@ -36,6 +34,9 @@ public class LoginUser implements Serializable {
     /** 用户名 */
     private String userName;
 
+    /** 用户昵称 */
+    private String nickName;
+
     /** 用户标识 */
     private String userType;
 
@@ -45,20 +46,8 @@ public class LoginUser implements Serializable {
     /** 登录时间 */
     private Long loginTime;
 
-    /** 过期时间 */
-    private Long expireTime;
-
     /** 登录IP地址 */
     private String ipaddr;
-
-    /** 权限列表 */
-    private Set<String> permissions;
-
-    /** 角色权限列表 */
-    private Set<String> roles;
-
-    /** 角色Id列表 */
-    private Set<Long> roleIds;
 
     /** 源策略组 */
     private Source source;
@@ -71,12 +60,6 @@ public class LoginUser implements Serializable {
 
     /** 数据权限 */
     private DataScope scope;
-
-    /** 模块路由列表 */
-    private Object moduleRoute;
-
-    /** 菜单路由列表 */
-    private Map<String, Object> menuRoute;
 
     /** 路由路径映射列表 */
     private Map<String, String> routeURL;
@@ -129,6 +112,14 @@ public class LoginUser implements Serializable {
         this.userName = userName;
     }
 
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
     public String getUserType() {
         return userType;
     }
@@ -153,44 +144,12 @@ public class LoginUser implements Serializable {
         this.loginTime = loginTime;
     }
 
-    public Long getExpireTime() {
-        return expireTime;
-    }
-
-    public void setExpireTime(Long expireTime) {
-        this.expireTime = expireTime;
-    }
-
     public String getIpaddr() {
         return ipaddr;
     }
 
     public void setIpaddr(String ipaddr) {
         this.ipaddr = ipaddr;
-    }
-
-    public Set<String> getPermissions() {
-        return permissions;
-    }
-
-    public void setPermissions(Set<String> permissions) {
-        this.permissions = permissions;
-    }
-
-    public Set<String> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<String> roles) {
-        this.roles = roles;
-    }
-
-    public Set<Long> getRoleIds() {
-        return roleIds;
-    }
-
-    public void setRoleIds(Set<Long> roleIds) {
-        this.roleIds = roleIds;
     }
 
     public Source getSource() {
@@ -225,27 +184,25 @@ public class LoginUser implements Serializable {
         this.scope = scope;
     }
 
-    public Object getModuleRoute() {
-        return moduleRoute;
-    }
-
-    public void setModuleRoute(Object moduleRoute) {
-        this.moduleRoute = moduleRoute;
-    }
-
-    public Map<String, Object> getMenuRoute() {
-        return menuRoute == null ? new HashMap<>() : menuRoute;
-    }
-
-    public void setMenuRoute(Map<String, Object> menuRoute) {
-        this.menuRoute = menuRoute;
-    }
-
     public Map<String, String> getRouteURL() {
         return routeURL;
     }
 
     public void setRouteURL(Map<String, String> routeURL) {
         this.routeURL = routeURL;
+    }
+
+    /** 初始化权限范围 */
+    public DataScope getDataScope() {
+        scope.setEnterpriseId(enterpriseId);
+        scope.setUserId(userId);
+        scope.setIsLessor(isLessor);
+        scope.setUserType(userType);
+        return scope;
+    }
+
+    /** 初始化路由路径映射列表 */
+    public void initRouteURL() {
+        routeURL = null;
     }
 }

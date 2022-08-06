@@ -20,14 +20,14 @@ public class CaptchaTextCreator extends DefaultTextCreator {
         int x = random.nextInt(10);
         int y = random.nextInt(10);
         StringBuilder suChinese = new StringBuilder();
-        int randomOperands = (int) Math.round(Math.random() * 2);
+        int randomOperands = random.nextInt(3);
         if (randomOperands == 0) {
             result = x * y;
             suChinese.append(NUMBERS[x]);
             suChinese.append("*");
             suChinese.append(NUMBERS[y]);
         } else if (randomOperands == 1) {
-            if (!(x == 0) && y % x == 0) {
+            if ((x != 0) && y % x == 0) {
                 result = y / x;
                 suChinese.append(NUMBERS[y]);
                 suChinese.append("/");
