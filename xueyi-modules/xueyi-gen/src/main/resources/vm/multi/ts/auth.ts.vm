@@ -4,7 +4,7 @@ export enum ${BusinessName}Auth {
   // 查看${functionName}列表
   LIST = '${authorityName}:${businessName}:list',
 #end
-#if($api.single)
+#if($api.getInfo)
   // 查询${functionName}详情
   SINGLE = '${authorityName}:${businessName}:single',
 #end
