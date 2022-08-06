@@ -6,7 +6,7 @@
 
 <script lang="ts">
   import { defineComponent, onMounted, ref } from 'vue';
-  import { get${BusinessName}Api } from '/@/api/${moduleName}';
+  import { get${BusinessName}Api } from '/@/api/${moduleName}/${authorityName}/${businessName}';
   import { Description, useDescription } from '/@/components/Description';
   import { detailSchema } from './${businessName}.data';
   import { useRoute } from 'vue-router';

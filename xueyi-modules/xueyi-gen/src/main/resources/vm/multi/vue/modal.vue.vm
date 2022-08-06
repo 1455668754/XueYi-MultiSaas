@@ -20,7 +20,7 @@
 #if($table.tree || $table.subTree)
     list${BusinessName}ExNodesApi,
 #end
-  } from '/@/api/${moduleName}';
+  } from '/@/api/${moduleName}/${authorityName}/${businessName}';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
 

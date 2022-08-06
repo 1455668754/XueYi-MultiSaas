@@ -2,25 +2,25 @@ package ${packageName}.service.impl;
 
 #if($table.base)
 #set($Entity="Base")
-#set($generics = "<"+${ClassName}+"Query, "+${ClassName}+"Dto, "+${ClassName}+"Manager>")
+#set($generics = "<"+${ClassName}+"Query, "+${ClassName}+"Dto, I"+${ClassName}+"Manager>")
 #elseif($table.tree)
 #set($Entity="Tree")
-#set($generics = "<"+${ClassName}+"Query, "+${ClassName}+"Dto, "+${ClassName}+"Manager>")
+#set($generics = "<"+${ClassName}+"Query, "+${ClassName}+"Dto, I"+${ClassName}+"Manager>")
 #elseif($table.subBase)
 #set($Entity="SubBase")
 #set($generics =
-"<"+${ClassName}+"Query, "+${ClassName}+"Dto, "+${ClassName}+"Manager, "+${subClassName}+"Query, "+${subClassName}+
+"<"+${ClassName}+"Query, "+${ClassName}+"Dto, I"+${ClassName}+"Manager, "+${subClassName}+"Query, "+${subClassName}+
 "Dto, I"+${subClassName}+"Service>")
 #elseif($table.subTree)
 #set($Entity="SubTree")
 #set($generics =
-"<"+${ClassName}+"Query, "+${ClassName}+"Dto, "+${ClassName}+"Manager, "+${subClassName}+"Query, "+${subClassName}+
+"<"+${ClassName}+"Query, "+${ClassName}+"Dto, I"+${ClassName}+"Manager, "+${subClassName}+"Query, "+${subClassName}+
 "Dto, I"+${subClassName}+"Service>")
 #end
 import ${packageName}.domain.query.${ClassName}Query;
 import ${packageName}.domain.dto.${ClassName}Dto;
 import ${packageName}.service.I${ClassName}Service;
-import ${packageName}.manager.${ClassName}Manager;
+import ${packageName}.manager.I${ClassName}Manager;
 #if($table.subBase || $table.subTree)
 import ${subPackageName}.domain.query.${subClassName}Query;
 import ${subPackageName}.domain.dto.${subClassName}Dto;

@@ -660,12 +660,12 @@ public class VelocityUtils {
             FileReader fileReader = new FileReader(path);
             if (!StrUtil.contains(fileReader.readString(), sentence)) {
                 FileWriter writer = new FileWriter(path);
-                writer.append(sentence + "\r\n");
+                writer.append(sentence + ";\r\n");
             }
         } else {
             FileUtil.touch(path);
             FileWriter writer = new FileWriter(path);
-            writer.write(sentence + "\r\n");
+            writer.write(sentence + ";\r\n");
         }
     }
 }

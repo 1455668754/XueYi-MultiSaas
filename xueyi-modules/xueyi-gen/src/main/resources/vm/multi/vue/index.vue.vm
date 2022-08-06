@@ -71,7 +71,7 @@
 
 <script lang="ts">
   import { defineComponent#if($api.batchRemove || $api.batchRemoveForce), reactive#end } from 'vue';
-  import { list${BusinessName}Api, del${BusinessName}Api#if($api.export), export${BusinessName}Api#end } from '/@/api/${moduleName}';
+  import { list${BusinessName}Api, del${BusinessName}Api#if($api.export), export${BusinessName}Api#end } from '/@/api/${moduleName}/${authorityName}/${businessName}';
   import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { IconEnum } from '/@/enums/appEnum';
