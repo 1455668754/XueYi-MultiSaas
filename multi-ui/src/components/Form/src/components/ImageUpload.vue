@@ -26,7 +26,7 @@
 <script lang="ts">
   import { PlusOutlined } from '@ant-design/icons-vue';
   import { defineComponent, PropType, ref, unref, watch } from 'vue';
-  import { message, Upload, UploadProps } from 'ant-design-vue';
+  import { message, Modal, Upload, UploadProps } from 'ant-design-vue';
   import { UploadFile } from 'ant-design-vue/lib/upload/interface';
   import { useRuleFormItem } from '/@/hooks/component/useFormItem';
   import { useI18n } from '/@/hooks/web/useI18n';
@@ -38,6 +38,7 @@
     components: {
       PlusOutlined,
       AUpload: Upload,
+      AModal: Modal,
     },
     props: {
       value: [Array, String],
