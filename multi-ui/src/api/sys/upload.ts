@@ -9,21 +9,6 @@ enum Api {
   UPLOAD_FILE = '/file/upload',
 }
 
-/**
- * @description: Upload interface
- */
-export function uploadApi(
-  params: UploadFileParams,
-  onUploadProgress: (progressEvent: ProgressEvent) => void,
-) {
-  return defHttp.uploadFile<UploadIM>(
-    {
-      url: uploadUrl,
-      onUploadProgress,
-    },
-    params,
-  );
-}
 
 /** 文件上传 */
 export const fileUploadApi = (
@@ -32,7 +17,7 @@ export const fileUploadApi = (
 ) =>
   defHttp.uploadFile<UploadIM>(
     {
-      url: Api.UPLOAD_FILE,
+      url: uploadUrl + Api.UPLOAD_FILE,
       onUploadProgress,
     },
     params,
