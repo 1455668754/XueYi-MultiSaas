@@ -10,6 +10,7 @@ import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.core.utils.ip.IpUtils;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessStatus;
+import com.xueyi.common.log.filter.PropertyPreExcludeFilter;
 import com.xueyi.common.log.service.AsyncLogService;
 import com.xueyi.common.security.service.TokenService;
 import com.xueyi.system.api.log.domain.dto.SysOperateLogDto;
@@ -41,6 +42,9 @@ import java.util.Map;
 public class LogAspect {
 
     private static final Logger log = LoggerFactory.getLogger(LogAspect.class);
+
+    /** 排除敏感属性字段 */
+    public static final String[] EXCLUDE_PROPERTIES = {"password", "oldPassword", "newPassword", "confirmPassword"};
 
     @Autowired
     private AsyncLogService asyncLogService;
@@ -157,14 +161,14 @@ public class LogAspect {
      * 参数拼装
      */
     private String argsArrayToString(Object[] paramsArray) {
-        String params = "" ;
+        String params = "";
         if (paramsArray != null && paramsArray.length > 0) {
             for (Object o : paramsArray) {
                 if (StringUtils.isNotNull(o) && !isFilterObject(o)) {
                     try {
-                        Object jsonObj = JSON.toJSON(o);
-                        params += jsonObj.toString() + " " ;
-                    } catch (Exception e) {
+                        String jsonObj = JSON.toJSONString(o, excludePropertyPreFilter());
+                        params += jsonObj + " ";
+                    } catch (Exception ignored) {
                     }
                 }
             }
@@ -173,7 +177,14 @@ public class LogAspect {
     }
 
     /**
-     * 判断是否需要过滤的对象。
+     * 忽略敏感属性
+     */
+    public PropertyPreExcludeFilter excludePropertyPreFilter() {
+        return new PropertyPreExcludeFilter().addExcludes(EXCLUDE_PROPERTIES);
+    }
+
+    /**
+     * 判断是否需要过滤的对象
      *
      * @param o 对象信息。
      * @return 如果是需要过滤的对象，则返回true；否则返回false。
