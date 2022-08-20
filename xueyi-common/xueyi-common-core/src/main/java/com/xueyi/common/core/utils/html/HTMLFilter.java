@@ -352,7 +352,7 @@ public final class HTMLFilter {
                         if (inArray(paramName, vProtocolAtts)) {
                             paramValue = processParamProtocol(paramValue);
                         }
-                        params.append(' ').append(paramName).append("=\\\"").append(paramValue).append("\"");
+                        params.append(' ').append(paramName).append("=\\\"").append(paramValue).append("\\\"");
                     }
                 }
 
