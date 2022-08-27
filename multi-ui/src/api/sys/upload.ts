@@ -9,7 +9,6 @@ enum Api {
   UPLOAD_FILE = '/file/upload',
 }
 
-
 /** 文件上传 */
 export const fileUploadApi = (
   params: UploadFileParams,

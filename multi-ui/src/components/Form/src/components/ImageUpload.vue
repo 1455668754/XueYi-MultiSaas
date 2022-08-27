@@ -8,6 +8,7 @@
       :max-count="maxCount"
       :customRequest="handleCustomRequest"
       :before-upload="handleBeforeUpload"
+      @change="handleChange"
       @preview="handlePreview"
     >
       <div v-if="fileList.length < maxCount">
@@ -25,12 +26,14 @@
 
 <script lang="ts">
   import { PlusOutlined } from '@ant-design/icons-vue';
-  import { defineComponent, PropType, ref, unref, watch } from 'vue';
+  import { defineComponent, PropType, ref, watch } from 'vue';
   import { message, Modal, Upload, UploadProps } from 'ant-design-vue';
   import { UploadFile } from 'ant-design-vue/lib/upload/interface';
   import { useRuleFormItem } from '/@/hooks/component/useFormItem';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { buildShortUUID } from '/@/utils/uuid';
+  import { fileUploadApi } from '/@/api/sys/upload';
+  import { isEmpty } from 'lodash-es';
 
   export type ImageUploadType = 'text' | 'picture' | 'picture-card';
   export default defineComponent({
@@ -44,7 +47,7 @@
       value: [Array, String],
       api: {
         type: Function as PropType<(file: UploadFile) => Promise<any>>,
-        default: null,
+        default: fileUploadApi,
       },
       listType: {
         type: String as PropType<ImageUploadType>,
@@ -64,11 +67,10 @@
       maxSize: { type: Number, default: 2 },
     },
     emits: ['update:value'],
-    setup(props, { emit }) {
+    setup(props, {}) {
       const { t } = useI18n();
       const previewVisible = ref(false);
       const previewImage = ref('');
-      const emitData = ref<string | string[] | undefined>(undefined);
       const fileList = ref<UploadFile[]>([]);
       const isFirstLoad = ref(true);
 
@@ -76,12 +78,11 @@
       const [state] = useRuleFormItem(props);
 
       watch(
-        () => props.value,
+        () => state.value,
         (count) => {
-          console.error(count);
           if (isFirstLoad.value) {
             fileList.value = [];
-            if (count !== undefined)
+            if (count !== undefined) {
               if (count && Array.isArray(count)) {
                 const uuid = buildShortUUID();
                 for (let i = 0; i < count.length; i++) {
@@ -101,32 +102,10 @@
                   url: count as string,
                 });
               }
-            isFirstLoad.value = false;
+            }
           }
         },
       );
-
-      watch(
-        () => fileList.value,
-        () => {
-          emitData.value =
-            props.maxCount === 1
-              ? fileList.value.length > 0
-                ? (fileList.value[0].url as string)
-                : ''
-              : fileList.value.length > 0
-              ? (fileList.value.map((item) => {
-                  return item.url;
-                }) as string[])
-              : [];
-          emitChange();
-        },
-        { deep: true },
-      );
-
-      function emitChange() {
-        emit('update:value', unref(emitData));
-      }
 
       /** 关闭查看 */
       const handleCancel = () => {
@@ -159,40 +138,49 @@
           message.error(t('component.upload.maxSizeMultiple', [props.maxSize]));
         }
         if (!(isPNG && isLt2M)) {
-          for (let i = fileList.value.length - 1; i >= 0; i--) {
-            if (fileList.value[i].uid === file.uid) {
-              fileList.value.splice(i, 1);
-              break;
-            }
-          }
+          fileList.value.pop();
         }
-        if (isFirstLoad.value) isFirstLoad.value = false;
         return isPNG && isLt2M;
       };
 
       /** 自定义上传 */
       const handleCustomRequest = async (option: any) => {
+        isFirstLoad.value = false;
         const { file } = option;
-        const uid = file.uid;
         await props
           .api(option)
           .then((res) => {
             file.status = 'done';
             file.url = res.data.url;
-            for (let i = fileList.value.length - 1; i >= 0; i--)
-              if (fileList.value[i].uid === uid) {
-                fileList.value[i] = file;
-                break;
-              }
+            fileList.value.pop();
+            fileList.value.push(file);
+            handleChange();
           })
           .catch(() => {
-            for (let i = fileList.value.length - 1; i >= 0; i--)
-              if (fileList.value[i].uid === uid) {
-                fileList.value.splice(i, 1);
-                break;
-              }
+            fileList.value.pop();
           });
+        isFirstLoad.value = true;
       };
+
+      function handleChange() {
+        isFirstLoad.value = false;
+        const images = fileList.value
+          .map((item) => {
+            return item.url;
+          })
+          .filter((item) => {
+            return !isEmpty(item);
+          });
+        state.value =
+          props.maxCount === 1
+            ? images.length > 0
+              ? images[0]
+              : ''
+            : images.length > 0
+            ? images
+            : [];
+        isFirstLoad.value = true;
+      }
 
       return {
         t,
@@ -201,6 +189,7 @@
         previewImage,
         fileList,
         handleCancel,
+        handleChange,
         handlePreview,
         handleCustomRequest,
         handleBeforeUpload,
