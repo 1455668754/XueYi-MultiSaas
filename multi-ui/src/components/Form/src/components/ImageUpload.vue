@@ -84,8 +84,8 @@
             fileList.value = [];
             if (count !== undefined) {
               if (count && Array.isArray(count)) {
-                const uuid = buildShortUUID();
                 for (let i = 0; i < count.length; i++) {
+                  const uuid = buildShortUUID();
                   fileList.value.push({
                     uid: uuid,
                     name: uuid,
