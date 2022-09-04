@@ -15,7 +15,6 @@ import { configVisualizerConfig } from './visualizer';
 import { configThemePlugin } from './theme';
 import { configImageminPlugin } from './imagemin';
 import { configSvgIconsPlugin } from './svgSprite';
-import topLevelAwait from 'vite-plugin-top-level-await';
 
 export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean) {
   const {
@@ -36,12 +35,6 @@ export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean) {
     // @ts-ignore
     VitePluginCertificate({
       source: 'coding',
-    }),
-    topLevelAwait({
-      // The export name of top-level await promise for each chunk module
-      promiseExportName: '__tla',
-      // The function to generate import names of top-level await promise in each chunk module
-      promiseImportName: (i) => `__tla_${i}`,
     }),
   ];
 
