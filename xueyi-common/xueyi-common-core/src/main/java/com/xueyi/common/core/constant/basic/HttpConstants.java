@@ -68,6 +68,7 @@ public class HttpConstants {
         HTTP("http://", "http请求"),
         HTTPS("https://", "https请求"),
         WS("ws://", "ws请求"),
+        WWW("www.", "www主域"),
         WSS("wss://", "wss请求");
 
         private final String code;
