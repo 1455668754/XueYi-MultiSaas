@@ -82,7 +82,7 @@ public class LogAspect {
             String ip = IpUtils.getIpAddr(ServletUtils.getRequest());
             operateLog.setIp(ip);
 
-            operateLog.setUrl(ServletUtils.getRequest().getRequestURI());
+            operateLog.setUrl(StringUtils.substring(ServletUtils.getRequest().getRequestURI(), 0, 255));
             LoginUser loginUser = tokenService.getLoginUser();
             String sourceName = ObjectUtil.isNotNull(loginUser) ? loginUser.getSourceName() : null;
             Long userId = ObjectUtil.isNotNull(loginUser) ? loginUser.getUserId() : null;
