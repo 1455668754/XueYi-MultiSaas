@@ -222,14 +222,14 @@ public class RedisService {
     }
 
     /**
-     * 删除单个对象
+     * 删除Hash中的某条数据
      *
      * @param key Redis键
      * @param hKey Hash键
-     * @return true=删除成功；false=删除失败
+     * @return 是否成功
      */
-    public Long deleteCacheMapHKey(final String key, final String hKey) {
-        return redisTemplate.opsForHash().delete(key,hKey);
+    public boolean deleteCacheMapValue(final String key, final String hKey) {
+        return redisTemplate.opsForHash().delete(key, hKey) > 0;
     }
 
     /**

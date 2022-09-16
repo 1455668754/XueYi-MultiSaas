@@ -84,7 +84,7 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigQuery, SysCon
         SysConfigDto config = baseManager.selectById(id);
         int row = baseManager.deleteById(id);
         if (row > 0)
-            redisService.deleteCacheMapHKey(CacheConstants.SYS_CONFIG_KEY, config.getCode());
+            redisService.deleteCacheMapValue(CacheConstants.SYS_CONFIG_KEY, config.getCode());
         return row;
     }
 
@@ -99,7 +99,7 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigQuery, SysCon
         List<SysConfigDto> configList = baseManager.selectListByIds(idList);
         int rows = baseManager.deleteByIds(idList);
         if (rows > 0)
-            configList.forEach(config -> redisService.deleteCacheMapHKey(CacheConstants.SYS_CONFIG_KEY, config.getCode()));
+            configList.forEach(config -> redisService.deleteCacheMapValue(CacheConstants.SYS_CONFIG_KEY, config.getCode()));
         return rows;
     }
 

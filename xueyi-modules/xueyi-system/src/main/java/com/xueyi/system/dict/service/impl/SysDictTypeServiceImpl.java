@@ -127,7 +127,7 @@ public class SysDictTypeServiceImpl extends SubBaseServiceImpl<SysDictTypeQuery,
      * 根据编码删除字典缓存
      */
     private void deleteDictCache(String code) {
-        redisService.deleteCacheMapHKey(CacheConstants.SYS_DICT_KEY, code);
+        redisService.deleteCacheMapValue(CacheConstants.SYS_DICT_KEY, code);
     }
 
     /**
