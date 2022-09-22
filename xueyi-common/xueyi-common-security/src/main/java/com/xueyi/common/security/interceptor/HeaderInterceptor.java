@@ -26,15 +26,16 @@ public class HeaderInterceptor implements AsyncHandlerInterceptor {
             return true;
         }
 
-        SecurityContextHolder.setEnterpriseId(ServletUtils.getHeader(request, SecurityConstants.ENTERPRISE_ID));
-        SecurityContextHolder.setEnterpriseName(ServletUtils.getHeader(request, SecurityConstants.ENTERPRISE_NAME));
-        SecurityContextHolder.setIsLessor(ServletUtils.getHeader(request, SecurityConstants.IS_LESSOR));
-        SecurityContextHolder.setUserId(ServletUtils.getHeader(request, SecurityConstants.USER_ID));
-        SecurityContextHolder.setUserName(ServletUtils.getHeader(request, SecurityConstants.USER_NAME));
-        SecurityContextHolder.setNickName(ServletUtils.getHeader(request, SecurityConstants.NICK_NAME));
-        SecurityContextHolder.setUserType(ServletUtils.getHeader(request, SecurityConstants.USER_TYPE));
-        SecurityContextHolder.setSourceName(ServletUtils.getHeader(request, SecurityConstants.SOURCE_NAME));
-        SecurityContextHolder.setUserKey(ServletUtils.getHeader(request, SecurityConstants.USER_KEY));
+        SecurityContextHolder.setEnterpriseId(ServletUtils.getHeader(request, SecurityConstants.BaseSecurity.ENTERPRISE_ID.getCode()));
+        SecurityContextHolder.setEnterpriseName(ServletUtils.getHeader(request, SecurityConstants. BaseSecurity.ENTERPRISE_NAME.getCode()));
+        SecurityContextHolder.setIsLessor(ServletUtils.getHeader(request, SecurityConstants. BaseSecurity.IS_LESSOR.getCode()));
+        SecurityContextHolder.setUserId(ServletUtils.getHeader(request, SecurityConstants. BaseSecurity.USER_ID.getCode()));
+        SecurityContextHolder.setUserName(ServletUtils.getHeader(request, SecurityConstants. BaseSecurity.USER_NAME.getCode()));
+        SecurityContextHolder.setNickName(ServletUtils.getHeader(request, SecurityConstants. BaseSecurity.NICK_NAME.getCode()));
+        SecurityContextHolder.setUserType(ServletUtils.getHeader(request, SecurityConstants. BaseSecurity.USER_TYPE.getCode()));
+        SecurityContextHolder.setSourceName(ServletUtils.getHeader(request, SecurityConstants. BaseSecurity.SOURCE_NAME.getCode()));
+        SecurityContextHolder.setUserKey(ServletUtils.getHeader(request, SecurityConstants. BaseSecurity.USER_KEY.getCode()));
+        SecurityContextHolder.setAccountType(ServletUtils.getHeader(request, SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode()));
 
         String token = SecurityUtils.getToken();
         if (StrUtil.isNotEmpty(token)) {

@@ -15,6 +15,7 @@ import java.util.Map;
  * @author xueyi
  */
 public class JwtUtils {
+
     public static String secret = TokenConstants.SECRET;
 
     /**
@@ -45,7 +46,7 @@ public class JwtUtils {
      */
     public static String getEnterpriseId(String token) {
         Claims claims = parseToken(token);
-        return getValue(claims, SecurityConstants.ENTERPRISE_ID);
+        return getValue(claims, SecurityConstants.BaseSecurity.ENTERPRISE_ID.getCode());
     }
 
     /**
@@ -55,7 +56,7 @@ public class JwtUtils {
      * @return 企业Id
      */
     public static String getEnterpriseId(Claims claims) {
-        return getValue(claims, SecurityConstants.ENTERPRISE_ID);
+        return getValue(claims, SecurityConstants.BaseSecurity.ENTERPRISE_ID.getCode());
     }
 
     /**
@@ -66,7 +67,7 @@ public class JwtUtils {
      */
     public static String getEnterpriseName(String token) {
         Claims claims = parseToken(token);
-        return getValue(claims, SecurityConstants.ENTERPRISE_NAME);
+        return getValue(claims, SecurityConstants.BaseSecurity.ENTERPRISE_NAME.getCode());
     }
 
     /**
@@ -76,7 +77,7 @@ public class JwtUtils {
      * @return 企业账号
      */
     public static String getEnterpriseName(Claims claims) {
-        return getValue(claims, SecurityConstants.ENTERPRISE_NAME);
+        return getValue(claims, SecurityConstants.BaseSecurity.ENTERPRISE_NAME.getCode());
     }
 
     /**
@@ -87,7 +88,7 @@ public class JwtUtils {
      */
     public static String getIsLessor(String token) {
         Claims claims = parseToken(token);
-        return getValue(claims, SecurityConstants.IS_LESSOR);
+        return getValue(claims, SecurityConstants.BaseSecurity.IS_LESSOR.getCode());
     }
 
     /**
@@ -97,7 +98,7 @@ public class JwtUtils {
      * @return 企业类型
      */
     public static String getIsLessor(Claims claims) {
-        return getValue(claims, SecurityConstants.IS_LESSOR);
+        return getValue(claims, SecurityConstants.BaseSecurity.IS_LESSOR.getCode());
     }
 
     /**
@@ -108,7 +109,7 @@ public class JwtUtils {
      */
     public static String getUserId(String token) {
         Claims claims = parseToken(token);
-        return getValue(claims, SecurityConstants.USER_ID);
+        return getValue(claims, SecurityConstants.BaseSecurity.USER_ID.getCode());
     }
 
     /**
@@ -118,7 +119,7 @@ public class JwtUtils {
      * @return 用户Id
      */
     public static String getUserId(Claims claims) {
-        return getValue(claims, SecurityConstants.USER_ID);
+        return getValue(claims, SecurityConstants.BaseSecurity.USER_ID.getCode());
     }
 
     /**
@@ -129,7 +130,7 @@ public class JwtUtils {
      */
     public static String getUserName(String token) {
         Claims claims = parseToken(token);
-        return getValue(claims, SecurityConstants.USER_NAME);
+        return getValue(claims, SecurityConstants.BaseSecurity.USER_NAME.getCode());
     }
 
     /**
@@ -139,7 +140,7 @@ public class JwtUtils {
      * @return 用户账号
      */
     public static String getUserName(Claims claims) {
-        return getValue(claims, SecurityConstants.USER_NAME);
+        return getValue(claims, SecurityConstants.BaseSecurity.USER_NAME.getCode());
     }
 
     /**
@@ -150,7 +151,7 @@ public class JwtUtils {
      */
     public static String getUserType(String token) {
         Claims claims = parseToken(token);
-        return getValue(claims, SecurityConstants.USER_TYPE);
+        return getValue(claims, SecurityConstants.BaseSecurity.USER_TYPE.getCode());
     }
 
     /**
@@ -160,7 +161,28 @@ public class JwtUtils {
      * @return 用户类型
      */
     public static String getUserType(Claims claims) {
-        return getValue(claims, SecurityConstants.USER_TYPE);
+        return getValue(claims, SecurityConstants.BaseSecurity.USER_TYPE.getCode());
+    }
+
+    /**
+     * 根据令牌获取账户类型
+     *
+     * @param token 令牌
+     * @return 账户类型
+     */
+    public static String getAccountType(String token) {
+        Claims claims = parseToken(token);
+        return getValue(claims, SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode());
+    }
+
+    /**
+     * 根据令牌获取账户类型
+     *
+     * @param claims 身份信息
+     * @return 账户类型
+     */
+    public static String getAccountType(Claims claims) {
+        return getValue(claims, SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode());
     }
 
     /**
@@ -171,7 +193,7 @@ public class JwtUtils {
      */
     public static String getSourceName(String token) {
         Claims claims = parseToken(token);
-        return getValue(claims, SecurityConstants.SOURCE_NAME);
+        return getValue(claims, SecurityConstants.BaseSecurity.SOURCE_NAME.getCode());
     }
 
     /**
@@ -181,7 +203,7 @@ public class JwtUtils {
      * @return 租户策略源
      */
     public static String getSourceName(Claims claims) {
-        return getValue(claims, SecurityConstants.SOURCE_NAME);
+        return getValue(claims, SecurityConstants.BaseSecurity.SOURCE_NAME.getCode());
     }
 
     /**
@@ -192,7 +214,7 @@ public class JwtUtils {
      */
     public static String getUserKey(String token) {
         Claims claims = parseToken(token);
-        return getValue(claims, SecurityConstants.USER_KEY);
+        return getValue(claims, SecurityConstants.BaseSecurity.USER_KEY.getCode());
     }
 
     /**
@@ -202,7 +224,7 @@ public class JwtUtils {
      * @return 用户Id
      */
     public static String getUserKey(Claims claims) {
-        return getValue(claims, SecurityConstants.USER_KEY);
+        return getValue(claims, SecurityConstants.BaseSecurity.USER_KEY.getCode());
     }
 
     /**

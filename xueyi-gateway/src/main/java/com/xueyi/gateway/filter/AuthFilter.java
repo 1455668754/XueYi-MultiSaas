@@ -1,10 +1,7 @@
 package com.xueyi.gateway.filter;
 
 import cn.hutool.core.util.StrUtil;
-import com.xueyi.common.core.constant.basic.CacheConstants;
-import com.xueyi.common.core.constant.basic.HttpConstants;
-import com.xueyi.common.core.constant.basic.SecurityConstants;
-import com.xueyi.common.core.constant.basic.TokenConstants;
+import com.xueyi.common.core.constant.basic.*;
 import com.xueyi.common.core.utils.JwtUtils;
 import com.xueyi.common.core.utils.ServletUtils;
 import com.xueyi.common.core.utils.StringUtils;
@@ -21,6 +18,8 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
+
+import java.util.Objects;
 
 /**
  * 网关鉴权
@@ -58,7 +57,8 @@ public class AuthFilter implements GlobalFilter, Ordered {
             return unauthorizedResponse(exchange, "令牌已过期或验证不正确！");
         }
         String userKey = JwtUtils.getUserKey(claims);
-        boolean isLogin = redisService.hasKey(getTokenKey(userKey));
+        String accountType = JwtUtils.getAccountType(claims);
+        boolean isLogin = redisService.hasKey(getTokenKey(userKey, accountType));
         if (!isLogin) {
             return unauthorizedResponse(exchange, "登录状态已过期");
         }
@@ -70,18 +70,19 @@ public class AuthFilter implements GlobalFilter, Ordered {
         String userType = JwtUtils.getUserType(claims);
         String sourceName = JwtUtils.getSourceName(claims);
 
-        if (StrUtil.hasBlank(enterpriseId, enterpriseName, isLessor, userId, userName, userType, sourceName)) {
+        if (TenantConstants.AccountType.ADMIN.isAdmin(accountType) && StrUtil.hasBlank(enterpriseId, enterpriseName, isLessor, userId, userName, userType, sourceName)) {
             return unauthorizedResponse(exchange, "令牌验证失败");
         }
         // 设置用户信息到请求
-        addHeader(mutate, SecurityConstants.ENTERPRISE_ID, enterpriseId);
-        addHeader(mutate, SecurityConstants.ENTERPRISE_NAME, enterpriseName);
-        addHeader(mutate, SecurityConstants.IS_LESSOR, isLessor);
-        addHeader(mutate, SecurityConstants.USER_ID, userId);
-        addHeader(mutate, SecurityConstants.USER_NAME, userName);
-        addHeader(mutate, SecurityConstants.USER_TYPE, userType);
-        addHeader(mutate, SecurityConstants.SOURCE_NAME, sourceName);
-        addHeader(mutate, SecurityConstants.USER_KEY, userKey);
+        addHeader(mutate, SecurityConstants.BaseSecurity.ENTERPRISE_ID.getCode(), enterpriseId);
+        addHeader(mutate, SecurityConstants.BaseSecurity.ENTERPRISE_NAME.getCode(), enterpriseName);
+        addHeader(mutate, SecurityConstants.BaseSecurity.IS_LESSOR.getCode(), isLessor);
+        addHeader(mutate, SecurityConstants.BaseSecurity.USER_ID.getCode(), userId);
+        addHeader(mutate, SecurityConstants.BaseSecurity.USER_NAME.getCode(), userName);
+        addHeader(mutate, SecurityConstants.BaseSecurity.USER_TYPE.getCode(), userType);
+        addHeader(mutate, SecurityConstants.BaseSecurity.SOURCE_NAME.getCode(), sourceName);
+        addHeader(mutate, SecurityConstants.BaseSecurity.USER_KEY.getCode(), userKey);
+        addHeader(mutate, SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode(), accountType);
         // 内部请求来源参数清除
         removeHeader(mutate, SecurityConstants.FROM_SOURCE);
         return chain.filter(exchange.mutate().request(mutate.build()).build());
@@ -108,8 +109,13 @@ public class AuthFilter implements GlobalFilter, Ordered {
     /**
      * 获取缓存key
      */
-    private String getTokenKey(String token) {
-        return CacheConstants.LOGIN_TOKEN_KEY + token;
+    private String getTokenKey(String token, String accountType) {
+        switch (Objects.requireNonNull(TenantConstants.AccountType.getByCode(accountType))) {
+            case ADMIN:
+                return CacheConstants.LoginTokenType.ADMIN.getCode() + token;
+            default:
+                return StrUtil.EMPTY;
+        }
     }
 
     /**

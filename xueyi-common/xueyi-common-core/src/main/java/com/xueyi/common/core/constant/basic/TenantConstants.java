@@ -1,5 +1,7 @@
 package com.xueyi.common.core.constant.basic;
 
+import cn.hutool.core.util.StrUtil;
+
 /**
  * 租户通用常量
  *
@@ -70,6 +72,48 @@ public class TenantConstants {
 
         public String getInfo() {
             return info;
+        }
+    }
+
+    /** 用户类型 */
+    public enum AccountType {
+
+        ADMIN("admin", "后台用户"),
+        MEMBER("member", "会员用户");
+
+        private final String code;
+        private final String info;
+
+        AccountType(String code, String info) {
+            this.code = code;
+            this.info = info;
+        }
+
+        public static AccountType getByCode(String code) {
+            for (AccountType accountType : AccountType.values()) {
+                if (StrUtil.equals(code, accountType.code)) {
+                    return accountType;
+                }
+            }
+            return null;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public String getInfo() {
+            return info;
+        }
+
+        /** 管理端用户 */
+        public boolean isAdmin(String code) {
+            return StrUtil.equals(code, AccountType.ADMIN.code);
+        }
+
+        /** 会员端用户 */
+        public boolean isMember(String code) {
+            return StrUtil.equalsAny(name(), AccountType.MEMBER.code);
         }
     }
 }

@@ -2,6 +2,7 @@ package com.xueyi.common.core.web.entity.base;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.web.validate.V_E;
 
 import javax.validation.constraints.NotNull;
@@ -26,6 +27,10 @@ public class BasisEntity implements Serializable {
     @TableField(exist = false)
     private String sourceName;
 
+    /** 操作类型 */
+    @TableField(exist = false)
+    private BaseConstants.Operate operate;
+
     /** 请求参数 */
     @TableField(exist = false)
     private Map<String, Object> params;
@@ -45,6 +50,14 @@ public class BasisEntity implements Serializable {
 
     public void setSourceName(String sourceName) {
         this.sourceName = sourceName;
+    }
+
+    public BaseConstants.Operate getOperate() {
+        return operate;
+    }
+
+    public void setOperate(BaseConstants.Operate operate) {
+        this.operate = operate;
     }
 
     public Map<String, Object> getParams() {

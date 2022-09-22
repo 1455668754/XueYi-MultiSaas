@@ -44,7 +44,7 @@ public class SysUserOnlineController extends BasisController {
         Collection<String> keys = redisService.keys(CacheConstants.LOGIN_TOKEN_KEY + SecurityUtils.getEnterpriseId() + StrUtil.COLON + "*");
         List<SysUserOnline> userOnlineList = new ArrayList<>();
         for (String key : keys) {
-            LoginUser loginUser = redisService.getCacheMapValue(key, SecurityConstants.LOGIN_USER);
+            LoginUser loginUser = redisService.getCacheMapValue(key, SecurityConstants.BaseSecurity.LOGIN_USER.getCode());
             if (StrUtil.isNotEmpty(ipaddr) && StrUtil.isNotEmpty(userName)) {
                 if (StrUtil.equals(ipaddr, loginUser.getIpaddr()) && StrUtil.equals(userName, loginUser.getUserName())) {
                     userOnlineList.add(userOnlineService.selectOnlineByInfo(ipaddr, userName, loginUser));

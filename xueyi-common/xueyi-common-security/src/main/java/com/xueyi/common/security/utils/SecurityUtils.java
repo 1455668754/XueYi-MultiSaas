@@ -1,14 +1,10 @@
 package com.xueyi.common.security.utils;
 
-import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.xueyi.common.core.constant.basic.SecurityConstants;
-import com.xueyi.common.core.constant.basic.TokenConstants;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
-import com.xueyi.common.core.context.SecurityContextHolder;
-import com.xueyi.common.core.utils.ServletUtils;
 import com.xueyi.common.core.utils.SpringUtils;
 import com.xueyi.common.security.service.TokenService;
+import com.xueyi.common.security.utils.base.BaseSecurityUtils;
 import com.xueyi.system.api.model.DataScope;
 import com.xueyi.system.api.model.LoginUser;
 import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
@@ -16,70 +12,12 @@ import com.xueyi.system.api.organize.domain.dto.SysUserDto;
 import com.xueyi.system.api.source.domain.Source;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import javax.servlet.http.HttpServletRequest;
-
 /**
- * 权限获取工具类
+ * 管理端 - 权限获取工具类
  *
  * @author xueyi
  */
-public class SecurityUtils {
-
-    /**
-     * 获取企业Id
-     */
-    public static Long getEnterpriseId() {
-        return SecurityContextHolder.getEnterpriseId();
-    }
-
-    /**
-     * 获取企业名称
-     */
-    public static String getEnterpriseName() {
-        return SecurityContextHolder.getEnterpriseName();
-    }
-
-    /**
-     * 获取租户权限标识
-     */
-    public static String getIsLessor() {
-        return SecurityContextHolder.getIsLessor();
-    }
-
-    /**
-     * 获取用户Id
-     */
-    public static Long getUserId() {
-        return SecurityContextHolder.getUserId();
-    }
-
-    /**
-     * 获取用户名称
-     */
-    public static String getUserName() {
-        return SecurityContextHolder.getUserName();
-    }
-
-    /**
-     * 获取用户权限标识
-     */
-    public static String getUserType() {
-        return SecurityContextHolder.getUserType();
-    }
-
-    /**
-     * 获取租户策略源
-     */
-    public static String getSourceName() {
-        return SecurityContextHolder.getSourceName();
-    }
-
-    /**
-     * 获取用户key
-     */
-    public static String getUserKey() {
-        return SecurityContextHolder.getUserKey();
-    }
+public class SecurityUtils extends BaseSecurityUtils {
 
     /**
      * 获取企业信息
@@ -114,44 +52,6 @@ public class SecurityUtils {
      */
     public static LoginUser getLoginUser() {
         return SpringUtils.getBean(TokenService.class).getLoginUser();
-    }
-
-    /**
-     * 获取请求token
-     */
-    public static String getToken() {
-        return getToken(ServletUtils.getRequest());
-    }
-
-    /**
-     * 根据request获取请求token
-     */
-    public static String getToken(HttpServletRequest request) {
-        // 从header获取token标识
-        String token = request.getHeader(TokenConstants.AUTHENTICATION);
-        return replaceTokenPrefix(token);
-    }
-
-    /**
-     * 裁剪token前缀
-     */
-    public static String replaceTokenPrefix(String token) {
-        // 如果前端设置了令牌前缀，则裁剪掉前缀
-        return StrUtil.isNotEmpty(token) && token.startsWith(TokenConstants.PREFIX) ? token.replaceFirst(TokenConstants.PREFIX, StrUtil.EMPTY) : token;
-    }
-
-    /**
-     * 是否为空租户信息
-     */
-    public static boolean isEmptyTenant() {
-        return ObjectUtil.equals(SecurityConstants.EMPTY_TENANT_ID, getEnterpriseId());
-    }
-
-    /**
-     * 是否不为空租户信息
-     */
-    public static boolean isNotEmptyTenant() {
-        return !isEmptyTenant();
     }
 
     /**
