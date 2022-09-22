@@ -1,5 +1,7 @@
 package com.xueyi.common.security.auth;
 
+import cn.hutool.core.util.StrUtil;
+import com.xueyi.common.core.constant.basic.TenantConstants;
 import com.xueyi.common.core.exception.auth.NotLoginException;
 import com.xueyi.common.core.exception.auth.NotPermissionException;
 import com.xueyi.common.core.exception.auth.NotRoleException;
@@ -17,6 +19,7 @@ import org.springframework.util.PatternMatchUtils;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -39,17 +42,22 @@ public class AuthLogic {
      */
     public void logout() {
         String token = SecurityUtils.getToken();
-        if (token == null) {
-            return;
+        TenantConstants.AccountType accountType = Objects.requireNonNull(TenantConstants.AccountType.getByCode(SecurityUtils.getAccountType()));
+        if (StrUtil.isNotEmpty(token)) {
+            AuthUtil.verifyLoginUserExpire(token, accountType);
+            logoutByToken(token, accountType);
         }
-        logoutByToken(token);
     }
 
     /**
      * 会话注销，根据指定Token
      */
-    public void logoutByToken(String token) {
-        tokenService.delLogin(token);
+    public void logoutByToken(String token, TenantConstants.AccountType accountType) {
+        switch (accountType) {
+            case ADMIN:
+                tokenService.delLogin(token);
+                break;
+        }
     }
 
     /**
@@ -106,8 +114,12 @@ public class AuthLogic {
      *
      * @param token token
      */
-    public void verifyLoginUserExpire(String token) {
-        tokenService.verifyToken(token);
+    public void verifyLoginUserExpire(String token, TenantConstants.AccountType accountType) {
+        switch (accountType) {
+            case ADMIN:
+                tokenService.verifyToken(token);
+                break;
+        }
     }
 
     /**

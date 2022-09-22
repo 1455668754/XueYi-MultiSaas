@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import com.xueyi.auth.form.LoginBody;
 import com.xueyi.auth.form.RegisterBody;
 import com.xueyi.auth.service.SysLoginService;
+import com.xueyi.common.core.constant.basic.TenantConstants;
 import com.xueyi.common.core.utils.JwtUtils;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.security.auth.AuthUtil;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Objects;
 
 /**
  * token 控制
@@ -46,8 +48,9 @@ public class TokenController {
         String token = SecurityUtils.getToken(request);
         if (StrUtil.isNotEmpty(token)) {
             LoginUser loginUser = tokenService.getLoginUser(request);
+            String accountType = JwtUtils.getAccountType(token);
             // 删除用户缓存记录
-            AuthUtil.logoutByToken(token);
+            AuthUtil.logoutByToken(token, Objects.requireNonNull(TenantConstants.AccountType.getByCode(accountType)));
             if (ObjectUtil.isNotNull(loginUser)) {
                 String sourceName = JwtUtils.getSourceName(token);
                 Long enterpriseId = Long.valueOf(JwtUtils.getEnterpriseId(token));

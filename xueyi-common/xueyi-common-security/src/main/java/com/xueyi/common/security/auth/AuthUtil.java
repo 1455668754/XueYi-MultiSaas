@@ -1,5 +1,6 @@
 package com.xueyi.common.security.auth;
 
+import com.xueyi.common.core.constant.basic.TenantConstants;
 import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.security.annotation.RequiresRoles;
 
@@ -27,8 +28,8 @@ public class AuthUtil {
      *
      * @param token 指定token
      */
-    public static void logoutByToken(String token) {
-        authLogic.logoutByToken(token);
+    public static void logoutByToken(String token, TenantConstants.AccountType accountType) {
+        authLogic.logoutByToken(token, accountType);
     }
 
     /**
@@ -41,8 +42,8 @@ public class AuthUtil {
     /**
      * 验证当前用户有效期
      */
-    public static void verifyLoginUserExpire(String token) {
-        authLogic.verifyLoginUserExpire(token);
+    public static void verifyLoginUserExpire(String token, TenantConstants.AccountType accountType) {
+        authLogic.verifyLoginUserExpire(token, accountType);
     }
 
     /**
