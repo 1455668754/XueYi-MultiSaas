@@ -1,5 +1,6 @@
 package com.xueyi.common.security.interceptor;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.basic.TenantConstants;
@@ -12,7 +13,6 @@ import org.springframework.web.servlet.AsyncHandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Objects;
 
 /**
  * 自定义请求头拦截器，将Header数据封装到线程变量中方便获取
@@ -40,8 +40,8 @@ public class HeaderInterceptor implements AsyncHandlerInterceptor {
         SecurityContextHolder.setAccountType(ServletUtils.getHeader(request, SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode()));
 
         String token = SecurityUtils.getToken();
-        TenantConstants.AccountType accountType = Objects.requireNonNull(TenantConstants.AccountType.getByCode(SecurityUtils.getAccountType()));
-        if (StrUtil.isNotEmpty(token)) {
+        TenantConstants.AccountType accountType = TenantConstants.AccountType.getByCode(SecurityUtils.getAccountType());
+        if (StrUtil.isNotEmpty(token) && ObjectUtil.isNotNull(accountType)) {
             AuthUtil.verifyLoginUserExpire(token, accountType);
         }
         return true;

@@ -1,11 +1,11 @@
 package com.xueyi.common.security.auth;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.TenantConstants;
 import com.xueyi.common.core.exception.auth.NotLoginException;
 import com.xueyi.common.core.exception.auth.NotPermissionException;
 import com.xueyi.common.core.exception.auth.NotRoleException;
-import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.core.utils.SpringUtils;
 import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.security.annotation.Logical;
@@ -13,13 +13,13 @@ import com.xueyi.common.security.annotation.RequiresLogin;
 import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.security.annotation.RequiresRoles;
 import com.xueyi.common.security.service.TokenService;
+import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.system.api.model.DataScope;
 import com.xueyi.system.api.model.LoginUser;
 import org.springframework.util.PatternMatchUtils;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -42,8 +42,8 @@ public class AuthLogic {
      */
     public void logout() {
         String token = SecurityUtils.getToken();
-        TenantConstants.AccountType accountType = Objects.requireNonNull(TenantConstants.AccountType.getByCode(SecurityUtils.getAccountType()));
-        if (StrUtil.isNotEmpty(token)) {
+        TenantConstants.AccountType accountType = TenantConstants.AccountType.getByCode(SecurityUtils.getAccountType());
+        if (StrUtil.isNotEmpty(token) && ObjectUtil.isNotNull(accountType)) {
             AuthUtil.verifyLoginUserExpire(token, accountType);
             logoutByToken(token, accountType);
         }
@@ -53,10 +53,8 @@ public class AuthLogic {
      * 会话注销，根据指定Token
      */
     public void logoutByToken(String token, TenantConstants.AccountType accountType) {
-        switch (accountType) {
-            case ADMIN:
-                tokenService.delLogin(token);
-                break;
+        if (accountType == TenantConstants.AccountType.ADMIN) {
+            tokenService.delLogin(token);
         }
     }
 
@@ -115,10 +113,8 @@ public class AuthLogic {
      * @param token token
      */
     public void verifyLoginUserExpire(String token, TenantConstants.AccountType accountType) {
-        switch (accountType) {
-            case ADMIN:
-                tokenService.verifyToken(token);
-                break;
+        if (accountType == TenantConstants.AccountType.ADMIN) {
+            tokenService.verifyToken(token);
         }
     }
 

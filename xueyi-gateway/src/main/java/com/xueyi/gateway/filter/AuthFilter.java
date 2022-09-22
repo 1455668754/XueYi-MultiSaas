@@ -110,12 +110,10 @@ public class AuthFilter implements GlobalFilter, Ordered {
      * 获取缓存key
      */
     private String getTokenKey(String token, String accountType) {
-        switch (Objects.requireNonNull(TenantConstants.AccountType.getByCode(accountType))) {
-            case ADMIN:
-                return CacheConstants.LoginTokenType.ADMIN.getCode() + token;
-            default:
-                return StrUtil.EMPTY;
+        if (Objects.requireNonNull(TenantConstants.AccountType.getByCode(accountType)) == TenantConstants.AccountType.ADMIN) {
+            return CacheConstants.LoginTokenType.ADMIN.getCode() + token;
         }
+        return StrUtil.EMPTY;
     }
 
     /**

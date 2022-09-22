@@ -322,7 +322,6 @@ public class TenantLineInnerInterceptor extends JsqlParserSupport implements Inn
                 this.processFunction((Function) selectExpressionItem.getExpression());
             }
         }
-
     }
 
     protected void processFunction(Function function) {

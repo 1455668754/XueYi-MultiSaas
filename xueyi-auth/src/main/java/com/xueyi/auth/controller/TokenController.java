@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Objects;
 
 /**
  * token 控制
@@ -50,7 +49,7 @@ public class TokenController {
             LoginUser loginUser = tokenService.getLoginUser(request);
             String accountType = JwtUtils.getAccountType(token);
             // 删除用户缓存记录
-            AuthUtil.logoutByToken(token, Objects.requireNonNull(TenantConstants.AccountType.getByCode(accountType)));
+            AuthUtil.logoutByToken(token, TenantConstants.AccountType.getByCode(accountType));
             if (ObjectUtil.isNotNull(loginUser)) {
                 String sourceName = JwtUtils.getSourceName(token);
                 Long enterpriseId = Long.valueOf(JwtUtils.getEnterpriseId(token));
