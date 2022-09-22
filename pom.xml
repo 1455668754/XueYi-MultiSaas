@@ -29,7 +29,7 @@
         <swagger.doc.version>1.6.11</swagger.doc.version>
         <tobato.version>1.27.2</tobato.version>
         <kaptcha.version>2.3.2</kaptcha.version>
-        <pagehelper.version>5.3.0</pagehelper.version>
+        <pagehelper.version>5.3.2</pagehelper.version>
         <druid.version>1.2.11</druid.version>
         <dynamic-ds.version>3.5.2</dynamic-ds.version>
         <commons.io.version>2.11.0</commons.io.version>
