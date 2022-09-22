@@ -12,6 +12,7 @@ import com.xueyi.common.web.entity.service.IBaseService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
@@ -43,6 +44,24 @@ public abstract class BaseController<Q extends BaseEntity, D extends BaseEntity,
         List<D> list = baseService.selectListScope(query);
         ExcelUtil<D> util = new ExcelUtil<>(getDClass());
         util.exportExcel(response, list, StrUtil.format("{}数据", getNodeName()));
+    }
+
+    /**
+     * 导入
+     */
+    public AjaxResult importData(MultipartFile file, String importType) throws Exception {
+        BaseConstants.ImportType importTypeEnum = BaseConstants.ImportType.getByCode(importType);
+        ExcelUtil<D> util = new ExcelUtil<>(getDClass());
+        List<D> list = util.importExcel(file.getInputStream());
+        return AjaxResult.success();
+    }
+
+    /**
+     * 导入模板下载
+     */
+    public void importTemplate(HttpServletResponse response) {
+        ExcelUtil<D> util = new ExcelUtil<>(getDClass());
+        util.importTemplateExcel(response, StrUtil.format("{}数据", getNodeName()));
     }
 
     /**

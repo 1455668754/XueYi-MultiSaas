@@ -187,4 +187,37 @@ public class BaseConstants {
             return info;
         }
     }
+
+    /** 导入类型 */
+    public enum ImportType {
+
+        DEFAULT("Y", "默认 - 新增&&修改"),
+        ONLY_INSERT("Y", "仅新增"),
+        ONLY_UPDATE("N", "仅修改");
+
+        private final String code;
+        private final String info;
+
+        ImportType(String code, String info) {
+            this.code = code;
+            this.info = info;
+        }
+
+        public static ImportType getByCode(String code) {
+            for (ImportType accountType : ImportType.values()) {
+                if (StrUtil.equals(code, accountType.code)) {
+                    return accountType;
+                }
+            }
+            return DEFAULT;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public String getInfo() {
+            return info;
+        }
+    }
 }
