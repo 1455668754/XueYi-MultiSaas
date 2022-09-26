@@ -43,26 +43,26 @@
   </BasicModal>
 </template>
 <script lang="ts">
-  import { defineComponent, reactive, ref, toRefs, unref, computed, PropType } from 'vue';
-  import { Upload, Alert } from 'ant-design-vue';
-  import { BasicModal, useModalInner } from '/@/components/Modal';
-  //   import { BasicTable, useTable } from '/@/components/Table';
-  // hooks
-  import { useUploadType } from './useUpload';
-  import { useMessage } from '/@/hooks/web/useMessage';
-  //   types
-  import { FileItem, UploadResultStatus } from './typing';
-  import { basicProps } from './props';
-  import { createTableColumns, createActionColumn } from './data';
-  // utils
-  import { checkImgType, getBase64WithFile } from './helper';
-  import { buildUUID } from '/@/utils/uuid';
-  import { isFunction } from '/@/utils/is';
-  import { warn } from '/@/utils/log';
-  import FileList from './FileList.vue';
-  import { useI18n } from '/@/hooks/web/useI18n';
+import {computed, defineComponent, PropType, reactive, ref, toRefs, unref} from 'vue';
+import {Alert, Upload} from 'ant-design-vue';
+import {BasicModal, useModalInner} from '/@/components/Modal';
+//   import { BasicTable, useTable } from '/@/components/Table';
+// hooks
+import {useUploadType} from './useUpload';
+import {useMessage} from '/@/hooks/web/useMessage';
+//   types
+import {FileItem, UploadResultStatus} from './typing';
+import {basicProps} from './props';
+import {createActionColumn, createTableColumns} from './data';
+// utils
+import {checkImgType, getBase64WithFile} from './helper';
+import {buildUUID} from '/@/utils/uuid';
+import {isFunction} from '/@/utils/is';
+import {warn} from '/@/utils/log';
+import FileList from './FileList.vue';
+import {useI18n} from '/@/hooks/web/useI18n';
 
-  export default defineComponent({
+export default defineComponent({
     components: { BasicModal, Upload, Alert, FileList },
     props: {
       ...basicProps,
@@ -182,18 +182,18 @@
           item.status = UploadResultStatus.UPLOADING;
           const { data } = await props.api?.(
             {
-              data: {
-                ...(props.uploadParams || {}),
-              },
+              ...props.uploadParams,
               file: item.file,
               name: props.name,
               filename: props.filename,
             },
             function onUploadProgress(progressEvent: ProgressEvent) {
-              const complete = ((progressEvent.loaded / progressEvent.total) * 100) | 0;
-              item.percent = complete;
+              item.percent = ((progressEvent.loaded / progressEvent.total) * 100) | 0;
             },
-          );
+          ).then((res) => {
+            if (res?.data?.code === 200) createMessage.success(res?.data?.msg || '');
+            else createMessage.warning(res?.data?.msg || '');
+          });
           item.status = UploadResultStatus.SUCCESS;
           item.responseData = data;
           return {
