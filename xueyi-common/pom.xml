@@ -13,6 +13,7 @@
         <module>xueyi-common-web</module>
         <module>xueyi-common-core</module>
         <module>xueyi-common-redis</module>
+        <module>xueyi-common-seata</module>
         <module>xueyi-common-swagger</module>
         <module>xueyi-common-security</module>
         <module>xueyi-common-datascope</module>

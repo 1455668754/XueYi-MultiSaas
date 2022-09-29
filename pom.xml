@@ -237,6 +237,13 @@
                 <version>${xueyi.version}</version>
             </dependency>
 
+            <!-- 分布式事务 -->
+            <dependency>
+                <groupId>com.xueyi</groupId>
+                <artifactId>xueyi-common-seata</artifactId>
+                <version>${xueyi.version}</version>
+            </dependency>
+
             <!-- 系统接口 -->
             <dependency>
                 <groupId>com.xueyi</groupId>
