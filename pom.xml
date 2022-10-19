@@ -39,7 +39,7 @@
         <commons-collections.version>3.2.2</commons-collections.version>
         <hutool.version>5.8.7</hutool.version>
         <jjwt.version>0.9.1</jjwt.version>
-        <mapstruct.version>1.5.2.Final</mapstruct.version>
+        <mapstruct.version>1.5.3.Final</mapstruct.version>
         <transmittable-thread-local.version>2.13.2</transmittable-thread-local.version>
     </properties>
 
