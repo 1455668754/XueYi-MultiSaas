@@ -1,6 +1,10 @@
 import { UserIM } from '/@/model/system';
 import { defHttp } from '/@/utils/http/axios';
 import { UploadIM } from '/@/model/sys';
+import { UploadFileParams } from '/#/axios';
+import { useGlobSetting } from '/@/hooks/setting';
+
+const { uploadUrl = '' } = useGlobSetting();
 
 enum Api {
   GET_USER_PROFILE = '/system/user/profile',
@@ -61,13 +65,12 @@ export const resetUserPwdApi = (oldPassword: string, newPassword: string) =>
 
 /** 用户头像上传 */
 export const editAvatarApi = (
-  // params: RequestUploadFileOptions,
-  params: any,
+  params: UploadFileParams,
   onUploadProgress: (progressEvent: ProgressEvent) => void,
 ) =>
   defHttp.uploadFile<UploadIM>(
     {
-      url: Api.RESET_USER_AVATAR,
+      url: uploadUrl + Api.RESET_USER_AVATAR,
       onUploadProgress,
     },
     params,
