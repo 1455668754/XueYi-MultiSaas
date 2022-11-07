@@ -22,7 +22,7 @@
             <groupId>com.xueyi</groupId>
             <artifactId>xueyi-common-core</artifactId>
         </dependency>
-        
+
     </dependencies>
 
 </project>

@@ -3,6 +3,8 @@ package com.xueyi.system.api.model;
 import com.xueyi.common.core.constant.basic.TenantConstants;
 import com.xueyi.system.api.model.base.BaseLoginUser;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Map;
 
@@ -11,7 +13,9 @@ import java.util.Map;
  *
  * @author xueyi
  */
-public class LoginUser  extends BaseLoginUser<SysUserDto> {
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class LoginUser extends BaseLoginUser<SysUserDto> {
 
     private static final long serialVersionUID = 1L;
 
@@ -21,21 +25,8 @@ public class LoginUser  extends BaseLoginUser<SysUserDto> {
     /** 路由路径映射列表 */
     private Map<String, String> routeURL;
 
-    public DataScope getScope() {
-        return scope;
-    }
-
-    public void setScope(DataScope scope) {
-        this.scope = scope;
-    }
-
-    public Map<String, String> getRouteURL() {
-        return routeURL;
-    }
-
-    public void setRouteURL(Map<String, String> routeURL) {
-        this.routeURL = routeURL;
-    }
+    /** 账户类型 */
+    private TenantConstants.AccountType accountType = TenantConstants.AccountType.ADMIN;
 
     /** 初始化权限范围 */
     public DataScope getDataScope() {
@@ -51,13 +42,4 @@ public class LoginUser  extends BaseLoginUser<SysUserDto> {
         routeURL = null;
     }
 
-    @Override
-    public TenantConstants.AccountType getAccountType() {
-        return accountType;
-    }
-
-    @Override
-    public void setAccountType(TenantConstants.AccountType accountType) {
-        this.accountType = accountType;
-    }
 }

@@ -39,6 +39,7 @@
         <commons-collections.version>3.2.2</commons-collections.version>
         <hutool.version>5.8.7</hutool.version>
         <jjwt.version>0.9.1</jjwt.version>
+        <lombok.version>1.18.24</lombok.version>
         <mapstruct.version>1.5.3.Final</mapstruct.version>
         <transmittable-thread-local.version>2.13.2</transmittable-thread-local.version>
     </properties>
@@ -93,6 +94,13 @@
                 <groupId>com.github.pagehelper</groupId>
                 <artifactId>pagehelper</artifactId>
                 <version>${pagehelper.version}</version>
+            </dependency>
+
+            <!-- lombok -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
             </dependency>
 
             <!-- mapstruct 转换器 -->
@@ -302,6 +310,11 @@
                             <groupId>org.mapstruct</groupId>
                             <artifactId>mapstruct-processor</artifactId>
                             <version>${mapstruct.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
                         </path>
                     </annotationProcessorPaths>
                     <encoding>${project.build.sourceEncoding}</encoding>
