@@ -3,14 +3,16 @@ package com.xueyi.gen.domain.dto;
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.gen.domain.po.GenTableColumnPo;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * 业务字段 数据传输对象
  *
  * @author xueyi
  */
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class GenTableColumnDto extends GenTableColumnPo {
 
     private static final long serialVersionUID = 1L;
@@ -18,67 +20,59 @@ public class GenTableColumnDto extends GenTableColumnPo {
     /** 字典名称 */
     private String dictName;
 
-    public String getDictName() {
-        return dictName;
-    }
-
-    public void setDictName(String dictName) {
-        this.dictName = dictName;
-    }
-
     public boolean isPk() {
-        return getPk();
+        return getIsPk();
     }
 
     public boolean isList() {
-        return getList();
+        return getIsList();
     }
 
     public boolean isInsert() {
-        return getInsert();
+        return getIsInsert();
     }
 
     public boolean isView() {
-        return getView();
+        return getIsView();
     }
 
     public boolean isEdit() {
-        return getEdit();
+        return getIsEdit();
     }
 
     public boolean isRequired() {
-        return getRequired();
+        return getIsRequired();
     }
 
     public boolean isQuery() {
-        return getQuery();
+        return getIsQuery();
     }
 
     public boolean isImport() {
-        return getImport();
+        return getIsImport();
     }
 
     public boolean isExport() {
-        return getExport();
+        return getIsExport();
     }
 
     public boolean isHide() {
-        return getHide();
+        return getIsHide();
     }
 
     public boolean isCover() {
-        return getCover();
+        return getIsCover();
     }
 
     public String readConverterExp() {
         String remarks = StrUtil.subBetween(this.getComment(), "（", "）");
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         if (StringUtils.isNotEmpty(remarks)) {
             for (String value : remarks.split(" ")) {
                 if (StringUtils.isNotEmpty(value)) {
                     Object startStr = value.subSequence(0, 1);
                     String endStr = value.substring(1);
-                    sb.append("").append(startStr).append("=").append(endStr).append(",");
+                    sb.append(startStr).append("=").append(endStr).append(",");
                 }
             }
             return sb.deleteCharAt(sb.length() - 1).toString();
@@ -91,27 +85,4 @@ public class GenTableColumnDto extends GenTableColumnPo {
         return StrUtil.isNotEmpty(this.getComment()) ? this.getComment().replaceAll("(?:\\（)[^\\(\\)]*(?:\\）)", StrUtil.EMPTY) : this.getComment();
     }
 
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-                .append("id", getId())
-                .append("name", getName())
-                .append("comment", getComment())
-                .append("tableId", getTableId())
-                .append("type", getType())
-                .append("javaType", getJavaType())
-                .append("javaField", getJavaField())
-                .append("isPk", getPk())
-                .append("isIncrement", getIncrement())
-                .append("isRequired", getRequired())
-                .append("isInsert", getInsert())
-                .append("isEdit", getEdit())
-                .append("isList", getList())
-                .append("isQuery", getQuery())
-                .append("isUnique", getUnique())
-                .append("queryType", getQueryType())
-                .append("htmlType", getHtmlType())
-                .append("dictType", getDictType())
-                .toString();
-    }
 }

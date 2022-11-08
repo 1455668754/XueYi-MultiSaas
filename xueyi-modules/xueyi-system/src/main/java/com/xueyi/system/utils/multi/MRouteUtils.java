@@ -143,7 +143,7 @@ public class MRouteUtils {
         meta.setHideMenu(StrUtil.equals(DictConstants.DicShowHide.HIDE.getCode(), menu.getHideMenu()));
         meta.setHideChildrenInMenu(StrUtil.equals(DictConstants.DicShowHide.HIDE.getCode(), menu.getHideChildren()));
         if (menu.isExternalLinks())
-            meta.setLink(true);
+            meta.setIsLink(true);
         meta.setOrderNo(menu.getSort());
         meta.setIgnoreRoute(StrUtil.equals(DictConstants.DicYesNo.YES.getCode(), menu.getIgnoreRoute()));
         meta.setHidePathForChildren(StrUtil.equals(DictConstants.DicShowHide.HIDE.getCode(), menu.getHidePathForChildren()));

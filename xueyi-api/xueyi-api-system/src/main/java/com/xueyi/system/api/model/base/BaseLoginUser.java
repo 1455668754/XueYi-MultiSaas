@@ -15,6 +15,8 @@ import java.io.Serializable;
 @Data
 public class BaseLoginUser<User> implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     /** 用户唯一标识 */
     protected String token;
 

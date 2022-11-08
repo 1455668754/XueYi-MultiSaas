@@ -18,6 +18,6 @@ public class TBaseEntity extends BaseEntity {
 
     /** 租户Id */
     @TableField(exist = false)
-    private Long enterpriseId;
+    protected Long enterpriseId;
 
 }

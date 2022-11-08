@@ -1,6 +1,8 @@
 package com.xueyi.system.api.log.domain.query;
 
 import com.xueyi.system.api.log.domain.po.SysOperateLogPo;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
 
@@ -9,6 +11,8 @@ import java.time.LocalDateTime;
  *
  * @author xueyi
  */
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class SysOperateLogQuery extends SysOperateLogPo {
 
     private static final long serialVersionUID = 1L;
@@ -18,21 +22,5 @@ public class SysOperateLogQuery extends SysOperateLogPo {
 
     /** 操作时间 - 终止 */
     private LocalDateTime operateTimeEnd;
-
-    public LocalDateTime getOperateTimeStart() {
-        return operateTimeStart;
-    }
-
-    public void setOperateTimeStart(LocalDateTime operateTimeStart) {
-        this.operateTimeStart = operateTimeStart;
-    }
-
-    public LocalDateTime getOperateTimeEnd() {
-        return operateTimeEnd;
-    }
-
-    public void setOperateTimeEnd(LocalDateTime operateTimeEnd) {
-        this.operateTimeEnd = operateTimeEnd;
-    }
 
 }

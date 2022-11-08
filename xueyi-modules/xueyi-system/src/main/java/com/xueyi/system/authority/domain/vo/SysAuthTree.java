@@ -8,8 +8,9 @@ import com.xueyi.common.core.web.entity.base.BasisEntity;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
 import com.xueyi.system.organize.domain.vo.SysOrganizeTree;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -19,6 +20,9 @@ import java.util.List;
  *
  * @author xueyi
  */
+@Data
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class SysAuthTree extends BasisEntity {
 
     /** Id */
@@ -40,8 +44,6 @@ public class SysAuthTree extends BasisEntity {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<SysOrganizeTree> children;
 
-    public SysAuthTree() {}
-
     /**
      * 模块转换
      */
@@ -62,65 +64,5 @@ public class SysAuthTree extends BasisEntity {
         this.label = menu.getTitle();
         this.status = menu.getStatus();
         this.type = AuthorityConstants.AuthorityType.MENU.getCode();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
-
-    public String getLabel() {
-        return label;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public List<SysOrganizeTree> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<SysOrganizeTree> children) {
-        this.children = children;
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-                .append("id", getId())
-                .append("parentId", getParentId())
-                .append("label", getLabel())
-                .append("status", getStatus())
-                .append("type", getType())
-                .append("children", getChildren())
-                .toString();
     }
 }

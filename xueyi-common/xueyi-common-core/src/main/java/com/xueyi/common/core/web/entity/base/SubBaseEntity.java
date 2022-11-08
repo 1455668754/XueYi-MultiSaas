@@ -1,6 +1,8 @@
 package com.xueyi.common.core.web.entity.base;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
@@ -10,17 +12,12 @@ import java.util.List;
  * @param <S> SubDto
  * @author xueyi
  */
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class SubBaseEntity<S> extends BaseEntity {
 
     /** 子数据集合 */
     @TableField(exist = false)
-    private List<S> subList;
+    protected List<S> subList;
 
-    public List<S> getSubList() {
-        return subList;
-    }
-
-    public void setSubList(List<S> subList) {
-        this.subList = subList;
-    }
 }

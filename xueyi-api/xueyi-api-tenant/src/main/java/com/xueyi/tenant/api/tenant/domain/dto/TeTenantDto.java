@@ -3,14 +3,16 @@ package com.xueyi.tenant.api.tenant.domain.dto;
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.tenant.api.tenant.domain.po.TeTenantPo;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * 租户 数据传输对象
  *
  * @author xueyi
  */
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class TeTenantDto extends TeTenantPo {
 
     private static final long serialVersionUID = 1L;
@@ -20,22 +22,6 @@ public class TeTenantDto extends TeTenantPo {
 
     /** 权限Ids */
     private Long[] authIds;
-
-    public TeStrategyDto getStrategy() {
-        return strategy;
-    }
-
-    public void setStrategy(TeStrategyDto strategy) {
-        this.strategy = strategy;
-    }
-
-    public Long[] getAuthIds() {
-        return authIds;
-    }
-
-    public void setAuthIds(Long[] authIds) {
-        this.authIds = authIds;
-    }
 
     /** 校验是否非租管租户 */
     public boolean isNotAdmin() {
@@ -52,29 +38,4 @@ public class TeTenantDto extends TeTenantPo {
         return StrUtil.equals(AuthorityConstants.TenantType.ADMIN.getCode(), isLessor);
     }
 
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-                .append("id", getId())
-                .append("strategyId", getStrategyId())
-                .append("strategy", getStrategy())
-                .append("name", getName())
-                .append("systemName", getSystemName())
-                .append("nick", getNick())
-                .append("logo", getLogo())
-                .append("nameFrequency", getNameFrequency())
-                .append("isLessor", getIsLessor())
-                .append("sort", getSort())
-                .append("status", getStatus())
-                .append("remark", getRemark())
-                .append("createBy", getCreateBy())
-                .append("createName", getCreateName())
-                .append("createTime", getCreateTime())
-                .append("updateBy", getUpdateBy())
-                .append("updateName", getUpdateName())
-                .append("updateTime", getUpdateTime())
-                .append("isDefault", getIsDefault())
-                .append("authIds", getAuthIds())
-                .toString();
-    }
 }

@@ -21,20 +21,20 @@ public class BasisEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /** Id */
-    @TableId("id")
+    @TableId
     @NotNull(message = "id不能为空", groups = {V_E.class})
-    private Long id;
+    protected Long id;
 
     /** 数据源名称 */
     @TableField(exist = false)
-    private String sourceName;
+    protected String sourceName;
 
     /** 操作类型 */
     @TableField(exist = false)
-    private BaseConstants.Operate operate;
+    protected BaseConstants.Operate operate;
 
     /** 请求参数 */
     @TableField(exist = false)
-    private Map<String, Object> params;
+    protected Map<String, Object> params;
 
 }

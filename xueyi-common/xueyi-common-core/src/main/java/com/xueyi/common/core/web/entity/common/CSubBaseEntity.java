@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.web.entity.base.SubBaseEntity;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * SubBase 混合基类
@@ -12,21 +14,15 @@ import com.xueyi.common.core.web.entity.base.SubBaseEntity;
  * @param <S> SubDto
  * @author xueyi
  */
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class CSubBaseEntity<S> extends SubBaseEntity<S> {
 
     private static final long serialVersionUID = 1L;
 
     /** 公共数据（Y是 N否） */
-    @TableField(value = "is_common", updateStrategy = FieldStrategy.NEVER)
-    private String isCommon;
-
-    public String getIsCommon() {
-        return isCommon;
-    }
-
-    public void setIsCommon(String isCommon) {
-        this.isCommon = isCommon;
-    }
+    @TableField(updateStrategy = FieldStrategy.NEVER)
+    protected String isCommon;
 
     /** 校验是否为公共数据 */
     public boolean isCommon(){

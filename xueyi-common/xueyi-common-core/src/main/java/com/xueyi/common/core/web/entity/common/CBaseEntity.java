@@ -20,8 +20,8 @@ public class CBaseEntity extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /** 公共数据（Y是 N否） */
-    @TableField(value = "is_common", updateStrategy = FieldStrategy.NEVER)
-    private String isCommon;
+    @TableField(updateStrategy = FieldStrategy.NEVER)
+    protected String isCommon;
 
     /** 校验是否为公共数据 */
     public boolean isCommon(){

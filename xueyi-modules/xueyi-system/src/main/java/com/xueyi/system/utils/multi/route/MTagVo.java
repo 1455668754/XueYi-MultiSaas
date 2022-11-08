@@ -1,10 +1,13 @@
 package com.xueyi.system.utils.multi.route;
 
+import lombok.Data;
+
 /**
  * 菜单标签配置信息
  *
  * @author xueyi
  */
+@Data
 public class MTagVo {
 
     /** 为true则显示小圆点 */
@@ -16,27 +19,4 @@ public class MTagVo {
     /** 类型 'error' | 'primary' | 'warn' | 'success' */
     private String type;
 
-    public Boolean getDot() {
-        return dot;
-    }
-
-    public void setDot(Boolean dot) {
-        this.dot = dot;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
 }

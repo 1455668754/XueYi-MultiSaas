@@ -1,11 +1,10 @@
 package com.xueyi.system.api.model;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
+import lombok.Data;
 
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -13,6 +12,7 @@ import java.util.Set;
  *
  * @author xueyi
  */
+@Data
 public class DataScope implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -49,94 +49,6 @@ public class DataScope implements Serializable {
 
     /** 权限控制 - 用户 */
     private Set<Long> userScope;
-
-    public Long getEnterpriseId() {
-        return enterpriseId;
-    }
-
-    public void setEnterpriseId(Long enterpriseId) {
-        this.enterpriseId = enterpriseId;
-    }
-
-    public String getIsLessor() {
-        return isLessor;
-    }
-
-    public void setIsLessor(String isLessor) {
-        this.isLessor = isLessor;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getUserType() {
-        return userType;
-    }
-
-    public void setUserType(String userType) {
-        this.userType = userType;
-    }
-
-    public Set<String> getPermissions() {
-        return permissions;
-    }
-
-    public void setPermissions(Set<String> permissions) {
-        this.permissions = permissions;
-    }
-
-    public Set<String> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<String> roles) {
-        this.roles = roles;
-    }
-
-    public Set<Long> getRoleIds() {
-        return roleIds;
-    }
-
-    public void setRoleIds(Set<Long> roleIds) {
-        this.roleIds = roleIds;
-    }
-
-    public String getDataScope() {
-        return dataScope;
-    }
-
-    public void setDataScope(String dataScope) {
-        this.dataScope = dataScope;
-    }
-
-    public Set<Long> getDeptScope() {
-        return CollUtil.isEmpty(deptScope) ? new HashSet<>() : deptScope;
-    }
-
-    public void setDeptScope(Set<Long> deptScope) {
-        this.deptScope = deptScope;
-    }
-
-    public Set<Long> getPostScope() {
-        return CollUtil.isEmpty(postScope) ? new HashSet<>() : postScope;
-    }
-
-    public void setPostScope(Set<Long> postScope) {
-        this.postScope = postScope;
-    }
-
-    public Set<Long> getUserScope() {
-        return CollUtil.isEmpty(userScope) ? new HashSet<>() : userScope;
-    }
-
-    public void setUserScope(Set<Long> userScope) {
-        this.userScope = userScope;
-    }
 
     public boolean isLessor() {
         return StrUtil.equals(AuthorityConstants.TenantType.ADMIN.getCode(), isLessor);

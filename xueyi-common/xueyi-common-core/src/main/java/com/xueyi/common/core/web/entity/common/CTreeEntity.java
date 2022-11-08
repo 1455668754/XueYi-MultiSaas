@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.web.entity.base.TreeEntity;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * Tree 混合基类
@@ -12,21 +14,15 @@ import com.xueyi.common.core.web.entity.base.TreeEntity;
  * @param <D> Dto
  * @author xueyi
  */
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class CTreeEntity<D> extends TreeEntity<D> {
 
     private static final long serialVersionUID = 1L;
 
     /** 公共数据（Y是 N否） */
-    @TableField(value = "is_common", updateStrategy = FieldStrategy.NEVER)
-    private String isCommon;
-
-    public String getIsCommon() {
-        return isCommon;
-    }
-
-    public void setIsCommon(String isCommon) {
-        this.isCommon = isCommon;
-    }
+    @TableField(updateStrategy = FieldStrategy.NEVER)
+    protected String isCommon;
 
     /** 校验是否为公共数据 */
     public boolean isCommon(){

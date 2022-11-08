@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.xueyi.common.core.constant.system.OrganizeConstants;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -14,6 +14,8 @@ import java.util.List;
  *
  * @author xueyi
  */
+@Data
+@NoArgsConstructor
 public class SysOrganizeTree {
 
     /** Id */
@@ -34,9 +36,6 @@ public class SysOrganizeTree {
     /** 子部门/岗位 */
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<SysOrganizeTree> children;
-
-    public SysOrganizeTree() {
-    }
 
     /**
      * 部门转换
@@ -60,63 +59,4 @@ public class SysOrganizeTree {
         this.type = OrganizeConstants.OrganizeType.POST.getCode();
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
-
-    public String getLabel() {
-        return label;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public List<SysOrganizeTree> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<SysOrganizeTree> children) {
-        this.children = children;
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-                .append("id", getId())
-                .append("parentId", getParentId())
-                .append("label", getLabel())
-                .append("status", getStatus())
-                .append("type", getType())
-                .append("children", getChildren())
-                .toString();
-    }
 }

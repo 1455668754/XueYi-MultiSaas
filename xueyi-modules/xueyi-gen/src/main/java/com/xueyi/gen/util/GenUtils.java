@@ -135,23 +135,23 @@ public class GenUtils {
 
         // 插入字段（默认除必须移除的参数外所有字段都需要插入）
         boolean mustCheck = arraysContains(GenConfig.getEntity().getMustHide(), javaField) || column.isPk();
-        column.setInsert(!(arraysContains(GenConfig.getOperate().getNotInsert(), javaField) || mustCheck));
+        column.setIsInsert(!(arraysContains(GenConfig.getOperate().getNotInsert(), javaField) || mustCheck));
         // 查看字段
-        column.setView(!(arraysContains(GenConfig.getOperate().getNotView(), javaField) || mustCheck));
+        column.setIsView(!(arraysContains(GenConfig.getOperate().getNotView(), javaField) || mustCheck));
         // 编辑字段
-        column.setEdit(!(arraysContains(GenConfig.getOperate().getNotEdit(), javaField) || mustCheck));
+        column.setIsEdit(!(arraysContains(GenConfig.getOperate().getNotEdit(), javaField) || mustCheck));
         // 列表字段
-        column.setList(!(arraysContains(GenConfig.getOperate().getNotList(), javaField) || mustCheck));
+        column.setIsList(!(arraysContains(GenConfig.getOperate().getNotList(), javaField) || mustCheck));
         // 查询字段
-        column.setQuery(!(arraysContains(GenConfig.getOperate().getNotQuery(), javaField) || mustCheck));
+        column.setIsQuery(!(arraysContains(GenConfig.getOperate().getNotQuery(), javaField) || mustCheck));
         // 导入字段
-        column.setImport(!(arraysContains(GenConfig.getOperate().getNotImport(), javaField) || mustCheck));
+        column.setIsImport(!(arraysContains(GenConfig.getOperate().getNotImport(), javaField) || mustCheck));
         // 导出字段
-        column.setExport(!(arraysContains(GenConfig.getOperate().getNotExport(), javaField) || mustCheck));
+        column.setIsExport(!(arraysContains(GenConfig.getOperate().getNotExport(), javaField) || mustCheck));
         // 隐藏字段
-        column.setHide(arraysContains(GenConfig.getEntity().getMustHide(), javaField));
+        column.setIsHide(arraysContains(GenConfig.getEntity().getMustHide(), javaField));
         // 覆盖字段（默认无需覆盖字段）
-        column.setCover(false);
+        column.setIsCover(false);
 
         // 特殊指定
         GenConstants.GenField field = GenConstants.GenField.getValue(javaField);
@@ -221,67 +221,67 @@ public class GenUtils {
                 case ID:
                     if (!(StrUtil.equals(column.getJavaType(), GenConstants.JavaType.LONG.getCode())
                             && StrUtil.equals(column.getName(), GenConstants.GenField.ID.getKey()))) {
-                        column.setCover(true);
+                        column.setIsCover(true);
                     }
                     break;
                 case NAME:
                     if (!(StrUtil.equals(column.getJavaType(), GenConstants.JavaType.STRING.getCode())
                             && StrUtil.equals(column.getName(), GenConstants.GenField.NAME.getKey())
                             && StrUtil.equals(column.getQueryType(), GenConstants.QueryType.LIKE.getCode()))) {
-                        column.setCover(true);
+                        column.setIsCover(true);
                     }
                     break;
                 case STATUS:
                     if (!(StrUtil.equals(column.getJavaType(), GenConstants.JavaType.STRING.getCode())
                             && StrUtil.equals(column.getName(), GenConstants.GenField.STATUS.getKey())
                             && StrUtil.contains(column.getComment(), GenConstants.GenCheck.NORMAL_DISABLE.getInfo()))) {
-                        column.setCover(true);
+                        column.setIsCover(true);
                     }
                     break;
                 case SORT:
                     if (!(StrUtil.equals(column.getJavaType(), GenConstants.JavaType.INTEGER.getCode())
                             && StrUtil.equals(column.getName(), GenConstants.GenField.SORT.getKey()))) {
-                        column.setCover(true);
+                        column.setIsCover(true);
                     }
                     break;
                 case PARENT_ID:
                     if (!(StrUtil.equals(column.getJavaType(), GenConstants.JavaType.LONG.getCode())
                             && StrUtil.equals(column.getName(), GenConstants.GenField.PARENT_ID.getKey()))) {
-                        column.setCover(true);
+                        column.setIsCover(true);
                     }
                     break;
                 case ANCESTORS:
                     if (!(StrUtil.equals(column.getJavaType(), GenConstants.JavaType.STRING.getCode())
                             && StrUtil.equals(column.getName(), GenConstants.GenField.ANCESTORS.getKey()))) {
-                        column.setCover(true);
+                        column.setIsCover(true);
                     }
                     break;
                 case REMARK:
                     if (!(StrUtil.equals(column.getJavaType(), GenConstants.JavaType.STRING.getCode())
                             && StrUtil.equals(column.getName(), GenConstants.GenField.REMARK.getKey()))) {
-                        column.setCover(true);
+                        column.setIsCover(true);
                     }
                     break;
                 default:
-                    column.setCover(false);
+                    column.setIsCover(false);
             }
         }
         // 校验是否需要隐藏
         boolean isMustHide = StrUtil.equalsAny(column.getName(), GenConfig.getEntity().getMustHide());
         if (column.isHide() || isMustHide) {
             if (isMustHide) {
-                column.setHide(true);
-                column.setCover(false);
+                column.setIsHide(true);
+                column.setIsCover(false);
             }
-            column.setView(false);
-            column.setInsert(false);
-            column.setEdit(false);
-            column.setImport(false);
-            column.setExport(false);
-            column.setUnique(false);
-            column.setRequired(false);
-            column.setList(false);
-            column.setQuery(false);
+            column.setIsView(false);
+            column.setIsInsert(false);
+            column.setIsEdit(false);
+            column.setIsImport(false);
+            column.setIsExport(false);
+            column.setIsUnique(false);
+            column.setIsRequired(false);
+            column.setIsList(false);
+            column.setIsQuery(false);
         }
     }
 

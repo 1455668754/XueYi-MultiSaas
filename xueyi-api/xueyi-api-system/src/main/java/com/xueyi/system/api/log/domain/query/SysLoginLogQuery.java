@@ -1,6 +1,8 @@
 package com.xueyi.system.api.log.domain.query;
 
 import com.xueyi.system.api.log.domain.po.SysLoginLogPo;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
 
@@ -9,6 +11,8 @@ import java.time.LocalDateTime;
  *
  * @author xueyi
  */
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class SysLoginLogQuery extends SysLoginLogPo {
 
     private static final long serialVersionUID = 1L;
@@ -18,21 +22,5 @@ public class SysLoginLogQuery extends SysLoginLogPo {
 
     /** 访问时间 - 终止 */
     private LocalDateTime accessTimeEnd;
-
-    public LocalDateTime getAccessTimeStart() {
-        return accessTimeStart;
-    }
-
-    public void setAccessTimeStart(LocalDateTime accessTimeStart) {
-        this.accessTimeStart = accessTimeStart;
-    }
-
-    public LocalDateTime getAccessTimeEnd() {
-        return accessTimeEnd;
-    }
-
-    public void setAccessTimeEnd(LocalDateTime accessTimeEnd) {
-        this.accessTimeEnd = accessTimeEnd;
-    }
 
 }

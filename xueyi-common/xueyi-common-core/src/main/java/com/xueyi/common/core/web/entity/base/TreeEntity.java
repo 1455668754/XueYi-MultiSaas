@@ -1,6 +1,8 @@
 package com.xueyi.common.core.web.entity.base;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
@@ -10,55 +12,27 @@ import java.util.List;
  * @param <D> Dto
  * @author xueyi
  */
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class TreeEntity<D> extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
     /** 父级Id */
-    @TableField("parent_id")
-    private Long parentId;
+    protected Long parentId;
 
     /** 父级名称 */
     @TableField(exist = false)
-    private String parentName;
+    protected String parentName;
 
     /** 祖籍列表 */
-    @TableField("ancestors")
-    private String ancestors;
+    protected String ancestors;
+
+    /** 层级 */
+    protected Integer level;
 
     /** 子节点集合 */
     @TableField(exist = false)
-    private List<D> children;
+    protected List<D> children;
 
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
-
-    public String getParentName() {
-        return parentName;
-    }
-
-    public void setParentName(String parentName) {
-        this.parentName = parentName;
-    }
-
-    public String getAncestors() {
-        return ancestors;
-    }
-
-    public void setAncestors(String ancestors) {
-        this.ancestors = ancestors;
-    }
-
-    public List<D> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<D> children) {
-        this.children = children;
-    }
 }
