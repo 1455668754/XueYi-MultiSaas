@@ -55,8 +55,8 @@ public class BaseEntity extends BasisEntity {
     protected LocalDateTime updateTime;
 
     /** 删除标志 */
+    @TableLogic
     @TableField(select = false)
-    @TableLogic(value = "0", delval = "1")
     protected Long delFlag;
 
     /** 创建者 */
