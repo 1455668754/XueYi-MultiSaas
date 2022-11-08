@@ -18,6 +18,7 @@ create table sys_dept (
   parent_id                 bigint              default 0                               comment '父部门id',
   code                      varchar(64)         default null                            comment '部门编码',
   name                      varchar(30)         default ''                              comment '部门名称',
+  level                     int                 not null                                comment '树层级',
   ancestors                 varchar(500)        default ''                              comment '祖级列表',
   leader                    varchar(20)         default ''                              comment '负责人',
   phone                     varchar(11)         default ''                              comment '联系电话',
@@ -37,18 +38,18 @@ create table sys_dept (
 -- ----------------------------
 -- 初始化-部门表数据
 -- ----------------------------
-insert into sys_dept (id, code, parent_id, ancestors, name, tenant_id)
-values (99, '99', 0, '0', '雪忆科技', 1),
-       (100, '100', 0, '0', '雪忆科技', 2),
-       (101, '101', 100, '0,100', '深圳总公司', 2),
-       (102, '102',  100, '0,100', '长沙分公司', 2),
-       (103, '103',  101, '0,100,101', '研发部门', 2),
-       (104, '104',  101, '0,100,101', '市场部门', 2),
-       (105, '105',  101, '0,100,101', '测试部门', 2),
-       (106, '106',  101, '0,100,101', '财务部门', 2),
-       (107, '107',  101, '0,100,101', '运维部门', 2),
-       (108, '108',  102, '0,100,102', '市场部门', 2),
-       (109, '109',  102, '0,100,102', '财务部门', 2);
+insert into sys_dept (id, code, parent_id, level, ancestors, name, tenant_id)
+values (99, '99', 0, 1, '0', '雪忆科技', 1),
+       (100, '100', 0, 1, '0', '雪忆科技', 2),
+       (101, '101', 100, 2, '0,100', '深圳总公司', 2),
+       (102, '102',  100, 2, '0,100', '长沙分公司', 2),
+       (103, '103',  101, 3, '0,100,101', '研发部门', 2),
+       (104, '104',  101, 3, '0,100,101', '市场部门', 2),
+       (105, '105',  101, 3, '0,100,101', '测试部门', 2),
+       (106, '106',  101, 3, '0,100,101', '财务部门', 2),
+       (107, '107',  101, 3, '0,100,101', '运维部门', 2),
+       (108, '108',  102, 3, '0,100,102', '市场部门', 2),
+       (109, '109',  102, 3, '0,100,102', '财务部门', 2);
 
 -- ----------------------------
 -- 2、岗位信息表
@@ -385,6 +386,7 @@ create table xy_material_folder (
   id		                bigint	            not null                                comment '分类Id',
   parent_id		            bigint	            not null default 0                      comment '父类Id',
   name		                varchar(100)	    not null	                            comment '分类名称',
+  level                     int                 not null                                comment '树层级',
   ancestors                 varchar(500)        default ''                              comment '祖级列表',
   type		                char(1)	            not null default '0'	                comment '分类类型（0默认文件夹 1系统文件夹）',
   sort                      int unsigned        not null default 0                      comment '显示顺序',
