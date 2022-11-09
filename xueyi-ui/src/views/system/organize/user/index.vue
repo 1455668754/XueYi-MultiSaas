@@ -295,9 +295,7 @@
                 @command="(command) => handleCommand(command, scope.row)"
                 v-hasPermi="[UserAuth.AUTH, UserAuth.EDIT_PASSWORD]"
               >
-                <span class="el-dropdown-link">
-                  <i class="el-icon-d-arrow-right el-icon--right"></i>更多
-                </span>
+                <el-button size="mini" type="text" icon="el-icon-d-arrow-right">更多</el-button>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item
                     command="handleResetPwd"

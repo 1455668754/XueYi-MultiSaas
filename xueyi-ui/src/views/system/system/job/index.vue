@@ -136,9 +136,7 @@
           <el-dropdown size="mini" @command="(command) => handleCommand(command, scope.row)"
                        v-hasPermi="[JobAuth.LIST, JobAuth.EDIT]"
           >
-            <span class="el-dropdown-link">
-              <i class="el-icon-d-arrow-right el-icon--right"></i>更多
-            </span>
+            <el-button size="mini" type="text" icon="el-icon-d-arrow-right">更多</el-button>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item command="handleRun" icon="el-icon-caret-right"
                                 v-hasPermi="[JobAuth.EDIT]"
