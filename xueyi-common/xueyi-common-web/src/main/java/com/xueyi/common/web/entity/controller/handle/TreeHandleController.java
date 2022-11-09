@@ -1,10 +1,9 @@
 package com.xueyi.common.web.entity.controller.handle;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
-import com.xueyi.common.core.utils.StringUtils;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.entity.base.TreeEntity;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.common.web.entity.service.ITreeService;
@@ -32,7 +31,7 @@ public abstract class TreeHandleController<Q extends TreeEntity<D>, D extends Tr
      */
     protected void SHandleExNodes(Collection<D> list, Serializable id) {
         list.removeIf(next -> ObjectUtil.equals(next.getId(), id) ||
-                ArrayUtils.contains(StringUtils.split(next.getAncestors(), StrUtil.COMMA), id + StrUtil.EMPTY));
+                ArrayUtils.contains(StrUtil.splitToArray(next.getAncestors(), StrUtil.COMMA), id + StrUtil.EMPTY));
     }
 
     /**

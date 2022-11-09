@@ -1,7 +1,7 @@
 package com.xueyi.common.core.web.page;
 
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 
 /**
  * 分页数据

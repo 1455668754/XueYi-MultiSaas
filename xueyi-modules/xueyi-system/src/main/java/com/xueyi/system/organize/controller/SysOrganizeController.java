@@ -1,6 +1,6 @@
 package com.xueyi.system.organize.controller;
 
-import com.xueyi.common.core.utils.TreeUtils;
+import com.xueyi.common.core.utils.TreeUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.security.annotation.Logical;
 import com.xueyi.common.security.annotation.RequiresPermissions;
@@ -30,7 +30,7 @@ public class SysOrganizeController extends BasisController {
     @GetMapping(value = "/organizeScope")
     @RequiresPermissions(value = {Auth.SYS_ROLE_ADD, Auth.SYS_ROLE_AUTH}, logical = Logical.OR)
     public AjaxResult getOrganizeScope() {
-        return success(TreeUtils.buildTree(organizeService.selectOrganizeScope()));
+        return success(TreeUtil.buildTree(organizeService.selectOrganizeScope()));
     }
 
     /**

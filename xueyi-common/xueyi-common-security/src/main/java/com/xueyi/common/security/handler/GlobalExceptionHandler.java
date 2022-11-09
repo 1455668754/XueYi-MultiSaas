@@ -6,7 +6,7 @@ import com.xueyi.common.core.exception.InnerAuthException;
 import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.exception.auth.NotPermissionException;
 import com.xueyi.common.core.exception.auth.NotRoleException;
-import com.xueyi.common.core.utils.StringUtils;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,7 +65,7 @@ public class GlobalExceptionHandler {
     public AjaxResult handleServiceException(ServiceException e, HttpServletRequest request) {
         log.error(e.getMessage(), e);
         Integer code = e.getCode();
-        return StringUtils.isNotNull(code) ? AjaxResult.error(code, e.getMessage()) : AjaxResult.error(e.getMessage());
+        return ObjectUtil.isNotNull(code) ? AjaxResult.error(code, e.getMessage()) : AjaxResult.error(e.getMessage());
     }
 
     /**

@@ -1,9 +1,9 @@
 package com.xueyi.common.core.web.entity.common;
 
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.xueyi.common.core.constant.basic.DictConstants;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.entity.base.BasisEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

@@ -1,7 +1,7 @@
 package com.xueyi.system.authority.service.impl;
 
-import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
 import com.xueyi.system.api.model.DataScope;

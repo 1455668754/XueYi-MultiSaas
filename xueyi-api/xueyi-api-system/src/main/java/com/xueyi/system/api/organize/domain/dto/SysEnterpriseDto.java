@@ -1,7 +1,7 @@
 package com.xueyi.system.api.organize.domain.dto;
 
-import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.system.api.organize.domain.po.SysEnterprisePo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

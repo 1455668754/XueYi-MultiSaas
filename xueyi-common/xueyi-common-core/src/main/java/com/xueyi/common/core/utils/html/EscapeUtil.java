@@ -1,6 +1,6 @@
 package com.xueyi.common.core.utils.html;
 
-import com.xueyi.common.core.utils.StringUtils;
+import com.xueyi.common.core.utils.core.StrUtil;
 
 /**
  * 转义和反转义工具类
@@ -63,8 +63,8 @@ public class EscapeUtil {
      * @return 编码后的字符
      */
     private static String encode(String text) {
-        if (StringUtils.isEmpty(text)) {
-            return StringUtils.EMPTY;
+        if (StrUtil.isEmpty(text)) {
+            return StrUtil.EMPTY;
         }
 
         final StringBuilder tmp = new StringBuilder(text.length() * 6);
@@ -96,7 +96,7 @@ public class EscapeUtil {
      * @return 解码后的字符串
      */
     public static String decode(String content) {
-        if (StringUtils.isEmpty(content)) {
+        if (StrUtil.isEmpty(content)) {
             return content;
         }
 

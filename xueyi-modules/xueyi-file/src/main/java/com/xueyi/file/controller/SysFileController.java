@@ -1,7 +1,7 @@
 package com.xueyi.file.controller;
 
 import com.xueyi.common.core.web.result.R;
-import com.xueyi.common.core.utils.file.FileUtils;
+import com.xueyi.common.core.utils.file.FileUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.file.api.domain.SysFile;
 import com.xueyi.file.service.ISysFileService;
@@ -36,7 +36,7 @@ public class SysFileController {
             // 上传并返回访问地址
             String url = sysFileService.uploadFile(file);
             SysFile sysFile = new SysFile();
-            sysFile.setName(FileUtils.getName(url));
+            sysFile.setName(FileUtil.getName(url));
             sysFile.setUrl(url);
             return R.ok(sysFile);
         } catch (Exception e) {

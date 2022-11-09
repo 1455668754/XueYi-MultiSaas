@@ -17,7 +17,7 @@ import java.util.Date;
  *
  * @author xueyi
  */
-public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
+public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
 
     public static final String YYYY = "yyyy";
 

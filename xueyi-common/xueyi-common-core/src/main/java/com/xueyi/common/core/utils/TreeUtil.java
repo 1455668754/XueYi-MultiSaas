@@ -1,10 +1,10 @@
 package com.xueyi.common.core.utils;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.exception.base.BaseException;
+import com.xueyi.common.core.utils.core.StrUtil;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -18,7 +18,7 @@ import java.util.Objects;
  *
  * @author xueyi
  */
-public class TreeUtils {
+public class TreeUtil {
 
     /**
      * 构建树结构

@@ -1,12 +1,12 @@
 package com.xueyi.auth.controller;
 
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.auth.form.LoginBody;
 import com.xueyi.auth.form.RegisterBody;
 import com.xueyi.auth.service.SysLoginService;
 import com.xueyi.common.core.constant.basic.TenantConstants;
-import com.xueyi.common.core.utils.JwtUtils;
+import com.xueyi.common.core.utils.JwtUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.security.auth.AuthUtil;
 import com.xueyi.common.security.service.TokenService;
@@ -47,15 +47,15 @@ public class TokenController {
         String token = SecurityUtils.getToken(request);
         if (StrUtil.isNotEmpty(token)) {
             LoginUser loginUser = tokenService.getLoginUser(request);
-            String accountType = JwtUtils.getAccountType(token);
+            String accountType = JwtUtil.getAccountType(token);
             // 删除用户缓存记录
             AuthUtil.logoutByToken(token, TenantConstants.AccountType.getByCode(accountType));
             if (ObjectUtil.isNotNull(loginUser)) {
-                String sourceName = JwtUtils.getSourceName(token);
-                Long enterpriseId = Long.valueOf(JwtUtils.getEnterpriseId(token));
-                String enterpriseName = JwtUtils.getEnterpriseName(token);
-                Long userId = Long.valueOf(JwtUtils.getUserId(token));
-                String userName = JwtUtils.getUserName(token);
+                String sourceName = JwtUtil.getSourceName(token);
+                Long enterpriseId = Long.valueOf(JwtUtil.getEnterpriseId(token));
+                String enterpriseName = JwtUtil.getEnterpriseName(token);
+                Long userId = Long.valueOf(JwtUtil.getUserId(token));
+                String userName = JwtUtil.getUserName(token);
                 String userNick = loginUser.getUser().getNickName();
                 // 记录用户退出日志
                 sysLoginService.logout(sourceName, enterpriseId, enterpriseName, userId, userName, userNick);

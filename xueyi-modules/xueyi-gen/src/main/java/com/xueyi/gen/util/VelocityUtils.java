@@ -6,15 +6,14 @@ import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.io.file.FileWriter;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.IdUtil;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.constant.basic.ServiceConstants;
 import com.xueyi.common.core.constant.gen.GenConstants;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
-import com.xueyi.common.core.utils.StringUtils;
+import com.xueyi.common.core.utils.core.ObjectUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.gen.config.GenConfig;
 import com.xueyi.gen.domain.dto.GenTableColumnDto;
 import com.xueyi.gen.domain.dto.GenTableDto;
@@ -59,27 +58,27 @@ public class VelocityUtils {
         // 数据库表名
         velocityContext.put("tableName", genTable.getName());
         // 生成功能名
-        velocityContext.put("functionName", StringUtils.isNotEmpty(functionName) ? functionName : "【请填写功能名称】");
+        velocityContext.put("functionName", StrUtil.isNotEmpty(functionName) ? functionName : "【请填写功能名称】");
         // 实体类名称(首字母大写)
         velocityContext.put("ClassName", genTable.getClassName());
         // 实体类名称(首字母小写)
-        velocityContext.put("className", StringUtils.uncapitalize(genTable.getClassName()));
+        velocityContext.put("className", StrUtil.uncapitalize(genTable.getClassName()));
         // 实体类名称(全大写 | _划分)
         velocityContext.put("ClASS_NAME", (StrUtil.toUnderlineCase(genTable.getClassName())).toUpperCase());
         // 实体类名称(首字母大写 | 无前缀)
-        velocityContext.put("ClassNameNoPrefix", genTable.getClassName().replaceFirst(genTable.getPrefix(), ""));
+        velocityContext.put("ClassNameNoPrefix", genTable.getClassName().replaceFirst(genTable.getPrefix(), StrUtil.EMPTY));
         // 实体类名称(首字母小写 | 无前缀)
-        velocityContext.put("classNameNoPrefix", StringUtils.uncapitalize(genTable.getClassName().replaceFirst(genTable.getPrefix(), "")));
+        velocityContext.put("classNameNoPrefix", StrUtil.uncapitalize(genTable.getClassName().replaceFirst(genTable.getPrefix(), StrUtil.EMPTY)));
         // 生成模块名
         velocityContext.put("moduleName", genTable.getModuleName());
         // 生成模块名
         velocityContext.put("authorityName", genTable.getAuthorityName());
         // 生成业务名(首字母大写)
-        velocityContext.put("BusinessName", StringUtils.capitalize(businessName));
+        velocityContext.put("BusinessName", StrUtil.capitalize(businessName));
         // 生成业务名(首字母小写)
         velocityContext.put("businessName", businessName);
         // 生成业务名(字母全大写)
-        velocityContext.put("BUSINESSName", StringUtils.upperCase(businessName));
+        velocityContext.put("BUSINESSName", StrUtil.upperCase(businessName));
         // 生成包路径前缀
         velocityContext.put("basePackage", getPackagePrefix(packageName));
         // 生成包路径
@@ -190,21 +189,21 @@ public class VelocityUtils {
         // 实体类名称(首字母大写)
         context.put("subClassName", subTable.getClassName());
         // 实体类名称(首字母小写)
-        context.put("subclassName", StringUtils.uncapitalize(subTable.getClassName()));
+        context.put("subclassName", StrUtil.uncapitalize(subTable.getClassName()));
         // 实体类名称(首字母大写 | 无前缀)
         context.put("subClassNameNoPrefix", subTable.getClassName().replaceFirst(subTable.getPrefix(), ""));
         // 实体类名称(首字母小写 | 无前缀)
-        context.put("subclassNameNoPrefix", StringUtils.uncapitalize(subTable.getClassName().replaceFirst(subTable.getPrefix(), "")));
+        context.put("subclassNameNoPrefix", StrUtil.uncapitalize(subTable.getClassName().replaceFirst(subTable.getPrefix(), "")));
         // 生成包路径
         context.put("subPackageName", subTable.getPackageName());
         // 生成功能名
-        context.put("subFunctionName", StringUtils.isNotEmpty(functionName) ? functionName : "【请填写功能名称】");
+        context.put("subFunctionName", StrUtil.isNotEmpty(functionName) ? functionName : "【请填写功能名称】");
         // 生成业务名(首字母大写)
-        context.put("subBusinessName", StringUtils.capitalize(subTable.getBusinessName()));
+        context.put("subBusinessName", StrUtil.capitalize(subTable.getBusinessName()));
         // 生成业务名(首字母小写)
         context.put("subbusinessName", subTable.getBusinessName());
         // 生成业务名(字母全大写)
-        context.put("subBUSINESSName", StringUtils.upperCase(subTable.getBusinessName()));
+        context.put("subBUSINESSName", StrUtil.upperCase(subTable.getBusinessName()));
         // 生成相对路径
         context.put("relativePath", getRelativePath(table, subTable));
     }
@@ -297,9 +296,9 @@ public class VelocityUtils {
         // 业务名称
         String businessName = genTable.getBusinessName();
         // 业务名称(首字母大写)
-        String BusinessName = StringUtils.capitalize(genTable.getBusinessName());
+        String BusinessName = StrUtil.capitalize(genTable.getBusinessName());
 
-        String javaPath = PROJECT_PATH + StrUtil.SLASH + StringUtils.replace(packageName, StrUtil.DOT, StrUtil.SLASH);
+        String javaPath = PROJECT_PATH + StrUtil.SLASH + StrUtil.replace(packageName, StrUtil.DOT, StrUtil.SLASH);
 
         if (template.contains("query.java.vm"))
             return StrUtil.format("{}/domain/query/{}Query.java", javaPath, className);
@@ -412,7 +411,7 @@ public class VelocityUtils {
      */
     public static String getPackagePrefix(String packageName) {
         int lastIndex = packageName.lastIndexOf(StrUtil.DOT);
-        return StringUtils.substring(packageName, 0, lastIndex);
+        return StrUtil.sub(packageName, 0, lastIndex);
     }
 
     /**
@@ -514,7 +513,7 @@ public class VelocityUtils {
         List<GenTableColumnDto> columns = genTable.getSubList();
         GenTableDto subGenTableDto = genTable.getSubTable();
         HashSet<String> importList = new HashSet<>();
-        if (StringUtils.isNotNull(subGenTableDto)) {
+        if (ObjectUtil.isNotNull(subGenTableDto)) {
             importList.add("java.util.List");
         }
         int hideLength = hideList.size();
@@ -539,7 +538,7 @@ public class VelocityUtils {
     public static Map<String, String> getDictMap(GenTableDto genTable) {
         Set<String> dictTypeSet = new HashSet<>();
         for (GenTableColumnDto column : genTable.getSubList()) {
-            if (StringUtils.isNotEmpty(column.getDictType()) && StringUtils.equalsAny(column.getHtmlType(), new String[]{GenConstants.DisplayType.SELECT.getCode(), GenConstants.DisplayType.CHECKBOX_GROUP.getCode(), GenConstants.DisplayType.RADIO_BUTTON_GROUP.getCode(), GenConstants.DisplayType.RADIO_GROUP.getCode()})) {
+            if (StrUtil.isNotEmpty(column.getDictType()) && StrUtil.equalsAny(column.getHtmlType(), GenConstants.DisplayType.SELECT.getCode(), GenConstants.DisplayType.CHECKBOX_GROUP.getCode(), GenConstants.DisplayType.RADIO_BUTTON_GROUP.getCode(), GenConstants.DisplayType.RADIO_GROUP.getCode())) {
                 dictTypeSet.add(column.getDictType());
                 column.setDictName(getDictName(column.getDictType()));
             }
@@ -560,9 +559,9 @@ public class VelocityUtils {
     public static String getDictName(String dictType) {
         for (String removeName : GenConfig.getDictTypeRemove()) {
             if (dictType.startsWith(removeName))
-                return StrUtil.format(GenConstants.DICT_NAME, StringUtils.convertToCamelCase(StrUtil.removePrefix(dictType, removeName)));
+                return StrUtil.format(GenConstants.DICT_NAME, StrUtil.convertToCamelCase(StrUtil.removePrefix(dictType, removeName)));
         }
-        return StrUtil.format(GenConstants.DICT_NAME, StringUtils.convertToCamelCase(dictType));
+        return StrUtil.format(GenConstants.DICT_NAME, StrUtil.convertToCamelCase(dictType));
     }
 
     /**

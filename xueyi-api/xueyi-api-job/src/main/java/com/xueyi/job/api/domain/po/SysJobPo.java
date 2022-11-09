@@ -1,11 +1,11 @@
 package com.xueyi.job.api.domain.po;
 
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.xueyi.common.core.annotation.Excel;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.tenant.base.TSubBaseEntity;
 import com.xueyi.job.api.domain.dto.SysJobLogDto;
 import com.xueyi.job.api.utils.CronUtils;

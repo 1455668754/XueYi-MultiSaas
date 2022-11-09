@@ -1,10 +1,10 @@
 package com.xueyi.common.datascope.interceptor;
 
 import cn.hutool.core.util.ArrayUtil;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.baomidou.mybatisplus.extension.plugins.handler.DataPermissionHandler;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.security.utils.SecurityUtils;
 import net.sf.jsqlparser.expression.Expression;

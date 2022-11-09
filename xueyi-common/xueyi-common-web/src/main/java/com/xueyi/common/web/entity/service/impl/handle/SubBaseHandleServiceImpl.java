@@ -1,6 +1,6 @@
 package com.xueyi.common.web.entity.service.impl.handle;
 
-import cn.hutool.core.util.ObjectUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.core.web.entity.base.SubBaseEntity;

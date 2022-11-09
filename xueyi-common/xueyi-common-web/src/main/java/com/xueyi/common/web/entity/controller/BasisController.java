@@ -2,9 +2,9 @@ package com.xueyi.common.web.entity.controller;
 
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.LocalDateTimeUtil;
-import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageInfo;
-import com.xueyi.common.core.utils.PageUtils;
+import com.xueyi.common.core.utils.page.PageUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.page.TableDataInfo;
 import com.xueyi.common.core.web.result.AjaxResult;
 import org.slf4j.Logger;
@@ -43,14 +43,14 @@ public class BasisController {
      * 设置请求分页数据
      */
     protected void startPage() {
-        PageUtils.startPage();
+        PageUtil.startPage();
     }
 
     /**
      * 清理分页的线程变量
      */
     protected void clearPage() {
-        PageUtils.clearPage();
+        PageUtil.clearPage();
     }
 
     /**

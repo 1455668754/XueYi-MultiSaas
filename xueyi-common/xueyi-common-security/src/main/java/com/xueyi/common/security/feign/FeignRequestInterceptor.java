@@ -1,10 +1,10 @@
 package com.xueyi.common.security.feign;
 
-import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
-import com.xueyi.common.core.utils.ServletUtils;
-import com.xueyi.common.core.utils.StringUtils;
-import com.xueyi.common.core.utils.ip.IpUtils;
+import com.xueyi.common.core.utils.ServletUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
+import com.xueyi.common.core.utils.ip.IpUtil;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import org.springframework.stereotype.Component;
@@ -22,9 +22,9 @@ public class FeignRequestInterceptor implements RequestInterceptor {
 
     @Override
     public void apply(RequestTemplate requestTemplate) {
-        HttpServletRequest httpServletRequest = ServletUtils.getRequest();
-        if (StringUtils.isNotNull(httpServletRequest)) {
-            Map<String, String> headers = ServletUtils.getHeaders(httpServletRequest);
+        HttpServletRequest httpServletRequest = ServletUtil.getRequest();
+        if (ObjectUtil.isNotNull(httpServletRequest)) {
+            Map<String, String> headers = ServletUtil.getHeaders(httpServletRequest);
             // 传递用户信息请求头，防止丢失
             setHeaderKey(requestTemplate, headers, SecurityConstants.BaseSecurity.ENTERPRISE_ID.getCode());
             setHeaderKey(requestTemplate, headers, SecurityConstants.BaseSecurity.ENTERPRISE_NAME.getCode());
@@ -38,7 +38,7 @@ public class FeignRequestInterceptor implements RequestInterceptor {
             setHeaderKey(requestTemplate, headers, SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode());
             setHeaderKey(requestTemplate, headers, SecurityConstants.AUTHORIZATION_HEADER);
             // 配置客户端IP
-            requestTemplate.header("X-Forwarded-For", IpUtils.getIpAddr(ServletUtils.getRequest()));
+            requestTemplate.header("X-Forwarded-For", IpUtil.getIpAddr(ServletUtil.getRequest()));
         }
     }
 

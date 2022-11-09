@@ -1,14 +1,13 @@
 package com.xueyi.gen.util;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.constant.gen.GenConstants;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
-import com.xueyi.common.core.utils.StringUtils;
+import com.xueyi.common.core.utils.core.ObjectUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.gen.config.GenConfig;
 import com.xueyi.gen.domain.dto.GenTableColumnDto;
 import com.xueyi.gen.domain.dto.GenTableDto;
@@ -29,7 +28,7 @@ public class GenUtils {
      * 初始化表信息
      */
     public static void initTable(GenTableDto genTable) {
-        genTable.setClassName(StringUtils.convertToCamelCase(genTable.getName()));
+        genTable.setClassName(StrUtil.convertToCamelCase(genTable.getName()));
         getRemoveItem(genTable);
         genTable.setBusinessName(getBusinessName(genTable.getName()));
         genTable.setFunctionName(replaceText(genTable.getComment()));
@@ -97,7 +96,7 @@ public class GenUtils {
         column.setTableId(table.getId());
         column.setCreateBy(table.getCreateBy());
         // 设置java字段名
-        column.setJavaField(StringUtils.toCamelCase(column.getName()));
+        column.setJavaField(StrUtil.toCamelCase(column.getName()));
         String javaField = column.getJavaField();
         // 设置默认类型
         column.setJavaType(GenConstants.JavaType.STRING.getCode());
@@ -320,7 +319,7 @@ public class GenUtils {
         if (GenConfig.isAutoRemovePre() && CollUtil.isNotEmpty(GenConfig.getRemoveLists())) {
             for (GenConfig.RemoveItem removeItem : GenConfig.getRemoveLists()) {
                 if (StrUtil.equals(StrUtil.sub(genTable.getName(), 0, removeItem.getPrefix().length()), removeItem.getPrefix())) {
-                    genTable.setPrefix(StringUtils.convertToCamelCase(removeItem.getPrefix()));
+                    genTable.setPrefix(StrUtil.convertToCamelCase(removeItem.getPrefix()));
                     genTable.setPackageName(removeItem.getPackageName());
                     genTable.setModuleName(getModuleName(removeItem.getPackageName()));
                     genTable.setAuthorityName(genTable.getModuleName());
@@ -339,7 +338,7 @@ public class GenUtils {
     public static String getModuleName(String packageName) {
         int lastIndex = packageName.lastIndexOf(StrUtil.DOT);
         int nameLength = packageName.length();
-        return StringUtils.substring(packageName, lastIndex + 1, nameLength);
+        return StrUtil.sub(packageName, lastIndex + 1, nameLength);
     }
 
     /**
@@ -351,7 +350,7 @@ public class GenUtils {
     public static String getBusinessName(String tableName) {
         int lastIndex = tableName.lastIndexOf(StrUtil.UNDERLINE);
         int nameLength = tableName.length();
-        return StringUtils.substring(tableName, lastIndex + 1, nameLength);
+        return StrUtil.sub(tableName, lastIndex + 1, nameLength);
     }
 
     /**

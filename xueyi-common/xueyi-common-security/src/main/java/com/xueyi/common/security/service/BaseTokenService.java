@@ -1,14 +1,14 @@
 package com.xueyi.common.security.service;
 
 import cn.hutool.core.util.IdUtil;
-import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.CacheConstants;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.basic.TenantConstants;
-import com.xueyi.common.core.utils.JwtUtils;
-import com.xueyi.common.core.utils.ServletUtils;
-import com.xueyi.common.core.utils.StringUtils;
-import com.xueyi.common.core.utils.ip.IpUtils;
+import com.xueyi.common.core.utils.JwtUtil;
+import com.xueyi.common.core.utils.ServletUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
+import com.xueyi.common.core.utils.ip.IpUtil;
 import com.xueyi.common.redis.service.RedisService;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.system.api.model.base.BaseLoginUser;
@@ -74,7 +74,7 @@ public class BaseTokenService<User, LoginUser extends BaseLoginUser<User>> {
         loginUser.setUserName(userName);
         loginUser.setNickName(nickName);
         loginUser.setSourceName(sourceName);
-        loginUser.setIpaddr(IpUtils.getIpAddr(ServletUtils.getRequest()));
+        loginUser.setIpaddr(IpUtil.getIpAddr(ServletUtil.getRequest()));
 
         loginUser.setLoginTime(System.currentTimeMillis());
 
@@ -104,7 +104,7 @@ public class BaseTokenService<User, LoginUser extends BaseLoginUser<User>> {
 
         // 接口返回信息
         Map<String, Object> rspMap = new HashMap<>();
-        rspMap.put("access_token", JwtUtils.createToken(claimsMap));
+        rspMap.put("access_token", JwtUtil.createToken(claimsMap));
         rspMap.put("expires_in", getTacitExpireTime());
         return rspMap;
     }
@@ -115,7 +115,7 @@ public class BaseTokenService<User, LoginUser extends BaseLoginUser<User>> {
      * @return 企业信息
      */
     public SysEnterpriseDto getEnterprise() {
-        return getEnterprise(ServletUtils.getRequest());
+        return getEnterprise(ServletUtil.getRequest());
     }
 
     /**
@@ -136,8 +136,8 @@ public class BaseTokenService<User, LoginUser extends BaseLoginUser<User>> {
      */
     public SysEnterpriseDto getEnterprise(String token) {
         try {
-            if (StringUtils.isNotEmpty(token)) {
-                String userKey = JwtUtils.getUserKey(token);
+            if (StrUtil.isNotEmpty(token)) {
+                String userKey = JwtUtil.getUserKey(token);
                 return redisService.getCacheMapValue(getTokenKey(userKey), SecurityConstants.BaseSecurity.ENTERPRISE.getCode());
             }
         } catch (Exception ignored) {
@@ -151,7 +151,7 @@ public class BaseTokenService<User, LoginUser extends BaseLoginUser<User>> {
      * @return 用户信息
      */
     public User getUser() {
-        return getUser(ServletUtils.getRequest());
+        return getUser(ServletUtil.getRequest());
     }
 
     /**
@@ -172,8 +172,8 @@ public class BaseTokenService<User, LoginUser extends BaseLoginUser<User>> {
      */
     public User getUser(String token) {
         try {
-            if (StringUtils.isNotEmpty(token)) {
-                String userKey = JwtUtils.getUserKey(token);
+            if (StrUtil.isNotEmpty(token)) {
+                String userKey = JwtUtil.getUserKey(token);
                 return redisService.getCacheMapValue(getTokenKey(userKey), SecurityConstants.BaseSecurity.USER.getCode());
             }
         } catch (Exception ignored) {
@@ -187,7 +187,7 @@ public class BaseTokenService<User, LoginUser extends BaseLoginUser<User>> {
      * @return 用户信息
      */
     public LoginUser getLoginUser() {
-        return getLoginUser(ServletUtils.getRequest());
+        return getLoginUser(ServletUtil.getRequest());
     }
 
     /**
@@ -208,8 +208,8 @@ public class BaseTokenService<User, LoginUser extends BaseLoginUser<User>> {
      */
     public LoginUser getLoginUser(String token) {
         try {
-            if (StringUtils.isNotEmpty(token)) {
-                String userKey = JwtUtils.getUserKey(token);
+            if (StrUtil.isNotEmpty(token)) {
+                String userKey = JwtUtil.getUserKey(token);
                 return redisService.getCacheMapValue(getTokenKey(userKey), SecurityConstants.BaseSecurity.LOGIN_USER.getCode());
             }
         } catch (Exception ignored) {
@@ -221,7 +221,7 @@ public class BaseTokenService<User, LoginUser extends BaseLoginUser<User>> {
      * 设置用户身份信息
      */
     public void setLoginUser(LoginUser loginUser) {
-        if (StringUtils.isNotNull(loginUser) && StringUtils.isNotEmpty(loginUser.getToken())) {
+        if (ObjectUtil.isNotNull(loginUser) && StrUtil.isNotEmpty(loginUser.getToken())) {
             redisService.setCacheMapValue(getTokenKey(loginUser.getToken()), SecurityConstants.BaseSecurity.ENTERPRISE.getCode(), loginUser.getEnterprise());
             redisService.setCacheMapValue(getTokenKey(loginUser.getToken()), SecurityConstants.BaseSecurity.USER.getCode(), loginUser.getUser());
             redisService.setCacheMapValue(getTokenKey(loginUser.getToken()), SecurityConstants.BaseSecurity.LOGIN_USER.getCode(), loginUser);
@@ -234,7 +234,7 @@ public class BaseTokenService<User, LoginUser extends BaseLoginUser<User>> {
      * @return 源策略信息
      */
     public Source getSource() {
-        return getSource(ServletUtils.getRequest());
+        return getSource(ServletUtil.getRequest());
     }
 
     /**
@@ -255,8 +255,8 @@ public class BaseTokenService<User, LoginUser extends BaseLoginUser<User>> {
      */
     public Source getSource(String token) {
         try {
-            if (StringUtils.isNotEmpty(token)) {
-                String userKey = JwtUtils.getUserKey(token);
+            if (StrUtil.isNotEmpty(token)) {
+                String userKey = JwtUtil.getUserKey(token);
                 return redisService.getCacheMapValue(getTokenKey(userKey), SecurityConstants.BaseSecurity.SOURCE.getCode());
             }
         } catch (Exception ignored) {
@@ -271,7 +271,7 @@ public class BaseTokenService<User, LoginUser extends BaseLoginUser<User>> {
      * @return 过期时间信息
      */
     public Long getExpireTime() {
-        return getExpireTime(ServletUtils.getRequest());
+        return getExpireTime(ServletUtil.getRequest());
     }
 
     /**
@@ -292,8 +292,8 @@ public class BaseTokenService<User, LoginUser extends BaseLoginUser<User>> {
      */
     public Long getExpireTime(String token) {
         try {
-            if (StringUtils.isNotEmpty(token)) {
-                String userKey = JwtUtils.getUserKey(token);
+            if (StrUtil.isNotEmpty(token)) {
+                String userKey = JwtUtil.getUserKey(token);
                 return redisService.getCacheMapValue(getTokenKey(userKey), SecurityConstants.BaseSecurity.EXPIRE_TIME.getCode());
             }
         } catch (Exception ignored) {
@@ -305,8 +305,8 @@ public class BaseTokenService<User, LoginUser extends BaseLoginUser<User>> {
      * 删除用户缓存信息
      */
     public void delLogin(String token) {
-        if (StringUtils.isNotEmpty(token)) {
-            String userKey = JwtUtils.getUserKey(token);
+        if (StrUtil.isNotEmpty(token)) {
+            String userKey = JwtUtil.getUserKey(token);
             redisService.deleteObject(getTokenKey(userKey));
         }
     }
@@ -359,9 +359,9 @@ public class BaseTokenService<User, LoginUser extends BaseLoginUser<User>> {
      * @return UserKey
      */
     protected String getUserKey() {
-        String token = SecurityUtils.getToken(Objects.requireNonNull(ServletUtils.getRequest()));
-        if (StringUtils.isNotEmpty(token)) {
-            return JwtUtils.getUserKey(token);
+        String token = SecurityUtils.getToken(Objects.requireNonNull(ServletUtil.getRequest()));
+        if (StrUtil.isNotEmpty(token)) {
+            return JwtUtil.getUserKey(token);
         }
         return null;
     }

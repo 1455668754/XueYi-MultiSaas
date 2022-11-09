@@ -1,6 +1,6 @@
 package com.xueyi.job.task;
 
-import cn.hutool.core.util.StrUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 import org.springframework.stereotype.Component;
 
 /**

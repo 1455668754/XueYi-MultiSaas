@@ -1,10 +1,10 @@
 package com.xueyi.common.web.entity.manager.impl;
 
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.SqlConstants;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.entity.base.TreeEntity;
 import com.xueyi.common.core.web.entity.model.BaseConverter;
 import com.xueyi.common.web.annotation.TenantIgnore;

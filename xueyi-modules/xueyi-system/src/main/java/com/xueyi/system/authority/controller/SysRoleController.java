@@ -1,8 +1,8 @@
 package com.xueyi.system.authority.controller;
 
-import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
-import com.xueyi.common.core.utils.TreeUtils;
+import com.xueyi.common.core.utils.TreeUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
@@ -73,7 +73,7 @@ public class SysRoleController extends BaseController<SysRoleQuery, SysRoleDto, 
     @GetMapping("/auth/{id}")
     @RequiresPermissions(Auth.SYS_ROLE_AUTH)
     public AjaxResult getRoleAuth(@PathVariable Long id) {
-        List<SysAuthTree> leafNodes = TreeUtils.getLeafNodes(TreeUtils.buildTree(authService.selectRoleAuth(id)));
+        List<SysAuthTree> leafNodes = TreeUtil.getLeafNodes(TreeUtil.buildTree(authService.selectRoleAuth(id)));
         return success(leafNodes.stream().map(SysAuthTree::getId).toArray(Long[]::new));
     }
 

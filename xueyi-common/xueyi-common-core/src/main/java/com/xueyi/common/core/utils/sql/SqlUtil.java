@@ -1,7 +1,7 @@
 package com.xueyi.common.core.utils.sql;
 
 import com.xueyi.common.core.exception.UtilException;
-import com.xueyi.common.core.utils.StringUtils;
+import com.xueyi.common.core.utils.core.StrUtil;
 
 /**
  * sql操作工具类
@@ -20,7 +20,7 @@ public class SqlUtil {
      * 检查字符，防止注入绕过
      */
     public static String escapeOrderBySql(String value) {
-        if (StringUtils.isNotEmpty(value) && !isValidOrderBySql(value)) {
+        if (StrUtil.isNotEmpty(value) && !isValidOrderBySql(value)) {
             throw new UtilException("参数不符合规范，不能进行查询");
         }
         return value;
@@ -38,12 +38,12 @@ public class SqlUtil {
      * SQL关键字检查
      */
     public static void filterKeyword(String value) {
-        if (StringUtils.isEmpty(value)) {
+        if (StrUtil.isEmpty(value)) {
             return;
         }
-        String[] sqlKeywords = StringUtils.split(SQL_REGEX, "\\|");
+        String[] sqlKeywords = StrUtil.splitToArray(SQL_REGEX, "\\|");
         for (String sqlKeyword : sqlKeywords) {
-            if (StringUtils.indexOfIgnoreCase(value, sqlKeyword) > -1) {
+            if (StrUtil.indexOfIgnoreCase(value, sqlKeyword) > -1) {
                 throw new UtilException("参数存在SQL注入风险");
             }
         }

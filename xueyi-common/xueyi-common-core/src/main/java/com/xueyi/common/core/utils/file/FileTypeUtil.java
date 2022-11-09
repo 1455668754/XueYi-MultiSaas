@@ -12,7 +12,7 @@ import java.util.Objects;
  *
  * @author xueyi
  */
-public class FileTypeUtils {
+public class FileTypeUtil {
 
     /**
      * 获取文件类型
@@ -54,7 +54,7 @@ public class FileTypeUtils {
     public static String getExtension(MultipartFile file) {
         String extension = FilenameUtils.getExtension(file.getOriginalFilename());
         if (StringUtils.isEmpty(extension)) {
-            extension = MimeTypeUtils.getExtension(Objects.requireNonNull(file.getContentType()));
+            extension = MimeTypeUtil.getExtension(Objects.requireNonNull(file.getContentType()));
         }
         return extension;
     }

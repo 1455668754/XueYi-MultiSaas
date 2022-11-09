@@ -1,6 +1,6 @@
 package com.xueyi.common.core.constant.job;
 
-import cn.hutool.core.util.StrUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 
 /**
  * 任务调度通用常量

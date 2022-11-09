@@ -3,8 +3,10 @@ package com.xueyi.job.util;
 import com.xueyi.common.core.constant.job.ScheduleConstants;
 import com.xueyi.common.core.exception.job.TaskException;
 import com.xueyi.common.core.exception.job.TaskException.Code;
-import com.xueyi.common.core.utils.SpringUtils;
-import com.xueyi.common.core.utils.StringUtils;
+import com.xueyi.common.core.utils.core.NumberUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
+import com.xueyi.common.core.utils.core.SpringUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.job.api.domain.dto.SysJobDto;
 import com.xueyi.job.api.utils.CronUtils;
 import org.quartz.*;
@@ -70,7 +72,7 @@ public class ScheduleUtils {
         }
 
         // 判断任务是否过期
-        if (StringUtils.isNotNull(CronUtils.getNextExecution(job.getCronExpression()))) {
+        if (ObjectUtil.isNotNull(CronUtils.getNextExecution(job.getCronExpression()))) {
             // 执行调度任务
             scheduler.scheduleJob(jobDetail, trigger);
         }
@@ -106,12 +108,12 @@ public class ScheduleUtils {
      * @return 结果
      */
     public static boolean whiteList(String invokeTarget) {
-        String packageName = StringUtils.substringBefore(invokeTarget, "(");
-        int count = StringUtils.countMatches(packageName, ".");
-        if (count > 1) {
-            return StringUtils.containsAnyIgnoreCase(invokeTarget, ScheduleConstants.JOB_WHITELIST_STR);
+        String packageName = StrUtil.subBefore(invokeTarget, StrUtil.PARENTHESES_START);
+        int count = StrUtil.count(packageName, StrUtil.DOT);
+        if (count > NumberUtil.One) {
+            return StrUtil.containsAnyIgnoreCase(invokeTarget, ScheduleConstants.JOB_WHITELIST_STR);
         }
-        Object obj = SpringUtils.getBean(StringUtils.split(invokeTarget, ".")[0]);
-        return StringUtils.containsAnyIgnoreCase(obj.getClass().getPackage().getName(), ScheduleConstants.JOB_WHITELIST_STR);
+        Object obj = SpringUtil.getBean(StrUtil.splitToArray(invokeTarget, StrUtil.DOT)[NumberUtil.Zero]);
+        return StrUtil.containsAnyIgnoreCase(obj.getClass().getPackage().getName(), ScheduleConstants.JOB_WHITELIST_STR);
     }
 }

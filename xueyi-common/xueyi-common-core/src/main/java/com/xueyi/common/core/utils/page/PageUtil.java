@@ -1,7 +1,7 @@
-package com.xueyi.common.core.utils;
+package com.xueyi.common.core.utils.page;
 
-import cn.hutool.core.util.ObjectUtil;
 import com.github.pagehelper.PageHelper;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.sql.SqlUtil;
 import com.xueyi.common.core.web.page.PageDomain;
 import com.xueyi.common.core.web.page.TableSupport;
@@ -11,7 +11,7 @@ import com.xueyi.common.core.web.page.TableSupport;
  *
  * @author xueyi
  */
-public class PageUtils extends PageHelper {
+public class PageUtil extends PageHelper {
 
     /**
      * 设置请求分页数据

@@ -1,6 +1,7 @@
 package com.xueyi.common.core.utils.ip;
 
-import com.xueyi.common.core.utils.StringUtils;
+import com.xueyi.common.core.utils.core.ArrayUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
@@ -11,7 +12,7 @@ import java.net.UnknownHostException;
  *
  * @author xueyi
  */
-public class IpUtils {
+public class IpUtil {
 
     /**
      * 获取客户端IP
@@ -62,7 +63,7 @@ public class IpUtils {
      * @return 结果
      */
     private static boolean internalIp(byte[] addr) {
-        if (StringUtils.isNull(addr) || addr.length < 2) {
+        if (ArrayUtil.isEmpty(addr) || addr.length < 2) {
             return true;
         }
         final byte b0 = addr[0];
@@ -84,9 +85,8 @@ public class IpUtils {
                     return true;
                 }
             case SECTION_5:
-                switch (b1) {
-                    case SECTION_6:
-                        return true;
+                if (b1 == SECTION_6) {
+                    return true;
                 }
             default:
                 return false;
@@ -175,7 +175,7 @@ public class IpUtils {
     public static String getHostIp() {
         try {
             return InetAddress.getLocalHost().getHostAddress();
-        } catch (UnknownHostException e) {
+        } catch (UnknownHostException ignored) {
         }
         return "127.0.0.1";
     }
@@ -188,7 +188,7 @@ public class IpUtils {
     public static String getHostName() {
         try {
             return InetAddress.getLocalHost().getHostName();
-        } catch (UnknownHostException e) {
+        } catch (UnknownHostException ignored) {
         }
         return "未知";
     }
@@ -201,10 +201,10 @@ public class IpUtils {
      */
     public static String getMultistageReverseProxyIp(String ip) {
         // 多级反向代理检测
-        if (ip != null && ip.indexOf(",") > 0) {
-            final String[] ips = ip.trim().split(",");
+        if (ip != null && ip.indexOf(StrUtil.COMMA) > 0) {
+            final String[] ips = ip.trim().split(StrUtil.COMMA);
             for (String subIp : ips) {
-                if (false == isUnknown(subIp)) {
+                if (!isUnknown(subIp)) {
                     ip = subIp;
                     break;
                 }
@@ -220,6 +220,6 @@ public class IpUtils {
      * @return 是否未知
      */
     public static boolean isUnknown(String checkString) {
-        return StringUtils.isBlank(checkString) || "unknown".equalsIgnoreCase(checkString);
+        return StrUtil.isBlank(checkString) || StrUtil.UNKNOWN.equalsIgnoreCase(checkString);
     }
 }

@@ -1,8 +1,8 @@
 package com.xueyi.common.security.utils;
 
-import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
-import com.xueyi.common.core.utils.SpringUtils;
+import com.xueyi.common.core.utils.core.SpringUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.security.service.TokenService;
 import com.xueyi.common.security.utils.base.BaseSecurityUtils;
 import com.xueyi.system.api.model.DataScope;
@@ -23,35 +23,35 @@ public class SecurityUtils extends BaseSecurityUtils {
      * 获取企业信息
      */
     public static SysEnterpriseDto getEnterprise() {
-        return SpringUtils.getBean(TokenService.class).getEnterprise();
+        return SpringUtil.getBean(TokenService.class).getEnterprise();
     }
 
     /**
      * 获取用户信息
      */
     public static SysUserDto getUser() {
-        return SpringUtils.getBean(TokenService.class).getUser();
+        return SpringUtil.getBean(TokenService.class).getUser();
     }
 
     /**
      * 获取源策略信息
      */
     public static Source getSource() {
-        return SpringUtils.getBean(TokenService.class).getSource();
+        return SpringUtil.getBean(TokenService.class).getSource();
     }
 
     /**
      * 获取数据权限信息
      */
     public static DataScope getDataScope() {
-        return SpringUtils.getBean(TokenService.class).getDataScope();
+        return SpringUtil.getBean(TokenService.class).getDataScope();
     }
 
     /**
      * 获取登录用户信息
      */
     public static LoginUser getLoginUser() {
-        return SpringUtils.getBean(TokenService.class).getLoginUser();
+        return SpringUtil.getBean(TokenService.class).getLoginUser();
     }
 
     /**

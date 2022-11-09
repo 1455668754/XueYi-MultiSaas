@@ -9,7 +9,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.ServerWebExchange;
-import com.xueyi.common.core.utils.ServletUtils;
+import com.xueyi.common.core.utils.ServletUtil;
 import reactor.core.publisher.Mono;
 
 /**
@@ -44,6 +44,6 @@ public class GatewayExceptionHandler implements ErrorWebExceptionHandler {
 
         log.error("[网关异常处理]请求路径:{},异常信息:{}", exchange.getRequest().getPath(), ex.getMessage());
 
-        return ServletUtils.webFluxResponseWriter(response, msg);
+        return ServletUtil.webFluxResponseWriter(response, msg);
     }
 }

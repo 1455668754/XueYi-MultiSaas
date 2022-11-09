@@ -1,12 +1,12 @@
 package com.xueyi.auth.service;
 
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.auth.form.RegisterBody;
 import com.xueyi.common.core.constant.basic.*;
 import com.xueyi.common.core.constant.system.OrganizeConstants;
-import com.xueyi.common.core.utils.ServletUtils;
-import com.xueyi.common.core.utils.ip.IpUtils;
+import com.xueyi.common.core.utils.ServletUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
+import com.xueyi.common.core.utils.ip.IpUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.result.R;
 import com.xueyi.system.api.authority.feign.RemoteLoginService;
@@ -152,7 +152,7 @@ public class SysLoginService {
         loginInfo.setUserId(userId);
         loginInfo.setUserName(userName);
         loginInfo.setUserNick(userNick);
-        loginInfo.setIpaddr(IpUtils.getIpAddr(ServletUtils.getRequest()));
+        loginInfo.setIpaddr(IpUtil.getIpAddr(ServletUtil.getRequest()));
         loginInfo.setMsg(message);
         // 日志状态
         if (StrUtil.equalsAny(status, Constants.LOGIN_SUCCESS, Constants.LOGOUT, Constants.REGISTER)) {

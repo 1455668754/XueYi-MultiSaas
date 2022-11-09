@@ -2,9 +2,9 @@ package com.xueyi.common.security.service;
 
 import com.xueyi.common.core.constant.basic.CacheConstants;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
-import com.xueyi.common.core.utils.JwtUtils;
-import com.xueyi.common.core.utils.ServletUtils;
-import com.xueyi.common.core.utils.StringUtils;
+import com.xueyi.common.core.utils.JwtUtil;
+import com.xueyi.common.core.utils.ServletUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.system.api.model.DataScope;
 import com.xueyi.system.api.model.LoginUser;
@@ -67,7 +67,7 @@ public class TokenService extends BaseTokenService<SysUserDto, LoginUser>{
      * @return 数据权限信息
      */
     public DataScope getDataScope() {
-        return getDataScope(ServletUtils.getRequest());
+        return getDataScope(ServletUtil.getRequest());
     }
 
     /**
@@ -88,8 +88,8 @@ public class TokenService extends BaseTokenService<SysUserDto, LoginUser>{
      */
     public DataScope getDataScope(String token) {
         try {
-            if (StringUtils.isNotEmpty(token)) {
-                String userKey = JwtUtils.getUserKey(token);
+            if (StrUtil.isNotEmpty(token)) {
+                String userKey = JwtUtil.getUserKey(token);
                 return redisService.getCacheMapValue(getTokenKey(userKey), SecurityConstants.AdminSecurity.DATA_SCOPE.getCode());
             }
         } catch (Exception ignored) {

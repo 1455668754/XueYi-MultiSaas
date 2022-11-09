@@ -1,6 +1,6 @@
 package com.xueyi.common.core.web.page;
 
-import com.xueyi.common.core.utils.ServletUtils;
+import com.xueyi.common.core.utils.ServletUtil;
 
 /**
  * 表格数据处理
@@ -29,11 +29,11 @@ public class TableSupport {
      */
     public static PageDomain getPageDomain() {
         PageDomain pageDomain = new PageDomain();
-        pageDomain.setPageNum(ServletUtils.getParameterToInt(PAGE_NUM));
-        pageDomain.setPageSize(ServletUtils.getParameterToInt(PAGE_SIZE));
-        pageDomain.setOrderByColumn(ServletUtils.getParameter(ORDER_BY_COLUMN));
-        pageDomain.setIsAsc(ServletUtils.getParameter(IS_ASC));
-        pageDomain.setReasonable(ServletUtils.getParameterToBool(REASONABLE));
+        pageDomain.setPageNum(ServletUtil.getParameterToInt(PAGE_NUM));
+        pageDomain.setPageSize(ServletUtil.getParameterToInt(PAGE_SIZE));
+        pageDomain.setOrderByColumn(ServletUtil.getParameter(ORDER_BY_COLUMN));
+        pageDomain.setIsAsc(ServletUtil.getParameter(IS_ASC));
+        pageDomain.setReasonable(ServletUtil.getParameterToBool(REASONABLE));
         return pageDomain;
     }
 

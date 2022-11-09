@@ -1,7 +1,6 @@
 package com.xueyi.gen.domain.dto;
 
-import cn.hutool.core.util.StrUtil;
-import com.xueyi.common.core.utils.StringUtils;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.gen.domain.po.GenTableColumnPo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -67,9 +66,9 @@ public class GenTableColumnDto extends GenTableColumnPo {
     public String readConverterExp() {
         String remarks = StrUtil.subBetween(this.getComment(), "（", "）");
         StringBuilder sb = new StringBuilder();
-        if (StringUtils.isNotEmpty(remarks)) {
+        if (StrUtil.isNotEmpty(remarks)) {
             for (String value : remarks.split(" ")) {
-                if (StringUtils.isNotEmpty(value)) {
+                if (StrUtil.isNotEmpty(value)) {
                     Object startStr = value.subSequence(0, 1);
                     String endStr = value.substring(1);
                     sb.append(startStr).append("=").append(endStr).append(",");

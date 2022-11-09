@@ -1,6 +1,6 @@
 package com.xueyi.common.core.constant.basic;
 
-import cn.hutool.core.util.StrUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 
 /**
  * 租户通用常量

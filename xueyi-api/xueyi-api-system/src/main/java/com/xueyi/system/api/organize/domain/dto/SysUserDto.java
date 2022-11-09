@@ -1,7 +1,7 @@
 package com.xueyi.system.api.organize.domain.dto;
 
-import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.validate.V_A_E;
 import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
 import com.xueyi.system.api.organize.domain.po.SysUserPo;

@@ -1,9 +1,9 @@
 package com.xueyi.system.organize.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.system.OrganizeConstants;
-import com.xueyi.common.core.utils.TreeUtils;
+import com.xueyi.common.core.utils.TreeUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.system.organize.domain.vo.SysOrganizeTree;
 import com.xueyi.system.organize.manager.impl.SysOrganizeManager;
 import com.xueyi.system.organize.service.ISysOrganizeService;
@@ -75,7 +75,7 @@ public class SysOrganizeServiceImpl implements ISysOrganizeService {
      */
     @Override
     public List<SysOrganizeTree> selectOrganizeTreeExDeptNode() {
-        List<SysOrganizeTree> organizeTrees = TreeUtils.buildTree(organizeManager.selectOrganizeScope());
+        List<SysOrganizeTree> organizeTrees = TreeUtil.buildTree(organizeManager.selectOrganizeScope());
         recursionDelLeaf(organizeTrees);
         return organizeTrees;
     }

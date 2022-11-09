@@ -1,6 +1,6 @@
 package com.xueyi.common.core.xss;
 
-import cn.hutool.core.util.StrUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

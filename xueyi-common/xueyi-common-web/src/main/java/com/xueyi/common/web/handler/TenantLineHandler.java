@@ -1,6 +1,6 @@
 package com.xueyi.common.web.handler;
 
-import cn.hutool.core.util.ObjectUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.constant.basic.TenantConstants;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.annotation.TenantIgnore;

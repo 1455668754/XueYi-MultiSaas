@@ -1,6 +1,6 @@
 package com.xueyi.common.core.constant.gen;
 
-import cn.hutool.core.util.StrUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 
 /**
  * 代码生成通用常量

@@ -1,7 +1,7 @@
 package com.xueyi.system.api.model;
 
-import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
+import com.xueyi.common.core.utils.core.StrUtil;
 import lombok.Data;
 
 import java.io.Serializable;

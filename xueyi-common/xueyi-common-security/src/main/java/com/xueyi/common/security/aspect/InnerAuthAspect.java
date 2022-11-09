@@ -1,10 +1,9 @@
 package com.xueyi.common.security.aspect;
 
-import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.exception.InnerAuthException;
-import com.xueyi.common.core.utils.ServletUtils;
-import com.xueyi.common.core.utils.StringUtils;
+import com.xueyi.common.core.utils.ServletUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.security.annotation.InnerAuth;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -22,17 +21,17 @@ import org.springframework.stereotype.Component;
 public class InnerAuthAspect implements Ordered {
     @Around("@annotation(innerAuth)")
     public Object innerAround(ProceedingJoinPoint point, InnerAuth innerAuth) throws Throwable {
-        String source = ServletUtils.getRequest().getHeader(SecurityConstants.FROM_SOURCE);
+        String source = ServletUtil.getRequest().getHeader(SecurityConstants.FROM_SOURCE);
         // 内部请求验证
-        if (!StringUtils.equals(SecurityConstants.INNER, source)) {
+        if (!StrUtil.equals(SecurityConstants.INNER, source)) {
             throw new InnerAuthException("没有内部访问权限，不允许访问");
         }
 
-        String enterpriseId = ServletUtils.getRequest()
+        String enterpriseId = ServletUtil.getRequest()
                 .getHeader(SecurityConstants.BaseSecurity.ENTERPRISE_ID.getCode());
-        String userId = ServletUtils.getRequest().getHeader(SecurityConstants.BaseSecurity.USER_ID.getCode());
-        String sourceName = ServletUtils.getRequest().getHeader(SecurityConstants.BaseSecurity.SOURCE_NAME.getCode());
-        String accountType = ServletUtils.getRequest().getHeader(SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode());
+        String userId = ServletUtil.getRequest().getHeader(SecurityConstants.BaseSecurity.USER_ID.getCode());
+        String sourceName = ServletUtil.getRequest().getHeader(SecurityConstants.BaseSecurity.SOURCE_NAME.getCode());
+        String accountType = ServletUtil.getRequest().getHeader(SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode());
         // 用户信息验证
         if (innerAuth.isUser() && (StrUtil.hasBlank(enterpriseId, userId, sourceName, accountType))) {
             throw new InnerAuthException("没有设置用户信息，不允许访问");

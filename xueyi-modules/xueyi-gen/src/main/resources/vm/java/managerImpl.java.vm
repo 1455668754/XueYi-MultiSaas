@@ -32,7 +32,7 @@ import ${subPackageName}.domain.dto.${subClassName}Dto;
 import ${subPackageName}.domain.po.${subClassName}Po;
 import ${subPackageName}.domain.model.${subClassName}Converter;
 import ${subPackageName}.mapper.${subClassName}Mapper;
-import cn.hutool.core.util.ObjectUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 
 import java.io.Serializable;
 import java.util.Collection;

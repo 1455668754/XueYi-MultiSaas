@@ -1,11 +1,11 @@
 package com.xueyi.common.security.utils.base;
 
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.basic.TokenConstants;
 import com.xueyi.common.core.context.SecurityContextHolder;
-import com.xueyi.common.core.utils.ServletUtils;
+import com.xueyi.common.core.utils.ServletUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -84,7 +84,7 @@ public class BaseSecurityUtils {
      * 获取请求token
      */
     public static String getToken() {
-        return getToken(ServletUtils.getRequest());
+        return getToken(ServletUtil.getRequest());
     }
 
     /**

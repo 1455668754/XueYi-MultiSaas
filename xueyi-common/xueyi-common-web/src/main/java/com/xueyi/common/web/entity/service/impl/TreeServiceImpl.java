@@ -1,9 +1,9 @@
 package com.xueyi.common.web.entity.service.impl;
 
-import cn.hutool.core.util.ObjectUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.xueyi.common.core.constant.basic.BaseConstants;
-import com.xueyi.common.core.utils.TreeUtils;
+import com.xueyi.common.core.utils.TreeUtil;
 import com.xueyi.common.core.web.entity.base.TreeEntity;
 import com.xueyi.common.core.web.vo.TreeSelect;
 import com.xueyi.common.web.entity.manager.ITreeManager;
@@ -236,7 +236,7 @@ public class TreeServiceImpl<Q extends TreeEntity<D>, D extends TreeEntity<D>, I
      */
     @Override
     public List<TreeSelect<D>> buildTreeSelect(List<D> list) {
-        List<D> deptTrees = TreeUtils.buildTree(list);
+        List<D> deptTrees = TreeUtil.buildTree(list);
         return deptTrees.stream().map(TreeSelect::new).collect(Collectors.toList());
     }
 }

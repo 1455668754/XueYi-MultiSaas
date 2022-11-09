@@ -5,7 +5,7 @@ package com.xueyi.common.core.utils.file;
  *
  * @author xueyi
  */
-public class MimeTypeUtils {
+public class MimeTypeUtil {
 
     public static final String IMAGE_PNG = "image/png";
 

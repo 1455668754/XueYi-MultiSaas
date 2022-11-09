@@ -1,9 +1,9 @@
 package com.xueyi.system.organize.controller;
 
-import cn.hutool.core.util.StrUtil;
-import com.xueyi.common.core.utils.StringUtils;
-import com.xueyi.common.core.utils.file.FileTypeUtils;
-import com.xueyi.common.core.utils.file.MimeTypeUtils;
+import com.xueyi.common.core.utils.core.ObjectUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
+import com.xueyi.common.core.utils.file.FileTypeUtil;
+import com.xueyi.common.core.utils.file.MimeTypeUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.log.annotation.Log;
@@ -158,17 +158,17 @@ public class SysProfileController extends BasisController {
     public AjaxResult editAvatar(@RequestParam("file") MultipartFile file) {
         if (!file.isEmpty()) {
             LoginUser loginUser = SecurityUtils.getLoginUser();
-            String extension = FileTypeUtils.getExtension(file);
-            if (!StringUtils.equalsAnyIgnoreCase(extension, MimeTypeUtils.IMAGE_EXTENSION)) {
-                return error("文件格式不正确，请上传" + Arrays.toString(MimeTypeUtils.IMAGE_EXTENSION) + "格式");
+            String extension = FileTypeUtil.getExtension(file);
+            if (!StrUtil.equalsAnyIgnoreCase(extension, MimeTypeUtil.IMAGE_EXTENSION)) {
+                return error("文件格式不正确，请上传" + Arrays.toString(MimeTypeUtil.IMAGE_EXTENSION) + "格式");
             }
             R<SysFile> fileResult = remoteFileService.upload(file);
-            if (StringUtils.isNull(fileResult) || StringUtils.isNull(fileResult.getData()))
+            if (ObjectUtil.isNull(fileResult) || ObjectUtil.isNull(fileResult.getData()))
                 return error("文件服务异常，请联系管理员！");
             String url = fileResult.getData().getUrl();
             if (userService.updateUserAvatar(SecurityUtils.getUserId(), url) > 0) {
                 String oldAvatarUrl = loginUser.getUser().getAvatar();
-                if (StringUtils.isNotEmpty(oldAvatarUrl)) {
+                if (StrUtil.isNotEmpty(oldAvatarUrl)) {
                     remoteFileService.delete(oldAvatarUrl);
                 }
                 AjaxResult ajax = success();

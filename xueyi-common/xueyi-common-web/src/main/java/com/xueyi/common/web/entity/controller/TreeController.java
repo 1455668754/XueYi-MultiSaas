@@ -1,7 +1,7 @@
 package com.xueyi.common.web.entity.controller;
 
 import com.xueyi.common.core.constant.basic.BaseConstants;
-import com.xueyi.common.core.utils.TreeUtils;
+import com.xueyi.common.core.utils.TreeUtil;
 import com.xueyi.common.core.web.entity.base.TreeEntity;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.validate.V_A;
@@ -31,7 +31,7 @@ public abstract class TreeController<Q extends TreeEntity<D>, D extends TreeEnti
     @Override
     public AjaxResult list(Q query) {
         List<D> list = baseService.selectListScope(query);
-        return success(TreeUtils.buildTree(list));
+        return success(TreeUtil.buildTree(list));
     }
 
     /**
@@ -42,7 +42,7 @@ public abstract class TreeController<Q extends TreeEntity<D>, D extends TreeEnti
         query.setId(null);
         List<D> list = baseService.selectListScope(query);
         SHandleExNodes(list, id);
-        return success(TreeUtils.buildTree(list));
+        return success(TreeUtil.buildTree(list));
     }
 
     /**

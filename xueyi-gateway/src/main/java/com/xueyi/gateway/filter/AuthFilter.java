@@ -1,10 +1,10 @@
 package com.xueyi.gateway.filter;
 
-import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.*;
-import com.xueyi.common.core.utils.JwtUtils;
-import com.xueyi.common.core.utils.ServletUtils;
-import com.xueyi.common.core.utils.StringUtils;
+import com.xueyi.common.core.utils.JwtUtil;
+import com.xueyi.common.core.utils.ServletUtil;
+import com.xueyi.common.core.utils.core.CollUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.redis.service.RedisService;
 import com.xueyi.gateway.config.properties.IgnoreWhiteProperties;
 import io.jsonwebtoken.Claims;
@@ -45,30 +45,30 @@ public class AuthFilter implements GlobalFilter, Ordered {
 
         String url = request.getURI().getPath();
         // 跳过不需要验证的路径
-        if (StringUtils.matches(url, ignoreWhite.getWhites())) {
+        if (CollUtil.contains(ignoreWhite.getWhites(), url)) {
             return chain.filter(exchange);
         }
         String token = getToken(request);
-        if (StringUtils.isEmpty(token)) {
+        if (StrUtil.isEmpty(token)) {
             return unauthorizedResponse(exchange, "令牌不能为空");
         }
-        Claims claims = JwtUtils.parseToken(token);
+        Claims claims = JwtUtil.parseToken(token);
         if (claims == null) {
             return unauthorizedResponse(exchange, "令牌已过期或验证不正确！");
         }
-        String userKey = JwtUtils.getUserKey(claims);
-        String accountType = JwtUtils.getAccountType(claims);
+        String userKey = JwtUtil.getUserKey(claims);
+        String accountType = JwtUtil.getAccountType(claims);
         boolean isLogin = redisService.hasKey(getTokenKey(userKey, accountType));
         if (!isLogin) {
             return unauthorizedResponse(exchange, "登录状态已过期");
         }
-        String enterpriseId = JwtUtils.getEnterpriseId(claims);
-        String enterpriseName = JwtUtils.getEnterpriseName(claims);
-        String isLessor = JwtUtils.getIsLessor(claims);
-        String userId = JwtUtils.getUserId(claims);
-        String userName = JwtUtils.getUserName(claims);
-        String userType = JwtUtils.getUserType(claims);
-        String sourceName = JwtUtils.getSourceName(claims);
+        String enterpriseId = JwtUtil.getEnterpriseId(claims);
+        String enterpriseName = JwtUtil.getEnterpriseName(claims);
+        String isLessor = JwtUtil.getIsLessor(claims);
+        String userId = JwtUtil.getUserId(claims);
+        String userName = JwtUtil.getUserName(claims);
+        String userType = JwtUtil.getUserType(claims);
+        String sourceName = JwtUtil.getSourceName(claims);
 
         if (TenantConstants.AccountType.ADMIN.isAdmin(accountType) && StrUtil.hasBlank(enterpriseId, enterpriseName, isLessor, userId, userName, userType, sourceName)) {
             return unauthorizedResponse(exchange, "令牌验证失败");
@@ -92,7 +92,7 @@ public class AuthFilter implements GlobalFilter, Ordered {
         if (value == null)
             return;
         String valueStr = value.toString();
-        String valueEncode = ServletUtils.urlEncode(valueStr);
+        String valueEncode = ServletUtil.urlEncode(valueStr);
         mutate.header(name, valueEncode);
     }
 
@@ -103,7 +103,7 @@ public class AuthFilter implements GlobalFilter, Ordered {
     private Mono<Void> unauthorizedResponse(ServerWebExchange exchange, String msg) {
         log.error("[鉴权异常处理]请求路径:{}", exchange.getRequest().getPath());
 
-        return ServletUtils.webFluxResponseWriter(exchange.getResponse(), msg, HttpConstants.Status.UNAUTHORIZED.getCode());
+        return ServletUtil.webFluxResponseWriter(exchange.getResponse(), msg, HttpConstants.Status.UNAUTHORIZED.getCode());
     }
 
     /**
@@ -122,8 +122,8 @@ public class AuthFilter implements GlobalFilter, Ordered {
     private String getToken(ServerHttpRequest request) {
         String token = request.getHeaders().getFirst(TokenConstants.AUTHENTICATION);
         // 如果前端设置了令牌前缀，则裁剪掉前缀
-        if (StringUtils.isNotEmpty(token) && token.startsWith(TokenConstants.PREFIX)) {
-            token = token.replaceFirst(TokenConstants.PREFIX, StringUtils.EMPTY);
+        if (StrUtil.isNotEmpty(token) && StrUtil.startWith(token, TokenConstants.PREFIX)) {
+            token = StrUtil.replaceFirst(token, TokenConstants.PREFIX, StrUtil.EMPTY);
         }
         return token;
     }

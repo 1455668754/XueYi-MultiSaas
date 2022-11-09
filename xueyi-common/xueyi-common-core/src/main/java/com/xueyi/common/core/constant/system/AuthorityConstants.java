@@ -1,7 +1,7 @@
 package com.xueyi.common.core.constant.system;
 
-import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
+import com.xueyi.common.core.utils.core.StrUtil;
 
 /**
  * 权限通用常量

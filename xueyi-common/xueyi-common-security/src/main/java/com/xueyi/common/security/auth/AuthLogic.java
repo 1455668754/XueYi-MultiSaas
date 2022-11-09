@@ -1,13 +1,12 @@
 package com.xueyi.common.security.auth;
 
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.TenantConstants;
 import com.xueyi.common.core.exception.auth.NotLoginException;
 import com.xueyi.common.core.exception.auth.NotPermissionException;
 import com.xueyi.common.core.exception.auth.NotRoleException;
-import com.xueyi.common.core.utils.SpringUtils;
-import com.xueyi.common.core.utils.StringUtils;
+import com.xueyi.common.core.utils.core.ObjectUtil;
+import com.xueyi.common.core.utils.core.SpringUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.security.annotation.Logical;
 import com.xueyi.common.security.annotation.RequiresLogin;
 import com.xueyi.common.security.annotation.RequiresPermissions;
@@ -35,7 +34,7 @@ public class AuthLogic {
     /** 管理员角色权限标识 */
     private static final String SUPER_ADMIN = "admin";
 
-    public TokenService tokenService = SpringUtils.getBean(TokenService.class);
+    public TokenService tokenService = SpringUtil.getBean(TokenService.class);
 
     /**
      * 会话注销
@@ -322,7 +321,7 @@ public class AuthLogic {
      * @return 用户是否具备某权限
      */
     public boolean hasPerm(Collection<String> authorities, String permission) {
-        return authorities.stream().filter(StringUtils::hasText)
+        return authorities.stream().filter(StrUtil::isNotEmpty)
                 .anyMatch(x -> ALL_PERMISSION.contains(x) || PatternMatchUtils.simpleMatch(x, permission));
     }
 
@@ -334,7 +333,7 @@ public class AuthLogic {
      * @return 用户是否具备某角色权限
      */
     public boolean hasRole(Collection<String> roles, String role) {
-        return roles.stream().filter(StringUtils::hasText)
+        return roles.stream().filter(StrUtil::isNotEmpty)
                 .anyMatch(x -> SUPER_ADMIN.contains(x) || PatternMatchUtils.simpleMatch(x, role));
     }
 }

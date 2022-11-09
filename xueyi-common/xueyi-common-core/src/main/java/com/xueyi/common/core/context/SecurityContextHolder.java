@@ -1,10 +1,10 @@
 package com.xueyi.common.core.context;
 
 import cn.hutool.core.convert.Convert;
-import cn.hutool.core.util.StrUtil;
 import com.alibaba.ttl.TransmittableThreadLocal;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
-import com.xueyi.common.core.utils.StringUtils;
+import com.xueyi.common.core.utils.core.ConvertUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -167,18 +167,18 @@ public class SecurityContextHolder {
 
     public static String get(String key) {
         Map<String, Object> map = getLocalMap();
-        return Convert.toStr(map.getOrDefault(key, StrUtil.EMPTY));
+        return ConvertUtil.toStr(map.getOrDefault(key, StrUtil.EMPTY));
     }
 
     public static <T> T get(String key, Class<T> clazz) {
         Map<String, Object> map = getLocalMap();
-        return StringUtils.cast(map.getOrDefault(key, null));
+        return ConvertUtil.convert(clazz, map.getOrDefault(key, null));
     }
 
     public static Map<String, Object> getLocalMap() {
         Map<String, Object> map = THREAD_LOCAL.get();
         if (map == null) {
-            map = new ConcurrentHashMap<String, Object>();
+            map = new ConcurrentHashMap<>();
             THREAD_LOCAL.set(map);
         }
         return map;

@@ -1,6 +1,6 @@
 package com.xueyi.common.core.utils.file;
 
-import cn.hutool.core.util.StrUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 import org.apache.commons.lang3.ArrayUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,7 +14,7 @@ import java.nio.charset.StandardCharsets;
  *
  * @author xueyi
  */
-public class FileUtils {
+public class FileUtil {
 
     /**
      * 字符常量：斜杠 {@code '/'}
@@ -33,7 +33,6 @@ public class FileUtils {
      *
      * @param filePath 文件路径
      * @param os       输出流
-     * @return
      */
     public static void writeBytes(String filePath, OutputStream os) throws IOException {
         FileInputStream fis = null;
@@ -72,7 +71,7 @@ public class FileUtils {
      * 删除文件
      *
      * @param filePath 文件
-     * @return
+     * @return 结果
      */
     public static boolean deleteFile(String filePath) {
         boolean flag = false;
@@ -106,14 +105,8 @@ public class FileUtils {
         if (StrUtil.contains(resource, "..")) {
             return false;
         }
-
         // 检查允许下载的文件规则
-        if (ArrayUtils.contains(MimeTypeUtils.DEFAULT_ALLOWED_EXTENSION, FileTypeUtils.getFileType(resource))) {
-            return true;
-        }
-
-        // 不在允许下载的文件规则
-        return false;
+        return ArrayUtils.contains(MimeTypeUtil.DEFAULT_ALLOWED_EXTENSION, FileTypeUtil.getFileType(resource));
     }
 
     /**
@@ -192,20 +185,18 @@ public class FileUtils {
      *
      * @param response     响应对象
      * @param realFileName 真实文件名
-     * @return
      */
     public static void setAttachmentResponseHeader(HttpServletResponse response, String realFileName) throws UnsupportedEncodingException {
         String percentEncodedFileName = percentEncode(realFileName);
 
-        StringBuilder contentDispositionValue = new StringBuilder();
-        contentDispositionValue.append("attachment; filename=")
-                .append(percentEncodedFileName)
-                .append(";")
-                .append("filename*=")
-                .append("utf-8''")
-                .append(percentEncodedFileName);
+        String contentDispositionValue = "attachment; filename=" +
+                percentEncodedFileName +
+                ";" +
+                "filename*=" +
+                "utf-8''" +
+                percentEncodedFileName;
 
-        response.setHeader("Content-disposition", contentDispositionValue.toString());
+        response.setHeader("Content-disposition", contentDispositionValue);
         response.setHeader("download-filename", percentEncodedFileName);
     }
 

@@ -2,13 +2,13 @@ package com.xueyi.job.util;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.LocalDateTimeUtil;
-import cn.hutool.core.util.ObjectUtil;
 import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.job.ScheduleConstants;
 import com.xueyi.common.core.utils.ExceptionUtil;
-import com.xueyi.common.core.utils.SpringUtils;
-import com.xueyi.common.core.utils.StringUtils;
+import com.xueyi.common.core.utils.core.ObjectUtil;
+import com.xueyi.common.core.utils.core.SpringUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.job.api.domain.dto.SysJobDto;
 import com.xueyi.job.api.domain.dto.SysJobLogDto;
 import com.xueyi.job.api.feign.RemoteJobLogService;
@@ -81,20 +81,20 @@ public abstract class AbstractQuartzJob implements Job {
         jobLog.setJobMessage(jobLog.getName() + " 总共耗时：" + between.toMillis() + "毫秒");
         if (e != null) {
             jobLog.setStatus(DictConstants.DicStatus.FAIL.getCode());
-            String errorMsg = StringUtils.substring(ExceptionUtil.getExceptionMessage(e), 0, 2000);
+            String errorMsg = StrUtil.sub(ExceptionUtil.getExceptionMessage(e), 0, 2000);
             jobLog.setExceptionInfo(errorMsg);
         } else {
             jobLog.setStatus(DictConstants.DicStatus.NORMAL.getCode());
         }
         String[] methodParams = jobLog.getInvokeTenant().split(",(?=([^\"']*[\"'][^\"']*[\"'])*[^\"']*$)");
-        String enterpriseIdStr = StringUtils.trimToEmpty(methodParams[0]);
-        Long enterpriseId = Long.valueOf(StringUtils.substring(enterpriseIdStr, 0, enterpriseIdStr.length() - 1));
-        String isLessorStr = StringUtils.trimToEmpty(methodParams[1]);
-        String isLessor = StringUtils.substring(isLessorStr, 1, isLessorStr.length() - 1);
-        String sourceNameStr = StringUtils.trimToEmpty(methodParams[2]);
-        String sourceName = StringUtils.substring(sourceNameStr, 1, sourceNameStr.length() - 1);
+        String enterpriseIdStr = StrUtil.trimToEmpty(methodParams[0]);
+        Long enterpriseId = Long.valueOf(StrUtil.sub(enterpriseIdStr, 0, enterpriseIdStr.length() - 1));
+        String isLessorStr = StrUtil.trimToEmpty(methodParams[1]);
+        String isLessor = StrUtil.sub(isLessorStr, 1, isLessorStr.length() - 1);
+        String sourceNameStr = StrUtil.trimToEmpty(methodParams[2]);
+        String sourceName = StrUtil.sub(sourceNameStr, 1, sourceNameStr.length() - 1);
         // 写入数据库当中
-        SpringUtils.getBean(RemoteJobLogService.class).saveJobLog(jobLog, enterpriseId, isLessor, sourceName, SecurityConstants.INNER);
+        SpringUtil.getBean(RemoteJobLogService.class).saveJobLog(jobLog, enterpriseId, isLessor, sourceName, SecurityConstants.INNER);
     }
 
     /**

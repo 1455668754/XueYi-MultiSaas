@@ -1,6 +1,6 @@
 package com.xueyi.common.core.utils;
 
-import cn.hutool.core.util.StrUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.io.PrintWriter;
@@ -32,6 +32,6 @@ public class ExceptionUtil {
         if (msg == null) {
             return StrUtil.NULL;
         }
-        return StringUtils.defaultString(msg);
+        return StrUtil.nullToEmpty(msg);
     }
 }

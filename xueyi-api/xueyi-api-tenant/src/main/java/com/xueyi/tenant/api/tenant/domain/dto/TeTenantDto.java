@@ -1,7 +1,7 @@
 package com.xueyi.tenant.api.tenant.domain.dto;
 
-import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.tenant.api.tenant.domain.po.TeTenantPo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

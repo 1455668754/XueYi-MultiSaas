@@ -15,9 +15,9 @@ import java.util.Arrays;
  *
  * @author xueyi
  */
-public class ImageUtils {
+public class ImageUtil {
 
-    private static final Logger log = LoggerFactory.getLogger(ImageUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(ImageUtil.class);
 
     public static byte[] getImage(String imagePath) {
         InputStream is = getFile(imagePath);

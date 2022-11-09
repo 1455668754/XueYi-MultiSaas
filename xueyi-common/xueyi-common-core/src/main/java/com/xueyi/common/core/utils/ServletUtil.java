@@ -1,10 +1,10 @@
 package com.xueyi.common.core.utils;
 
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.convert.Convert;
 import com.alibaba.fastjson2.JSON;
 import com.xueyi.common.core.constant.basic.HttpConstants;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.result.R;
-import cn.hutool.core.convert.Convert;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -31,7 +31,7 @@ import java.util.Map;
  *
  * @author xueyi
  */
-public class ServletUtils {
+public class ServletUtil {
 
     /**
      * 获取String参数
@@ -168,12 +168,12 @@ public class ServletUtils {
         }
 
         String uri = request.getRequestURI();
-        if (StringUtils.inStringIgnoreCase(uri, ".json", ".xml")) {
+        if (StrUtil.inStringIgnoreCase(uri, ".json", ".xml")) {
             return true;
         }
 
         String ajax = request.getParameter("__ajax");
-        return StringUtils.inStringIgnoreCase(ajax, "json", "xml");
+        return StrUtil.inStringIgnoreCase(ajax, "json", "xml");
     }
 
     /**

@@ -2,8 +2,8 @@ package com.xueyi.gateway.filter;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
-import com.xueyi.common.core.utils.ServletUtils;
-import com.xueyi.common.core.utils.StringUtils;
+import com.xueyi.common.core.utils.ServletUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.gateway.config.properties.CaptchaProperties;
 import com.xueyi.gateway.service.ValidateCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +45,7 @@ public class ValidateCodeFilter extends AbstractGatewayFilterFactory<Object> {
             ServerHttpRequest request = exchange.getRequest();
 
             // 非登录/注册请求或验证码关闭，不处理
-            if (!StringUtils.containsAnyIgnoreCase(request.getURI().getPath(), VALIDATE_URL) || !captchaProperties.getEnabled()) {
+            if (!StrUtil.containsAnyIgnoreCase(request.getURI().getPath(), VALIDATE_URL) || !captchaProperties.getEnabled()) {
                 return chain.filter(exchange);
             }
             try {
@@ -53,7 +53,7 @@ public class ValidateCodeFilter extends AbstractGatewayFilterFactory<Object> {
                 JSONObject obj = JSON.parseObject(rspStr);
                 validateCodeService.checkCaptcha(obj.getString(CODE), obj.getString(UUID));
             } catch (Exception e) {
-                return ServletUtils.webFluxResponseWriter(exchange.getResponse(), e.getMessage());
+                return ServletUtil.webFluxResponseWriter(exchange.getResponse(), e.getMessage());
             }
             return chain.filter(exchange);
         };

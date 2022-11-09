@@ -1,13 +1,13 @@
 package com.xueyi.file.utils;
 
 import cn.hutool.core.util.IdUtil;
-import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.exception.file.FileNameLengthLimitExceededException;
 import com.xueyi.common.core.exception.file.FileSizeLimitExceededException;
 import com.xueyi.common.core.exception.file.InvalidExtensionException;
-import com.xueyi.common.core.utils.DateUtils;
-import com.xueyi.common.core.utils.file.FileTypeUtils;
-import com.xueyi.common.core.utils.file.MimeTypeUtils;
+import com.xueyi.common.core.utils.DateUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
+import com.xueyi.common.core.utils.file.FileTypeUtil;
+import com.xueyi.common.core.utils.file.MimeTypeUtil;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,7 +38,7 @@ public class FileUploadUtils {
      */
     public static String upload(String baseDir, MultipartFile file) throws IOException {
         try {
-            return upload(baseDir, file, MimeTypeUtils.DEFAULT_ALLOWED_EXTENSION);
+            return upload(baseDir, file, MimeTypeUtil.DEFAULT_ALLOWED_EXTENSION);
         } catch (Exception e) {
             throw new IOException(e.getMessage(), e);
         }
@@ -75,7 +75,7 @@ public class FileUploadUtils {
      * 编码文件名
      */
     public static String extractFilename(MultipartFile file) {
-        return StrUtil.format("{}/{}_{}.{}", DateUtils.datePath(), FilenameUtils.getBaseName(file.getOriginalFilename()), IdUtil.simpleUUID(), FileTypeUtils.getExtension(file));
+        return StrUtil.format("{}/{}_{}.{}", DateUtil.datePath(), FilenameUtils.getBaseName(file.getOriginalFilename()), IdUtil.simpleUUID(), FileTypeUtil.getExtension(file));
     }
 
     private static File getAbsoluteFile(String uploadDir, String fileName) throws IOException {
@@ -107,15 +107,15 @@ public class FileUploadUtils {
         }
 
         String fileName = file.getOriginalFilename();
-        String extension = FileTypeUtils.getExtension(file);
+        String extension = FileTypeUtil.getExtension(file);
         if (allowedExtension != null && !isAllowedExtension(extension, allowedExtension)) {
-            if (allowedExtension == MimeTypeUtils.IMAGE_EXTENSION) {
+            if (allowedExtension == MimeTypeUtil.IMAGE_EXTENSION) {
                 throw new InvalidExtensionException.InvalidImageExtensionException(allowedExtension, extension, fileName);
-            } else if (allowedExtension == MimeTypeUtils.FLASH_EXTENSION) {
+            } else if (allowedExtension == MimeTypeUtil.FLASH_EXTENSION) {
                 throw new InvalidExtensionException.InvalidFlashExtensionException(allowedExtension, extension, fileName);
-            } else if (allowedExtension == MimeTypeUtils.MEDIA_EXTENSION) {
+            } else if (allowedExtension == MimeTypeUtil.MEDIA_EXTENSION) {
                 throw new InvalidExtensionException.InvalidMediaExtensionException(allowedExtension, extension, fileName);
-            } else if (allowedExtension == MimeTypeUtils.VIDEO_EXTENSION) {
+            } else if (allowedExtension == MimeTypeUtil.VIDEO_EXTENSION) {
                 throw new InvalidExtensionException.InvalidVideoExtensionException(allowedExtension, extension, fileName);
             } else {
                 throw new InvalidExtensionException(allowedExtension, extension, fileName);

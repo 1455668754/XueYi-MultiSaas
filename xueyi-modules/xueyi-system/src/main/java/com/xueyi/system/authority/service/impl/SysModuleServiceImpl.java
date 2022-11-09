@@ -1,6 +1,6 @@
 package com.xueyi.system.authority.service.impl;
 
-import cn.hutool.core.util.ObjectUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.web.entity.service.impl.SubBaseServiceImpl;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;

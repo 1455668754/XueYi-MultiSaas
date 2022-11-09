@@ -2,11 +2,11 @@ package com.xueyi.system.authority.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.IdUtil;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
-import com.xueyi.common.core.utils.TreeUtils;
+import com.xueyi.common.core.utils.TreeUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.web.entity.service.impl.TreeServiceImpl;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
@@ -187,7 +187,7 @@ public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuQuery, SysMenuDto
         Map<String, String> routeMap = new HashMap<>();
         if (CollUtil.isEmpty(menus))
             return new HashMap<>();
-        List<SysMenuDto> menuTree = TreeUtils.buildTree(menus);
+        List<SysMenuDto> menuTree = TreeUtil.buildTree(menus);
         SysMenuDto menu = new SysMenuDto();
         menu.setFullPath(StrUtil.EMPTY);
         menu.setChildren(menuTree);

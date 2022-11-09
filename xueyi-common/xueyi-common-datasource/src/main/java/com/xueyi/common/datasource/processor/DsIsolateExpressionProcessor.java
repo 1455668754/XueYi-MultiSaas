@@ -1,7 +1,7 @@
 package com.xueyi.common.datasource.processor;
 
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.dynamic.datasource.processor.DsProcessor;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.datasource.utils.DSUtils;
 import com.xueyi.common.security.utils.SecurityUtils;
 import org.aopalliance.intercept.MethodInvocation;

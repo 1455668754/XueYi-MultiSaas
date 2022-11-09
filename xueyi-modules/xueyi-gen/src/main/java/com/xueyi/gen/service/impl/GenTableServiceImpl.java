@@ -1,8 +1,6 @@
 package com.xueyi.gen.service.impl;
 
 import cn.hutool.core.util.CharsetUtil;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
@@ -12,7 +10,8 @@ import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.basic.ServiceConstants;
 import com.xueyi.common.core.constant.gen.GenConstants.OptionField;
 import com.xueyi.common.core.constant.gen.GenConstants.TemplateType;
-import com.xueyi.common.core.utils.StringUtils;
+import com.xueyi.common.core.utils.core.ObjectUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.web.entity.service.impl.SubBaseServiceImpl;
@@ -70,7 +69,7 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableQuery, GenTa
      */
     public static String getGenPath(GenTableDto table, String template, ServiceConstants.FromSource fromSource) {
         String genPath = table.getGenPath();
-        if (StringUtils.equals(genPath, StrUtil.SLASH)) {
+        if (StrUtil.equals(genPath, StrUtil.SLASH)) {
             String prefixPath = System.getProperty("user.dir") + File.separator + "src" + File.separator;
             return prefixPath + VelocityUtils.getFileName(prefixPath, template, table, fromSource);
         }
@@ -363,11 +362,11 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableQuery, GenTa
     private void checkTclTree(JSONObject optionsObj) {
         if (StrUtil.isEmpty(optionsObj.getString(OptionField.TREE_ID.getCode())))
             AjaxResult.warn("树编码字段不能为空");
-        else if (StringUtils.isEmpty(optionsObj.getString(OptionField.PARENT_ID.getCode())))
+        else if (StrUtil.isEmpty(optionsObj.getString(OptionField.PARENT_ID.getCode())))
             AjaxResult.warn("树父编码字段不能为空");
-        else if (StringUtils.isEmpty(optionsObj.getString(OptionField.TREE_NAME.getCode())))
+        else if (StrUtil.isEmpty(optionsObj.getString(OptionField.TREE_NAME.getCode())))
             AjaxResult.warn("树名称字段不能为空");
-        else if (StringUtils.isEmpty(optionsObj.getString(OptionField.ANCESTORS.getCode())))
+        else if (StrUtil.isEmpty(optionsObj.getString(OptionField.ANCESTORS.getCode())))
             AjaxResult.warn("树祖籍列表字段不能为空");
     }
 
@@ -381,7 +380,7 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableQuery, GenTa
             AjaxResult.warn("外键关联的主表字段不能为空");
         else if (StrUtil.isEmpty(optionsObj.getString(OptionField.SUB_TABLE_ID.getCode())))
             AjaxResult.warn("关联子表的表名字段不能为空");
-        else if (StringUtils.isEmpty(optionsObj.getString(OptionField.SUB_FOREIGN_ID.getCode())))
+        else if (StrUtil.isEmpty(optionsObj.getString(OptionField.SUB_FOREIGN_ID.getCode())))
             AjaxResult.warn("关联子表的外键名字段不能为空");
     }
 

@@ -1,6 +1,6 @@
 package com.xueyi.system.authority.domain.vo;
 
-import cn.hutool.core.util.ObjectUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.system.AuthorityConstants;

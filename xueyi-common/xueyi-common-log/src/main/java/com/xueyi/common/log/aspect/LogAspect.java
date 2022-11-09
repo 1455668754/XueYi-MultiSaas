@@ -1,13 +1,12 @@
 package com.xueyi.common.log.aspect;
 
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSON;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.basic.TenantConstants;
-import com.xueyi.common.core.utils.ServletUtils;
-import com.xueyi.common.core.utils.StringUtils;
-import com.xueyi.common.core.utils.ip.IpUtils;
+import com.xueyi.common.core.utils.ServletUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
+import com.xueyi.common.core.utils.ip.IpUtil;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessStatus;
 import com.xueyi.common.log.filter.PropertyPreExcludeFilter;
@@ -79,10 +78,10 @@ public class LogAspect {
             SysOperateLogDto operateLog = new SysOperateLogDto();
             operateLog.setStatus(BusinessStatus.SUCCESS.getCode());
             // 请求的地址
-            String ip = IpUtils.getIpAddr(ServletUtils.getRequest());
+            String ip = IpUtil.getIpAddr(ServletUtil.getRequest());
             operateLog.setIp(ip);
 
-            operateLog.setUrl(StringUtils.substring(ServletUtils.getRequest().getRequestURI(), 0, 255));
+            operateLog.setUrl(StrUtil.sub(ServletUtil.getRequest().getRequestURI(), 0, 255));
             LoginUser loginUser = tokenService.getLoginUser();
             String sourceName = ObjectUtil.isNotNull(loginUser) ? loginUser.getSourceName() : null;
             Long userId = ObjectUtil.isNotNull(loginUser) ? loginUser.getUserId() : null;
@@ -98,14 +97,14 @@ public class LogAspect {
             operateLog.setEnterpriseId(ObjectUtil.isNotNull(enterpriseId) ? enterpriseId : SecurityConstants.EMPTY_TENANT_ID);
             if (e != null) {
                 operateLog.setStatus(BusinessStatus.FAIL.getCode());
-                operateLog.setErrorMsg(StringUtils.substring(e.getMessage(), 0, 2000));
+                operateLog.setErrorMsg(StrUtil.sub(e.getMessage(), 0, 2000));
             }
             // 设置方法名称
             String className = joinPoint.getTarget().getClass().getName();
             String methodName = joinPoint.getSignature().getName();
-            operateLog.setMethod(className + StrUtil.DOT + methodName + "()");
+            operateLog.setMethod(className + StrUtil.DOT + methodName + StrUtil.PARENTHESES);
             // 设置请求方式
-            operateLog.setRequestMethod(ServletUtils.getRequest().getMethod());
+            operateLog.setRequestMethod(ServletUtil.getRequest().getMethod());
             // 处理设置注解上的参数
             getControllerMethodDescription(joinPoint, controllerLog, operateLog, jsonResult);
             // 保存数据库
@@ -138,8 +137,8 @@ public class LogAspect {
             setRequestValue(joinPoint, operationLog);
         }
         // 是否需要保存response，参数和值
-        if (log.isSaveResponseData() && StringUtils.isNotNull(jsonResult)) {
-            operationLog.setJsonResult(StringUtils.substring(JSON.toJSONString(jsonResult), 0, 2000));
+        if (log.isSaveResponseData() && ObjectUtil.isNotNull(jsonResult)) {
+            operationLog.setJsonResult(StrUtil.sub(JSON.toJSONString(jsonResult), 0, 2000));
         }
     }
 
@@ -153,7 +152,7 @@ public class LogAspect {
         String requestMethod = operateLog.getRequestMethod();
         if (HttpMethod.PUT.name().equals(requestMethod) || HttpMethod.POST.name().equals(requestMethod)) {
             String params = argsArrayToString(joinPoint.getArgs());
-            operateLog.setParam(StringUtils.substring(params, 0, 2000));
+            operateLog.setParam(StrUtil.sub(params, 0, 2000));
         }
     }
 
@@ -161,19 +160,19 @@ public class LogAspect {
      * 参数拼装
      */
     private String argsArrayToString(Object[] paramsArray) {
-        String params = "";
+        StringBuilder params = new StringBuilder();
         if (paramsArray != null && paramsArray.length > 0) {
             for (Object o : paramsArray) {
-                if (StringUtils.isNotNull(o) && !isFilterObject(o)) {
+                if (ObjectUtil.isNotNull(o) && !isFilterObject(o)) {
                     try {
                         String jsonObj = JSON.toJSONString(o, excludePropertyPreFilter());
-                        params += jsonObj + " ";
+                        params.append(jsonObj).append(" ");
                     } catch (Exception ignored) {
                     }
                 }
             }
         }
-        return params.trim();
+        return params.toString().trim();
     }
 
     /**

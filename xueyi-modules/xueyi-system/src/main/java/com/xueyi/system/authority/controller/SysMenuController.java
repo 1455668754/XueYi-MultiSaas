@@ -1,13 +1,12 @@
 package com.xueyi.system.authority.controller;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.ServiceConstants;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
-import com.xueyi.common.core.utils.StringUtils;
-import com.xueyi.common.core.utils.TreeUtils;
+import com.xueyi.common.core.utils.TreeUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.core.web.validate.V_A;
@@ -35,7 +34,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -84,7 +82,7 @@ public class SysMenuController extends TreeController<SysMenuQuery, SysMenuDto, 
         if (ObjectUtil.isNull(menuMap) || ObjectUtil.isNull(menuMap.get(moduleKey))) {
             List<SysMenuDto> menus = baseService.getRoutes(moduleId);
             if (ObjectUtil.isNull(menuMap)) menuMap = new HashMap<>();
-            menuMap.put(moduleKey, CRouteUtils.buildMenus(TreeUtils.buildTree(menus)));
+            menuMap.put(moduleKey, CRouteUtils.buildMenus(TreeUtil.buildTree(menus)));
             tokenService.setMenuRoute(menuMap);
         }
         return success(menuMap.get(moduleKey));
@@ -100,7 +98,7 @@ public class SysMenuController extends TreeController<SysMenuQuery, SysMenuDto, 
         if (ObjectUtil.isNull(menuMap) || ObjectUtil.isNull(menuMap.get(moduleKey))) {
             List<SysMenuDto> menus = baseService.getRoutes(moduleId);
             if (ObjectUtil.isNull(menuMap)) menuMap = new HashMap<>();
-            menuMap.put(moduleKey, MRouteUtils.buildMenus(TreeUtils.buildTree(menus)));
+            menuMap.put(moduleKey, MRouteUtils.buildMenus(TreeUtil.buildTree(menus)));
             tokenService.setMenuRoute(menuMap);
         }
         return success(menuMap.get(moduleKey));
@@ -143,7 +141,7 @@ public class SysMenuController extends TreeController<SysMenuQuery, SysMenuDto, 
         if (ObjectUtil.isNull(menu) || ObjectUtil.isNull(menu.getModuleId()) || ObjectUtil.isNull(menu.getMenuType()))
             warn("请传入有效参数");
         List<SysMenuDto> menus = baseService.getMenuByMenuType(menu.getModuleId(), menu.getMenuType());
-        return success(TreeUtils.buildTree((menus)));
+        return success(TreeUtil.buildTree((menus)));
     }
 
     /**
@@ -154,13 +152,8 @@ public class SysMenuController extends TreeController<SysMenuQuery, SysMenuDto, 
         if (ObjectUtil.isNull(menu) || ObjectUtil.isNull(menu.getModuleId()) || ObjectUtil.isNull(menu.getMenuType()))
             warn("请传入有效参数");
         List<SysMenuDto> menus = baseService.getMenuByMenuType(menu.getModuleId(), menu.getMenuType());
-        Iterator<SysMenuDto> it = menus.iterator();
-        while (it.hasNext()) {
-            SysMenuDto next = (SysMenuDto) it.next();
-            if (ObjectUtil.equals(next.getId(), menu.getId()) || ArrayUtils.contains(StringUtils.split(next.getAncestors(), StrUtil.COMMA), menu.getId() + StrUtil.EMPTY))
-                it.remove();
-        }
-        return success(TreeUtils.buildTree((menus)));
+        menus.removeIf(next -> ObjectUtil.equals(next.getId(), menu.getId()) || ArrayUtils.contains(StrUtil.splitToArray(next.getAncestors(), StrUtil.COMMA), menu.getId() + StrUtil.EMPTY));
+        return success(TreeUtil.buildTree((menus)));
     }
 
     /**

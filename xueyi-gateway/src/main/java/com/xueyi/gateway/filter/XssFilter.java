@@ -1,6 +1,7 @@
 package com.xueyi.gateway.filter;
 
-import com.xueyi.common.core.utils.StringUtils;
+import com.xueyi.common.core.utils.core.CollUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.utils.html.EscapeUtil;
 import com.xueyi.gateway.config.properties.XssProperties;
 import io.netty.buffer.ByteBufAllocator;
@@ -47,7 +48,7 @@ public class XssFilter implements GlobalFilter, Ordered {
         }
         // excludeUrls 不过滤
         String url = request.getURI().getPath();
-        if (StringUtils.matches(url, xss.getExcludeUrls())) {
+        if (CollUtil.contains(xss.getExcludeUrls(), url)) {
             return chain.filter(exchange);
         }
         ServerHttpRequestDecorator httpRequestDecorator = requestDecorator(exchange);
@@ -98,7 +99,7 @@ public class XssFilter implements GlobalFilter, Ordered {
      */
     public boolean isJsonRequest(ServerWebExchange exchange) {
         String header = exchange.getRequest().getHeaders().getFirst(HttpHeaders.CONTENT_TYPE);
-        return StringUtils.startsWithIgnoreCase(header, MediaType.APPLICATION_JSON_VALUE);
+        return StrUtil.startWithIgnoreCase(header, MediaType.APPLICATION_JSON_VALUE);
     }
 
     @Override
