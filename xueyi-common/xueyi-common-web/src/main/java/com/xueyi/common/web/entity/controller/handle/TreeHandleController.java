@@ -4,7 +4,6 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
-import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.core.web.entity.base.TreeEntity;
 import com.xueyi.common.web.entity.controller.BaseController;
@@ -45,7 +44,7 @@ public abstract class TreeHandleController<Q extends TreeEntity<D>, D extends Tr
     protected void AHandleTreeStatusValidated(D d) {
         if (StrUtil.equals(BaseConstants.Status.NORMAL.getCode(), d.getStatus())
                 && BaseConstants.Status.DISABLE == baseService.checkStatus(d.getParentId()))
-            throw new ServiceException(StrUtil.format("新增{}{}失败，该{}的父级{}已被停用，禁止启用！！", getNodeName(), d.getName(), getNodeName(), getNodeName()));
+            warn(StrUtil.format("新增{}{}失败，该{}的父级{}已被停用，禁止启用！！", getNodeName(), d.getName(), getNodeName(), getNodeName()));
     }
 
     /**
@@ -57,9 +56,9 @@ public abstract class TreeHandleController<Q extends TreeEntity<D>, D extends Tr
      */
     protected void EHandleTreeLoopValidated(D d) {
         if (ObjectUtil.equals(d.getId(), d.getParentId()))
-            throw new ServiceException(StrUtil.format("修改{}{}失败，上级{}不能是自己！", getNodeName(), d.getName(), getNodeName()));
+            warn(StrUtil.format("修改{}{}失败，上级{}不能是自己！", getNodeName(), d.getName(), getNodeName()));
         else if (baseService.checkIsChild(d.getParentId(), d.getId()))
-            throw new ServiceException(StrUtil.format("修改{}{}失败，上级{}不能是自己的子{}！", getNodeName(), d.getName(), getNodeName(), getNodeName()));
+            warn(StrUtil.format("修改{}{}失败，上级{}不能是自己的子{}！", getNodeName(), d.getName(), getNodeName(), getNodeName()));
     }
 
     /**
@@ -71,10 +70,10 @@ public abstract class TreeHandleController<Q extends TreeEntity<D>, D extends Tr
     protected void EHandleTreeStatusValidated(D d) {
         if (StrUtil.equals(BaseConstants.Status.DISABLE.getCode(), d.getStatus())
                 && baseService.checkHasNormalChild(d.getId()))
-            throw new ServiceException(StrUtil.format("修改{}{}失败，该{}包含未停用的子{}，禁止停用！", getNodeName(), d.getName(), getNodeName(), getNodeName()));
+            warn(StrUtil.format("修改{}{}失败，该{}包含未停用的子{}，禁止停用！", getNodeName(), d.getName(), getNodeName(), getNodeName()));
         else if (StrUtil.equals(BaseConstants.Status.NORMAL.getCode(), d.getStatus())
                 && BaseConstants.Status.DISABLE == baseService.checkStatus(d.getParentId()))
-            throw new ServiceException(StrUtil.format("修改{}{}失败，该{}的父级{}已被停用，禁止启用！", getNodeName(), d.getName(), getNodeName(), getNodeName()));
+            warn(StrUtil.format("修改{}{}失败，该{}的父级{}已被停用，禁止启用！", getNodeName(), d.getName(), getNodeName(), getNodeName()));
     }
 
     /**
@@ -86,10 +85,10 @@ public abstract class TreeHandleController<Q extends TreeEntity<D>, D extends Tr
     protected void ESHandleTreeStatusValidated(D d) {
         if (StrUtil.equals(BaseConstants.Status.DISABLE.getCode(), d.getStatus())
                 && baseService.checkHasNormalChild(d.getId()))
-            throw new ServiceException(StrUtil.format("停用失败，该{}包含未停用的子{}！", getNodeName(), getNodeName()));
+            warn(StrUtil.format("停用失败，该{}包含未停用的子{}！", getNodeName(), getNodeName()));
         else if (StrUtil.equals(BaseConstants.Status.NORMAL.getCode(), d.getStatus())
                 && BaseConstants.Status.DISABLE == baseService.checkStatus(d.getParentId()))
-            throw new ServiceException(StrUtil.format("启用失败，该{}的父级{}已被停用！", getNodeName(), getNodeName()));
+            warn(StrUtil.format("启用失败，该{}的父级{}已被停用！", getNodeName(), getNodeName()));
     }
 
     /**
@@ -105,10 +104,10 @@ public abstract class TreeHandleController<Q extends TreeEntity<D>, D extends Tr
             if (baseService.checkHasChild(idList.get(i)))
                 idList.remove(i);
         if (CollUtil.isEmpty(idList)) {
-            throw new ServiceException(StrUtil.format("删除失败，所有待删除{}皆存在子{}！", getNodeName(), getNodeName()));
+            warn(StrUtil.format("删除失败，所有待删除{}皆存在子{}！", getNodeName(), getNodeName()));
         } else if (idList.size() != size) {
             baseService.deleteByIds(idList);
-            throw new ServiceException(StrUtil.format("成功删除所有无子{}的{}！", getNodeName(), getNodeName()));
+            warn(StrUtil.format("成功删除所有无子{}的{}！", getNodeName(), getNodeName()));
         }
     }
 }

@@ -30,7 +30,7 @@ public class SysOrganizeController extends BasisController {
     @GetMapping(value = "/organizeScope")
     @RequiresPermissions(value = {Auth.SYS_ROLE_ADD, Auth.SYS_ROLE_AUTH}, logical = Logical.OR)
     public AjaxResult getOrganizeScope() {
-        return AjaxResult.success(TreeUtils.buildTree(organizeService.selectOrganizeScope()));
+        return success(TreeUtils.buildTree(organizeService.selectOrganizeScope()));
     }
 
     /**
@@ -38,6 +38,6 @@ public class SysOrganizeController extends BasisController {
      */
     @GetMapping("/option")
     public AjaxResult option() {
-        return AjaxResult.success(organizeService.selectOrganizeTreeExDeptNode());
+        return success(organizeService.selectOrganizeTreeExDeptNode());
     }
 }

@@ -5,10 +5,10 @@ import cn.hutool.core.util.StrUtil;
 import com.xueyi.auth.form.RegisterBody;
 import com.xueyi.common.core.constant.basic.*;
 import com.xueyi.common.core.constant.system.OrganizeConstants;
-import com.xueyi.common.core.web.result.R;
-import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.ServletUtils;
 import com.xueyi.common.core.utils.ip.IpUtils;
+import com.xueyi.common.core.web.result.AjaxResult;
+import com.xueyi.common.core.web.result.R;
 import com.xueyi.system.api.authority.feign.RemoteLoginService;
 import com.xueyi.system.api.log.domain.dto.SysLoginLogDto;
 import com.xueyi.system.api.log.feign.RemoteLogService;
@@ -42,35 +42,35 @@ public class SysLoginService {
         // 企业账号||员工账号||密码为空 错误
         if (StrUtil.hasBlank(enterpriseName, userName, password)) {
             recordLoginInfo(enterpriseName, userName, Constants.LOGIN_FAIL, "企业账号/员工账号/密码必须填写");
-            throw new ServiceException("企业账号/员工账号/密码必须填写");
+            AjaxResult.warn("企业账号/员工账号/密码必须填写");
         }
         // 企业账号不在指定范围内 错误
         if (enterpriseName.length() < OrganizeConstants.ENTERPRISE_NAME_MIN_LENGTH
                 || enterpriseName.length() > OrganizeConstants.ENTERPRISE_NAME_MAX_LENGTH) {
             recordLoginInfo(enterpriseName, userName, Constants.LOGIN_FAIL, "企业账号不在指定范围");
-            throw new ServiceException("企业账号不在指定范围");
+            AjaxResult.warn("企业账号不在指定范围");
         }
 
         // 员工账号不在指定范围内 错误
         if (userName.length() < OrganizeConstants.USERNAME_MIN_LENGTH
                 || userName.length() > OrganizeConstants.USERNAME_MAX_LENGTH) {
             recordLoginInfo(enterpriseName, userName, Constants.LOGIN_FAIL, "员工账号不在指定范围");
-            throw new ServiceException("员工账号不在指定范围");
+            AjaxResult.warn("员工账号不在指定范围");
         }
 
         // 密码如果不在指定范围内 错误
         if (password.length() < OrganizeConstants.PASSWORD_MIN_LENGTH
                 || password.length() > OrganizeConstants.PASSWORD_MAX_LENGTH) {
             recordLoginInfo(enterpriseName, userName, Constants.LOGIN_FAIL, "用户密码不在指定范围");
-            throw new ServiceException("用户密码不在指定范围");
+            AjaxResult.warn("用户密码不在指定范围");
         }
         // 查询登录信息
         R<LoginUser> loginInfoResult = remoteLoginService.getLoginInfoInner(enterpriseName, userName, password, SecurityConstants.INNER);
         if (loginInfoResult.isFail()) {
-            throw new ServiceException("当前访问人数过多，请稍后再试！");
+            AjaxResult.warn("当前访问人数过多，请稍后再试！");
         } else if (ObjectUtil.isNull(loginInfoResult.getData())) {
             recordLoginInfo(enterpriseName, userName, Constants.LOGIN_FAIL, loginInfoResult.getMsg());
-            throw new ServiceException("企业账号/员工账号/密码错误，请检查！");
+            AjaxResult.warn("企业账号/员工账号/密码错误，请检查！");
         }
         LoginUser loginUser = loginInfoResult.getData();
         Long enterpriseId = loginUser.getEnterpriseId();
@@ -80,7 +80,7 @@ public class SysLoginService {
         String userNick = user.getNickName();
         if (BaseConstants.Status.DISABLE.getCode().equals(loginUser.getUser().getStatus())) {
             recordLoginInfo(sourceName, enterpriseId, enterpriseName, userId, userName, userNick, Constants.LOGIN_FAIL, "用户已停用，请联系管理员");
-            throw new ServiceException("对不起，您的账号：" + userName + " 已停用！");
+            AjaxResult.warn("对不起，您的账号：" + userName + " 已停用！");
         }
 
         recordLoginInfo(sourceName, enterpriseId, enterpriseName, userId, userName, userNick, Constants.LOGIN_SUCCESS, "登录成功");
@@ -102,7 +102,7 @@ public class SysLoginService {
         // 注册租户信息
         R<?> registerResult = remoteTenantService.registerTenantInfo(registerBody.buildJson(), SecurityConstants.INNER);
         if (R.FAIL == registerResult.getCode()) {
-            throw new ServiceException(registerResult.getMsg());
+            AjaxResult.warn(registerResult.getMsg());
         }
         // 注册逻辑补充完整后再增加日志
 //        recordLoginInfo(TenantConstants.Source.SLAVE.getCode(), SecurityConstants.EMPTY_TENANT_ID, registerBody.getTenant().getName(), SecurityConstants.EMPTY_USER_ID, registerBody.getUser().getUserName(), Constants.REGISTER, "注册成功");

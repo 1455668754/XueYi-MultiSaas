@@ -2,7 +2,6 @@ package com.xueyi.system.dict.controller;
 
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
-import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
@@ -140,7 +139,7 @@ public class SysDictTypeController extends SubBaseController<SysDictTypeQuery, S
     @GetMapping("/refresh")
     public AjaxResult refreshCache() {
         baseService.resetDictCache();
-        return AjaxResult.success();
+        return success();
     }
 
     /**
@@ -158,6 +157,6 @@ public class SysDictTypeController extends SubBaseController<SysDictTypeQuery, S
     @Override
     protected void AEHandleValidated(BaseConstants.Operate operate, SysDictTypeDto dictType) {
         if (baseService.checkDictCodeUnique(dictType.getId(), dictType.getCode()))
-            throw new ServiceException(StrUtil.format("{}{}{}失败，字典编码已存在", operate.getInfo(), getNodeName(), dictType.getName()));
+            warn(StrUtil.format("{}{}{}失败，字典编码已存在", operate.getInfo(), getNodeName(), dictType.getName()));
     }
 }

@@ -4,7 +4,6 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.system.OrganizeConstants;
-import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
@@ -66,7 +65,7 @@ public class TeTenantController extends BaseController<TeTenantQuery, TeTenantDt
     @GetMapping("/auth/{id}")
     @RequiresPermissions(Auth.TE_TENANT_AUTH)
     public AjaxResult getAuth(@PathVariable Long id) {
-        return AjaxResult.success(baseService.selectAuth(id));
+        return success(baseService.selectAuth(id));
     }
 
     /**
@@ -140,7 +139,7 @@ public class TeTenantController extends BaseController<TeTenantQuery, TeTenantDt
     @Override
     protected void AEHandleValidated(BaseConstants.Operate operate, TeTenantDto tenant) {
         if (baseService.checkNameUnique(tenant.getId(), tenant.getName()))
-            throw new ServiceException(StrUtil.format("{}{}{}失败，{}名称已存在", operate.getInfo(), getNodeName(), tenant.getName(), getNodeName()));
+            warn(StrUtil.format("{}{}{}失败，{}名称已存在", operate.getInfo(), getNodeName(), tenant.getName(), getNodeName()));
     }
 
     /**
@@ -153,10 +152,10 @@ public class TeTenantController extends BaseController<TeTenantQuery, TeTenantDt
             if (baseService.checkIsDefault(idList.get(i)))
                 idList.remove(i);
         if (CollUtil.isEmpty(idList)) {
-            throw new ServiceException(StrUtil.format("删除失败，默认{}不允许删除！", getNodeName()));
+            warn(StrUtil.format("删除失败，默认{}不允许删除！", getNodeName()));
         } else if (idList.size() != size) {
             baseService.deleteByIds(idList);
-            throw new ServiceException(StrUtil.format("默认{}不允许删除，其余{}删除成功！", getNodeName(), getNodeName()));
+            warn(StrUtil.format("默认{}不允许删除，其余{}删除成功！", getNodeName(), getNodeName()));
         }
     }
 
@@ -167,28 +166,17 @@ public class TeTenantController extends BaseController<TeTenantQuery, TeTenantDt
         String enterpriseName = tenantRegister.getTenant().getName();
         String userName = tenantRegister.getUser().getUserName();
         String password = tenantRegister.getUser().getPassword();
-        // 企业账号为空 错误
-        if (StrUtil.isBlank(enterpriseName)) {
-            throw new ServiceException("企业账号必须填写");
-        }
-        if (enterpriseName.length() < OrganizeConstants.ENTERPRISE_NAME_MIN_LENGTH
-                || enterpriseName.length() > OrganizeConstants.ENTERPRISE_NAME_MAX_LENGTH) {
-            throw new ServiceException("企业账号长度必须在" + OrganizeConstants.ENTERPRISE_NAME_MIN_LENGTH + "到" + OrganizeConstants.ENTERPRISE_NAME_MAX_LENGTH + "个字符之间");
-        }
-
-        // 用户名或密码为空 错误
-        if (StrUtil.hasBlank(userName, password)) {
-            throw new ServiceException("用户账号/密码必须填写");
-        }
-        if (userName.length() < OrganizeConstants.USERNAME_MIN_LENGTH
-                || userName.length() > OrganizeConstants.USERNAME_MAX_LENGTH) {
-            throw new ServiceException("用户账号长度必须在" + OrganizeConstants.USERNAME_MIN_LENGTH + "到" + OrganizeConstants.USERNAME_MAX_LENGTH + "个字符之间");
-        }
-        if (password.length() < OrganizeConstants.PASSWORD_MIN_LENGTH
-                || password.length() > OrganizeConstants.PASSWORD_MAX_LENGTH) {
-            throw new ServiceException("用户密码长度必须在" + OrganizeConstants.PASSWORD_MIN_LENGTH + "到" + OrganizeConstants.PASSWORD_MAX_LENGTH + "个字符之间");
-        }
-        if (baseService.checkNameUnique(tenantRegister.getTenant().getId(), tenantRegister.getTenant().getName()))
-            throw new ServiceException("企业账号已存在，请更换后再提交！");
+        if (StrUtil.isBlank(enterpriseName))
+            warn("企业账号必须填写");
+        else if (enterpriseName.length() < OrganizeConstants.ENTERPRISE_NAME_MIN_LENGTH || enterpriseName.length() > OrganizeConstants.ENTERPRISE_NAME_MAX_LENGTH)
+            warn("企业账号长度必须在" + OrganizeConstants.ENTERPRISE_NAME_MIN_LENGTH + "到" + OrganizeConstants.ENTERPRISE_NAME_MAX_LENGTH + "个字符之间");
+        else if (StrUtil.hasBlank(userName, password))
+            warn("用户账号/密码必须填写");
+        else if (userName.length() < OrganizeConstants.USERNAME_MIN_LENGTH || userName.length() > OrganizeConstants.USERNAME_MAX_LENGTH)
+            warn("用户账号长度必须在" + OrganizeConstants.USERNAME_MIN_LENGTH + "到" + OrganizeConstants.USERNAME_MAX_LENGTH + "个字符之间");
+        else if (password.length() < OrganizeConstants.PASSWORD_MIN_LENGTH || password.length() > OrganizeConstants.PASSWORD_MAX_LENGTH)
+            warn("用户密码长度必须在" + OrganizeConstants.PASSWORD_MIN_LENGTH + "到" + OrganizeConstants.PASSWORD_MAX_LENGTH + "个字符之间");
+        else if (baseService.checkNameUnique(tenantRegister.getTenant().getId(), tenantRegister.getTenant().getName()))
+            warn("企业账号已存在，请更换后再提交！");
     }
 }

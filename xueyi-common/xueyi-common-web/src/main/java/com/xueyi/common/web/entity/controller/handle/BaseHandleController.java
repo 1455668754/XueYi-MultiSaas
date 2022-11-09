@@ -3,7 +3,6 @@ package com.xueyi.common.web.entity.controller.handle;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
-import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.web.entity.controller.BasisController;
 import com.xueyi.common.web.entity.service.IBaseService;
@@ -98,6 +97,6 @@ public abstract class BaseHandleController<Q extends BaseEntity, D extends BaseE
      */
     protected void RHandleEmptyValidated(List<Long> idList) {
         if (CollUtil.isEmpty(idList))
-            throw new ServiceException(StrUtil.format("无待删除{}！", getNodeName()));
+            warn(StrUtil.format("无待删除{}！", getNodeName()));
     }
 }

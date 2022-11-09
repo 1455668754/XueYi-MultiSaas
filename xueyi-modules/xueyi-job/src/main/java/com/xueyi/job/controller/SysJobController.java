@@ -5,7 +5,6 @@ import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.HttpConstants;
 import com.xueyi.common.core.constant.job.ScheduleConstants;
-import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.exception.job.TaskException;
 import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.core.utils.poi.ExcelUtil;
@@ -65,7 +64,7 @@ public class SysJobController extends BasisController {
     @GetMapping(value = "/{id}")
     @RequiresPermissions(Auth.SCHEDULE_JOB_SINGLE)
     public AjaxResult getInfo(@PathVariable Long id) {
-        return AjaxResult.success(baseService.selectById(id));
+        return success(baseService.selectById(id));
     }
 
     /**
@@ -129,7 +128,7 @@ public class SysJobController extends BasisController {
     @Log(title = "调度任务管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) throws SchedulerException {
         if (CollUtil.isEmpty(idList))
-            throw new ServiceException(StrUtil.format("无待删除{}！", getNodeName()));
+            warn(StrUtil.format("无待删除{}！", getNodeName()));
         return toAjax(baseService.deleteByIds(idList));
     }
 
@@ -146,16 +145,16 @@ public class SysJobController extends BasisController {
      */
     protected void AEHandleValidated(BaseConstants.Operate operate, SysJobDto job) {
         if (!CronUtils.isValid(job.getCronExpression()))
-            throw new ServiceException(StrUtil.format("{}{}{}失败，Cron表达式不正确", operate.getInfo(), getNodeName(), job.getName()));
+            warn(StrUtil.format("{}{}{}失败，Cron表达式不正确", operate.getInfo(), getNodeName(), job.getName()));
         else if (StringUtils.containsIgnoreCase(job.getInvokeTarget(), HttpConstants.Type.LOOKUP_RMI.getCode()))
-            throw new ServiceException(StrUtil.format("{}{}{}失败，目标字符串不允许'rmi'调用", operate.getInfo(), getNodeName(), job.getName()));
+            warn(StrUtil.format("{}{}{}失败，目标字符串不允许'rmi'调用", operate.getInfo(), getNodeName(), job.getName()));
         else if (StringUtils.containsAnyIgnoreCase(job.getInvokeTarget(), new String[]{HttpConstants.Type.LOOKUP_LDAP.getCode(), HttpConstants.Type.LOOKUP_LDAPS.getCode()}))
-            throw new ServiceException(StrUtil.format("{}{}{}失败，目标字符串不允许'ldap(s)'调用", operate.getInfo(), getNodeName(), job.getName()));
+            warn(StrUtil.format("{}{}{}失败，目标字符串不允许'ldap(s)'调用", operate.getInfo(), getNodeName(), job.getName()));
         else if (StringUtils.containsAnyIgnoreCase(job.getInvokeTarget(), new String[]{HttpConstants.Type.HTTP.getCode(), HttpConstants.Type.HTTPS.getCode()}))
-            throw new ServiceException(StrUtil.format("{}{}{}失败，目标字符串不允许'http(s)'调用", operate.getInfo(), getNodeName(), job.getName()));
+            warn(StrUtil.format("{}{}{}失败，目标字符串不允许'http(s)'调用", operate.getInfo(), getNodeName(), job.getName()));
         else if (StringUtils.containsAnyIgnoreCase(job.getInvokeTarget(), ScheduleConstants.JOB_ERROR_STR))
-            throw new ServiceException(StrUtil.format("{}{}{}失败，目标字符串存在违规", operate.getInfo(), getNodeName(), job.getName()));
+            warn(StrUtil.format("{}{}{}失败，目标字符串存在违规", operate.getInfo(), getNodeName(), job.getName()));
         else if (!ScheduleUtils.whiteList(job.getInvokeTarget()))
-            throw new ServiceException(StrUtil.format("{}{}{}失败，目标字符串不在白名单内", operate.getInfo(), getNodeName(), job.getName()));
+            warn(StrUtil.format("{}{}{}失败，目标字符串不在白名单内", operate.getInfo(), getNodeName(), job.getName()));
     }
 }

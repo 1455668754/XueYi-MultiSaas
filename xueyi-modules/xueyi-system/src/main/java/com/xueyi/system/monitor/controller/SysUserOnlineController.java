@@ -75,6 +75,6 @@ public class SysUserOnlineController extends BasisController {
     public AjaxResult forceLogout(@PathVariable List<String> idList) {
         if (ArrayUtil.isNotEmpty(idList))
             idList.forEach(id -> redisService.deleteObject(CacheConstants.LOGIN_TOKEN_KEY + id));
-        return AjaxResult.success();
+        return success();
     }
 }

@@ -61,7 +61,7 @@ public class BasisController {
         TableDataInfo rspData = new TableDataInfo();
         rspData.setItems(list);
         rspData.setTotal(new PageInfo(list).getTotal());
-        return AjaxResult.success(rspData);
+        return success(rspData);
     }
 
     /**
@@ -72,6 +72,55 @@ public class BasisController {
             return LocalDateTimeUtil.parse(text, DatePattern.NORM_DATE_PATTERN);
         else
             return LocalDateTimeUtil.parse(text, DatePattern.NORM_DATETIME_PATTERN);
+    }
+
+    /**
+     * 返回成功消息
+     */
+    public AjaxResult success() {
+        return AjaxResult.success();
+    }
+
+    /**
+     * 返回成功消息
+     */
+    public AjaxResult success(String message) {
+        return AjaxResult.success(message);
+    }
+
+    /**
+     * 返回成功消息
+     */
+    public AjaxResult success(Object data) {
+        return AjaxResult.success(data);
+    }
+
+    /**
+     * 返回失败消息
+     */
+    public AjaxResult error() {
+        return AjaxResult.error();
+    }
+
+    /**
+     * 返回失败消息
+     */
+    public AjaxResult error(String message) {
+        return AjaxResult.error(message);
+    }
+
+    /**
+     * 返回警告消息
+     */
+    public AjaxResult warn(String message) {
+        return AjaxResult.warn(message);
+    }
+
+    /**
+     * 返回警告消息
+     */
+    public AjaxResult warn(String message, Integer code) {
+        return AjaxResult.warn(message, code);
     }
 
     /**
@@ -92,33 +141,5 @@ public class BasisController {
      */
     protected AjaxResult toAjax(boolean result) {
         return result ? success() : error();
-    }
-
-    /**
-     * 返回成功
-     */
-    public AjaxResult success() {
-        return AjaxResult.success();
-    }
-
-    /**
-     * 返回失败消息
-     */
-    public AjaxResult error() {
-        return AjaxResult.error();
-    }
-
-    /**
-     * 返回成功消息
-     */
-    public AjaxResult success(String message) {
-        return AjaxResult.success(message);
-    }
-
-    /**
-     * 返回失败消息
-     */
-    public AjaxResult error(String message) {
-        return AjaxResult.error(message);
     }
 }

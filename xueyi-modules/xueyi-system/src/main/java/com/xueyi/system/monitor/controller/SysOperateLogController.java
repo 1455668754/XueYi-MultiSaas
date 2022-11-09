@@ -1,7 +1,7 @@
 package com.xueyi.system.monitor.controller;
 
-import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.core.web.result.AjaxResult;
+import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.InnerAuth;
@@ -92,6 +92,6 @@ public class SysOperateLogController extends BaseController<SysOperateLogQuery, 
     @Log(title = "操作日志", businessType = BusinessType.CLEAN)
     public AjaxResult clean() {
         baseService.cleanOperateLog();
-        return AjaxResult.success();
+        return success();
     }
 }

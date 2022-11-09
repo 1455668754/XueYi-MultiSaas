@@ -3,7 +3,6 @@ package com.xueyi.tenant.source.controller;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
-import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
@@ -143,7 +142,7 @@ public class TeSourceController extends BaseController<TeSourceQuery, TeSourceDt
     protected void AEHandleValidated(BaseConstants.Operate operate, TeSourceDto source) {
         DSUtils.testSlaveDs(source);
         if (baseService.checkNameUnique(source.getId(), source.getName()))
-            throw new ServiceException(StrUtil.format("{}{}{}失败，{}名称已存在", operate.getInfo(), getNodeName(), source.getName(), getNodeName()));
+            warn(StrUtil.format("{}{}{}失败，{}名称已存在", operate.getInfo(), getNodeName(), source.getName(), getNodeName()));
     }
 
     /**
@@ -159,10 +158,10 @@ public class TeSourceController extends BaseController<TeSourceQuery, TeSourceDt
                 idList.remove(i);
         }
         if (CollUtil.isEmpty(idList)) {
-            throw new ServiceException(StrUtil.format("删除失败，默认{}及已被使用的{}不允许删除！", getNodeName(), getNodeName()));
+            warn(StrUtil.format("删除失败，默认{}及已被使用的{}不允许删除！", getNodeName(), getNodeName()));
         } else if (idList.size() != size) {
             baseService.deleteByIds(idList);
-            throw new ServiceException(StrUtil.format("默认{}及已被使用的{}不允许删除，其余{}删除成功！", getNodeName(), getNodeName(), getNodeName()));
+            warn(StrUtil.format("默认{}及已被使用的{}不允许删除，其余{}删除成功！", getNodeName(), getNodeName(), getNodeName()));
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.xueyi.job.controller;
 
-import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.core.web.result.AjaxResult;
+import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.InnerAuth;
@@ -80,6 +80,6 @@ public class SysJobLogController extends BaseController<SysJobLogQuery, SysJobLo
     @Log(title = "调度日志管理", businessType = BusinessType.CLEAN)
     public AjaxResult clean() {
         baseService.cleanLog();
-        return AjaxResult.success();
+        return success();
     }
 }

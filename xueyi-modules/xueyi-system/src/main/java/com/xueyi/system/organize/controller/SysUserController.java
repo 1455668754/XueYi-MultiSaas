@@ -4,7 +4,6 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
-import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.core.web.validate.V_A;
@@ -79,7 +78,7 @@ public class SysUserController extends BaseController<SysUserQuery, SysUserDto, 
         map.put("roles", dataScope.getRoles());
         map.put("permissions", dataScope.getPermissions());
         map.put("routes", tokenService.getRouteURL());
-        return AjaxResult.success(map);
+        return success(map);
     }
 
     /**
@@ -111,7 +110,7 @@ public class SysUserController extends BaseController<SysUserQuery, SysUserDto, 
     @GetMapping(value = "/auth/{id}")
     @RequiresPermissions(Auth.SYS_USER_AUTH)
     public AjaxResult getRoleAuth(@PathVariable Long id) {
-        return AjaxResult.success(organizeService.selectUserRoleMerge(id));
+        return success(organizeService.selectUserRoleMerge(id));
     }
 
     /**
@@ -154,7 +153,7 @@ public class SysUserController extends BaseController<SysUserQuery, SysUserDto, 
     @RequiresPermissions(Auth.SYS_USER_AUTH)
     public AjaxResult editRoleAuth(@RequestBody SysUserDto user) {
         organizeService.editUserRoleMerge(user.getId(), user.getRoleIds());
-        return AjaxResult.success();
+        return success();
     }
 
     /**
@@ -207,13 +206,13 @@ public class SysUserController extends BaseController<SysUserQuery, SysUserDto, 
         if (operate.isEdit())
             adminValidated(user.getId());
         if (baseService.checkUserCodeUnique(user.getId(), user.getCode()))
-            throw new ServiceException(StrUtil.format("{}{}{}失败，用户编码已存在", operate.getInfo(), getNodeName(), user.getNickName()));
+            warn(StrUtil.format("{}{}{}失败，用户编码已存在", operate.getInfo(), getNodeName(), user.getNickName()));
         else if (baseService.checkUserNameUnique(user.getId(), user.getUserName()))
-            throw new ServiceException(StrUtil.format("{}{}{}失败，用户账号已存在", operate.getInfo(), getNodeName(), user.getNickName()));
+            warn(StrUtil.format("{}{}{}失败，用户账号已存在", operate.getInfo(), getNodeName(), user.getNickName()));
         else if (StrUtil.isNotEmpty(user.getEmail()) && baseService.checkPhoneUnique(user.getId(), user.getCode()))
-            throw new ServiceException(StrUtil.format("{}{}{}失败，手机号码已存在", operate.getInfo(), getNodeName(), user.getNickName()));
+            warn(StrUtil.format("{}{}{}失败，手机号码已存在", operate.getInfo(), getNodeName(), user.getNickName()));
         else if (StrUtil.isNotEmpty(user.getEmail()) && baseService.checkEmailUnique(user.getId(), user.getName()))
-            throw new ServiceException(StrUtil.format("{}{}{}失败，邮箱账号已存在", operate.getInfo(), getNodeName(), user.getNickName()));
+            warn(StrUtil.format("{}{}{}失败，邮箱账号已存在", operate.getInfo(), getNodeName(), user.getNickName()));
         // 防止修改操作更替密码
         if (BaseConstants.Operate.ADD == operate)
             user.setPassword(SecurityUtils.encryptPassword(user.getPassword()));
@@ -243,10 +242,10 @@ public class SysUserController extends BaseController<SysUserQuery, SysUserDto, 
             if (ObjectUtil.equals(idList.get(i), userId) || !baseService.checkUserAllowed(idList.get(i)))
                 idList.remove(i);
         if (CollUtil.isEmpty(idList))
-            throw new ServiceException("删除失败，不能删除自己或超管用户！");
+            warn("删除失败，不能删除自己或超管用户！");
         else if (idList.size() != size) {
             baseService.deleteByIds(idList);
-            throw new ServiceException("成功删除除自己及超管用户外的所有用户！");
+            warn("成功删除除自己及超管用户外的所有用户！");
         }
     }
 
@@ -255,6 +254,6 @@ public class SysUserController extends BaseController<SysUserQuery, SysUserDto, 
      */
     private void adminValidated(Long Id) {
         if (!baseService.checkUserAllowed(Id))
-            throw new ServiceException("不允许操作超级管理员用户");
+            warn("不允许操作超级管理员用户");
     }
 }

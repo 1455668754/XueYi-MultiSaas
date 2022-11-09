@@ -1,11 +1,11 @@
 package com.xueyi.system.organize.controller;
 
 import cn.hutool.core.util.StrUtil;
+import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.core.utils.file.FileTypeUtils;
 import com.xueyi.common.core.utils.file.MimeTypeUtils;
-import com.xueyi.common.core.web.result.R;
-import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.core.web.result.AjaxResult;
+import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.service.TokenService;
@@ -48,7 +48,7 @@ public class SysProfileController extends BasisController {
     public AjaxResult profile() {
         SysUserDto user = SecurityUtils.getUser();
         userService.userDesensitized(user);
-        return AjaxResult.success(user);
+        return success(user);
     }
 
     /**
@@ -64,9 +64,9 @@ public class SysProfileController extends BasisController {
             loginUser.getUser().setSex(user.getSex());
             loginUser.getUser().setProfile(user.getProfile());
             tokenService.setLoginUser(loginUser);
-            return AjaxResult.success();
+            return success();
         }
-        return AjaxResult.error("修改个人信息异常，请联系管理员！");
+        return error("修改个人信息异常，请联系管理员！");
     }
 
     /**
@@ -76,18 +76,18 @@ public class SysProfileController extends BasisController {
     @Log(title = "个人信息管理 - 修改账号", businessType = BusinessType.UPDATE)
     public AjaxResult editUserName(String userName) {
         LoginUser loginUser = SecurityUtils.getLoginUser();
-        if (StrUtil.isEmpty(userName)) return AjaxResult.error("不能设置为空账号！");
+        if (StrUtil.isEmpty(userName)) return error("不能设置为空账号！");
         else if (StrUtil.equals(userName, loginUser.getUser().getUserName()))
-            return AjaxResult.error("该账号为当前使用账号，无需更换！");
+            return error("该账号为当前使用账号，无需更换！");
         else if (userService.checkUserNameUnique(loginUser.getUserId(), userName))
-            return AjaxResult.error("该账号已被使用！");
+            return error("该账号已被使用！");
         if (userService.updateUserName(loginUser.getUserId(), userName) > 0) {
             // 更新缓存
             loginUser.getUser().setUserName(userName);
             tokenService.setLoginUser(loginUser);
-            return AjaxResult.success();
+            return success();
         }
-        return AjaxResult.error("更绑邮箱异常，请联系管理员！");
+        return error("更绑邮箱异常，请联系管理员！");
     }
 
     /**
@@ -97,17 +97,17 @@ public class SysProfileController extends BasisController {
     @Log(title = "个人信息管理 - 更绑邮箱", businessType = BusinessType.UPDATE)
     public AjaxResult editEmail(String email) {
         LoginUser loginUser = SecurityUtils.getLoginUser();
-        if (StrUtil.isEmpty(email)) return AjaxResult.error("不能设置为空邮箱！");
+        if (StrUtil.isEmpty(email)) return error("不能设置为空邮箱！");
         else if (StrUtil.equals(email, loginUser.getUser().getEmail()))
-            return AjaxResult.error("该邮箱为当前使用邮箱，无需更换！");
-        else if (userService.checkEmailUnique(loginUser.getUserId(), email)) return AjaxResult.error("该邮箱已被使用！");
+            return error("该邮箱为当前使用邮箱，无需更换！");
+        else if (userService.checkEmailUnique(loginUser.getUserId(), email)) return error("该邮箱已被使用！");
         if (userService.updateEmail(loginUser.getUserId(), email) > 0) {
             // 更新缓存
             loginUser.getUser().setEmail(email);
             tokenService.setLoginUser(loginUser);
-            return AjaxResult.success();
+            return success();
         }
-        return AjaxResult.error("更绑邮箱异常，请联系管理员！");
+        return error("更绑邮箱异常，请联系管理员！");
     }
 
     /**
@@ -117,18 +117,18 @@ public class SysProfileController extends BasisController {
     @Log(title = "个人信息管理 - 更绑手机号", businessType = BusinessType.UPDATE)
     public AjaxResult editPhone(String phone) {
         LoginUser loginUser = SecurityUtils.getLoginUser();
-        if (StrUtil.isEmpty(phone)) return AjaxResult.error("不能设置为空手机号！");
+        if (StrUtil.isEmpty(phone)) return error("不能设置为空手机号！");
         else if (StrUtil.equals(phone, loginUser.getUser().getPhone()))
-            return AjaxResult.error("该邮箱为当前使用手机号，无需更换！");
+            return error("该邮箱为当前使用手机号，无需更换！");
         else if (userService.checkPhoneUnique(loginUser.getUserId(), phone))
-            return AjaxResult.error("该手机号已被使用！");
+            return error("该手机号已被使用！");
         if (userService.updatePhone(loginUser.getUserId(), phone) > 0) {
             // 更新缓存
             loginUser.getUser().setPhone(phone);
             tokenService.setLoginUser(loginUser);
-            return AjaxResult.success();
+            return success();
         }
-        return AjaxResult.error("更绑手机号异常，请联系管理员！");
+        return error("更绑手机号异常，请联系管理员！");
     }
 
     /**
@@ -139,15 +139,15 @@ public class SysProfileController extends BasisController {
     public AjaxResult editPassword(String oldPassword, String newPassword) {
         LoginUser loginUser = SecurityUtils.getLoginUser();
         String password = loginUser.getUser().getPassword();
-        if (!SecurityUtils.matchesPassword(oldPassword, password)) return AjaxResult.error("修改失败，旧密码错误！");
-        if (SecurityUtils.matchesPassword(newPassword, password)) return AjaxResult.error("新旧密码不能相同！");
+        if (!SecurityUtils.matchesPassword(oldPassword, password)) return error("修改失败，旧密码错误！");
+        if (SecurityUtils.matchesPassword(newPassword, password)) return error("新旧密码不能相同！");
         if (userService.resetUserPassword(loginUser.getUserId(), SecurityUtils.encryptPassword(newPassword)) > 0) {
             // 更新缓存用户密码
             loginUser.getUser().setPassword(SecurityUtils.encryptPassword(newPassword));
             tokenService.setLoginUser(loginUser);
-            return AjaxResult.success();
+            return success();
         }
-        return AjaxResult.error("修改密码异常，请联系管理员！");
+        return error("修改密码异常，请联系管理员！");
     }
 
     /**
@@ -160,18 +160,18 @@ public class SysProfileController extends BasisController {
             LoginUser loginUser = SecurityUtils.getLoginUser();
             String extension = FileTypeUtils.getExtension(file);
             if (!StringUtils.equalsAnyIgnoreCase(extension, MimeTypeUtils.IMAGE_EXTENSION)) {
-                return AjaxResult.error("文件格式不正确，请上传" + Arrays.toString(MimeTypeUtils.IMAGE_EXTENSION) + "格式");
+                return error("文件格式不正确，请上传" + Arrays.toString(MimeTypeUtils.IMAGE_EXTENSION) + "格式");
             }
             R<SysFile> fileResult = remoteFileService.upload(file);
             if (StringUtils.isNull(fileResult) || StringUtils.isNull(fileResult.getData()))
-                return AjaxResult.error("文件服务异常，请联系管理员！");
+                return error("文件服务异常，请联系管理员！");
             String url = fileResult.getData().getUrl();
             if (userService.updateUserAvatar(SecurityUtils.getUserId(), url) > 0) {
                 String oldAvatarUrl = loginUser.getUser().getAvatar();
                 if (StringUtils.isNotEmpty(oldAvatarUrl)) {
                     remoteFileService.delete(oldAvatarUrl);
                 }
-                AjaxResult ajax = AjaxResult.success();
+                AjaxResult ajax = success();
                 ajax.put(AjaxResult.URL_TAG, url);
                 // 更新缓存 - 用户头像
                 loginUser.getUser().setAvatar(url);
@@ -179,6 +179,6 @@ public class SysProfileController extends BasisController {
                 return ajax;
             }
         }
-        return AjaxResult.error("上传图片异常，请联系管理员！");
+        return error("上传图片异常，请联系管理员！");
     }
 }

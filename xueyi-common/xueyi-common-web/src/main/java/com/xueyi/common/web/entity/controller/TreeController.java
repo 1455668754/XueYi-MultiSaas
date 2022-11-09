@@ -31,7 +31,7 @@ public abstract class TreeController<Q extends TreeEntity<D>, D extends TreeEnti
     @Override
     public AjaxResult list(Q query) {
         List<D> list = baseService.selectListScope(query);
-        return AjaxResult.success(TreeUtils.buildTree(list));
+        return success(TreeUtils.buildTree(list));
     }
 
     /**
@@ -42,7 +42,7 @@ public abstract class TreeController<Q extends TreeEntity<D>, D extends TreeEnti
         query.setId(null);
         List<D> list = baseService.selectListScope(query);
         SHandleExNodes(list, id);
-        return AjaxResult.success(TreeUtils.buildTree(list));
+        return success(TreeUtils.buildTree(list));
     }
 
     /**

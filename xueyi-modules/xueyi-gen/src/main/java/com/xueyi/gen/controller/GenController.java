@@ -1,8 +1,8 @@
 package com.xueyi.gen.controller;
 
+import cn.hutool.core.convert.Convert;
 import com.alibaba.fastjson2.JSONObject;
 import com.xueyi.common.core.constant.basic.BaseConstants;
-import cn.hutool.core.convert.Convert;
 import com.xueyi.common.core.constant.basic.ServiceConstants;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.validate.V_E;
@@ -79,7 +79,7 @@ public class GenController extends SubBaseController<GenTableQuery, GenTableDto,
     @GetMapping(value = "/{id}")
     @RequiresPermissions(Auth.GENERATE_GEN_SINGLE)
     public AjaxResult getInfo(@PathVariable Serializable id) {
-        return AjaxResult.success(baseService.selectById(id));
+        return success(baseService.selectById(id));
     }
 
     /**
@@ -99,7 +99,7 @@ public class GenController extends SubBaseController<GenTableQuery, GenTableDto,
     @RequiresPermissions(Auth.GENERATE_GEN_PREVIEW)
     public AjaxResult previewCloud(@PathVariable("tableId") Long tableId) {
         List<JSONObject> dataMap = baseService.previewCode(tableId, ServiceConstants.FromSource.CLOUD);
-        return AjaxResult.success(dataMap);
+        return success(dataMap);
     }
 
     /**
@@ -109,7 +109,7 @@ public class GenController extends SubBaseController<GenTableQuery, GenTableDto,
     @RequiresPermissions(Auth.GENERATE_GEN_PREVIEW)
     public AjaxResult previewMulti(@PathVariable("tableId") Long tableId) {
         List<JSONObject> dataMap = baseService.previewCode(tableId, ServiceConstants.FromSource.MULTI);
-        return AjaxResult.success(dataMap);
+        return success(dataMap);
     }
 
     /**
@@ -134,7 +134,7 @@ public class GenController extends SubBaseController<GenTableQuery, GenTableDto,
         // 查询表信息
         List<GenTableDto> tableList = baseService.selectDbTableListByNames(tableNames);
         baseService.importGenTable(tableList);
-        return AjaxResult.success();
+        return success();
     }
 
     /**
@@ -178,7 +178,7 @@ public class GenController extends SubBaseController<GenTableQuery, GenTableDto,
     @GetMapping("/cloud/generate/{tableId}")
     public AjaxResult genCloudCode(@PathVariable("tableId") Long tableId) {
         baseService.generatorCode(tableId, ServiceConstants.FromSource.CLOUD);
-        return AjaxResult.success();
+        return success();
     }
 
     /**
@@ -189,7 +189,7 @@ public class GenController extends SubBaseController<GenTableQuery, GenTableDto,
     @GetMapping("/multi/generate/{tableId}")
     public AjaxResult genMultiCode(@PathVariable("tableId") Long tableId) {
         baseService.generatorCode(tableId, ServiceConstants.FromSource.MULTI);
-        return AjaxResult.success();
+        return success();
     }
 
     /**

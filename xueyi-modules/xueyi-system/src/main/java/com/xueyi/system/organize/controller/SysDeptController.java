@@ -2,9 +2,8 @@ package com.xueyi.system.organize.controller;
 
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
-import com.xueyi.common.core.web.result.R;
-import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.web.result.AjaxResult;
+import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
@@ -97,7 +96,7 @@ public class SysDeptController extends SubTreeController<SysDeptQuery, SysDeptDt
     @GetMapping(value = "/auth/{id}")
     @RequiresPermissions(Auth.SYS_DEPT_AUTH)
     public AjaxResult getRoleAuth(@PathVariable Long id) {
-        return AjaxResult.success(organizeService.selectDeptRoleMerge(id));
+        return success(organizeService.selectDeptRoleMerge(id));
     }
 
     /**
@@ -140,7 +139,7 @@ public class SysDeptController extends SubTreeController<SysDeptQuery, SysDeptDt
     @RequiresPermissions(Auth.SYS_DEPT_AUTH)
     public AjaxResult editRoleAuth(@RequestBody SysDeptDto dept) {
         organizeService.editDeptRoleMerge(dept.getId(), dept.getRoleIds());
-        return AjaxResult.success();
+        return success();
     }
 
     /**
@@ -180,8 +179,8 @@ public class SysDeptController extends SubTreeController<SysDeptQuery, SysDeptDt
     @Override
     protected void AEHandleValidated(BaseConstants.Operate operate, SysDeptDto dept) {
         if (baseService.checkDeptCodeUnique(dept.getId(), dept.getCode()))
-            throw new ServiceException(StrUtil.format("{}{}{}失败，部门编码已存在", operate.getInfo(), getNodeName(), dept.getName()));
+            warn(StrUtil.format("{}{}{}失败，部门编码已存在", operate.getInfo(), getNodeName(), dept.getName()));
         else if (baseService.checkNameUnique(dept.getId(), dept.getParentId(), dept.getName()))
-            throw new ServiceException(StrUtil.format("{}{}{}失败，部门名称已存在", operate.getInfo(), getNodeName(), dept.getName()));
+            warn(StrUtil.format("{}{}{}失败，部门名称已存在", operate.getInfo(), getNodeName(), dept.getName()));
     }
 }

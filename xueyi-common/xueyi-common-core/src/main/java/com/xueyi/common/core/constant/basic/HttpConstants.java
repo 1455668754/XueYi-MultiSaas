@@ -106,7 +106,8 @@ public class HttpConstants {
         CONFLICT(409, "资源冲突，或者资源被锁"),
         UNSUPPORTED_TYPE(415, "不支持的数据，媒体类型"),
         ERROR(500, "系统内部错误"),
-        NOT_IMPLEMENTED(501, "接口未实现");
+        NOT_IMPLEMENTED(501, "接口未实现"),
+        WARN(601, "系统警告消息");
 
         private final int code;
         private final String info;

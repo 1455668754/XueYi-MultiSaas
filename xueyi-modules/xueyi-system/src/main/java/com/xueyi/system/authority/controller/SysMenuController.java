@@ -6,7 +6,6 @@ import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.ServiceConstants;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
-import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.StringUtils;
 import com.xueyi.common.core.utils.TreeUtils;
 import com.xueyi.common.core.web.result.AjaxResult;
@@ -88,7 +87,7 @@ public class SysMenuController extends TreeController<SysMenuQuery, SysMenuDto, 
             menuMap.put(moduleKey, CRouteUtils.buildMenus(TreeUtils.buildTree(menus)));
             tokenService.setMenuRoute(menuMap);
         }
-        return AjaxResult.success(menuMap.get(moduleKey));
+        return success(menuMap.get(moduleKey));
     }
 
     /**
@@ -104,7 +103,7 @@ public class SysMenuController extends TreeController<SysMenuQuery, SysMenuDto, 
             menuMap.put(moduleKey, MRouteUtils.buildMenus(TreeUtils.buildTree(menus)));
             tokenService.setMenuRoute(menuMap);
         }
-        return AjaxResult.success(menuMap.get(moduleKey));
+        return success(menuMap.get(moduleKey));
     }
 
     /**
@@ -142,9 +141,9 @@ public class SysMenuController extends TreeController<SysMenuQuery, SysMenuDto, 
     @PostMapping("/routeList")
     public AjaxResult getMenuByMenuType(@RequestBody SysMenuDto menu) {
         if (ObjectUtil.isNull(menu) || ObjectUtil.isNull(menu.getModuleId()) || ObjectUtil.isNull(menu.getMenuType()))
-            throw new ServiceException("请传入有效参数");
+            warn("请传入有效参数");
         List<SysMenuDto> menus = baseService.getMenuByMenuType(menu.getModuleId(), menu.getMenuType());
-        return AjaxResult.success(TreeUtils.buildTree((menus)));
+        return success(TreeUtils.buildTree((menus)));
     }
 
     /**
@@ -153,7 +152,7 @@ public class SysMenuController extends TreeController<SysMenuQuery, SysMenuDto, 
     @PostMapping("/routeList/exclude")
     public AjaxResult getMenuByMenuTypeExNodes(@RequestBody SysMenuDto menu) {
         if (ObjectUtil.isNull(menu) || ObjectUtil.isNull(menu.getModuleId()) || ObjectUtil.isNull(menu.getMenuType()))
-            throw new ServiceException("请传入有效参数");
+            warn("请传入有效参数");
         List<SysMenuDto> menus = baseService.getMenuByMenuType(menu.getModuleId(), menu.getMenuType());
         Iterator<SysMenuDto> it = menus.iterator();
         while (it.hasNext()) {
@@ -161,7 +160,7 @@ public class SysMenuController extends TreeController<SysMenuQuery, SysMenuDto, 
             if (ObjectUtil.equals(next.getId(), menu.getId()) || ArrayUtils.contains(StringUtils.split(next.getAncestors(), StrUtil.COMMA), menu.getId() + StrUtil.EMPTY))
                 it.remove();
         }
-        return AjaxResult.success(TreeUtils.buildTree((menus)));
+        return success(TreeUtils.buildTree((menus)));
     }
 
     /**
@@ -223,28 +222,28 @@ public class SysMenuController extends TreeController<SysMenuQuery, SysMenuDto, 
     @Override
     protected void AEHandleValidated(BaseConstants.Operate operate, SysMenuDto menu) {
         if (ObjectUtil.equals(menu.getId(), AuthorityConstants.MENU_TOP_NODE))
-            throw new ServiceException(StrUtil.format("默认{}不允许修改！", getNodeName()));
+            warn(StrUtil.format("默认{}不允许修改！", getNodeName()));
         if (baseService.checkNameUnique(menu.getId(), menu.getParentId(), menu.getName()))
-            throw new ServiceException(StrUtil.format("{}{}{}失败，{}名称已存在！", operate.getInfo(), getNodeName(), menu.getTitle(), getNodeName()));
+            warn(StrUtil.format("{}{}{}失败，{}名称已存在！", operate.getInfo(), getNodeName(), menu.getTitle(), getNodeName()));
         if (operate.isAdd() && SecurityUtils.isNotAdminTenant() && menu.isCommon())
-            throw new ServiceException(StrUtil.format("{}{}{}失败，无操作权限！", operate.getInfo(), getNodeName(), menu.getTitle()));
+            warn(StrUtil.format("{}{}{}失败，无操作权限！", operate.getInfo(), getNodeName(), menu.getTitle()));
         if (operate.isEdit()) {
             SysMenuDto original = baseService.selectById(menu.getId());
-            if (ObjectUtil.isNull(original)) throw new ServiceException("数据不存在！");
+            if (ObjectUtil.isNull(original)) warn("数据不存在！");
             if (SecurityUtils.isNotAdminTenant() && original.isCommon())
-                throw new ServiceException(StrUtil.format("{}{}{}失败，无操作权限！", operate.getInfo(), getNodeName(), menu.getTitle()));
+                warn(StrUtil.format("{}{}{}失败，无操作权限！", operate.getInfo(), getNodeName(), menu.getTitle()));
             if (!StrUtil.equals(menu.getIsCommon(), original.getIsCommon()))
-                throw new ServiceException(StrUtil.format("{}{}{}失败，公共{}属性禁止变更！", operate.getInfo(), getNodeName(), menu.getTitle(), getNodeName()));
+                warn(StrUtil.format("{}{}{}失败，公共{}属性禁止变更！", operate.getInfo(), getNodeName(), menu.getTitle(), getNodeName()));
         }
         if (menu.isCommon()) {
             SysModuleDto module = moduleService.selectById(menu.getModuleId());
-            if (ObjectUtil.isNull(module)) throw new ServiceException("数据不存在！");
+            if (ObjectUtil.isNull(module)) warn("数据不存在！");
             if (module.isNotCommon())
-                throw new ServiceException(StrUtil.format("{}{}{}失败，公共{}必须挂载在公共{}下！", operate.getInfo(), getNodeName(), menu.getTitle(), getNodeName(), getParentName()));
+                warn(StrUtil.format("{}{}{}失败，公共{}必须挂载在公共{}下！", operate.getInfo(), getNodeName(), menu.getTitle(), getNodeName(), getParentName()));
             SysMenuDto parentMenu = baseService.selectById(menu.getParentId());
-            if (ObjectUtil.isNull(parentMenu)) throw new ServiceException("数据不存在！");
+            if (ObjectUtil.isNull(parentMenu)) warn("数据不存在！");
             if (parentMenu.isNotCommon())
-                throw new ServiceException(StrUtil.format("{}{}{}失败，公共{}必须挂载在公共{}下！", operate.getInfo(), getNodeName(), menu.getTitle(), getNodeName(), getNodeName()));
+                warn(StrUtil.format("{}{}{}失败，公共{}必须挂载在公共{}下！", operate.getInfo(), getNodeName(), menu.getTitle(), getNodeName(), getNodeName()));
         }
     }
 
@@ -260,6 +259,6 @@ public class SysMenuController extends TreeController<SysMenuQuery, SysMenuDto, 
         // remove top node
         for (int i = idList.size() - 1; i >= 0; i--)
             if (ObjectUtil.equals(idList.get(i), AuthorityConstants.MENU_TOP_NODE)) idList.remove(i);
-        if (CollUtil.isEmpty(idList)) throw new ServiceException(StrUtil.format("删除失败，无法删除默认{}！", getNodeName()));
+        if (CollUtil.isEmpty(idList)) warn(StrUtil.format("删除失败，无法删除默认{}！", getNodeName()));
     }
 }

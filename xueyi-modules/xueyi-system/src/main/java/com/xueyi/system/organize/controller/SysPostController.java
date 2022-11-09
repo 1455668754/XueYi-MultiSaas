@@ -2,7 +2,6 @@ package com.xueyi.system.organize.controller;
 
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
-import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.core.web.validate.V_A;
@@ -88,7 +87,7 @@ public class SysPostController extends BaseController<SysPostQuery, SysPostDto, 
     @GetMapping(value = "/auth/{id}")
     @RequiresPermissions(Auth.SYS_POST_AUTH)
     public AjaxResult getRoleAuth(@PathVariable Long id) {
-        return AjaxResult.success(organizeService.selectPostRoleMerge(id));
+        return success(organizeService.selectPostRoleMerge(id));
     }
 
     /**
@@ -131,7 +130,7 @@ public class SysPostController extends BaseController<SysPostQuery, SysPostDto, 
     @RequiresPermissions(Auth.SYS_POST_AUTH)
     public AjaxResult editRoleAuth(@RequestBody SysPostDto post) {
         organizeService.editPostIdRoleMerge(post.getId(), post.getRoleIds());
-        return AjaxResult.success();
+        return success();
     }
 
     /**
@@ -171,9 +170,9 @@ public class SysPostController extends BaseController<SysPostQuery, SysPostDto, 
     @Override
     protected void AEHandleValidated(BaseConstants.Operate operate, SysPostDto post) {
         if (baseService.checkPostCodeUnique(post.getId(), post.getCode()))
-            throw new ServiceException(StrUtil.format("{}{}{}失败，岗位编码已存在", operate.getInfo(), getNodeName(), post.getName()));
+            warn(StrUtil.format("{}{}{}失败，岗位编码已存在", operate.getInfo(), getNodeName(), post.getName()));
         else if (baseService.checkNameUnique(post.getId(), post.getName()))
-            throw new ServiceException(StrUtil.format("{}{}{}失败，岗位名称已存在", operate.getInfo(), getNodeName(), post.getName()));
+            warn(StrUtil.format("{}{}{}失败，岗位名称已存在", operate.getInfo(), getNodeName(), post.getName()));
         if (BaseConstants.Status.DISABLE == deptService.checkStatus(post.getId()))
             post.setStatus(BaseConstants.Status.DISABLE.getCode());
     }
@@ -188,7 +187,7 @@ public class SysPostController extends BaseController<SysPostQuery, SysPostDto, 
         if (StrUtil.equals(BaseConstants.Status.NORMAL.getCode(), post.getStatus())) {
             SysPostDto original = baseService.selectById(post.getId());
             if (BaseConstants.Status.DISABLE == deptService.checkStatus(original.getDeptId()))
-                AjaxResult.error(StrUtil.format("启用失败，该{}归属的{}已被禁用！", getNodeName(), getParentName()));
+                warn(StrUtil.format("启用失败，该{}归属的{}已被禁用！", getNodeName(), getParentName()));
         }
     }
 }

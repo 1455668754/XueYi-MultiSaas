@@ -1,8 +1,8 @@
 package com.xueyi.system.authority.controller;
 
-import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.core.utils.TreeUtils;
 import com.xueyi.common.core.web.result.AjaxResult;
+import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.security.annotation.InnerAuth;
 import com.xueyi.common.security.annotation.Logical;
 import com.xueyi.common.security.annotation.RequiresPermissions;
@@ -63,7 +63,7 @@ public class SysAuthController extends BasisController {
     @GetMapping(value = "/tenant/authScope")
     @RequiresPermissions(value = {Auth.TE_TENANT_ADD, Auth.TE_TENANT_AUTH}, logical = Logical.OR)
     public AjaxResult getCommonAuthScope() {
-        return AjaxResult.success(TreeUtils.buildTree(authService.selectCommonAuthScope()));
+        return success(TreeUtils.buildTree(authService.selectCommonAuthScope()));
     }
 
     /**
@@ -72,7 +72,7 @@ public class SysAuthController extends BasisController {
     @GetMapping(value = "/enterprise/authScope")
     @RequiresPermissions(value = {Auth.SYS_ROLE_ADD, Auth.SYS_ROLE_AUTH}, logical = Logical.OR)
     public AjaxResult getEnterpriseAuthScope() {
-        return AjaxResult.success(TreeUtils.buildTree(authService.selectEnterpriseAuthScope()));
+        return success(TreeUtils.buildTree(authService.selectEnterpriseAuthScope()));
     }
 
 }

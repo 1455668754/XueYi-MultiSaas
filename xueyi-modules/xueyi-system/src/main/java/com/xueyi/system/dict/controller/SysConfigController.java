@@ -3,9 +3,8 @@ package com.xueyi.system.dict.controller;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
-import com.xueyi.common.core.web.result.R;
-import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.web.result.AjaxResult;
+import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
@@ -51,7 +50,7 @@ public class SysConfigController extends BaseController<SysConfigQuery, SysConfi
      */
     @GetMapping(value = "/code/{configCode}")
     public AjaxResult getConfigCode(@PathVariable String configCode) {
-        return AjaxResult.success(baseService.selectConfigByCode(configCode));
+        return success(baseService.selectConfigByCode(configCode));
     }
 
     /**
@@ -149,7 +148,7 @@ public class SysConfigController extends BaseController<SysConfigQuery, SysConfi
     @GetMapping("/refresh")
     public AjaxResult refreshCache() {
         baseService.resetConfigCache();
-        return AjaxResult.success();
+        return success();
     }
 
     /**
@@ -158,7 +157,7 @@ public class SysConfigController extends BaseController<SysConfigQuery, SysConfi
     @Override
     protected void AEHandleValidated(BaseConstants.Operate operate, SysConfigDto config) {
         if (baseService.checkConfigCodeUnique(config.getId(), config.getCode()))
-            throw new ServiceException(StrUtil.format("{}{}{}失败，参数编码已存在", operate.getInfo(), getNodeName(), config.getName()));
+            warn(StrUtil.format("{}{}{}失败，参数编码已存在", operate.getInfo(), getNodeName(), config.getName()));
     }
 
     /**
@@ -176,10 +175,10 @@ public class SysConfigController extends BaseController<SysConfigQuery, SysConfi
                     idList.remove(i);
             }
             if (CollUtil.isEmpty(idList)) {
-                throw new ServiceException(StrUtil.format("{}失败，不能删除内置参数！", operate.getInfo()));
+                warn(StrUtil.format("{}失败，不能删除内置参数！", operate.getInfo()));
             } else if (idList.size() != size) {
                 baseService.deleteByIds(idList);
-                throw new ServiceException(StrUtil.format("成功{}除内置参数外的所有参数！", operate.getInfo()));
+                warn(StrUtil.format("成功{}除内置参数外的所有参数！", operate.getInfo()));
             }
         }
     }

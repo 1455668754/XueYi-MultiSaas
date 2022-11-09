@@ -3,6 +3,7 @@ package com.xueyi.common.core.web.result;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.HttpConstants;
+import com.xueyi.common.core.exception.ServiceException;
 
 import java.util.HashMap;
 import java.util.Objects;
@@ -171,6 +172,27 @@ public class AjaxResult extends HashMap<String, Object> {
      */
     public static AjaxResult error(int code, String msg) {
         return new AjaxResult(code, HttpConstants.ResultType.ERROR.getCode(), msg, null);
+    }
+
+    /**
+     * 返回警告消息
+     *
+     * @param msg 返回内容
+     * @return 警告消息
+     */
+    public static AjaxResult warn(String msg) {
+        throw new ServiceException(msg);
+    }
+
+    /**
+     * 返回警告消息
+     *
+     * @param msg  返回内容
+     * @param code 错误编码
+     * @return 警告消息
+     */
+    public static AjaxResult warn(String msg, Integer code) {
+        throw new ServiceException(msg, code);
     }
 
     /**

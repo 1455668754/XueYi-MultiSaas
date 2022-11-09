@@ -1,7 +1,7 @@
 package com.xueyi.system.monitor.controller;
 
-import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.core.web.result.AjaxResult;
+import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.InnerAuth;
@@ -81,7 +81,7 @@ public class SysLoginLogController extends BaseController<SysLoginLogQuery, SysL
     @Log(title = "访问日志", businessType = BusinessType.CLEAN)
     public AjaxResult clean() {
         baseService.cleanLoginLog();
-        return AjaxResult.success();
+        return success();
     }
 
 }

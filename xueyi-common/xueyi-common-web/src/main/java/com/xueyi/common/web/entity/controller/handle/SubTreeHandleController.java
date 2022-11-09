@@ -3,7 +3,6 @@ package com.xueyi.common.web.entity.controller.handle;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
-import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.core.web.entity.base.SubTreeEntity;
 import com.xueyi.common.web.entity.controller.TreeController;
@@ -37,7 +36,7 @@ public abstract class SubTreeHandleController<Q extends SubTreeEntity<D, SD>, D 
     protected void EHandleSubStatusValidated(D d) {
         if (StrUtil.equals(BaseConstants.Status.DISABLE.getCode(), d.getStatus())
                 && baseService.checkExistNormalSub(d.getId()))
-            throw new ServiceException(StrUtil.format("修改{}{}失败，该{}包含未停用的归属{}，禁止停用！", getNodeName(), d.getName(), getNodeName(), getSubName()));
+            warn(StrUtil.format("修改{}{}失败，该{}包含未停用的归属{}，禁止停用！", getNodeName(), d.getName(), getNodeName(), getSubName()));
     }
 
     /**
@@ -49,7 +48,7 @@ public abstract class SubTreeHandleController<Q extends SubTreeEntity<D, SD>, D 
     protected void ESHandleSubStatusValidated(D d) {
         if (StrUtil.equals(BaseConstants.Status.DISABLE.getCode(), d.getStatus())
                 && baseService.checkExistNormalSub(d.getId()))
-            throw new ServiceException(StrUtil.format("停用失败，该{}包含未停用的归属{}！", getNodeName(), getSubName()));
+            warn(StrUtil.format("停用失败，该{}包含未停用的归属{}！", getNodeName(), getSubName()));
     }
 
     /**
@@ -66,10 +65,10 @@ public abstract class SubTreeHandleController<Q extends SubTreeEntity<D, SD>, D 
                 idList.remove(i);
         }
         if (CollUtil.isEmpty(idList)) {
-            throw new ServiceException(StrUtil.format("删除失败，所有待删除{}皆存在子{}或归属{}！", getNodeName(), getNodeName(), getSubName()));
+            warn(StrUtil.format("删除失败，所有待删除{}皆存在子{}或归属{}！", getNodeName(), getNodeName(), getSubName()));
         } else if (idList.size() != size) {
             baseService.deleteByIds(idList);
-            throw new ServiceException(StrUtil.format("成功删除所有无子{}或归属{}的{}！", getNodeName(), getSubName(), getNodeName()));
+            warn(StrUtil.format("成功删除所有无子{}或归属{}的{}！", getNodeName(), getSubName(), getNodeName()));
         }
     }
 }

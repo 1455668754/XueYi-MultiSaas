@@ -12,8 +12,8 @@ import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.basic.ServiceConstants;
 import com.xueyi.common.core.constant.gen.GenConstants.OptionField;
 import com.xueyi.common.core.constant.gen.GenConstants.TemplateType;
-import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.StringUtils;
+import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.web.entity.service.impl.SubBaseServiceImpl;
 import com.xueyi.gen.config.GenConfig;
@@ -139,7 +139,7 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableQuery, GenTa
                 }
             });
         } catch (Exception e) {
-            throw new ServiceException("导入失败：" + e.getMessage());
+            AjaxResult.warn(StrUtil.format("导入失败：{}", e.getMessage()));
         }
     }
 
@@ -235,7 +235,7 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableQuery, GenTa
                 String path = StrUtil.containsAny(template, genFiles) ? getGenPath(table, template, fromSource) : getUiPath(table, template, fromSource);
                 FileUtils.writeStringToFile(new File(path), sw.toString(), CharsetUtil.UTF_8);
             } catch (IOException e) {
-                throw new ServiceException("渲染模板失败，表名：" + table.getName());
+                AjaxResult.warn(StrUtil.format("渲染模板失败，表名：{}", table.getName()));
             }
         }
     }
@@ -325,7 +325,7 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableQuery, GenTa
      */
     private void checkTclBasic(GenTableDto genTable, JSONObject optionsObj) {
         if (StrUtil.isEmpty(optionsObj.getString(OptionField.SOURCE_MODE.getCode()))) {
-            throw new ServiceException("未设置源策略模式！");
+            AjaxResult.warn("未设置源策略模式！");
         }
         if (StrUtil.isNotEmpty(optionsObj.getString(OptionField.IS_TENANT.getCode())) && StrUtil.equals(optionsObj.getString(OptionField.IS_TENANT.getCode()), DictConstants.DicYesNo.YES.getCode())) {
             for (GenTableColumnDto column : genTable.getSubList()) {
@@ -333,7 +333,7 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableQuery, GenTa
                     return;
                 }
             }
-            throw new ServiceException("未在业务表中发现多租户关键字，请关闭多租户模式重试！");
+            AjaxResult.warn("未在业务表中发现多租户关键字，请关闭多租户模式重试！");
         }
     }
 
@@ -345,14 +345,14 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableQuery, GenTa
      */
     private void checkTclBase(GenTableDto genTable, JSONObject optionsObj) {
         if (StrUtil.isEmpty(optionsObj.getString(OptionField.PARENT_MODULE_ID.getCode())))
-            throw new ServiceException("归属模块不能为空");
+            AjaxResult.warn("归属模块不能为空");
         else if (StrUtil.isEmpty(optionsObj.getString(OptionField.PARENT_MENU_ID.getCode())))
-            throw new ServiceException("归属菜单不能为空");
+            AjaxResult.warn("归属菜单不能为空");
         else if (StrUtil.isEmpty(optionsObj.getString(OptionField.ID.getCode())))
-            throw new ServiceException("主键字段不能为空");
+            AjaxResult.warn("主键字段不能为空");
         for (GenTableColumnDto column : genTable.getSubList())
             if (column.isPk() && !ObjectUtil.equals(column.getId(), optionsObj.getLong(OptionField.ID.getCode())))
-                throw new ServiceException("主键字段只能为数据表主键");
+                AjaxResult.warn("主键字段只能为数据表主键");
     }
 
     /**
@@ -362,13 +362,13 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableQuery, GenTa
      */
     private void checkTclTree(JSONObject optionsObj) {
         if (StrUtil.isEmpty(optionsObj.getString(OptionField.TREE_ID.getCode())))
-            throw new ServiceException("树编码字段不能为空");
+            AjaxResult.warn("树编码字段不能为空");
         else if (StringUtils.isEmpty(optionsObj.getString(OptionField.PARENT_ID.getCode())))
-            throw new ServiceException("树父编码字段不能为空");
+            AjaxResult.warn("树父编码字段不能为空");
         else if (StringUtils.isEmpty(optionsObj.getString(OptionField.TREE_NAME.getCode())))
-            throw new ServiceException("树名称字段不能为空");
+            AjaxResult.warn("树名称字段不能为空");
         else if (StringUtils.isEmpty(optionsObj.getString(OptionField.ANCESTORS.getCode())))
-            throw new ServiceException("树祖籍列表字段不能为空");
+            AjaxResult.warn("树祖籍列表字段不能为空");
     }
 
     /**
@@ -378,11 +378,11 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableQuery, GenTa
      */
     private void checkTclSub(JSONObject optionsObj) {
         if (StrUtil.isEmpty(optionsObj.getString(OptionField.FOREIGN_ID.getCode())))
-            throw new ServiceException("外键关联的主表字段不能为空");
+            AjaxResult.warn("外键关联的主表字段不能为空");
         else if (StrUtil.isEmpty(optionsObj.getString(OptionField.SUB_TABLE_ID.getCode())))
-            throw new ServiceException("关联子表的表名字段不能为空");
+            AjaxResult.warn("关联子表的表名字段不能为空");
         else if (StringUtils.isEmpty(optionsObj.getString(OptionField.SUB_FOREIGN_ID.getCode())))
-            throw new ServiceException("关联子表的外键名字段不能为空");
+            AjaxResult.warn("关联子表的外键名字段不能为空");
     }
 
     /**
@@ -455,8 +455,8 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableQuery, GenTa
     private void setMenuOptions(GenTableDto table, JSONObject optionsObj) {
         Long menuId = optionsObj.getLong(OptionField.PARENT_MENU_ID.getCode());
         R<SysMenuDto> result = remoteMenuService.getInfoInner(menuId, SecurityConstants.INNER);
-        if (result.isFail()) throw new ServiceException("菜单服务异常，请联系管理员！");
-        else if (ObjectUtil.isNull(result.getData())) throw new ServiceException("该服务对应的菜单已被删除，请先修改后再生成代码！");
+        if (result.isFail()) AjaxResult.warn("菜单服务异常，请联系管理员！");
+        else if (ObjectUtil.isNull(result.getData())) AjaxResult.warn("该服务对应的菜单已被删除，请先修改后再生成代码！");
         if (StrUtil.isEmpty(result.getData().getAncestors()))
             optionsObj.put(OptionField.PARENT_MENU_ANCESTORS.getCode(), result.getData().getId());
         else

@@ -5,8 +5,8 @@ import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
+import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.result.R;
-import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.authority.feign.RemoteAuthService;
@@ -72,7 +72,7 @@ public class TeTenantServiceImpl extends BaseServiceImpl<TeTenantQuery, TeTenant
         TeStrategyDto strategy = strategyService.selectById(tenant.getStrategyId());
         R<Long[]> authR = remoteAuthService.getTenantAuthInner(tenant.getId(), strategy.getSourceSlave(), SecurityConstants.INNER);
         if (authR.isFail())
-            throw new ServiceException(authR.getMsg());
+            AjaxResult.warn(authR.getMsg());
         return authR.getData();
     }
 
@@ -89,7 +89,7 @@ public class TeTenantServiceImpl extends BaseServiceImpl<TeTenantQuery, TeTenant
             TeStrategyDto strategy = strategyService.selectById(tenant.getStrategyId());
             R<Boolean> authR = remoteAuthService.editTenantAuthInner(authIds, tenant.getId(), strategy.getSourceSlave(), SecurityConstants.INNER);
             if (authR.isFail())
-                throw new ServiceException(authR.getMsg());
+                AjaxResult.warn(authR.getMsg());
         }
     }
 
@@ -150,17 +150,17 @@ public class TeTenantServiceImpl extends BaseServiceImpl<TeTenantQuery, TeTenant
         String sourceName = tenantRegister.getSourceName();
         R<SysDeptDto> deptR = deptService.addInner(tenantRegister.getDept(), enterpriseId, sourceName, SecurityConstants.INNER);
         if (deptR.isFail())
-            throw new ServiceException("新增失败，请检查！");
+            AjaxResult.warn("新增失败，请检查！");
         tenantRegister.getPost().setDeptId(deptR.getData().getId());
         R<SysPostDto> postR = postService.addInner(tenantRegister.getPost(), enterpriseId, sourceName, SecurityConstants.INNER);
         if (postR.isFail())
-            throw new ServiceException("新增失败，请检查！");
+            AjaxResult.warn("新增失败，请检查！");
         tenantRegister.getUser().setPostIds(new Long[]{postR.getData().getId()});
         tenantRegister.getUser().setUserType(AuthorityConstants.UserType.ADMIN.getCode());
         tenantRegister.getUser().setPassword(SecurityUtils.encryptPassword(tenantRegister.getUser().getPassword()));
         R<SysUserDto> userR = userService.addInner(tenantRegister.getUser(), enterpriseId, sourceName, SecurityConstants.INNER);
         if (userR.isFail())
-            throw new ServiceException("新增失败，请检查！");
+            AjaxResult.warn("新增失败，请检查！");
     }
 
     /**
@@ -173,6 +173,6 @@ public class TeTenantServiceImpl extends BaseServiceImpl<TeTenantQuery, TeTenant
     public void authorityInit(TeTenantRegister tenantRegister) {
         R<Boolean> authR = authService.addTenantAuthInner(tenantRegister.getAuthIds(), tenantRegister.getTenant().getId(), tenantRegister.getSourceName(), SecurityConstants.INNER);
         if (authR.isFail())
-            throw new ServiceException("新增失败，请检查！");
+            AjaxResult.warn("新增失败，请检查！");
     }
 }

@@ -53,7 +53,7 @@ public abstract class BaseController<Q extends BaseEntity, D extends BaseEntity,
         BaseConstants.ImportType importTypeEnum = BaseConstants.ImportType.getByCode(importType);
         ExcelUtil<D> util = new ExcelUtil<>(getDClass());
         List<D> list = util.importExcel(file.getInputStream());
-        return AjaxResult.success();
+        return success();
     }
 
     /**
@@ -68,14 +68,14 @@ public abstract class BaseController<Q extends BaseEntity, D extends BaseEntity,
      * 查询详细
      */
     public AjaxResult getInfo(@PathVariable Serializable id) {
-        return AjaxResult.success(baseService.selectById(id));
+        return success(baseService.selectById(id));
     }
 
     /**
      * 查询详细 | 附加数据
      */
     public AjaxResult getInfoExtra(@PathVariable Serializable id) {
-        return AjaxResult.success(baseService.selectByIdExtra(id));
+        return success(baseService.selectByIdExtra(id));
     }
 
     /**
@@ -158,6 +158,6 @@ public abstract class BaseController<Q extends BaseEntity, D extends BaseEntity,
             return list(query);
         } catch (Exception ignored) {
         }
-        return AjaxResult.error();
+        return error();
     }
 }

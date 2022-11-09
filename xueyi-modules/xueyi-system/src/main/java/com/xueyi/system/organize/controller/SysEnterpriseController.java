@@ -1,7 +1,7 @@
 package com.xueyi.system.organize.controller;
 
-import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.core.web.result.AjaxResult;
+import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.security.annotation.InnerAuth;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.entity.controller.BaseController;
@@ -41,7 +41,7 @@ public class SysEnterpriseController extends BaseController<SysEnterpriseQuery, 
      */
     @GetMapping("/getInfo")
     public AjaxResult getInfo() {
-        return AjaxResult.success(SecurityUtils.getEnterprise());
+        return success(SecurityUtils.getEnterprise());
     }
 
 //    /**
@@ -55,7 +55,7 @@ public class SysEnterpriseController extends BaseController<SysEnterpriseQuery, 
 //            LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
 //            R<SysFile> fileResult = remoteFileService.upload(file);
 //            if (StringUtils.isNull(fileResult) || StringUtils.isNull(fileResult.getData())) {
-//                return AjaxResult.error("文件服务异常，请稍后再试");
+//                return error("文件服务异常，请稍后再试");
 //            }
 //            String url = fileResult.getData().getUrl();
 //            SysEnterprise enterprise = new SysEnterprise();
@@ -66,7 +66,7 @@ public class SysEnterpriseController extends BaseController<SysEnterpriseQuery, 
 //                if (StringUtils.isNotEmpty(oldLogoUrl)) {
 //                    remoteFileService.delete(oldLogoUrl);
 //                }
-//                AjaxResult ajax = AjaxResult.success();
+//                AjaxResult ajax = success();
 //                ajax.put("imgUrl", url);
 //                // 更新缓存用户头像
 //                loginUser.getSysEnterprise().setLogo(url);
@@ -74,7 +74,7 @@ public class SysEnterpriseController extends BaseController<SysEnterpriseQuery, 
 //                return ajax;
 //            }
 //        }
-//        return AjaxResult.error("上传图片异常，请稍后再试");
+//        return error("上传图片异常，请稍后再试");
 //    }
 //
 //    /**
@@ -95,7 +95,7 @@ public class SysEnterpriseController extends BaseController<SysEnterpriseQuery, 
 //    @PutMapping("/changeEnterpriseName")
 //    public AjaxResult changeEnterpriseName(@Validated @RequestBody SysEnterprise enterprise) {
 //        if (StringUtils.equals(BaseConstants.Check.NOT_UNIQUE.getCode(), enterpriseService.mainCheckEnterpriseNameUnique(enterprise))) {
-//            return AjaxResult.error("修改失败，该企业账号名不可用，请换一个账号名！");
+//            return error("修改失败，该企业账号名不可用，请换一个账号名！");
 //        }
 //        int i = refreshLoginCache(enterpriseService.mainUpdateEnterpriseName(enterprise));
 //        Collection<String> keys = redisService.keys(CacheConstants.LOGIN_TOKEN_KEY + "*");

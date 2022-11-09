@@ -44,7 +44,7 @@ public class SysDictDataController extends BaseController<SysDictDataQuery, SysD
     @GetMapping(value = "/type/{code}")
     public AjaxResult listByCode(@PathVariable String code) {
         List<SysDictDataDto> data = baseService.selectListByCode(code);
-        return AjaxResult.success(ObjectUtil.isNotNull(data) ? data : new ArrayList<SysDictDataDto>());
+        return success(ObjectUtil.isNotNull(data) ? data : new ArrayList<SysDictDataDto>());
     }
 
     /**
@@ -53,11 +53,11 @@ public class SysDictDataController extends BaseController<SysDictDataQuery, SysD
     @GetMapping(value = "/types/{codeList}")
     public AjaxResult listByCodeList(@PathVariable List<String> codeList) {
         if (CollUtil.isEmpty(codeList))
-            AjaxResult.error("请传入编码后再查询字典");
+            error("请传入编码后再查询字典");
         HashMap<String, List<SysDictDataDto>> map = new HashMap<>();
         for (String code : codeList)
             map.put(code, DictUtils.getDictCache(code));
-        return AjaxResult.success(map);
+        return success(map);
     }
 
     /**

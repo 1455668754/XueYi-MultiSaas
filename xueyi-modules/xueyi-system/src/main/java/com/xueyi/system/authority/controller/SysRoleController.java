@@ -2,7 +2,6 @@ package com.xueyi.system.authority.controller;
 
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
-import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.TreeUtils;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.validate.V_A;
@@ -75,7 +74,7 @@ public class SysRoleController extends BaseController<SysRoleQuery, SysRoleDto, 
     @RequiresPermissions(Auth.SYS_ROLE_AUTH)
     public AjaxResult getRoleAuth(@PathVariable Long id) {
         List<SysAuthTree> leafNodes = TreeUtils.getLeafNodes(TreeUtils.buildTree(authService.selectRoleAuth(id)));
-        return AjaxResult.success(leafNodes.stream().map(SysAuthTree::getId).toArray(Long[]::new));
+        return success(leafNodes.stream().map(SysAuthTree::getId).toArray(Long[]::new));
     }
 
     /**
@@ -84,7 +83,7 @@ public class SysRoleController extends BaseController<SysRoleQuery, SysRoleDto, 
     @GetMapping("/organize/{id}")
     @RequiresPermissions(Auth.SYS_ROLE_AUTH)
     public AjaxResult getRoleOrganize(@PathVariable Long id) {
-        return AjaxResult.success(organizeService.selectRoleOrganizeMerge(id));
+        return success(organizeService.selectRoleOrganizeMerge(id));
     }
 
     /**
@@ -128,7 +127,7 @@ public class SysRoleController extends BaseController<SysRoleQuery, SysRoleDto, 
     @Log(title = "角色管理", businessType = BusinessType.AUTH)
     public AjaxResult editAuth(@RequestBody SysRoleDto role) {
         authService.editRoleAuth(role.getId(), role.getAuthIds());
-        return AjaxResult.success();
+        return success();
     }
 
     /**
@@ -138,7 +137,7 @@ public class SysRoleController extends BaseController<SysRoleQuery, SysRoleDto, 
     @RequiresPermissions(Auth.SYS_ROLE_AUTH)
     @Log(title = "角色管理", businessType = BusinessType.AUTH)
     public AjaxResult editOrganize(@RequestBody SysRoleDto role) {
-        return AjaxResult.success(baseService.updateDataScope(role));
+        return success(baseService.updateDataScope(role));
     }
 
     /**
@@ -178,11 +177,11 @@ public class SysRoleController extends BaseController<SysRoleQuery, SysRoleDto, 
     @Override
     protected void AEHandleValidated(BaseConstants.Operate operate, SysRoleDto role) {
         if (baseService.checkRoleCodeUnique(role.getId(), role.getCode()))
-            throw new ServiceException(StrUtil.format("{}{}{}失败，角色编码已存在", operate.getInfo(), getNodeName(), role.getName()));
+            warn(StrUtil.format("{}{}{}失败，角色编码已存在", operate.getInfo(), getNodeName(), role.getName()));
         else if (baseService.checkNameUnique(role.getId(), role.getName()))
-            throw new ServiceException(StrUtil.format("{}{}{}失败，角色名称已存在", operate.getInfo(), getNodeName(), role.getName()));
+            warn(StrUtil.format("{}{}{}失败，角色名称已存在", operate.getInfo(), getNodeName(), role.getName()));
         else if (baseService.checkRoleKeyUnique(role.getId(), role.getRoleKey()))
-            throw new ServiceException(StrUtil.format("{}{}{}失败，角色权限已存在", operate.getInfo(), getNodeName(), role.getName()));
+            warn(StrUtil.format("{}{}{}失败，角色权限已存在", operate.getInfo(), getNodeName(), role.getName()));
         // 修改禁止操作权限范围
         if (operate.isEdit())
             role.setDataScope(null);
