@@ -8,7 +8,7 @@ import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DataSourcePrope
 import com.baomidou.dynamic.datasource.toolkit.DynamicDataSourceContextHolder;
 import com.xueyi.common.core.constant.basic.TenantConstants;
 import com.xueyi.common.core.exception.ServiceException;
-import com.xueyi.common.core.utils.SpringUtils;
+import com.xueyi.common.core.utils.core.SpringUtil;
 import com.xueyi.tenant.api.source.domain.dto.TeSourceDto;
 
 import javax.sql.DataSource;
@@ -34,10 +34,10 @@ public class DSUtils {
      */
     public static void addDs(TeSourceDto source) {
         try {
-            DefaultDataSourceCreator dataSourceCreator = SpringUtils.getBean(DefaultDataSourceCreator.class);
+            DefaultDataSourceCreator dataSourceCreator = SpringUtil.getBean(DefaultDataSourceCreator.class);
             DataSourceProperty dataSourceProperty = new DataSourceProperty();
             BeanUtil.copyProperties(source, dataSourceProperty);
-            DataSource dataSource = SpringUtils.getBean(DataSource.class);
+            DataSource dataSource = SpringUtil.getBean(DataSource.class);
             DynamicRoutingDataSource ds = (DynamicRoutingDataSource) dataSource;
             dataSource = dataSourceCreator.createDataSource(dataSourceProperty);
             ds.addDataSource(source.getSlave(), dataSource);
@@ -54,7 +54,7 @@ public class DSUtils {
      */
     public static void delDs(String slave) {
         try {
-            DynamicRoutingDataSource ds = (DynamicRoutingDataSource) SpringUtils.getBean(DataSource.class);
+            DynamicRoutingDataSource ds = (DynamicRoutingDataSource) SpringUtil.getBean(DataSource.class);
             ds.removeDataSource(slave);
         } catch (Exception e) {
             e.printStackTrace();
@@ -66,7 +66,7 @@ public class DSUtils {
      * 获取当前数据源库中所有数据源
      */
     public static void getDs() {
-        DynamicRoutingDataSource ds = (DynamicRoutingDataSource) SpringUtils.getBean(DataSource.class);
+        DynamicRoutingDataSource ds = (DynamicRoutingDataSource) SpringUtil.getBean(DataSource.class);
         ds.getDataSources().keySet().forEach(System.out::println);
     }
 
@@ -83,7 +83,7 @@ public class DSUtils {
 //     * @param source 数据源对象
 //     */
 //    public static void syncDs(TeSourceDto source) {
-//        ProducerService producerService = SpringUtils.getBean(ProducerService.class);
+//        ProducerService producerService = SpringUtil.getBean(ProducerService.class);
 //        Message message = new Message(IdUtils.randomUUID(), source);
 //        producerService.sendMsg(message, MessageConstant.EXCHANGE_SOURCE, MessageConstant.ROUTING_KEY_SOURCE);
 //    }

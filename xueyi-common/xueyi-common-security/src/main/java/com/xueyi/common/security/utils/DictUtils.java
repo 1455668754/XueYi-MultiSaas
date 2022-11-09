@@ -1,7 +1,7 @@
 package com.xueyi.common.security.utils;
 
 import com.xueyi.common.core.constant.basic.CacheConstants;
-import com.xueyi.common.core.utils.SpringUtils;
+import com.xueyi.common.core.utils.core.SpringUtil;
 import com.xueyi.common.redis.service.RedisService;
 import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
 
@@ -22,7 +22,7 @@ public class DictUtils {
      * @return 字典数据列表
      */
     public static List<SysDictDataDto> getDictCache(String code) {
-        return SpringUtils.getBean(RedisService.class).getCacheMapValue(CacheConstants.SYS_DICT_KEY, code);
+        return SpringUtil.getBean(RedisService.class).getCacheMapValue(CacheConstants.SYS_DICT_KEY, code);
     }
 
     /**
@@ -32,6 +32,6 @@ public class DictUtils {
      * @return 字典数据列表
      */
     public static List<List<SysDictDataDto>> getDictListCache(Collection<Object> codeList) {
-        return SpringUtils.getBean(RedisService.class).getMultiCacheMapValue(CacheConstants.SYS_DICT_KEY, codeList);
+        return SpringUtil.getBean(RedisService.class).getMultiCacheMapValue(CacheConstants.SYS_DICT_KEY, codeList);
     }
 }
