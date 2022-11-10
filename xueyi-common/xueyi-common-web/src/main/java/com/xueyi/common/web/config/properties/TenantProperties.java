@@ -1,10 +1,8 @@
 package com.xueyi.common.web.config.properties;
 
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-
-import static com.xueyi.common.core.constant.basic.BaseConstants.INIT_COMMON_TABLE;
-import static com.xueyi.common.core.constant.basic.BaseConstants.INIT_EXCLUDE_TABLE;
 
 /**
  * 租户表控制配置
@@ -13,13 +11,13 @@ import static com.xueyi.common.core.constant.basic.BaseConstants.INIT_EXCLUDE_TA
  */
 @Configuration
 @ConfigurationProperties(prefix = "xueyi.tenant")
-public class TenantProperties {
+public class TenantProperties implements BeanPostProcessor {
 
     /** 公共表 */
-    private static String[] commonTable = INIT_COMMON_TABLE;
+    private static String[] commonTable;
 
     /** 非租户表 */
-    private static String[] excludeTable = INIT_EXCLUDE_TABLE;
+    private static String[] excludeTable;
 
     public static String[] getCommonTable() {
         return commonTable;
