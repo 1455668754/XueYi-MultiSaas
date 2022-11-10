@@ -1,12 +1,13 @@
 package com.xueyi.common.web.method;
 
-import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.core.injector.AbstractMethod;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.xueyi.common.core.utils.core.NumberUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.web.enums.SqlMethod;
 import org.apache.ibatis.executor.keygen.Jdbc3KeyGenerator;
@@ -59,15 +60,13 @@ public class InsertBatchMethod extends AbstractMethod {
     private String prepareFieldSql(TableInfo tableInfo) {
         StringBuilder fieldSql = new StringBuilder();
         if (StrUtil.isNotEmpty(tableInfo.getKeyColumn()))
-            fieldSql.append(tableInfo.getKeyColumn()).append(",");
-        tableInfo.getFieldList().forEach(x -> {
-            if (!ObjectUtil.equals(FieldStrategy.NEVER, x.getInsertStrategy())) {
-                fieldSql.append(x.getColumn()).append(",");
-            }
-        });
-        fieldSql.delete(fieldSql.length() - 1, fieldSql.length());
-        fieldSql.insert(0, "(");
-        fieldSql.append(")");
+            fieldSql.append(tableInfo.getKeyColumn()).append(StrUtil.COMMA);
+        tableInfo.getFieldList().stream()
+                .filter(x -> ObjectUtil.notEqual(FieldStrategy.NEVER, x.getInsertStrategy()) || !x.isLogicDelete())
+                .forEach(x -> fieldSql.append(x.getColumn()).append(StrUtil.COMMA));
+        fieldSql.delete(fieldSql.length() - NumberUtil.One, fieldSql.length());
+        fieldSql.insert(NumberUtil.Zero, StrUtil.PARENTHESES_START);
+        fieldSql.append(StrUtil.PARENTHESES_END);
         return fieldSql.toString();
     }
 
