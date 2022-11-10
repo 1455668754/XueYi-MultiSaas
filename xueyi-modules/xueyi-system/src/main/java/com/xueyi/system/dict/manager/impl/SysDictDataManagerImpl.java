@@ -1,7 +1,7 @@
 package com.xueyi.system.dict.manager.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.xueyi.common.web.entity.manager.impl.BaseManager;
+import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
 import com.xueyi.system.api.dict.domain.model.SysDictDataConverter;
 import com.xueyi.system.api.dict.domain.po.SysDictDataPo;
@@ -18,7 +18,7 @@ import java.util.List;
  * @author xueyi
  */
 @Component
-public class SysDictDataManager extends BaseManager<SysDictDataQuery, SysDictDataDto, SysDictDataPo, SysDictDataMapper, SysDictDataConverter> implements ISysDictDataManager {
+public class SysDictDataManagerImpl extends BaseManagerImpl<SysDictDataQuery, SysDictDataDto, SysDictDataPo, SysDictDataMapper, SysDictDataConverter> implements ISysDictDataManager {
 
     /**
      * 查询字典数据对象列表

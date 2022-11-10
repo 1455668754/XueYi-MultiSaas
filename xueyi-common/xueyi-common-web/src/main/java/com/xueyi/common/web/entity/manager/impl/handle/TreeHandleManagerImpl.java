@@ -2,7 +2,7 @@ package com.xueyi.common.web.entity.manager.impl.handle;
 
 import com.xueyi.common.core.web.entity.base.TreeEntity;
 import com.xueyi.common.core.web.entity.model.BaseConverter;
-import com.xueyi.common.web.entity.manager.impl.BaseManager;
+import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.common.web.entity.mapper.TreeMapper;
 
 /**
@@ -14,5 +14,5 @@ import com.xueyi.common.web.entity.mapper.TreeMapper;
  * @param <PM> PoMapper
  * @author xueyi
  */
-public class TreeHandleManager<Q extends P, D extends P, P extends TreeEntity<D>, PM extends TreeMapper<Q, D, P>, CT extends BaseConverter<Q, D, P>> extends BaseManager<Q, D, P, PM, CT> {
+public class TreeHandleManagerImpl<Q extends P, D extends P, P extends TreeEntity<D>, PM extends TreeMapper<Q, D, P>, CT extends BaseConverter<Q, D, P>> extends BaseManagerImpl<Q, D, P, PM, CT> {
 }

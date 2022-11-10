@@ -1,7 +1,7 @@
 package com.xueyi.tenant.source.manager.impl;
 
 import cn.hutool.core.util.IdUtil;
-import com.xueyi.common.web.entity.manager.impl.BaseManager;
+import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.tenant.api.source.domain.dto.TeSourceDto;
 import com.xueyi.tenant.api.source.domain.model.TeSourceConverter;
 import com.xueyi.tenant.api.source.domain.po.TeSourcePo;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
  * @author xueyi
  */
 @Component
-public class TeSourceManager extends BaseManager<TeSourceQuery, TeSourceDto, TeSourcePo, TeSourceMapper, TeSourceConverter> implements ITeSourceManager {
+public class TeSourceManagerImpl extends BaseManagerImpl<TeSourceQuery, TeSourceDto, TeSourcePo, TeSourceMapper, TeSourceConverter> implements ITeSourceManager {
 
     /**
      * 新增数据源对象

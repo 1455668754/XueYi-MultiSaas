@@ -8,7 +8,7 @@ import com.xueyi.common.core.constant.basic.SqlConstants;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.core.web.entity.model.BaseConverter;
 import com.xueyi.common.web.entity.manager.IBaseManager;
-import com.xueyi.common.web.entity.manager.impl.handle.BaseHandleManager;
+import com.xueyi.common.web.entity.manager.impl.handle.BaseHandleManagerImpl;
 import com.xueyi.common.web.entity.mapper.BaseMapper;
 
 import java.io.Serializable;
@@ -24,7 +24,7 @@ import java.util.List;
  * @param <PM> PoMapper
  * @author xueyi
  */
-public class BaseManager<Q extends P, D extends P, P extends BaseEntity, PM extends BaseMapper<Q, D, P>, CT extends BaseConverter<Q, D, P>> extends BaseHandleManager<Q, D, P, PM, CT> implements IBaseManager<Q, D> {
+public class BaseManagerImpl<Q extends P, D extends P, P extends BaseEntity, PM extends BaseMapper<Q, D, P>, CT extends BaseConverter<Q, D, P>> extends BaseHandleManagerImpl<Q, D, P, PM, CT> implements IBaseManager<Q, D> {
 
     /**
      * 查询数据对象列表

@@ -23,7 +23,7 @@ import java.util.List;
  * @author xueyi
  */
 
-public class BaseHandleManager<Q extends P, D extends P, P extends BaseEntity, PM extends BaseMapper<Q, D, P>, CT extends BaseConverter<Q, D, P>> {
+public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntity, PM extends BaseMapper<Q, D, P>, CT extends BaseConverter<Q, D, P>> {
 
     @Autowired
     protected PM baseMapper;

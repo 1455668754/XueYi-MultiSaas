@@ -2,7 +2,7 @@ package com.xueyi.tenant.tenant.manager.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.basic.SqlConstants;
-import com.xueyi.common.web.entity.manager.impl.BaseManager;
+import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.tenant.api.tenant.domain.dto.TeTenantDto;
 import com.xueyi.tenant.api.tenant.domain.model.TeTenantConverter;
 import com.xueyi.tenant.api.tenant.domain.po.TeTenantPo;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
  * @author xueyi
  */
 @Component
-public class TeTenantManager extends BaseManager<TeTenantQuery, TeTenantDto, TeTenantPo, TeTenantMapper, TeTenantConverter> implements ITeTenantManager {
+public class TeTenantManagerImpl extends BaseManagerImpl<TeTenantQuery, TeTenantDto, TeTenantPo, TeTenantMapper, TeTenantConverter> implements ITeTenantManager {
 
     /**
      * 校验数据源策略是否被使用

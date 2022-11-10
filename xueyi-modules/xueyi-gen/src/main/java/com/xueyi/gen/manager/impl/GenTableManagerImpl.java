@@ -4,7 +4,7 @@ import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.xueyi.common.web.entity.manager.impl.SubBaseManager;
+import com.xueyi.common.web.entity.manager.impl.SubBaseManagerImpl;
 import com.xueyi.gen.domain.dto.GenTableColumnDto;
 import com.xueyi.gen.domain.dto.GenTableDto;
 import com.xueyi.gen.domain.model.GenTableColumnConverter;
@@ -27,7 +27,7 @@ import java.util.List;
  * @author xueyi
  */
 @Component
-public class GenTableManager extends SubBaseManager<GenTableQuery, GenTableDto, GenTablePo, GenTableMapper, GenTableConverter, GenTableColumnQuery, GenTableColumnDto, GenTableColumnPo, GenTableColumnMapper, GenTableColumnConverter> implements IGenTableManager {
+public class GenTableManagerImpl extends SubBaseManagerImpl<GenTableQuery, GenTableDto, GenTablePo, GenTableMapper, GenTableConverter, GenTableColumnQuery, GenTableColumnDto, GenTableColumnPo, GenTableColumnMapper, GenTableColumnConverter> implements IGenTableManager {
 
     /**
      * 查询数据库列表

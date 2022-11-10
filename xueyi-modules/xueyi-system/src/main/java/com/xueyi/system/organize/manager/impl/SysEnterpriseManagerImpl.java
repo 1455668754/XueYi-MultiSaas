@@ -2,7 +2,7 @@ package com.xueyi.system.organize.manager.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.basic.BaseConstants;
-import com.xueyi.common.web.entity.manager.impl.BaseManager;
+import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
 import com.xueyi.system.api.organize.domain.model.SysEnterpriseConverter;
 import com.xueyi.system.api.organize.domain.po.SysEnterprisePo;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
  * @author xueyi
  */
 @Component
-public class SysEnterpriseManager extends BaseManager<SysEnterpriseQuery, SysEnterpriseDto, SysEnterprisePo, SysEnterpriseMapper, SysEnterpriseConverter> implements ISysEnterpriseManager {
+public class SysEnterpriseManagerImpl extends BaseManagerImpl<SysEnterpriseQuery, SysEnterpriseDto, SysEnterprisePo, SysEnterpriseMapper, SysEnterpriseConverter> implements ISysEnterpriseManager {
 
     /**
      * 根据名称查询状态正常企业对象

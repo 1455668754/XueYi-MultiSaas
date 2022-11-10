@@ -5,18 +5,18 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.SqlConstants;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
-import com.xueyi.common.core.web.entity.base.SubTreeEntity;
+import com.xueyi.common.core.web.entity.base.SubBaseEntity;
 import com.xueyi.common.core.web.entity.model.BaseConverter;
-import com.xueyi.common.web.entity.manager.ISubTreeManager;
-import com.xueyi.common.web.entity.manager.impl.handle.SubTreeHandleManager;
+import com.xueyi.common.web.entity.manager.ISubBaseManager;
+import com.xueyi.common.web.entity.manager.impl.handle.SubBaseHandleManagerImpl;
 import com.xueyi.common.web.entity.mapper.BaseMapper;
-import com.xueyi.common.web.entity.mapper.SubTreeMapper;
+import com.xueyi.common.web.entity.mapper.SubBaseMapper;
 
 import java.io.Serializable;
 import java.util.List;
 
 /**
- * 数据封装层处理 主子树型通用数据处理
+ * 数据封装层处理 主子基类通用数据处理
  *
  * @param <Q>   Query
  * @param <D>   Dto
@@ -28,7 +28,7 @@ import java.util.List;
  * @param <SPM> SubPoMapper
  * @author xueyi
  */
-public abstract class SubTreeManager<Q extends P, D extends P, P extends SubTreeEntity<D, SD>, PM extends SubTreeMapper<Q, D, P, SQ, SD, SP>, CT extends BaseConverter<Q, D, P>, SQ extends SP, SD extends SP, SP extends BaseEntity, SPM extends BaseMapper<SQ, SD, SP>, SCT extends BaseConverter<SQ, SD, SP>> extends SubTreeHandleManager<Q, D, P, PM, CT, SQ, SD, SP, SPM, SCT> implements ISubTreeManager<Q, D, SQ, SD> {
+public abstract class SubBaseManagerImpl<Q extends P, D extends P, P extends SubBaseEntity<SD>, PM extends SubBaseMapper<Q, D, P, SQ, SD, SP>, CT extends BaseConverter<Q, D, P>, SQ extends SP, SD extends SP, SP extends BaseEntity, SPM extends BaseMapper<SQ, SD, SP>, SCT extends BaseConverter<SQ, SD, SP>> extends SubBaseHandleManagerImpl<Q, D, P, PM, CT, SQ, SD, SP, SPM, SCT> implements ISubBaseManager<Q, D, SQ, SD> {
 
     /**
      * 根据Id查询单条数据对象 | 包含子数据
@@ -59,7 +59,8 @@ public abstract class SubTreeManager<Q extends P, D extends P, P extends SubTree
      */
     @Override
     public D selectByIdExtra(Serializable id) {
-        D dto = mapperDto(baseMapper.selectById(id));
+        P po = baseMapper.selectById(id);
+        D dto = mapperDto(po);
         LambdaQueryWrapper<SP> subQueryWrapper = new LambdaQueryWrapper<>();
         querySetForeignKey(subQueryWrapper, dto);
         dto.setSubList(subConverter.mapperDto(subMapper.selectList(subQueryWrapper)));
@@ -138,4 +139,5 @@ public abstract class SubTreeManager<Q extends P, D extends P, P extends SubTree
                 .last(SqlConstants.LIMIT_ONE);
         return subConverter.mapperDto(subMapper.selectOne(queryWrapper));
     }
+
 }

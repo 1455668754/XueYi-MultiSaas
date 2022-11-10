@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.web.annotation.TenantIgnore;
-import com.xueyi.common.web.entity.manager.impl.SubBaseManager;
+import com.xueyi.common.web.entity.manager.impl.SubBaseManagerImpl;
 import com.xueyi.job.api.domain.dto.SysJobDto;
 import com.xueyi.job.api.domain.dto.SysJobLogDto;
 import com.xueyi.job.api.domain.model.SysJobConverter;
@@ -28,7 +28,7 @@ import java.util.List;
  * @author xueyi
  */
 @Component
-public class SysJobManager extends SubBaseManager<SysJobQuery, SysJobDto, SysJobPo, SysJobMapper, SysJobConverter, SysJobLogQuery, SysJobLogDto, SysJobLogPo, SysJobLogMapper, SysJobLogConverter> implements ISysJobManager {
+public class SysJobManagerImpl extends SubBaseManagerImpl<SysJobQuery, SysJobDto, SysJobPo, SysJobMapper, SysJobConverter, SysJobLogQuery, SysJobLogDto, SysJobLogPo, SysJobLogMapper, SysJobLogConverter> implements ISysJobManager {
 
     /**
      * 项目启动时

@@ -8,7 +8,7 @@ import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.job.api.domain.dto.SysJobDto;
 import com.xueyi.job.api.domain.query.SysJobQuery;
-import com.xueyi.job.manager.impl.SysJobManager;
+import com.xueyi.job.manager.impl.SysJobManagerImpl;
 import com.xueyi.job.service.ISysJobService;
 import com.xueyi.job.util.ScheduleUtils;
 import org.quartz.JobDataMap;
@@ -32,7 +32,7 @@ import static com.xueyi.common.core.constant.basic.SecurityConstants.CREATE_BY;
 public class SysJobServiceImpl implements ISysJobService {
 
     @Autowired
-    private SysJobManager baseManager;
+    private SysJobManagerImpl baseManager;
 
     @Autowired
     private Scheduler scheduler;

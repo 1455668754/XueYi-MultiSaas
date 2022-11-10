@@ -7,7 +7,7 @@ import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.basic.SqlConstants;
 import com.xueyi.common.security.utils.SecurityUtils;
-import com.xueyi.common.web.entity.manager.impl.BaseManager;
+import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.system.api.authority.domain.model.SysRoleConverter;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
@@ -42,7 +42,7 @@ import java.util.stream.Collectors;
  * @author xueyi
  */
 @Component
-public class SysUserManager extends BaseManager<SysUserQuery, SysUserDto, SysUserPo, SysUserMapper, SysUserConverter> implements ISysUserManager {
+public class SysUserManagerImpl extends BaseManagerImpl<SysUserQuery, SysUserDto, SysUserPo, SysUserMapper, SysUserConverter> implements ISysUserManager {
 
     @Autowired
     SysUserPostMergeMapper userPostMergeMapper;

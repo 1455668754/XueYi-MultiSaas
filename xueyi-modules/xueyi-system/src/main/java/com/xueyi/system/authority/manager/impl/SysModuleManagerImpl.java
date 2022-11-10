@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.security.utils.SecurityUtils;
-import com.xueyi.common.web.entity.manager.impl.SubBaseManager;
+import com.xueyi.common.web.entity.manager.impl.SubBaseManagerImpl;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
 import com.xueyi.system.api.authority.domain.model.SysMenuConverter;
@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
  * @author xueyi
  */
 @Component
-public class SysModuleManager extends SubBaseManager<SysModuleQuery, SysModuleDto, SysModulePo, SysModuleMapper, SysModuleConverter, SysMenuQuery, SysMenuDto, SysMenuPo, SysMenuMapper, SysMenuConverter> implements ISysModuleManager {
+public class SysModuleManagerImpl extends SubBaseManagerImpl<SysModuleQuery, SysModuleDto, SysModulePo, SysModuleMapper, SysModuleConverter, SysMenuQuery, SysMenuDto, SysMenuPo, SysMenuMapper, SysMenuConverter> implements ISysModuleManager {
 
     @Autowired
     private SysTenantModuleMergeMapper tenantModuleMergeMapper;

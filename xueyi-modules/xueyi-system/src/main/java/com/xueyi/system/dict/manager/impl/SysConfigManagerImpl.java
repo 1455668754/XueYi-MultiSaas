@@ -3,7 +3,7 @@ package com.xueyi.system.dict.manager.impl;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.SqlConstants;
-import com.xueyi.common.web.entity.manager.impl.BaseManager;
+import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.system.api.dict.domain.dto.SysConfigDto;
 import com.xueyi.system.api.dict.domain.model.SysConfigConverter;
 import com.xueyi.system.api.dict.domain.po.SysConfigPo;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
  * @author xueyi
  */
 @Component
-public class SysConfigManager extends BaseManager<SysConfigQuery, SysConfigDto, SysConfigPo, SysConfigMapper, SysConfigConverter> implements ISysConfigManager {
+public class SysConfigManagerImpl extends BaseManagerImpl<SysConfigQuery, SysConfigDto, SysConfigPo, SysConfigMapper, SysConfigConverter> implements ISysConfigManager {
 
     /**
      * 根据参数编码查询参数对象

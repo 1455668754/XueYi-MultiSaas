@@ -3,7 +3,7 @@ package com.xueyi.system.authority.manager.impl;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.basic.SqlConstants;
-import com.xueyi.common.web.entity.manager.impl.BaseManager;
+import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
 import com.xueyi.system.api.authority.domain.model.SysRoleConverter;
 import com.xueyi.system.api.authority.domain.po.SysRolePo;
@@ -32,7 +32,7 @@ import java.util.Collection;
  * @author xueyi
  */
 @Component
-public class SysRoleManager extends BaseManager<SysRoleQuery, SysRoleDto, SysRolePo, SysRoleMapper, SysRoleConverter> implements ISysRoleManager {
+public class SysRoleManagerImpl extends BaseManagerImpl<SysRoleQuery, SysRoleDto, SysRolePo, SysRoleMapper, SysRoleConverter> implements ISysRoleManager {
 
     @Autowired
     private SysRoleModuleMergeMapper roleModuleMergeMapper;

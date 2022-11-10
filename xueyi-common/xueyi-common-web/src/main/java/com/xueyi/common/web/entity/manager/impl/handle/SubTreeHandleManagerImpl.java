@@ -3,18 +3,18 @@ package com.xueyi.common.web.entity.manager.impl.handle;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
-import com.xueyi.common.core.web.entity.base.SubBaseEntity;
+import com.xueyi.common.core.web.entity.base.SubTreeEntity;
 import com.xueyi.common.core.web.entity.model.BaseConverter;
-import com.xueyi.common.web.entity.manager.impl.BaseManager;
-import com.xueyi.common.web.entity.manager.impl.SubTreeManager;
+import com.xueyi.common.web.entity.manager.impl.SubTreeManagerImpl;
+import com.xueyi.common.web.entity.manager.impl.TreeManagerImpl;
 import com.xueyi.common.web.entity.mapper.BaseMapper;
-import com.xueyi.common.web.entity.mapper.SubBaseMapper;
+import com.xueyi.common.web.entity.mapper.SubTreeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 
 /**
- * 数据封装层处理 操作方法 主子基类通用数据处理
+ * 数据封装层处理 操作方法 主子树型通用数据处理
  *
  * @param <Q>   Query
  * @param <D>   Dto
@@ -26,7 +26,7 @@ import java.io.Serializable;
  * @param <SPM> SubPoMapper
  * @author xueyi
  */
-public abstract class SubBaseHandleManager<Q extends P, D extends P, P extends SubBaseEntity<SD>, PM extends SubBaseMapper<Q, D, P, SQ, SD, SP>, CT extends BaseConverter<Q, D, P>, SQ extends SP, SD extends SP, SP extends BaseEntity, SPM extends BaseMapper<SQ, SD, SP>, SCT extends BaseConverter<SQ, SD, SP>> extends BaseManager<Q, D, P, PM, CT> {
+public abstract class SubTreeHandleManagerImpl<Q extends P, D extends P, P extends SubTreeEntity<D, SD>, PM extends SubTreeMapper<Q, D, P, SQ, SD, SP>, CT extends BaseConverter<Q, D, P>, SQ extends SP, SD extends SP, SP extends BaseEntity, SPM extends BaseMapper<SQ, SD, SP>, SCT extends BaseConverter<SQ, SD, SP>> extends TreeManagerImpl<Q, D, P, PM, CT> {
 
     @Autowired
     protected SPM subMapper;
@@ -38,8 +38,12 @@ public abstract class SubBaseHandleManager<Q extends P, D extends P, P extends S
     @SuppressWarnings("unchecked")
     private Class<SD> SDClass = (Class<SD>) getClazz(5);
 
-    protected Class<SD> getSDClass() {
+    public Class<SD> getSDClass() {
         return SDClass;
+    }
+
+    public void setSDClass(Class<SD> SDClass) {
+        this.SDClass = SDClass;
     }
 
     /**
@@ -47,7 +51,7 @@ public abstract class SubBaseHandleManager<Q extends P, D extends P, P extends S
      *
      * @param queryWrapper 条件构造器
      * @param d            数据对象
-     * @see SubTreeManager#selectByIdExtra(Serializable)
+     * @see SubTreeManagerImpl#selectByIdExtra(Serializable)
      */
     protected void querySetForeignKey(LambdaQueryWrapper<SP> queryWrapper, D d) {
         setForeignKey(queryWrapper, null, d, null);
@@ -58,8 +62,8 @@ public abstract class SubBaseHandleManager<Q extends P, D extends P, P extends S
      *
      * @param queryWrapper 条件构造器
      * @param foreignKey   子表外键值
-     * @see SubTreeManager#checkExistSub(Serializable)
-     * @see SubTreeManager#checkExistNormalSub(Serializable)
+     * @see SubTreeManagerImpl#checkExistSub(Serializable)
+     * @see SubTreeManagerImpl#checkExistNormalSub(Serializable)
      */
     protected void querySetForeignKey(LambdaQueryWrapper<SP> queryWrapper, Serializable foreignKey) {
         setForeignKey(queryWrapper, null, null, foreignKey);
@@ -70,8 +74,8 @@ public abstract class SubBaseHandleManager<Q extends P, D extends P, P extends S
      *
      * @param updateWrapper 条件构造器
      * @param d             数据对象
-     * @see SubTreeManager#updateSubStatus(Serializable, String)
-     * @see SubTreeManager#deleteSub(Serializable)
+     * @see SubTreeManagerImpl#updateSubStatus(Serializable, String)
+     * @see SubTreeManagerImpl#deleteSub(Serializable)
      */
     protected void updateSetForeignKey(LambdaUpdateWrapper<SP> updateWrapper, D d) {
         setForeignKey(null, updateWrapper, d, null);
@@ -82,8 +86,8 @@ public abstract class SubBaseHandleManager<Q extends P, D extends P, P extends S
      *
      * @param updateWrapper 条件构造器
      * @param foreignKey    子表外键值
-     * @see SubTreeManager#updateSubStatus(Serializable, String)
-     * @see SubTreeManager#deleteSub(Serializable)
+     * @see SubTreeManagerImpl#updateSubStatus(Serializable, String)
+     * @see SubTreeManagerImpl#deleteSub(Serializable)
      */
     protected void updateSetForeignKey(LambdaUpdateWrapper<SP> updateWrapper, Serializable foreignKey) {
         setForeignKey(null, updateWrapper, null, foreignKey);

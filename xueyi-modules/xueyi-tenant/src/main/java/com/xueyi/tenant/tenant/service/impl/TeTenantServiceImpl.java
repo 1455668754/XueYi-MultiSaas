@@ -20,7 +20,7 @@ import com.xueyi.tenant.api.tenant.domain.dto.TeStrategyDto;
 import com.xueyi.tenant.api.tenant.domain.dto.TeTenantDto;
 import com.xueyi.tenant.api.tenant.domain.query.TeTenantQuery;
 import com.xueyi.tenant.tenant.domain.model.TeTenantRegister;
-import com.xueyi.tenant.tenant.manager.impl.TeTenantManager;
+import com.xueyi.tenant.tenant.manager.impl.TeTenantManagerImpl;
 import com.xueyi.tenant.tenant.service.ITeStrategyService;
 import com.xueyi.tenant.tenant.service.ITeTenantService;
 import io.seata.spring.annotation.GlobalTransactional;
@@ -36,7 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author xueyi
  */
 @Service
-public class TeTenantServiceImpl extends BaseServiceImpl<TeTenantQuery, TeTenantDto, TeTenantManager> implements ITeTenantService {
+public class TeTenantServiceImpl extends BaseServiceImpl<TeTenantQuery, TeTenantDto, TeTenantManagerImpl> implements ITeTenantService {
 
     @Lazy
     @Autowired

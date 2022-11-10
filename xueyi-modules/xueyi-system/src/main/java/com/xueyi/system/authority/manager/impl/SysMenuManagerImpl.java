@@ -10,7 +10,7 @@ import com.xueyi.common.core.constant.basic.SqlConstants;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.security.utils.SecurityUtils;
-import com.xueyi.common.web.entity.manager.impl.TreeManager;
+import com.xueyi.common.web.entity.manager.impl.TreeManagerImpl;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.authority.domain.model.SysMenuConverter;
 import com.xueyi.system.api.authority.domain.po.SysMenuPo;
@@ -37,7 +37,7 @@ import static com.xueyi.common.core.constant.basic.SqlConstants.ANCESTORS_FIND;
  * @author xueyi
  */
 @Component
-public class SysMenuManager extends TreeManager<SysMenuQuery, SysMenuDto, SysMenuPo, SysMenuMapper, SysMenuConverter> implements ISysMenuManager {
+public class SysMenuManagerImpl extends TreeManagerImpl<SysMenuQuery, SysMenuDto, SysMenuPo, SysMenuMapper, SysMenuConverter> implements ISysMenuManager {
 
     @Autowired
     SysTenantMenuMergeMapper tenantMenuMergeMapper;

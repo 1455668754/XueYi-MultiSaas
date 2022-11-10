@@ -1,6 +1,6 @@
 package com.xueyi.system.notice.manager.impl;
 
-import com.xueyi.common.web.entity.manager.impl.BaseManager;
+import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.system.notice.domain.dto.SysNoticeDto;
 import com.xueyi.system.notice.domain.model.SysNoticeConverter;
 import com.xueyi.system.notice.domain.po.SysNoticePo;
@@ -15,5 +15,5 @@ import org.springframework.stereotype.Component;
  * @author xueyi
  */
 @Component
-public class SysNoticeManager extends BaseManager<SysNoticeQuery, SysNoticeDto, SysNoticePo, SysNoticeMapper, SysNoticeConverter> implements ISysNoticeManager {
+public class SysNoticeManagerImpl extends BaseManagerImpl<SysNoticeQuery, SysNoticeDto, SysNoticePo, SysNoticeMapper, SysNoticeConverter> implements ISysNoticeManager {
 }

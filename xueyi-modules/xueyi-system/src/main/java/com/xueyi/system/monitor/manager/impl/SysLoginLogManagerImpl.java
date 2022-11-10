@@ -4,7 +4,7 @@ import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.basic.BaseConstants;
-import com.xueyi.common.web.entity.manager.impl.BaseManager;
+import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.system.api.log.domain.dto.SysLoginLogDto;
 import com.xueyi.system.api.log.domain.model.SysLoginLogConverter;
 import com.xueyi.system.api.log.domain.po.SysLoginLogPo;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
  * @author xueyi
  */
 @Component
-public class SysLoginLogManager extends BaseManager<SysLoginLogQuery, SysLoginLogDto, SysLoginLogPo, SysLoginLogMapper, SysLoginLogConverter> implements ISysLoginLogManager {
+public class SysLoginLogManagerImpl extends BaseManagerImpl<SysLoginLogQuery, SysLoginLogDto, SysLoginLogPo, SysLoginLogMapper, SysLoginLogConverter> implements ISysLoginLogManager {
 
     /**
      * 清空系统登录日志

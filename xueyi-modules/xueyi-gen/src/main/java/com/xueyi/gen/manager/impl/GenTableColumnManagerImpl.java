@@ -1,6 +1,6 @@
 package com.xueyi.gen.manager.impl;
 
-import com.xueyi.common.web.entity.manager.impl.BaseManager;
+import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.gen.domain.dto.GenTableColumnDto;
 import com.xueyi.gen.domain.model.GenTableColumnConverter;
 import com.xueyi.gen.domain.po.GenTableColumnPo;
@@ -17,7 +17,7 @@ import java.util.List;
  * @author xueyi
  */
 @Component
-public class GenTableColumnManager extends BaseManager<GenTableColumnQuery, GenTableColumnDto, GenTableColumnPo, GenTableColumnMapper, GenTableColumnConverter> implements IGenTableColumnManager {
+public class GenTableColumnManagerImpl extends BaseManagerImpl<GenTableColumnQuery, GenTableColumnDto, GenTableColumnPo, GenTableColumnMapper, GenTableColumnConverter> implements IGenTableColumnManager {
 
     /**
      * 根据表名称查询数据库表列信息

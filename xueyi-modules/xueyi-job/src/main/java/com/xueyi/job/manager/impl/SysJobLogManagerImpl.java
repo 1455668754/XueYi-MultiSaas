@@ -1,7 +1,7 @@
 package com.xueyi.job.manager.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.xueyi.common.web.entity.manager.impl.BaseManager;
+import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.job.api.domain.dto.SysJobLogDto;
 import com.xueyi.job.api.domain.model.SysJobLogConverter;
 import com.xueyi.job.api.domain.po.SysJobLogPo;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
  * @author xueyi
  */
 @Component
-public class SysJobLogManager extends BaseManager<SysJobLogQuery, SysJobLogDto, SysJobLogPo, SysJobLogMapper, SysJobLogConverter> implements ISysJobLogManager {
+public class SysJobLogManagerImpl extends BaseManagerImpl<SysJobLogQuery, SysJobLogDto, SysJobLogPo, SysJobLogMapper, SysJobLogConverter> implements ISysJobLogManager {
 
     /**
      * 清空任务日志

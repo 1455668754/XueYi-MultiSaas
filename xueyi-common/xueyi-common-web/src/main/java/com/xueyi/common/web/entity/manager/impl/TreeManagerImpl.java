@@ -9,7 +9,7 @@ import com.xueyi.common.core.web.entity.base.TreeEntity;
 import com.xueyi.common.core.web.entity.model.BaseConverter;
 import com.xueyi.common.web.annotation.TenantIgnore;
 import com.xueyi.common.web.entity.manager.ITreeManager;
-import com.xueyi.common.web.entity.manager.impl.handle.TreeHandleManager;
+import com.xueyi.common.web.entity.manager.impl.handle.TreeHandleManagerImpl;
 import com.xueyi.common.web.entity.mapper.TreeMapper;
 
 import java.io.Serializable;
@@ -26,7 +26,7 @@ import static com.xueyi.common.core.constant.basic.SqlConstants.ANCESTORS_FIND;
  * @param <PM> PoMapper
  * @author xueyi
  */
-public class TreeManager<Q extends P, D extends P, P extends TreeEntity<D>, PM extends TreeMapper<Q, D, P>, CT extends BaseConverter<Q, D, P>> extends TreeHandleManager<Q, D, P, PM, CT> implements ITreeManager<Q, D> {
+public class TreeManagerImpl<Q extends P, D extends P, P extends TreeEntity<D>, PM extends TreeMapper<Q, D, P>, CT extends BaseConverter<Q, D, P>> extends TreeHandleManagerImpl<Q, D, P, PM, CT> implements ITreeManager<Q, D> {
 
     /**
      * 根据Id查询本节点及其所有祖籍节点

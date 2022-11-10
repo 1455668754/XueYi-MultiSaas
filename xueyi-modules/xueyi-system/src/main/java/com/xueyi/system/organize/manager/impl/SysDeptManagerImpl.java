@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.basic.SqlConstants;
-import com.xueyi.common.web.entity.manager.impl.SubTreeManager;
+import com.xueyi.common.web.entity.manager.impl.SubTreeManagerImpl;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 import com.xueyi.system.api.organize.domain.model.SysDeptConverter;
@@ -34,7 +34,7 @@ import java.util.Collection;
  * @author xueyi
  */
 @Component
-public class SysDeptManager extends SubTreeManager<SysDeptQuery, SysDeptDto, SysDeptPo, SysDeptMapper, SysDeptConverter, SysPostQuery, SysPostDto, SysPostPo, SysPostMapper, SysPostConverter> implements ISysDeptManager {
+public class SysDeptManagerImpl extends SubTreeManagerImpl<SysDeptQuery, SysDeptDto, SysDeptPo, SysDeptMapper, SysDeptConverter, SysPostQuery, SysPostDto, SysPostPo, SysPostMapper, SysPostConverter> implements ISysDeptManager {
 
     @Autowired
     SysOrganizeRoleMergeMapper organizeRoleMergeMapper;
