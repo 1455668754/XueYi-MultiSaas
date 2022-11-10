@@ -10,4 +10,7 @@ public interface NumberPool {
     int Zero = 0;
     int One = 1;
     int Two = 2;
+    int Three = 3;
+    int Four = 4;
+    int Five = 5;
 }

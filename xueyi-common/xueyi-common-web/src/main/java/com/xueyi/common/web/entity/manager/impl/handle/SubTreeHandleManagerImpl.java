@@ -2,6 +2,7 @@ package com.xueyi.common.web.entity.manager.impl.handle;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.xueyi.common.core.utils.core.NumberUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.core.web.entity.base.SubTreeEntity;
 import com.xueyi.common.core.web.entity.model.BaseConverter;
@@ -36,7 +37,7 @@ public abstract class SubTreeHandleManagerImpl<Q extends P, D extends P, P exten
 
     /** SubDto泛型的类型 */
     @SuppressWarnings("unchecked")
-    private Class<SD> SDClass = (Class<SD>) getClazz(5);
+    private Class<SD> SDClass = (Class<SD>) getClazz(NumberUtil.Five);
 
     public Class<SD> getSDClass() {
         return SDClass;

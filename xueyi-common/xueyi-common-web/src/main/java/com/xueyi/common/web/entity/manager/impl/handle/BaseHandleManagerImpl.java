@@ -3,6 +3,7 @@ package com.xueyi.common.web.entity.manager.impl.handle;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.github.pagehelper.Page;
 import com.xueyi.common.core.constant.basic.BaseConstants;
+import com.xueyi.common.core.utils.core.NumberUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.core.web.entity.model.BaseConverter;
 import com.xueyi.common.web.entity.mapper.BaseMapper;
@@ -33,11 +34,11 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
 
     /** Dto泛型的类型 */
     @SuppressWarnings("unchecked")
-    private final Class<D> DClass = (Class<D>) getClazz(1);
+    private final Class<D> DClass = (Class<D>) getClazz(NumberUtil.One);
 
     /** Po泛型的类型 */
     @SuppressWarnings("unchecked")
-    private final Class<P> PClass = (Class<P>) getClazz(2);
+    private final Class<P> PClass = (Class<P>) getClazz(NumberUtil.Two);
 
     public Class<D> getDClass() {
         return DClass;

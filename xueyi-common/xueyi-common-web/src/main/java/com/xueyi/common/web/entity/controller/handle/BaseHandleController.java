@@ -2,6 +2,7 @@ package com.xueyi.common.web.entity.controller.handle;
 
 import cn.hutool.core.collection.CollUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
+import com.xueyi.common.core.utils.core.NumberUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.web.entity.controller.BasisController;
@@ -27,11 +28,11 @@ public abstract class BaseHandleController<Q extends BaseEntity, D extends BaseE
 
     /** Query泛型的类型 */
     @SuppressWarnings("unchecked")
-    private final Class<Q> QClass = (Class<Q>) getClazz(0);
+    private final Class<Q> QClass = (Class<Q>) getClazz(NumberUtil.Zero);
 
     /** Dto泛型的类型 */
     @SuppressWarnings("unchecked")
-    private final Class<D> DClass = (Class<D>) getClazz(1);
+    private final Class<D> DClass = (Class<D>) getClazz(NumberUtil.One);
 
     /** 定义节点名称 */
     protected abstract String getNodeName();

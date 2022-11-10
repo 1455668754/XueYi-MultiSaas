@@ -4,6 +4,8 @@ import cn.hutool.core.util.ArrayUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.constant.basic.TenantConstants;
+import com.xueyi.common.core.utils.core.ObjectUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.config.properties.TenantProperties;
 import net.sf.jsqlparser.expression.*;
@@ -67,7 +69,7 @@ public interface BasicLineHandler {
         return new MultipleExpression(childList) {
             @Override
             public String getStringExpression() {
-                return ",";
+                return StrUtil.COMMA;
             }
         };
     }
@@ -125,9 +127,7 @@ public interface BasicLineHandler {
      * @return Expression
      */
     default Expression updateExpression(Table table, Expression where) {
-        return isCommonTable(table.getName()) && isLessor()
-                ? inExpression(table, where)
-                : this.andExpression(table, where);
+        return isCommonTable(table.getName()) && isLessor() ? inExpression(table, where) : andExpression(table, where);
     }
 
     /**
@@ -137,27 +137,31 @@ public interface BasicLineHandler {
      * @return Expression
      */
     default Expression getInsertTenantId(String tableName) {
-        return isCommonTable(tableName)
-                ? getMixTenantId()
-                : getTenantId();
+        return isCommonTable(tableName) ? getMixTenantId() : getTenantId();
     }
 
     /**
-     * 单租户表达式 | delete/update -> where
+     * 租户表达式 | insert -> insert
+     *
+     * @param tableName 表名
+     * @return EqualsTo
+     */
+    default EqualsTo getInsertTenantEqualsTo(String tableName) {
+        return new EqualsTo(new StringValue(getTenantIdColumn()), getInsertTenantId(tableName));
+    }
+
+    /**
+     * 租户表达式 | delete/update -> where
      *
      * @param table 表对象
      * @param where 表达式条件对象
      * @return Expression
      */
     default BinaryExpression andExpression(Table table, Expression where) {
-        EqualsTo equalsTo = new EqualsTo();
-        equalsTo.setLeftExpression(getAliasColumn(table));
-        equalsTo.setRightExpression(getTenantId());
-        if (null != where) {
-            return where instanceof OrExpression ? new AndExpression(equalsTo, new Parenthesis(where)) : new AndExpression(equalsTo, where);
-        } else {
-            return equalsTo;
-        }
+        EqualsTo equalsTo = new EqualsTo(getAliasColumn(table), getTenantId());
+        return ObjectUtil.isNotNull(where)
+                ? where instanceof OrExpression ? new AndExpression(equalsTo, new Parenthesis(where)) : new AndExpression(equalsTo, where)
+                : equalsTo;
     }
 
     /**
@@ -171,11 +175,9 @@ public interface BasicLineHandler {
         InExpression inExpression = new InExpression();
         inExpression.setLeftExpression(getAliasColumn(table));
         inExpression.setRightExpression(getCommonTenantId());
-        if (null != where)
-            return where instanceof OrExpression
-                    ? new AndExpression(inExpression, new Parenthesis(where))
-                    : new AndExpression(inExpression, where);
-        return inExpression;
+        return ObjectUtil.isNotNull(where)
+                ? where instanceof OrExpression ? new AndExpression(inExpression, new Parenthesis(where)) : new AndExpression(inExpression, where)
+                : inExpression;
     }
 
     /**
@@ -185,12 +187,8 @@ public interface BasicLineHandler {
      * @return 租户别名列
      */
     default Column getAliasColumn(Table table) {
-        StringBuilder column = new StringBuilder();
-        if (table.getAlias() != null)
-            column.append(table.getAlias().getName());
-        else
-            column.append(table.getName());
-        column.append(".").append(getTenantIdColumn());
-        return new Column(column.toString());
+        String column = (ObjectUtil.isNotNull(table.getAlias()) ? table.getAlias().getName() : table.getName()) +
+                StrUtil.DOT + getTenantIdColumn();
+        return new Column(column);
     }
 }
