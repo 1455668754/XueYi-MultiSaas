@@ -1,15 +1,11 @@
 package com.xueyi.common.core.utils.poi;
 
-import cn.hutool.core.convert.Convert;
-import cn.hutool.core.util.ReflectUtil;
 import com.xueyi.common.core.annotation.Excel;
 import com.xueyi.common.core.annotation.Excel.ColumnType;
 import com.xueyi.common.core.annotation.Excel.Type;
 import com.xueyi.common.core.annotation.Excels;
 import com.xueyi.common.core.utils.DateUtil;
-import com.xueyi.common.core.utils.core.CollUtil;
-import com.xueyi.common.core.utils.core.ObjectUtil;
-import com.xueyi.common.core.utils.core.StrUtil;
+import com.xueyi.common.core.utils.core.*;
 import com.xueyi.common.core.utils.file.FileTypeUtil;
 import com.xueyi.common.core.utils.file.ImageUtil;
 import org.apache.commons.lang3.ArrayUtils;
@@ -302,7 +298,7 @@ public class ExcelUtil<T> {
                     // 取得类型,并根据对象类型设置值.
                     Class<?> fieldType = field.getType();
                     if (String.class == fieldType) {
-                        String s = Convert.toStr(val);
+                        String s = ConvertUtil.toStr(val);
                         if (StrUtil.endWith(s, ".0")) {
                             val = StrUtil.subBefore(s, ".0");
                         } else {
@@ -310,19 +306,19 @@ public class ExcelUtil<T> {
                             if (StrUtil.isNotEmpty(dateFormat)) {
                                 val = parseDateToStr(dateFormat, val);
                             } else {
-                                val = Convert.toStr(val);
+                                val = ConvertUtil.toStr(val);
                             }
                         }
-                    } else if ((Integer.TYPE == fieldType || Integer.class == fieldType) && StrUtil.isNumeric(Convert.toStr(val))) {
-                        val = Convert.toInt(val);
-                    } else if ((Long.TYPE == fieldType || Long.class == fieldType) && StrUtil.isNumeric(Convert.toStr(val))) {
-                        val = Convert.toLong(val);
+                    } else if ((Integer.TYPE == fieldType || Integer.class == fieldType) && StrUtil.isNumeric(ConvertUtil.toStr(val))) {
+                        val = ConvertUtil.toInt(val);
+                    } else if ((Long.TYPE == fieldType || Long.class == fieldType) && StrUtil.isNumeric(ConvertUtil.toStr(val))) {
+                        val = ConvertUtil.toLong(val);
                     } else if (Double.TYPE == fieldType || Double.class == fieldType) {
-                        val = Convert.toDouble(val);
+                        val = ConvertUtil.toDouble(val);
                     } else if (Float.TYPE == fieldType || Float.class == fieldType) {
-                        val = Convert.toFloat(val);
+                        val = ConvertUtil.toFloat(val);
                     } else if (BigDecimal.class == fieldType) {
-                        val = Convert.toBigDecimal(val);
+                        val = ConvertUtil.toBigDecimal(val);
                     } else if (Date.class == fieldType) {
                         if (val instanceof String) {
                             val = DateUtil.parseDate(val);
@@ -330,14 +326,14 @@ public class ExcelUtil<T> {
                             val = org.apache.poi.ss.usermodel.DateUtil.getJavaDate((Double) val);
                         }
                     } else if (Boolean.TYPE == fieldType || Boolean.class == fieldType) {
-                        val = Convert.toBool(val, false);
+                        val = ConvertUtil.toBool(val, false);
                     }
                     if (ObjectUtil.isNotNull(fieldType)) {
                         String propertyName = field.getName();
                         if (StrUtil.isNotEmpty(attr.targetAttr())) {
                             propertyName = field.getName() + "." + attr.targetAttr();
                         } else if (StrUtil.isNotEmpty(attr.readConverterExp())) {
-                            val = reverseByExp(Convert.toStr(val), attr.readConverterExp(), attr.separator());
+                            val = reverseByExp(ConvertUtil.toStr(val), attr.readConverterExp(), attr.separator());
                         } else if (!attr.handler().equals(ExcelHandlerAdapter.class)) {
                             val = dataFormatHandlerAdapter(val, attr);
                         }
@@ -649,7 +645,7 @@ public class ExcelUtil<T> {
      */
     public void setCellVo(Object value, Excel attr, Cell cell) {
         if (ColumnType.STRING == attr.cellType()) {
-            String cellValue = Convert.toStr(value);
+            String cellValue = ConvertUtil.toStr(value);
             // 对于任何以表达式触发字符 =-+@开头的单元格，直接使用tab字符作为前缀，防止CSV注入。
             if (StrUtil.startWithAny(cellValue, FORMULA_STR)) {
                 cellValue = RegExUtils.replaceFirst(cellValue, FORMULA_REGEX_STR, "\t$0");
@@ -657,12 +653,12 @@ public class ExcelUtil<T> {
             cell.setCellValue(ObjectUtil.isNull(cellValue) ? attr.defaultValue() : cellValue + attr.suffix());
         } else if (ColumnType.NUMERIC == attr.cellType()) {
             if (ObjectUtil.isNotNull(value)) {
-                cell.setCellValue(StrUtil.contains(Convert.toStr(value), StrUtil.DOT) ? Convert.toDouble(value) : Convert.toInt(value));
+                cell.setCellValue(StrUtil.contains(ConvertUtil.toStr(value), StrUtil.DOT) ? ConvertUtil.toDouble(value) : ConvertUtil.toInt(value));
             }
         } else if (ColumnType.IMAGE == attr.cellType()) {
             ClientAnchor anchor = new XSSFClientAnchor(0, 0, 0, 0, (short) cell.getColumnIndex(), cell.getRow()
                     .getRowNum(), (short) (cell.getColumnIndex() + 1), cell.getRow().getRowNum() + 1);
-            String imagePath = Convert.toStr(value);
+            String imagePath = ConvertUtil.toStr(value);
             if (StrUtil.isNotEmpty(imagePath)) {
                 byte[] data = ImageUtil.getImage(imagePath);
                 getDrawingPatriarch(cell.getSheet()).createPicture(anchor,
@@ -736,7 +732,7 @@ public class ExcelUtil<T> {
                 if (StrUtil.isNotEmpty(dateFormat) && ObjectUtil.isNotNull(value)) {
                     cell.setCellValue(parseDateToStr(dateFormat, value));
                 } else if (StrUtil.isNotEmpty(readConverterExp) && ObjectUtil.isNotNull(value)) {
-                    cell.setCellValue(convertByExp(Convert.toStr(value), readConverterExp, separator));
+                    cell.setCellValue(convertByExp(ConvertUtil.toStr(value), readConverterExp, separator));
                 } else if (value instanceof BigDecimal && -1 != attr.scale()) {
                     cell.setCellValue((((BigDecimal) value).setScale(attr.scale(), attr.roundingMode())).doubleValue());
                 } else if (!attr.handler().equals(ExcelHandlerAdapter.class)) {
@@ -745,7 +741,7 @@ public class ExcelUtil<T> {
                     // 设置列类型
                     setCellVo(value, attr, cell);
                 }
-                addStatisticsData(column, Convert.toStr(value), attr);
+                addStatisticsData(column, ConvertUtil.toStr(value), attr);
             }
         } catch (Exception e) {
             log.error("导出Excel失败{}", e);
@@ -858,7 +854,7 @@ public class ExcelUtil<T> {
         } catch (Exception e) {
             log.error("不能格式化数据 " + excel.handler(), e.getMessage());
         }
-        return Convert.toStr(value);
+        return ConvertUtil.toStr(value);
     }
 
     /**

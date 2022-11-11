@@ -131,20 +131,22 @@
             <artifactId>lombok</artifactId>
         </dependency>
 
-        <!-- huTool 工具类库 -->
+        <!-- huTool 工具类库 核心包 -->
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-core</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-json</artifactId>
-        </dependency>
-
+        <!-- huTool 工具类库 扩展包 -->
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-extra</artifactId>
+        </dependency>
+
+        <!-- huTool 工具类库 加解密包 -->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-crypto</artifactId>
         </dependency>
 
     </dependencies>

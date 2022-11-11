@@ -1,10 +1,10 @@
 package com.xueyi.file.utils;
 
-import cn.hutool.core.util.IdUtil;
 import com.xueyi.common.core.exception.file.FileNameLengthLimitExceededException;
 import com.xueyi.common.core.exception.file.FileSizeLimitExceededException;
 import com.xueyi.common.core.exception.file.InvalidExtensionException;
 import com.xueyi.common.core.utils.DateUtil;
+import com.xueyi.common.core.utils.core.IdUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.utils.file.FileTypeUtil;
 import com.xueyi.common.core.utils.file.MimeTypeUtil;

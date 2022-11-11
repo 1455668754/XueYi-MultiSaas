@@ -1,6 +1,5 @@
 package com.xueyi.gen.service.impl;
 
-import cn.hutool.core.util.CharsetUtil;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
@@ -10,6 +9,7 @@ import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.basic.ServiceConstants;
 import com.xueyi.common.core.constant.gen.GenConstants.OptionField;
 import com.xueyi.common.core.constant.gen.GenConstants.TemplateType;
+import com.xueyi.common.core.utils.core.CharsetUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.result.AjaxResult;

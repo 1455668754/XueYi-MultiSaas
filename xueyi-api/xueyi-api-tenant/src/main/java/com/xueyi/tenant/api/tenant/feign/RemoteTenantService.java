@@ -1,6 +1,6 @@
 package com.xueyi.tenant.api.tenant.feign;
 
-import cn.hutool.json.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.basic.ServiceConstants;
 import com.xueyi.common.core.web.result.R;

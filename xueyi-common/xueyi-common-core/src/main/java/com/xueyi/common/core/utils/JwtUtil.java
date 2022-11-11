@@ -2,7 +2,7 @@ package com.xueyi.common.core.utils;
 
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.basic.TokenConstants;
-import cn.hutool.core.convert.Convert;
+import com.xueyi.common.core.utils.core.ConvertUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -235,6 +235,6 @@ public class JwtUtil {
      * @return 值
      */
     public static String getValue(Claims claims, String key) {
-        return Convert.toStr(claims.get(key), "");
+        return ConvertUtil.toStr(claims.get(key), "");
     }
 }

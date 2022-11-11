@@ -1,9 +1,9 @@
 package com.xueyi.gen.controller;
 
-import cn.hutool.core.convert.Convert;
 import com.alibaba.fastjson2.JSONObject;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.ServiceConstants;
+import com.xueyi.common.core.utils.core.ConvertUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
@@ -130,7 +130,7 @@ public class GenController extends SubBaseController<GenTableQuery, GenTableDto,
     @RequiresPermissions(Auth.GENERATE_GEN_IMPORT)
     @Log(title = "代码生成", businessType = BusinessType.IMPORT)
     public AjaxResult importTableSave(@RequestParam("tables") String tables) {
-        String[] tableNames = Convert.toStrArray(tables);
+        String[] tableNames = ConvertUtil.toStrArray(tables);
         // 查询表信息
         List<GenTableDto> tableList = baseService.selectDbTableListByNames(tableNames);
         baseService.importGenTable(tableList);

@@ -1,6 +1,6 @@
 package com.xueyi.common.core.web.vo;
 
-import cn.hutool.core.collection.CollUtil;
+import com.xueyi.common.core.utils.core.CollUtil;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.xueyi.common.core.web.entity.base.TreeEntity;
 

@@ -1,6 +1,6 @@
 package com.xueyi.gen.util;
 
-import cn.hutool.core.collection.CollUtil;
+import com.xueyi.common.core.utils.core.CollUtil;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.xueyi.common.core.constant.basic.DictConstants;

@@ -1,6 +1,6 @@
 package com.xueyi.system.authority.controller;
 
-import cn.hutool.core.collection.CollUtil;
+import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.context.SecurityContextHolder;
 import com.xueyi.common.core.web.result.R;

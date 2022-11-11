@@ -1,6 +1,6 @@
 package com.xueyi.system.dict.controller;
 
-import cn.hutool.core.collection.CollUtil;
+import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.validate.V_A;

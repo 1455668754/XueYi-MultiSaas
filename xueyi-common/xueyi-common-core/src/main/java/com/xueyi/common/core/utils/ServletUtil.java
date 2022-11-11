@@ -1,8 +1,8 @@
 package com.xueyi.common.core.utils;
 
-import cn.hutool.core.convert.Convert;
 import com.alibaba.fastjson2.JSON;
 import com.xueyi.common.core.constant.basic.HttpConstants;
+import com.xueyi.common.core.utils.core.ConvertUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.result.R;
 import org.springframework.core.io.buffer.DataBuffer;
@@ -44,35 +44,35 @@ public class ServletUtil {
      * 获取String参数
      */
     public static String getParameter(String name, String defaultValue) {
-        return Convert.toStr(getRequest().getParameter(name), defaultValue);
+        return ConvertUtil.toStr(getRequest().getParameter(name), defaultValue);
     }
 
     /**
      * 获取Integer参数
      */
     public static Integer getParameterToInt(String name) {
-        return Convert.toInt(getRequest().getParameter(name));
+        return ConvertUtil.toInt(getRequest().getParameter(name));
     }
 
     /**
      * 获取Integer参数
      */
     public static Integer getParameterToInt(String name, Integer defaultValue) {
-        return Convert.toInt(getRequest().getParameter(name), defaultValue);
+        return ConvertUtil.toInt(getRequest().getParameter(name), defaultValue);
     }
 
     /**
      * 获取Boolean参数
      */
     public static Boolean getParameterToBool(String name) {
-        return Convert.toBool(getRequest().getParameter(name));
+        return ConvertUtil.toBool(getRequest().getParameter(name));
     }
 
     /**
      * 获取Boolean参数
      */
     public static Boolean getParameterToBool(String name, Boolean defaultValue) {
-        return Convert.toBool(getRequest().getParameter(name), defaultValue);
+        return ConvertUtil.toBool(getRequest().getParameter(name), defaultValue);
     }
 
     /**

@@ -1,6 +1,6 @@
 package com.xueyi.tenant.source.manager.impl;
 
-import cn.hutool.core.util.IdUtil;
+import com.xueyi.common.core.utils.core.IdUtil;
 import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.tenant.api.source.domain.dto.TeSourceDto;
 import com.xueyi.tenant.api.source.domain.model.TeSourceConverter;

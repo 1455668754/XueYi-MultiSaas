@@ -1,6 +1,5 @@
 package com.xueyi.common.core.context;
 
-import cn.hutool.core.convert.Convert;
 import com.alibaba.ttl.TransmittableThreadLocal;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.utils.core.ConvertUtil;
@@ -23,7 +22,7 @@ public class SecurityContextHolder {
      * 获取企业Id
      */
     public static Long getEnterpriseId() {
-        return Convert.toLong(get(SecurityConstants.BaseSecurity.ENTERPRISE_ID.getCode()), SecurityConstants.EMPTY_TENANT_ID);
+        return ConvertUtil.toLong(get(SecurityConstants.BaseSecurity.ENTERPRISE_ID.getCode()), SecurityConstants.EMPTY_TENANT_ID);
     }
 
     /**
@@ -65,7 +64,7 @@ public class SecurityContextHolder {
      * 获取用户Id
      */
     public static Long getUserId() {
-        return Convert.toLong(get(SecurityConstants.BaseSecurity.USER_ID.getCode()), SecurityConstants.EMPTY_USER_ID);
+        return ConvertUtil.toLong(get(SecurityConstants.BaseSecurity.USER_ID.getCode()), SecurityConstants.EMPTY_USER_ID);
     }
 
     /**

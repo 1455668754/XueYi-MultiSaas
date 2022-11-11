@@ -1,6 +1,6 @@
 package com.xueyi.job.controller;
 
-import cn.hutool.core.collection.CollUtil;
+import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.HttpConstants;
 import com.xueyi.common.core.constant.job.ScheduleConstants;

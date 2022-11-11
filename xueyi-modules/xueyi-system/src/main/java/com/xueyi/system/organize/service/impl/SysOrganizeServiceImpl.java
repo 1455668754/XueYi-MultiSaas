@@ -1,6 +1,6 @@
 package com.xueyi.system.organize.service.impl;
 
-import cn.hutool.core.collection.CollUtil;
+import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.constant.system.OrganizeConstants;
 import com.xueyi.common.core.utils.TreeUtil;
 import com.xueyi.common.core.utils.core.StrUtil;

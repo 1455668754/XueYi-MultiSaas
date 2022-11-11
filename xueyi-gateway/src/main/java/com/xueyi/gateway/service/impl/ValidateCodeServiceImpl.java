@@ -1,11 +1,11 @@
 package com.xueyi.gateway.service.impl;
 
 import cn.hutool.core.codec.Base64;
-import cn.hutool.core.util.IdUtil;
 import com.google.code.kaptcha.Producer;
 import com.xueyi.common.core.constant.basic.CacheConstants;
 import com.xueyi.common.core.constant.basic.Constants;
 import com.xueyi.common.core.exception.CaptchaException;
+import com.xueyi.common.core.utils.core.IdUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.redis.service.RedisService;

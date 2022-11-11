@@ -1,7 +1,6 @@
 package com.xueyi.auth.form;
 
-import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
+import com.alibaba.fastjson2.JSONObject;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
@@ -60,10 +59,11 @@ public class RegisterBody {
 
     /** 构造租户注册对象 */
     public JSONObject buildJson(){
-        return JSONUtil.createObj()
-                .set("tenant", getTenant())
-                .set("dept", getDept())
-                .set("post", getPost())
-                .set("user", getUser());
+        JSONObject json = new JSONObject();
+        json.put("tenant", getTenant());
+        json.put("dept", getDept());
+        json.put("post", getPost());
+        json.put("user", getUser());
+        return json;
     }
 }
