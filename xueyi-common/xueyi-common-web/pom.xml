@@ -17,6 +17,12 @@
 
     <dependencies>
 
+        <!-- Mysql Connector -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
         <!-- 权限范围 -->
         <dependency>
             <groupId>com.xueyi</groupId>
@@ -27,6 +33,12 @@
         <dependency>
             <groupId>com.xueyi</groupId>
             <artifactId>xueyi-common-datasource</artifactId>
+        </dependency>
+
+        <!-- XueYi Common DataSource -->
+        <dependency>
+            <groupId>com.xueyi</groupId>
+            <artifactId>xueyi-common-seata</artifactId>
         </dependency>
 
     </dependencies>
