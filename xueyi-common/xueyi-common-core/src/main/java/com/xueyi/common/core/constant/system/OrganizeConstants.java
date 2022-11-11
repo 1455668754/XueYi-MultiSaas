@@ -1,5 +1,8 @@
 package com.xueyi.common.core.constant.system;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 /**
  * 组织通用常量
  *
@@ -23,6 +26,8 @@ public class OrganizeConstants {
     public static final int PASSWORD_MAX_LENGTH = 20;
 
     /** 组织树类型 */
+    @Getter
+    @AllArgsConstructor
     public enum OrganizeType {
 
         ENTERPRISE("0", "企业级"),
@@ -33,17 +38,5 @@ public class OrganizeConstants {
         private final String code;
         private final String info;
 
-        OrganizeType(String code, String info) {
-            this.code = code;
-            this.info = info;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
     }
 }

@@ -113,7 +113,7 @@ public class VelocityUtils {
         setMenuVelocityContext(velocityContext, optionsObj);
         // api设置
         setApiVelocityContext(velocityContext, optionsObj);
-        switch (Objects.requireNonNull(GenConstants.TemplateType.getValue(tplCategory))) {
+        switch (GenConstants.TemplateType.getByCode(tplCategory)) {
             case TREE:
                 setTreeVelocityContext(velocityContext, genTable, optionsObj);
                 break;
@@ -416,7 +416,7 @@ public class VelocityUtils {
     public static Map<String, Set<String>> getCoverMap(GenTableDto genTable) {
         Set<String> coverSet = genTable.getSubList().stream().filter(GenTableColumnDto::isCover).map(GenTableColumnDto::getJavaField).collect(Collectors.toSet());
         Set<String> hideSet = genTable.getSubList().stream().filter(GenTableColumnDto::isHide).map(GenTableColumnDto::getJavaField).collect(Collectors.toSet());
-        switch (Objects.requireNonNull(GenConstants.TemplateType.getValue(genTable.getTplCategory()))) {
+        switch (GenConstants.TemplateType.getByCode(genTable.getTplCategory())) {
             case TREE:
                 Set<String> treeSet = new HashSet<>(Arrays.asList(ArrayUtil.addAll(GenConfig.getEntity().getBack().getBase(), GenConfig.getEntity().getBack().getTree())));
                 treeSet.removeAll(coverSet);
@@ -473,7 +473,7 @@ public class VelocityUtils {
      */
     public static Set<String> getFrontHideField(String tplCategory) {
         Set<String> stringSet = new HashSet<>(Arrays.asList(GenConfig.getEntity().getMustHide()));
-        switch (Objects.requireNonNull(GenConstants.TemplateType.getValue(tplCategory))) {
+        switch (GenConstants.TemplateType.getByCode(tplCategory)) {
             case TREE:
                 stringSet.addAll(Arrays.asList(GenConfig.getEntity().getFront().getTree()));
                 stringSet.addAll(Arrays.asList(GenConfig.getEntity().getFront().getBase()));

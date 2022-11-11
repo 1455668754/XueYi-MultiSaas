@@ -1,11 +1,11 @@
 package com.xueyi.gen.util;
 
-import com.xueyi.common.core.utils.core.CollUtil;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.constant.gen.GenConstants;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
+import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.gen.config.GenConfig;
@@ -15,7 +15,6 @@ import org.apache.commons.lang3.RegExUtils;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * 代码生成器 工具类
@@ -153,9 +152,9 @@ public class GenUtils {
         column.setIsCover(false);
 
         // 特殊指定
-        GenConstants.GenField field = GenConstants.GenField.getValue(javaField);
+        GenConstants.GenField field = GenConstants.GenField.getByCode(javaField);
         if (ObjectUtil.isNotNull(field)) {
-            switch (Objects.requireNonNull(field)) {
+            switch (field) {
                 case NAME:
                     column.setQueryType(GenConstants.QueryType.LIKE.getCode());
                     break;
@@ -214,9 +213,9 @@ public class GenUtils {
      */
     public static void basicInitColumn(GenTableColumnDto column) {
         // 校验是否需要覆盖
-        GenConstants.GenField field = GenConstants.GenField.getValue(column.getJavaField());
+        GenConstants.GenField field = GenConstants.GenField.getByCode(column.getJavaField());
         if (ObjectUtil.isNotNull(field)) {
-            switch (Objects.requireNonNull(field)) {
+            switch (field) {
                 case ID:
                     if (!(StrUtil.equals(column.getJavaType(), GenConstants.JavaType.LONG.getCode())
                             && StrUtil.equals(column.getName(), GenConstants.GenField.ID.getKey()))) {

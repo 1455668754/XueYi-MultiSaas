@@ -19,8 +19,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
-import java.util.Objects;
-
 /**
  * 网关鉴权
  *
@@ -70,7 +68,7 @@ public class AuthFilter implements GlobalFilter, Ordered {
         String userType = JwtUtil.getUserType(claims);
         String sourceName = JwtUtil.getSourceName(claims);
 
-        if (TenantConstants.AccountType.ADMIN.isAdmin(accountType) && StrUtil.hasBlank(enterpriseId, enterpriseName, isLessor, userId, userName, userType, sourceName)) {
+        if (TenantConstants.AccountType.isAdmin(accountType) && StrUtil.hasBlank(enterpriseId, enterpriseName, isLessor, userId, userName, userType, sourceName)) {
             return unauthorizedResponse(exchange, "令牌验证失败");
         }
         // 设置用户信息到请求
@@ -110,10 +108,7 @@ public class AuthFilter implements GlobalFilter, Ordered {
      * 获取缓存key
      */
     private String getTokenKey(String token, String accountType) {
-        if (Objects.requireNonNull(TenantConstants.AccountType.getByCode(accountType)) == TenantConstants.AccountType.ADMIN) {
-            return CacheConstants.LoginTokenType.ADMIN.getCode() + token;
-        }
-        return StrUtil.EMPTY;
+        return TenantConstants.AccountType.isAdmin(accountType) ? CacheConstants.LoginTokenType.ADMIN.getCode() + token : StrUtil.EMPTY;
     }
 
     /**

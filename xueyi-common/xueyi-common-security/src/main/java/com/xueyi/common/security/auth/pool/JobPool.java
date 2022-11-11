@@ -1,11 +1,11 @@
-package com.xueyi.common.security.constants;
+package com.xueyi.common.security.auth.pool;
 
 /**
  * 定时任务模块 权限标识常量
  *
  * @author xueyi
  */
-public interface JobConstants {
+public interface JobPool {
 
     /** 定时任务 - 调度任务管理 - 列表 */
     String SCHEDULE_JOB_LIST = "schedule:job:list";

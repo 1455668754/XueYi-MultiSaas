@@ -1,5 +1,8 @@
 package com.xueyi.common.core.constant.basic;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 /**
  * 字典通用常量
  *
@@ -8,6 +11,8 @@ package com.xueyi.common.core.constant.basic;
 public class DictConstants {
 
     /** 字典类型 */
+    @Getter
+    @AllArgsConstructor
     public enum DictType {
 
         SYS_NORMAL_DISABLE("sys_normal_disable", "系统开关列表"),
@@ -19,21 +24,11 @@ public class DictConstants {
         private final String code;
         private final String info;
 
-        DictType(String code, String info) {
-            this.code = code;
-            this.info = info;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
     }
 
     /** 常规：是否列表（Y是 N否） */
+    @Getter
+    @AllArgsConstructor
     public enum DicYesNo {
 
         YES("Y", "是"),
@@ -42,21 +37,11 @@ public class DictConstants {
         private final String code;
         private final String info;
 
-        DicYesNo(String code, String info) {
-            this.code = code;
-            this.info = info;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
     }
 
     /** 常规：显隐列表（0显示 1隐藏） */
+    @Getter
+    @AllArgsConstructor
     public enum DicShowHide {
 
         SHOW("0", "显示"),
@@ -65,21 +50,11 @@ public class DictConstants {
         private final String code;
         private final String info;
 
-        DicShowHide(String code, String info) {
-            this.code = code;
-            this.info = info;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
     }
 
     /** 常规：公共私有列表（0公共 1私有） */
+    @Getter
+    @AllArgsConstructor
     public enum DicCommonPrivate {
 
         COMMON("0", "公共"),
@@ -88,21 +63,11 @@ public class DictConstants {
         private final String code;
         private final String info;
 
-        DicCommonPrivate(String code, String info) {
-            this.code = code;
-            this.info = info;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
     }
 
     /** 常规：状态列表（0正常 1失败） */
+    @Getter
+    @AllArgsConstructor
     public enum DicStatus {
 
         NORMAL("0", "正常"),
@@ -111,17 +76,5 @@ public class DictConstants {
         private final String code;
         private final String info;
 
-        DicStatus(String code, String info) {
-            this.code = code;
-            this.info = info;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
     }
 }

@@ -1,6 +1,5 @@
 package com.xueyi.system.authority.manager.impl;
 
-import com.xueyi.common.core.utils.core.CollUtil;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -8,6 +7,7 @@ import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.constant.basic.SqlConstants;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
+import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.entity.manager.impl.TreeManagerImpl;
@@ -26,7 +26,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.xueyi.common.core.constant.basic.SqlConstants.ANCESTORS_FIND;
@@ -214,7 +217,7 @@ public class SysMenuManagerImpl extends TreeManagerImpl<SysMenuQuery, SysMenuDto
     @Override
     public List<SysMenuDto> getMenuByMenuType(Long moduleId, String menuType) {
         LambdaQueryWrapper<SysMenuPo> queryWrapper = new LambdaQueryWrapper<>();
-        switch (Objects.requireNonNull(AuthorityConstants.MenuType.getValue(menuType))) {
+        switch (AuthorityConstants.MenuType.getByCode(menuType)) {
             case BUTTON:
             case DETAILS:
                 queryWrapper

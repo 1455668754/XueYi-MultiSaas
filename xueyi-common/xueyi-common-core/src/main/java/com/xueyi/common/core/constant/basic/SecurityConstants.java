@@ -1,5 +1,8 @@
 package com.xueyi.common.core.constant.basic;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 /**
  * 安全相关通用常量
  *
@@ -41,6 +44,8 @@ public class SecurityConstants {
     public static final String UPDATE_BY = "update_by";
 
     /** 通用安全常量 */
+    @Getter
+    @AllArgsConstructor
     public enum BaseSecurity {
 
         TOKEN("token", "用户唯一标识"),
@@ -63,21 +68,11 @@ public class SecurityConstants {
         private final String code;
         private final String info;
 
-        BaseSecurity(String code, String info) {
-            this.code = code;
-            this.info = info;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
     }
 
     /** 管理端安全常量 */
+    @Getter
+    @AllArgsConstructor
     public enum AdminSecurity {
 
         DATA_SCOPE("data_scope", "数据权限"),
@@ -88,17 +83,5 @@ public class SecurityConstants {
         private final String code;
         private final String info;
 
-        AdminSecurity(String code, String info) {
-            this.code = code;
-            this.info = info;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
     }
 }

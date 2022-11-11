@@ -22,7 +22,6 @@ import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -78,7 +77,7 @@ public class XueYiDataScopeHandler implements DataPermissionHandler {
         if (ObjectUtil.isNull(scope) || scope.isAdmin()) return where;
         Long userId = scope.getUserId();
         String scopeType = scope.getDataScope();
-        switch (Objects.requireNonNull(AuthorityConstants.DataScope.getValue(scopeType))) {
+        switch (AuthorityConstants.DataScope.getByCode(scopeType)) {
             case ALL:
                 return where;
             case CUSTOM:

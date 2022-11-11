@@ -42,7 +42,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -302,7 +301,7 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableQuery, GenTa
     public void validateEdit(GenTableDto genTable) {
         JSONObject optionsObj = JSON.parseObject(genTable.getOptions());
         checkTclBasic(genTable, optionsObj);
-        switch (Objects.requireNonNull(TemplateType.getValue(genTable.getTplCategory()))) {
+        switch (TemplateType.getByCode(genTable.getTplCategory())) {
             case SUB_BASE:
                 checkTclSub(optionsObj);
                 checkTclBase(genTable, optionsObj);
@@ -394,7 +393,7 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableQuery, GenTa
         GenTableDto table = baseManager.selectByIdExtra(id);
         JSONObject optionsObj = JSON.parseObject(table.getOptions());
         // 设置列信息
-        switch (Objects.requireNonNull(TemplateType.getValue(table.getTplCategory()))) {
+        switch (TemplateType.getByCode(table.getTplCategory())) {
             case SUB_BASE:
                 setSubTable(table, optionsObj);
                 setBaseTable(table, optionsObj);

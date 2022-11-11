@@ -15,7 +15,10 @@ import com.xueyi.system.organize.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -137,7 +140,7 @@ public class SysLoginServiceImpl implements ISysLoginService {
         Set<Long> deptScope = new HashSet<>(), postScope = new HashSet<>(), userScope = new HashSet<>(), customRoleId = new HashSet<>();
         int isCustom = 0, isDept = 0, isDeptAndChild = 0, isPost = 0, isSelf = 0;
         for (SysRoleDto role : roleList) {
-            switch (Objects.requireNonNull(AuthorityConstants.DataScope.getValue(role.getDataScope()))) {
+            switch (AuthorityConstants.DataScope.getByCode(role.getDataScope())) {
                 case CUSTOM:
                     isCustom++;
                     customRoleId.add(role.getId());

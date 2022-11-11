@@ -1,6 +1,11 @@
 package com.xueyi.common.core.constant.basic;
 
+import com.xueyi.common.core.utils.core.EnumUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+import java.util.Objects;
 
 /**
  * 通用常量
@@ -19,6 +24,8 @@ public class BaseConstants {
     public static final Long NONE_ID = -2L;
 
     /** 操作类型 */
+    @Getter
+    @AllArgsConstructor
     public enum Operate {
 
         ADD("add", "新增"),
@@ -32,19 +39,6 @@ public class BaseConstants {
 
         private final String code;
         private final String info;
-
-        Operate(String code, String info) {
-            this.code = code;
-            this.info = info;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
 
         /** 是否为新增 | 强制新增 */
         public boolean isAdd() {
@@ -78,6 +72,8 @@ public class BaseConstants {
     }
 
     /** 查询类型 */
+    @Getter
+    @AllArgsConstructor
     public enum SelectType {
 
         NORMAL("normal", "正常查询"),
@@ -85,19 +81,6 @@ public class BaseConstants {
 
         private final String code;
         private final String info;
-
-        SelectType(String code, String info) {
-            this.code = code;
-            this.info = info;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
 
         /** 是否为正常查询 */
         public boolean isNormal() {
@@ -108,9 +91,12 @@ public class BaseConstants {
         public boolean isExtra() {
             return StrUtil.equalsAny(name(), SelectType.EXTRA.name());
         }
+
     }
 
     /** 字段映射名 */
+    @Getter
+    @AllArgsConstructor
     public enum Entity {
 
         ID("id", "Id"),
@@ -121,21 +107,11 @@ public class BaseConstants {
         private final String code;
         private final String info;
 
-        Entity(String code, String info) {
-            this.code = code;
-            this.info = info;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
     }
 
     /** 状态 */
+    @Getter
+    @AllArgsConstructor
     public enum Status {
 
         NORMAL("0", "正常"),
@@ -145,21 +121,11 @@ public class BaseConstants {
         private final String code;
         private final String info;
 
-        Status(String code, String info) {
-            this.code = code;
-            this.info = info;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
     }
 
     /** 系统默认值 */
+    @Getter
+    @AllArgsConstructor
     public enum Whether {
 
         YES("Y", "是"),
@@ -168,21 +134,11 @@ public class BaseConstants {
         private final String code;
         private final String info;
 
-        Whether(String code, String info) {
-            this.code = code;
-            this.info = info;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
     }
 
     /** 导入类型 */
+    @Getter
+    @AllArgsConstructor
     public enum ImportType {
 
         DEFAULT("Y", "默认 - 新增&&修改"),
@@ -192,26 +148,9 @@ public class BaseConstants {
         private final String code;
         private final String info;
 
-        ImportType(String code, String info) {
-            this.code = code;
-            this.info = info;
-        }
-
         public static ImportType getByCode(String code) {
-            for (ImportType accountType : ImportType.values()) {
-                if (StrUtil.equals(code, accountType.code)) {
-                    return accountType;
-                }
-            }
-            return DEFAULT;
+            return Objects.requireNonNull(EnumUtil.getByCode(ImportType.class, code));
         }
 
-        public String getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
     }
 }

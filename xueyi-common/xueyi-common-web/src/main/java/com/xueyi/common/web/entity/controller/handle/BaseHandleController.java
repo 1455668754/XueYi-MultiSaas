@@ -1,16 +1,16 @@
 package com.xueyi.common.web.entity.controller.handle;
 
-import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
+import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.NumberUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
+import com.xueyi.common.core.utils.core.TypeUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.web.entity.controller.BasisController;
 import com.xueyi.common.web.entity.service.IBaseService;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.List;
 
 /**
@@ -27,37 +27,15 @@ public abstract class BaseHandleController<Q extends BaseEntity, D extends BaseE
     protected IDS baseService;
 
     /** Query泛型的类型 */
-    @SuppressWarnings("unchecked")
-    private final Class<Q> QClass = (Class<Q>) getClazz(NumberUtil.Zero);
+    @Getter
+    private final Class<Q> QClass = TypeUtil.getClazz(getClass().getGenericSuperclass(), NumberUtil.Zero);
 
     /** Dto泛型的类型 */
-    @SuppressWarnings("unchecked")
-    private final Class<D> DClass = (Class<D>) getClazz(NumberUtil.One);
+    @Getter
+    private final Class<D> DClass = TypeUtil.getClazz(getClass().getGenericSuperclass(), NumberUtil.One);
 
     /** 定义节点名称 */
     protected abstract String getNodeName();
-
-    public Class<Q> getQClass() {
-        return QClass;
-    }
-
-    public Class<D> getDClass() {
-        return DClass;
-    }
-
-    /**
-     * 获取class
-     *
-     * @return class
-     */
-    protected Type getClazz(int index) {
-        Type type = this.getClass().getGenericSuperclass();
-        if (type instanceof ParameterizedType) {
-            ParameterizedType pType = (ParameterizedType) type;
-            return pType.getActualTypeArguments()[index];
-        }
-        return null;
-    }
 
     /**
      * 前置校验 （强制）增加/修改

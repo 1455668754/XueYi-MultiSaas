@@ -4,13 +4,13 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.github.pagehelper.Page;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.utils.core.NumberUtil;
+import com.xueyi.common.core.utils.core.TypeUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.core.web.entity.model.BaseConverter;
 import com.xueyi.common.web.entity.mapper.BaseMapper;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.List;
 
@@ -33,34 +33,12 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
     protected CT baseConverter;
 
     /** Dto泛型的类型 */
-    @SuppressWarnings("unchecked")
-    private final Class<D> DClass = (Class<D>) getClazz(NumberUtil.One);
+    @Getter
+    private final Class<D> DClass = TypeUtil.getClazz(getClass().getGenericSuperclass(), NumberUtil.One);
 
     /** Po泛型的类型 */
-    @SuppressWarnings("unchecked")
-    private final Class<P> PClass = (Class<P>) getClazz(NumberUtil.Two);
-
-    public Class<D> getDClass() {
-        return DClass;
-    }
-
-    public Class<P> getPClass() {
-        return PClass;
-    }
-
-    /**
-     * 获取class
-     *
-     * @return class
-     */
-    protected Type getClazz(int index) {
-        Type type = this.getClass().getGenericSuperclass();
-        if (type instanceof ParameterizedType) {
-            ParameterizedType pType = (ParameterizedType) type;
-            return pType.getActualTypeArguments()[index];
-        }
-        return null;
-    }
+    @Getter
+    private final Class<P> PClass = TypeUtil.getClazz(getClass().getGenericSuperclass(), NumberUtil.Two);
 
     /**
      * 类型转换 | 持久化对象 -> 数据传输对象

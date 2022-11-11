@@ -1,5 +1,8 @@
 package com.xueyi.common.core.constant.basic;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 /**
  * 缓存的key通用常量
  *
@@ -12,28 +15,6 @@ public class CacheConstants {
 
     /** 缓存刷新时间，默认120（分钟） */
     public final static long REFRESH_TIME = 120;
-
-    /** 登录缓存类型 */
-    public enum LoginTokenType {
-
-        ADMIN("login_tokens:", "管理端");
-
-        private final String code;
-        private final String info;
-
-        LoginTokenType(String code, String info) {
-            this.code = code;
-            this.info = info;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
-    }
 
     /** 权限缓存前缀 */
     public final static String LOGIN_TOKEN_KEY = "login_tokens:";
@@ -49,5 +30,17 @@ public class CacheConstants {
 
     /** 参数管理 cache key */
     public static final String SYS_CONFIG_KEY = "system:config";
+
+    /** 登录缓存类型 */
+    @Getter
+    @AllArgsConstructor
+    public enum LoginTokenType {
+
+        ADMIN("login_tokens:", "管理端");
+
+        private final String code;
+        private final String info;
+
+    }
 
 }

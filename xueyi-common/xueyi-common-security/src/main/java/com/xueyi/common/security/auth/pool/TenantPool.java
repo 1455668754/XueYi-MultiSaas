@@ -1,11 +1,11 @@
-package com.xueyi.common.security.constants;
+package com.xueyi.common.security.auth.pool;
 
 /**
  * 租户模块 权限标识常量
  *
  * @author xueyi
  */
-public interface TenantConstants {
+public interface TenantPool {
 
     /** 租户 - 租户管理 - 列表 */
     String TE_TENANT_LIST = "tenant:tenant:list";
@@ -59,4 +59,5 @@ public interface TenantConstants {
     String TE_SOURCE_IMPORT = "tenant:source:import";
     /** 租户 - 数据源管理 - 导出 */
     String TE_SOURCE_EXPORT = "tenant:source:export";
+
 }

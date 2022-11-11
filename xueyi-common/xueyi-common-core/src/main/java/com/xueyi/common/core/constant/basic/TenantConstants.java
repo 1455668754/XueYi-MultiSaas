@@ -1,6 +1,11 @@
 package com.xueyi.common.core.constant.basic;
 
+import com.xueyi.common.core.utils.core.EnumUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+import java.util.Objects;
 
 /**
  * 租户通用常量
@@ -32,6 +37,8 @@ public class TenantConstants {
     public static final String SOURCE = "#sourceName";
 
     /** 数据源 */
+    @Getter
+    @AllArgsConstructor
     public enum Source {
 
         MASTER("master", "默认数据源"), SLAVE("slave", "从数据源"), REGISTER("slave", "注册数据源");
@@ -39,21 +46,11 @@ public class TenantConstants {
         private final String code;
         private final String info;
 
-        Source(String code, String info) {
-            this.code = code;
-            this.info = info;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
     }
 
     /** 源同步策略类型 */
+    @Getter
+    @AllArgsConstructor
     public enum SyncType {
 
         UNCHANGED("0", "不变"), REFRESH("1", "刷新"), ADD("2", "新增"), DELETE("3", "删除");
@@ -61,21 +58,11 @@ public class TenantConstants {
         private final String code;
         private final String info;
 
-        SyncType(String code, String info) {
-            this.code = code;
-            this.info = info;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
     }
 
     /** 用户类型 */
+    @Getter
+    @AllArgsConstructor
     public enum AccountType {
 
         ADMIN("admin", "后台用户"),
@@ -84,36 +71,29 @@ public class TenantConstants {
         private final String code;
         private final String info;
 
-        AccountType(String code, String info) {
-            this.code = code;
-            this.info = info;
-        }
-
         public static AccountType getByCode(String code) {
-            for (AccountType accountType : AccountType.values()) {
-                if (StrUtil.equals(code, accountType.code)) {
-                    return accountType;
-                }
-            }
-            return null;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
+            return Objects.requireNonNull(EnumUtil.getByCode(AccountType.class, code));
         }
 
         /** 管理端用户 */
-        public boolean isAdmin(String code) {
-            return StrUtil.equals(code, AccountType.ADMIN.code);
+        public static boolean isAdmin(String code) {
+            return StrUtil.equals(code, ADMIN.code);
+        }
+
+        /** 管理端用户 */
+        public boolean isAdmin() {
+            return StrUtil.equals(code, ADMIN.code);
         }
 
         /** 会员端用户 */
-        public boolean isMember(String code) {
-            return StrUtil.equalsAny(name(), AccountType.MEMBER.code);
+        public static boolean isMember(String code) {
+            return StrUtil.equals(code, MEMBER.code);
+        }
+
+        /** 会员端用户 */
+        public boolean isMember() {
+            return StrUtil.equals(code, MEMBER.code);
         }
     }
+
 }

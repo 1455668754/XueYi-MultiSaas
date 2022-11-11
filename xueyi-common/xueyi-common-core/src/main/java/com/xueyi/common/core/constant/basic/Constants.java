@@ -2,7 +2,7 @@ package com.xueyi.common.core.constant.basic;
 
 /**
  * 通用常量
- * 
+ *
  * @author xueyi
  */
 public class Constants {

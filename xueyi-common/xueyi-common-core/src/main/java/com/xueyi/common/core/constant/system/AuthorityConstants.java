@@ -1,7 +1,11 @@
 package com.xueyi.common.core.constant.system;
 
 import com.xueyi.common.core.constant.basic.BaseConstants;
-import com.xueyi.common.core.utils.core.StrUtil;
+import com.xueyi.common.core.utils.core.EnumUtil;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+import java.util.Objects;
 
 /**
  * 权限通用常量
@@ -17,6 +21,8 @@ public class AuthorityConstants {
     public static final Long MODULE_DEFAULT_NODE = 1L;
 
     /** 用户类型 */
+    @Getter
+    @AllArgsConstructor
     public enum UserType {
 
         NORMAL("01", "普通用户"),
@@ -25,21 +31,11 @@ public class AuthorityConstants {
         private final String code;
         private final String info;
 
-        UserType(String code, String info) {
-            this.code = code;
-            this.info = info;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
     }
 
     /** 租户类型 */
+    @Getter
+    @AllArgsConstructor
     public enum TenantType {
 
         NORMAL("N", "普通租户"),
@@ -48,58 +44,33 @@ public class AuthorityConstants {
         private final String code;
         private final String info;
 
-        TenantType(String code, String info) {
-            this.code = code;
-            this.info = info;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
     }
 
     /** 数据范围 */
+    @Getter
+    @AllArgsConstructor
     public enum DataScope {
 
-        NONE("0","无数据权限"),
-        ALL("1","全部数据权限"),
-        CUSTOM("2","自定义数据权限"),
-        DEPT("3","本部门数据权限"),
-        DEPT_AND_CHILD("4","本部门及以下数据权限"),
-        POST("5","本岗位数据权限"),
-        SELF("6","仅本人数据权限");
+        NONE("0", "无数据权限"),
+        ALL("1", "全部数据权限"),
+        CUSTOM("2", "自定义数据权限"),
+        DEPT("3", "本部门数据权限"),
+        DEPT_AND_CHILD("4", "本部门及以下数据权限"),
+        POST("5", "本岗位数据权限"),
+        SELF("6", "仅本人数据权限");
 
         private final String code;
         private final String info;
 
-        DataScope(String code, String info) {
-            this.code = code;
-            this.info = info;
+        public static DataScope getByCode(String code) {
+            return Objects.requireNonNull(EnumUtil.getByCode(DataScope.class, code));
         }
 
-        public String getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
-
-        public static DataScope getValue(String code){
-            for(DataScope scope : values()){
-                if(StrUtil.equals(code, scope.getCode())){
-                    return scope;
-                }
-            }
-            return null;
-        }
     }
 
     /** 页面类型 */
+    @Getter
+    @AllArgsConstructor
     public enum FrameType {
 
         NORMAL("0", "正常"),
@@ -109,21 +80,11 @@ public class AuthorityConstants {
         private final String code;
         private final String info;
 
-        FrameType(String code, String info) {
-            this.code = code;
-            this.info = info;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
     }
 
     /** 菜单类型 */
+    @Getter
+    @AllArgsConstructor
     public enum MenuType {
 
         DIR("M", "目录"),
@@ -134,28 +95,15 @@ public class AuthorityConstants {
         private final String code;
         private final String info;
 
-        MenuType(String code, String info) {
-            this.code = code;
-            this.info = info;
+        public static MenuType getByCode(String code) {
+            return Objects.requireNonNull(EnumUtil.getByCode(MenuType.class, code));
         }
 
-        public String getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
-
-        public static MenuType getValue(String code) {
-            for (MenuType one : values())
-                if (StrUtil.equals(code, one.getCode()))
-                    return one;
-            return null;
-        }
     }
 
     /** 权限类型 */
+    @Getter
+    @AllArgsConstructor
     public enum AuthorityType {
 
         MODULE("0", "模块"),
@@ -164,17 +112,5 @@ public class AuthorityConstants {
         private final String code;
         private final String info;
 
-        AuthorityType(String code, String info) {
-            this.code = code;
-            this.info = info;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
     }
 }

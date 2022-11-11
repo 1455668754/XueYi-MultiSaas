@@ -1,5 +1,8 @@
 package com.xueyi.common.core.constant.basic;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 /**
  * sql 通用常量
  *
@@ -17,28 +20,18 @@ public class SqlConstants {
     public static final String ANCESTORS_FIND = "find_in_set({0}, ancestors)";
 
     /** 数据库字段映射 */
+    @Getter
+    @AllArgsConstructor
     public enum Entity {
 
         ID("id", "Id字段"),
         PARENT_ID("parent_id", "父级Id字段"),
         STATUS("status", "状态字段"),
-        SORT("sort","排序字段"),
-        ANCESTORS("ancestors","祖籍字段");
+        SORT("sort", "排序字段"),
+        ANCESTORS("ancestors", "祖籍字段");
 
         private final String code;
         private final String info;
 
-        Entity(String code, String info) {
-            this.code = code;
-            this.info = info;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
     }
 }

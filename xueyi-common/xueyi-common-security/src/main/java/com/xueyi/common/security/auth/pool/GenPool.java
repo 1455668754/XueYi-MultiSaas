@@ -1,11 +1,11 @@
-package com.xueyi.common.security.constants;
+package com.xueyi.common.security.auth.pool;
 
 /**
  * 代码生成模块 权限标识常量
  *
  * @author xueyi
  */
-public interface GenConstants {
+public interface GenPool {
 
     /** 代码生成 - 代码生成管理 - 列表 */
     String GENERATE_GEN_LIST = "generate:gen:list";

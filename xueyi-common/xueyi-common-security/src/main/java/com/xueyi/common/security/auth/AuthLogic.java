@@ -52,7 +52,7 @@ public class AuthLogic {
      * 会话注销，根据指定Token
      */
     public void logoutByToken(String token, TenantConstants.AccountType accountType) {
-        if (accountType == TenantConstants.AccountType.ADMIN) {
+        if (accountType.isAdmin()) {
             tokenService.delLogin(token);
         }
     }
@@ -112,7 +112,7 @@ public class AuthLogic {
      * @param token token
      */
     public void verifyLoginUserExpire(String token, TenantConstants.AccountType accountType) {
-        if (accountType == TenantConstants.AccountType.ADMIN) {
+        if (accountType.isAdmin()) {
             tokenService.verifyToken(token);
         }
     }

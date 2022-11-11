@@ -1,6 +1,10 @@
 package com.xueyi.common.core.constant.gen;
 
-import com.xueyi.common.core.utils.core.StrUtil;
+import com.xueyi.common.core.utils.core.EnumUtil;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+import java.util.Objects;
 
 /**
  * 代码生成通用常量
@@ -13,24 +17,22 @@ public class GenConstants {
     public static final String DICT_NAME = "Dic{}Options";
 
     /** 校验内容 */
+    @Getter
+    @AllArgsConstructor
     public enum GenCheck {
 
-        NORMAL_DISABLE("（0正常 1停用）"),
-        SHOW_HIDE("（0显示 1隐藏）"),
-        YES_NO("（Y是 N否）");
+        NORMAL_DISABLE("0", "（0正常 1停用）"),
+        SHOW_HIDE("1", "（0显示 1隐藏）"),
+        YES_NO("2", "（Y是 N否）");
 
+        private final String code;
         private final String info;
 
-        GenCheck(String info) {
-            this.info = info;
-        }
-
-        public String getInfo() {
-            return info;
-        }
     }
 
     /** 生成字段 */
+    @Getter
+    @AllArgsConstructor
     public enum GenField {
 
         ID("id", "主键字段", "id"),
@@ -51,33 +53,15 @@ public class GenConstants {
         private final String info;
         private final String key;
 
-        GenField(String code, String info, String key) {
-            this.code = code;
-            this.info = info;
-            this.key = key;
+        public static GenField getByCode(String code) {
+            return EnumUtil.getByCode(GenField.class, code);
         }
 
-        public static GenField getValue(String code) {
-            for (GenField one : values())
-                if (StrUtil.equals(code, one.getCode()))
-                    return one;
-            return null;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
-
-        public String getKey() {
-            return key;
-        }
     }
 
     /** 其它生成选项字段 */
+    @Getter
+    @AllArgsConstructor
     public enum OptionField {
         PARENT_MODULE_ID("parentModuleId", "归属模块Id字段", null),
         PARENT_MENU_ID("parentMenuId", "归属菜单Id字段", null),
@@ -115,33 +99,11 @@ public class GenConstants {
         private final String info;
         private final String key;
 
-        OptionField(String code, String info, String key) {
-            this.code = code;
-            this.info = info;
-            this.key = key;
-        }
-
-        public static OptionField getValue(String code) {
-            for (OptionField one : values())
-                if (StrUtil.equals(code, one.getCode()))
-                    return one;
-            return null;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
-
-        public String getKey() {
-            return key;
-        }
     }
 
     /** 表模板类型 */
+    @Getter
+    @AllArgsConstructor
     public enum TemplateType {
 
         BASE("base", "单表"),
@@ -153,28 +115,15 @@ public class GenConstants {
         private final String code;
         private final String info;
 
-        TemplateType(String code, String info) {
-            this.code = code;
-            this.info = info;
+        public static TemplateType getByCode(String code) {
+            return Objects.requireNonNull(EnumUtil.getByCode(TemplateType.class, code));
         }
 
-        public static TemplateType getValue(String code) {
-            for (TemplateType one : values())
-                if (StrUtil.equals(code, one.getCode()))
-                    return one;
-            return null;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
     }
 
     /** 字段Java类型 */
+    @Getter
+    @AllArgsConstructor
     public enum JavaType {
 
         STRING("String", "String"),
@@ -188,21 +137,11 @@ public class GenConstants {
         private final String code;
         private final String info;
 
-        JavaType(String code, String info) {
-            this.code = code;
-            this.info = info;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
     }
 
     /** 字段查询类型 */
+    @Getter
+    @AllArgsConstructor
     public enum QueryType {
 
         EQ("eq", "="),
@@ -223,21 +162,11 @@ public class GenConstants {
         private final String code;
         private final String info;
 
-        QueryType(String code, String info) {
-            this.code = code;
-            this.info = info;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
     }
 
     /** 字段显示类型 */
+    @Getter
+    @AllArgsConstructor
     public enum DisplayType {
 
         INPUT("Input", "文本框"),
@@ -259,21 +188,11 @@ public class GenConstants {
         private final String code;
         private final String info;
 
-        DisplayType(String code, String info) {
-            this.code = code;
-            this.info = info;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
     }
 
     /** 源策略模式 */
+    @Getter
+    @AllArgsConstructor
     public enum SourceMode {
 
         ISOLATE("Isolate", "策略源"),
@@ -282,18 +201,6 @@ public class GenConstants {
         private final String code;
         private final String info;
 
-        SourceMode(String code, String info) {
-            this.code = code;
-            this.info = info;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
     }
 
 }

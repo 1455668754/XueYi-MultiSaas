@@ -1,5 +1,8 @@
 package com.xueyi.common.core.constant.basic;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 /**
  * 网络协议通用常量
  *
@@ -14,6 +17,8 @@ public class HttpConstants {
     public static final int WS_PORT = 10;
 
     /** 字符集 */
+    @Getter
+    @AllArgsConstructor
     public enum Character {
 
         UTF8("UTF-8", "UTF-8"),
@@ -22,22 +27,12 @@ public class HttpConstants {
         private final String code;
         private final String info;
 
-        Character(String code, String info) {
-            this.code = code;
-            this.info = info;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
     }
 
     /** 返回类型 */
-    public enum ResultType{
+    @Getter
+    @AllArgsConstructor
+    public enum ResultType {
         SUCCESS("success", "操作成功"),
         ERROR("error", "操作失败"),
         WARNING("warning", "操作异常");
@@ -45,21 +40,11 @@ public class HttpConstants {
         private final String code;
         private final String info;
 
-        ResultType(String code, String info) {
-            this.code = code;
-            this.info = info;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
     }
 
     /** 请求类型 */
+    @Getter
+    @AllArgsConstructor
     public enum Type {
 
         LOOKUP_RMI("rmi:", "RMI 远程方法调用"),
@@ -74,21 +59,11 @@ public class HttpConstants {
         private final String code;
         private final String info;
 
-        Type(String code, String info) {
-            this.code = code;
-            this.info = info;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
     }
 
     /** 返回状态码 */
+    @Getter
+    @AllArgsConstructor
     public enum Status {
 
         SUCCESS(200, "操作成功"),
@@ -112,17 +87,5 @@ public class HttpConstants {
         private final int code;
         private final String info;
 
-        Status(int code, String info) {
-            this.code = code;
-            this.info = info;
-        }
-
-        public int getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
     }
 }

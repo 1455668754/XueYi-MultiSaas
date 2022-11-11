@@ -3,6 +3,7 @@ package com.xueyi.common.web.entity.manager.impl.handle;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.xueyi.common.core.utils.core.NumberUtil;
+import com.xueyi.common.core.utils.core.TypeUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.core.web.entity.base.SubTreeEntity;
 import com.xueyi.common.core.web.entity.model.BaseConverter;
@@ -10,6 +11,7 @@ import com.xueyi.common.web.entity.manager.impl.SubTreeManagerImpl;
 import com.xueyi.common.web.entity.manager.impl.TreeManagerImpl;
 import com.xueyi.common.web.entity.mapper.BaseMapper;
 import com.xueyi.common.web.entity.mapper.SubTreeMapper;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
@@ -36,16 +38,8 @@ public abstract class SubTreeHandleManagerImpl<Q extends P, D extends P, P exten
     protected SCT subConverter;
 
     /** SubDto泛型的类型 */
-    @SuppressWarnings("unchecked")
-    private Class<SD> SDClass = (Class<SD>) getClazz(NumberUtil.Five);
-
-    public Class<SD> getSDClass() {
-        return SDClass;
-    }
-
-    public void setSDClass(Class<SD> SDClass) {
-        this.SDClass = SDClass;
-    }
+    @Getter
+    private final Class<SD> SDClass = TypeUtil.getClazz(getClass().getGenericSuperclass(), NumberUtil.Five);
 
     /**
      * 查询 设置主子表中子表外键值

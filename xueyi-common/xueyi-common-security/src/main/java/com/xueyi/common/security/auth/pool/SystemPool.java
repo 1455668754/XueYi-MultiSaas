@@ -1,11 +1,11 @@
-package com.xueyi.common.security.constants;
+package com.xueyi.common.security.auth.pool;
 
 /**
  * 系统模块 权限标识常量
  *
  * @author xueyi
  */
-public interface SystemConstants {
+public interface SystemPool {
 
     /** 系统 - 部门管理 - 列表 */
     String SYS_DEPT_LIST = "organize:dept:list";

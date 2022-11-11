@@ -1,10 +1,14 @@
 package com.xueyi.common.core.constant.job;
 
-import com.xueyi.common.core.utils.core.StrUtil;
+import com.xueyi.common.core.utils.core.EnumUtil;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+import java.util.Objects;
 
 /**
  * 任务调度通用常量
- * 
+ *
  * @author xueyi
  */
 public class ScheduleConstants {
@@ -16,13 +20,15 @@ public class ScheduleConstants {
     public static final String TASK_PROPERTIES = "TASK_PROPERTIES";
 
     /** 定时任务白名单配置（仅允许访问的包名，如其他需要可以自行添加） */
-    public static final String[] JOB_WHITELIST_STR = { "com.xueyi" };
+    public static final String[] JOB_WHITELIST_STR = {"com.xueyi"};
 
     /** 定时任务违规的字符 */
     public static final String[] JOB_ERROR_STR = {"java.net.URL", "javax.naming.InitialContext", "org.yaml.snakeyaml",
-            "org.springframework", "org.apache", "com.xueyi.common.core.utils.file" };
+            "org.springframework", "org.apache", "com.xueyi.common.core.utils.file"};
 
     /** 任务状态 */
+    @Getter
+    @AllArgsConstructor
     public enum Status {
 
         NORMAL("0", "正常"), PAUSE("1", "暂停");
@@ -30,21 +36,11 @@ public class ScheduleConstants {
         private final String code;
         private final String info;
 
-        Status(String code, String info) {
-            this.code = code;
-            this.info = info;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
     }
 
     /** 错误策略 */
+    @Getter
+    @AllArgsConstructor
     public enum Misfire {
 
         DEFAULT("0", "默认"),
@@ -55,26 +51,9 @@ public class ScheduleConstants {
         private final String code;
         private final String info;
 
-        Misfire(String code, String info) {
-            this.code = code;
-            this.info = info;
+        public static Misfire getByCode(String code) {
+            return Objects.requireNonNull(EnumUtil.getByCode(Misfire.class, code));
         }
 
-        public String getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
-
-        public static Misfire getValue(String code){
-            for(Misfire misfire : values()){
-                if(StrUtil.equals(code, misfire.getCode())){
-                    return misfire;
-                }
-            }
-            return null;
-        }
     }
 }

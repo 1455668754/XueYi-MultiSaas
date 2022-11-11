@@ -11,8 +11,6 @@ import com.xueyi.job.api.domain.dto.SysJobDto;
 import com.xueyi.job.api.utils.CronUtils;
 import org.quartz.*;
 
-import java.util.Objects;
-
 /**
  * 定时任务工具类
  *
@@ -87,7 +85,7 @@ public class ScheduleUtils {
      * 设置定时任务策略
      */
     public static CronScheduleBuilder handleCronScheduleMisfirePolicy(SysJobDto job, CronScheduleBuilder cb) throws TaskException {
-        switch (Objects.requireNonNull(ScheduleConstants.Misfire.getValue(job.getMisfirePolicy()))) {
+        switch (ScheduleConstants.Misfire.getByCode(job.getMisfirePolicy())) {
             case DEFAULT:
                 return cb;
             case IGNORE_MISFIRES:

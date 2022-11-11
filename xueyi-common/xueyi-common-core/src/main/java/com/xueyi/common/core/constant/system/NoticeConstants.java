@@ -1,5 +1,8 @@
 package com.xueyi.common.core.constant.system;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 /**
  * 通知通用常量
  *
@@ -8,6 +11,8 @@ package com.xueyi.common.core.constant.system;
 public class NoticeConstants {
 
     /** 通知状态 */
+    @Getter
+    @AllArgsConstructor
     public enum NoticeStatus {
 
         READY("0", "待发送"),
@@ -19,17 +24,5 @@ public class NoticeConstants {
         private final String code;
         private final String info;
 
-        NoticeStatus(String code, String info) {
-            this.code = code;
-            this.info = info;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
     }
 }
