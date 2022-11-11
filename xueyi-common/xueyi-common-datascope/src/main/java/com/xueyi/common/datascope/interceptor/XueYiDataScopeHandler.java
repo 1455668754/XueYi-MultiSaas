@@ -3,6 +3,7 @@ package com.xueyi.common.datascope.interceptor;
 import com.baomidou.mybatisplus.extension.plugins.handler.DataPermissionHandler;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.core.utils.core.ArrayUtil;
+import com.xueyi.common.core.utils.core.NumberUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.datascope.annotation.DataScope;
@@ -66,10 +67,10 @@ public class XueYiDataScopeHandler implements DataPermissionHandler {
         DataScope dataScope = threadLocal.get();
         if (ObjectUtil.isNull(dataScope) || (StrUtil.isAllEmpty(dataScope.deptAlias(), dataScope.postAlias(), dataScope.userAlias())))
             return where;
-        List<String> split = StrUtil.split(mappedStatementId, '.');
+        List<String> split = StrUtil.split(mappedStatementId, StrUtil.DOT);
         int index = split.size();
-        String method = split.get(index - 1);
-        String mapper = split.get(index - 2);
+        String method = split.get(index - NumberUtil.One);
+        String mapper = split.get(index - NumberUtil.Two);
         if (!((ArrayUtil.isEmpty(dataScope.mapperScope()) || ArrayUtil.contains(dataScope.mapperScope(), mapper)) && (ArrayUtil.isEmpty(dataScope.methodScope()) || ArrayUtil.contains(dataScope.methodScope(), method))))
             return where;
         if (where == null) where = new HexValue(" 1 = 1 ");
