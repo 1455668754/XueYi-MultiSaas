@@ -1,5 +1,6 @@
 package com.xueyi.common.redis.service;
 
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundSetOperations;
 import org.springframework.data.redis.core.HashOperations;
@@ -7,7 +8,10 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -15,8 +19,8 @@ import java.util.concurrent.TimeUnit;
  *
  * @author xueyi
  **/
-@SuppressWarnings(value = {"unchecked", "rawtypes"})
 @Component
+@SuppressWarnings(value = {"unchecked", "rawtypes"})
 public class RedisService {
 
     @Autowired
@@ -112,7 +116,7 @@ public class RedisService {
      * 删除集合对象
      *
      * @param collection 多个对象
-     * @return  结果
+     * @return 结果
      */
     public Long deleteObject(final Collection collection) {
         return redisTemplate.delete(collection);
@@ -127,6 +131,20 @@ public class RedisService {
      */
     public <T> long setCacheList(final String key, final List<T> dataList) {
         Long count = redisTemplate.opsForList().rightPushAll(key, dataList);
+        return count == null ? 0 : count;
+    }
+
+    /**
+     * 缓存List数据
+     *
+     * @param key      Redis键
+     * @param dataList 待缓存的List数据
+     * @return 缓存的对象
+     */
+    public <T> long setCacheList(final String key, final List<T> dataList, final long timeout, final TimeUnit unit) {
+        Long count = redisTemplate.opsForList().rightPushAll(key, dataList);
+        if (ObjectUtil.isNotNull(count))
+            expire(key, timeout, unit);
         return count == null ? 0 : count;
     }
 
@@ -224,11 +242,22 @@ public class RedisService {
     /**
      * 删除Hash中的某条数据
      *
-     * @param key Redis键
+     * @param key  Redis键
      * @param hKey Hash键
      * @return 是否成功
      */
     public boolean deleteCacheMapValue(final String key, final String hKey) {
+        return redisTemplate.opsForHash().delete(key, hKey) > 0;
+    }
+
+    /**
+     * 删除Hash中的某条数据
+     *
+     * @param key  Redis键
+     * @param hKey Hash键
+     * @return 是否成功
+     */
+    public boolean deleteCacheMapValue(final String key, final Object[] hKey) {
         return redisTemplate.opsForHash().delete(key, hKey) > 0;
     }
 
@@ -241,4 +270,5 @@ public class RedisService {
     public Collection<String> keys(final String pattern) {
         return redisTemplate.keys(pattern);
     }
+
 }
