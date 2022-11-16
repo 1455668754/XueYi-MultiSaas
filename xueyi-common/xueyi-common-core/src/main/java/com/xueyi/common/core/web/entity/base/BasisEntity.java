@@ -3,6 +3,7 @@ package com.xueyi.common.core.web.entity.base;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.xueyi.common.core.constant.basic.BaseConstants;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.web.validate.V_E;
 import lombok.Data;
 
@@ -37,4 +38,7 @@ public class BasisEntity implements Serializable {
     @TableField(exist = false)
     protected Map<String, Object> params;
 
+    public String getIdStr() {
+        return ObjectUtil.isNotNull(id) ? id.toString() : null;
+    }
 }

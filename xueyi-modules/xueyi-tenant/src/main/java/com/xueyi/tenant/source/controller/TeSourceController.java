@@ -1,7 +1,7 @@
 package com.xueyi.tenant.source.controller;
 
-import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
+import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.validate.V_A;

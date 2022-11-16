@@ -1,7 +1,7 @@
 package com.xueyi.common.web.entity.service.impl;
 
-import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.web.entity.manager.IBaseManager;
@@ -96,7 +96,9 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG ext
      */
     @Override
     public int insert(D d) {
-        return baseManager.insert(d);
+        int row = baseManager.insert(d);
+        addHandle(row, d, null);
+        return row;
     }
 
     /**
@@ -106,7 +108,9 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG ext
      */
     @Override
     public int insertBatch(Collection<D> entityList) {
-        return baseManager.insertBatch(entityList);
+        int rows = baseManager.insertBatch(entityList);
+        addHandle(rows, null, entityList);
+        return rows;
     }
 
     /**
@@ -117,7 +121,9 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG ext
      */
     @Override
     public int update(D d) {
-        return baseManager.update(d);
+        int row = baseManager.update(d);
+        editHandle(row, d, null);
+        return row;
     }
 
     /**
@@ -127,7 +133,9 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG ext
      */
     @Override
     public int updateBatch(Collection<D> entityList) {
-        return baseManager.updateBatch(entityList);
+        int rows = baseManager.updateBatch(entityList);
+        editHandle(rows, null, entityList);
+        return rows;
     }
 
     /**
@@ -139,7 +147,9 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG ext
      */
     @Override
     public int updateStatus(Serializable id, String status) {
-        return baseManager.updateStatus(id, status);
+        int row = baseManager.updateStatus(id, status);
+        editStatusHandle(row, id);
+        return row;
     }
 
     /**
@@ -150,7 +160,9 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG ext
      */
     @Override
     public int deleteById(Serializable id) {
-        return baseManager.deleteById(id);
+        int row = baseManager.deleteById(id);
+        deleteHandle(row, id);
+        return row;
     }
 
     /**
@@ -161,7 +173,9 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG ext
      */
     @Override
     public int deleteByIds(Collection<? extends Serializable> idList) {
-        return baseManager.deleteByIds(idList);
+        int row = baseManager.deleteByIds(idList);
+        deleteHandle(row, idList.toArray());
+        return row;
     }
 
     /**

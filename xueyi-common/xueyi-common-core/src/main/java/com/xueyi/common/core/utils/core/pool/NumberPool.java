@@ -13,4 +13,8 @@ public interface NumberPool {
     int Three = 3;
     int Four = 4;
     int Five = 5;
+    int Six = 6;
+    int Seven = 7;
+    int Eight = 8;
+    int Nine = 9;
 }
