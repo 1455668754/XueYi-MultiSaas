@@ -139,16 +139,15 @@ public class BaseManagerImpl<Q extends P, D extends P, P extends BaseEntity, PM 
     /**
      * 修改状态
      *
-     * @param id     Id
-     * @param status 状态
+     * @param d 数据对象
      * @return 结果
      */
     @Override
-    public int updateStatus(Serializable id, String status) {
+    public int updateStatus(D d) {
         return baseMapper.update(null,
                 Wrappers.<P>update().lambda()
-                        .set(P::getStatus, status)
-                        .eq(P::getId, id));
+                        .set(P::getStatus, d.getStatus())
+                        .eq(P::getId, d.getId()));
     }
 
     /**

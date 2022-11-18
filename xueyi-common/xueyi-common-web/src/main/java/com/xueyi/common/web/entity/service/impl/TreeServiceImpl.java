@@ -1,9 +1,9 @@
 package com.xueyi.common.web.entity.service.impl;
 
-import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.utils.TreeUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.web.entity.base.TreeEntity;
 import com.xueyi.common.core.web.vo.TreeSelect;
 import com.xueyi.common.web.entity.manager.ITreeManager;
@@ -72,14 +72,14 @@ public class TreeServiceImpl<Q extends TreeEntity<D>, D extends TreeEntity<D>, I
      * @return 结果
      * @see #AUHandleParentStatusCheck(Serializable, String) 树型 检查父级状态
      * @see #UHandleAncestorsCheck(TreeEntity) 树型 检验祖籍是否变更
-     * @see #UUSChildrenStatusCheck(Serializable, String) 树型 检查子节点状态
+     * @see #UUSChildrenStatusCheck 树型 检查子节点状态
      */
     @Override
     @DSTransactional
     public int update(D d) {
         AUHandleParentStatusCheck(d.getParentId(), d.getStatus());
         UHandleAncestorsCheck(d);
-        UUSChildrenStatusCheck(d.getId(), d.getStatus());
+        UUSChildrenStatusCheck(d);
         return baseManager.update(d);
     }
 
@@ -87,18 +87,17 @@ public class TreeServiceImpl<Q extends TreeEntity<D>, D extends TreeEntity<D>, I
      * 修改数据对象状态
      * 同步停用子节点 || 启用父节点
      *
-     * @param id     Id
-     * @param status 状态
+     * @param d 数据对象
      * @return 结果
-     * @see #USHandelParentStatusCheck(Serializable, String) 树型 检查父级状态
-     * @see #UUSChildrenStatusCheck(Serializable, String) 树型 检查子节点状态
+     * @see #USHandelParentStatusCheck 树型 检查父级状态
+     * @see #UUSChildrenStatusCheck 树型 检查子节点状态
      */
     @Override
     @DSTransactional
-    public int updateStatus(Serializable id, String status) {
-        USHandelParentStatusCheck(id, status);
-        UUSChildrenStatusCheck(id, status);
-        return baseManager.updateStatus(id, status);
+    public int updateStatus(D d) {
+        USHandelParentStatusCheck(d);
+        UUSChildrenStatusCheck(d);
+        return baseManager.updateStatus(d);
     }
 
     /**

@@ -5,6 +5,7 @@ import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.utils.poi.ExcelUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.core.web.result.AjaxResult;
+import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.web.entity.controller.handle.BaseHandleController;
@@ -115,15 +116,7 @@ public abstract class BaseController<Q extends BaseEntity, D extends BaseEntity,
      */
     public AjaxResult editStatus(@RequestBody D d) {
         ESHandleValidated(BaseConstants.Operate.EDIT_STATUS, d);
-        return toAjax(baseService.updateStatus(d.getId(), d.getStatus()));
-    }
-
-    /**
-     * 强制修改状态
-     */
-    public AjaxResult editStatusForce(@RequestBody D d) {
-        ESHandleValidated(BaseConstants.Operate.EDIT_STATUS_FORCE, d);
-        return toAjax(baseService.updateStatus(d.getId(), d.getStatus()));
+        return toAjax(baseService.updateStatus(d));
     }
 
     /**
@@ -159,5 +152,21 @@ public abstract class BaseController<Q extends BaseEntity, D extends BaseEntity,
         } catch (Exception ignored) {
         }
         return error();
+    }
+
+    /**
+     * 更新缓存数据 | 内部调用
+     */
+    public R<Boolean> refreshCacheInner() {
+        baseService.refreshCache();
+        return R.ok();
+    }
+
+    /**
+     * 更新缓存数据
+     */
+    public AjaxResult refreshCache() {
+        baseService.refreshCache();
+        return AjaxResult.success();
     }
 }

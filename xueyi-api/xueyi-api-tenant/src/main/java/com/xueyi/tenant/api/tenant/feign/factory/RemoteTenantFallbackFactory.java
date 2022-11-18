@@ -3,8 +3,7 @@ package com.xueyi.tenant.api.tenant.feign.factory;
 import com.alibaba.fastjson2.JSONObject;
 import com.xueyi.common.core.web.result.R;
 import com.xueyi.tenant.api.tenant.feign.RemoteTenantService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
 
@@ -14,9 +13,9 @@ import org.springframework.stereotype.Component;
  *
  * @author xueyi
  */
+@Slf4j
 @Component
 public class RemoteTenantFallbackFactory implements FallbackFactory<RemoteTenantService> {
-    private static final Logger log = LoggerFactory.getLogger(RemoteTenantFallbackFactory.class);
 
     @Override
     public RemoteTenantService create(Throwable throwable) {

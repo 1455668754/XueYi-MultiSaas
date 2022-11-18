@@ -3,8 +3,7 @@ package com.xueyi.system.api.authority.feign.factory;
 import com.xueyi.common.core.web.result.R;
 import com.xueyi.system.api.authority.feign.RemoteLoginService;
 import com.xueyi.system.api.model.LoginUser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
 
@@ -13,10 +12,9 @@ import org.springframework.stereotype.Component;
  *
  * @author xueyi
  */
+@Slf4j
 @Component
 public class RemoteLoginFallbackFactory implements FallbackFactory<RemoteLoginService> {
-
-    private static final Logger log = LoggerFactory.getLogger(RemoteLoginFallbackFactory.class);
 
     @Override
     public RemoteLoginService create(Throwable throwable) {

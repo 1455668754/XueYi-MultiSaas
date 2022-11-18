@@ -1,7 +1,7 @@
 package com.xueyi.common.web.entity.service.impl.handle;
 
-import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.entity.base.TreeEntity;
 import com.xueyi.common.web.entity.manager.ITreeManager;
@@ -31,8 +31,14 @@ public class TreeHandleServiceImpl<Q extends TreeEntity<D>, D extends TreeEntity
     protected void AUHandleParentStatusCheck(Serializable parentId, String status) {
         if (ObjectUtil.equals(BaseConstants.Status.NORMAL.getCode(), status)) {
             BaseConstants.Status parentStatus = checkStatus(parentId);
-            if (BaseConstants.Status.DISABLE == parentStatus)
-                baseManager.updateStatus(parentId, BaseConstants.Status.NORMAL.getCode());
+            if (BaseConstants.Status.DISABLE == parentStatus) {
+                try {
+                    D parent = getDClass().newInstance();
+                    parent.setId((Long) parentId);
+                    parent.setStatus(BaseConstants.Status.NORMAL.getCode());
+                    baseManager.updateStatus(parent);
+                }catch (Exception ignored) {}
+            }
         }
     }
 
@@ -40,15 +46,16 @@ public class TreeHandleServiceImpl<Q extends TreeEntity<D>, D extends TreeEntity
      * 修改状态 树型 检查父级状态
      * 是否启用，非启用则启用
      *
-     * @param Id     Id
-     * @param status 状态
-     * @see com.xueyi.common.web.entity.service.impl.TreeServiceImpl#updateStatus(Serializable, String)
+     * @param d 数据对象
+     * @see com.xueyi.common.web.entity.service.impl.TreeServiceImpl#updateStatus
      */
-    protected void USHandelParentStatusCheck(Serializable Id, String status) {
-        D nowD = baseManager.selectById(Id);
-        if (ObjectUtil.equals(BaseConstants.Status.NORMAL.getCode(), status)
-                && BaseConstants.Status.DISABLE == checkStatus(nowD.getParentId()))
-            baseManager.updateStatus(nowD.getParentId(), BaseConstants.Status.NORMAL.getCode());
+    protected void USHandelParentStatusCheck(D d) {
+        D nowD = baseManager.selectById(d.getId());
+        if (ObjectUtil.equals(BaseConstants.Status.NORMAL.getCode(), d.getStatus())
+                && BaseConstants.Status.DISABLE == checkStatus(nowD.getParentId())) {
+            nowD.setStatus(BaseConstants.Status.NORMAL.getCode());
+            baseManager.updateStatus(nowD);
+        }
     }
 
     /**
@@ -91,17 +98,16 @@ public class TreeHandleServiceImpl<Q extends TreeEntity<D>, D extends TreeEntity
      * 修改/修改状态 树型 检查子节点状态
      * 是否变更，变更则同步禁用子节点
      *
-     * @param id     id
-     * @param status 状态
+     * @param d 数据对象
      * @see com.xueyi.common.web.entity.service.impl.TreeServiceImpl#update(TreeEntity)
-     * @see com.xueyi.common.web.entity.service.impl.TreeServiceImpl#updateStatus(Serializable, String)
+     * @see com.xueyi.common.web.entity.service.impl.TreeServiceImpl#updateStatus
      */
-    protected void UUSChildrenStatusCheck(Serializable id, String status) {
-        D original = baseManager.selectById(id);
-        if (ObjectUtil.notEqual(original.getStatus(), status)
-                && ObjectUtil.equals(BaseConstants.Status.DISABLE.getCode(), status)
-                && ObjectUtil.isNotNull(baseManager.checkHasNormalChild(id))) {
-            baseManager.updateChildrenStatus(id, BaseConstants.Status.DISABLE.getCode());
+    protected void UUSChildrenStatusCheck(D d) {
+        D original = baseManager.selectById(d.getId());
+        if (ObjectUtil.notEqual(original.getStatus(), d.getStatus())
+                && ObjectUtil.equals(BaseConstants.Status.DISABLE.getCode(), d.getStatus())
+                && ObjectUtil.isNotNull(baseManager.checkHasNormalChild(d.getId()))) {
+            baseManager.updateChildrenStatus(d.getId(), BaseConstants.Status.DISABLE.getCode());
         }
     }
 }

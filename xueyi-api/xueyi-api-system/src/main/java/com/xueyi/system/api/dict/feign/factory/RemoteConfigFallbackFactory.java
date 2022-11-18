@@ -2,8 +2,7 @@ package com.xueyi.system.api.dict.feign.factory;
 
 import com.xueyi.common.core.web.result.R;
 import com.xueyi.system.api.dict.feign.RemoteConfigService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
 
@@ -12,10 +11,9 @@ import org.springframework.stereotype.Component;
  *
  * @author xueyi
  */
+@Slf4j
 @Component
 public class RemoteConfigFallbackFactory implements FallbackFactory<RemoteConfigService> {
-
-    private static final Logger log = LoggerFactory.getLogger(RemoteConfigFallbackFactory.class);
 
     @Override
     public RemoteConfigService create(Throwable throwable) {
@@ -24,6 +22,11 @@ public class RemoteConfigFallbackFactory implements FallbackFactory<RemoteConfig
             @Override
             public R<String> getCode(String configCode) {
                 return R.fail("获取参数失败:" + throwable.getMessage());
+            }
+
+            @Override
+            public R<Boolean> refreshCache(String source) {
+                return R.fail("刷新参数缓存失败:" + throwable.getMessage());
             }
         };
     }

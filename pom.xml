@@ -237,6 +237,13 @@
                 <version>${xueyi.version}</version>
             </dependency>
 
+            <!-- 缓存管理 -->
+            <dependency>
+                <groupId>com.xueyi</groupId>
+                <artifactId>xueyi-common-cache</artifactId>
+                <version>${xueyi.version}</version>
+            </dependency>
+
             <!-- 缓存服务 -->
             <dependency>
                 <groupId>com.xueyi</groupId>

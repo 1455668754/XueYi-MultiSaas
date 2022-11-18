@@ -1,23 +1,21 @@
 package com.xueyi.file.api.feign.factory;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.xueyi.common.core.web.result.R;
+import com.xueyi.file.api.domain.SysFile;
+import com.xueyi.file.api.feign.RemoteFileService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-import com.xueyi.common.core.web.result.R;
-import com.xueyi.file.api.feign.RemoteFileService;
-import com.xueyi.file.api.domain.SysFile;
 
 /**
  * 文件服务 降级处理
  *
  * @author xueyi
  */
+@Slf4j
 @Component
 public class RemoteFileFallbackFactory implements FallbackFactory<RemoteFileService> {
-
-    private static final Logger log = LoggerFactory.getLogger(RemoteFileFallbackFactory.class);
 
     @Override
     public RemoteFileService create(Throwable throwable) {

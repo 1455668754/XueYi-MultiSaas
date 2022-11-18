@@ -31,10 +31,10 @@
             <version>${dynamic-ds.version}</version>
         </dependency>
 
-        <!-- XueYi Common Security -->
+        <!-- XueYi Common Cache -->
         <dependency>
             <groupId>com.xueyi</groupId>
-            <artifactId>xueyi-common-security</artifactId>
+            <artifactId>xueyi-common-cache</artifactId>
         </dependency>
 
     </dependencies>

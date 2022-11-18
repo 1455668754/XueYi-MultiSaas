@@ -1,9 +1,12 @@
 package com.xueyi.common.web.entity.service.impl;
 
 import com.xueyi.common.core.constant.basic.BaseConstants;
+import com.xueyi.common.core.exception.UtilException;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
+import com.xueyi.common.redis.constant.RedisConstants;
+import com.xueyi.common.web.constant.OperateConstants;
 import com.xueyi.common.web.entity.manager.IBaseManager;
 import com.xueyi.common.web.entity.service.IBaseService;
 import com.xueyi.common.web.entity.service.impl.handle.BaseHandleServiceImpl;
@@ -11,6 +14,7 @@ import com.xueyi.common.web.entity.service.impl.handle.BaseHandleServiceImpl;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 服务层 基类实现通用数据处理
@@ -96,8 +100,9 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG ext
      */
     @Override
     public int insert(D d) {
+        startHandle(OperateConstants.ServiceType.ADD, null, d);
         int row = baseManager.insert(d);
-        addHandle(row, d, null);
+        endHandle(OperateConstants.ServiceType.ADD, row, d);
         return row;
     }
 
@@ -108,8 +113,9 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG ext
      */
     @Override
     public int insertBatch(Collection<D> entityList) {
+        startBatchHandle(OperateConstants.ServiceType.BATCH_ADD, null, entityList);
         int rows = baseManager.insertBatch(entityList);
-        addHandle(rows, null, entityList);
+        endBatchHandle(OperateConstants.ServiceType.BATCH_ADD, rows, entityList);
         return rows;
     }
 
@@ -121,8 +127,10 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG ext
      */
     @Override
     public int update(D d) {
+        D originDto = baseManager.selectById(d.getId());
+        startHandle(OperateConstants.ServiceType.EDIT, originDto, d);
         int row = baseManager.update(d);
-        editHandle(row, d, null);
+        endHandle(OperateConstants.ServiceType.EDIT, row, d);
         return row;
     }
 
@@ -133,22 +141,25 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG ext
      */
     @Override
     public int updateBatch(Collection<D> entityList) {
+        List<D> originList = baseManager.selectListByIds(entityList.stream().map(D::getId).collect(Collectors.toList()));
+        startBatchHandle(OperateConstants.ServiceType.BATCH_EDIT, originList, entityList);
         int rows = baseManager.updateBatch(entityList);
-        editHandle(rows, null, entityList);
+        endBatchHandle(OperateConstants.ServiceType.BATCH_EDIT, rows, entityList);
         return rows;
     }
 
     /**
      * 修改数据对象状态
      *
-     * @param id     Id
-     * @param status 状态
+     * @param d 数据对象
      * @return 结果
      */
     @Override
-    public int updateStatus(Serializable id, String status) {
-        int row = baseManager.updateStatus(id, status);
-        editStatusHandle(row, id);
+    public int updateStatus(D d) {
+        D originDto = baseManager.selectById(d.getId());
+        startHandle(OperateConstants.ServiceType.EDIT_STATUS, originDto, d);
+        int row = baseManager.updateStatus(d);
+        endHandle(OperateConstants.ServiceType.EDIT_STATUS, row, d);
         return row;
     }
 
@@ -160,8 +171,10 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG ext
      */
     @Override
     public int deleteById(Serializable id) {
+        D originDto = baseManager.selectById(id);
+        startHandle(OperateConstants.ServiceType.DELETE, originDto, null);
         int row = baseManager.deleteById(id);
-        deleteHandle(row, id);
+        endHandle(OperateConstants.ServiceType.DELETE, row, originDto);
         return row;
     }
 
@@ -173,9 +186,11 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG ext
      */
     @Override
     public int deleteByIds(Collection<? extends Serializable> idList) {
-        int row = baseManager.deleteByIds(idList);
-        deleteHandle(row, idList.toArray());
-        return row;
+        List<D> originList = baseManager.selectListByIds(idList);
+        startBatchHandle(OperateConstants.ServiceType.BATCH_DELETE, originList, null);
+        int rows = baseManager.deleteByIds(idList);
+        endBatchHandle(OperateConstants.ServiceType.BATCH_DELETE, rows, originList);
+        return rows;
     }
 
     /**
@@ -204,5 +219,15 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG ext
                 : StrUtil.equals(BaseConstants.Status.NORMAL.getCode(), info.getStatus())
                 ? BaseConstants.Status.NORMAL
                 : BaseConstants.Status.DISABLE;
+    }
+
+    /**
+     * 更新缓存数据
+     */
+    @Override
+    public void refreshCache() {
+        if (StrUtil.isEmpty(getCacheKey()))
+            throw new UtilException("未正常配置缓存，无法使用!");
+        refreshCache(null, RedisConstants.OperateType.REFRESH_ALL, null, null);
     }
 }

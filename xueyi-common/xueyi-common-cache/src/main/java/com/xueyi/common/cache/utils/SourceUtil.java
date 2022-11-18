@@ -1,4 +1,4 @@
-package com.xueyi.common.security.utils;
+package com.xueyi.common.cache.utils;
 
 import com.xueyi.common.core.constant.basic.CacheConstants;
 import com.xueyi.common.core.utils.core.SpringUtil;
@@ -12,7 +12,7 @@ import java.io.Serializable;
  *
  * @author xueyi
  */
-public class SourceUtils {
+public class SourceUtil {
 
     /**
      * 源策略组查询

@@ -1,7 +1,7 @@
 package com.xueyi.system.dict.controller;
 
-import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
+import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.result.R;
@@ -35,6 +35,16 @@ public class SysConfigController extends BaseController<SysConfigQuery, SysConfi
     /** 定义节点名称 */
     protected String getNodeName() {
         return "参数";
+    }
+
+    /**
+     * 刷新参数缓存 | 内部调用
+     */
+    @Override
+    @Log(title = "参数管理", businessType = BusinessType.REFRESH)
+    @GetMapping("/inner/refresh")
+    public R<Boolean> refreshCacheInner() {
+        return super.refreshCacheInner();
     }
 
     /**
@@ -143,6 +153,7 @@ public class SysConfigController extends BaseController<SysConfigQuery, SysConfi
     /**
      * 刷新参数缓存
      */
+    @Override
     @RequiresPermissions(Auth.SYS_CONFIG_EDIT)
     @Log(title = "参数管理", businessType = BusinessType.REFRESH)
     @GetMapping("/refresh")

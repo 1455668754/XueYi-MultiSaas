@@ -1,5 +1,6 @@
 package com.xueyi.system.dict.controller;
 
+import com.xueyi.common.cache.utils.DictUtil;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
@@ -9,7 +10,6 @@ import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.security.auth.Auth;
-import com.xueyi.common.security.utils.DictUtils;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
 import com.xueyi.system.api.dict.domain.query.SysDictDataQuery;
@@ -56,7 +56,7 @@ public class SysDictDataController extends BaseController<SysDictDataQuery, SysD
             error("请传入编码后再查询字典");
         HashMap<String, List<SysDictDataDto>> map = new HashMap<>();
         for (String code : codeList)
-            map.put(code, DictUtils.getDictCache(code));
+            map.put(code, DictUtil.getDictCache(code));
         return success(map);
     }
 

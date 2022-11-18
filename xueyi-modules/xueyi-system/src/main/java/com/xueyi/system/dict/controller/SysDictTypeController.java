@@ -3,6 +3,7 @@ package com.xueyi.system.dict.controller;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
+import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
@@ -43,6 +44,27 @@ public class SysDictTypeController extends SubBaseController<SysDictTypeQuery, S
     @Override
     protected String getSubName() {
         return "字典数据";
+    }
+
+    /**
+     * 刷新字典缓存 | 内部调用
+     */
+    @Override
+    @Log(title = "字典类型", businessType = BusinessType.REFRESH)
+    @GetMapping("/inner/refresh")
+    public R<Boolean> refreshCacheInner() {
+        return super.refreshCacheInner();
+    }
+
+    /**
+     * 刷新字典缓存
+     */
+    @Override
+    @RequiresPermissions(Auth.SYS_DICT_EDIT)
+    @Log(title = "字典类型", businessType = BusinessType.REFRESH)
+    @GetMapping("/refresh")
+    public AjaxResult refreshCache() {
+        return super.refreshCache();
     }
 
     /**
@@ -132,17 +154,6 @@ public class SysDictTypeController extends SubBaseController<SysDictTypeQuery, S
     }
 
     /**
-     * 刷新字典缓存
-     */
-    @RequiresPermissions(Auth.SYS_DICT_EDIT)
-    @Log(title = "字典类型", businessType = BusinessType.CLEAN)
-    @GetMapping("/refresh")
-    public AjaxResult refreshCache() {
-        baseService.resetDictCache();
-        return success();
-    }
-
-    /**
      * 获取字典类型选择框列表
      */
     @Override
@@ -159,4 +170,5 @@ public class SysDictTypeController extends SubBaseController<SysDictTypeQuery, S
         if (baseService.checkDictCodeUnique(dictType.getId(), dictType.getCode()))
             warn(StrUtil.format("{}{}{}失败，字典编码已存在", operate.getInfo(), getNodeName(), dictType.getName()));
     }
+
 }

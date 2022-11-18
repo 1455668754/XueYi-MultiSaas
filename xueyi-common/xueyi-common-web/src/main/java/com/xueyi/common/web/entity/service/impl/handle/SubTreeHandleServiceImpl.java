@@ -1,7 +1,7 @@
 package com.xueyi.common.web.entity.service.impl.handle;
 
-import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.core.web.entity.base.SubTreeEntity;
 import com.xueyi.common.web.entity.manager.ISubTreeManager;
@@ -32,17 +32,16 @@ public abstract class SubTreeHandleServiceImpl<Q extends SubTreeEntity<D, SD>, D
      * 修改/修改状态 主子树型 检查归属数据状态
      * 是否变更，变更则同步禁用归属数据
      *
-     * @param id     Id
-     * @param status 状态
+     * @param d 数据对象
      * @see com.xueyi.common.web.entity.service.impl.SubTreeServiceImpl#update(SubTreeEntity)
-     * @see com.xueyi.common.web.entity.service.impl.SubTreeServiceImpl#updateStatus(Serializable, String)
+     * @see com.xueyi.common.web.entity.service.impl.SubTreeServiceImpl#updateStatus
      */
-    protected void UUSHandleSubStatusCheck(Serializable id, String status) {
-        D original = baseManager.selectById(id);
-        if (!ObjectUtil.equals(original.getStatus(), status)
-                && ObjectUtil.equals(BaseConstants.Status.DISABLE.getCode(), status)
-                && ObjectUtil.isNotNull(baseManager.checkExistNormalSub(id)))
-            baseManager.updateSubStatus(id, BaseConstants.Status.DISABLE.getCode());
+    protected void UUSHandleSubStatusCheck(D d) {
+        D original = baseManager.selectById(d.getId());
+        if (!ObjectUtil.equals(original.getStatus(), d.getStatus())
+                && ObjectUtil.equals(BaseConstants.Status.DISABLE.getCode(), d.getStatus())
+                && ObjectUtil.isNotNull(baseManager.checkExistNormalSub(d.getId())))
+            baseManager.updateSubStatus(d.getId(), BaseConstants.Status.DISABLE.getCode());
     }
 
     /**

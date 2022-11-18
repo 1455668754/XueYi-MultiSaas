@@ -1,8 +1,8 @@
 package com.xueyi.common.web.entity.service.impl;
 
+import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
-import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.core.web.entity.base.SubTreeEntity;
 import com.xueyi.common.web.entity.manager.ISubTreeManager;
@@ -63,12 +63,12 @@ public abstract class SubTreeServiceImpl<Q extends SubTreeEntity<D, SD>, D exten
      *
      * @param d 数据对象
      * @return 结果
-     * @see #UUSHandleSubStatusCheck(Serializable, String) 主子树型 检查归属数据状态
+     * @see #UUSHandleSubStatusCheck 主子树型 检查归属数据状态
      */
     @Override
     @DSTransactional
     public int update(D d) {
-        UUSHandleSubStatusCheck(d.getId(), d.getStatus());
+        UUSHandleSubStatusCheck(d);
         return super.update(d);
     }
 
@@ -76,16 +76,15 @@ public abstract class SubTreeServiceImpl<Q extends SubTreeEntity<D, SD>, D exten
      * 修改数据对象状态
      * 同步停用 子数据状态&&子节点状态
      *
-     * @param id     Id
-     * @param status 状态
+     * @param d 数据对象
      * @return 结果
-     * @see #UUSHandleSubStatusCheck(Serializable, String) 主子树型 检查归属数据状态
+     * @see #UUSHandleSubStatusCheck 主子树型 检查归属数据状态
      */
     @Override
     @DSTransactional
-    public int updateStatus(Serializable id, String status) {
-        UUSHandleSubStatusCheck(id, status);
-        return super.updateStatus(id, status);
+    public int updateStatus(D d) {
+        UUSHandleSubStatusCheck(d);
+        return super.updateStatus(d);
     }
 
     /**

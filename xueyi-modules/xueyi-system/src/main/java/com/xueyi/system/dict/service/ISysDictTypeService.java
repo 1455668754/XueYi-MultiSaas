@@ -14,21 +14,6 @@ import com.xueyi.system.api.dict.domain.query.SysDictTypeQuery;
 public interface ISysDictTypeService extends ISubBaseService<SysDictTypeQuery, SysDictTypeDto, SysDictDataQuery, SysDictDataDto> {
 
     /**
-     * 加载字典缓存数据
-     */
-    void loadingDictCache();
-
-    /**
-     * 清空字典缓存数据
-     */
-    void clearDictCache();
-
-    /**
-     * 重置字典缓存数据
-     */
-    void resetDictCache();
-
-    /**
      * 校验字典编码是否唯一
      *
      * @param Id       字典类型Id

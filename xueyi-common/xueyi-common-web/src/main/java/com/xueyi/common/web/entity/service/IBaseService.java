@@ -97,11 +97,10 @@ public interface IBaseService<Q extends BaseEntity, D extends BaseEntity> {
     /**
      * 修改数据对象状态
      *
-     * @param id     Id
-     * @param status 状态
+     * @param d 数据对象
      * @return 结果
      */
-    int updateStatus(Serializable id, String status);
+    int updateStatus(D d);
 
     /**
      * 根据Id删除数据对象
@@ -135,4 +134,9 @@ public interface IBaseService<Q extends BaseEntity, D extends BaseEntity> {
      * @return 状态
      */
     BaseConstants.Status checkStatus(Serializable id);
+
+    /**
+     * 更新缓存数据
+     */
+    void refreshCache();
 }

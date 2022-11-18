@@ -94,7 +94,7 @@ public abstract class TreeController<Q extends TreeEntity<D>, D extends TreeEnti
     @Override
     public AjaxResult editStatus(@RequestBody D d) {
         ESHandleTreeStatusValidated(d);
-        return toAjax(baseService.updateStatus(d.getId(), d.getStatus()));
+        return toAjax(baseService.updateStatus(d));
     }
 
     /**

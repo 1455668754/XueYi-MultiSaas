@@ -147,7 +147,8 @@ public class SysJobServiceImpl implements ISysJobService {
     @Override
     @DSTransactional
     public int pauseJob(SysJobDto job) throws SchedulerException {
-        int row = baseManager.updateStatus(job.getId(), ScheduleConstants.Status.PAUSE.getCode());
+        job.setStatus(ScheduleConstants.Status.PAUSE.getCode());
+        int row = baseManager.updateStatus(job);
         if (row > 0) scheduler.pauseJob(ScheduleUtils.getJobKey(job.getId(), job.getJobGroup()));
         return row;
     }
@@ -161,7 +162,8 @@ public class SysJobServiceImpl implements ISysJobService {
     @Override
     @DSTransactional
     public int resumeJob(SysJobDto job) throws SchedulerException {
-        int row = baseManager.updateStatus(job.getId(), ScheduleConstants.Status.NORMAL.getCode());
+        job.setStatus(ScheduleConstants.Status.NORMAL.getCode());
+        int row = baseManager.updateStatus(job);
         if (row > 0) scheduler.resumeJob(ScheduleUtils.getJobKey(job.getId(), job.getJobGroup()));
         return row;
     }

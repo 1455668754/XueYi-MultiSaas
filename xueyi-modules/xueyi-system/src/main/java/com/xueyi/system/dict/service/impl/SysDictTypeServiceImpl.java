@@ -1,10 +1,10 @@
 package com.xueyi.system.dict.service.impl;
 
-import com.xueyi.common.core.utils.core.ObjectUtil;
-import com.baomidou.dynamic.datasource.annotation.DSTransactional;
+import com.xueyi.common.cache.constant.CacheConstants;
 import com.xueyi.common.core.constant.basic.BaseConstants;
-import com.xueyi.common.core.constant.basic.CacheConstants;
-import com.xueyi.common.redis.service.RedisService;
+import com.xueyi.common.core.utils.core.ObjectUtil;
+import com.xueyi.common.redis.constant.RedisConstants;
+import com.xueyi.common.web.constant.OperateConstants;
 import com.xueyi.common.web.entity.service.impl.SubBaseServiceImpl;
 import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
 import com.xueyi.system.api.dict.domain.dto.SysDictTypeDto;
@@ -13,15 +13,11 @@ import com.xueyi.system.api.dict.domain.query.SysDictTypeQuery;
 import com.xueyi.system.dict.manager.ISysDictTypeManager;
 import com.xueyi.system.dict.service.ISysDictDataService;
 import com.xueyi.system.dict.service.ISysDictTypeService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 字典类型管理 业务层处理
@@ -31,84 +27,12 @@ import java.util.Map;
 @Service
 public class SysDictTypeServiceImpl extends SubBaseServiceImpl<SysDictTypeQuery, SysDictTypeDto, ISysDictTypeManager, SysDictDataQuery, SysDictDataDto, ISysDictDataService> implements ISysDictTypeService {
 
-    @Autowired
-    private RedisService redisService;
-
     /**
-     * 项目启动时，初始化字典到缓存
-     */
-    @PostConstruct
-    public void init() {
-        loadingDictCache();
-    }
-
-    /**
-     * 新增数据对象
-     *
-     * @param dictType 数据对象
-     * @return 结果
+     * 缓存主键命名定义
      */
     @Override
-    @DSTransactional
-    public int insert(SysDictTypeDto dictType) {
-        int row = super.insert(dictType);
-        if (row > 0)
-            redisService.setCacheMapValue(CacheConstants.SYS_DICT_KEY, dictType.getCode(), dictType.getSubList());
-        return row;
-    }
-
-    /**
-     * 根据Id删除参数对象
-     *
-     * @param id Id
-     * @return 结果
-     */
-    @Override
-    public int deleteById(Serializable id) {
-        SysDictTypeDto dict = baseManager.selectById(id);
-        deleteDictCache(dict.getCode());
-        return baseManager.deleteById(id);
-    }
-
-    /**
-     * 根据Id集合删除参数对象
-     *
-     * @param idList Id集合
-     * @return 结果
-     */
-    @Override
-    public int deleteByIds(Collection<? extends Serializable> idList) {
-        List<SysDictTypeDto> dictList = baseManager.selectListByIds(idList);
-        dictList.forEach(item -> deleteDictCache(item.getCode()));
-        return baseManager.deleteByIds(idList);
-    }
-
-    /**
-     * 加载字典缓存数据
-     */
-    @Override
-    public void loadingDictCache() {
-        List<SysDictTypeDto> dictTypeList = baseManager.selectListExtra(null);
-        Map<String, List<SysDictDataDto>> dataMap = new HashMap<>();
-        dictTypeList.forEach(item -> dataMap.put(item.getCode(), item.getSubList()));
-        redisService.setCacheMap(CacheConstants.SYS_DICT_KEY, dataMap);
-    }
-
-    /**
-     * 清空字典缓存数据
-     */
-    @Override
-    public void clearDictCache() {
-        redisService.deleteObject(CacheConstants.SYS_DICT_KEY);
-    }
-
-    /**
-     * 重置字典缓存数据
-     */
-    @Override
-    public void resetDictCache() {
-        clearDictCache();
-        loadingDictCache();
+    protected String getCacheKey() {
+        return CacheConstants.CacheType.SYS_DICT_KEY.getCode();
     }
 
     /**
@@ -124,13 +48,6 @@ public class SysDictTypeServiceImpl extends SubBaseServiceImpl<SysDictTypeQuery,
     }
 
     /**
-     * 根据编码删除字典缓存
-     */
-    private void deleteDictCache(String code) {
-        redisService.deleteCacheMapValue(CacheConstants.SYS_DICT_KEY, code);
-    }
-
-    /**
      * 设置子数据的外键值
      */
     @Override
@@ -140,5 +57,36 @@ public class SysDictTypeServiceImpl extends SubBaseServiceImpl<SysDictTypeQuery,
             dictData.setCode(code);
         else
             dictDataList.forEach(sub -> sub.setCode(code));
+    }
+
+    /**
+     * 缓存更新
+     *
+     * @param operate      服务层 - 操作类型
+     * @param operateCache 缓存操作类型
+     * @param dto          数据对象
+     * @param dtoList      数据对象集合
+     */
+    @Override
+    protected void refreshCache(OperateConstants.ServiceType operate, RedisConstants.OperateType operateCache, SysDictTypeDto dto, Collection<SysDictTypeDto> dtoList) {
+        switch (operateCache) {
+            case REFRESH_ALL:
+                List<SysDictTypeDto> allList = baseManager.selectList(null);
+                redisService.deleteObject(getCacheKey());
+                redisService.refreshMapCache(getCacheKey(), allList, SysDictTypeDto::getCode, SysDictTypeDto::getSubList);
+                break;
+            case REFRESH:
+                if (operate.isSingle())
+                    redisService.refreshMapValueCache(getCacheKey(), dto::getCode, dto::getSubList);
+                else if (operate.isBatch())
+                    dtoList.forEach(item -> redisService.refreshMapValueCache(getCacheKey(), item::getCode, item::getSubList));
+                break;
+            case REMOVE:
+                if (operate.isSingle())
+                    redisService.removeMapValueCache(getCacheKey(), dto.getCode());
+                else if (operate.isBatch())
+                    redisService.removeMapValueCache(getCacheKey(), dtoList.stream().map(SysDictTypeDto::getCode).toArray());
+                break;
+        }
     }
 }

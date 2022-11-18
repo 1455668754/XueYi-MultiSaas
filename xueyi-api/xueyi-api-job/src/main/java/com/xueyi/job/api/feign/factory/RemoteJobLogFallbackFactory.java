@@ -3,8 +3,7 @@ package com.xueyi.job.api.feign.factory;
 import com.xueyi.common.core.web.result.R;
 import com.xueyi.job.api.domain.dto.SysJobLogDto;
 import com.xueyi.job.api.feign.RemoteJobLogService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
 
@@ -13,10 +12,9 @@ import org.springframework.stereotype.Component;
  *
  * @author xueyi
  */
+@Slf4j
 @Component
 public class RemoteJobLogFallbackFactory implements FallbackFactory<RemoteJobLogService> {
-
-    private static final Logger log = LoggerFactory.getLogger(RemoteJobLogFallbackFactory.class);
 
     @Override
     public RemoteJobLogService create(Throwable throwable) {

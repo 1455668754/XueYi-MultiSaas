@@ -62,7 +62,7 @@ public class InsertBatchMethod extends AbstractMethod {
         if (StrUtil.isNotEmpty(tableInfo.getKeyColumn()))
             fieldSql.append(tableInfo.getKeyColumn()).append(StrUtil.COMMA);
         tableInfo.getFieldList().stream()
-                .filter(x -> ObjectUtil.notEqual(FieldStrategy.NEVER, x.getInsertStrategy()) || !x.isLogicDelete())
+                .filter(x -> !(ObjectUtil.equals(FieldStrategy.NEVER, x.getInsertStrategy()) || x.isLogicDelete()))
                 .forEach(x -> fieldSql.append(x.getColumn()).append(StrUtil.COMMA));
         fieldSql.delete(fieldSql.length() - NumberUtil.One, fieldSql.length());
         fieldSql.insert(NumberUtil.Zero, StrUtil.PARENTHESES_START);

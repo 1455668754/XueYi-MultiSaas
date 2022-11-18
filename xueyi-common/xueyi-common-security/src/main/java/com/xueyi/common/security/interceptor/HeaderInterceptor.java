@@ -1,10 +1,10 @@
 package com.xueyi.common.security.interceptor;
 
-import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.basic.TenantConstants;
 import com.xueyi.common.core.context.SecurityContextHolder;
 import com.xueyi.common.core.utils.ServletUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.security.auth.AuthUtil;
 import com.xueyi.common.security.utils.SecurityUtils;
@@ -40,9 +40,12 @@ public class HeaderInterceptor implements AsyncHandlerInterceptor {
         SecurityContextHolder.setAccountType(ServletUtil.getHeader(request, SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode()));
 
         String token = SecurityUtils.getToken();
-        TenantConstants.AccountType accountType = TenantConstants.AccountType.getByCode(SecurityUtils.getAccountType());
-        if (StrUtil.isNotEmpty(token) && ObjectUtil.isNotNull(accountType)) {
-            AuthUtil.verifyLoginUserExpire(token, accountType);
+
+        if (StrUtil.isNotEmpty(token)) {
+            TenantConstants.AccountType accountType = TenantConstants.AccountType.getByCode(SecurityUtils.getAccountType());
+            if(ObjectUtil.isNotNull(accountType)) {
+                AuthUtil.verifyLoginUserExpire(token, accountType);
+            }
         }
         return true;
     }

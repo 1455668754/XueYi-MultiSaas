@@ -90,11 +90,10 @@ public interface IBaseManager<Q extends BaseEntity, D extends BaseEntity> {
     /**
      * 修改状态
      *
-     * @param id     Id
-     * @param status 状态
+     * @param d 数据对象
      * @return 结果
      */
-    int updateStatus(Serializable id, String status);
+    int updateStatus(D d);
 
     /**
      * 根据Id删除数据对象

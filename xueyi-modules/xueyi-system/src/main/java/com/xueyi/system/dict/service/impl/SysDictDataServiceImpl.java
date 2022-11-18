@@ -1,16 +1,16 @@
 package com.xueyi.system.dict.service.impl;
 
-import com.xueyi.common.core.constant.basic.CacheConstants;
-import com.xueyi.common.redis.service.RedisService;
+import com.xueyi.common.cache.constant.CacheConstants;
+import com.xueyi.common.redis.constant.RedisConstants;
+import com.xueyi.common.web.constant.OperateConstants;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
+import com.xueyi.system.api.dict.domain.po.SysDictDataPo;
 import com.xueyi.system.api.dict.domain.query.SysDictDataQuery;
 import com.xueyi.system.dict.manager.ISysDictDataManager;
 import com.xueyi.system.dict.service.ISysDictDataService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -24,59 +24,12 @@ import java.util.stream.Collectors;
 @Service
 public class SysDictDataServiceImpl extends BaseServiceImpl<SysDictDataQuery, SysDictDataDto, ISysDictDataManager> implements ISysDictDataService {
 
-    @Autowired
-    private RedisService redisService;
-
     /**
-     * 新增数据对象
-     *
-     * @param data 数据对象
-     * @return 结果
+     * 缓存主键命名定义
      */
     @Override
-    public int insert(SysDictDataDto data) {
-        return refreshCache(baseManager.insert(data), data.getCode());
-    }
-
-    /**
-     * 修改数据对象
-     *
-     * @param data 数据对象
-     * @return 结果
-     */
-    @Override
-    public int update(SysDictDataDto data) {
-        return refreshCache(baseManager.update(data), data.getCode());
-    }
-
-    /**
-     * 根据Id删除数据对象
-     *
-     * @param id Id
-     * @return 结果
-     */
-    @Override
-    public int deleteById(Serializable id) {
-        SysDictDataDto data = baseManager.selectById(id);
-        return refreshCache(baseManager.deleteById(id), data.getCode());
-    }
-
-    /**
-     * 根据Id集合删除数据对象
-     *
-     * @param idList Id集合
-     * @return 结果
-     */
-    @Override
-    public int deleteByIds(Collection<? extends Serializable> idList) {
-        List<SysDictDataDto> dataList = baseManager.selectListByIds(idList);
-        int rows = baseManager.deleteByIds(idList);
-        if (rows > 0) {
-            Set<String> codes = dataList.stream().map(SysDictDataDto::getCode).collect(Collectors.toSet());
-            for (String code : codes)
-                redisService.setCacheMapValue(CacheConstants.SYS_DICT_KEY, code, baseManager.selectListByCode(code));
-        }
-        return rows;
+    protected String getCacheKey() {
+        return CacheConstants.CacheType.SYS_DICT_KEY.getCode();
     }
 
     /**
@@ -91,15 +44,24 @@ public class SysDictDataServiceImpl extends BaseServiceImpl<SysDictDataQuery, Sy
     }
 
     /**
-     * 新增/修改缓存
+     * 缓存更新
      *
-     * @param rows 结果
-     * @param code 参数编码
-     * @return 结果
+     * @param operate      服务层 - 操作类型
+     * @param operateCache 缓存操作类型
+     * @param dto          数据对象
+     * @param dtoList      数据对象集合
      */
-    private int refreshCache(int rows, String code) {
-        if (rows > 0)
-            redisService.setCacheMapValue(CacheConstants.SYS_DICT_KEY, code, baseManager.selectListByCode(code));
-        return rows;
+    @Override
+    protected void refreshCache(OperateConstants.ServiceType operate, RedisConstants.OperateType operateCache, SysDictDataDto dto, Collection<SysDictDataDto> dtoList) {
+        if (operate.isSingle()) {
+            List<SysDictDataDto> dictList = baseManager.selectListByCode(dto.getCode());
+            redisService.refreshMapValueCache(getCacheKey(), dto::getCode, () -> dictList);
+        } else if (operate.isBatch()) {
+            Set<String> codes = dtoList.stream().map(SysDictDataPo::getCode).collect(Collectors.toSet());
+            codes.forEach(item -> {
+                List<SysDictDataDto> dictList = baseManager.selectListByCode(dto.getCode());
+                redisService.refreshMapValueCache(getCacheKey(), dto::getCode, () -> dictList);
+            });
+        }
     }
 }
