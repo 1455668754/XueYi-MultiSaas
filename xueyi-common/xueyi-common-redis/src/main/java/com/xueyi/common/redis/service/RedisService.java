@@ -1,9 +1,6 @@
 package com.xueyi.common.redis.service;
 
-import cn.hutool.core.collection.CollUtil;
-import com.xueyi.common.core.utils.core.ArrayUtil;
-import com.xueyi.common.core.utils.core.NumberUtil;
-import com.xueyi.common.core.utils.core.ObjectUtil;
+import com.xueyi.common.core.utils.core.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundSetOperations;
 import org.springframework.data.redis.core.HashOperations;
@@ -297,8 +294,12 @@ public class RedisService {
         Map<String, K> resultMap = new HashMap<>();
         if (CollUtil.isNotEmpty(cacheList))
             resultMap = cacheList.stream().collect(Collectors.toMap(keyGet, valueGet));
-        setCacheMap(mapKey, resultMap);
-        expire(mapKey, NumberUtil.Nine, TimeUnit.HOURS);
+        if(MapUtil.isNotEmpty(resultMap)) {
+            setCacheMap(mapKey, resultMap);
+            expire(mapKey, NumberUtil.Nine, TimeUnit.HOURS);
+        }else {
+            deleteObject(mapKey);
+        }
     }
 
     /**

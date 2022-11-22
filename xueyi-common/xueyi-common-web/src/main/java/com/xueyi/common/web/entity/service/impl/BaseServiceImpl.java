@@ -1,12 +1,12 @@
 package com.xueyi.common.web.entity.service.impl;
 
 import com.xueyi.common.core.constant.basic.BaseConstants;
+import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.exception.UtilException;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.redis.constant.RedisConstants;
-import com.xueyi.common.web.constant.OperateConstants;
 import com.xueyi.common.web.entity.manager.IBaseManager;
 import com.xueyi.common.web.entity.service.IBaseService;
 import com.xueyi.common.web.entity.service.impl.handle.BaseHandleServiceImpl;

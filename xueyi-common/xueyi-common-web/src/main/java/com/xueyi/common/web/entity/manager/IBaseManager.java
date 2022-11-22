@@ -1,6 +1,7 @@
 package com.xueyi.common.web.entity.manager;
 
 import com.xueyi.common.core.web.entity.base.BaseEntity;
+import com.xueyi.common.web.entity.domain.SqlField;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -110,6 +111,30 @@ public interface IBaseManager<Q extends BaseEntity, D extends BaseEntity> {
      * @return 结果
      */
     int deleteByIds(Collection<? extends Serializable> idList);
+
+    /**
+     * 根据动态SQL控制对象查询数据对象集合
+     *
+     * @param field 动态SQL控制对象
+     * @return 数据对象集合
+     */
+    List<D> selectListByField(SqlField... field);
+
+    /**
+     * 根据动态SQL控制对象查询数据对象
+     *
+     * @param field 动态SQL控制对象
+     * @return 数据对象
+     */
+    D selectByField(SqlField... field);
+
+    /**
+     * 根据动态SQL控制对象更新数据对象
+     *
+     * @param field 动态SQL控制对象
+     * @return 结果
+     */
+    int updateByField(SqlField... field);
 
     /**
      * 校验名称是否唯一

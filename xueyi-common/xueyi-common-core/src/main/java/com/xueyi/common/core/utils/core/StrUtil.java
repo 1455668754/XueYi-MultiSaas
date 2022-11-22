@@ -9,6 +9,10 @@ import com.xueyi.common.core.utils.core.pool.StrPool;
  */
 public class StrUtil extends cn.hutool.core.util.StrUtil implements StrPool {
 
+    public static boolean notEquals(CharSequence str1, CharSequence str2) {
+        return !equals(str1, str2, false);
+    }
+
     /**
      * 截取分隔字符串之前的字符串 | 不包括分隔字符串
      *

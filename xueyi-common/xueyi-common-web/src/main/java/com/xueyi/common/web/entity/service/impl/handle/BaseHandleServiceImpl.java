@@ -1,12 +1,12 @@
 package com.xueyi.common.web.entity.service.impl.handle;
 
+import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.utils.core.NumberUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.utils.core.TypeUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.redis.constant.RedisConstants;
 import com.xueyi.common.redis.service.RedisService;
-import com.xueyi.common.web.constant.OperateConstants;
 import com.xueyi.common.web.entity.manager.IBaseManager;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;

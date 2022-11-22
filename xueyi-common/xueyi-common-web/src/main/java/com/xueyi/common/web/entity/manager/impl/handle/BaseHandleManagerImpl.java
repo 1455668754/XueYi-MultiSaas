@@ -4,13 +4,17 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.github.pagehelper.Page;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.utils.core.NumberUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.TypeUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.core.web.entity.model.BaseConverter;
+import com.xueyi.common.web.entity.domain.SubRelation;
 import com.xueyi.common.web.entity.mapper.BaseMapper;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -39,6 +43,19 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
     /** Po泛型的类型 */
     @Getter
     private final Class<P> PClass = TypeUtil.getClazz(getClass().getGenericSuperclass(), NumberUtil.Two);
+
+    /** 子类操作泛型的类型 */
+    @Setter
+    private List<SubRelation> subRelationList;
+
+    /**
+     * 初始化子类关联
+     *
+     * @return 关系对象集合
+     */
+    protected List<SubRelation> subRelationInit() {
+        return new ArrayList<>();
+    }
 
     /**
      * 类型转换 | 持久化对象 -> 数据传输对象
@@ -122,5 +139,16 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
      * @param query        数据查询对象
      */
     protected void SelectListQuery(BaseConstants.SelectType selectType, LambdaQueryWrapper<P> queryWrapper, Q query) {
+    }
+
+//    protected List<D> buildSubRelation(List<D> dtoList) {
+//
+//    }
+
+    /** 子类操作泛型的类型Getter */
+    protected List<SubRelation> getSubRelationList() {
+        if (ObjectUtil.isNull(this.subRelationList))
+            this.subRelationList = subRelationInit();
+        return this.subRelationList;
     }
 }

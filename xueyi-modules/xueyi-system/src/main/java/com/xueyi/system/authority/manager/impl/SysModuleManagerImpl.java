@@ -1,14 +1,15 @@
 package com.xueyi.system.authority.manager.impl;
 
-import com.xueyi.common.core.utils.core.CollUtil;
-import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.DictConstants;
+import com.xueyi.common.core.utils.core.CollUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.security.utils.SecurityUtils;
+import com.xueyi.common.web.entity.domain.SubRelation;
 import com.xueyi.common.web.entity.manager.impl.SubBaseManagerImpl;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
@@ -35,6 +36,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.xueyi.system.api.constant.MergeConstants.MODULE_MENU_GROUP;
+
 /**
  * 模块管理 数据封装层处理
  *
@@ -48,6 +51,18 @@ public class SysModuleManagerImpl extends SubBaseManagerImpl<SysModuleQuery, Sys
 
     @Autowired
     private SysRoleModuleMergeMapper roleModuleMergeMapper;
+
+    /**
+     * 初始化子类关联
+     *
+     * @return 关系对象集合
+     */
+    // TODO 待删除
+    protected List<SubRelation> subRelationInit() {
+        return new ArrayList<SubRelation>(){{
+            add(new SubRelation(SysMenuManagerImpl.class, MODULE_MENU_GROUP));
+        }};
+    }
 
     /**
      * 当前用户首页可展示的模块路由
