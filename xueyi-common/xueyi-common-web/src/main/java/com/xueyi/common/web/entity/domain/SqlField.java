@@ -22,7 +22,10 @@ public class SqlField implements Serializable {
     private SqlConstants.OperateType operateType;
 
     /** SQL - 操作键 */
-    private SFunction<? extends BaseEntity, Object> sFunction;
+    private SFunction<? extends BaseEntity, Object> fieldFun;
+
+    /** SQL - 操作键名 */
+    private String fieldStr;
 
     /** SQL - 操作值 */
     private Object object;
@@ -30,15 +33,27 @@ public class SqlField implements Serializable {
     /** SQL - 操作集合 */
     private Collection<Object> list;
 
-    public SqlField(SqlConstants.OperateType operateType, SFunction<? extends BaseEntity, Object> sFunction, Object object){
+    public SqlField(SqlConstants.OperateType operateType, SFunction<? extends BaseEntity, Object> fieldFun, Object object) {
         this.operateType = operateType;
-        this.sFunction = sFunction;
+        this.fieldFun = fieldFun;
         this.object = object;
     }
 
-    public SqlField(SqlConstants.OperateType operateType, SFunction<? extends BaseEntity, Object> sFunction, Collection<Object> list){
+    public SqlField(SqlConstants.OperateType operateType, String fieldStr, Object object) {
         this.operateType = operateType;
-        this.sFunction = sFunction;
+        this.fieldStr = fieldStr;
+        this.object = object;
+    }
+
+    public SqlField(SqlConstants.OperateType operateType, SFunction<? extends BaseEntity, Object> fieldFun, Collection<Object> list) {
+        this.operateType = operateType;
+        this.fieldFun = fieldFun;
+        this.list = list;
+    }
+
+    public SqlField(SqlConstants.OperateType operateType, String fieldStr, Collection<Object> list) {
+        this.operateType = operateType;
+        this.fieldStr = fieldStr;
         this.list = list;
     }
 }

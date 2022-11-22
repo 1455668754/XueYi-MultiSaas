@@ -1,16 +1,21 @@
 package com.xueyi.common.web.utils;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.xueyi.common.core.constant.basic.OperateConstants;
+import com.xueyi.common.core.constant.basic.SqlConstants;
 import com.xueyi.common.core.constant.error.UtilErrorConstants;
 import com.xueyi.common.core.exception.UtilException;
 import com.xueyi.common.core.utils.core.*;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
+import com.xueyi.common.web.entity.domain.SqlField;
 import com.xueyi.common.web.entity.domain.SubRelation;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class MergeUtil {
 
@@ -56,7 +61,10 @@ public class MergeUtil {
             case COLLECTION:
                 if(CollUtil.isEmpty(dtoList))
                     return;
-//                SqlField sqlField = new SqlField(SqlConstants.OperateType.IN, );
+                TableField tableField = subRelation.getSubKeyField().getAnnotation(TableField.class);
+
+                Set<Object> findInSet = dtoList.stream().map().collect(Collectors.toSet());
+                SqlField sqlField = new SqlField(SqlConstants.OperateType.IN, StrUtil.isNotEmpty(tableField.value()) ? tableField.value() : StrUtil.toUnderlineCase(subRelation.getSubKeyField().getName()), null);
 
                 break;
         }

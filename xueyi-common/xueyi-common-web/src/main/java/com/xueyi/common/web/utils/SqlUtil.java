@@ -29,52 +29,52 @@ public class SqlUtil {
                 switch (sqlField.getOperateType()) {
                     case SET:
                         if (i instanceof LambdaUpdateWrapper) {
-                            ((LambdaUpdateWrapper<P>) i).set((SFunction<P, ?>) sqlField.getSFunction(), sqlField.getObject());
+                            ((LambdaUpdateWrapper<P>) i).set((SFunction<P, ?>) sqlField.getFieldFun(), sqlField.getObject());
                         } else {
                             throw new UtilException("wrapper is not LambdaUpdateWrapper,method does not exist!");
                         }
                     case EQ:
-                        i.eq((SFunction<P, ?>) sqlField.getSFunction(), sqlField.getObject());
-                        i.eq((SFunction<P, ?>) sqlField.getSFunction(), sqlField.getObject());
+                        i.eq((SFunction<P, ?>) sqlField.getFieldFun(), sqlField.getObject());
+                        i.eq((SFunction<P, ?>) sqlField.getFieldFun(), sqlField.getObject());
                         break;
                     case NE:
-                        i.ne((SFunction<P, ?>) sqlField.getSFunction(), sqlField.getObject());
+                        i.ne((SFunction<P, ?>) sqlField.getFieldFun(), sqlField.getObject());
                         break;
                     case GT:
-                        i.gt((SFunction<P, ?>) sqlField.getSFunction(), sqlField.getObject());
+                        i.gt((SFunction<P, ?>) sqlField.getFieldFun(), sqlField.getObject());
                         break;
                     case GE:
-                        i.ge((SFunction<P, ?>) sqlField.getSFunction(), sqlField.getObject());
+                        i.ge((SFunction<P, ?>) sqlField.getFieldFun(), sqlField.getObject());
                         break;
                     case LT:
-                        i.lt((SFunction<P, ?>) sqlField.getSFunction(), sqlField.getObject());
+                        i.lt((SFunction<P, ?>) sqlField.getFieldFun(), sqlField.getObject());
                         break;
                     case LE:
-                        i.le((SFunction<P, ?>) sqlField.getSFunction(), sqlField.getObject());
+                        i.le((SFunction<P, ?>) sqlField.getFieldFun(), sqlField.getObject());
                         break;
                     case LIKE:
-                        i.like((SFunction<P, ?>) sqlField.getSFunction(), sqlField.getObject());
+                        i.like((SFunction<P, ?>) sqlField.getFieldFun(), sqlField.getObject());
                         break;
                     case NOT_LIKE:
-                        i.notLike((SFunction<P, ?>) sqlField.getSFunction(), sqlField.getObject());
+                        i.notLike((SFunction<P, ?>) sqlField.getFieldFun(), sqlField.getObject());
                         break;
                     case LIKE_LEFT:
-                        i.likeLeft((SFunction<P, ?>) sqlField.getSFunction(), sqlField.getObject());
+                        i.likeLeft((SFunction<P, ?>) sqlField.getFieldFun(), sqlField.getObject());
                         break;
                     case LIKE_RIGHT:
-                        i.likeRight((SFunction<P, ?>) sqlField.getSFunction(), sqlField.getObject());
+                        i.likeRight((SFunction<P, ?>) sqlField.getFieldFun(), sqlField.getObject());
                         break;
                     case IS_NULL:
-                        i.isNull((SFunction<P, ?>) sqlField.getSFunction());
+                        i.isNull((SFunction<P, ?>) sqlField.getFieldFun());
                         break;
                     case IS_NOT_NULL:
-                        i.isNotNull((SFunction<P, ?>) sqlField.getSFunction());
+                        i.isNotNull((SFunction<P, ?>) sqlField.getFieldFun());
                         break;
                     case IN:
-                        i.in((SFunction<P, ?>) sqlField.getSFunction(), sqlField.getList());
+                        i.in((SFunction<P, ?>) sqlField.getFieldFun(), sqlField.getList());
                         break;
                     case NOT_IN:
-                        i.notIn((SFunction<P, ?>) sqlField.getSFunction(), sqlField.getList());
+                        i.notIn((SFunction<P, ?>) sqlField.getFieldFun(), sqlField.getList());
                         break;
                     default:
                         i.apply(SqlConstants.NONE_FIND);
