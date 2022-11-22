@@ -53,18 +53,24 @@ public class MergeUtil {
      * @param DClass      数据对象Class
      */
     private static <D> void directRelationBuild(D dto, List<D> dtoList, SubRelation subRelation, Class<D> DClass, OperateConstants.DataRow dataRow) {
-        switch (dataRow){
+        switch (dataRow) {
             case SINGLE:
-                if(ObjectUtil.isNull(dto))
+                if (ObjectUtil.isNull(dto))
                     return;
                 break;
             case COLLECTION:
-                if(CollUtil.isEmpty(dtoList))
+                if (CollUtil.isEmpty(dtoList))
                     return;
                 TableField tableField = subRelation.getSubKeyField().getAnnotation(TableField.class);
-
-                Set<Object> findInSet = dtoList.stream().map().collect(Collectors.toSet());
-                SqlField sqlField = new SqlField(SqlConstants.OperateType.IN, StrUtil.isNotEmpty(tableField.value()) ? tableField.value() : StrUtil.toUnderlineCase(subRelation.getSubKeyField().getName()), null);
+                subRelation.getMainKeyField().setAccessible(true);
+                Set<Object> findInSet = dtoList.stream().map(item -> {
+                    try {
+                        return subRelation.getMainKeyField().get(item);
+                    } catch (IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    }
+                }).collect(Collectors.toSet());
+                SqlField sqlField = new SqlField(SqlConstants.OperateType.IN, StrUtil.isNotEmpty(tableField.value()) ? tableField.value() : StrUtil.toUnderlineCase(subRelation.getSubKeyField().getName()), findInSet);
 
                 break;
         }
