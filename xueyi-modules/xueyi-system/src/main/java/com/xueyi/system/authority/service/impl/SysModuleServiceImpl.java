@@ -1,19 +1,13 @@
 package com.xueyi.system.authority.service.impl;
 
-import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.datascope.annotation.DataScope;
-import com.xueyi.common.web.entity.service.impl.SubBaseServiceImpl;
-import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
+import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
-import com.xueyi.system.api.authority.domain.query.SysMenuQuery;
 import com.xueyi.system.api.authority.domain.query.SysModuleQuery;
 import com.xueyi.system.authority.manager.ISysModuleManager;
-import com.xueyi.system.authority.service.ISysMenuService;
 import com.xueyi.system.authority.service.ISysModuleService;
 import org.springframework.stereotype.Service;
 
-import java.io.Serializable;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -25,7 +19,7 @@ import static com.xueyi.common.core.constant.basic.SecurityConstants.CREATE_BY;
  * @author xueyi
  */
 @Service
-public class SysModuleServiceImpl extends SubBaseServiceImpl<SysModuleQuery, SysModuleDto, ISysModuleManager, SysMenuQuery, SysMenuDto, ISysMenuService> implements ISysModuleService {
+public class SysModuleServiceImpl extends BaseServiceImpl<SysModuleQuery, SysModuleDto, ISysModuleManager> implements ISysModuleService {
 
     /**
      * 当前用户首页可展示的模块路由
@@ -47,19 +41,7 @@ public class SysModuleServiceImpl extends SubBaseServiceImpl<SysModuleQuery, Sys
     @Override
     @DataScope(userAlias = CREATE_BY, mapperScope = {"SysModuleMapper"})
     public List<SysModuleDto> selectListScope(SysModuleQuery module) {
-        return baseManager.selectListExtra(module);
-    }
-
-    /**
-     * 设置子数据的外键值
-     */
-    @Override
-    protected void setForeignKey(Collection<SysMenuDto> menuList, SysMenuDto menu, SysModuleDto module, Serializable key) {
-        Long moduleId = ObjectUtil.isNotNull(module) ? module.getId() : (Long) key;
-        if (ObjectUtil.isNotNull(menu))
-            menu.setModuleId(moduleId);
-        else
-            menuList.forEach(sub -> sub.setModuleId(moduleId));
+        return baseManager.selectList(module);
     }
 
 }

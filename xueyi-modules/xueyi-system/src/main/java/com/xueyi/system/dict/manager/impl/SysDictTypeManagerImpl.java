@@ -1,28 +1,17 @@
 package com.xueyi.system.dict.manager.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.SqlConstants;
-import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.web.entity.domain.SubRelation;
-import com.xueyi.common.web.entity.manager.impl.SubBaseManagerImpl;
-import com.xueyi.common.web.utils.MergeUtil;
-import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
+import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.system.api.dict.domain.dto.SysDictTypeDto;
-import com.xueyi.system.api.dict.domain.model.SysDictDataConverter;
 import com.xueyi.system.api.dict.domain.model.SysDictTypeConverter;
-import com.xueyi.system.api.dict.domain.po.SysDictDataPo;
 import com.xueyi.system.api.dict.domain.po.SysDictTypePo;
-import com.xueyi.system.api.dict.domain.query.SysDictDataQuery;
 import com.xueyi.system.api.dict.domain.query.SysDictTypeQuery;
 import com.xueyi.system.dict.manager.ISysDictTypeManager;
-import com.xueyi.system.dict.mapper.SysDictDataMapper;
 import com.xueyi.system.dict.mapper.SysDictTypeMapper;
 import org.springframework.stereotype.Component;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,32 +23,17 @@ import static com.xueyi.system.api.constant.MergeConstants.DICT_DATA_GROUP;
  * @author xueyi
  */
 @Component
-public class SysDictTypeManagerImpl extends SubBaseManagerImpl<SysDictTypeQuery, SysDictTypeDto, SysDictTypePo, SysDictTypeMapper, SysDictTypeConverter, SysDictDataQuery, SysDictDataDto, SysDictDataPo, SysDictDataMapper, SysDictDataConverter> implements ISysDictTypeManager {
+public class SysDictTypeManagerImpl extends BaseManagerImpl<SysDictTypeQuery, SysDictTypeDto, SysDictTypePo, SysDictTypeMapper, SysDictTypeConverter> implements ISysDictTypeManager {
 
     /**
      * 初始化子类关联
      *
      * @return 关系对象集合
      */
-    // TODO 待删除
     protected List<SubRelation> subRelationInit() {
         return new ArrayList<SubRelation>(){{
             add(new SubRelation(SysDictDataManagerImpl.class, DICT_DATA_GROUP));
         }};
-    }
-
-    /**
-     * 查询数据对象列表
-     *
-     * @param query 数据查询对象
-     * @return 数据对象集合
-     */
-    @Override
-    public List<SysDictTypeDto> selectList(SysDictTypeQuery query) {
-        LambdaQueryWrapper<SysDictTypePo> queryWrapper = new LambdaQueryWrapper<>(query);
-        SelectListQuery(BaseConstants.SelectType.NORMAL, queryWrapper, query);
-        List<SysDictTypePo> poList = baseMapper.selectList(queryWrapper);
-        return MergeUtil.subRelationBuild(mapperDto(poList),getSubRelationList(),getDClass());
     }
 
     /**
@@ -79,15 +53,4 @@ public class SysDictTypeManagerImpl extends SubBaseManagerImpl<SysDictTypeQuery,
         return baseConverter.mapperDto(dictType);
     }
 
-    /**
-     * 设置主子表中子表外键值
-     */
-    @Override
-    protected void setForeignKey(LambdaQueryWrapper<SysDictDataPo> queryWrapper, LambdaUpdateWrapper<SysDictDataPo> updateWrapper, SysDictTypeDto dictType, Serializable code) {
-        Serializable Code = ObjectUtil.isNotNull(dictType) ? dictType.getCode() : code;
-        if (ObjectUtil.isNotNull(queryWrapper))
-            queryWrapper.eq(SysDictDataPo::getCode, Code);
-        else
-            updateWrapper.eq(SysDictDataPo::getCode, Code);
-    }
 }

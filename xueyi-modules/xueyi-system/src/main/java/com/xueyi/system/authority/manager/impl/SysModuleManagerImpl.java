@@ -1,28 +1,20 @@
 package com.xueyi.system.authority.manager.impl;
 
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.utils.core.CollUtil;
-import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.entity.domain.SubRelation;
-import com.xueyi.common.web.entity.manager.impl.SubBaseManagerImpl;
-import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
+import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
-import com.xueyi.system.api.authority.domain.model.SysMenuConverter;
 import com.xueyi.system.api.authority.domain.model.SysModuleConverter;
-import com.xueyi.system.api.authority.domain.po.SysMenuPo;
 import com.xueyi.system.api.authority.domain.po.SysModulePo;
-import com.xueyi.system.api.authority.domain.query.SysMenuQuery;
 import com.xueyi.system.api.authority.domain.query.SysModuleQuery;
 import com.xueyi.system.authority.domain.merge.SysRoleModuleMerge;
 import com.xueyi.system.authority.domain.merge.SysTenantModuleMerge;
 import com.xueyi.system.authority.manager.ISysModuleManager;
-import com.xueyi.system.authority.mapper.SysMenuMapper;
 import com.xueyi.system.authority.mapper.SysModuleMapper;
 import com.xueyi.system.authority.mapper.merge.SysRoleModuleMergeMapper;
 import com.xueyi.system.authority.mapper.merge.SysTenantModuleMergeMapper;
@@ -44,7 +36,7 @@ import static com.xueyi.system.api.constant.MergeConstants.MODULE_MENU_GROUP;
  * @author xueyi
  */
 @Component
-public class SysModuleManagerImpl extends SubBaseManagerImpl<SysModuleQuery, SysModuleDto, SysModulePo, SysModuleMapper, SysModuleConverter, SysMenuQuery, SysMenuDto, SysMenuPo, SysMenuMapper, SysMenuConverter> implements ISysModuleManager {
+public class SysModuleManagerImpl extends BaseManagerImpl<SysModuleQuery, SysModuleDto, SysModulePo, SysModuleMapper, SysModuleConverter> implements ISysModuleManager {
 
     @Autowired
     private SysTenantModuleMergeMapper tenantModuleMergeMapper;
@@ -57,7 +49,6 @@ public class SysModuleManagerImpl extends SubBaseManagerImpl<SysModuleQuery, Sys
      *
      * @return 关系对象集合
      */
-    // TODO 待删除
     protected List<SubRelation> subRelationInit() {
         return new ArrayList<SubRelation>(){{
             add(new SubRelation(SysMenuManagerImpl.class, MODULE_MENU_GROUP));
@@ -197,15 +188,4 @@ public class SysModuleManagerImpl extends SubBaseManagerImpl<SysModuleQuery, Sys
         return super.deleteByIds(idList);
     }
 
-    /**
-     * 设置主子表中子表外键值
-     */
-    @Override
-    protected void setForeignKey(LambdaQueryWrapper<SysMenuPo> queryWrapper, LambdaUpdateWrapper<SysMenuPo> updateWrapper, SysModuleDto module, Serializable key) {
-        Serializable moduleId = ObjectUtil.isNotNull(module) ? module.getId() : key;
-        if (ObjectUtil.isNotNull(queryWrapper))
-            queryWrapper.eq(SysMenuPo::getModuleId, moduleId);
-        else
-            updateWrapper.eq(SysMenuPo::getModuleId, moduleId);
-    }
 }

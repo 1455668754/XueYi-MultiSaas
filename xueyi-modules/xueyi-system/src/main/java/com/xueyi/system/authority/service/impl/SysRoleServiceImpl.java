@@ -1,9 +1,9 @@
 package com.xueyi.system.authority.service.impl;
 
-import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
@@ -43,7 +43,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleQuery, SysRoleDto
     @Override
     @DataScope(userAlias = CREATE_BY, mapperScope = {"SysRoleMapper"})
     public List<SysRoleDto> selectListScope(SysRoleQuery role) {
-        return baseManager.selectListExtra(role);
+        return baseManager.selectList(role);
     }
 
     /**

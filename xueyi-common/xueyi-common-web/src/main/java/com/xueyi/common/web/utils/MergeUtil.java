@@ -14,13 +14,44 @@ import com.xueyi.common.web.entity.domain.SubRelation;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * 主子关联工具类
+ *
+ * @author xueyi
+ */
 public class MergeUtil {
 
     /**
      * 子数据映射关联
+     *
+     * @param dto             数据对象
+     * @param subRelationList 子类关联对象集合
+     * @param DClass          数据对象Class
+     */
+    public static <D> D subRelationBuild(D dto, List<SubRelation> subRelationList, Class<D> DClass) {
+        if (CollUtil.isEmpty(subRelationList))
+            return dto;
+        for (SubRelation subRelation : subRelationList) {
+            if (ObjectUtil.hasNull(subRelation.getMainKeyField(), subRelation.getSubKeyField(), subRelation.getReceiveKeyField()))
+                initRelationField(subRelation, DClass);
+            switch (subRelation.getRelationType()) {
+                case DIRECT:
+                    directRelationBuild(dto, null, subRelation, OperateConstants.DataRow.SINGLE);
+                    break;
+                case INDIRECT:
+                    indirectRelationBuild(dto, null, subRelation, OperateConstants.DataRow.SINGLE);
+                    break;
+            }
+        }
+        return dto;
+    }
+
+    /**
+     * 集合子数据映射关联
      *
      * @param dtoList         数据对象集合
      * @param subRelationList 子类关联对象集合
@@ -34,10 +65,10 @@ public class MergeUtil {
                 initRelationField(subRelation, DClass);
             switch (subRelation.getRelationType()) {
                 case DIRECT:
-                    directRelationBuild(null, dtoList, subRelation, DClass, OperateConstants.DataRow.COLLECTION);
+                    directRelationBuild(null, dtoList, subRelation, OperateConstants.DataRow.COLLECTION);
                     break;
                 case INDIRECT:
-                    indirectRelationBuild(null, dtoList, subRelation, DClass, OperateConstants.DataRow.COLLECTION);
+                    indirectRelationBuild(null, dtoList, subRelation, OperateConstants.DataRow.COLLECTION);
                     break;
             }
         }
@@ -50,28 +81,52 @@ public class MergeUtil {
      * @param dto         数据对象
      * @param dtoList     数据对象集合
      * @param subRelation 子类关联对象
-     * @param DClass      数据对象Class
+     * @param dataRow     数据类型
      */
-    private static <D> void directRelationBuild(D dto, List<D> dtoList, SubRelation subRelation, Class<D> DClass, OperateConstants.DataRow dataRow) {
+    private static <D> void directRelationBuild(D dto, List<D> dtoList, SubRelation subRelation, OperateConstants.DataRow dataRow) {
+        TableField tableField = subRelation.getSubKeyField().getAnnotation(TableField.class);
+        String subFieldName = StrUtil.isNotEmpty(tableField.value()) ? tableField.value() : StrUtil.toUnderlineCase(subRelation.getSubKeyField().getName());
         switch (dataRow) {
             case SINGLE:
                 if (ObjectUtil.isNull(dto))
                     return;
+                try {
+                    Object value = subRelation.getMainKeyField().get(dto);
+                    SqlField singleSqlField = new SqlField(SqlConstants.OperateType.EQ, subFieldName, value instanceof String ? StrUtil.SINGLE_QUOTES + value + StrUtil.SINGLE_QUOTES : value);
+                    Class<?> fieldType = subRelation.getReceiveKeyField().getType();
+                    if (ClassUtil.isNormalClass(fieldType)) {
+                        subRelation.getReceiveKeyField().set(dto, SpringUtil.getBean(subRelation.getSubClass()).selectByField(singleSqlField));
+                    } else if (ClassUtil.isCollection(fieldType)) {
+                        subRelation.getReceiveKeyField().set(dto, SpringUtil.getBean(subRelation.getSubClass()).selectListByField(singleSqlField));
+                    } else {
+                        throw new UtilException(UtilErrorConstants.MergeUtil.RECEIVE_KEY_TYPE_ERROR.getInfo());
+                    }
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
                 break;
             case COLLECTION:
                 if (CollUtil.isEmpty(dtoList))
                     return;
-                TableField tableField = subRelation.getSubKeyField().getAnnotation(TableField.class);
-                subRelation.getMainKeyField().setAccessible(true);
                 Set<Object> findInSet = dtoList.stream().map(item -> {
                     try {
-                        return subRelation.getMainKeyField().get(item);
+                        Object value = subRelation.getMainKeyField().get(item);
+                        if (value instanceof String)
+                            return StrUtil.SINGLE_QUOTES + value + StrUtil.SINGLE_QUOTES;
+                        else
+                            return value;
                     } catch (IllegalAccessException e) {
                         throw new RuntimeException(e);
                     }
                 }).collect(Collectors.toSet());
-                SqlField sqlField = new SqlField(SqlConstants.OperateType.IN, StrUtil.isNotEmpty(tableField.value()) ? tableField.value() : StrUtil.toUnderlineCase(subRelation.getSubKeyField().getName()), findInSet);
-
+                if (CollUtil.isEmpty(findInSet))
+                    return;
+                SqlField collSqlField = new SqlField(SqlConstants.OperateType.IN, subFieldName, findInSet);
+                List<?> subList = SpringUtil.getBean(subRelation.getSubClass()).selectListByField(collSqlField);
+                if (CollUtil.isEmpty(subList))
+                    return;
+                // assemble relation
+                assembleRelationList(dtoList, subRelation, subList);
                 break;
         }
     }
@@ -82,10 +137,56 @@ public class MergeUtil {
      * @param dto         数据对象
      * @param dtoList     数据对象集合
      * @param subRelation 子类关联对象
-     * @param DClass      数据对象Class
+     * @param dataRow     数据类型
      */
-    private static <D> void indirectRelationBuild(D dto, List<D> dtoList, SubRelation subRelation, Class<D> DClass, OperateConstants.DataRow dataRow) {
+    private static <D> void indirectRelationBuild(D dto, List<D> dtoList, SubRelation subRelation, OperateConstants.DataRow dataRow) {
 
+    }
+
+    /**
+     * 组装集合关联数据
+     *
+     * @param dtoList     数据对象集合
+     * @param subRelation 子类关联对象
+     * @param subList     子数据集合
+     */
+    private static <D> void assembleRelationList(List<D> dtoList, SubRelation subRelation, List<?> subList) {
+        Class<?> fieldType = subRelation.getReceiveKeyField().getType();
+        if (ClassUtil.isNormalClass(fieldType)) {
+            Map<Object, Object> subMap = subList.stream().collect(Collectors.toMap(item -> {
+                try {
+                    return subRelation.getSubKeyField().get(item);
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+            }, item -> item));
+            dtoList.forEach(item -> {
+                try {
+                    Object subObj = subMap.get(subRelation.getMainKeyField().get(item));
+                    subRelation.getReceiveKeyField().set(item, subObj);
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        } else if (ClassUtil.isCollection(fieldType)) {
+            Map<Object, List<Object>> subMap = subList.stream().collect(Collectors.groupingBy(item -> {
+                try {
+                    return subRelation.getSubKeyField().get(item);
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+            }, Collectors.mapping(item -> item, Collectors.toList())));
+            dtoList.forEach(item -> {
+                try {
+                    List<Object> subObjList = subMap.get(subRelation.getMainKeyField().get(item));
+                    subRelation.getReceiveKeyField().set(item, subObjList);
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        } else {
+            throw new UtilException(UtilErrorConstants.MergeUtil.RECEIVE_KEY_TYPE_ERROR.getInfo());
+        }
     }
 
     /**
@@ -124,5 +225,11 @@ public class MergeUtil {
             throw new UtilException(StrUtil.format(UtilErrorConstants.MergeUtil.FIELD_NULL.getInfo(), subRelation.getGroupName(), OperateConstants.SubKeyType.MAIN_KEY.getInfo()));
         if (ObjectUtil.isNull(subRelation.getReceiveKeyField()))
             throw new UtilException(StrUtil.format(UtilErrorConstants.MergeUtil.FIELD_NULL.getInfo(), subRelation.getGroupName(), OperateConstants.SubKeyType.RECEIVE_KEY.getInfo()));
+        Class<?> fieldType = subRelation.getReceiveKeyField().getType();
+        if (!(ClassUtil.isNormalClass(fieldType) || ClassUtil.isCollection(fieldType)))
+            throw new UtilException(UtilErrorConstants.MergeUtil.RECEIVE_KEY_TYPE_ERROR.getInfo());
+        subRelation.getMainKeyField().setAccessible(true);
+        subRelation.getSubKeyField().setAccessible(true);
+        subRelation.getReceiveKeyField().setAccessible(true);
     }
 }

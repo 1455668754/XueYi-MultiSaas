@@ -1,9 +1,7 @@
 package com.xueyi.system.dict.manager;
 
-import com.xueyi.common.web.entity.manager.ISubBaseManager;
-import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
+import com.xueyi.common.web.entity.manager.IBaseManager;
 import com.xueyi.system.api.dict.domain.dto.SysDictTypeDto;
-import com.xueyi.system.api.dict.domain.query.SysDictDataQuery;
 import com.xueyi.system.api.dict.domain.query.SysDictTypeQuery;
 
 /**
@@ -11,7 +9,7 @@ import com.xueyi.system.api.dict.domain.query.SysDictTypeQuery;
  *
  * @author xueyi
  */
-public interface ISysDictTypeManager extends ISubBaseManager<SysDictTypeQuery, SysDictTypeDto, SysDictDataQuery, SysDictDataDto> {
+public interface ISysDictTypeManager extends IBaseManager<SysDictTypeQuery, SysDictTypeDto> {
 
     /**
      * 校验字典编码是否唯一

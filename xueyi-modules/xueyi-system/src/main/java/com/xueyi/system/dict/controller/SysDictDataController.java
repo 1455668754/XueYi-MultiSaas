@@ -76,8 +76,8 @@ public class SysDictDataController extends BaseController<SysDictDataQuery, SysD
     @Override
     @GetMapping(value = "/{id}")
     @RequiresPermissions(Auth.SYS_DICT_DICT)
-    public AjaxResult getInfoExtra(@PathVariable Serializable id) {
-        return super.getInfoExtra(id);
+    public AjaxResult getInfo(@PathVariable Serializable id) {
+        return super.getInfo(id);
     }
 
     /**

@@ -1,7 +1,7 @@
 package com.xueyi.system.organize.service.impl;
 
-import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.datasource.annotation.Isolate;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
@@ -57,7 +57,7 @@ public class SysPostServiceImpl extends BaseServiceImpl<SysPostQuery, SysPostDto
     @Override
     @DataScope(postAlias = "id", mapperScope = {"SysPostMapper"})
     public List<SysPostDto> selectListScope(SysPostQuery post) {
-        return baseManager.selectListExtra(post);
+        return baseManager.selectList(post);
     }
 
     /**

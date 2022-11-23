@@ -104,7 +104,7 @@ public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuQuery, SysMenuDto
     @Override
     @DataScope(userAlias = CREATE_BY, mapperScope = {"SysMenuMapper"})
     public List<SysMenuDto> selectListScope(SysMenuQuery menu) {
-        return baseManager.selectListExtra(menu);
+        return baseManager.selectList(menu);
     }
 
     /**

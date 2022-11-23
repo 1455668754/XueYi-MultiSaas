@@ -2,7 +2,7 @@ package com.xueyi.common.web.entity.domain;
 
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.xueyi.common.core.constant.basic.SqlConstants;
-import com.xueyi.common.core.web.entity.base.BaseEntity;
+import com.xueyi.common.core.web.entity.base.BasisEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -22,7 +22,7 @@ public class SqlField implements Serializable {
     private SqlConstants.OperateType operateType;
 
     /** SQL - 操作键 */
-    private SFunction<? extends BaseEntity, Object> fieldFun;
+    private SFunction<? extends BasisEntity, Object> fieldFun;
 
     /** SQL - 操作键名 */
     private String fieldStr;
@@ -33,7 +33,7 @@ public class SqlField implements Serializable {
     /** SQL - 操作集合 */
     private Collection<Object> list;
 
-    public SqlField(SqlConstants.OperateType operateType, SFunction<? extends BaseEntity, Object> fieldFun, Object object) {
+    public SqlField(SqlConstants.OperateType operateType, SFunction<? extends BasisEntity, Object> fieldFun, Object object) {
         this.operateType = operateType;
         this.fieldFun = fieldFun;
         this.object = object;
@@ -45,7 +45,7 @@ public class SqlField implements Serializable {
         this.object = object;
     }
 
-    public SqlField(SqlConstants.OperateType operateType, SFunction<? extends BaseEntity, Object> fieldFun, Collection<Object> list) {
+    public SqlField(SqlConstants.OperateType operateType, SFunction<? extends BasisEntity, Object> fieldFun, Collection<Object> list) {
         this.operateType = operateType;
         this.fieldFun = fieldFun;
         this.list = list;

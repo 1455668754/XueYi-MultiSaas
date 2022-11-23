@@ -1,10 +1,16 @@
 package com.xueyi.gen.domain.dto;
 
+import com.xueyi.common.core.annotation.SubRelation;
+import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.constant.gen.GenConstants;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.gen.domain.po.GenTablePo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.util.List;
+
+import static com.xueyi.system.api.constant.MergeConstants.GEN_TABLE_GROUP;
 
 /**
  * 业务 数据传输对象
@@ -22,6 +28,10 @@ public class GenTableDto extends GenTablePo {
 
     /** 子表信息 */
     private GenTableDto subTable;
+
+    /** 业务字段数据集合 */
+    @SubRelation(groupName = GEN_TABLE_GROUP, keyType = OperateConstants.SubKeyType.RECEIVE_KEY)
+    private List<GenTableColumnDto> subList;
 
     public static boolean isBase(String tplCategory) {
         return tplCategory != null && StrUtil.equals(GenConstants.TemplateType.BASE.getCode(), tplCategory);

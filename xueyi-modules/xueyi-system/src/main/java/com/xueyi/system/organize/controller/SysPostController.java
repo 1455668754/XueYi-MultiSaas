@@ -77,8 +77,8 @@ public class SysPostController extends BaseController<SysPostQuery, SysPostDto, 
     @Override
     @GetMapping(value = "/{id}")
     @RequiresPermissions(Auth.SYS_POST_SINGLE)
-    public AjaxResult getInfoExtra(@PathVariable Serializable id) {
-        return super.getInfoExtra(id);
+    public AjaxResult getInfo(@PathVariable Serializable id) {
+        return super.getInfo(id);
     }
 
     /**

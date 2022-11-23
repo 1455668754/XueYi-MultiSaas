@@ -1,7 +1,7 @@
 package com.xueyi.system.authority.controller;
 
-import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.validate.V_A;
@@ -13,13 +13,10 @@ import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.security.service.TokenService;
 import com.xueyi.common.security.utils.SecurityUtils;
-import com.xueyi.common.web.entity.controller.SubBaseController;
-import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
+import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
-import com.xueyi.system.api.authority.domain.query.SysMenuQuery;
 import com.xueyi.system.api.authority.domain.query.SysModuleQuery;
 import com.xueyi.system.api.model.DataScope;
-import com.xueyi.system.authority.service.ISysMenuService;
 import com.xueyi.system.authority.service.ISysModuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -36,7 +33,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/module")
-public class SysModuleController extends SubBaseController<SysModuleQuery, SysModuleDto, ISysModuleService, SysMenuQuery, SysMenuDto, ISysMenuService> {
+public class SysModuleController extends BaseController<SysModuleQuery, SysModuleDto, ISysModuleService> {
 
     @Autowired
     private TokenService tokenService;
@@ -45,12 +42,6 @@ public class SysModuleController extends SubBaseController<SysModuleQuery, SysMo
     @Override
     protected String getNodeName() {
         return "模块";
-    }
-
-    /** 定义子数据名称 */
-    @Override
-    protected String getSubName() {
-        return "菜单";
     }
 
     /**
@@ -83,8 +74,8 @@ public class SysModuleController extends SubBaseController<SysModuleQuery, SysMo
     @Override
     @GetMapping(value = "/{id}")
     @RequiresPermissions(Auth.SYS_MODULE_SINGLE)
-    public AjaxResult getInfoExtra(@PathVariable Serializable id) {
-        return super.getInfoExtra(id);
+    public AjaxResult getInfo(@PathVariable Serializable id) {
+        return super.getInfo(id);
     }
 
     /**

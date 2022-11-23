@@ -63,8 +63,8 @@ public class SysRoleController extends BaseController<SysRoleQuery, SysRoleDto, 
     @Override
     @GetMapping(value = "/{id}")
     @RequiresPermissions(Auth.SYS_ROLE_SINGLE)
-    public AjaxResult getInfoExtra(@PathVariable Serializable id) {
-        return super.getInfoExtra(id);
+    public AjaxResult getInfo(@PathVariable Serializable id) {
+        return super.getInfo(id);
     }
 
     /**

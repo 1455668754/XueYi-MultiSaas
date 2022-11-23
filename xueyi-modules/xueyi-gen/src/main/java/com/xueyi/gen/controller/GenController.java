@@ -3,6 +3,7 @@ package com.xueyi.gen.controller;
 import com.alibaba.fastjson2.JSONObject;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.ServiceConstants;
+import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.core.ConvertUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.validate.V_E;
@@ -10,12 +11,9 @@ import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.security.auth.Auth;
-import com.xueyi.common.web.entity.controller.SubBaseController;
-import com.xueyi.gen.domain.dto.GenTableColumnDto;
+import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.gen.domain.dto.GenTableDto;
-import com.xueyi.gen.domain.query.GenTableColumnQuery;
 import com.xueyi.gen.domain.query.GenTableQuery;
-import com.xueyi.gen.service.IGenTableColumnService;
 import com.xueyi.gen.service.IGenTableService;
 import org.apache.commons.io.IOUtils;
 import org.springframework.validation.annotation.Validated;
@@ -33,7 +31,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/gen")
-public class GenController extends SubBaseController<GenTableQuery, GenTableDto, IGenTableService, GenTableColumnQuery, GenTableColumnDto, IGenTableColumnService> {
+public class GenController extends BaseController<GenTableQuery, GenTableDto, IGenTableService> {
 
     /**
      * 定义节点名称
@@ -41,14 +39,6 @@ public class GenController extends SubBaseController<GenTableQuery, GenTableDto,
     @Override
     protected String getNodeName() {
         return "业务表" ;
-    }
-
-    /**
-     * 定义子数据名称
-     */
-    @Override
-    protected String getSubName() {
-        return "业务字段" ;
     }
 
     /**
@@ -85,11 +75,10 @@ public class GenController extends SubBaseController<GenTableQuery, GenTableDto,
     /**
      * 查询代码生成详细 | 包含代码生成数据
      */
-    @Override
     @GetMapping(value = "/sub/{id}")
     @RequiresPermissions(Auth.GENERATE_GEN_SINGLE)
     public AjaxResult getInfoExtra(@PathVariable Serializable id) {
-        return super.getInfoExtra(id);
+        return super.getInfo(id);
     }
 
     /**
@@ -118,9 +107,10 @@ public class GenController extends SubBaseController<GenTableQuery, GenTableDto,
     @GetMapping(value = "/column/{tableId}")
     @RequiresPermissions(Auth.GENERATE_GEN_LIST)
     public AjaxResult columnList(@PathVariable Long tableId) {
-        startPage();
-        List<GenTableColumnDto> list = baseService.selectSubByForeignKey(tableId);
-        return getDataTable(list);
+        throw new ServiceException("此处为错误，待调整！！！！");
+//        startPage();
+//        List<GenTableColumnDto> list = baseService.selectList(tableId);
+//        return getDataTable(list);
     }
 
     /**

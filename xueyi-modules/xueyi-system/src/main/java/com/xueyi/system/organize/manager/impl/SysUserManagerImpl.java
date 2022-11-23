@@ -138,7 +138,7 @@ public class SysUserManagerImpl extends BaseManagerImpl<SysUserQuery, SysUserDto
      * @return 用户对象
      */
     @Override
-    public SysUserDto selectByIdExtra(Serializable id) {
+    public SysUserDto selectById(Serializable id) {
         SysUserDto user = baseConverter.mapperDto(baseMapper.selectById(id));
         if (ObjectUtil.isNotNull(user)) {
             List<SysUserPostMerge> userPostMerges = userPostMergeMapper.selectList(

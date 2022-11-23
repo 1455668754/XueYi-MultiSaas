@@ -73,25 +73,10 @@ public abstract class BaseController<Q extends BaseEntity, D extends BaseEntity,
     }
 
     /**
-     * 查询详细 | 附加数据
-     */
-    public AjaxResult getInfoExtra(@PathVariable Serializable id) {
-        return success(baseService.selectByIdExtra(id));
-    }
-
-    /**
      * 新增
      */
     public AjaxResult add(@Validated({V_A.class}) @RequestBody D d) {
         AEHandleValidated(BaseConstants.Operate.ADD, d);
-        return toAjax(baseService.insert(d));
-    }
-
-    /**
-     * 强制新增
-     */
-    public AjaxResult addForce(@Validated({V_A.class}) @RequestBody D d) {
-        AEHandleValidated(BaseConstants.Operate.ADD_FORCE, d);
         return toAjax(baseService.insert(d));
     }
 

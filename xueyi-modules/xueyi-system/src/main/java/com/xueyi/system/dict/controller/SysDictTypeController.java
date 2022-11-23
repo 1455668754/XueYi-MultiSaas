@@ -11,12 +11,9 @@ import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.Logical;
 import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.security.auth.Auth;
-import com.xueyi.common.web.entity.controller.SubBaseController;
-import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
+import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.system.api.dict.domain.dto.SysDictTypeDto;
-import com.xueyi.system.api.dict.domain.query.SysDictDataQuery;
 import com.xueyi.system.api.dict.domain.query.SysDictTypeQuery;
-import com.xueyi.system.dict.service.ISysDictDataService;
 import com.xueyi.system.dict.service.ISysDictTypeService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -32,18 +29,12 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/dict/type")
-public class SysDictTypeController extends SubBaseController<SysDictTypeQuery, SysDictTypeDto, ISysDictTypeService, SysDictDataQuery, SysDictDataDto, ISysDictDataService> {
+public class SysDictTypeController extends BaseController<SysDictTypeQuery, SysDictTypeDto, ISysDictTypeService> {
 
     /** 定义节点名称 */
     @Override
     protected String getNodeName() {
         return "字典类型";
-    }
-
-    /** 定义子数据名称 */
-    @Override
-    protected String getSubName() {
-        return "字典数据";
     }
 
     /**
@@ -83,8 +74,8 @@ public class SysDictTypeController extends SubBaseController<SysDictTypeQuery, S
     @Override
     @GetMapping(value = "/{id}")
     @RequiresPermissions(Auth.SYS_DICT_SINGLE)
-    public AjaxResult getInfoExtra(@PathVariable Serializable id) {
-        return super.getInfoExtra(id);
+    public AjaxResult getInfo(@PathVariable Serializable id) {
+        return super.getInfo(id);
     }
 
     /**

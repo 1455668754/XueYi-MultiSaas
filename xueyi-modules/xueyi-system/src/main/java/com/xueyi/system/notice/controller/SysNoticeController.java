@@ -52,8 +52,8 @@ public class SysNoticeController extends BaseController<SysNoticeQuery, SysNotic
     @Override
     @GetMapping(value = "/{id}")
     @RequiresPermissions(Auth.SYS_NOTICE_SINGLE)
-    public AjaxResult getInfoExtra(@PathVariable Serializable id) {
-        return super.getInfoExtra(id);
+    public AjaxResult getInfo(@PathVariable Serializable id) {
+        return super.getInfo(id);
     }
 
     /**

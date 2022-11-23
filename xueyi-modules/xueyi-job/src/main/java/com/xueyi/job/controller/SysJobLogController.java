@@ -54,11 +54,10 @@ public class SysJobLogController extends BaseController<SysJobLogQuery, SysJobLo
     /**
      * 查询调度日志详细
      */
-    @Override
     @GetMapping(value = "/{id}")
     @RequiresPermissions(Auth.SCHEDULE_JOB_SINGLE)
     public AjaxResult getInfoExtra(@PathVariable Serializable id) {
-        return super.getInfoExtra(id);
+        return super.getInfo(id);
     }
 
     /**

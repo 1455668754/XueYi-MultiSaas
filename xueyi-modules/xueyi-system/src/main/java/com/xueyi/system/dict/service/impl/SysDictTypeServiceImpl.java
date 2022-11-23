@@ -5,17 +5,13 @@ import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.redis.constant.RedisConstants;
-import com.xueyi.common.web.entity.service.impl.SubBaseServiceImpl;
-import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
+import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.dict.domain.dto.SysDictTypeDto;
-import com.xueyi.system.api.dict.domain.query.SysDictDataQuery;
 import com.xueyi.system.api.dict.domain.query.SysDictTypeQuery;
 import com.xueyi.system.dict.manager.ISysDictTypeManager;
-import com.xueyi.system.dict.service.ISysDictDataService;
 import com.xueyi.system.dict.service.ISysDictTypeService;
 import org.springframework.stereotype.Service;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
@@ -25,7 +21,7 @@ import java.util.List;
  * @author xueyi
  */
 @Service
-public class SysDictTypeServiceImpl extends SubBaseServiceImpl<SysDictTypeQuery, SysDictTypeDto, ISysDictTypeManager, SysDictDataQuery, SysDictDataDto, ISysDictDataService> implements ISysDictTypeService {
+public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeQuery, SysDictTypeDto, ISysDictTypeManager> implements ISysDictTypeService {
 
     /**
      * 缓存主键命名定义
@@ -45,18 +41,6 @@ public class SysDictTypeServiceImpl extends SubBaseServiceImpl<SysDictTypeQuery,
     @Override
     public boolean checkDictCodeUnique(Long Id, String dictCode) {
         return ObjectUtil.isNotNull(baseManager.checkDictCodeUnique(ObjectUtil.isNull(Id) ? BaseConstants.NONE_ID : Id, dictCode));
-    }
-
-    /**
-     * 设置子数据的外键值
-     */
-    @Override
-    protected void setForeignKey(Collection<SysDictDataDto> dictDataList, SysDictDataDto dictData, SysDictTypeDto dictType, Serializable key) {
-        String code = ObjectUtil.isNotNull(dictType) ? dictType.getCode() : (String) key;
-        if (ObjectUtil.isNotNull(dictData))
-            dictData.setCode(code);
-        else
-            dictDataList.forEach(sub -> sub.setCode(code));
     }
 
     /**

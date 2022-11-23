@@ -1,9 +1,7 @@
 package com.xueyi.gen.manager;
 
-import com.xueyi.common.web.entity.manager.ISubBaseManager;
-import com.xueyi.gen.domain.dto.GenTableColumnDto;
+import com.xueyi.common.web.entity.manager.IBaseManager;
 import com.xueyi.gen.domain.dto.GenTableDto;
-import com.xueyi.gen.domain.query.GenTableColumnQuery;
 import com.xueyi.gen.domain.query.GenTableQuery;
 
 import java.io.Serializable;
@@ -14,7 +12,7 @@ import java.util.List;
  *
  * @author xueyi
  */
-public interface IGenTableManager extends ISubBaseManager<GenTableQuery, GenTableDto, GenTableColumnQuery, GenTableColumnDto> {
+public interface IGenTableManager extends IBaseManager<GenTableQuery, GenTableDto> {
 
     /**
      * 查询数据库列表

@@ -6,8 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.xueyi.common.core.annotation.Excel;
 import com.xueyi.common.core.utils.core.StrUtil;
-import com.xueyi.common.core.web.tenant.base.TSubBaseEntity;
-import com.xueyi.job.api.domain.dto.SysJobLogDto;
+import com.xueyi.common.core.web.tenant.base.TBaseEntity;
 import com.xueyi.job.api.utils.CronUtils;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -26,7 +25,7 @@ import static com.baomidou.mybatisplus.annotation.SqlCondition.LIKE;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName(value = "sys_job", excludeProperty = {"sort"})
-public class SysJobPo extends TSubBaseEntity<SysJobLogDto> {
+public class SysJobPo extends TBaseEntity {
 
     private static final long serialVersionUID = 1L;
 

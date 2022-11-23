@@ -25,14 +25,6 @@ public interface IBaseManager<Q extends BaseEntity, D extends BaseEntity> {
     List<D> selectList(Q query);
 
     /**
-     * 查询数据对象列表 | 附加数据
-     *
-     * @param query 数据查询对象
-     * @return 数据对象集合
-     */
-    List<D> selectListExtra(Q query);
-
-    /**
      * 根据Id集合查询数据对象列表
      *
      * @param idList Id集合
@@ -47,14 +39,6 @@ public interface IBaseManager<Q extends BaseEntity, D extends BaseEntity> {
      * @return 数据对象
      */
     D selectById(Serializable id);
-
-    /**
-     * 根据Id查询单条数据对象 | 附加数据
-     *
-     * @param id Id
-     * @return 数据对象
-     */
-    D selectByIdExtra(Serializable id);
 
     /**
      * 新增数据对象
@@ -135,6 +119,14 @@ public interface IBaseManager<Q extends BaseEntity, D extends BaseEntity> {
      * @return 结果
      */
     int updateByField(SqlField... field);
+
+    /**
+     * 根据动态SQL控制对象删除数据对象
+     *
+     * @param field 动态SQL控制对象
+     * @return 结果
+     */
+    int deleteByField(SqlField... field);
 
     /**
      * 校验名称是否唯一

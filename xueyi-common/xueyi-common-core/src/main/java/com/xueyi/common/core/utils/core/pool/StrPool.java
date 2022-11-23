@@ -10,6 +10,7 @@ public interface StrPool {
     String UNKNOWN = "unknown";
     String TRUE = "true";
     String FALSE = "false";
+    String SINGLE_QUOTES = "'";
     String PARENTHESES = "()";
     String PARENTHESES_START = "(";
     String PARENTHESES_END = ")";

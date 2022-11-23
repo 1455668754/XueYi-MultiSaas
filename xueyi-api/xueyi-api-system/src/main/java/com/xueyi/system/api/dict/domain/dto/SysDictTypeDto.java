@@ -22,7 +22,8 @@ public class SysDictTypeDto extends SysDictTypePo {
 
     private static final long serialVersionUID = 1L;
 
+    /** 字典数据 */
     @SubRelation(groupName = DICT_DATA_GROUP, keyType = OperateConstants.SubKeyType.RECEIVE_KEY)
-    private List<SysMenuDto> dataList;
+    private List<SysMenuDto> subList;
 
 }

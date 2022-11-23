@@ -60,7 +60,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserQuery, SysUserDto
     @Override
     @DataScope(userAlias = "id", mapperScope = {"SysUserMapper"})
     public List<SysUserDto> selectListScope(SysUserQuery user) {
-        return baseManager.selectListExtra(user);
+        return baseManager.selectList(user);
     }
 
     /**

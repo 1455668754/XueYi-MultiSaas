@@ -2,10 +2,8 @@ package com.xueyi.gen.service;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.xueyi.common.core.constant.basic.ServiceConstants;
-import com.xueyi.common.web.entity.service.ISubBaseService;
-import com.xueyi.gen.domain.dto.GenTableColumnDto;
+import com.xueyi.common.web.entity.service.IBaseService;
 import com.xueyi.gen.domain.dto.GenTableDto;
-import com.xueyi.gen.domain.query.GenTableColumnQuery;
 import com.xueyi.gen.domain.query.GenTableQuery;
 
 import java.util.List;
@@ -15,7 +13,7 @@ import java.util.List;
  *
  * @author xueyi
  */
-public interface IGenTableService extends ISubBaseService<GenTableQuery, GenTableDto, GenTableColumnQuery, GenTableColumnDto> {
+public interface IGenTableService extends IBaseService<GenTableQuery, GenTableDto> {
 
     /**
      * 查询据库列表

@@ -38,17 +38,6 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG ext
     }
 
     /**
-     * 查询数据对象列表 | 附加数据
-     *
-     * @param query 数据查询对象
-     * @return 数据对象集合
-     */
-    @Override
-    public List<D> selectListExtra(Q query) {
-        return baseManager.selectListExtra(query);
-    }
-
-    /**
      * 查询数据对象列表 | 数据权限 | 附加数据
      *
      * @param query 数据查询对象
@@ -56,7 +45,7 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG ext
      */
     @Override
     public List<D> selectListScope(Q query) {
-        return baseManager.selectListExtra(query);
+        return baseManager.selectList(query);
     }
 
     /**
@@ -79,17 +68,6 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG ext
     @Override
     public D selectById(Serializable id) {
         return baseManager.selectById(id);
-    }
-
-    /**
-     * 根据Id查询单条数据对象 | 附加数据
-     *
-     * @param id Id
-     * @return 数据对象
-     */
-    @Override
-    public D selectByIdExtra(Serializable id) {
-        return baseManager.selectByIdExtra(id);
     }
 
     /**

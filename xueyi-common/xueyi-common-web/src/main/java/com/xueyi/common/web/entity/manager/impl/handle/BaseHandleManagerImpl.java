@@ -2,7 +2,6 @@ package com.xueyi.common.web.entity.manager.impl.handle;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.github.pagehelper.Page;
-import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.utils.core.NumberUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.TypeUtil;
@@ -10,6 +9,7 @@ import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.core.web.entity.model.BaseConverter;
 import com.xueyi.common.web.entity.domain.SubRelation;
 import com.xueyi.common.web.entity.mapper.BaseMapper;
+import com.xueyi.common.web.utils.MergeUtil;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -132,18 +132,34 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
     }
 
     /**
-     * 查询条件附加
+     * 子数据组装
      *
-     * @param selectType   查询类型
-     * @param queryWrapper 条件构造器
-     * @param query        数据查询对象
+     * @param dtoList 数据传输对象集合
+     * @return 数据传输对象集合
      */
-    protected void SelectListQuery(BaseConstants.SelectType selectType, LambdaQueryWrapper<P> queryWrapper, Q query) {
+    protected List<D> buildSubRelation(List<D> dtoList) {
+        return MergeUtil.subRelationBuild(dtoList, getSubRelationList(), getDClass());
     }
 
-//    protected List<D> buildSubRelation(List<D> dtoList) {
-//
-//    }
+    /**
+     * 子数据组装
+     *
+     * @param dto 数据传输对象
+     * @return 数据传输对象
+     */
+    protected D buildSubRelation(D dto) {
+        return MergeUtil.subRelationBuild(dto, getSubRelationList(), getDClass());
+    }
+
+    /**
+     * 查询条件构造 | 列表查询
+     *
+     * @param query 数据查询对象
+     * @return 条件构造器
+     */
+    protected LambdaQueryWrapper<P> selectListQuery(Q query) {
+        return new LambdaQueryWrapper<>(query);
+    }
 
     /** 子类操作泛型的类型Getter */
     protected List<SubRelation> getSubRelationList() {

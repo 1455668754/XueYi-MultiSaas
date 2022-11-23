@@ -1,8 +1,8 @@
 package com.xueyi.tenant.tenant.controller;
 
+import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
-import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.validate.V_A;
@@ -64,8 +64,8 @@ public class TeStrategyController extends BaseController<TeStrategyQuery, TeStra
     @Override
     @GetMapping(value = "/{id}")
     @RequiresPermissions(Auth.TE_STRATEGY_SINGLE)
-    public AjaxResult getInfoExtra(@PathVariable Serializable id) {
-        return super.getInfoExtra(id);
+    public AjaxResult getInfo(@PathVariable Serializable id) {
+        return super.getInfo(id);
     }
 
     /**

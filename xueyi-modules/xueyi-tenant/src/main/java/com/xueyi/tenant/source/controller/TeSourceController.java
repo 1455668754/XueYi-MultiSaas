@@ -59,8 +59,8 @@ public class TeSourceController extends BaseController<TeSourceQuery, TeSourceDt
     @Override
     @GetMapping(value = "/{id}")
     @RequiresPermissions(Auth.TE_SOURCE_SINGLE)
-    public AjaxResult getInfoExtra(@PathVariable Serializable id) {
-        return super.getInfoExtra(id);
+    public AjaxResult getInfo(@PathVariable Serializable id) {
+        return super.getInfo(id);
     }
 
     /**

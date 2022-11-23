@@ -1,10 +1,10 @@
 package com.xueyi.system.organize.service.impl;
 
-import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.datasource.annotation.Isolate;
-import com.xueyi.common.web.entity.service.impl.SubTreeServiceImpl;
+import com.xueyi.common.web.entity.service.impl.TreeServiceImpl;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 import com.xueyi.system.api.organize.domain.query.SysDeptQuery;
@@ -27,7 +27,7 @@ import java.util.List;
  */
 @Service
 @Isolate
-public class SysDeptServiceImpl extends SubTreeServiceImpl<SysDeptQuery, SysDeptDto, ISysDeptManager, SysPostQuery, SysPostDto, ISysPostService> implements ISysDeptService {
+public class SysDeptServiceImpl extends TreeServiceImpl<SysDeptQuery, SysDeptDto, ISysDeptManager> implements ISysDeptService {
 
     /**
      * 新增部门 | 内部调用
@@ -50,7 +50,7 @@ public class SysDeptServiceImpl extends SubTreeServiceImpl<SysDeptQuery, SysDept
     @Override
     @DataScope(deptAlias = "id", mapperScope = {"SysDeptMapper"})
     public List<SysDeptDto> selectListScope(SysDeptQuery dept) {
-        return baseManager.selectListExtra(dept);
+        return baseManager.selectList(dept);
     }
 
     /**
@@ -65,15 +65,4 @@ public class SysDeptServiceImpl extends SubTreeServiceImpl<SysDeptQuery, SysDept
         return ObjectUtil.isNotNull(baseManager.checkDeptCodeUnique(ObjectUtil.isNull(Id) ? BaseConstants.NONE_ID : Id, code));
     }
 
-    /**
-     * 设置子数据的外键值
-     */
-    @Override
-    protected void setForeignKey(Collection<SysPostDto> postList, SysPostDto post, SysDeptDto dept, Serializable key) {
-        Long deptId = ObjectUtil.isNotNull(dept) ? dept.getId() : (Long) key;
-        if (ObjectUtil.isNotNull(post))
-            post.setDeptId(deptId);
-        else
-            postList.forEach(sub -> sub.setDeptId(deptId));
-    }
 }

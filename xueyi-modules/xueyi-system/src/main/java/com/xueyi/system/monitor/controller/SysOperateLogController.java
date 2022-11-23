@@ -58,8 +58,8 @@ public class SysOperateLogController extends BaseController<SysOperateLogQuery, 
     @Override
     @GetMapping(value = "/{id}")
     @RequiresPermissions(Auth.SYS_OPERATE_LOG_SINGLE)
-    public AjaxResult getInfoExtra(@PathVariable Serializable id) {
-        return super.getInfoExtra(id);
+    public AjaxResult getInfo(@PathVariable Serializable id) {
+        return super.getInfo(id);
     }
 
     /**

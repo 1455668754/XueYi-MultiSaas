@@ -1,25 +1,21 @@
 package com.xueyi.gen.manager.impl;
 
-import com.xueyi.common.core.utils.core.ObjectUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.xueyi.common.web.entity.manager.impl.SubBaseManagerImpl;
-import com.xueyi.gen.domain.dto.GenTableColumnDto;
+import com.xueyi.common.web.entity.domain.SubRelation;
+import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.gen.domain.dto.GenTableDto;
-import com.xueyi.gen.domain.model.GenTableColumnConverter;
 import com.xueyi.gen.domain.model.GenTableConverter;
-import com.xueyi.gen.domain.po.GenTableColumnPo;
 import com.xueyi.gen.domain.po.GenTablePo;
-import com.xueyi.gen.domain.query.GenTableColumnQuery;
 import com.xueyi.gen.domain.query.GenTableQuery;
 import com.xueyi.gen.manager.IGenTableManager;
-import com.xueyi.gen.mapper.GenTableColumnMapper;
 import com.xueyi.gen.mapper.GenTableMapper;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+
+import static com.xueyi.system.api.constant.MergeConstants.GEN_TABLE_GROUP;
 
 /**
  * 业务管理 数据封装层处理
@@ -27,7 +23,18 @@ import java.util.List;
  * @author xueyi
  */
 @Component
-public class GenTableManagerImpl extends SubBaseManagerImpl<GenTableQuery, GenTableDto, GenTablePo, GenTableMapper, GenTableConverter, GenTableColumnQuery, GenTableColumnDto, GenTableColumnPo, GenTableColumnMapper, GenTableColumnConverter> implements IGenTableManager {
+public class GenTableManagerImpl extends BaseManagerImpl<GenTableQuery, GenTableDto, GenTablePo, GenTableMapper, GenTableConverter> implements IGenTableManager {
+
+    /**
+     * 初始化子类关联
+     *
+     * @return 关系对象集合
+     */
+    protected List<SubRelation> subRelationInit() {
+        return new ArrayList<SubRelation>(){{
+            add(new SubRelation(GenTableColumnManagerImpl.class, GEN_TABLE_GROUP));
+        }};
+    }
 
     /**
      * 查询数据库列表
@@ -77,15 +84,4 @@ public class GenTableManagerImpl extends SubBaseManagerImpl<GenTableQuery, GenTa
                         .eq(GenTablePo::getId, id));
     }
 
-    /**
-     * 设置主子表中子表外键值
-     */
-    @Override
-    protected void setForeignKey(LambdaQueryWrapper<GenTableColumnPo> queryWrapper, LambdaUpdateWrapper<GenTableColumnPo> updateWrapper, GenTableDto table, Serializable id) {
-        Serializable Id = ObjectUtil.isNotNull(table) ? table.getId() : id;
-        if (ObjectUtil.isNotNull(queryWrapper))
-            queryWrapper.eq(GenTableColumnPo::getTableId, Id);
-        else
-            updateWrapper.eq(GenTableColumnPo::getTableId, Id);
-    }
 }

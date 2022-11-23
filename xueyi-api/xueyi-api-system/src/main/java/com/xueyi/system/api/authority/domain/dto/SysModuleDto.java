@@ -21,6 +21,7 @@ public class SysModuleDto extends SysModulePo {
 
     private static final long serialVersionUID = 1L;
 
+    /** 菜单数据 */
     @SubRelation(groupName = MODULE_MENU_GROUP, keyType = OperateConstants.SubKeyType.RECEIVE_KEY)
-    private List<SysMenuDto> menuList;
+    private List<SysMenuDto> subList;
 }

@@ -1,11 +1,11 @@
 package com.xueyi.system.authority.controller;
 
-import com.xueyi.common.core.utils.core.CollUtil;
-import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.ServiceConstants;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.core.utils.TreeUtil;
+import com.xueyi.common.core.utils.core.CollUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.result.R;
@@ -129,8 +129,8 @@ public class SysMenuController extends TreeController<SysMenuQuery, SysMenuDto, 
     @Override
     @GetMapping(value = "/{id}")
     @RequiresPermissions(Auth.SYS_MENU_SINGLE)
-    public AjaxResult getInfoExtra(@PathVariable Serializable id) {
-        return super.getInfoExtra(id);
+    public AjaxResult getInfo(@PathVariable Serializable id) {
+        return super.getInfo(id);
     }
 
     /**

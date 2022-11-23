@@ -12,14 +12,11 @@ import com.xueyi.common.security.annotation.InnerAuth;
 import com.xueyi.common.security.annotation.Logical;
 import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.security.auth.Auth;
-import com.xueyi.common.web.entity.controller.SubTreeController;
+import com.xueyi.common.web.entity.controller.TreeController;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
-import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 import com.xueyi.system.api.organize.domain.query.SysDeptQuery;
-import com.xueyi.system.api.organize.domain.query.SysPostQuery;
 import com.xueyi.system.organize.service.ISysDeptService;
 import com.xueyi.system.organize.service.ISysOrganizeService;
-import com.xueyi.system.organize.service.ISysPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +32,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/dept")
-public class SysDeptController extends SubTreeController<SysDeptQuery, SysDeptDto, ISysDeptService, SysPostQuery, SysPostDto, ISysPostService> {
+public class SysDeptController extends TreeController<SysDeptQuery, SysDeptDto, ISysDeptService> {
 
     @Autowired
     private ISysOrganizeService organizeService;
@@ -44,12 +41,6 @@ public class SysDeptController extends SubTreeController<SysDeptQuery, SysDeptDt
     @Override
     protected String getNodeName() {
         return "部门";
-    }
-
-    /** 定义子数据名称 */
-    @Override
-    protected String getSubName() {
-        return "岗位";
     }
 
     /**
@@ -86,8 +77,8 @@ public class SysDeptController extends SubTreeController<SysDeptQuery, SysDeptDt
     @Override
     @GetMapping(value = "/{id}")
     @RequiresPermissions(Auth.SYS_DEPT_SINGLE)
-    public AjaxResult getInfoExtra(@PathVariable Serializable id) {
-        return super.getInfoExtra(id);
+    public AjaxResult getInfo(@PathVariable Serializable id) {
+        return super.getInfo(id);
     }
 
     /**

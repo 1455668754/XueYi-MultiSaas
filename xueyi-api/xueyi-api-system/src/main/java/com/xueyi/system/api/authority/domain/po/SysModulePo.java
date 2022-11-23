@@ -1,8 +1,7 @@
 package com.xueyi.system.api.authority.domain.po;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.xueyi.common.core.web.tenant.common.TCSubBaseEntity;
-import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
+import com.xueyi.common.core.web.tenant.common.TCBaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -14,7 +13,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("sys_module")
-public class SysModulePo extends TCSubBaseEntity<SysMenuDto> {
+public class SysModulePo extends TCBaseEntity {
 
     private static final long serialVersionUID = 1L;
 

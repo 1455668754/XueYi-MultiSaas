@@ -1,9 +1,7 @@
 package com.xueyi.system.authority.service;
 
-import com.xueyi.common.web.entity.service.ISubBaseService;
-import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
+import com.xueyi.common.web.entity.service.IBaseService;
 import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
-import com.xueyi.system.api.authority.domain.query.SysMenuQuery;
 import com.xueyi.system.api.authority.domain.query.SysModuleQuery;
 
 import java.util.List;
@@ -14,7 +12,7 @@ import java.util.Set;
  *
  * @author xueyi
  */
-public interface ISysModuleService extends ISubBaseService<SysModuleQuery, SysModuleDto, SysMenuQuery, SysMenuDto> {
+public interface ISysModuleService extends IBaseService<SysModuleQuery, SysModuleDto> {
 
     /**
      * 当前用户首页可展示的模块路由

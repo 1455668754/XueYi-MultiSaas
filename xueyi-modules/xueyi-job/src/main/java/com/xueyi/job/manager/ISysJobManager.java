@@ -1,9 +1,7 @@
 package com.xueyi.job.manager;
 
-import com.xueyi.common.web.entity.manager.ISubBaseManager;
+import com.xueyi.common.web.entity.manager.IBaseManager;
 import com.xueyi.job.api.domain.dto.SysJobDto;
-import com.xueyi.job.api.domain.dto.SysJobLogDto;
-import com.xueyi.job.api.domain.query.SysJobLogQuery;
 import com.xueyi.job.api.domain.query.SysJobQuery;
 
 import java.util.List;
@@ -13,7 +11,7 @@ import java.util.List;
  *
  * @author xueyi
  */
-public interface ISysJobManager extends ISubBaseManager<SysJobQuery, SysJobDto, SysJobLogQuery, SysJobLogDto> {
+public interface ISysJobManager extends IBaseManager<SysJobQuery, SysJobDto> {
 
     /**
      * 项目启动时

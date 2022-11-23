@@ -2,10 +2,9 @@ package com.xueyi.system.api.organize.domain.po;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.xueyi.common.core.web.tenant.base.TSubTreeEntity;
+import com.xueyi.common.core.web.tenant.base.TTreeEntity;
 import com.xueyi.common.core.xss.Xss;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
-import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -15,7 +14,6 @@ import javax.validation.constraints.Size;
 
 import static com.baomidou.mybatisplus.annotation.SqlCondition.LIKE;
 
-
 /**
  * 部门 持久化对象
  *
@@ -24,7 +22,7 @@ import static com.baomidou.mybatisplus.annotation.SqlCondition.LIKE;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("sys_dept")
-public class SysDeptPo extends TSubTreeEntity<SysDeptDto, SysPostDto> {
+public class SysDeptPo extends TTreeEntity<SysDeptDto> {
 
     private static final long serialVersionUID = 1L;
 

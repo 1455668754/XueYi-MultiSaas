@@ -1,9 +1,8 @@
 package com.xueyi.system.monitor.manager.impl;
 
-import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.xueyi.common.core.constant.basic.BaseConstants;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.system.api.log.domain.dto.SysLoginLogDto;
 import com.xueyi.system.api.log.domain.model.SysLoginLogConverter;
@@ -30,15 +29,17 @@ public class SysLoginLogManagerImpl extends BaseManagerImpl<SysLoginLogQuery, Sy
     }
 
     /**
-     * 查询条件附加
+     * 查询条件构造 | 列表查询
      *
-     * @param selectType   查询类型
-     * @param queryWrapper 条件构造器
-     * @param loginLog     数据查询对象
+     * @param loginLog 数据查询对象
      */
     @Override
-    protected void SelectListQuery(BaseConstants.SelectType selectType, LambdaQueryWrapper<SysLoginLogPo> queryWrapper, SysLoginLogQuery loginLog) {
-        if (ObjectUtil.isAllNotEmpty(loginLog.getAccessTimeStart(), loginLog.getAccessTimeEnd()))
-            queryWrapper.between(SysLoginLogPo::getAccessTime, loginLog.getAccessTimeStart(), loginLog.getAccessTimeEnd());
+    protected LambdaQueryWrapper<SysLoginLogPo> selectListQuery(SysLoginLogQuery loginLog) {
+        return Wrappers.<SysLoginLogPo>query(loginLog).lambda()
+                .func(i -> {
+                    if (ObjectUtil.isAllNotEmpty(loginLog.getAccessTimeStart(), loginLog.getAccessTimeEnd())) {
+                        i.between(SysLoginLogPo::getAccessTime, loginLog.getAccessTimeStart(), loginLog.getAccessTimeEnd());
+                    }
+                });
     }
 }

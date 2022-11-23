@@ -9,16 +9,16 @@ import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.basic.ServiceConstants;
 import com.xueyi.common.core.constant.gen.GenConstants.OptionField;
 import com.xueyi.common.core.constant.gen.GenConstants.TemplateType;
+import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.core.CharsetUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.result.R;
-import com.xueyi.common.web.entity.service.impl.SubBaseServiceImpl;
+import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.gen.config.GenConfig;
 import com.xueyi.gen.domain.dto.GenTableColumnDto;
 import com.xueyi.gen.domain.dto.GenTableDto;
-import com.xueyi.gen.domain.query.GenTableColumnQuery;
 import com.xueyi.gen.domain.query.GenTableQuery;
 import com.xueyi.gen.manager.IGenTableManager;
 import com.xueyi.gen.service.IGenTableColumnService;
@@ -38,9 +38,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -51,12 +53,15 @@ import java.util.zip.ZipOutputStream;
  * @author xueyi
  */
 @Service
-public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableQuery, GenTableDto, IGenTableManager, GenTableColumnQuery, GenTableColumnDto, IGenTableColumnService> implements IGenTableService {
+public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTableDto, IGenTableManager> implements IGenTableService {
 
     private static final Logger log = LoggerFactory.getLogger(GenTableServiceImpl.class);
 
     @Autowired
     private RemoteMenuService remoteMenuService;
+
+    @Autowired
+    private IGenTableColumnService subService;
 
     /**
      * 获取后端代码生成地址
@@ -131,7 +136,7 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableQuery, GenTa
                     List<GenTableColumnDto> columnList = subService.selectDbTableColumnsByName(table.getName());
                     columnList.forEach(column -> GenUtils.initColumnField(column, table));
                     subService.insertBatch(columnList);
-                    columnList = baseManager.selectSubByForeignKey(table.getId());
+//                    columnList = baseManager.selectSubByForeignKey(table.getId());
                     GenUtils.initTableOptions(columnList, table);
                     baseManager.update(table);
                 }
@@ -139,6 +144,8 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableQuery, GenTa
         } catch (Exception e) {
             AjaxResult.warn(StrUtil.format("导入失败：{}", e.getMessage()));
         }
+        // TODO
+        throw new ServiceException("此处进行了注释，无法正常使用，待修正");
     }
 
     /**
@@ -390,7 +397,7 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableQuery, GenTa
      * @return 业务表对象
      */
     private GenTableDto initTable(Long id) {
-        GenTableDto table = baseManager.selectByIdExtra(id);
+        GenTableDto table = baseManager.selectById(id);
         JSONObject optionsObj = JSON.parseObject(table.getOptions());
         // 设置列信息
         switch (TemplateType.getByCode(table.getTplCategory())) {
@@ -437,7 +444,7 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableQuery, GenTa
      * @param optionsObj 其它生成选项信息
      */
     private void setSubTable(GenTableDto table, JSONObject optionsObj) {
-        table.setSubTable(baseManager.selectByIdExtra(optionsObj.getLong(OptionField.SUB_TABLE_ID.getCode())));
+        table.setSubTable(baseManager.selectById(optionsObj.getLong(OptionField.SUB_TABLE_ID.getCode())));
         JSONObject subOptionsObj = JSON.parseObject(table.getSubTable().getOptions());
         setBaseTable(table.getSubTable(), subOptionsObj);
         if (StrUtil.equalsAny(table.getSubTable().getTplCategory(), TemplateType.TREE.getCode(), TemplateType.SUB_TREE.getCode()))
@@ -462,13 +469,4 @@ public class GenTableServiceImpl extends SubBaseServiceImpl<GenTableQuery, GenTa
         table.setOptions(optionsObj.toString());
     }
 
-    /**
-     * 设置子数据的外键值
-     */
-    @Override
-    protected void setForeignKey(Collection<GenTableColumnDto> columnList, GenTableColumnDto column, GenTableDto table, Serializable id) {
-        Long tableId = ObjectUtil.isNotNull(table) ? table.getId() : (Long) id;
-        if (ObjectUtil.isNotNull(column)) column.setTableId(tableId);
-        else columnList.forEach(sub -> sub.setTableId(tableId));
-    }
 }

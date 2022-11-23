@@ -6,8 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.common.core.annotation.Excel;
 import com.xueyi.common.core.annotation.SubRelation;
 import com.xueyi.common.core.constant.basic.OperateConstants;
-import com.xueyi.common.core.web.entity.base.SubBaseEntity;
-import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
+import com.xueyi.common.core.web.entity.base.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -26,7 +25,7 @@ import static com.xueyi.system.api.constant.MergeConstants.DICT_DATA_GROUP;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName(value = "sys_dict_type", excludeProperty = {"delFlag"})
-public class SysDictTypePo extends SubBaseEntity<SysDictDataDto> {
+public class SysDictTypePo extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 

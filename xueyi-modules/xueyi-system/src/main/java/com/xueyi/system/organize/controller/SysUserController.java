@@ -1,8 +1,8 @@
 package com.xueyi.system.organize.controller;
 
+import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
-import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.result.R;
@@ -100,8 +100,8 @@ public class SysUserController extends BaseController<SysUserQuery, SysUserDto, 
     @Override
     @GetMapping(value = "/{id}")
     @RequiresPermissions(Auth.SYS_USER_SINGLE)
-    public AjaxResult getInfoExtra(@PathVariable Serializable id) {
-        return super.getInfoExtra(id);
+    public AjaxResult getInfo(@PathVariable Serializable id) {
+        return super.getInfo(id);
     }
 
     /**

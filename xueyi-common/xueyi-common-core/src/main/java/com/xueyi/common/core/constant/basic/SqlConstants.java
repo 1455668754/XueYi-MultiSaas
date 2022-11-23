@@ -30,25 +30,26 @@ public class SqlConstants {
     @AllArgsConstructor
     public enum OperateType {
 
-        SET("set", "赋值"),
-        EQ("eq", "等于 ="),
-        NE("ne", "不等于 <>"),
-        GT("gt", "大于 >"),
-        GE("ge", "大于等于 >="),
-        LT("lt", "小于 <"),
-        LE("le", "小于等于 <="),
-        BETWEEN("between", "BETWEEN 值1 AND 值2"),
-        NOT_BETWEEN("notBetween", "NOT BETWEEN 值1 AND 值2"),
-        LIKE("like", "LIKE '%值%'"),
-        NOT_LIKE("notLike", "NOT LIKE '%值%'"),
-        LIKE_LEFT("likeLeft", "LIKE '%值'"),
-        LIKE_RIGHT("likeRight", "LIKE '值%'"),
-        IS_NULL("isNull", "字段 IS NULL"),
-        IS_NOT_NULL("isNotNull", "字段 IS NOT NULL"),
-        IN("in", "字段 IN (value.get(0), value.get(1), ...)"),
-        NOT_IN("notIn", "NOT IN (value.get(0), value.get(1), ...)");
+        SET("set", " {} = {} ", "赋值"),
+        EQ("eq", " {} = {} ", "等于 ="),
+        NE("ne", " {} <> {} ", "不等于 <>"),
+        GT("gt", " {} > {} ", "大于 >"),
+        GE("ge", " {} >= {} ", "大于等于 >="),
+        LT("lt", " {} < {} ", "小于 <"),
+        LE("le", " {} <= {} ", "小于等于 <="),
+        BETWEEN("between", " {} BETWEEN {} AND {} ", "BETWEEN 值1 AND 值2"),
+        NOT_BETWEEN("notBetween", " {} NOT BETWEEN {} AND {} ", "NOT BETWEEN 值1 AND 值2"),
+        LIKE("like", " {} LIKE '%{}%' ", "LIKE '%值%'"),
+        NOT_LIKE("notLike", " {} NOT LIKE '%{}%' ", "NOT LIKE '%值%'"),
+        LIKE_LEFT("likeLeft", " {} LIKE '%{}' ", "LIKE '%值'"),
+        LIKE_RIGHT("likeRight", " {} LIKE '{}%' ", "LIKE '值%'"),
+        IS_NULL("isNull", " {} IS NULL ", "字段 IS NULL"),
+        IS_NOT_NULL("isNotNull", " {} IS NOT NULL ", "字段 IS NOT NULL"),
+        IN("in", " {} IN ({}) ", "字段 IN (value.get(0), value.get(1), ...)"),
+        NOT_IN("notIn", " {} NOT IN ({}) ", "NOT IN (value.get(0), value.get(1), ...)");
 
         private final String code;
+        private final String sql;
         private final String info;
 
     }

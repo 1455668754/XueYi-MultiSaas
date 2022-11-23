@@ -1,6 +1,6 @@
 package com.xueyi.system.api.authority.domain.model;
 
-import com.xueyi.common.core.web.entity.model.SubBaseConverter;
+import com.xueyi.common.core.web.entity.model.BaseConverter;
 import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
 import com.xueyi.system.api.authority.domain.po.SysModulePo;
 import com.xueyi.system.api.authority.domain.query.SysModuleQuery;
@@ -12,5 +12,5 @@ import org.mapstruct.Mapper;
  * @author xueyi
  */
 @Mapper(componentModel = "spring")
-public interface SysModuleConverter extends SubBaseConverter<SysModuleQuery, SysModuleDto, SysModulePo> {
+public interface SysModuleConverter extends BaseConverter<SysModuleQuery, SysModuleDto, SysModulePo> {
 }
