@@ -10,6 +10,16 @@ import java.util.Collection;
 public class ClassUtil extends cn.hutool.core.util.ClassUtil {
 
     /**
+     * 判断返回值类型是否是数组类型
+     *
+     * @param fieldType 类型
+     * @return 结果
+     */
+    public static boolean isArray(Class<?> fieldType) {
+        return fieldType.isArray();
+    }
+
+    /**
      * 判断返回值类型是否是集合类型
      *
      * @param fieldType 类型

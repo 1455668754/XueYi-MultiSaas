@@ -51,7 +51,7 @@ public class SysModuleManagerImpl extends BaseManagerImpl<SysModuleQuery, SysMod
      */
     protected List<SubRelation> subRelationInit() {
         return new ArrayList<SubRelation>(){{
-            add(new SubRelation(SysMenuManagerImpl.class, MODULE_MENU_GROUP));
+            add(new SubRelation(MODULE_MENU_GROUP, SysMenuManagerImpl.class));
         }};
     }
 

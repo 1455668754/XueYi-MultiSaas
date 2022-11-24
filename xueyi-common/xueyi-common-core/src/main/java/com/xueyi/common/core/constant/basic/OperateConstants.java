@@ -45,7 +45,10 @@ public class OperateConstants {
 
         MAIN_KEY("main_key", "主关联键"),
         SUB_KEY("sub_key", "子关联键"),
-        RECEIVE_KEY("receive_key", "值接收键");
+        RECEIVE_KEY("receive_key", "值接收键"),
+        MERGE_MAIN_KEY("merge_main_key", "间接关联 - 关联主键"),
+        MERGE_SUB_KEY("merge_sub_key", "间接关联 - 关联子键"),
+        RECEIVE_ARR_KEY("receive_arr_key", "间接关联 - 关联子键值接收键");
 
         private final String code;
         private final String info;
@@ -55,11 +58,23 @@ public class OperateConstants {
         }
 
         public boolean isSubKey() {
-            return StrUtil.equalsAny(name(), SUB_KEY.name());
+            return StrUtil.equals(name(), SUB_KEY.name());
         }
 
         public boolean isReceiveKey() {
-            return StrUtil.equalsAny(name(), RECEIVE_KEY.name());
+            return StrUtil.equals(name(), RECEIVE_KEY.name());
+        }
+
+        public boolean isMergeMainKey() {
+            return StrUtil.equals(name(), MERGE_MAIN_KEY.name());
+        }
+
+        public boolean isMergeSubKey() {
+            return StrUtil.equals(name(), MERGE_SUB_KEY.name());
+        }
+
+        public boolean isReceiveArrKey() {
+            return StrUtil.equals(name(), RECEIVE_ARR_KEY.name());
         }
     }
 
@@ -98,6 +113,14 @@ public class OperateConstants {
 
         private final String code;
         private final String info;
+
+        public boolean isDirect() {
+            return StrUtil.equals(name(), DIRECT.name());
+        }
+
+        public boolean isIndirect() {
+            return StrUtil.equals(name(), INDIRECT.name());
+        }
     }
 
     /** 主子关联 - 删除校验 */

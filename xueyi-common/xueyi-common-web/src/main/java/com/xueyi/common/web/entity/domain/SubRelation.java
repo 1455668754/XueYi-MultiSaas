@@ -2,9 +2,11 @@ package com.xueyi.common.web.entity.domain;
 
 import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
+import com.xueyi.common.core.web.entity.base.BasisEntity;
 import com.xueyi.common.core.web.entity.model.BaseConverter;
 import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.common.web.entity.mapper.BaseMapper;
+import com.xueyi.common.web.entity.mapper.BasicMapper;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -40,24 +42,45 @@ public class SubRelation {
     /** 值接收键字段 */
     private Field receiveKeyField;
 
-    public SubRelation(Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> subClass, String groupName) {
-        this.subClass = subClass;
+    /** 关联类class */
+    private Class<? extends BasicMapper<? extends BasisEntity>> mergeClass;
+
+    /** 间接关联 - 关联主键字段 */
+    private Field mergeMainKeyField;
+
+    /** 间接关联 - 关联子键字段 */
+    private Field mergeSubKeyField;
+
+    /** 间接关联 - 关联子键值接收键字段 */
+    private Field receiveArrKeyField;
+
+    public SubRelation(String groupName, Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> subClass) {
         this.groupName = groupName;
+        this.subClass = subClass;
         this.relationType = OperateConstants.SubTableType.DIRECT;
         this.deleteType = OperateConstants.SubDeleteType.NORMAL;
     }
 
-    public SubRelation(Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> subClass, String groupName, OperateConstants.SubTableType relationType) {
-        this.subClass = subClass;
+    public SubRelation(String groupName, Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> subClass, OperateConstants.SubDeleteType deleteType) {
         this.groupName = groupName;
-        this.relationType = relationType;
+        this.subClass = subClass;
+        this.relationType = OperateConstants.SubTableType.DIRECT;
+        this.deleteType = deleteType;
+    }
+
+    public SubRelation(String groupName, Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> subClass, Class<? extends BasicMapper<? extends BasisEntity>> mergeClass) {
+        this.groupName = groupName;
+        this.subClass = subClass;
+        this.mergeClass = mergeClass;
+        this.relationType = OperateConstants.SubTableType.INDIRECT;
         this.deleteType = OperateConstants.SubDeleteType.NORMAL;
     }
 
-    public SubRelation(Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> subClass, String groupName, OperateConstants.SubTableType relationType, OperateConstants.SubDeleteType deleteType) {
-        this.subClass = subClass;
+    public SubRelation(String groupName, Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> subClass, Class<? extends BasicMapper<? extends BasisEntity>> mergeClass, OperateConstants.SubDeleteType deleteType) {
         this.groupName = groupName;
-        this.relationType = relationType;
+        this.subClass = subClass;
+        this.mergeClass = mergeClass;
+        this.relationType = OperateConstants.SubTableType.INDIRECT;
         this.deleteType = deleteType;
     }
 }

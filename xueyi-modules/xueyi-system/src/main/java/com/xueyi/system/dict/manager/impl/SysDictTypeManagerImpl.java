@@ -32,7 +32,7 @@ public class SysDictTypeManagerImpl extends BaseManagerImpl<SysDictTypeQuery, Sy
      */
     protected List<SubRelation> subRelationInit() {
         return new ArrayList<SubRelation>(){{
-            add(new SubRelation(SysDictDataManagerImpl.class, DICT_DATA_GROUP));
+            add(new SubRelation(DICT_DATA_GROUP, SysDictDataManagerImpl.class));
         }};
     }
 

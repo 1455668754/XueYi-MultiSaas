@@ -32,7 +32,7 @@ public class GenTableManagerImpl extends BaseManagerImpl<GenTableQuery, GenTable
      */
     protected List<SubRelation> subRelationInit() {
         return new ArrayList<SubRelation>(){{
-            add(new SubRelation(GenTableColumnManagerImpl.class, GEN_TABLE_GROUP));
+            add(new SubRelation(GEN_TABLE_GROUP, GenTableColumnManagerImpl.class));
         }};
     }
 

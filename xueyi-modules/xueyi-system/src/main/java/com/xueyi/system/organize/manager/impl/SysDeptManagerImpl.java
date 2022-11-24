@@ -46,7 +46,7 @@ public class SysDeptManagerImpl extends TreeManagerImpl<SysDeptQuery, SysDeptDto
      */
     protected List<SubRelation> subRelationInit() {
         return new ArrayList<SubRelation>(){{
-            add(new SubRelation(SysPostManagerImpl.class, DEPT_POST_GROUP));
+            add(new SubRelation(DEPT_POST_GROUP, SysPostManagerImpl.class));
         }};
     }
 
