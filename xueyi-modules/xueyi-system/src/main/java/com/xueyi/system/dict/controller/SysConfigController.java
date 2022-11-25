@@ -48,6 +48,17 @@ public class SysConfigController extends BaseController<SysConfigQuery, SysConfi
     }
 
     /**
+     * 刷新参数缓存
+     */
+    @Override
+    @RequiresPermissions(Auth.SYS_CONFIG_EDIT)
+    @Log(title = "参数管理", businessType = BusinessType.REFRESH)
+    @GetMapping("/refresh")
+    public AjaxResult refreshCache() {
+        return super.refreshCache();
+    }
+
+    /**
      * 查询参数值
      */
     @GetMapping(value = "/innerCode/{configCode}")
@@ -147,19 +158,6 @@ public class SysConfigController extends BaseController<SysConfigQuery, SysConfi
     @Log(title = "参数管理", businessType = BusinessType.DELETE_FORCE)
     public AjaxResult batchRemoveForce(@PathVariable List<Long> idList) {
         return super.batchRemoveForce(idList);
-    }
-
-
-    /**
-     * 刷新参数缓存
-     */
-    @Override
-    @RequiresPermissions(Auth.SYS_CONFIG_EDIT)
-    @Log(title = "参数管理", businessType = BusinessType.REFRESH)
-    @GetMapping("/refresh")
-    public AjaxResult refreshCache() {
-        baseService.resetConfigCache();
-        return success();
     }
 
     /**

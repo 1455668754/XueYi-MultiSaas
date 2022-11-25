@@ -39,6 +39,9 @@ public class SubRelation {
     /** 子关联键字段 */
     private Field subKeyField;
 
+    /** 子关联键 - 数据库字段名 */
+    private String subFieldSqlName;
+
     /** 值接收键字段 */
     private Field receiveKeyField;
 
@@ -47,6 +50,9 @@ public class SubRelation {
 
     /** 间接关联 - 关联主键字段 */
     private Field mergeMainKeyField;
+
+    /** 间接关联 - 关联主键 - 数据库字段名 */
+    private String mergeMainFieldSqlName;
 
     /** 间接关联 - 关联子键字段 */
     private Field mergeSubKeyField;
