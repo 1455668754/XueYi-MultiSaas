@@ -4,6 +4,7 @@ import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
+import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.datasource.utils.DSUtils;
@@ -41,6 +42,27 @@ public class TeSourceController extends BaseController<TeSourceQuery, TeSourceDt
     @Override
     protected String getNodeName() {
         return "数据源";
+    }
+
+    /**
+     * 刷新数据源缓存 | 内部调用
+     */
+    @Override
+    @Log(title = "数据源管理", businessType = BusinessType.REFRESH)
+    @GetMapping("/inner/refresh")
+    public R<Boolean> refreshCacheInner() {
+        return super.refreshCacheInner();
+    }
+
+    /**
+     * 刷新数据源缓存
+     */
+    @Override
+    @RequiresPermissions(Auth.TE_SOURCE_EDIT)
+    @Log(title = "数据源管理", businessType = BusinessType.REFRESH)
+    @GetMapping("/refresh")
+    public AjaxResult refreshCache() {
+        return super.refreshCache();
     }
 
     /**

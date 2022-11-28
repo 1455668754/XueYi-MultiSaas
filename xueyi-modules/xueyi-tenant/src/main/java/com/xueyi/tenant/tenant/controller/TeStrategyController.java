@@ -5,6 +5,7 @@ import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
+import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
@@ -28,7 +29,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 数据源策略管理 业务处理
+ * 源策略管理 业务处理
  *
  * @author xueyi
  */
@@ -48,6 +49,27 @@ public class TeStrategyController extends BaseController<TeStrategyQuery, TeStra
         return "数据源策略";
     }
 
+    /**
+     * 刷新源策略管理缓存 | 内部调用
+     */
+    @Override
+    @Log(title = "数据源管理", businessType = BusinessType.REFRESH)
+    @GetMapping("/inner/refresh")
+    public R<Boolean> refreshCacheInner() {
+        return super.refreshCacheInner();
+    }
+
+    /**
+     * 刷新源策略管理缓存
+     */
+    @Override
+    @RequiresPermissions(Auth.TE_STRATEGY_EDIT)
+    @Log(title = "数据源管理", businessType = BusinessType.REFRESH)
+    @GetMapping("/refresh")
+    public AjaxResult refreshCache() {
+        return super.refreshCache();
+    }
+    
     /**
      * 查询数据源策略列表
      */
@@ -84,7 +106,7 @@ public class TeStrategyController extends BaseController<TeStrategyQuery, TeStra
     @Override
     @PostMapping
     @RequiresPermissions(Auth.TE_STRATEGY_ADD)
-    @Log(title = "数据源策略管理", businessType = BusinessType.INSERT)
+    @Log(title = "源策略管理", businessType = BusinessType.INSERT)
     public AjaxResult add(@Validated({V_A.class}) @RequestBody TeStrategyDto strategy) {
         return super.add(strategy);
     }
@@ -95,7 +117,7 @@ public class TeStrategyController extends BaseController<TeStrategyQuery, TeStra
     @Override
     @PutMapping
     @RequiresPermissions(Auth.TE_STRATEGY_EDIT)
-    @Log(title = "数据源策略管理", businessType = BusinessType.UPDATE)
+    @Log(title = "源策略管理", businessType = BusinessType.UPDATE)
     public AjaxResult edit(@Validated({V_E.class}) @RequestBody TeStrategyDto strategy) {
         return super.edit(strategy);
     }
@@ -106,7 +128,7 @@ public class TeStrategyController extends BaseController<TeStrategyQuery, TeStra
     @Override
     @PutMapping("/status")
     @RequiresPermissions(value = {Auth.TE_STRATEGY_EDIT, Auth.TE_STRATEGY_ES}, logical = Logical.OR)
-    @Log(title = "数据源策略管理", businessType = BusinessType.UPDATE_STATUS)
+    @Log(title = "源策略管理", businessType = BusinessType.UPDATE_STATUS)
     public AjaxResult editStatus(@RequestBody TeStrategyDto strategy) {
         return super.editStatus(strategy);
     }
@@ -117,7 +139,7 @@ public class TeStrategyController extends BaseController<TeStrategyQuery, TeStra
     @Override
     @DeleteMapping("/batch/{idList}")
     @RequiresPermissions(Auth.TE_STRATEGY_DEL)
-    @Log(title = "数据源策略管理", businessType = BusinessType.DELETE)
+    @Log(title = "源策略管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);
     }

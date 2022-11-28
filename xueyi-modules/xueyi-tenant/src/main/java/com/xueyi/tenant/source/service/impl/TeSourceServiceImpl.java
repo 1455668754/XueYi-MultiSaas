@@ -1,5 +1,6 @@
 package com.xueyi.tenant.source.service.impl;
 
+import com.xueyi.common.cache.constant.CacheConstants;
 import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.IdUtil;
@@ -21,6 +22,14 @@ import java.util.Collection;
  */
 @Service
 public class TeSourceServiceImpl extends BaseServiceImpl<TeSourceQuery, TeSourceDto, TeSourceManagerImpl> implements ITeSourceService {
+
+    /**
+     * 缓存主键命名定义
+     */
+    @Override
+    protected String getCacheKey() {
+        return CacheConstants.CacheType.TE_SOURCE_KEY.getCode();
+    }
 
     /**
      * 校验数据源是否为默认数据源

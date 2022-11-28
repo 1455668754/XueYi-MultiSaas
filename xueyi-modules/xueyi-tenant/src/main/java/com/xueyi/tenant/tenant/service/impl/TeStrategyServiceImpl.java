@@ -1,7 +1,8 @@
 package com.xueyi.tenant.tenant.service.impl;
 
-import com.xueyi.common.core.utils.core.ObjectUtil;
+import com.xueyi.common.cache.constant.CacheConstants;
 import com.xueyi.common.core.constant.basic.DictConstants;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.tenant.api.tenant.domain.dto.TeStrategyDto;
@@ -17,6 +18,14 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class TeStrategyServiceImpl extends BaseServiceImpl<TeStrategyQuery, TeStrategyDto, ITeStrategyManager> implements ITeStrategyService {
+
+    /**
+     * 缓存主键命名定义
+     */
+    @Override
+    protected String getCacheKey() {
+        return CacheConstants.CacheType.TE_STRATEGY_KEY.getCode();
+    }
 
     /**
      * 校验数据源是否被使用

@@ -19,7 +19,9 @@ public class CacheConstants {
     public enum CacheType {
 
         SYS_DICT_KEY("system:dict", "字典"),
-        SYS_CONFIG_KEY("system:config", "参数");
+        SYS_CONFIG_KEY("system:config", "参数"),
+        TE_STRATEGY_KEY("system:strategy", "源策略组"),
+        TE_SOURCE_KEY("system:source", "数据源");
 
         private final String code;
         private final String info;

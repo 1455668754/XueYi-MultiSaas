@@ -25,12 +25,6 @@ public class CacheConstants {
     /** 源策略组管理 cache key */
     public static final String DATA_SOURCE_KEY = "system:source";
 
-    /** 字典管理 cache key */
-    public static final String SYS_DICT_KEY = "system:dict";
-
-    /** 参数管理 cache key */
-    public static final String SYS_CONFIG_KEY = "system:config";
-
     /** 登录缓存类型 */
     @Getter
     @AllArgsConstructor
