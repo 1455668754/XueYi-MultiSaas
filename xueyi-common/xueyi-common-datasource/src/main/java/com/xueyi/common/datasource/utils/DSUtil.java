@@ -30,7 +30,7 @@ import java.util.List;
 public class DSUtil {
 
     /**
-     * 添加一个数据源到数据源库中
+     * 数据源动态加载
      *
      * @param sourceName 数据源编码
      */
@@ -114,7 +114,6 @@ public class DSUtil {
         try {
             Class.forName(source.getDriverClassName());
         } catch (Exception e) {
-            // TODO: handle exception
             e.printStackTrace();
             throw new UtilException("数据源驱动加载失败，请检查驱动信息！");
         }
@@ -122,7 +121,6 @@ public class DSUtil {
             Connection dbConn = DriverManager.getConnection(source.getUrlPrepend() + source.getUrlAppend(), source.getUserName(), source.getPassword());
             dbConn.close();
         } catch (Exception e) {
-            // TODO: handle exception
             e.printStackTrace();
             throw new UtilException("数据源连接失败，请检查连接信息！");
         }
@@ -138,7 +136,6 @@ public class DSUtil {
         try {
             Class.forName(source.getDriverClassName());
         } catch (Exception e) {
-            // TODO: handle exception
             e.printStackTrace();
             throw new ServiceException("数据源驱动加载失败");
         }
@@ -157,7 +154,6 @@ public class DSUtil {
             }
             dbConn.close();
         } catch (Exception e) {
-            // TODO: handle exception
             e.printStackTrace();
             throw new ServiceException(error);
         }
