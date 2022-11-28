@@ -10,6 +10,7 @@ import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
+import com.xueyi.common.security.annotation.InnerAuth;
 import com.xueyi.common.security.annotation.Logical;
 import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.security.auth.Auth;
@@ -53,6 +54,7 @@ public class TeStrategyController extends BaseController<TeStrategyQuery, TeStra
      * 刷新源策略管理缓存 | 内部调用
      */
     @Override
+    @InnerAuth
     @Log(title = "数据源管理", businessType = BusinessType.REFRESH)
     @GetMapping("/inner/refresh")
     public R<Boolean> refreshCacheInner() {

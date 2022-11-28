@@ -1,8 +1,8 @@
 package com.xueyi.system.api.model.base;
 
 import com.xueyi.common.core.constant.basic.TenantConstants;
+import com.xueyi.system.api.model.Source;
 import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
-import com.xueyi.system.api.source.domain.Source;
 import lombok.Data;
 
 import java.io.Serializable;

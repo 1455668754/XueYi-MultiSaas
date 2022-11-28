@@ -1,7 +1,5 @@
-package com.xueyi.system.api.source.domain;
+package com.xueyi.system.api.model;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,13 +11,14 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName(value = "te_strategy", excludeProperty = {"name", "sort", "remark", "createBy", "createTime", "updateBy", "updateTime"})
 public class Source extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
+    /** 源策略Id */
+    Long sourceId;
+
     /** 主写源 */
-    @TableField("source_slave")
     String master;
 
 }

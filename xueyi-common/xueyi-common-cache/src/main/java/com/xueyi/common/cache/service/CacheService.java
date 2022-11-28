@@ -4,11 +4,14 @@ import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.xueyi.common.cache.constant.CacheConstants;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
+import com.xueyi.common.core.exception.UtilException;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.SpringUtil;
 import com.xueyi.common.redis.service.RedisService;
 import com.xueyi.system.api.dict.feign.RemoteConfigService;
 import com.xueyi.system.api.dict.feign.RemoteDictService;
+import com.xueyi.tenant.api.source.feign.RemoteSourceService;
+import com.xueyi.tenant.api.tenant.feign.RemoteStrategyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -127,11 +130,20 @@ public class CacheService {
      */
     private void refreshCache(CacheConstants.CacheType cacheType) {
         switch (cacheType) {
-            // KBD配置：一级渠道
             case SYS_DICT_KEY:
                 SpringUtil.getBean(RemoteDictService.class).refreshCache(SecurityConstants.INNER);
+                break;
             case SYS_CONFIG_KEY:
                 SpringUtil.getBean(RemoteConfigService.class).refreshCache(SecurityConstants.INNER);
+                break;
+            case TE_STRATEGY_KEY:
+                SpringUtil.getBean(RemoteStrategyService.class).refreshCache(SecurityConstants.INNER);
+                break;
+            case TE_SOURCE_KEY:
+                SpringUtil.getBean(RemoteSourceService.class).refreshCache(SecurityConstants.INNER);
+                break;
+            default:
+                throw new UtilException("缓存更新方法不存在，请先定义！");
         }
     }
 

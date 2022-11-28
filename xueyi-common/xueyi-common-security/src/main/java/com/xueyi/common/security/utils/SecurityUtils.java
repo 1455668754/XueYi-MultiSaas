@@ -7,9 +7,9 @@ import com.xueyi.common.security.service.TokenService;
 import com.xueyi.common.security.utils.base.BaseSecurityUtils;
 import com.xueyi.system.api.model.DataScope;
 import com.xueyi.system.api.model.LoginUser;
+import com.xueyi.system.api.model.Source;
 import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
-import com.xueyi.system.api.source.domain.Source;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**

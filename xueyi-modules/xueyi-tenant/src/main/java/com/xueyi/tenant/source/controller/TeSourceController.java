@@ -7,9 +7,10 @@ import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
-import com.xueyi.common.datasource.utils.DSUtils;
+import com.xueyi.common.datasource.utils.DSUtil;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
+import com.xueyi.common.security.annotation.InnerAuth;
 import com.xueyi.common.security.annotation.Logical;
 import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.security.auth.Auth;
@@ -48,8 +49,9 @@ public class TeSourceController extends BaseController<TeSourceQuery, TeSourceDt
      * 刷新数据源缓存 | 内部调用
      */
     @Override
-    @Log(title = "数据源管理", businessType = BusinessType.REFRESH)
+    @InnerAuth
     @GetMapping("/inner/refresh")
+    @Log(title = "数据源管理", businessType = BusinessType.REFRESH)
     public R<Boolean> refreshCacheInner() {
         return super.refreshCacheInner();
     }
@@ -100,7 +102,7 @@ public class TeSourceController extends BaseController<TeSourceQuery, TeSourceDt
      */
     @PostMapping("/connection")
     public AjaxResult connection(@Validated @RequestBody TeSourceDto source) {
-        DSUtils.testSlaveDs(source);
+        DSUtil.testSlaveDs(source);
         return success();
     }
 
@@ -162,7 +164,7 @@ public class TeSourceController extends BaseController<TeSourceQuery, TeSourceDt
      */
     @Override
     protected void AEHandleValidated(BaseConstants.Operate operate, TeSourceDto source) {
-        DSUtils.testSlaveDs(source);
+        DSUtil.testSlaveDs(source);
         if (baseService.checkNameUnique(source.getId(), source.getName()))
             warn(StrUtil.format("{}{}{}失败，{}名称已存在", operate.getInfo(), getNodeName(), source.getName(), getNodeName()));
     }

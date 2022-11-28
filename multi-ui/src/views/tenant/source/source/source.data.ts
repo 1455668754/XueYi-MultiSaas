@@ -132,7 +132,7 @@ export const formSchema: FormSchema[] = [
   },
   {
     label: '用户名',
-    field: 'username',
+    field: 'userName',
     component: 'Input',
     required: true,
     colProps: { span: 12 },
@@ -198,7 +198,7 @@ export const detailSchema: DescItem[] = [
   },
   {
     label: '用户名',
-    field: 'username',
+    field: 'userName',
     span: 8,
   },
   {

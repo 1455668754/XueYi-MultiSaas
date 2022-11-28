@@ -1,14 +1,16 @@
 package com.xueyi.common.datasource.utils;
 
-import cn.hutool.core.bean.BeanUtil;
-import com.xueyi.common.core.utils.core.CollUtil;
 import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
 import com.baomidou.dynamic.datasource.creator.DefaultDataSourceCreator;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DataSourceProperty;
 import com.baomidou.dynamic.datasource.toolkit.DynamicDataSourceContextHolder;
+import com.xueyi.common.cache.utils.SourceUtil;
 import com.xueyi.common.core.constant.basic.TenantConstants;
 import com.xueyi.common.core.exception.ServiceException;
+import com.xueyi.common.core.exception.UtilException;
+import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.SpringUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.tenant.api.source.domain.dto.TeSourceDto;
 
 import javax.sql.DataSource;
@@ -25,7 +27,22 @@ import java.util.List;
  *
  * @author xueyi
  */
-public class DSUtils {
+public class DSUtil {
+
+    /**
+     * 添加一个数据源到数据源库中
+     *
+     * @param sourceName 数据源编码
+     */
+    public static String loadDs(String sourceName) {
+        if(StrUtil.isEmpty(sourceName))
+            throw new UtilException("数据源不存在！");
+        else if(checkHasDs(sourceName))
+            return sourceName;
+        TeSourceDto source = SourceUtil.getTeSourceCache(sourceName);
+        addDs(source);
+        return sourceName;
+    }
 
     /**
      * 添加一个数据源到数据源库中
@@ -36,14 +53,17 @@ public class DSUtils {
         try {
             DefaultDataSourceCreator dataSourceCreator = SpringUtil.getBean(DefaultDataSourceCreator.class);
             DataSourceProperty dataSourceProperty = new DataSourceProperty();
-            BeanUtil.copyProperties(source, dataSourceProperty);
+            dataSourceProperty.setDriverClassName(source.getDriverClassName());
+            dataSourceProperty.setUrl(source.getUrlPrepend() + source.getUrlAppend());
+            dataSourceProperty.setUsername(source.getUserName());
+            dataSourceProperty.setPassword(source.getPassword());
             DataSource dataSource = SpringUtil.getBean(DataSource.class);
             DynamicRoutingDataSource ds = (DynamicRoutingDataSource) dataSource;
             dataSource = dataSourceCreator.createDataSource(dataSourceProperty);
             ds.addDataSource(source.getSlave(), dataSource);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new ServiceException("数据源添加失败");
+            throw new UtilException("数据源添加失败!");
         }
     }
 
@@ -58,7 +78,7 @@ public class DSUtils {
             ds.removeDataSource(slave);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new ServiceException("数据源删除失败");
+            throw new UtilException("数据源删除失败!");
         }
     }
 
@@ -71,22 +91,19 @@ public class DSUtils {
     }
 
     /**
+     * 是否存在指定数据源
+     */
+    public static boolean checkHasDs(String slave) {
+        DynamicRoutingDataSource ds = (DynamicRoutingDataSource) SpringUtil.getBean(DataSource.class);
+        return ds.getDataSources().containsKey(slave);
+    }
+
+    /**
      * 获取当前线程数据源名称
      */
     public static String getNowDsName() {
         return DynamicDataSourceContextHolder.peek();
     }
-
-//    /**
-//     * 异步同步数据源到数据源库
-//     *
-//     * @param source 数据源对象
-//     */
-//    public static void syncDs(TeSourceDto source) {
-//        ProducerService producerService = SpringUtil.getBean(ProducerService.class);
-//        Message message = new Message(IdUtils.randomUUID(), source);
-//        producerService.sendMsg(message, MessageConstant.EXCHANGE_SOURCE, MessageConstant.ROUTING_KEY_SOURCE);
-//    }
 
     /**
      * 测试数据源是否可连接
@@ -99,15 +116,15 @@ public class DSUtils {
         } catch (Exception e) {
             // TODO: handle exception
             e.printStackTrace();
-            throw new ServiceException("数据源驱动加载失败，请检查驱动信息！");
+            throw new UtilException("数据源驱动加载失败，请检查驱动信息！");
         }
         try {
-            Connection dbConn = DriverManager.getConnection(source.getUrlPrepend() + source.getUrlAppend(), source.getUsername(), source.getPassword());
+            Connection dbConn = DriverManager.getConnection(source.getUrlPrepend() + source.getUrlAppend(), source.getUserName(), source.getPassword());
             dbConn.close();
         } catch (Exception e) {
             // TODO: handle exception
             e.printStackTrace();
-            throw new ServiceException("数据源连接失败，请检查连接信息！");
+            throw new UtilException("数据源连接失败，请检查连接信息！");
         }
     }
 
@@ -120,13 +137,13 @@ public class DSUtils {
         String error = "数据源连接失败，请检查连接信息！";
         try {
             Class.forName(source.getDriverClassName());
-        }catch (Exception e) {
+        } catch (Exception e) {
             // TODO: handle exception
             e.printStackTrace();
             throw new ServiceException("数据源驱动加载失败");
         }
         try {
-            Connection dbConn= DriverManager.getConnection(source.getUrlPrepend()+source.getUrlAppend(),source.getUsername(),source.getPassword());
+            Connection dbConn = DriverManager.getConnection(source.getUrlPrepend() + source.getUrlAppend(), source.getUserName(), source.getPassword());
             PreparedStatement statement = dbConn.prepareStatement("select table_name from information_schema.tables where table_schema = (select database())");
             ResultSet resultSet = statement.executeQuery();
             List<String> tableNameList = new ArrayList<>();
@@ -134,12 +151,12 @@ public class DSUtils {
                 tableNameList.add(resultSet.getString("table_name"));
             List<String> slaveTable = new ArrayList<>(Arrays.asList(TenantConstants.SLAVE_TABLE));
             slaveTable.removeAll(tableNameList);
-            if(CollUtil.isNotEmpty(slaveTable)){
+            if (CollUtil.isNotEmpty(slaveTable)) {
                 error = "请连接包含子库数据表信息的数据源！";
                 throw new ServiceException(error);
             }
             dbConn.close();
-        }catch (Exception e) {
+        } catch (Exception e) {
             // TODO: handle exception
             e.printStackTrace();
             throw new ServiceException(error);

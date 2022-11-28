@@ -70,7 +70,7 @@ create table te_source (
   driver_class_name		    varchar(200)	    not null	                            comment '驱动',
   url_prepend	            varchar(200)	    not null	                            comment '连接地址',
   url_append	            varchar(200)	    not null default ''	                    comment '连接参数',
-  username	                varchar(100) 	    not null	                            comment '用户名',
+  user_name	                varchar(100) 	    not null	                            comment '用户名',
   password	                varchar(100) 	    not null default ''	                    comment '密码',
   sort                      int unsigned        not null default 0                      comment '显示顺序',
   status                    char(1)             not null default '0'                    comment '状态（0正常 1停用）',
@@ -87,7 +87,7 @@ create table te_source (
 -- ----------------------------
 -- 初始化-数据源表数据 | 这条数据为我的基础库，实际使用时调整成自己的库即可
 -- ----------------------------
-insert into te_source(id, name, is_default, slave, driver_class_name, url_prepend, url_append, username, password)
+insert into te_source(id, name, is_default, slave, driver_class_name, url_prepend, url_append, user_name, password)
 values (1, '注册数据源', 'Y', 'slave', 'com.mysql.cj.jdbc.Driver', 'jdbc:mysql://localhost:3306/xy-cloud1', '?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8', 'root', 'password');
 
 -- ----------------------------

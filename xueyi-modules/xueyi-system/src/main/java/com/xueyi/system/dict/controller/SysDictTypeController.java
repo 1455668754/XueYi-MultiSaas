@@ -8,6 +8,7 @@ import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
+import com.xueyi.common.security.annotation.InnerAuth;
 import com.xueyi.common.security.annotation.Logical;
 import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.security.auth.Auth;
@@ -41,8 +42,9 @@ public class SysDictTypeController extends BaseController<SysDictTypeQuery, SysD
      * 刷新字典缓存 | 内部调用
      */
     @Override
-    @Log(title = "字典类型", businessType = BusinessType.REFRESH)
+    @InnerAuth
     @GetMapping("/inner/refresh")
+    @Log(title = "字典类型", businessType = BusinessType.REFRESH)
     public R<Boolean> refreshCacheInner() {
         return super.refreshCacheInner();
     }

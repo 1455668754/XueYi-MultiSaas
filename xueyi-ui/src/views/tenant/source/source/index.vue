@@ -156,8 +156,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="用户名" prop="username">
-              <el-input v-model="form.username" placeholder="请输入用户名" />
+            <el-form-item label="用户名" prop="userName">
+              <el-input v-model="form.userName" placeholder="请输入用户名" />
             </el-form-item>
           </el-col>
           <el-col :span="24">
@@ -214,16 +214,16 @@
 
 <script>
 import {
-  listSourceApi,
-  getSourceApi,
   addSourceApi,
-  editSourceApi,
+  connectionSourceApi,
   delSourceApi,
-  connectionSourceApi
+  editSourceApi,
+  getSourceApi,
+  listSourceApi
 } from '@/api/tenant/source/source'
-import { SourceAuth } from '@auth/tenant'
-import { DRIVER_CLASSNAME, URL_APPEND, URL_PREPEND } from '@enums/tenant'
-import { DicSortEnum, DicStatusEnum, IconEnum } from '@enums'
+import {SourceAuth} from '@auth/tenant'
+import {DRIVER_CLASSNAME, URL_APPEND, URL_PREPEND} from '@enums/tenant'
+import {DicSortEnum, DicStatusEnum, IconEnum} from '@enums'
 
 export default {
   name: 'SourceManagement',
@@ -292,7 +292,7 @@ export default {
         urlPrepend: [
           { required: true, message: '连接地址不能为空', trigger: 'blur' }
         ],
-        username: [
+        userName: [
           { required: true, message: '用户名不能为空', trigger: 'blur' }
         ],
         password: [
@@ -338,7 +338,7 @@ export default {
         driverClassName: DRIVER_CLASSNAME,
         urlPrepend: URL_PREPEND,
         urlAppend: URL_APPEND,
-        username: undefined,
+        userName: undefined,
         password: undefined,
         sort: DicSortEnum.ZERO,
         status: DicStatusEnum.NORMAL,

@@ -30,7 +30,7 @@ public class TeSourcePo extends BaseEntity {
     protected String urlAppend;
 
     /** 用户名 */
-    protected String username;
+    protected String userName;
 
     /** 密码 */
     protected String password;
