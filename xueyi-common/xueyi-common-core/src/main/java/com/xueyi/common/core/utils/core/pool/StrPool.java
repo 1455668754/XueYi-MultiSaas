@@ -14,4 +14,6 @@ public interface StrPool {
     String PARENTHESES = "()";
     String PARENTHESES_START = "(";
     String PARENTHESES_END = ")";
+    String DELIM = "{}";
+    String BRACKET = "[]";
 }

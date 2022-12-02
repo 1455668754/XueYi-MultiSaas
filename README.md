@@ -60,9 +60,10 @@ com.xueyi
 ├── xueyi-auth            // 认证中心 [9200]
 ├── xueyi-api             // 接口模块
 │       ├── xueyi-api-system                          // 系统接口
-│       ├── xueyi-api-tenant                          // 租管接口
+│       ├── xueyi-api-tenant                          // 租户接口
 │       └── xueyi-api-job                             // 调度接口
 ├── xueyi-common          // 通用模块
+│       ├── xueyi-common-cache                        // 缓存管理
 │       ├── xueyi-common-core                         // 核心模块
 │       ├── xueyi-common-datascope                    // 权限范围
 │       ├── xueyi-common-datasource                   // 多数据源
@@ -70,7 +71,7 @@ com.xueyi
 │       ├── xueyi-common-redis                        // 缓存服务
 │       ├── xueyi-common-security                     // 安全模块
 │       ├── xueyi-common-swagger                      // 系统接口
-│       └── xueyi-common-web                          // 基类封装
+│       └── xueyi-common-web                          // 租户核心
 ├── xueyi-modules         // 业务模块
 │       ├── xueyi-file                                // 文件服务 [9300]
 │       ├── xueyi-gen                                 // 代码生成 [9400]

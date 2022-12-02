@@ -650,6 +650,9 @@ public class ExcelUtil<T> {
             if (StrUtil.startWithAny(cellValue, FORMULA_STR)) {
                 cellValue = RegExUtils.replaceFirst(cellValue, FORMULA_REGEX_STR, "\t$0");
             }
+            if (value instanceof Collection && StrUtil.equals(StrUtil.BRACKET, cellValue)) {
+                cellValue = StrUtil.EMPTY;
+            }
             cell.setCellValue(ObjectUtil.isNull(cellValue) ? attr.defaultValue() : cellValue + attr.suffix());
         } else if (ColumnType.NUMERIC == attr.cellType()) {
             if (ObjectUtil.isNotNull(value)) {
