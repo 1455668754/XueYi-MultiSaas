@@ -2,6 +2,7 @@ package com.xueyi.common.core.web.entity.base;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -55,6 +56,7 @@ public class BaseEntity extends BasisEntity {
     protected LocalDateTime updateTime;
 
     /** 删除标志 */
+    @JsonIgnore
     @TableLogic
     @TableField(select = false)
     protected Long delFlag;
