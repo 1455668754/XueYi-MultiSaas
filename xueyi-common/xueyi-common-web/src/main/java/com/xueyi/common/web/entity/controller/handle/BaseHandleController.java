@@ -38,23 +38,13 @@ public abstract class BaseHandleController<Q extends BaseEntity, D extends BaseE
     protected abstract String getNodeName();
 
     /**
-     * 前置校验 （强制）增加/修改
+     * 前置校验 增加/修改
      * 必须满足内容
      *
      * @param operate 操作类型
      * @param d       数据对象
      */
-    protected void AEHandleValidated(BaseConstants.Operate operate, D d) {
-    }
-
-    /**
-     * 前置校验 （强制）修改状态
-     * 必须满足内容
-     *
-     * @param operate 操作类型
-     * @param d       数据对象
-     */
-    protected void ESHandleValidated(BaseConstants.Operate operate, D d) {
+    protected void AEHandle(BaseConstants.Operate operate, D d) {
     }
 
     /**
@@ -64,7 +54,7 @@ public abstract class BaseHandleController<Q extends BaseEntity, D extends BaseE
      * @param operate 操作类型
      * @param idList  Id集合
      */
-    protected void RHandleValidated(BaseConstants.Operate operate, List<Long> idList) {
+    protected void RHandle(BaseConstants.Operate operate, List<Long> idList) {
     }
 
     /**
@@ -74,7 +64,7 @@ public abstract class BaseHandleController<Q extends BaseEntity, D extends BaseE
      * @see com.xueyi.common.web.entity.controller.BaseController#batchRemove(List)
      * @see com.xueyi.common.web.entity.controller.BaseController#batchRemoveForce(List)
      */
-    protected void RHandleEmptyValidated(List<Long> idList) {
+    protected void RHandleEmpty(List<Long> idList) {
         if (CollUtil.isEmpty(idList))
             warn(StrUtil.format("无待删除{}！", getNodeName()));
     }

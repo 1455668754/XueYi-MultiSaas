@@ -168,7 +168,7 @@ public class SysDeptController extends TreeController<SysDeptQuery, SysDeptDto, 
      * 前置校验 （强制）增加/修改
      */
     @Override
-    protected void AEHandleValidated(BaseConstants.Operate operate, SysDeptDto dept) {
+    protected void AEHandle(BaseConstants.Operate operate, SysDeptDto dept) {
         if (baseService.checkDeptCodeUnique(dept.getId(), dept.getCode()))
             warn(StrUtil.format("{}{}{}失败，部门编码已存在", operate.getInfo(), getNodeName(), dept.getName()));
         else if (baseService.checkNameUnique(dept.getId(), dept.getParentId(), dept.getName()))

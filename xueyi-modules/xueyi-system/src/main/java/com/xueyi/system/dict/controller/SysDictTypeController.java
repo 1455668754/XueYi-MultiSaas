@@ -159,7 +159,7 @@ public class SysDictTypeController extends BaseController<SysDictTypeQuery, SysD
      * 前置校验 （强制）增加/修改
      */
     @Override
-    protected void AEHandleValidated(BaseConstants.Operate operate, SysDictTypeDto dictType) {
+    protected void AEHandle(BaseConstants.Operate operate, SysDictTypeDto dictType) {
         if (baseService.checkDictCodeUnique(dictType.getId(), dictType.getCode()))
             warn(StrUtil.format("{}{}{}失败，字典编码已存在", operate.getInfo(), getNodeName(), dictType.getName()));
     }

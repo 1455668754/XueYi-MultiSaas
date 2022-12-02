@@ -146,7 +146,7 @@ public class SysModuleController extends BaseController<SysModuleQuery, SysModul
      * 新增/修改 前置校验
      */
     @Override
-    protected void AEHandleValidated(BaseConstants.Operate operate, SysModuleDto module) {
+    protected void AEHandle(BaseConstants.Operate operate, SysModuleDto module) {
         if (baseService.checkNameUnique(module.getId(), module.getName()))
             warn(StrUtil.format("{}{}{}失败，{}名称已存在！", operate.getInfo(), getNodeName(), module.getName(), getNodeName()));
         if (operate.isAdd() && SecurityUtils.isNotAdminTenant() && module.isCommon())

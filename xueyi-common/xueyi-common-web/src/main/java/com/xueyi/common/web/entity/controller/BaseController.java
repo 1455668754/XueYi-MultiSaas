@@ -76,7 +76,7 @@ public abstract class BaseController<Q extends BaseEntity, D extends BaseEntity,
      * 新增
      */
     public AjaxResult add(@Validated({V_A.class}) @RequestBody D d) {
-        AEHandleValidated(BaseConstants.Operate.ADD, d);
+        AEHandle(BaseConstants.Operate.ADD, d);
         return toAjax(baseService.insert(d));
     }
 
@@ -84,7 +84,7 @@ public abstract class BaseController<Q extends BaseEntity, D extends BaseEntity,
      * 修改
      */
     public AjaxResult edit(@Validated({V_E.class}) @RequestBody D d) {
-        AEHandleValidated(BaseConstants.Operate.EDIT, d);
+        AEHandle(BaseConstants.Operate.EDIT, d);
         return toAjax(baseService.update(d));
     }
 
@@ -92,7 +92,7 @@ public abstract class BaseController<Q extends BaseEntity, D extends BaseEntity,
      * 强制修改
      */
     public AjaxResult editForce(@Validated({V_E.class}) @RequestBody D d) {
-        AEHandleValidated(BaseConstants.Operate.EDIT_FORCE, d);
+        AEHandle(BaseConstants.Operate.EDIT_FORCE, d);
         return toAjax(baseService.update(d));
     }
 
@@ -100,29 +100,29 @@ public abstract class BaseController<Q extends BaseEntity, D extends BaseEntity,
      * 修改状态
      */
     public AjaxResult editStatus(@RequestBody D d) {
-        ESHandleValidated(BaseConstants.Operate.EDIT_STATUS, d);
+        AEHandle(BaseConstants.Operate.EDIT_STATUS, d);
         return toAjax(baseService.updateStatus(d));
     }
 
     /**
      * 批量删除
      *
-     * @see #RHandleEmptyValidated (List)  基类 空校验
+     * @see #RHandleEmpty (List)  基类 空校验
      */
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
-        RHandleEmptyValidated(idList);
-        RHandleValidated(BaseConstants.Operate.DELETE, idList);
+        RHandleEmpty(idList);
+        RHandle(BaseConstants.Operate.DELETE, idList);
         return toAjax(baseService.deleteByIds(idList));
     }
 
     /**
      * 强制批量删除
      *
-     * @see #RHandleEmptyValidated (List)  基类 空校验
+     * @see #RHandleEmpty (List)  基类 空校验
      */
     public AjaxResult batchRemoveForce(@PathVariable List<Long> idList) {
-        RHandleEmptyValidated(idList);
-        RHandleValidated(BaseConstants.Operate.DELETE_FORCE, idList);
+        RHandleEmpty(idList);
+        RHandle(BaseConstants.Operate.DELETE_FORCE, idList);
         return toAjax(baseService.deleteByIds(idList));
     }
 

@@ -166,7 +166,7 @@ public class SysConfigController extends BaseController<SysConfigQuery, SysConfi
      * 前置校验 （强制）增加/修改
      */
     @Override
-    protected void AEHandleValidated(BaseConstants.Operate operate, SysConfigDto config) {
+    protected void AEHandle(BaseConstants.Operate operate, SysConfigDto config) {
         if (baseService.checkConfigCodeUnique(config.getId(), config.getCode()))
             warn(StrUtil.format("{}{}{}失败，参数编码已存在", operate.getInfo(), getNodeName(), config.getName()));
     }
@@ -177,7 +177,7 @@ public class SysConfigController extends BaseController<SysConfigQuery, SysConfi
      * @param idList Id集合
      */
     @Override
-    protected void RHandleValidated(BaseConstants.Operate operate, List<Long> idList) {
+    protected void RHandle(BaseConstants.Operate operate, List<Long> idList) {
         if (operate.isDelete()) {
             int size = idList.size();
             // remove oneself or admin

@@ -53,7 +53,7 @@ public abstract class TreeController<Q extends TreeEntity<D>, D extends TreeEnti
      */
     @Override
     public AjaxResult add(@Validated({V_A.class}) @RequestBody D d) {
-        AEHandleValidated(BaseConstants.Operate.ADD, d);
+        AEHandle(BaseConstants.Operate.ADD, d);
         AHandleTreeStatusValidated(d);
         return toAjax(baseService.insert(d));
     }
@@ -67,7 +67,7 @@ public abstract class TreeController<Q extends TreeEntity<D>, D extends TreeEnti
      */
     @Override
     public AjaxResult edit(@Validated({V_E.class}) @RequestBody D d) {
-        AEHandleValidated(BaseConstants.Operate.EDIT, d);
+        AEHandle(BaseConstants.Operate.EDIT, d);
         EHandleTreeLoopValidated(d);
         EHandleTreeStatusValidated(d);
         return toAjax(baseService.update(d));
@@ -80,7 +80,7 @@ public abstract class TreeController<Q extends TreeEntity<D>, D extends TreeEnti
      */
     @Override
     public AjaxResult editForce(@Validated({V_E.class}) @RequestBody D d) {
-        AEHandleValidated(BaseConstants.Operate.EDIT_FORCE, d);
+        AEHandle(BaseConstants.Operate.EDIT_FORCE, d);
         EHandleTreeLoopValidated(d);
         return toAjax(baseService.update(d));
     }
@@ -101,14 +101,14 @@ public abstract class TreeController<Q extends TreeEntity<D>, D extends TreeEnti
      * 树型 批量删除
      * 考虑子节点存在与否
      *
-     * @see #RHandleEmptyValidated(List)  基类 空校验
+     * @see #RHandleEmpty(List)  基类 空校验
      * @see #RHandleTreeChildValidated(List)  树型 子节点存在与否校验
      */
     @Override
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
-        RHandleEmptyValidated(idList);
-        RHandleValidated(BaseConstants.Operate.DELETE, idList);
-        RHandleEmptyValidated(idList);
+        RHandleEmpty(idList);
+        RHandle(BaseConstants.Operate.DELETE, idList);
+        RHandleEmpty(idList);
         RHandleTreeChildValidated(idList);
         return toAjax(baseService.deleteByIds(idList));
     }

@@ -163,7 +163,7 @@ public class TeSourceController extends BaseController<TeSourceQuery, TeSourceDt
      * 前置校验 （强制）增加/修改
      */
     @Override
-    protected void AEHandleValidated(BaseConstants.Operate operate, TeSourceDto source) {
+    protected void AEHandle(BaseConstants.Operate operate, TeSourceDto source) {
         DSUtil.testSlaveDs(source);
         if (baseService.checkNameUnique(source.getId(), source.getName()))
             warn(StrUtil.format("{}{}{}失败，{}名称已存在", operate.getInfo(), getNodeName(), source.getName(), getNodeName()));
@@ -173,7 +173,7 @@ public class TeSourceController extends BaseController<TeSourceQuery, TeSourceDt
      * 前置校验 （强制）删除
      */
     @Override
-    protected void RHandleValidated(BaseConstants.Operate operate, List<Long> idList) {
+    protected void RHandle(BaseConstants.Operate operate, List<Long> idList) {
         int size = idList.size();
         for (int i = idList.size() - 1; i >= 0; i--) {
             if (strategyService.checkSourceExist(idList.get(i)))

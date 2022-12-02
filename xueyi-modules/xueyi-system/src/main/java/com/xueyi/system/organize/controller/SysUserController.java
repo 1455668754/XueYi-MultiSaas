@@ -202,7 +202,8 @@ public class SysUserController extends BaseController<SysUserQuery, SysUserDto, 
      * 前置校验 （强制）增加/修改
      */
     @Override
-    protected void AEHandleValidated(BaseConstants.Operate operate, SysUserDto user) {
+    protected void AEHandle(BaseConstants.Operate operate, SysUserDto user) {
+
         if (operate.isEdit())
             adminValidated(user.getId());
         if (baseService.checkUserCodeUnique(user.getId(), user.getCode()))
@@ -213,19 +214,15 @@ public class SysUserController extends BaseController<SysUserQuery, SysUserDto, 
             warn(StrUtil.format("{}{}{}失败，手机号码已存在", operate.getInfo(), getNodeName(), user.getNickName()));
         else if (StrUtil.isNotEmpty(user.getEmail()) && baseService.checkEmailUnique(user.getId(), user.getName()))
             warn(StrUtil.format("{}{}{}失败，邮箱账号已存在", operate.getInfo(), getNodeName(), user.getNickName()));
-        // 防止修改操作更替密码
-        if (BaseConstants.Operate.ADD == operate)
-            user.setPassword(SecurityUtils.encryptPassword(user.getPassword()));
-    }
-
-    /**
-     * 前置校验 （强制）修改状态
-     *
-     * @param user 用户对象
-     */
-    @Override
-    protected void ESHandleValidated(BaseConstants.Operate operate, SysUserDto user) {
-        adminValidated(user.getId());
+        switch (operate){
+            case ADD:
+                // 防止修改操作更替密码
+                user.setPassword(SecurityUtils.encryptPassword(user.getPassword()));
+                break;
+            case EDIT_STATUS:
+                adminValidated(user.getId());
+                break;
+        }
     }
 
     /**
@@ -234,7 +231,7 @@ public class SysUserController extends BaseController<SysUserQuery, SysUserDto, 
      * @param idList Id集合
      */
     @Override
-    protected void RHandleValidated(BaseConstants.Operate operate, List<Long> idList) {
+    protected void RHandle(BaseConstants.Operate operate, List<Long> idList) {
         int size = idList.size();
         Long userId = SecurityUtils.getUserId();
         // remove oneself or admin

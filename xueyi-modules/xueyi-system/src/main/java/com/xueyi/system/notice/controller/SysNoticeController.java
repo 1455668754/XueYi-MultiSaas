@@ -124,7 +124,7 @@ public class SysNoticeController extends BaseController<SysNoticeQuery, SysNotic
      * 前置校验 （强制）增加/修改
      */
     @Override
-    protected void AEHandleValidated(BaseConstants.Operate operate, SysNoticeDto notice) {
+    protected void AEHandle(BaseConstants.Operate operate, SysNoticeDto notice) {
         // 初始化发送状态
         if (operate.isAdd())
             notice.setStatus(NoticeConstants.NoticeStatus.READY.getCode());
