@@ -186,11 +186,11 @@
 import importTable from './importTable'
 import hljs from 'highlight.js/lib/highlight'
 import 'highlight.js/styles/github-gist.css'
-import { delForceGenApi, generateGenApi, listGenApi, previewGenApi } from '@/api/gen/generate/gen'
-import { GenerationModeEnum, GenGenerateDetailGo } from '@enums/gen'
+import {delForceGenApi, generateGenApi, listGenApi, previewGenApi} from '@/api/gen/generate/gen'
+import {GenerationModeEnum, GenGenerateDetailGo} from '@enums/gen'
 import store from '@/store'
-import { GenAuth } from '@auth/gen'
-import { IconEnum } from '@enums'
+import {GenAuth} from '@auth/gen'
+import {IconEnum} from '@enums'
 
 hljs.registerLanguage('java', require('highlight.js/lib/languages/java'))
 hljs.registerLanguage('xml', require('highlight.js/lib/languages/xml'))
@@ -338,7 +338,7 @@ export default {
           this.$modal.msgSuccess('成功生成到自定义路径：\n后端：' + row.genPath + '\n前端：' + row.uiPath)
         })
       } else {
-        this.$download.zip('/code/gen/cloud/download/' + row.id, 'xueyi')
+        this.$download.zip('/code/gen/cloud/download/' + row.id, 'xueyi.zip')
       }
     }
   }
