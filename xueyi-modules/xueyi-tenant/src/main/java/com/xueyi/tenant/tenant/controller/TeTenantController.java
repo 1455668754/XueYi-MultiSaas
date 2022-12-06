@@ -9,6 +9,7 @@ import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
+import com.xueyi.common.security.annotation.InnerAuth;
 import com.xueyi.common.security.annotation.Logical;
 import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.security.auth.Auth;
@@ -37,6 +38,17 @@ public class TeTenantController extends BaseController<TeTenantQuery, TeTenantDt
     @Override
     protected String getNodeName() {
         return "租户";
+    }
+
+    /**
+     * 租户新增 | 内部调用
+     */
+    @InnerAuth
+    @PostMapping("/register")
+    @RequiresPermissions(Auth.TE_TENANT_ADD)
+    @Log(title = "租户管理", businessType = BusinessType.INSERT)
+    public AjaxResult addInner(@Validated({V_A.class}) @RequestBody TeTenantRegister tenantRegister) {
+        return add(tenantRegister);
     }
 
     /**
