@@ -5,7 +5,7 @@ export default {
     userCenter: 'Personal Center',
     enterpriseCenter: 'Enterprise Center',
     dropdownItemDoc: 'Document',
-    dropdownItemLoginOut: 'Login Out',
+    dropdownItemLoginOut: 'Log Out',
 
     tooltipErrorLog: 'Error log',
     tooltipLock: 'Lock screen',
