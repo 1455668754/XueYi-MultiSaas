@@ -9,7 +9,7 @@ import type { MenuMode } from 'ant-design-vue/lib/menu/src/interface';
 export const basicProps = {
   items: {
     type: Array as PropType<Menu[]>,
-    default: () => [],
+    default: () => ({}),
   },
   collapsedShowTitle: propTypes.bool,
   // 最好是4 倍数
