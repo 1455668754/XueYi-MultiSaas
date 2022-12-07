@@ -27,7 +27,7 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>
-            <version>${swagger.doc.version}</version>
+            <version>${spring-doc.version}</version>
         </dependency>
 
     </dependencies>
