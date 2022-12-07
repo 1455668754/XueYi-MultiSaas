@@ -33,7 +33,7 @@ public class TreeHandleServiceImpl<Q extends TreeEntity<D>, D extends TreeEntity
             BaseConstants.Status parentStatus = checkStatus(parentId);
             if (BaseConstants.Status.DISABLE == parentStatus) {
                 try {
-                    D parent = getDClass().newInstance();
+                    D parent = getDClass().getDeclaredConstructor().newInstance();
                     parent.setId((Long) parentId);
                     parent.setStatus(BaseConstants.Status.NORMAL.getCode());
                     baseManager.updateStatus(parent);

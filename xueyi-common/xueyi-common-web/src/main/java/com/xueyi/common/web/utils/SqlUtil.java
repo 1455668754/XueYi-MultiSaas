@@ -1,5 +1,6 @@
 package com.xueyi.common.web.utils;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.core.conditions.AbstractLambdaWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
@@ -11,6 +12,11 @@ import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.entity.base.BasisEntity;
 import com.xueyi.common.web.entity.domain.SqlField;
+
+import java.lang.invoke.SerializedLambda;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * SQL操作工具类
@@ -29,89 +35,22 @@ public class SqlUtil {
     public static <P extends BasisEntity, Lambda extends AbstractLambdaWrapper<P, ?>> void fieldCondition(Lambda i, SqlField[] sqlFieldArr) {
         if (ArrayUtil.isNotEmpty(sqlFieldArr)) {
             for (SqlField sqlField : sqlFieldArr) {
-                if (ObjectUtil.isNotNull(sqlField.getFieldFun())) {
+                if (StrUtil.isNotEmpty(sqlField.getFieldStr())) {
                     switch (sqlField.getOperateType()) {
-                        case SET:
-                            if (i instanceof LambdaUpdateWrapper) {
-                                ((LambdaUpdateWrapper<P>) i).set((SFunction<P, ?>) sqlField.getFieldFun(), sqlField.getObject());
-                            } else {
-                                throw new UtilException("wrapper is not LambdaUpdateWrapper,method does not exist!");
-                            }
-                        case EQ:
-                            i.eq((SFunction<P, ?>) sqlField.getFieldFun(), sqlField.getObject());
-                            break;
-                        case NE:
-                            i.ne((SFunction<P, ?>) sqlField.getFieldFun(), sqlField.getObject());
-                            break;
-                        case GT:
-                            i.gt((SFunction<P, ?>) sqlField.getFieldFun(), sqlField.getObject());
-                            break;
-                        case GE:
-                            i.ge((SFunction<P, ?>) sqlField.getFieldFun(), sqlField.getObject());
-                            break;
-                        case LT:
-                            i.lt((SFunction<P, ?>) sqlField.getFieldFun(), sqlField.getObject());
-                            break;
-                        case LE:
-                            i.le((SFunction<P, ?>) sqlField.getFieldFun(), sqlField.getObject());
-                            break;
-                        case LIKE:
-                            i.like((SFunction<P, ?>) sqlField.getFieldFun(), sqlField.getObject());
-                            break;
-                        case NOT_LIKE:
-                            i.notLike((SFunction<P, ?>) sqlField.getFieldFun(), sqlField.getObject());
-                            break;
-                        case LIKE_LEFT:
-                            i.likeLeft((SFunction<P, ?>) sqlField.getFieldFun(), sqlField.getObject());
-                            break;
-                        case LIKE_RIGHT:
-                            i.likeRight((SFunction<P, ?>) sqlField.getFieldFun(), sqlField.getObject());
-                            break;
-                        case IS_NULL:
-                            i.isNull((SFunction<P, ?>) sqlField.getFieldFun());
-                            break;
-                        case IS_NOT_NULL:
-                            i.isNotNull((SFunction<P, ?>) sqlField.getFieldFun());
-                            break;
-                        case IN:
-                            i.in((SFunction<P, ?>) sqlField.getFieldFun(), sqlField.getList());
-                            break;
-                        case NOT_IN:
-                            i.notIn((SFunction<P, ?>) sqlField.getFieldFun(), sqlField.getList());
-                            break;
-                        default:
-                            i.apply(SqlConstants.NONE_FIND);
-                    }
-                } else if (StrUtil.isNotEmpty(sqlField.getFieldStr())) {
-                    switch (sqlField.getOperateType()) {
-                        case SET:
+                        case SET -> {
                             if (i instanceof LambdaUpdateWrapper) {
                                 ((LambdaUpdateWrapper<P>) i).setSql(StrUtil.format(sqlField.getOperateType().getSql(), sqlField.getFieldStr(), sqlField.getObject()));
                             } else {
                                 throw new UtilException("wrapper is not LambdaUpdateWrapper,method does not exist!");
                             }
-                        case EQ:
-                        case NE:
-                        case GT:
-                        case GE:
-                        case LT:
-                        case LE:
-                        case LIKE:
-                        case NOT_LIKE:
-                        case LIKE_LEFT:
-                        case LIKE_RIGHT:
-                            i.apply(StrUtil.format(sqlField.getOperateType().getSql(), sqlField.getFieldStr(), sqlField.getObject()));
-                            break;
-                        case IS_NULL:
-                        case IS_NOT_NULL:
-                            i.apply(StrUtil.format(sqlField.getOperateType().getSql(), sqlField.getFieldStr()));
-                            break;
-                        case IN:
-                        case NOT_IN:
-                            i.apply(StrUtil.format(sqlField.getOperateType().getSql(), sqlField.getFieldStr(), CollUtil.join(sqlField.getList(), StrUtil.COMMA)));
-                            break;
-                        default:
-                            i.apply(SqlConstants.NONE_FIND);
+                        }
+                        case EQ, NE, GT, GE, LT, LE, LIKE, NOT_LIKE, LIKE_LEFT, LIKE_RIGHT ->
+                                i.apply(StrUtil.format(sqlField.getOperateType().getSql(), sqlField.getFieldStr(), sqlField.getObject()));
+                        case IS_NULL, IS_NOT_NULL ->
+                                i.apply(StrUtil.format(sqlField.getOperateType().getSql(), sqlField.getFieldStr()));
+                        case IN, NOT_IN ->
+                                i.apply(StrUtil.format(sqlField.getOperateType().getSql(), sqlField.getFieldStr(), CollUtil.join(sqlField.getColl(), StrUtil.COMMA)));
+                        default -> i.apply(SqlConstants.NONE_FIND);
                     }
                 } else {
                     i.apply(SqlConstants.NONE_FIND);
@@ -120,6 +59,49 @@ public class SqlUtil {
         } else {
             i.apply(SqlConstants.NONE_FIND);
         }
+    }
+
+    /**
+     * 获取实体类的数据库字段名
+     *
+     * @param fieldFun 字段SFunction方法
+     * @return 字段对应数据库字段名
+     */
+    public static <T> String getFieldName(SFunction<T, ?> fieldFun) {
+        // 从function取出序列化方法
+        Method writeReplaceMethod;
+        try {
+            writeReplaceMethod = fieldFun.getClass().getDeclaredMethod("writeReplace");
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+
+        // 从序列化方法取出序列化的lambda信息
+        boolean isAccessible = writeReplaceMethod.canAccess(fieldFun);
+        writeReplaceMethod.setAccessible(true);
+        SerializedLambda serializedLambda;
+        try {
+            serializedLambda = (SerializedLambda) writeReplaceMethod.invoke(fieldFun);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
+        writeReplaceMethod.setAccessible(isAccessible);
+
+        // 从lambda信息取出method、field、class等
+        String fieldName = serializedLambda.getImplMethodName().substring("get".length());
+        fieldName = fieldName.replaceFirst(fieldName.charAt(0) + StrUtil.EMPTY, (fieldName.charAt(0) + StrUtil.EMPTY).toLowerCase());
+        Field field;
+        try {
+            field = Class.forName(serializedLambda.getImplClass().replace(StrUtil.SLASH, StrUtil.DOT)).getDeclaredField(fieldName);
+        } catch (ClassNotFoundException | NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        }
+
+        // 获取字段名
+        TableField tableField = field.getAnnotation(TableField.class);
+        return ObjectUtil.isNotNull(tableField) && StrUtil.isNotEmpty(tableField.value())
+                ? tableField.value()
+                : StrUtil.toUnderlineCase(fieldName);
     }
 
 }

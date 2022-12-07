@@ -131,7 +131,7 @@ public abstract class BaseController<Q extends BaseEntity, D extends BaseEntity,
      */
     public AjaxResult option() {
         try {
-            Q query = getQClass().newInstance();
+            Q query = getQClass().getDeclaredConstructor().newInstance();
             query.setStatus(BaseConstants.Status.NORMAL.getCode());
             return list(query);
         } catch (Exception ignored) {
