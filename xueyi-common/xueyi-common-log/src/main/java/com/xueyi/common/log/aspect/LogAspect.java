@@ -4,6 +4,7 @@ import com.alibaba.fastjson2.JSON;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.basic.TenantConstants;
 import com.xueyi.common.core.utils.ServletUtil;
+import com.xueyi.common.core.utils.core.ArrayUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.utils.ip.IpUtil;
@@ -111,7 +112,6 @@ public class LogAspect {
             asyncLogService.saveOperateLog(operateLog);
         } catch (Exception exp) {
             // 记录本地异常日志
-            log.error("==前置通知异常==");
             log.error("异常信息:{}", exp.getMessage());
             exp.printStackTrace();
         }
@@ -153,6 +153,9 @@ public class LogAspect {
         if (HttpMethod.PUT.name().equals(requestMethod) || HttpMethod.POST.name().equals(requestMethod)) {
             String params = argsArrayToString(joinPoint.getArgs());
             operateLog.setParam(StrUtil.sub(params, 0, 2000));
+        } else {
+            Map<?, ?> paramsMap = ServletUtil.getParamMap(ServletUtil.getRequest());
+            operateLog.setParam(StrUtil.sub(JSON.toJSONString(paramsMap, excludePropertyPreFilter()), 0, 2000));
         }
     }
 
@@ -161,7 +164,7 @@ public class LogAspect {
      */
     private String argsArrayToString(Object[] paramsArray) {
         StringBuilder params = new StringBuilder();
-        if (paramsArray != null && paramsArray.length > 0) {
+        if (ArrayUtil.isNotEmpty(paramsArray)) {
             for (Object o : paramsArray) {
                 if (ObjectUtil.isNotNull(o) && !isFilterObject(o)) {
                     try {

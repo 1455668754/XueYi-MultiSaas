@@ -1,8 +1,8 @@
 package com.xueyi.common.core.web.result;
 
-import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.constant.basic.HttpConstants;
 import com.xueyi.common.core.exception.ServiceException;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 
 import java.util.HashMap;
@@ -146,7 +146,7 @@ public class AjaxResult extends HashMap<String, Object> {
      * 返回错误消息
      *
      * @param msg 返回内容
-     * @return 警告消息
+     * @return 错误消息
      */
     public static AjaxResult error(String msg) {
         return AjaxResult.error(msg, null);
@@ -157,7 +157,7 @@ public class AjaxResult extends HashMap<String, Object> {
      *
      * @param msg  返回内容
      * @param data 数据对象
-     * @return 警告消息
+     * @return 错误消息
      */
     public static AjaxResult error(String msg, Object data) {
         return new AjaxResult(HttpConstants.Status.ERROR.getCode(), HttpConstants.ResultType.ERROR.getCode(), msg, data);
@@ -168,7 +168,7 @@ public class AjaxResult extends HashMap<String, Object> {
      *
      * @param code 状态码
      * @param msg  返回内容
-     * @return 警告消息
+     * @return 错误消息
      */
     public static AjaxResult error(int code, String msg) {
         return new AjaxResult(code, HttpConstants.ResultType.ERROR.getCode(), msg, null);
