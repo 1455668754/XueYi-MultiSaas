@@ -282,7 +282,7 @@ public class MergeUtil {
         }
         // if relationType is indirect and subKeyField is null then assignment idKey
         if (subRelation.getRelationType().isIndirect() && ObjectUtil.isNull(subRelation.getSubKeyField()))
-            subRelation.setSubKeyField(Arrays.stream(subFields).filter(field -> field.getAnnotation(TableId.class) != null).findFirst().orElse(null));
+            subRelation.setSubKeyField(Arrays.stream(subFields).filter(field -> ObjectUtil.isNotNull(field.getAnnotation(TableId.class))).findFirst().orElse(null));
         if (ObjectUtil.isNull(subRelation.getSubKeyField()))
             throw new UtilException(StrUtil.format(UtilErrorConstants.MergeUtil.FIELD_NULL.getInfo()
                     , subRelation.getGroupName(), OperateConstants.SubKeyType.SUB_KEY.getInfo()));
@@ -368,7 +368,7 @@ public class MergeUtil {
         TableField tableField = subRelation.getSubKeyField().getAnnotation(TableField.class);
         if (ObjectUtil.isNull(tableField)) {
             TableId idField = subRelation.getSubKeyField().getAnnotation(TableId.class);
-            subRelation.setSubFieldSqlName(StrUtil.isNotEmpty(idField.value())
+            subRelation.setSubFieldSqlName(ObjectUtil.isNotNull(idField) && StrUtil.isNotEmpty(idField.value())
                     ? idField.value()
                     : StrUtil.toUnderlineCase(subRelation.getSubKeyField().getName()));
         } else {
@@ -379,7 +379,7 @@ public class MergeUtil {
 
         if (subRelation.getRelationType().isIndirect()) {
             TableField mergeTableField = subRelation.getMergeMainKeyField().getAnnotation(TableField.class);
-            subRelation.setMergeMainFieldSqlName(StrUtil.isNotEmpty(mergeTableField.value())
+            subRelation.setMergeMainFieldSqlName(ObjectUtil.isNotNull(mergeTableField) && StrUtil.isNotEmpty(mergeTableField.value())
                     ? mergeTableField.value()
                     : StrUtil.toUnderlineCase(subRelation.getMergeMainKeyField().getName()));
         }

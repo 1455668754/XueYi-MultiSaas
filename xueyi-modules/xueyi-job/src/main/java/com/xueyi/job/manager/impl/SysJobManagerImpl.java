@@ -31,7 +31,7 @@ public class SysJobManagerImpl extends BaseManagerImpl<SysJobQuery, SysJobDto, S
      * @return 关系对象集合
      */
     protected List<SubRelation> subRelationInit() {
-        return new ArrayList<SubRelation>(){{
+        return new ArrayList<>(){{
             add(new SubRelation(JOB_LOG_GROUP, SysJobLogManagerImpl.class));
         }};
     }

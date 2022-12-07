@@ -31,7 +31,7 @@ public class SysDictTypeManagerImpl extends BaseManagerImpl<SysDictTypeQuery, Sy
      * @return 关系对象集合
      */
     protected List<SubRelation> subRelationInit() {
-        return new ArrayList<SubRelation>(){{
+        return new ArrayList<>(){{
             add(new SubRelation(DICT_DATA_GROUP, SysDictDataManagerImpl.class));
         }};
     }
