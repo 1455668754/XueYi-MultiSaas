@@ -14,6 +14,7 @@ import com.xueyi.common.web.entity.domain.SubRelation;
 
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -36,12 +37,8 @@ public class MergeUtil {
         for (SubRelation subRelation : subRelationList) {
             initRelationField(subRelation, DClass);
             switch (subRelation.getRelationType()) {
-                case DIRECT:
-                    directRelationBuild(dto, null, subRelation, OperateConstants.DataRow.SINGLE);
-                    break;
-                case INDIRECT:
-                    indirectRelationBuild(dto, null, subRelation, OperateConstants.DataRow.SINGLE);
-                    break;
+                case DIRECT -> directRelationBuild(dto, null, subRelation, OperateConstants.DataRow.SINGLE);
+                case INDIRECT -> indirectRelationBuild(dto, null, subRelation, OperateConstants.DataRow.SINGLE);
             }
         }
         return dto;
@@ -60,12 +57,8 @@ public class MergeUtil {
         for (SubRelation subRelation : subRelationList) {
             initRelationField(subRelation, DClass);
             switch (subRelation.getRelationType()) {
-                case DIRECT:
-                    directRelationBuild(null, dtoList, subRelation, OperateConstants.DataRow.COLLECTION);
-                    break;
-                case INDIRECT:
-                    indirectRelationBuild(null, dtoList, subRelation, OperateConstants.DataRow.COLLECTION);
-                    break;
+                case DIRECT -> directRelationBuild(null, dtoList, subRelation, OperateConstants.DataRow.COLLECTION);
+                case INDIRECT -> indirectRelationBuild(null, dtoList, subRelation, OperateConstants.DataRow.COLLECTION);
             }
         }
         return dtoList;
@@ -81,12 +74,8 @@ public class MergeUtil {
      */
     private static <D> void directRelationBuild(D dto, List<D> dtoList, SubRelation subRelation, OperateConstants.DataRow dataRow) {
         switch (dataRow) {
-            case SINGLE:
-                assembleDirectRelationObj(dto, subRelation);
-                break;
-            case COLLECTION:
-                assembleDirectRelationList(dtoList, subRelation);
-                break;
+            case SINGLE -> assembleDirectRelationObj(dto, subRelation);
+            case COLLECTION -> assembleDirectRelationList(dtoList, subRelation);
         }
     }
 
@@ -100,12 +89,8 @@ public class MergeUtil {
      */
     private static <D> void indirectRelationBuild(D dto, List<D> dtoList, SubRelation subRelation, OperateConstants.DataRow dataRow) {
         switch (dataRow) {
-            case SINGLE:
-                assembleIndirectRelationObj(dto, subRelation);
-                break;
-            case COLLECTION:
-                assembleIndirectRelationList(dtoList, subRelation);
-                break;
+            case SINGLE -> assembleIndirectRelationObj(dto, subRelation);
+            case COLLECTION -> assembleIndirectRelationList(dtoList, subRelation);
         }
     }
 
@@ -151,15 +136,14 @@ public class MergeUtil {
         Class<?> fieldType = subRelation.getReceiveKeyField().getType();
         if (ClassUtil.isNormalClass(fieldType)) {
             Map<Object, Object> subMap = subList.stream().collect(
-                    Collectors.toMap(item -> getFieldObj(item, subRelation.getSubKeyField()), item -> item));
+                    Collectors.toMap(item -> getFieldObj(item, subRelation.getSubKeyField()), Function.identity()));
             dtoList.forEach(item -> {
                 Object subObj = subMap.get(getFieldObj(item, subRelation.getMainKeyField()));
                 setField(item, subRelation.getReceiveKeyField(), subObj);
             });
         } else if (ClassUtil.isCollection(fieldType)) {
             Map<Object, List<Object>> subMap = subList.stream().collect(
-                    Collectors.groupingBy(item -> getFieldObj(item, subRelation.getSubKeyField())
-                            , Collectors.mapping(item -> item, Collectors.toList())));
+                    Collectors.groupingBy(item -> getFieldObj(item, subRelation.getSubKeyField())));
             dtoList.forEach(item -> {
                 List<Object> subObjList = subMap.get(getFieldObj(item, subRelation.getMainKeyField()));
                 setField(item, subRelation.getReceiveKeyField(), subObjList);
@@ -252,7 +236,7 @@ public class MergeUtil {
         if (CollUtil.isEmpty(mergeSubList))
             return;
         Map<Object, Object> subMap = mergeSubList.stream().collect(
-                Collectors.toMap(item -> getFieldObj(item, subRelation.getSubKeyField()), item -> item));
+                Collectors.toMap(item -> getFieldObj(item, subRelation.getSubKeyField()), Function.identity()));
         // assemble receive key relation
         dtoList.forEach(item -> {
             List<Object> mergeRelationList = mergeMap.get(getFieldObj(item, subRelation.getMainKeyField()));
@@ -408,7 +392,7 @@ public class MergeUtil {
      * @param field 字段
      * @return 字段值
      */
-    private static Object getFieldObj(Object item, Field field) {
+    private static <T> Object getFieldObj(T item, Field field) {
         try {
             return field.get(item);
         } catch (IllegalAccessException e) {
@@ -423,7 +407,7 @@ public class MergeUtil {
      * @param field 字段
      * @return 字段值
      */
-    private static Object getFieldSql(Object item, Field field) {
+    private static <T> Object getFieldSql(T item, Field field) {
         try {
             Object value = field.get(item);
             if (value instanceof String)
