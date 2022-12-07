@@ -8,6 +8,7 @@ import com.xueyi.common.core.web.tenant.base.TBaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
 import java.time.LocalDateTime;
 
 import static com.baomidou.mybatisplus.annotation.SqlCondition.LIKE;
@@ -22,6 +23,7 @@ import static com.baomidou.mybatisplus.annotation.SqlCondition.LIKE;
 @TableName(value = "sys_login_log", excludeProperty = {"name", "sort", "createBy", "createTime", "updateBy", "updateTime", "remark"})
 public class SysLoginLogPo extends TBaseEntity {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 企业账号 */

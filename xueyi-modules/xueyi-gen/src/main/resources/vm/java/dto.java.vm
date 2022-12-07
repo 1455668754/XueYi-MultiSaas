@@ -12,6 +12,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public class ${ClassName}Dto extends ${ClassName}Po {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Override

@@ -1,8 +1,8 @@
 package com.xueyi.system.authority.manager.impl;
 
-import com.xueyi.common.core.utils.core.CollUtil;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
 import com.xueyi.system.authority.domain.merge.SysRoleMenuMerge;

@@ -1,9 +1,9 @@
 package com.xueyi.system.utils.cloud;
 
-import com.xueyi.common.core.utils.core.CollUtil;
-import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
+import com.xueyi.common.core.utils.core.CollUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.utils.cloud.route.CMetaVo;

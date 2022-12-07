@@ -13,6 +13,7 @@ import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.io.Serial;
 import java.util.Date;
 
 import static com.baomidou.mybatisplus.annotation.SqlCondition.LIKE;
@@ -27,6 +28,7 @@ import static com.baomidou.mybatisplus.annotation.SqlCondition.LIKE;
 @TableName(value = "sys_job", excludeProperty = {"sort"})
 public class SysJobPo extends TBaseEntity {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 任务名称 */

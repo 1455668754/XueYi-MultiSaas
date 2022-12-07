@@ -22,6 +22,7 @@ import com.xueyi.common.core.annotation.Excel;
 @TableName(#if(${excludeProperty.size()} > 0 )value = "${tableName}", excludeProperty = {#set($times = true)#foreach($field in $excludeProperty)#if($times)#set($times = false)#else,#end"${field}"#end}#else"${tableName}"#end)
 public class ${ClassName}#if($generics)${generics}#end extends ${Entity} {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
 #foreach ($column in $columns)

@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serial;
 
 import static com.xueyi.system.api.constant.MergeConstants.MODULE_MENU_GROUP;
 
@@ -24,6 +25,7 @@ import static com.xueyi.system.api.constant.MergeConstants.MODULE_MENU_GROUP;
 @TableName("sys_menu")
 public class SysMenuPo extends TCTreeEntity<SysMenuDto> {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 模块Id */

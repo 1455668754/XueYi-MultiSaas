@@ -7,6 +7,7 @@ import com.xueyi.system.api.dict.domain.po.SysDictTypePo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
 import java.util.List;
 
 import static com.xueyi.system.api.constant.MergeConstants.DICT_DATA_GROUP;
@@ -20,6 +21,7 @@ import static com.xueyi.system.api.constant.MergeConstants.DICT_DATA_GROUP;
 @EqualsAndHashCode(callSuper = true)
 public class SysDictTypeDto extends SysDictTypePo {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 字典数据 */

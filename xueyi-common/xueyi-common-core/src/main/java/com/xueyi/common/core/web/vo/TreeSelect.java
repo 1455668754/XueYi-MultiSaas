@@ -1,9 +1,10 @@
 package com.xueyi.common.core.web.vo;
 
-import com.xueyi.common.core.utils.core.CollUtil;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.web.entity.base.TreeEntity;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
  */
 public class TreeSelect<T extends TreeEntity<T>> implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 节点Id */

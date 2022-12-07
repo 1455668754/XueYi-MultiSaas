@@ -2,9 +2,7 @@ package com.xueyi.system.organize.service;
 
 import com.xueyi.common.web.entity.service.ITreeService;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
-import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 import com.xueyi.system.api.organize.domain.query.SysDeptQuery;
-import com.xueyi.system.api.organize.domain.query.SysPostQuery;
 
 /**
  * 部门管理 服务层

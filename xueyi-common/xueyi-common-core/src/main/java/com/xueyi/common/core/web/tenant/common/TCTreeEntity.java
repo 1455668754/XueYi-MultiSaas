@@ -5,6 +5,8 @@ import com.xueyi.common.core.web.entity.common.CTreeEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
+
 /**
  * Tree 租户混合基类
  *
@@ -15,6 +17,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class TCTreeEntity<D> extends CTreeEntity<D> {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 租户Id */

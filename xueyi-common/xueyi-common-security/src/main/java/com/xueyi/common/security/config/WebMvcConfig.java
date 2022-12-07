@@ -1,8 +1,8 @@
 package com.xueyi.common.security.config;
 
+import com.xueyi.common.security.interceptor.HeaderInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import com.xueyi.common.security.interceptor.HeaderInterceptor;
 
 /**
  * 拦截器配置

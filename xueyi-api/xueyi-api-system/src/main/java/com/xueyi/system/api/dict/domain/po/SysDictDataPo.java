@@ -10,6 +10,8 @@ import com.xueyi.common.core.web.entity.base.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
+
 import static com.xueyi.system.api.constant.MergeConstants.DICT_DATA_GROUP;
 
 /**
@@ -22,6 +24,7 @@ import static com.xueyi.system.api.constant.MergeConstants.DICT_DATA_GROUP;
 @TableName(value = "sys_dict_data", excludeProperty = {"name", "delFlag"})
 public class SysDictDataPo extends BaseEntity {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 字典编码 */

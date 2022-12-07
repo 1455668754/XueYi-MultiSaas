@@ -8,6 +8,8 @@ import com.xueyi.tenant.api.tenant.domain.dto.TeTenantDto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
+
 /**
  * 租户初始化对象
  *
@@ -17,6 +19,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class TeTenantRegister extends BasisEntity {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 租户信息 */

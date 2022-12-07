@@ -1,13 +1,18 @@
 package com.xueyi.common.web.entity.service.impl.handle;
 
 import com.xueyi.common.core.constant.basic.BaseConstants;
+import com.xueyi.common.core.constant.basic.OperateConstants;
+import com.xueyi.common.core.utils.core.CollUtil;
+import com.xueyi.common.core.utils.core.NumberUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.entity.base.TreeEntity;
 import com.xueyi.common.web.entity.manager.ITreeManager;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 
-import java.io.Serializable;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * 服务层 操作方法 树型实现通用数据处理
@@ -20,94 +25,128 @@ import java.io.Serializable;
 public class TreeHandleServiceImpl<Q extends TreeEntity<D>, D extends TreeEntity<D>, IDG extends ITreeManager<Q, D>> extends BaseServiceImpl<Q, D, IDG> {
 
     /**
-     * 新增/修改 树型 检查父级状态
-     * 是否启用，非启用则启用
+     * 单条操作 - 开始处理
      *
-     * @param parentId 父级Id
-     * @param status   状态
-     * @see com.xueyi.common.web.entity.service.impl.TreeServiceImpl#insert(TreeEntity)
-     * @see com.xueyi.common.web.entity.service.impl.TreeServiceImpl#update(TreeEntity)
+     * @param operate   服务层 - 操作类型
+     * @param originDto 源数据对象（新增时不存在）
+     * @param newDto    新数据对象（删除时不存在）
      */
-    protected void AUHandleParentStatusCheck(Serializable parentId, String status) {
-        if (ObjectUtil.equals(BaseConstants.Status.NORMAL.getCode(), status)) {
-            BaseConstants.Status parentStatus = checkStatus(parentId);
-            if (BaseConstants.Status.DISABLE == parentStatus) {
-                try {
-                    D parent = getDClass().getDeclaredConstructor().newInstance();
-                    parent.setId((Long) parentId);
-                    parent.setStatus(BaseConstants.Status.NORMAL.getCode());
-                    baseManager.updateStatus(parent);
-                }catch (Exception ignored) {}
+    protected void startHandle(OperateConstants.ServiceType operate, D originDto, D newDto) {
+        switch (operate) {
+            case EDIT:
+                newDto.setOldAncestors(originDto.getAncestors());
+                newDto.setOldLevel(originDto.getLevel());
+            case ADD:
+                if (ObjectUtil.equals(BaseConstants.TOP_ID, newDto.getParentId())) {
+                    newDto.setAncestors(String.valueOf(BaseConstants.TOP_ID));
+                    newDto.setLevel(NumberUtil.One);
+                } else {
+                    D parent = baseManager.selectById(newDto.getParentId());
+                    newDto.setAncestors(parent.getAncestors() + StrUtil.COMMA + newDto.getParentId());
+                    newDto.setLevel(parent.getLevel() + NumberUtil.One);
+                }
+                break;
+        }
+    }
+
+    /**
+     * 单条操作 - 结束处理
+     *
+     * @param operate 服务层 - 操作类型
+     * @param row     操作数据条数
+     * @param dto     数据对象
+     */
+    protected void endHandle(OperateConstants.ServiceType operate, int row, D dto) {
+        if (row <= 0)
+            return;
+        switch (operate) {
+            case EDIT -> {
+                if (ObjectUtil.equals(BaseConstants.Status.DISABLE.getCode(), dto.getStatus())) {
+                    baseManager.updateChildren(dto);
+                } else {
+                    baseManager.updateChildrenAncestors(dto);
+                }
+            }
+            case EDIT_STATUS -> {
+                if (ObjectUtil.equals(BaseConstants.Status.DISABLE.getCode(), dto.getStatus())) {
+                    baseManager.updateChildrenStatus(dto);
+                }
+            }
+            case DELETE -> baseManager.deleteChildren(dto.getId());
+        }
+        super.endHandle(operate, row, dto);
+    }
+
+    /**
+     * 批量操作 - 开始处理
+     *
+     * @param operate    服务层 - 操作类型
+     * @param originList 源数据对象集合（新增时不存在）
+     * @param newList    新数据对象集合（删除时不存在）
+     */
+    protected void startBatchHandle(OperateConstants.ServiceType operate, Collection<D> originList, Collection<D> newList) {
+        switch (operate) {
+            case EDIT:
+                Map<Long, D> originMap = CollUtil.isNotEmpty(originList)
+                        ? originList.stream().collect(Collectors.toMap(D::getId, Function.identity()))
+                        : new HashMap<>();
+                newList.forEach(item -> {
+                    D originDto = originMap.get(item.getId());
+                    if (ObjectUtil.isNotNull(originDto)) {
+                        item.setOldAncestors(originDto.getAncestors());
+                        item.setOldLevel(originDto.getLevel());
+                    }
+                });
+            case ADD:
+                Set<Long> parentIds = newList.stream().map(TreeEntity::getParentId).collect(Collectors.toSet());
+                if (CollUtil.isNotEmpty(parentIds)) {
+                    List<D> parentList = baseManager.selectListByIds(parentIds);
+                    Map<Long, D> parentMap = parentList.stream().collect(Collectors.toMap(D::getId, Function.identity()));
+                    newList.forEach(item -> {
+                        if (ObjectUtil.equals(BaseConstants.TOP_ID, item.getParentId())) {
+                            item.setAncestors(String.valueOf(BaseConstants.TOP_ID));
+                            item.setLevel(NumberUtil.One);
+                        } else {
+                            D parentDto = parentMap.get(item.getParentId());
+                            if (ObjectUtil.isNotNull(parentDto)) {
+                                item.setAncestors(parentDto.getAncestors() + StrUtil.COMMA + parentDto.getParentId());
+                                item.setLevel(parentDto.getLevel() + NumberUtil.One);
+                            }
+                        }
+                    });
+                }
+                break;
+        }
+    }
+
+    /**
+     * 批量操作 - 结束处理
+     *
+     * @param operate    服务层 - 操作类型
+     * @param rows       操作数据条数
+     * @param entityList 数据对象集合
+     */
+    protected void endBatchHandle(OperateConstants.ServiceType operate, int rows, Collection<D> entityList) {
+        if (rows <= 0)
+            return;
+        switch (operate) {
+            case EDIT -> entityList.forEach(item -> {
+                if (ObjectUtil.equals(BaseConstants.Status.DISABLE.getCode(), item.getStatus())) {
+                    baseManager.updateChildren(item);
+                } else {
+                    baseManager.updateChildrenAncestors(item);
+                }
+            });
+            case EDIT_STATUS -> entityList.forEach(item -> {
+                if (ObjectUtil.equals(BaseConstants.Status.DISABLE.getCode(), item.getStatus())) {
+                    baseManager.updateChildrenStatus(item);
+                }
+            });
+            case BATCH_DELETE -> {
+                for (D dto : entityList)
+                    baseManager.deleteChildren(dto.getId());
             }
         }
-    }
-
-    /**
-     * 修改状态 树型 检查父级状态
-     * 是否启用，非启用则启用
-     *
-     * @param d 数据对象
-     * @see com.xueyi.common.web.entity.service.impl.TreeServiceImpl#updateStatus
-     */
-    protected void USHandelParentStatusCheck(D d) {
-        D nowD = baseManager.selectById(d.getId());
-        if (ObjectUtil.equals(BaseConstants.Status.NORMAL.getCode(), d.getStatus())
-                && BaseConstants.Status.DISABLE == checkStatus(nowD.getParentId())) {
-            nowD.setStatus(BaseConstants.Status.NORMAL.getCode());
-            baseManager.updateStatus(nowD);
-        }
-    }
-
-    /**
-     * 新增 树型 设置祖籍
-     *
-     * @param d 数据对象 | parentId 父Id
-     * @see com.xueyi.common.web.entity.service.impl.TreeServiceImpl#insert(TreeEntity)
-     */
-    protected void AHandleAncestorsSet(D d) {
-        if (ObjectUtil.equals(BaseConstants.TOP_ID, d.getParentId())) {
-            d.setAncestors(String.valueOf(BaseConstants.TOP_ID));
-        } else {
-            D parent = baseManager.selectById(d.getParentId());
-            d.setAncestors(parent.getAncestors() + StrUtil.COMMA + d.getParentId());
-        }
-    }
-
-    /**
-     * 修改 树型 检验祖籍是否变更
-     * 是否变更，变更则同步变更子节点祖籍
-     *
-     * @param d 数据对象 | id id | parentId 父Id
-     * @see com.xueyi.common.web.entity.service.impl.TreeServiceImpl#update(TreeEntity)
-     */
-    protected void UHandleAncestorsCheck(D d) {
-        D original = baseManager.selectById(d.getId());
-        if (!ObjectUtil.equals(d.getParentId(), original.getParentId())) {
-            String oldAncestors = original.getAncestors();
-            if (ObjectUtil.equals(BaseConstants.TOP_ID, d.getParentId()))
-                d.setAncestors(String.valueOf(BaseConstants.TOP_ID));
-            else {
-                D parent = baseManager.selectById(d.getParentId());
-                d.setAncestors(parent.getAncestors() + StrUtil.COMMA + d.getParentId());
-            }
-            baseManager.updateChildrenAncestors(d.getId(), d.getAncestors(), oldAncestors);
-        }
-    }
-
-    /**
-     * 修改/修改状态 树型 检查子节点状态
-     * 是否变更，变更则同步禁用子节点
-     *
-     * @param d 数据对象
-     * @see com.xueyi.common.web.entity.service.impl.TreeServiceImpl#update(TreeEntity)
-     * @see com.xueyi.common.web.entity.service.impl.TreeServiceImpl#updateStatus
-     */
-    protected void UUSChildrenStatusCheck(D d) {
-        D original = baseManager.selectById(d.getId());
-        if (ObjectUtil.notEqual(original.getStatus(), d.getStatus())
-                && ObjectUtil.equals(BaseConstants.Status.DISABLE.getCode(), d.getStatus())
-                && ObjectUtil.isNotNull(baseManager.checkHasNormalChild(d.getId()))) {
-            baseManager.updateChildrenStatus(d.getId(), BaseConstants.Status.DISABLE.getCode());
-        }
+        super.endBatchHandle(operate, rows, entityList);
     }
 }

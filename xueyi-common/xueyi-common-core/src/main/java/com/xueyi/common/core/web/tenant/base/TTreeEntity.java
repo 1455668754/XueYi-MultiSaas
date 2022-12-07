@@ -6,6 +6,8 @@ import com.xueyi.common.core.web.entity.base.TreeEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
+
 /**
  * Tree 租户基类
  *
@@ -16,6 +18,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class TTreeEntity<D> extends TreeEntity<D> {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 租户Id */

@@ -7,6 +7,7 @@ import com.xueyi.system.api.organize.domain.po.SysDeptPo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
 import java.util.List;
 
 import static com.xueyi.system.api.constant.MergeConstants.DEPT_POST_GROUP;
@@ -20,6 +21,7 @@ import static com.xueyi.system.api.constant.MergeConstants.DEPT_POST_GROUP;
 @EqualsAndHashCode(callSuper = true)
 public class SysDeptDto extends SysDeptPo {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 角色对象 */

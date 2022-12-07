@@ -8,6 +8,7 @@ import com.xueyi.system.api.organize.domain.po.SysPostPo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
 import java.util.List;
 
 /**
@@ -19,6 +20,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class SysPostDto extends SysPostPo {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 部门对象 */

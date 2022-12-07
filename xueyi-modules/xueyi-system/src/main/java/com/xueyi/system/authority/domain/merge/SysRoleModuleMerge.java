@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
+
 /**
  * 角色-模块关联 持久化对象
  *
@@ -17,6 +19,7 @@ import lombok.NoArgsConstructor;
 @TableName("sys_role_module_merge")
 public class SysRoleModuleMerge extends TBasisEntity {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 角色Id */

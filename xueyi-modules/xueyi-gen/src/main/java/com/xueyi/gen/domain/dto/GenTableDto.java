@@ -8,6 +8,7 @@ import com.xueyi.gen.domain.po.GenTablePo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
 import java.util.List;
 
 import static com.xueyi.system.api.constant.MergeConstants.GEN_TABLE_GROUP;
@@ -21,6 +22,7 @@ import static com.xueyi.system.api.constant.MergeConstants.GEN_TABLE_GROUP;
 @EqualsAndHashCode(callSuper = true)
 public class GenTableDto extends GenTablePo {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 主键信息 */

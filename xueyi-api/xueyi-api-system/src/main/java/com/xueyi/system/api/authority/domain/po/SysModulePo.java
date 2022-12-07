@@ -5,6 +5,8 @@ import com.xueyi.common.core.web.tenant.common.TCBaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
+
 /**
  * 模块 持久化对象
  *
@@ -15,6 +17,7 @@ import lombok.EqualsAndHashCode;
 @TableName("sys_module")
 public class SysModulePo extends TCBaseEntity {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 模块logo */

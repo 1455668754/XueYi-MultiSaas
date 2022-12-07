@@ -31,34 +31,28 @@ public interface ITreeManager<Q extends TreeEntity<D>, D extends TreeEntity<D>> 
     List<D> selectChildListById(Serializable id);
 
     /**
-     * 根据Id修改其子节点的状态
+     * 修改子节点的状态
      *
-     * @param id     Id
-     * @param status 状态
+     * @param dto 数据对象
      * @return 结果
      */
-    int updateChildrenStatus(Serializable id, String status);
+    int updateChildrenStatus(D dto);
 
     /**
-     * 根据Id修改其子节点的祖籍
+     * 修改其子节点的祖籍
      *
-     * @param id           Id
-     * @param newAncestors 新祖籍
-     * @param oldAncestors 旧祖籍
+     * @param dto 数据对象
      * @return 结果
      */
-    int updateChildrenAncestors(Serializable id, String newAncestors, String oldAncestors);
+    int updateChildrenAncestors(D dto);
 
     /**
-     * 根据Id修改其子节点的祖籍和状态
+     * 修改子节点的祖籍和状态
      *
-     * @param id           Id
-     * @param status       状态
-     * @param newAncestors 新祖籍
-     * @param oldAncestors 旧祖籍
+     * @param dto 数据对象
      * @return 结果
      */
-    int updateChildren(Serializable id, String status, String newAncestors, String oldAncestors);
+    int updateChildren(D dto);
 
     /**
      * 根据Id删除其子节点

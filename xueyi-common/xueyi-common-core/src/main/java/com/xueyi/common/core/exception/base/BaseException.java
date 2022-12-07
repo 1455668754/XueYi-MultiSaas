@@ -1,5 +1,7 @@
 package com.xueyi.common.core.exception.base;
 
+import java.io.Serial;
+
 /**
  * 基础异常
  *
@@ -7,6 +9,7 @@ package com.xueyi.common.core.exception.base;
  */
 public class BaseException extends RuntimeException {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 所属模块 */

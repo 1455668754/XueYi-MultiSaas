@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.xueyi.common.core.constant.basic.SqlConstants;
 import com.xueyi.common.core.web.entity.base.BasisEntity;
 import com.xueyi.common.web.utils.SqlUtil;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,7 +18,9 @@ import java.util.Collection;
  * @author xueyi
  */
 @Data
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class SqlField implements Serializable {
 
     /** SQL - 操作类型 */
@@ -37,6 +41,12 @@ public class SqlField implements Serializable {
         this.object = object;
     }
 
+    public SqlField(SqlConstants.OperateType operateType, SFunction<? extends BasisEntity, Object> fieldFun, Serializable serial) {
+        this.operateType = operateType;
+        this.fieldStr = SqlUtil.getFieldName(fieldFun);
+        this.object = serial;
+    }
+
     public SqlField(SqlConstants.OperateType operateType, String fieldStr, Object object) {
         this.operateType = operateType;
         this.fieldStr = fieldStr;
@@ -55,5 +65,7 @@ public class SqlField implements Serializable {
         this.coll = coll;
     }
 
-
+    public void setField(SFunction<? extends BasisEntity, Object> fieldFun) {
+        this.fieldStr = SqlUtil.getFieldName(fieldFun);
+    }
 }

@@ -6,6 +6,8 @@ import com.xueyi.common.core.web.entity.base.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
+
 /**
  * 通知公告 持久化对象
  *
@@ -16,6 +18,7 @@ import lombok.EqualsAndHashCode;
 @TableName(value = "sys_notice",excludeProperty = {"sort"})
 public class SysNoticePo extends BaseEntity {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 公告类型（0通知 1公告） */

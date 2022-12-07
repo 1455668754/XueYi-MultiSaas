@@ -1,9 +1,9 @@
 package com.xueyi.auth;
 
+import com.xueyi.common.security.annotation.EnableRyFeignClients;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import com.xueyi.common.security.annotation.EnableRyFeignClients;
 
 /**
  * 认证授权中心

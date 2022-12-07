@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotEmpty;
+import java.io.Serial;
 import java.util.List;
 
 /**
@@ -20,6 +21,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class SysUserDto extends SysUserPo {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 岗位对象 */

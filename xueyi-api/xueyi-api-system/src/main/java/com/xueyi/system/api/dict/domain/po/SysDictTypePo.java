@@ -13,6 +13,7 @@ import lombok.EqualsAndHashCode;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.io.Serial;
 
 import static com.baomidou.mybatisplus.annotation.SqlCondition.LIKE;
 import static com.xueyi.system.api.constant.MergeConstants.DICT_DATA_GROUP;
@@ -27,6 +28,7 @@ import static com.xueyi.system.api.constant.MergeConstants.DICT_DATA_GROUP;
 @TableName(value = "sys_dict_type", excludeProperty = {"delFlag"})
 public class SysDictTypePo extends BaseEntity {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 字典类型 */

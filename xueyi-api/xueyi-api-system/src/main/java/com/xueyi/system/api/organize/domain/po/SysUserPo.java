@@ -13,6 +13,7 @@ import lombok.EqualsAndHashCode;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.io.Serial;
 import java.time.LocalDateTime;
 
 /**
@@ -25,6 +26,7 @@ import java.time.LocalDateTime;
 @TableName(value = "sys_user", excludeProperty = {"name"})
 public class SysUserPo extends TBaseEntity {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 用户编码 */

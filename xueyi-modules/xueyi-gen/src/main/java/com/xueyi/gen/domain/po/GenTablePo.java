@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotBlank;
+import java.io.Serial;
 
 import static com.baomidou.mybatisplus.annotation.SqlCondition.LIKE;
 
@@ -20,6 +21,7 @@ import static com.baomidou.mybatisplus.annotation.SqlCondition.LIKE;
 @TableName(value = "gen_table", excludeProperty = {"status", "sort", "delFlag"})
 public class GenTablePo extends BaseEntity {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 表描述 */

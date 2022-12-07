@@ -4,6 +4,8 @@ import com.xueyi.system.api.authority.domain.po.SysMenuPo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
+
 /**
  * 菜单 数据查询对象
  *
@@ -13,6 +15,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class SysMenuQuery extends SysMenuPo {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
 }

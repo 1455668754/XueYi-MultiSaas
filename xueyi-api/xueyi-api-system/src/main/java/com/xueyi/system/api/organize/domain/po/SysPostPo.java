@@ -13,6 +13,7 @@ import lombok.EqualsAndHashCode;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serial;
 
 import static com.baomidou.mybatisplus.annotation.SqlCondition.LIKE;
 import static com.xueyi.system.api.constant.MergeConstants.DEPT_POST_GROUP;
@@ -27,6 +28,7 @@ import static com.xueyi.system.api.constant.MergeConstants.DEPT_POST_GROUP;
 @TableName("sys_post")
 public class SysPostPo extends TBaseEntity {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 部门Id */

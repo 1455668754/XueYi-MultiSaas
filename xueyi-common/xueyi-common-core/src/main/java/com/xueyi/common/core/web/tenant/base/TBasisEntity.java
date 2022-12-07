@@ -6,6 +6,8 @@ import com.xueyi.common.core.web.entity.base.BasisEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
+
 /**
  * Basis 租户基类
  *
@@ -15,6 +17,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class TBasisEntity extends BasisEntity {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 租户Id */

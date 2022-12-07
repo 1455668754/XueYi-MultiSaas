@@ -25,6 +25,12 @@ public class SqlConstants {
     /** sql find_in_set函数 */
     public static final String ANCESTORS_FIND = "find_in_set({0}, ancestors)";
 
+    /** sql 祖籍字符串部分更新 */
+    public static final String ANCESTORS_PART_UPDATE = "{} = insert({},{},{},{})";
+
+    /** sql 树层级更新 */
+    public static final String TREE_LEVEL_UPDATE = "{} = {} + {}";
+
     /** SQL - 操作类型 */
     @Getter
     @AllArgsConstructor
@@ -63,7 +69,8 @@ public class SqlConstants {
         PARENT_ID("parent_id", "父级Id字段"),
         STATUS("status", "状态字段"),
         SORT("sort", "排序字段"),
-        ANCESTORS("ancestors", "祖籍字段");
+        ANCESTORS("ancestors", "祖籍字段"),
+        LEVEL("level", "层级字段");
 
         private final String code;
         private final String info;

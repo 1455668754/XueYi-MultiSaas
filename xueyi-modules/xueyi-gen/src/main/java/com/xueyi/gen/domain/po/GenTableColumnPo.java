@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotBlank;
+import java.io.Serial;
 
 import static com.xueyi.system.api.constant.MergeConstants.GEN_TABLE_GROUP;
 
@@ -21,6 +22,7 @@ import static com.xueyi.system.api.constant.MergeConstants.GEN_TABLE_GROUP;
 @TableName(value = "gen_table_column", excludeProperty = {"status", "remark", "delFlag"})
 public class GenTableColumnPo extends BaseEntity {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 归属表Id */

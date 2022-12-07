@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
+
 /**
  * 用户-岗位关联 持久化对象
  *
@@ -17,6 +19,7 @@ import lombok.NoArgsConstructor;
 @TableName("sys_user_post_merge")
 public class SysUserPostMerge extends TBasisEntity {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 用户Id */

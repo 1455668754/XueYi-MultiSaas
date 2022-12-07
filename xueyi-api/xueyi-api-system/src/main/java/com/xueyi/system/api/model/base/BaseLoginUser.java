@@ -5,6 +5,7 @@ import com.xueyi.system.api.model.Source;
 import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
 import lombok.Data;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -15,6 +16,7 @@ import java.io.Serializable;
 @Data
 public class BaseLoginUser<User> implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 用户唯一标识 */

@@ -5,6 +5,8 @@ import com.xueyi.common.core.web.entity.base.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
+
 /**
  * 数据源 持久化对象
  *
@@ -15,6 +17,7 @@ import lombok.EqualsAndHashCode;
 @TableName("te_source")
 public class TeSourcePo extends BaseEntity {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 数据源编码 */

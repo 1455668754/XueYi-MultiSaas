@@ -8,6 +8,8 @@ import com.xueyi.common.core.web.tenant.base.TBaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
+
 import static com.xueyi.job.api.constant.MergeConstants.JOB_LOG_GROUP;
 
 /**
@@ -20,6 +22,7 @@ import static com.xueyi.job.api.constant.MergeConstants.JOB_LOG_GROUP;
 @TableName(value = "sys_job_log", excludeProperty = {"createBy","updateBy","remark","updateTime","sort"})
 public class SysJobLogPo extends TBaseEntity {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 任务Id */

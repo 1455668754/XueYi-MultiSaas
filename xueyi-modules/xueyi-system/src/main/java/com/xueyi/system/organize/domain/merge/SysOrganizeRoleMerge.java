@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
+
 /**
  * 组织-角色关联（角色绑定） 持久化对象
  *
@@ -18,6 +20,7 @@ import lombok.NoArgsConstructor;
 @TableName("sys_organize_role_merge")
 public class SysOrganizeRoleMerge extends TBasisEntity {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 部门Id */

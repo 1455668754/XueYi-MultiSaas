@@ -6,7 +6,6 @@ import com.xueyi.system.api.authority.domain.query.SysMenuQuery;
 import com.xueyi.system.authority.domain.merge.SysRoleMenuMerge;
 import com.xueyi.system.authority.domain.merge.SysTenantMenuMerge;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
@@ -69,17 +68,6 @@ public interface ISysMenuManager extends ITreeManager<SysMenuQuery, SysMenuDto> 
      * @return 菜单列表
      */
     List<SysMenuDto> getMenuByMenuType(Long moduleId, String menuType);
-
-    /**
-     * 根据Id修改其子节点的祖籍
-     *
-     * @param id           Id
-     * @param newAncestors 新祖籍
-     * @param oldAncestors 旧祖籍
-     * @param moduleId     模块Id
-     * @return 结果
-     */
-    int updateChildrenAncestors(Serializable id, String newAncestors, String oldAncestors, Long moduleId);
 
     /**
      * 校验菜单是否存在租户

@@ -76,7 +76,8 @@ public abstract class BaseController<Q extends BaseEntity, D extends BaseEntity,
      * 新增
      */
     public AjaxResult add(@Validated({V_A.class}) @RequestBody D d) {
-        AEHandle(BaseConstants.Operate.ADD, d);
+        d.initOperate(BaseConstants.Operate.ADD);
+        AEHandle(d.getOperate(), d);
         return toAjax(baseService.insert(d));
     }
 
@@ -84,15 +85,8 @@ public abstract class BaseController<Q extends BaseEntity, D extends BaseEntity,
      * 修改
      */
     public AjaxResult edit(@Validated({V_E.class}) @RequestBody D d) {
-        AEHandle(BaseConstants.Operate.EDIT, d);
-        return toAjax(baseService.update(d));
-    }
-
-    /**
-     * 强制修改
-     */
-    public AjaxResult editForce(@Validated({V_E.class}) @RequestBody D d) {
-        AEHandle(BaseConstants.Operate.EDIT_FORCE, d);
+        d.initOperate(BaseConstants.Operate.EDIT);
+        AEHandle(d.getOperate(), d);
         return toAjax(baseService.update(d));
     }
 
@@ -100,7 +94,8 @@ public abstract class BaseController<Q extends BaseEntity, D extends BaseEntity,
      * 修改状态
      */
     public AjaxResult editStatus(@RequestBody D d) {
-        AEHandle(BaseConstants.Operate.EDIT_STATUS, d);
+        d.initOperate(BaseConstants.Operate.EDIT_STATUS);
+        AEHandle(d.getOperate(), d);
         return toAjax(baseService.updateStatus(d));
     }
 

@@ -8,6 +8,8 @@ import com.xueyi.common.core.web.entity.base.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
+
 /**
  * 参数配置 持久化对象
  *
@@ -17,6 +19,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @TableName(value = "sys_config", excludeProperty = {"status", "delFlag"})
 public class SysConfigPo extends BaseEntity {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 参数键名 */

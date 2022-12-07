@@ -6,6 +6,7 @@ import com.xueyi.system.api.authority.domain.po.SysModulePo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
 import java.util.List;
 
 import static com.xueyi.system.api.constant.MergeConstants.MODULE_MENU_GROUP;
@@ -19,6 +20,7 @@ import static com.xueyi.system.api.constant.MergeConstants.MODULE_MENU_GROUP;
 @EqualsAndHashCode(callSuper = true)
 public class SysModuleDto extends SysModulePo {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 菜单数据 */

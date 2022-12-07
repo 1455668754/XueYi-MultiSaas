@@ -4,6 +4,7 @@ import com.xueyi.job.api.domain.po.SysJobLogPo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
 import java.time.LocalDateTime;
 
 /**
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = true)
 public class SysJobLogDto extends SysJobLogPo {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 开始时间 */

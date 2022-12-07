@@ -1,7 +1,9 @@
 package com.xueyi.common.core.exception.file;
 
-import java.util.Arrays;
 import org.apache.commons.fileupload.FileUploadException;
+
+import java.io.Serial;
+import java.util.Arrays;
 
 /**
  * 文件上传 误异常类
@@ -10,6 +12,7 @@ import org.apache.commons.fileupload.FileUploadException;
  */
 public class InvalidExtensionException extends FileUploadException
 {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private String[] allowedExtension;
@@ -41,7 +44,8 @@ public class InvalidExtensionException extends FileUploadException
 
     public static class InvalidImageExtensionException extends InvalidExtensionException
     {
-        private static final long serialVersionUID = 1L;
+        @Serial
+    private static final long serialVersionUID = 1L;
 
         public InvalidImageExtensionException(String[] allowedExtension, String extension, String filename)
         {
@@ -51,7 +55,8 @@ public class InvalidExtensionException extends FileUploadException
 
     public static class InvalidFlashExtensionException extends InvalidExtensionException
     {
-        private static final long serialVersionUID = 1L;
+        @Serial
+    private static final long serialVersionUID = 1L;
 
         public InvalidFlashExtensionException(String[] allowedExtension, String extension, String filename)
         {
@@ -61,7 +66,8 @@ public class InvalidExtensionException extends FileUploadException
 
     public static class InvalidMediaExtensionException extends InvalidExtensionException
     {
-        private static final long serialVersionUID = 1L;
+        @Serial
+    private static final long serialVersionUID = 1L;
 
         public InvalidMediaExtensionException(String[] allowedExtension, String extension, String filename)
         {
@@ -71,7 +77,8 @@ public class InvalidExtensionException extends FileUploadException
     
     public static class InvalidVideoExtensionException extends InvalidExtensionException
     {
-        private static final long serialVersionUID = 1L;
+        @Serial
+    private static final long serialVersionUID = 1L;
 
         public InvalidVideoExtensionException(String[] allowedExtension, String extension, String filename)
         {

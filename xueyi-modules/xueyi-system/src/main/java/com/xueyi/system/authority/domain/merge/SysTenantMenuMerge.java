@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
+
 /**
  * 租户-菜单关联 持久化对象
  *
@@ -17,6 +19,7 @@ import lombok.NoArgsConstructor;
 @TableName("sys_tenant_menu_merge")
 public class SysTenantMenuMerge extends TBasisEntity {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 菜单Id */

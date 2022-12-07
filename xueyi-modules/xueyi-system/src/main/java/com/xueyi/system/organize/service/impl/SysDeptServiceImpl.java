@@ -6,18 +6,13 @@ import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.datasource.annotation.Isolate;
 import com.xueyi.common.web.entity.service.impl.TreeServiceImpl;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
-import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 import com.xueyi.system.api.organize.domain.query.SysDeptQuery;
-import com.xueyi.system.api.organize.domain.query.SysPostQuery;
 import com.xueyi.system.organize.manager.ISysDeptManager;
 import com.xueyi.system.organize.service.ISysDeptService;
-import com.xueyi.system.organize.service.ISysPostService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.Serializable;
-import java.util.Collection;
 import java.util.List;
 
 /**

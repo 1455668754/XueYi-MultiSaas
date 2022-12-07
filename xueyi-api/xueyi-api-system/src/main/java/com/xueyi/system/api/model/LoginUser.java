@@ -6,6 +6,7 @@ import com.xueyi.system.api.organize.domain.dto.SysUserDto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
 import java.util.Map;
 
 /**
@@ -17,6 +18,7 @@ import java.util.Map;
 @EqualsAndHashCode(callSuper = true)
 public class LoginUser extends BaseLoginUser<SysUserDto> {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 数据权限 */

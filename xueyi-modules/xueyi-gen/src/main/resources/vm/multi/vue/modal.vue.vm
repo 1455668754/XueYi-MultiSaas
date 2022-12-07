@@ -10,19 +10,11 @@
 </template>
 
 <script lang="ts">
-  import { computed, defineComponent, ref, unref } from 'vue';
-  import { formSchema } from './${businessName}.data';
-  import { useMessage } from '/@/hooks/web/useMessage';
-  import {
-    get${BusinessName}Api,
-    add${BusinessName}Api,
-    edit${BusinessName}Api,
-#if($table.tree || $table.subTree)
-    list${BusinessName}ExNodesApi,
-#end
-  } from '/@/api/${moduleName}/${authorityName}/${businessName}';
-  import { BasicModal, useModalInner } from '/@/components/Modal';
-  import { BasicForm, useForm } from '/@/components/Form';
+  import {computed, defineComponent, ref, unref} from 'vue';
+  import {formSchema} from './';
+  import {useMessage} from '/@/hooks/web/useMessage';
+  import {BasicModal, useModalInner} from '/@/components/Modal';
+  import {BasicForm, useForm} from '/@/components/Form';
 
   export default defineComponent({
     name: '${BusinessName}Modal',

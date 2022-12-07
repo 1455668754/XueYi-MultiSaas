@@ -8,6 +8,8 @@ import com.xueyi.common.core.web.entity.base.TreeEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
+
 /**
  * Tree 混合基类
  *
@@ -18,6 +20,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class CTreeEntity<D> extends TreeEntity<D> {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 公共数据（Y是 N否） */

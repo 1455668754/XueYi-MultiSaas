@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.xueyi.common.core.constant.basic.SqlConstants.ANCESTORS_FIND;
+import static com.xueyi.common.core.constant.basic.SqlConstants.*;
 
 /**
  * 菜单管理 数据封装层处理
@@ -218,44 +218,60 @@ public class SysMenuManagerImpl extends TreeManagerImpl<SysMenuQuery, SysMenuDto
     public List<SysMenuDto> getMenuByMenuType(Long moduleId, String menuType) {
         LambdaQueryWrapper<SysMenuPo> queryWrapper = new LambdaQueryWrapper<>();
         switch (AuthorityConstants.MenuType.getByCode(menuType)) {
-            case BUTTON:
-            case DETAILS:
-                queryWrapper
-                        .eq(SysMenuPo::getModuleId, moduleId)
-                        .and(i -> i
-                                .eq(SysMenuPo::getMenuType, AuthorityConstants.MenuType.MENU.getCode())
-                                .or().eq(SysMenuPo::getMenuType, AuthorityConstants.MenuType.DIR.getCode()))
-                        .or().eq(SysMenuPo::getId, AuthorityConstants.MENU_TOP_NODE);
-                break;
-            case MENU:
-            case DIR:
-                queryWrapper
-                        .eq(SysMenuPo::getModuleId, moduleId)
-                        .eq(SysMenuPo::getMenuType, AuthorityConstants.MenuType.DIR.getCode())
-                        .or().eq(SysMenuPo::getId, AuthorityConstants.MENU_TOP_NODE);
-                break;
-            default:
+            case BUTTON, DETAILS -> queryWrapper
+                    .eq(SysMenuPo::getModuleId, moduleId)
+                    .and(i -> i
+                            .eq(SysMenuPo::getMenuType, AuthorityConstants.MenuType.MENU.getCode())
+                            .or().eq(SysMenuPo::getMenuType, AuthorityConstants.MenuType.DIR.getCode()))
+                    .or().eq(SysMenuPo::getId, AuthorityConstants.MENU_TOP_NODE);
+            case MENU, DIR -> queryWrapper
+                    .eq(SysMenuPo::getModuleId, moduleId)
+                    .eq(SysMenuPo::getMenuType, AuthorityConstants.MenuType.DIR.getCode())
+                    .or().eq(SysMenuPo::getId, AuthorityConstants.MENU_TOP_NODE);
+            default -> {
                 return new ArrayList<>();
+            }
         }
         return baseConverter.mapperDto(baseMapper.selectList(queryWrapper));
     }
 
     /**
-     * 根据Id修改其子节点的祖籍
+     * 修改其子节点的祖籍
      *
-     * @param id           Id
-     * @param newAncestors 新祖籍
-     * @param oldAncestors 旧祖籍
-     * @param moduleId     模块Id
+     * @param dto 数据对象
      * @return 结果
      */
     @Override
-    public int updateChildrenAncestors(Serializable id, String newAncestors, String oldAncestors, Long moduleId) {
+    public int updateChildrenAncestors(SysMenuDto dto) {
+        String newAncestors = dto.getAncestors() + StrUtil.COMMA + dto.getId();
+        String oldAncestors = dto.getOldAncestors() + StrUtil.COMMA + dto.getId();
+        int levelChange = dto.getLevel() - dto.getOldLevel();
         return baseMapper.update(null,
                 Wrappers.<SysMenuPo>update().lambda()
-                        .set(SysMenuPo::getModuleId, moduleId)
-                        .setSql(StrUtil.format("{} = insert({},{},{},'{}')", SqlConstants.Entity.ANCESTORS.getCode(), SqlConstants.Entity.ANCESTORS.getCode(), 1, oldAncestors.length(), newAncestors))
-                        .apply(ANCESTORS_FIND, id));
+                        .set(SysMenuPo::getModuleId, dto.getModuleId())
+                        .setSql(StrUtil.format(ANCESTORS_PART_UPDATE, SqlConstants.Entity.ANCESTORS.getCode(), SqlConstants.Entity.ANCESTORS.getCode(), 1, oldAncestors.length(), newAncestors))
+                        .setSql(StrUtil.format(TREE_LEVEL_UPDATE, SqlConstants.Entity.LEVEL.getCode(), SqlConstants.Entity.LEVEL.getCode(), levelChange))
+                        .likeRight(SysMenuPo::getAncestors, oldAncestors));
+    }
+
+    /**
+     * 修改子节点的祖籍和状态
+     *
+     * @param dto 数据对象
+     * @return 结果
+     */
+    @Override
+    public int updateChildren(SysMenuDto dto) {
+        String newAncestors = dto.getAncestors() + StrUtil.COMMA + dto.getId();
+        String oldAncestors = dto.getOldAncestors() + StrUtil.COMMA + dto.getId();
+        int levelChange = dto.getLevel() - dto.getOldLevel();
+        return baseMapper.update(null,
+                Wrappers.<SysMenuPo>update().lambda()
+                        .set(SysMenuPo::getModuleId, dto.getModuleId())
+                        .set(SysMenuPo::getStatus, dto.getStatus())
+                        .setSql(StrUtil.format(ANCESTORS_PART_UPDATE, SqlConstants.Entity.ANCESTORS.getCode(), SqlConstants.Entity.ANCESTORS.getCode(), 1, oldAncestors.length(), newAncestors))
+                        .setSql(StrUtil.format(TREE_LEVEL_UPDATE, SqlConstants.Entity.LEVEL.getCode(), SqlConstants.Entity.LEVEL.getCode(), levelChange))
+                        .likeRight(SysMenuPo::getAncestors, oldAncestors));
     }
 
     /**

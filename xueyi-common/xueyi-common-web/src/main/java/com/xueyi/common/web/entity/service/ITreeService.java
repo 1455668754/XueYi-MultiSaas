@@ -32,44 +32,6 @@ public interface ITreeService<Q extends TreeEntity<D>, D extends TreeEntity<D>> 
     List<D> selectChildListById(Serializable id);
 
     /**
-     * 根据Id及祖籍修改其子节点的状态
-     *
-     * @param id     Id
-     * @param status 状态
-     * @return 结果
-     */
-    int updateChildrenStatus(Serializable id, String status);
-
-    /**
-     * 根据Id及旧祖籍修改其子节点的祖籍
-     *
-     * @param id           Id
-     * @param newAncestors 新祖籍
-     * @param oldAncestors 旧祖籍
-     * @return 结果
-     */
-    int updateChildrenAncestors(Serializable id, String newAncestors, String oldAncestors);
-
-    /**
-     * 根据Id及旧祖籍修改其子节点的祖籍和状态
-     *
-     * @param id           Id
-     * @param status       状态
-     * @param newAncestors 新祖籍
-     * @param oldAncestors 旧祖籍
-     * @return 结果
-     */
-    int updateChildren(Serializable id, String status, String newAncestors, String oldAncestors);
-
-    /**
-     * 根据Id及祖籍删除其子节点
-     *
-     * @param id Id
-     * @return 结果
-     */
-    int deleteChildren(Serializable id);
-
-    /**
      * 校验是否为父级的子级
      *
      * @param id       Id

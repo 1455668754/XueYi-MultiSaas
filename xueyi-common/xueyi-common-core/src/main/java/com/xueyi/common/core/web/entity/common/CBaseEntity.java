@@ -8,6 +8,8 @@ import com.xueyi.common.core.web.entity.base.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
+
 /**
  * Base 混合基类
  *
@@ -17,6 +19,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class CBaseEntity extends BaseEntity {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 公共数据（Y是 N否） */

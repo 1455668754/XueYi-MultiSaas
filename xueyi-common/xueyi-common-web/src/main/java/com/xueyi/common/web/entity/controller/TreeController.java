@@ -48,68 +48,49 @@ public abstract class TreeController<Q extends TreeEntity<D>, D extends TreeEnti
     /**
      * 树型 新增
      * 考虑父节点状态
-     *
-     * @see #AHandleTreeStatusValidated(D) 树型 父节点逻辑校验
      */
     @Override
     public AjaxResult add(@Validated({V_A.class}) @RequestBody D d) {
-        AEHandle(BaseConstants.Operate.ADD, d);
-        AHandleTreeStatusValidated(d);
+        d.initOperate(BaseConstants.Operate.ADD);
+        AEHandle(d.getOperate(), d);
+        AETreeStatusHandle(d.getOperate(), d);
         return toAjax(baseService.insert(d));
     }
 
     /**
      * 树型 修改
      * 考虑子节点状态
-     *
-     * @see #EHandleTreeLoopValidated(D) 树型 父节点不能为自己或自己的子节点
-     * @see #EHandleTreeStatusValidated(D) 树型 父子节点逻辑校验
      */
     @Override
     public AjaxResult edit(@Validated({V_E.class}) @RequestBody D d) {
-        AEHandle(BaseConstants.Operate.EDIT, d);
-        EHandleTreeLoopValidated(d);
-        EHandleTreeStatusValidated(d);
-        return toAjax(baseService.update(d));
-    }
-
-    /**
-     * 树型 强制修改
-     *
-     * @see #EHandleTreeLoopValidated(D) 树型 父节点不能为自己或自己的子节点
-     */
-    @Override
-    public AjaxResult editForce(@Validated({V_E.class}) @RequestBody D d) {
-        AEHandle(BaseConstants.Operate.EDIT_FORCE, d);
-        EHandleTreeLoopValidated(d);
+        d.initOperate(BaseConstants.Operate.EDIT);
+        AEHandle(d.getOperate(), d);
+        TreeLoopHandle(d);
+        AETreeStatusHandle(d.getOperate(), d);
         return toAjax(baseService.update(d));
     }
 
     /**
      * 树型 修改状态
      * 考虑子节点状态
-     *
-     * @see #ESHandleTreeStatusValidated(D) 树型 父子节点逻辑校验
      */
     @Override
     public AjaxResult editStatus(@RequestBody D d) {
-        ESHandleTreeStatusValidated(d);
+        d.initOperate(BaseConstants.Operate.EDIT_STATUS);
+        AETreeStatusHandle(d.getOperate(), d);
         return toAjax(baseService.updateStatus(d));
     }
 
     /**
      * 树型 批量删除
      * 考虑子节点存在与否
-     *
-     * @see #RHandleEmpty(List)  基类 空校验
-     * @see #RHandleTreeChildValidated(List)  树型 子节点存在与否校验
      */
     @Override
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         RHandleEmpty(idList);
         RHandle(BaseConstants.Operate.DELETE, idList);
         RHandleEmpty(idList);
-        RHandleTreeChildValidated(idList);
+        RHandleTreeChild(idList);
         return toAjax(baseService.deleteByIds(idList));
     }
 }

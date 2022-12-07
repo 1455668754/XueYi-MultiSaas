@@ -58,23 +58,23 @@ public class BaseHandleServiceImpl<Q extends BaseEntity, D extends BaseEntity, I
         if (StrUtil.isEmpty(getCacheKey()))
             return;
         switch (operateCache) {
-            case REFRESH_ALL:
+            case REFRESH_ALL -> {
                 List<D> allList = baseManager.selectList(null);
                 redisService.deleteObject(getCacheKey());
                 redisService.refreshMapCache(getCacheKey(), allList, D::getIdStr, D -> D);
-                break;
-            case REFRESH:
+            }
+            case REFRESH -> {
                 if (operate.isSingle())
                     redisService.refreshMapValueCache(getCacheKey(), dto::getIdStr, () -> dto);
                 else if (operate.isBatch())
                     dtoList.forEach(item -> redisService.refreshMapValueCache(getCacheKey(), item::getIdStr, () -> item));
-                break;
-            case REMOVE:
+            }
+            case REMOVE -> {
                 if (operate.isSingle())
                     redisService.removeMapValueCache(getCacheKey(), dto.getId());
                 else if (operate.isBatch())
                     redisService.removeMapValueCache(getCacheKey(), dtoList.stream().map(D::getIdStr).toArray());
-                break;
+            }
         }
     }
 
@@ -98,14 +98,8 @@ public class BaseHandleServiceImpl<Q extends BaseEntity, D extends BaseEntity, I
     protected void endHandle(OperateConstants.ServiceType operate, int row, D dto) {
         if (row > 0) {
             switch (operate) {
-                case ADD:
-                case EDIT:
-                case EDIT_STATUS:
-                    refreshCache(operate, RedisConstants.OperateType.REFRESH, dto, null);
-                    break;
-                case DELETE:
-                    refreshCache(operate, RedisConstants.OperateType.REMOVE, dto, null);
-                    break;
+                case ADD, EDIT, EDIT_STATUS -> refreshCache(operate, RedisConstants.OperateType.REFRESH, dto, null);
+                case DELETE -> refreshCache(operate, RedisConstants.OperateType.REMOVE, dto, null);
             }
         }
     }
@@ -131,13 +125,9 @@ public class BaseHandleServiceImpl<Q extends BaseEntity, D extends BaseEntity, I
     protected void endBatchHandle(OperateConstants.ServiceType operate, int rows, Collection<D> entityList) {
         if (rows > 0) {
             switch (operate) {
-                case BATCH_ADD:
-                case BATCH_EDIT:
-                    refreshCache(operate, RedisConstants.OperateType.REFRESH, null, entityList);
-                    break;
-                case BATCH_DELETE:
-                    refreshCache(operate, RedisConstants.OperateType.REMOVE, null, entityList);
-                    break;
+                case BATCH_ADD, BATCH_EDIT ->
+                        refreshCache(operate, RedisConstants.OperateType.REFRESH, null, entityList);
+                case BATCH_DELETE -> refreshCache(operate, RedisConstants.OperateType.REMOVE, null, entityList);
             }
         }
     }

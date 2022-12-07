@@ -49,60 +49,42 @@ public class TreeServiceImpl<Q extends TreeEntity<D>, D extends TreeEntity<D>, I
 
     /**
      * 新增修改数据对象
-     * 同步启用父节点
      *
      * @param d 数据对象
      * @return 结果
-     * @see #AUHandleParentStatusCheck(Serializable, String) 树型 检查父级状态
-     * @see #AHandleAncestorsSet(TreeEntity) 树型 设置祖籍
      */
     @Override
     @DSTransactional
     public int insert(D d) {
-        AUHandleParentStatusCheck(d.getParentId(), d.getStatus());
-        AHandleAncestorsSet(d);
-        return baseManager.insert(d);
+        return super.insert(d);
     }
 
     /**
-     * 修改数据对象
-     * 同步 修改子节点祖籍 || 停用子节点 || 启用父节点
+     * 修改数据对象 | 同步 修改子节点祖籍 || 停用子节点
      *
      * @param d 数据对象
      * @return 结果
-     * @see #AUHandleParentStatusCheck(Serializable, String) 树型 检查父级状态
-     * @see #UHandleAncestorsCheck(TreeEntity) 树型 检验祖籍是否变更
-     * @see #UUSChildrenStatusCheck 树型 检查子节点状态
      */
     @Override
     @DSTransactional
     public int update(D d) {
-        AUHandleParentStatusCheck(d.getParentId(), d.getStatus());
-        UHandleAncestorsCheck(d);
-        UUSChildrenStatusCheck(d);
-        return baseManager.update(d);
+        return super.update(d);
     }
 
     /**
-     * 修改数据对象状态
-     * 同步停用子节点 || 启用父节点
+     * 修改数据对象状态 | 同步停用子节点
      *
      * @param d 数据对象
      * @return 结果
-     * @see #USHandelParentStatusCheck 树型 检查父级状态
-     * @see #UUSChildrenStatusCheck 树型 检查子节点状态
      */
     @Override
     @DSTransactional
     public int updateStatus(D d) {
-        USHandelParentStatusCheck(d);
-        UUSChildrenStatusCheck(d);
-        return baseManager.updateStatus(d);
+        return super.updateStatus(d);
     }
 
     /**
-     * 根据Id删除数据对象
-     * 同步删除 子节点
+     * 根据Id删除数据对象 | 同步删除 子节点
      *
      * @param id Id
      * @return 结果
@@ -110,13 +92,11 @@ public class TreeServiceImpl<Q extends TreeEntity<D>, D extends TreeEntity<D>, I
     @Override
     @DSTransactional
     public int deleteById(Serializable id) {
-        baseManager.deleteChildren(id);
-        return baseManager.deleteById(id);
+        return super.deleteById(id);
     }
 
     /**
-     * 根据Id集合删除数据对象
-     * 同步删除 子节点
+     * 根据Id集合删除数据对象 | 同步删除 子节点
      *
      * @param idList Id集合
      * @return 结果
@@ -124,59 +104,7 @@ public class TreeServiceImpl<Q extends TreeEntity<D>, D extends TreeEntity<D>, I
     @Override
     @DSTransactional
     public int deleteByIds(Collection<? extends Serializable> idList) {
-        for (Serializable id : idList)
-            baseManager.deleteChildren(id);
-        return baseManager.deleteByIds(idList);
-    }
-
-    /**
-     * 根据Id修改其子节点的状态
-     *
-     * @param id     Id
-     * @param status 状态
-     * @return 结果
-     */
-    @Override
-    public int updateChildrenStatus(Serializable id, String status) {
-        return baseManager.updateChildrenStatus(id, status);
-    }
-
-    /**
-     * 根据Id修改其子节点的祖籍
-     *
-     * @param id           Id
-     * @param newAncestors 新祖籍
-     * @param oldAncestors 旧祖籍
-     * @return 结果
-     */
-    @Override
-    public int updateChildrenAncestors(Serializable id, String newAncestors, String oldAncestors) {
-        return baseManager.updateChildrenAncestors(id, newAncestors, oldAncestors);
-    }
-
-    /**
-     * 根据Id修改其子节点的祖籍和状态
-     *
-     * @param id           Id
-     * @param status       状态
-     * @param newAncestors 新祖籍
-     * @param oldAncestors 旧祖籍
-     * @return 结果
-     */
-    @Override
-    public int updateChildren(Serializable id, String status, String newAncestors, String oldAncestors) {
-        return baseManager.updateChildren(id, status, newAncestors, oldAncestors);
-    }
-
-    /**
-     * 根据Id删除其子节点
-     *
-     * @param id Id
-     * @return 结果
-     */
-    @Override
-    public int deleteChildren(Serializable id) {
-        return baseManager.deleteChildren(id);
+        return super.deleteByIds(idList);
     }
 
     /**
@@ -214,6 +142,19 @@ public class TreeServiceImpl<Q extends TreeEntity<D>, D extends TreeEntity<D>, I
     }
 
     /**
+     * 根据Id查询数据对象状态 | 顶级节点默认一直启动
+     *
+     * @param id Id
+     * @return 结果 | NORMAL 正常 | DISABLE 停用 | EXCEPTION 异常（值不存在）
+     */
+    @Override
+    public BaseConstants.Status checkStatus(Serializable id) {
+        if (ObjectUtil.equals(BaseConstants.TOP_ID, id))
+            return BaseConstants.Status.NORMAL;
+        return super.checkStatus(id);
+    }
+
+    /**
      * 校验名称是否唯一
      *
      * @param id       Id
@@ -238,4 +179,5 @@ public class TreeServiceImpl<Q extends TreeEntity<D>, D extends TreeEntity<D>, I
         List<D> deptTrees = TreeUtil.buildTree(list);
         return deptTrees.stream().map(TreeSelect::new).collect(Collectors.toList());
     }
+
 }

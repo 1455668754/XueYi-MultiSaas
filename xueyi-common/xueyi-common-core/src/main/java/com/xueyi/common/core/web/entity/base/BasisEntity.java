@@ -10,6 +10,7 @@ import com.xueyi.common.core.web.validate.V_E;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Map;
 
@@ -21,6 +22,7 @@ import java.util.Map;
 @Data
 public class BasisEntity implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** Id */
@@ -45,5 +47,15 @@ public class BasisEntity implements Serializable {
 
     public String getIdStr() {
         return ObjectUtil.isNotNull(id) ? id.toString() : null;
+    }
+
+    /**
+     * 初始化操作类型
+     *
+     * @param operate 操作类型
+     */
+    public void initOperate(BaseConstants.Operate operate) {
+        if (ObjectUtil.isNull(this.operate))
+            this.operate = operate;
     }
 }

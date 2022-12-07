@@ -11,6 +11,7 @@ import lombok.EqualsAndHashCode;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.io.Serial;
 
 import static com.baomidou.mybatisplus.annotation.SqlCondition.LIKE;
 
@@ -24,6 +25,7 @@ import static com.baomidou.mybatisplus.annotation.SqlCondition.LIKE;
 @TableName("sys_dept")
 public class SysDeptPo extends TTreeEntity<SysDeptDto> {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 部门编码 */

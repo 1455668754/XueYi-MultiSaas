@@ -14,7 +14,7 @@ import com.xueyi.common.web.entity.mapper.TreeMapper;
 import java.io.Serializable;
 import java.util.List;
 
-import static com.xueyi.common.core.constant.basic.SqlConstants.ANCESTORS_FIND;
+import static com.xueyi.common.core.constant.basic.SqlConstants.*;
 
 /**
  * 数据封装层处理 树型通用数据处理
@@ -61,52 +61,55 @@ public class TreeManagerImpl<Q extends P, D extends P, P extends TreeEntity<D>, 
     }
 
     /**
-     * 根据Id修改其子节点的状态
+     * 修改子节点的状态
      *
-     * @param id     Id
-     * @param status 状态
+     * @param dto 数据对象
      * @return 结果
      */
     @Override
-    public int updateChildrenStatus(Serializable id, String status) {
+    public int updateChildrenStatus(D dto) {
+        String ancestors = dto.getOldAncestors() + StrUtil.COMMA + dto.getId();
         return baseMapper.update(null,
                 Wrappers.<P>update().lambda()
-                        .set(P::getStatus, status)
-                        .apply(ANCESTORS_FIND, id));
+                        .set(P::getStatus, dto.getStatus())
+                        .likeRight(P::getAncestors, ancestors));
     }
 
     /**
-     * 根据Id修改其子节点的祖籍
+     * 修改其子节点的祖籍
      *
-     * @param id           Id
-     * @param newAncestors 新祖籍
-     * @param oldAncestors 旧祖籍
+     * @param dto 数据对象
      * @return 结果
      */
     @Override
-    public int updateChildrenAncestors(Serializable id, String newAncestors, String oldAncestors) {
+    public int updateChildrenAncestors(D dto) {
+        String newAncestors = dto.getAncestors() + StrUtil.COMMA + dto.getId();
+        String oldAncestors = dto.getOldAncestors() + StrUtil.COMMA + dto.getId();
+        int levelChange = dto.getLevel() - dto.getOldLevel();
         return baseMapper.update(null,
                 Wrappers.<P>update().lambda()
-                        .setSql(StrUtil.format("{} = insert({},{},{},'{}')", SqlConstants.Entity.ANCESTORS.getCode(), SqlConstants.Entity.ANCESTORS.getCode(), 1, oldAncestors.length(), newAncestors))
-                        .apply(ANCESTORS_FIND, id));
+                        .setSql(StrUtil.format(ANCESTORS_PART_UPDATE, SqlConstants.Entity.ANCESTORS.getCode(), SqlConstants.Entity.ANCESTORS.getCode(), 1, oldAncestors.length(), newAncestors))
+                        .setSql(StrUtil.format(TREE_LEVEL_UPDATE, SqlConstants.Entity.LEVEL.getCode(), SqlConstants.Entity.LEVEL.getCode(), levelChange))
+                        .likeRight(P::getAncestors, oldAncestors));
     }
 
     /**
-     * 根据Id修改其子节点的祖籍和状态
+     * 修改子节点的祖籍和状态
      *
-     * @param id           Id
-     * @param status       状态
-     * @param newAncestors 新祖籍
-     * @param oldAncestors 旧祖籍
+     * @param dto 数据对象
      * @return 结果
      */
     @Override
-    public int updateChildren(Serializable id, String status, String newAncestors, String oldAncestors) {
+    public int updateChildren(D dto) {
+        String newAncestors = dto.getAncestors() + StrUtil.COMMA + dto.getId();
+        String oldAncestors = dto.getOldAncestors() + StrUtil.COMMA + dto.getId();
+        int levelChange = dto.getLevel() - dto.getOldLevel();
         return baseMapper.update(null,
                 Wrappers.<P>update().lambda()
-                        .set(P::getStatus, status)
-                        .setSql(StrUtil.format("{} = insert({},{},{},{})", SqlConstants.Entity.ANCESTORS.getCode(), SqlConstants.Entity.ANCESTORS.getCode(), 1, oldAncestors.length(), newAncestors))
-                        .apply(ANCESTORS_FIND, id));
+                        .set(P::getStatus, dto.getStatus())
+                        .setSql(StrUtil.format(ANCESTORS_PART_UPDATE, SqlConstants.Entity.ANCESTORS.getCode(), SqlConstants.Entity.ANCESTORS.getCode(), 1, oldAncestors.length(), newAncestors))
+                        .setSql(StrUtil.format(TREE_LEVEL_UPDATE, SqlConstants.Entity.LEVEL.getCode(), SqlConstants.Entity.LEVEL.getCode(), levelChange))
+                        .likeRight(P::getAncestors, oldAncestors));
     }
 
     /**

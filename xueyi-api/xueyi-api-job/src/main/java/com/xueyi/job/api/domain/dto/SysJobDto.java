@@ -6,6 +6,7 @@ import com.xueyi.job.api.domain.po.SysJobPo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
 import java.util.List;
 
 import static com.xueyi.job.api.constant.MergeConstants.JOB_LOG_GROUP;
@@ -19,6 +20,7 @@ import static com.xueyi.job.api.constant.MergeConstants.JOB_LOG_GROUP;
 @EqualsAndHashCode(callSuper = true)
 public class SysJobDto extends SysJobPo {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 任务记录数据集合 */

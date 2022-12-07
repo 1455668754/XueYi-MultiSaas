@@ -9,5 +9,6 @@ import ${packageName}.domain.po.${ClassName}Po;
  */
 public class ${ClassName}Query extends ${ClassName}Po {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 }

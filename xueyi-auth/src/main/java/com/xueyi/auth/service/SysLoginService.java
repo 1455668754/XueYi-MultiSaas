@@ -1,10 +1,10 @@
 package com.xueyi.auth.service;
 
-import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.auth.form.RegisterBody;
 import com.xueyi.common.core.constant.basic.*;
 import com.xueyi.common.core.constant.system.OrganizeConstants;
 import com.xueyi.common.core.utils.ServletUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.utils.ip.IpUtil;
 import com.xueyi.common.core.web.result.AjaxResult;

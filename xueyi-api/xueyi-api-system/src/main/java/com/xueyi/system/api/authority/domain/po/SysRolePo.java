@@ -9,6 +9,7 @@ import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.io.Serial;
 
 import static com.baomidou.mybatisplus.annotation.SqlCondition.LIKE;
 
@@ -22,6 +23,7 @@ import static com.baomidou.mybatisplus.annotation.SqlCondition.LIKE;
 @TableName("sys_role")
 public class SysRolePo extends TBaseEntity {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 角色编码 */

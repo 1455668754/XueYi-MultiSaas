@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
 import java.util.List;
 
 /**
@@ -16,6 +17,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class TreeEntity<D> extends BaseEntity {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 父级Id */
@@ -35,4 +37,11 @@ public class TreeEntity<D> extends BaseEntity {
     @TableField(exist = false)
     protected List<D> children;
 
+    /** 原始祖籍列表 */
+    @TableField(exist = false)
+    protected String oldAncestors;
+
+    /** 原始层级 */
+    @TableField(exist = false)
+    protected Integer oldLevel;
 }

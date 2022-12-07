@@ -1,5 +1,7 @@
 package com.xueyi.common.core.exception;
 
+import java.io.Serial;
+
 /**
  * 验证码错误异常类
  *
@@ -7,6 +9,7 @@ package com.xueyi.common.core.exception;
  */
 public class CaptchaException extends RuntimeException {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     public CaptchaException(String msg) {

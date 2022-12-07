@@ -5,6 +5,7 @@ import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 
+import java.io.Serial;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -15,6 +16,7 @@ import java.util.Objects;
  */
 public class AjaxResult extends HashMap<String, Object> {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 状态码 */

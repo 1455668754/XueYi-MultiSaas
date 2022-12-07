@@ -4,6 +4,7 @@ import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.core.utils.core.StrUtil;
 import lombok.Data;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Set;
 
@@ -15,6 +16,7 @@ import java.util.Set;
 @Data
 public class DataScope implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 企业账号Id */
