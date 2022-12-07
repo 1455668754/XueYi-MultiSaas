@@ -37,6 +37,10 @@ public class XssFilter implements GlobalFilter, Ordered {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
+        // xss开关未开启 或 通过nacos关闭，不过滤
+        if (!xss.getEnabled()) {
+            return chain.filter(exchange);
+        }
         // GET DELETE 不过滤
         HttpMethod method = request.getMethod();
         if (method == null || method == HttpMethod.GET || method == HttpMethod.DELETE) {
