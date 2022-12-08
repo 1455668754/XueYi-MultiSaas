@@ -3,7 +3,6 @@ package com.xueyi.gen.controller;
 import com.alibaba.fastjson2.JSONObject;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.ServiceConstants;
-import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.core.ConvertUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.validate.V_E;
@@ -12,10 +11,14 @@ import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.RequiresPermissions;
 import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.web.entity.controller.BaseController;
+import com.xueyi.gen.domain.dto.GenTableColumnDto;
 import com.xueyi.gen.domain.dto.GenTableDto;
+import com.xueyi.gen.domain.query.GenTableColumnQuery;
 import com.xueyi.gen.domain.query.GenTableQuery;
+import com.xueyi.gen.service.IGenTableColumnService;
 import com.xueyi.gen.service.IGenTableService;
 import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,6 +35,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/gen")
 public class GenController extends BaseController<GenTableQuery, GenTableDto, IGenTableService> {
+
+    @Autowired
+    private IGenTableColumnService subService;
 
     /**
      * 定义节点名称
@@ -59,6 +65,17 @@ public class GenController extends BaseController<GenTableQuery, GenTableDto, IG
     public AjaxResult dataList(GenTableDto table) {
         startPage();
         List<GenTableDto> list = baseService.selectDbTableList(table);
+        return getDataTable(list);
+    }
+
+    /**
+     * 查询数据表字段列表
+     */
+    @GetMapping(value = "/column/list")
+    @RequiresPermissions(Auth.GENERATE_GEN_LIST)
+    public AjaxResult columnList(GenTableColumnQuery query) {
+        startPage();
+        List<GenTableColumnDto> list = subService.selectList(query);
         return getDataTable(list);
     }
 
@@ -99,18 +116,6 @@ public class GenController extends BaseController<GenTableQuery, GenTableDto, IG
     public AjaxResult previewMulti(@PathVariable("tableId") Long tableId) {
         List<JSONObject> dataMap = baseService.previewCode(tableId, ServiceConstants.FromSource.MULTI);
         return success(dataMap);
-    }
-
-    /**
-     * 查询数据表字段列表
-     */
-    @GetMapping(value = "/column/{tableId}")
-    @RequiresPermissions(Auth.GENERATE_GEN_LIST)
-    public AjaxResult columnList(@PathVariable Long tableId) {
-        throw new ServiceException("此处为错误，待调整！！！！");
-//        startPage();
-//        List<GenTableColumnDto> list = baseService.selectList(tableId);
-//        return getDataTable(list);
     }
 
     /**
