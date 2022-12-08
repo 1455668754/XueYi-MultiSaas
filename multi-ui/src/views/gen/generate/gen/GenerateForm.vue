@@ -15,10 +15,6 @@
     <BasicForm @register="treeRegister" />
   </CollapseContainer>
 
-  <CollapseContainer title="主子表配置" v-show="isSubTpl(tplType)">
-    <BasicForm @register="subRegister" />
-  </CollapseContainer>
-
   <CollapseContainer title="接口配置" v-show="!isMergeTpl(tplType)">
     <BasicForm @register="apiRegister" />
   </CollapseContainer>
@@ -36,15 +32,12 @@
     generateBaseSchema,
     generateBasicSchema,
     generateFormSchema,
-    generateSubSchema,
     generateTreeSchema,
     genList,
     getOptions,
     isMergeTpl,
-    isSubTpl,
     isTreeTpl,
   } from './gen.detail.data';
-  import { listGenApi, listGenColumnApi } from '/@/api/gen/generate/gen';
   import { getMenuRouteListApi } from '/@/api/system/authority/menu';
   import { MenuTypeEnum } from '/@/enums/system';
   import { sourceAssign } from '/@/utils/xueyi';
@@ -101,15 +94,6 @@
         showActionButtonGroup: false,
       });
 
-      const [
-        subRegister,
-        { setFieldsValue: subSetFieldsValue, validate: subValidate, updateSchema: subUpdateSchema },
-      ] = useForm({
-        labelWidth: 160,
-        schemas: generateSubSchema,
-        showActionButtonGroup: false,
-      });
-
       const [apiRegister, { setFieldsValue: apiSetFieldsValue, validate: apiValidate }] = useForm({
         labelWidth: 160,
         schemas: generateApiSchema,
@@ -125,9 +109,7 @@
         const option = JSON.parse(state.info?.options) as OptionIM;
         initBase(dataList, option);
         initTree(dataList);
-        initSub(dataList, option);
         basicSetFieldsValue({ ...option });
-        subSetFieldsValue({ ...option });
         treeSetFieldsValue({ ...option });
         baseSetFieldsValue({ ...option });
         apiSetFieldsValue({ ...option });
@@ -177,58 +159,12 @@
         ]);
       }
 
-      /** 主子表配置初始化 */
-      async function initSub(subList: any[], options: OptionIM) {
-        if (options?.subTableId !== undefined) {
-          const subForeignOptions = await listGenColumnApi(options?.subTableId).then((res) => {
-            return getOptions(res.items);
-          });
-          subUpdateSchema({
-            field: 'subForeignId',
-            componentProps: { options: subForeignOptions },
-          });
-        }
-        const data = await listGenApi().then((res) => {
-          return getOptions(res.items);
-        });
-        subUpdateSchema([
-          { field: 'foreignId', componentProps: { options: subList } },
-          {
-            field: 'subTableId',
-            componentProps: ({ formModel, formActionType }) => {
-              return {
-                options: data,
-                showSearch: true,
-                optionFilterProp: 'label',
-                onChange: async (e: any) => {
-                  formModel.subForeignId = undefined;
-                  const { updateSchema } = formActionType;
-                  const data =
-                    e === undefined
-                      ? []
-                      : await listGenColumnApi(e).then((res) => {
-                          return getOptions(res.items);
-                        });
-                  updateSchema({
-                    field: 'subForeignId',
-                    componentProps: { options: data },
-                  });
-                },
-              };
-            },
-          },
-        ]);
-      }
-
       /** 保存校验 */
       async function submit() {
         try {
           sourceAssign(state.info, await validate());
           let options = {};
           sourceAssign(options, await basicValidate());
-          if (isSubTpl(tplType.value)) {
-            sourceAssign(options, await subValidate());
-          }
           if (isTreeTpl(tplType.value)) {
             sourceAssign(options, await treeValidate());
           }
@@ -247,7 +183,6 @@
         basicRegister,
         baseRegister,
         treeRegister,
-        subRegister,
         apiRegister,
         initialize,
         submit,
@@ -255,7 +190,6 @@
         TemplateTypeEnum,
         isMergeTpl,
         isTreeTpl,
-        isSubTpl,
       };
     },
   });

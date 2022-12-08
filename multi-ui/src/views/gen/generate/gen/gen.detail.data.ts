@@ -62,12 +62,7 @@ export function isBaseTpl(tplType: TemplateTypeEnum) {
 
 /** 树型表类型校验 */
 export function isTreeTpl(tplType: TemplateTypeEnum) {
-  return tplType === TemplateTypeEnum.TREE || tplType === TemplateTypeEnum.SUB_TREE;
-}
-
-/** 主子型表类型校验 */
-export function isSubTpl(tplType: TemplateTypeEnum) {
-  return tplType === TemplateTypeEnum.SUB_BASE || tplType === TemplateTypeEnum.SUB_TREE;
+  return tplType === TemplateTypeEnum.TREE;
 }
 
 /** 分页数据 */
@@ -192,24 +187,24 @@ export const fieldColumns: BasicColumn[] = [
   },
   {
     title: '隐藏',
-    dataIndex: 'hide',
+    dataIndex: 'isHide',
     customRender: ({ record }) => {
       const data = record as GenTableColumnIM;
       return h(Switch, {
-        checked: data.hide,
+        checked: data.isHide,
         checkedChildren: IsTickEnum.YES,
         unCheckedChildren: IsTickEnum.NO,
         onChange(checked: boolean) {
-          data.hide = checked;
+          data.isHide = checked;
           if (checked) {
-            data.insert = !checked;
-            data.edit = !checked;
-            data.view = !checked;
-            data.import = !checked;
-            data.export = !checked;
-            data.required = !checked;
-            data.list = !checked;
-            data.query = !checked;
+            data.isInsert = !checked;
+            data.isEdit = !checked;
+            data.isView = !checked;
+            data.isImport = !checked;
+            data.isExport = !checked;
+            data.isRequired = !checked;
+            data.isList = !checked;
+            data.isQuery = !checked;
           }
         },
       });
@@ -218,15 +213,15 @@ export const fieldColumns: BasicColumn[] = [
   },
   {
     title: '新增',
-    dataIndex: 'insert',
+    dataIndex: 'isInsert',
     customRender: ({ record }) => {
       const data = record as GenTableColumnIM;
       return h(Switch, {
-        checked: data.insert,
+        checked: data.isInsert,
         checkedChildren: IsTickEnum.YES,
         unCheckedChildren: IsTickEnum.NO,
         onChange(checked: boolean) {
-          data.insert = checked;
+          data.isInsert = checked;
         },
       });
     },
@@ -234,15 +229,15 @@ export const fieldColumns: BasicColumn[] = [
   },
   {
     title: '编辑',
-    dataIndex: 'edit',
+    dataIndex: 'isEdit',
     customRender: ({ record }) => {
       const data = record as GenTableColumnIM;
       return h(Switch, {
-        checked: data.edit,
+        checked: data.isEdit,
         checkedChildren: IsTickEnum.YES,
         unCheckedChildren: IsTickEnum.NO,
         onChange(checked: boolean) {
-          data.edit = checked;
+          data.isEdit = checked;
         },
       });
     },
@@ -250,15 +245,15 @@ export const fieldColumns: BasicColumn[] = [
   },
   {
     title: '查看',
-    dataIndex: 'view',
+    dataIndex: 'isView',
     customRender: ({ record }) => {
       const data = record as GenTableColumnIM;
       return h(Switch, {
-        checked: data.view,
+        checked: data.isView,
         checkedChildren: IsTickEnum.YES,
         unCheckedChildren: IsTickEnum.NO,
         onChange(checked: boolean) {
-          data.view = checked;
+          data.isView = checked;
         },
       });
     },
@@ -266,15 +261,15 @@ export const fieldColumns: BasicColumn[] = [
   },
   {
     title: '导入',
-    dataIndex: 'import',
+    dataIndex: 'isImport',
     customRender: ({ record }) => {
       const data = record as GenTableColumnIM;
       return h(Switch, {
-        checked: data.import,
+        checked: data.isImport,
         checkedChildren: IsTickEnum.YES,
         unCheckedChildren: IsTickEnum.NO,
         onChange(checked: boolean) {
-          data.import = checked;
+          data.isImport = checked;
         },
       });
     },
@@ -282,15 +277,15 @@ export const fieldColumns: BasicColumn[] = [
   },
   {
     title: '导出',
-    dataIndex: 'export',
+    dataIndex: 'isExport',
     customRender: ({ record }) => {
       const data = record as GenTableColumnIM;
       return h(Switch, {
-        checked: data.export,
+        checked: data.isExport,
         checkedChildren: IsTickEnum.YES,
         unCheckedChildren: IsTickEnum.NO,
         onChange(checked: boolean) {
-          data.export = checked;
+          data.isExport = checked;
         },
       });
     },
@@ -298,15 +293,15 @@ export const fieldColumns: BasicColumn[] = [
   },
   {
     title: '唯一',
-    dataIndex: 'unique',
+    dataIndex: 'isUnique',
     customRender: ({ record }) => {
       const data = record as GenTableColumnIM;
       return h(Switch, {
-        checked: data.unique,
+        checked: data.isUnique,
         checkedChildren: IsTickEnum.YES,
         unCheckedChildren: IsTickEnum.NO,
         onChange(checked: boolean) {
-          data.unique = checked;
+          data.isUnique = checked;
         },
       });
     },
@@ -314,15 +309,15 @@ export const fieldColumns: BasicColumn[] = [
   },
   {
     title: '必填',
-    dataIndex: 'required',
+    dataIndex: 'isRequired',
     customRender: ({ record }) => {
       const data = record as GenTableColumnIM;
       return h(Switch, {
-        checked: data.required,
+        checked: data.isRequired,
         checkedChildren: IsTickEnum.YES,
         unCheckedChildren: IsTickEnum.NO,
         onChange(checked: boolean) {
-          data.required = checked;
+          data.isRequired = checked;
         },
       });
     },
@@ -330,15 +325,15 @@ export const fieldColumns: BasicColumn[] = [
   },
   {
     title: '列表',
-    dataIndex: 'list',
+    dataIndex: 'isList',
     customRender: ({ record }) => {
       const data = record as GenTableColumnIM;
       return h(Switch, {
-        checked: data.list,
+        checked: data.isList,
         checkedChildren: IsTickEnum.YES,
         unCheckedChildren: IsTickEnum.NO,
         onChange(checked: boolean) {
-          data.list = checked;
+          data.isList = checked;
         },
       });
     },
@@ -346,15 +341,15 @@ export const fieldColumns: BasicColumn[] = [
   },
   {
     title: '查询',
-    dataIndex: 'query',
+    dataIndex: 'isQuery',
     customRender: ({ record }) => {
       const data = record as GenTableColumnIM;
       return h(Switch, {
-        checked: data.query,
+        checked: data.isQuery,
         checkedChildren: IsTickEnum.YES,
         unCheckedChildren: IsTickEnum.NO,
         onChange(checked: boolean) {
-          data.query = checked;
+          data.isQuery = checked;
         },
       });
     },
@@ -572,51 +567,6 @@ export const generateBaseSchema: FormSchema[] = [
     required: true,
     colProps: { span: 12 },
   },
-  {
-    label: '主键字段',
-    field: 'id',
-    component: 'Select',
-    componentProps: {
-      showSearch: true,
-      optionFilterProp: 'label',
-    },
-    helpMessage: ['主键字段， 默认为id'],
-    required: true,
-    colProps: { span: 12 },
-  },
-  {
-    label: '名称字段',
-    field: 'name',
-    component: 'Select',
-    componentProps: {
-      showSearch: true,
-      optionFilterProp: 'label',
-    },
-    helpMessage: ['名称字段， 默认为name，LIKE查询'],
-    colProps: { span: 12 },
-  },
-  {
-    label: '状态字段',
-    field: 'status',
-    component: 'Select',
-    componentProps: {
-      showSearch: true,
-      optionFilterProp: 'label',
-    },
-    helpMessage: ['状态字段， 默认为status（0 启用 1 禁用）'],
-    colProps: { span: 12 },
-  },
-  {
-    label: '排序字段',
-    field: 'sort',
-    component: 'Select',
-    componentProps: {
-      showSearch: true,
-      optionFilterProp: 'label',
-    },
-    helpMessage: ['排序字段， 默认为sort'],
-    colProps: { span: 12 },
-  },
 ];
 
 /** 生成树表配置数据 */
@@ -671,43 +621,6 @@ export const generateTreeSchema: FormSchema[] = [
   },
 ];
 
-/** 生成主子表配置数据 */
-export const generateSubSchema: FormSchema[] = [
-  {
-    label: '外键关联的主表字段',
-    field: 'foreignId',
-    component: 'Select',
-    componentProps: {
-      showSearch: true,
-      optionFilterProp: 'label',
-    },
-    helpMessage: ['外键对应的主表字段， 如：id'],
-    required: true,
-    colProps: { span: 12 },
-  },
-  {
-    label: '关联子表的表名',
-    field: 'subTableId',
-    component: 'Select',
-    defaultValue: undefined,
-    helpMessage: ['关联子表的表名， 如：sys_user'],
-    required: true,
-    colProps: { span: 12 },
-  },
-  {
-    label: '关联子表的外键字段',
-    field: 'subForeignId',
-    component: 'Select',
-    componentProps: {
-      showSearch: true,
-      optionFilterProp: 'label',
-    },
-    helpMessage: ['子表关联的外键字段， 如：dept_id'],
-    required: true,
-    colProps: { span: 12 },
-  },
-];
-
 /** 生成接口配置数据 */
 export const generateApiSchema: FormSchema[] = [
   {
@@ -744,30 +657,8 @@ export const generateApiSchema: FormSchema[] = [
     colProps: { span: 12 },
   },
   {
-    label: '强制新增',
-    field: 'apiAddForce',
-    component: 'RadioButtonGroup',
-    defaultValue: GenStatusEnum.FALSE,
-    componentProps: {
-      options: dict.genStatus,
-    },
-    required: true,
-    colProps: { span: 12 },
-  },
-  {
     label: '修改',
     field: 'apiEdit',
-    component: 'RadioButtonGroup',
-    defaultValue: GenStatusEnum.FALSE,
-    componentProps: {
-      options: dict.genStatus,
-    },
-    required: true,
-    colProps: { span: 12 },
-  },
-  {
-    label: '强制修改',
-    field: 'apiEditForce',
     component: 'RadioButtonGroup',
     defaultValue: GenStatusEnum.FALSE,
     componentProps: {
@@ -788,17 +679,6 @@ export const generateApiSchema: FormSchema[] = [
     colProps: { span: 12 },
   },
   {
-    label: '强制修改状态',
-    field: 'apiEditStatusForce',
-    component: 'RadioButtonGroup',
-    defaultValue: GenStatusEnum.FALSE,
-    componentProps: {
-      options: dict.genStatus,
-    },
-    required: true,
-    colProps: { span: 12 },
-  },
-  {
     label: '批量删除',
     field: 'apiBatchRemove',
     component: 'RadioButtonGroup',
@@ -810,8 +690,8 @@ export const generateApiSchema: FormSchema[] = [
     colProps: { span: 12 },
   },
   {
-    label: '强制批量删除',
-    field: 'apiBatchRemoveForce',
+    label: '导入',
+    field: 'apiImport',
     component: 'RadioButtonGroup',
     defaultValue: GenStatusEnum.FALSE,
     componentProps: {

@@ -13,10 +13,6 @@ export enum TemplateTypeEnum {
   BASE = 'base',
   // 树表
   TREE = 'tree',
-  // 主子表
-  SUB_BASE = 'subBase',
-  // 主子树表
-  SUB_TREE = 'subTree',
   // 关联表
   MERGE = 'merge',
 }
