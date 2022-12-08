@@ -1,8 +1,7 @@
 package com.xueyi.gateway.handler;
 
 import com.xueyi.common.core.utils.ServletUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
 import org.springframework.cloud.gateway.support.NotFoundException;
 import org.springframework.context.annotation.Configuration;
@@ -17,11 +16,10 @@ import reactor.core.publisher.Mono;
  *
  * @author xueyi
  */
+@Slf4j
 @Order(-1)
 @Configuration
 public class GatewayExceptionHandler implements ErrorWebExceptionHandler {
-
-    private static final Logger log = LoggerFactory.getLogger(GatewayExceptionHandler.class);
 
     @Override
     public Mono<Void> handle(ServerWebExchange exchange, Throwable ex) {

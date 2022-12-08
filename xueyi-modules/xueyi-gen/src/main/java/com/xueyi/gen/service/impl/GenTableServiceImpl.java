@@ -28,13 +28,12 @@ import com.xueyi.gen.util.VelocityInitializer;
 import com.xueyi.gen.util.VelocityUtils;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.authority.feign.RemoteMenuService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,10 +51,9 @@ import java.util.zip.ZipOutputStream;
  *
  * @author xueyi
  */
+@Slf4j
 @Service
 public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTableDto, IGenTableManager> implements IGenTableService {
-
-    private static final Logger log = LoggerFactory.getLogger(GenTableServiceImpl.class);
 
     @Autowired
     private RemoteMenuService remoteMenuService;

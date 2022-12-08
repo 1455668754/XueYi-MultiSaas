@@ -5,8 +5,7 @@ import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.result.R;
 import com.xueyi.file.api.domain.SysFile;
 import com.xueyi.file.service.ISysFileService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,10 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
  *
  * @author xueyi
  */
+@Slf4j
 @RestController
 public class SysFileController {
-
-    private static final Logger log = LoggerFactory.getLogger(SysFileController.class);
 
     @Autowired
     private ISysFileService sysFileService;

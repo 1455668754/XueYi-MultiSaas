@@ -12,11 +12,10 @@ import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.job.api.domain.dto.SysJobDto;
 import com.xueyi.job.api.domain.dto.SysJobLogDto;
 import com.xueyi.job.api.feign.RemoteJobLogService;
+import lombok.extern.slf4j.Slf4j;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -26,8 +25,8 @@ import java.time.LocalDateTime;
  *
  * @author xueyi
  */
+@Slf4j
 public abstract class AbstractQuartzJob implements Job {
-    private static final Logger log = LoggerFactory.getLogger(AbstractQuartzJob.class);
 
     /**
      * 线程本地变量

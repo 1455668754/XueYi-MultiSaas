@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.core.injector.AbstractMethod;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.xueyi.common.core.utils.core.NumberUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
@@ -33,7 +32,7 @@ public class InsertBatchMethod extends AbstractMethod {
         SqlMethod sqlMethod = SqlMethod.INSERT_BATCH;
         String keyProperty = null;
         String keyColumn = null;
-        if (StringUtils.isNotBlank(tableInfo.getKeyProperty())) {
+        if (StrUtil.isNotBlank(tableInfo.getKeyProperty())) {
             if (tableInfo.getIdType() == IdType.AUTO) {
                 keyGenerator = Jdbc3KeyGenerator.INSTANCE;
                 keyProperty = tableInfo.getKeyProperty();

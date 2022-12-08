@@ -5,6 +5,7 @@ import com.xueyi.common.core.constant.basic.SqlConstants;
 import com.xueyi.common.core.utils.core.ArrayUtil;
 import com.xueyi.common.core.utils.core.NumberUtil;
 import com.xueyi.common.core.web.entity.base.BasisEntity;
+import com.xueyi.common.web.annotation.AutoInject;
 import com.xueyi.common.web.entity.domain.SqlField;
 import com.xueyi.common.web.utils.SqlUtil;
 import org.apache.ibatis.annotations.Param;
@@ -24,11 +25,13 @@ public interface BasicMapper<P extends BasisEntity> extends com.baomidou.mybatis
     /**
      * 自定义批量插入
      */
+    @AutoInject
     int insertBatch(@Param("collection") Collection<P> list);
 
     /**
      * 自定义批量更新，条件为主键
      */
+    @AutoInject(key = false, isInsert = false)
     int updateBatch(@Param("collection") Collection<P> list);
 
     /**

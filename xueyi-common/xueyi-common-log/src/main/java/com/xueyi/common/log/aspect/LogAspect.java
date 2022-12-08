@@ -15,12 +15,11 @@ import com.xueyi.common.log.service.AsyncLogService;
 import com.xueyi.common.security.service.TokenService;
 import com.xueyi.system.api.log.domain.dto.SysOperateLogDto;
 import com.xueyi.system.api.model.LoginUser;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
@@ -37,11 +36,10 @@ import java.util.Map;
  *
  * @author xueyi
  */
+@Slf4j
 @Aspect
 @Component
 public class LogAspect {
-
-    private static final Logger log = LoggerFactory.getLogger(LogAspect.class);
 
     /** 排除敏感属性字段 */
     public static final String[] EXCLUDE_PROPERTIES = {"password", "oldPassword", "newPassword", "confirmPassword"};
@@ -122,7 +120,6 @@ public class LogAspect {
      *
      * @param log          日志
      * @param operationLog 操作日志
-     * @throws Exception
      */
     public void getControllerMethodDescription(JoinPoint joinPoint, Log log, SysOperateLogDto operationLog, Object jsonResult) throws Exception {
         // 设置action动作

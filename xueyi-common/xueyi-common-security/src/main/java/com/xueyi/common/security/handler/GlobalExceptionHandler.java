@@ -8,8 +8,7 @@ import com.xueyi.common.core.exception.auth.NotPermissionException;
 import com.xueyi.common.core.exception.auth.NotRoleException;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -23,10 +22,9 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author xueyi
  */
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
-    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     /**
      * 权限码异常

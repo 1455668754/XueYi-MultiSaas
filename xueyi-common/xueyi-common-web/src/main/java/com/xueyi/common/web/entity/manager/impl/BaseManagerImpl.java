@@ -80,8 +80,9 @@ public class BaseManagerImpl<Q extends P, D extends P, P extends BaseEntity, PM 
      */
     @Override
     @DSTransactional
+    @SuppressWarnings("unchecked")
     public int insertBatch(Collection<D> entityList) {
-        return baseMapper.insertBatch(mapperPo(entityList));
+        return baseMapper.insertBatch((Collection<P>) entityList);
     }
 
     /**
@@ -103,8 +104,9 @@ public class BaseManagerImpl<Q extends P, D extends P, P extends BaseEntity, PM 
      */
     @Override
     @DSTransactional
+    @SuppressWarnings("unchecked")
     public int updateBatch(Collection<D> entityList) {
-        return baseMapper.updateBatch(mapperPo(entityList));
+        return baseMapper.updateBatch((Collection<P>) entityList);
     }
 
     /**

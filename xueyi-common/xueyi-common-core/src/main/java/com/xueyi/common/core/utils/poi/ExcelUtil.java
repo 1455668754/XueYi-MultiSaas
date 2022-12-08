@@ -8,6 +8,7 @@ import com.xueyi.common.core.utils.DateUtil;
 import com.xueyi.common.core.utils.core.*;
 import com.xueyi.common.core.utils.file.FileTypeUtil;
 import com.xueyi.common.core.utils.file.ImageUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.RegExUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -19,8 +20,6 @@ import org.apache.poi.util.IOUtils;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
 import org.apache.poi.xssf.usermodel.XSSFDataValidation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -40,8 +39,8 @@ import java.util.stream.Collectors;
  *
  * @author xueyi
  */
+@Slf4j
 public class ExcelUtil<T> {
-    private static final Logger log = LoggerFactory.getLogger(ExcelUtil.class);
 
     public static final String FORMULA_REGEX_STR = "=|-|\\+|@";
 
