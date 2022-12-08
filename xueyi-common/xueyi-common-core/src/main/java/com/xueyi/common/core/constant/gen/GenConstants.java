@@ -69,6 +69,7 @@ public class GenConstants {
         PARENT_ID("parentId", "树父编码字段", "parent_id"),
         TREE_NAME("treeName", "树名称字段", "name"),
         ANCESTORS("ancestors", "祖籍列表字段", "ancestors"),
+        LEVEL("level", "层级字段", "level"),
 
 //        FOREIGN_ID("foreignId", "外键关联的主表字段字段", null),
 //        SUB_TABLE_ID("subTableId", "关联子表的表名字段", null),
@@ -80,6 +81,8 @@ public class GenConstants {
         SORT("sort", "序号字段", "sort"),
         IS_TENANT("isTenant", "多租户", null),
         SOURCE_MODE("sourceMode", "源策略模式", null),
+
+        HAS_API_ES("hasApiES", "存在接口：修改状态", null),
 
         API_LIST("apiList", "接口：查询列表", null),
         API_IMPORT("apiImport", "接口：导入", null),
@@ -93,6 +96,10 @@ public class GenConstants {
         private final String code;
         private final String info;
         private final String key;
+
+        public static OptionField getByCode(String code) {
+            return EnumUtil.getByCodeElseNull(OptionField.class, code);
+        }
 
     }
 
@@ -187,6 +194,19 @@ public class GenConstants {
     @Getter
     @AllArgsConstructor
     public enum SourceMode {
+
+        ISOLATE("Isolate", "策略源"),
+        MASTER("Master", "主数据源");
+
+        private final String code;
+        private final String info;
+
+    }
+
+    /** 源策略模式 */
+    @Getter
+    @AllArgsConstructor
+    public enum GenType {
 
         ISOLATE("Isolate", "策略源"),
         MASTER("Master", "主数据源");

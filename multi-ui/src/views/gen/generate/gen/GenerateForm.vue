@@ -107,7 +107,7 @@
         initBasic();
         const dataList = state.info.subList === undefined ? [] : getOptions(state.info.subList);
         const option = JSON.parse(state.info?.options) as OptionIM;
-        initBase(dataList, option);
+        initBase(option);
         initTree(dataList);
         basicSetFieldsValue({ ...option });
         treeSetFieldsValue({ ...option });
@@ -132,31 +132,23 @@
       }
 
       /** 单表配置初始化 */
-      async function initBase(subList: any[], options: OptionIM) {
+      async function initBase(options: OptionIM) {
         const parentMenuIdOptions =
           options?.parentModuleId === undefined
             ? []
             : await getMenuRouteListApi(options?.parentModuleId, MenuTypeEnum.DIR);
         baseUpdateSchema([
-          {
-            field: 'parentMenuId',
-            componentProps: { treeData: parentMenuIdOptions },
-          },
-          { field: 'id', componentProps: { options: subList } },
-          { field: 'name', componentProps: { options: subList } },
-          { field: 'status', componentProps: { options: subList } },
-          { field: 'sort', componentProps: { options: subList } },
+          { field: 'parentMenuId', componentProps: { treeData: parentMenuIdOptions } },
         ]);
       }
 
       /** 树表配置初始化 */
       function initTree(subList: any[]) {
-        treeUpdateSchema([
-          { field: 'treeCode', componentProps: { options: subList } },
-          { field: 'parentId', componentProps: { options: subList } },
-          { field: 'treeName', componentProps: { options: subList } },
-          { field: 'ancestors', componentProps: { options: subList } },
-        ]);
+        treeUpdateSchema({ field: 'treeCode', componentProps: { options: subList } });
+        treeUpdateSchema({ field: 'parentId', componentProps: { options: subList } });
+        treeUpdateSchema({ field: 'treeName', componentProps: { options: subList } });
+        treeUpdateSchema({ field: 'ancestors', componentProps: { options: subList } });
+        treeUpdateSchema({ field: 'level', componentProps: { options: subList } });
       }
 
       /** 保存校验 */
