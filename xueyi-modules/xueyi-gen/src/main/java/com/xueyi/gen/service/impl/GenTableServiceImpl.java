@@ -128,7 +128,7 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
      */
     @Override
     public void importGenTable(List<GenTableDto> tableList) {
-        try {
+//        try {
             tableList.forEach(table -> {
                 GenUtils.initTable(table);
                 int row = baseManager.insert(table);
@@ -141,9 +141,9 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
                     baseManager.update(table);
                 }
             });
-        } catch (Exception e) {
-            AjaxResult.warn(StrUtil.format("导入失败：{}", e.getMessage()));
-        }
+//        } catch (Exception e) {
+//            AjaxResult.warn(StrUtil.format("导入失败：{}", e.getMessage()));
+//        }
         // TODO
         throw new ServiceException("此处进行了注释，无法正常使用，待修正");
     }

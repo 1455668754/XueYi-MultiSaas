@@ -5,8 +5,6 @@ import com.xueyi.common.core.utils.core.StrUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.Objects;
-
 /**
  * 通用常量
  *
@@ -149,7 +147,7 @@ public class BaseConstants {
         private final String info;
 
         public static ImportType getByCode(String code) {
-            return Objects.requireNonNull(EnumUtil.getByCode(ImportType.class, code));
+            return EnumUtil.getByCode(ImportType.class, code);
         }
 
     }

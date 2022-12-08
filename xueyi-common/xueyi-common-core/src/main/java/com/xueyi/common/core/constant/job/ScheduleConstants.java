@@ -4,8 +4,6 @@ import com.xueyi.common.core.utils.core.EnumUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.Objects;
-
 /**
  * 任务调度通用常量
  *
@@ -52,7 +50,7 @@ public class ScheduleConstants {
         private final String info;
 
         public static Misfire getByCode(String code) {
-            return Objects.requireNonNull(EnumUtil.getByCode(Misfire.class, code));
+            return EnumUtil.getByCode(Misfire.class, code);
         }
 
     }

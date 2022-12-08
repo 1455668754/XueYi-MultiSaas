@@ -27,7 +27,6 @@ import java.util.List;
  * @param <PM> PoMapper
  * @author xueyi
  */
-
 public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntity, PM extends BaseMapper<Q, D, P>, CT extends BaseConverter<Q, D, P>> {
 
     @Autowired
@@ -74,8 +73,7 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
      * @return dtoList
      */
     protected List<D> mapperDto(Collection<P> poList) {
-        if (poList instanceof Page) {
-            Page<P> pagePoList = (Page<P>) poList;
+        if (poList instanceof Page<P> pagePoList) {
             Page<D> pageDtoList = baseConverter.mapperPageDto(poList);
             pageCopy(pagePoList, pageDtoList);
             return pageDtoList;
@@ -100,8 +98,7 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
      * @return poList
      */
     protected List<P> mapperPo(Collection<D> dtoList) {
-        if (dtoList instanceof Page) {
-            Page<D> pageDtoList = (Page<D>) dtoList;
+        if (dtoList instanceof Page<D> pageDtoList) {
             Page<P> pagePoList = baseConverter.mapperPagePo(dtoList);
             pageCopy(pageDtoList, pagePoList);
             return pagePoList;

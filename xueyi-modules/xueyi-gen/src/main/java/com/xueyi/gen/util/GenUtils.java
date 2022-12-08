@@ -57,8 +57,7 @@ public class GenUtils {
                         ? GenConstants.SourceMode.ISOLATE.getCode()
                         : GenConstants.SourceMode.MASTER.getCode());
         columnList.forEach(column -> {
-            if (column.isPk()
-                    && StrUtil.equals(column.getJavaField(), GenConstants.OptionField.ID.getCode())) {
+            if (column.isPk() && StrUtil.equals(column.getJavaField(), GenConstants.OptionField.ID.getCode())) {
                 optionJson.put(GenConstants.OptionField.ID.getCode(), column.getId().toString());
                 optionJson.put(GenConstants.OptionField.TREE_ID.getCode(), column.getId().toString());
                 optionJson.put(GenConstants.OptionField.FOREIGN_ID.getCode(), column.getId().toString());
@@ -155,25 +154,12 @@ public class GenUtils {
         GenConstants.GenField field = GenConstants.GenField.getByCode(javaField);
         if (ObjectUtil.isNotNull(field)) {
             switch (field) {
-                case NAME:
-                    column.setQueryType(GenConstants.QueryType.LIKE.getCode());
-                    break;
-                case SEX:
-                    column.setDictType(DictConstants.DictType.SYS_USER_SEX.getCode());
-                    break;
-                case LOGO:
-                case IMAGE:
-                    column.setHtmlType(GenConstants.DisplayType.IMAGE_UPLOAD.getCode());
-                    break;
-                case FILE:
-                    column.setHtmlType(GenConstants.DisplayType.FILE_UPLOAD.getCode());
-                    break;
-                case COMMENT:
-                    column.setHtmlType(GenConstants.DisplayType.TINYMCE.getCode());
-                    break;
-                case REMARK:
-                    column.setHtmlType(GenConstants.DisplayType.INPUT_TEXTAREA.getCode());
-                    break;
+                case NAME -> column.setQueryType(GenConstants.QueryType.LIKE.getCode());
+                case SEX -> column.setDictType(DictConstants.DictType.SYS_USER_SEX.getCode());
+                case LOGO, IMAGE -> column.setHtmlType(GenConstants.DisplayType.IMAGE_UPLOAD.getCode());
+                case FILE -> column.setHtmlType(GenConstants.DisplayType.FILE_UPLOAD.getCode());
+                case COMMENT -> column.setHtmlType(GenConstants.DisplayType.TINYMCE.getCode());
+                case REMARK -> column.setHtmlType(GenConstants.DisplayType.INPUT_TEXTAREA.getCode());
             }
         }
         // 最终校验
@@ -216,52 +202,51 @@ public class GenUtils {
         GenConstants.GenField field = GenConstants.GenField.getByCode(column.getJavaField());
         if (ObjectUtil.isNotNull(field)) {
             switch (field) {
-                case ID:
+                case ID -> {
                     if (!(StrUtil.equals(column.getJavaType(), GenConstants.JavaType.LONG.getCode())
                             && StrUtil.equals(column.getName(), GenConstants.GenField.ID.getKey()))) {
                         column.setIsCover(true);
                     }
-                    break;
-                case NAME:
+                }
+                case NAME -> {
                     if (!(StrUtil.equals(column.getJavaType(), GenConstants.JavaType.STRING.getCode())
                             && StrUtil.equals(column.getName(), GenConstants.GenField.NAME.getKey())
                             && StrUtil.equals(column.getQueryType(), GenConstants.QueryType.LIKE.getCode()))) {
                         column.setIsCover(true);
                     }
-                    break;
-                case STATUS:
+                }
+                case STATUS -> {
                     if (!(StrUtil.equals(column.getJavaType(), GenConstants.JavaType.STRING.getCode())
                             && StrUtil.equals(column.getName(), GenConstants.GenField.STATUS.getKey())
                             && StrUtil.contains(column.getComment(), GenConstants.GenCheck.NORMAL_DISABLE.getInfo()))) {
                         column.setIsCover(true);
                     }
-                    break;
-                case SORT:
+                }
+                case SORT -> {
                     if (!(StrUtil.equals(column.getJavaType(), GenConstants.JavaType.INTEGER.getCode())
                             && StrUtil.equals(column.getName(), GenConstants.GenField.SORT.getKey()))) {
                         column.setIsCover(true);
                     }
-                    break;
-                case PARENT_ID:
+                }
+                case PARENT_ID -> {
                     if (!(StrUtil.equals(column.getJavaType(), GenConstants.JavaType.LONG.getCode())
                             && StrUtil.equals(column.getName(), GenConstants.GenField.PARENT_ID.getKey()))) {
                         column.setIsCover(true);
                     }
-                    break;
-                case ANCESTORS:
+                }
+                case ANCESTORS -> {
                     if (!(StrUtil.equals(column.getJavaType(), GenConstants.JavaType.STRING.getCode())
                             && StrUtil.equals(column.getName(), GenConstants.GenField.ANCESTORS.getKey()))) {
                         column.setIsCover(true);
                     }
-                    break;
-                case REMARK:
+                }
+                case REMARK -> {
                     if (!(StrUtil.equals(column.getJavaType(), GenConstants.JavaType.STRING.getCode())
                             && StrUtil.equals(column.getName(), GenConstants.GenField.REMARK.getKey()))) {
                         column.setIsCover(true);
                     }
-                    break;
-                default:
-                    column.setIsCover(false);
+                }
+                default -> column.setIsCover(false);
             }
         }
         // 校验是否需要隐藏

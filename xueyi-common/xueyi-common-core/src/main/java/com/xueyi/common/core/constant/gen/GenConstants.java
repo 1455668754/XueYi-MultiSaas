@@ -4,8 +4,6 @@ import com.xueyi.common.core.utils.core.EnumUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.Objects;
-
 /**
  * 代码生成通用常量
  *
@@ -54,7 +52,7 @@ public class GenConstants {
         private final String key;
 
         public static GenField getByCode(String code) {
-            return EnumUtil.getByCode(GenField.class, code);
+            return EnumUtil.getByCodeElseNull(GenField.class, code);
         }
 
     }
@@ -116,7 +114,7 @@ public class GenConstants {
         private final String info;
 
         public static TemplateType getByCode(String code) {
-            return Objects.requireNonNull(EnumUtil.getByCode(TemplateType.class, code));
+            return EnumUtil.getByCode(TemplateType.class, code);
         }
 
     }

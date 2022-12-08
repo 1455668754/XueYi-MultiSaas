@@ -5,8 +5,6 @@ import com.xueyi.common.core.utils.core.StrUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.Objects;
-
 /**
  * 租户通用常量
  *
@@ -72,7 +70,7 @@ public class TenantConstants {
         private final String info;
 
         public static AccountType getByCode(String code) {
-            return Objects.requireNonNull(EnumUtil.getByCode(AccountType.class, code));
+            return EnumUtil.getByCode(AccountType.class, code);
         }
 
         /** 管理端用户 */

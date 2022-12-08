@@ -5,8 +5,6 @@ import com.xueyi.common.core.utils.core.EnumUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.Objects;
-
 /**
  * 权限通用常量
  *
@@ -63,7 +61,7 @@ public class AuthorityConstants {
         private final String info;
 
         public static DataScope getByCode(String code) {
-            return Objects.requireNonNull(EnumUtil.getByCode(DataScope.class, code));
+            return EnumUtil.getByCode(DataScope.class, code);
         }
 
     }
@@ -96,7 +94,7 @@ public class AuthorityConstants {
         private final String info;
 
         public static MenuType getByCode(String code) {
-            return Objects.requireNonNull(EnumUtil.getByCode(MenuType.class, code));
+            return EnumUtil.getByCode(MenuType.class, code);
         }
 
     }

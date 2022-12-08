@@ -4,8 +4,6 @@ import com.xueyi.common.core.utils.core.EnumUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.Objects;
-
 public class RedisConstants {
 
     /** 缓存类型 */
@@ -21,7 +19,7 @@ public class RedisConstants {
         private final String info;
 
         public static OperateType getByCode(String code) {
-            return Objects.requireNonNull(EnumUtil.getByCode(OperateType.class, code));
+            return EnumUtil.getByCode(OperateType.class, code);
         }
 
     }

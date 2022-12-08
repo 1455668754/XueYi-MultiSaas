@@ -4,8 +4,6 @@ import com.xueyi.common.core.utils.core.EnumUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.Objects;
-
 /**
  * 缓存通用常量
  *
@@ -27,7 +25,7 @@ public class CacheConstants {
         private final String info;
 
         public static CacheType getByCode(String code) {
-            return Objects.requireNonNull(EnumUtil.getByCode(CacheType.class, code));
+            return EnumUtil.getByCode(CacheType.class, code);
         }
 
     }
