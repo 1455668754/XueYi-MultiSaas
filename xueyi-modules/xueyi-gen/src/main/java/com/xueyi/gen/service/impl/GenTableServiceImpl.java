@@ -9,7 +9,6 @@ import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.basic.ServiceConstants;
 import com.xueyi.common.core.constant.gen.GenConstants.OptionField;
 import com.xueyi.common.core.constant.gen.GenConstants.TemplateType;
-import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.core.CharsetUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
@@ -125,6 +124,7 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
      * @param tableList 导入表列表
      */
     @Override
+    @DSTransactional
     public void importGenTable(List<GenTableDto> tableList) {
 //        try {
             tableList.forEach(table -> {
@@ -141,8 +141,6 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
 //        } catch (Exception e) {
 //            AjaxResult.warn(StrUtil.format("导入失败：{}", e.getMessage()));
 //        }
-        // TODO
-        throw new ServiceException("此处进行了注释，无法正常使用，待修正");
     }
 
     /**
@@ -306,12 +304,6 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
         JSONObject optionsObj = JSON.parseObject(genTable.getOptions());
         checkTclBasic(genTable, optionsObj);
         switch (TemplateType.getByCode(genTable.getTplCategory())) {
-            case SUB_BASE:
-                checkTclSub(optionsObj);
-                checkTclBase(genTable, optionsObj);
-                break;
-            case SUB_TREE:
-                checkTclSub(optionsObj);
             case TREE:
                 checkTclTree(optionsObj);
             case BASE:
@@ -353,7 +345,7 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
         else if (StrUtil.isEmpty(optionsObj.getString(OptionField.ID.getCode())))
             AjaxResult.warn("主键字段不能为空");
         for (GenTableColumnDto column : genTable.getSubList())
-            if (column.isPk() && !ObjectUtil.equals(column.getId(), optionsObj.getLong(OptionField.ID.getCode())))
+            if (column.getIsPk() && !ObjectUtil.equals(column.getId(), optionsObj.getLong(OptionField.ID.getCode())))
                 AjaxResult.warn("主键字段只能为数据表主键");
     }
 
@@ -374,20 +366,6 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
     }
 
     /**
-     * 校验主子表配置
-     *
-     * @param optionsObj 其它生成选项信息
-     */
-    private void checkTclSub(JSONObject optionsObj) {
-        if (StrUtil.isEmpty(optionsObj.getString(OptionField.FOREIGN_ID.getCode())))
-            AjaxResult.warn("外键关联的主表字段不能为空");
-        else if (StrUtil.isEmpty(optionsObj.getString(OptionField.SUB_TABLE_ID.getCode())))
-            AjaxResult.warn("关联子表的表名字段不能为空");
-        else if (StrUtil.isEmpty(optionsObj.getString(OptionField.SUB_FOREIGN_ID.getCode())))
-            AjaxResult.warn("关联子表的外键名字段不能为空");
-    }
-
-    /**
      * 初始化代码生成表数据
      *
      * @param id Id
@@ -398,12 +376,6 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
         JSONObject optionsObj = JSON.parseObject(table.getOptions());
         // 设置列信息
         switch (TemplateType.getByCode(table.getTplCategory())) {
-            case SUB_BASE:
-                setSubTable(table, optionsObj);
-                setBaseTable(table, optionsObj);
-                break;
-            case SUB_TREE:
-                setSubTable(table, optionsObj);
             case TREE:
                 setTreeTable(table, optionsObj);
             case BASE:
@@ -421,7 +393,7 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
      */
     private void setBaseTable(GenTableDto table, JSONObject optionsObj) {
         table.getSubList().forEach(column -> {
-            if (column.isPk()) table.setPkColumn(column);
+            if (column.getIsPk()) table.setPkColumn(column);
         });
     }
 
@@ -432,20 +404,6 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
      * @param optionsObj 其它生成选项信息
      */
     private void setTreeTable(GenTableDto table, JSONObject optionsObj) {
-    }
-
-    /**
-     * 设置主子表信息
-     *
-     * @param table      业务表信息
-     * @param optionsObj 其它生成选项信息
-     */
-    private void setSubTable(GenTableDto table, JSONObject optionsObj) {
-        table.setSubTable(baseManager.selectById(optionsObj.getLong(OptionField.SUB_TABLE_ID.getCode())));
-        JSONObject subOptionsObj = JSON.parseObject(table.getSubTable().getOptions());
-        setBaseTable(table.getSubTable(), subOptionsObj);
-        if (StrUtil.equalsAny(table.getSubTable().getTplCategory(), TemplateType.TREE.getCode(), TemplateType.SUB_TREE.getCode()))
-            setTreeTable(table, optionsObj);
     }
 
     /**

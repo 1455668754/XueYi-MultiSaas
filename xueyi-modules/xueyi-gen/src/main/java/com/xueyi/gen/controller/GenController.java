@@ -69,7 +69,7 @@ public class GenController extends BaseController<GenTableQuery, GenTableDto, IG
     @GetMapping(value = "/{id}")
     @RequiresPermissions(Auth.GENERATE_GEN_SINGLE)
     public AjaxResult getInfo(@PathVariable Serializable id) {
-        return success(baseService.selectById(id));
+        return super.getInfo(id);
     }
 
     /**

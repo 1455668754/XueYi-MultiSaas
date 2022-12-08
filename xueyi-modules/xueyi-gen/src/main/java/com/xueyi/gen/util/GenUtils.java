@@ -57,23 +57,22 @@ public class GenUtils {
                         ? GenConstants.SourceMode.ISOLATE.getCode()
                         : GenConstants.SourceMode.MASTER.getCode());
         columnList.forEach(column -> {
-            if (column.isPk() && StrUtil.equals(column.getJavaField(), GenConstants.OptionField.ID.getCode())) {
-                optionJson.put(GenConstants.OptionField.ID.getCode(), column.getId().toString());
-                optionJson.put(GenConstants.OptionField.TREE_ID.getCode(), column.getId().toString());
-                optionJson.put(GenConstants.OptionField.FOREIGN_ID.getCode(), column.getId().toString());
+            if (column.getIsPk() && StrUtil.equals(column.getJavaField(), GenConstants.OptionField.ID.getCode())) {
+                optionJson.put(GenConstants.OptionField.ID.getCode(), column.getIdStr());
+                optionJson.put(GenConstants.OptionField.TREE_ID.getCode(), column.getIdStr());
             } else if (StrUtil.equals(column.getJavaField(), GenConstants.OptionField.NAME.getCode())) {
-                optionJson.put(GenConstants.OptionField.NAME.getCode(), column.getId().toString());
-                optionJson.put(GenConstants.OptionField.TREE_NAME.getCode(), column.getId().toString());
+                optionJson.put(GenConstants.OptionField.NAME.getCode(), column.getIdStr());
+                optionJson.put(GenConstants.OptionField.TREE_NAME.getCode(), column.getIdStr());
             } else if (StrUtil.equals(column.getJavaField(), GenConstants.OptionField.STATUS.getCode())) {
-                optionJson.put(GenConstants.OptionField.STATUS.getCode(), column.getId().toString());
+                optionJson.put(GenConstants.OptionField.STATUS.getCode(), column.getIdStr());
                 optionJson.put(GenConstants.OptionField.API_ES.getCode(), DictConstants.DicYesNo.YES.getCode());
             } else if (StrUtil.equals(column.getJavaField(), GenConstants.OptionField.SORT.getCode())) {
-                optionJson.put(GenConstants.OptionField.SORT.getCode(), column.getId().toString());
+                optionJson.put(GenConstants.OptionField.SORT.getCode(), column.getIdStr());
             } else if (StrUtil.equals(column.getJavaField(), GenConstants.OptionField.PARENT_ID.getCode())) {
-                optionJson.put(GenConstants.OptionField.PARENT_ID.getCode(), column.getId().toString());
+                optionJson.put(GenConstants.OptionField.PARENT_ID.getCode(), column.getIdStr());
                 table.setTplCategory(GenConstants.TemplateType.TREE.getCode());
             } else if (StrUtil.equals(column.getJavaField(), GenConstants.OptionField.ANCESTORS.getCode())) {
-                optionJson.put(GenConstants.OptionField.ANCESTORS.getCode(), column.getId().toString());
+                optionJson.put(GenConstants.OptionField.ANCESTORS.getCode(), column.getIdStr());
             }
         });
 
@@ -131,7 +130,7 @@ public class GenUtils {
         }
 
         // 插入字段（默认除必须移除的参数外所有字段都需要插入）
-        boolean mustCheck = arraysContains(GenConfig.getEntity().getMustHide(), javaField) || column.isPk();
+        boolean mustCheck = arraysContains(GenConfig.getEntity().getMustHide(), javaField) || column.getIsPk();
         column.setIsInsert(!(arraysContains(GenConfig.getOperate().getNotInsert(), javaField) || mustCheck));
         // 查看字段
         column.setIsView(!(arraysContains(GenConfig.getOperate().getNotView(), javaField) || mustCheck));
@@ -182,7 +181,7 @@ public class GenUtils {
                 column.setJavaField(GenConstants.OptionField.SORT.getCode());
             }
             if (StrUtil.equalsAny(table.getTplCategory(),
-                    GenConstants.TemplateType.TREE.getCode(), GenConstants.TemplateType.SUB_TREE.getCode())) {
+                    GenConstants.TemplateType.TREE.getCode())) {
                 if (ObjectUtil.equals(column.getId(), objectJson.getLong(GenConstants.OptionField.PARENT_ID.getCode()))) {
                     column.setJavaField(GenConstants.OptionField.PARENT_ID.getCode());
                 } else if (ObjectUtil.equals(column.getId(), objectJson.getLong(GenConstants.OptionField.ANCESTORS.getCode()))) {
@@ -251,7 +250,7 @@ public class GenUtils {
         }
         // 校验是否需要隐藏
         boolean isMustHide = StrUtil.equalsAny(column.getName(), GenConfig.getEntity().getMustHide());
-        if (column.isHide() || isMustHide) {
+        if (column.getIsHide() || isMustHide) {
             if (isMustHide) {
                 column.setIsHide(true);
                 column.setIsCover(false);

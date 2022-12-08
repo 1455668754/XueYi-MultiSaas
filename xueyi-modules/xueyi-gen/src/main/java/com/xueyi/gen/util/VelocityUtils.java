@@ -27,13 +27,13 @@ import java.util.stream.Collectors;
 public class VelocityUtils {
 
     /** 主目录 */
-    private static final String PROJECT_PATH = "main/java" ;
+    private static final String PROJECT_PATH = "main/java";
 
     /** 隐藏字段数组 */
-    private static final String HIDE = "hide" ;
+    private static final String HIDE = "hide";
 
     /** 覆写字段数组 */
-    private static final String COVER = "cover" ;
+    private static final String COVER = "cover";
 
     /**
      * 设置模板变量信息
@@ -112,15 +112,9 @@ public class VelocityUtils {
         // sql模板设置
         setMenuVelocityContext(velocityContext, optionsObj);
         // api设置
-        setApiVelocityContext(velocityContext, optionsObj);
-        switch (GenConstants.TemplateType.getByCode(tplCategory)) {
-            case TREE:
-                setTreeVelocityContext(velocityContext, genTable, optionsObj);
-                break;
-            case SUB_TREE:
-                setTreeVelocityContext(velocityContext, genTable, optionsObj);
-            case SUB_BASE:
-                setSubVelocityContext(velocityContext, genTable);
+        setApiStatus(velocityContext, optionsObj);
+        if (GenConstants.TemplateType.getByCode(tplCategory) == GenConstants.TemplateType.TREE) {
+            setTreeVelocityContext(velocityContext, genTable, optionsObj);
         }
         return velocityContext;
     }
@@ -171,57 +165,34 @@ public class VelocityUtils {
     }
 
     /**
-     * 设置主子表模板变量信息
+     * 设置接口变量信息
+     *
+     * @param context    模板列表
+     * @param optionsObj 配置JSON
      */
-    public static void setSubVelocityContext(VelocityContext context, GenTableDto table) {
-        GenTableDto subTable = table.getSubTable();
-        String functionName = subTable.getFunctionName();
-        // 外键关联的主表字段信息
-        context.put("foreignColumn", getForeignMainColumn(table));
-        // 子表外键字段信息
-        context.put("subForeignColumn", getForeignColumn(table));
-        context.put("subTable", subTable);
-        context.put("subTableName", subTable.getName());
-        // 实体类名称(首字母大写)
-        context.put("subClassName", subTable.getClassName());
-        // 实体类名称(首字母小写)
-        context.put("subclassName", StrUtil.uncapitalize(subTable.getClassName()));
-        // 实体类名称(首字母大写 | 无前缀)
-        context.put("subClassNameNoPrefix", subTable.getClassName().replaceFirst(subTable.getPrefix(), ""));
-        // 实体类名称(首字母小写 | 无前缀)
-        context.put("subclassNameNoPrefix", StrUtil.uncapitalize(subTable.getClassName().replaceFirst(subTable.getPrefix(), "")));
-        // 生成包路径
-        context.put("subPackageName", subTable.getPackageName());
-        // 生成功能名
-        context.put("subFunctionName", StrUtil.isNotEmpty(functionName) ? functionName : "【请填写功能名称】");
-        // 生成业务名(首字母大写)
-        context.put("subBusinessName", StrUtil.capitalize(subTable.getBusinessName()));
-        // 生成业务名(首字母小写)
-        context.put("subbusinessName", subTable.getBusinessName());
-        // 生成业务名(字母全大写)
-        context.put("subBUSINESSName", StrUtil.upperCase(subTable.getBusinessName()));
-        // 生成相对路径
-        context.put("relativePath", getRelativePath(table, subTable));
+    public static void setApiStatus(VelocityContext context, JSONObject optionsObj) {
+        JSONObject apiJSon = new JSONObject();
+        apiJSon.put("list", checkApiStatus(optionsObj, GenConstants.OptionField.API_LIST));
+        apiJSon.put("getInfo", checkApiStatus(optionsObj, GenConstants.OptionField.API_GET_INFO));
+        apiJSon.put("add", checkApiStatus(optionsObj, GenConstants.OptionField.API_ADD));
+        apiJSon.put("edit", checkApiStatus(optionsObj, GenConstants.OptionField.API_EDIT));
+        apiJSon.put("editStatus", checkApiStatus(optionsObj, GenConstants.OptionField.API_ES));
+        apiJSon.put("batchRemove", checkApiStatus(optionsObj, GenConstants.OptionField.API_BATCH_REMOVE));
+        apiJSon.put("import", checkApiStatus(optionsObj, GenConstants.OptionField.API_IMPORT));
+        apiJSon.put("export", checkApiStatus(optionsObj, GenConstants.OptionField.API_EXPORT));
+        // 接口
+        context.put("api", apiJSon);
     }
 
     /**
-     * 设置接口变量信息
+     * 校验Api是否开启
+     *
+     * @param optionsObj  配置JSON
+     * @param optionField API类型
+     * @return 结果
      */
-    public static void setApiVelocityContext(VelocityContext context, JSONObject optionsObj) {
-        JSONObject apiJSon = new JSONObject();
-        apiJSon.put("list", StrUtil.equals(optionsObj.getString(GenConstants.OptionField.API_LIST.getCode()), DictConstants.DicYesNo.YES.getCode()));
-        apiJSon.put("getInfo", StrUtil.equals(optionsObj.getString(GenConstants.OptionField.API_GET_INFO.getCode()), DictConstants.DicYesNo.YES.getCode()));
-        apiJSon.put("add", StrUtil.equals(optionsObj.getString(GenConstants.OptionField.API_ADD.getCode()), DictConstants.DicYesNo.YES.getCode()));
-        apiJSon.put("addForce", StrUtil.equals(optionsObj.getString(GenConstants.OptionField.API_ADD_FORCE.getCode()), DictConstants.DicYesNo.YES.getCode()));
-        apiJSon.put("edit", StrUtil.equals(optionsObj.getString(GenConstants.OptionField.API_EDIT.getCode()), DictConstants.DicYesNo.YES.getCode()));
-        apiJSon.put("editForce", StrUtil.equals(optionsObj.getString(GenConstants.OptionField.API_EDIT_FORCE.getCode()), DictConstants.DicYesNo.YES.getCode()));
-        apiJSon.put("editStatus", StrUtil.equals(optionsObj.getString(GenConstants.OptionField.API_ES.getCode()), DictConstants.DicYesNo.YES.getCode()));
-        apiJSon.put("editStatusForce", StrUtil.equals(optionsObj.getString(GenConstants.OptionField.API_ES_FORCE.getCode()), DictConstants.DicYesNo.YES.getCode()));
-        apiJSon.put("batchRemove", StrUtil.equals(optionsObj.getString(GenConstants.OptionField.API_BATCH_REMOVE.getCode()), DictConstants.DicYesNo.YES.getCode()));
-        apiJSon.put("batchRemoveForce", StrUtil.equals(optionsObj.getString(GenConstants.OptionField.API_BATCH_REMOVE_FORCE.getCode()), DictConstants.DicYesNo.YES.getCode()));
-        apiJSon.put("export", StrUtil.equals(optionsObj.getString(GenConstants.OptionField.API_EXPORT.getCode()), DictConstants.DicYesNo.YES.getCode()));
-        // 接口
-        context.put("api", apiJSon);
+    private static boolean checkApiStatus(JSONObject optionsObj, GenConstants.OptionField optionField) {
+        return StrUtil.equals(optionsObj.getString(optionField.getCode()), DictConstants.DicYesNo.YES.getCode());
     }
 
     /**
@@ -250,13 +221,13 @@ public class VelocityUtils {
             templates.add("vm/java/mapper.java.vm");
             templates.add("vm/sql/sql.sql.vm");
             switch (fromSource) {
-                case CLOUD:
+                case CLOUD -> {
                     templates.add("vm/cloud/js/api.js.vm");
                     templates.add("vm/cloud/js/auth.js.vm");
                     templates.add("vm/cloud/js/enum.js.vm");
                     templates.add("vm/cloud/vue/index.vue.vm");
-                    break;
-                case MULTI:
+                }
+                case MULTI -> {
                     templates.add("vm/multi/ts/api.ts.vm");
                     templates.add("vm/multi/ts/data.ts.vm");
                     templates.add("vm/multi/ts/auth.ts.vm");
@@ -265,8 +236,9 @@ public class VelocityUtils {
                     templates.add("vm/multi/vue/detail.vue.vm");
                     templates.add("vm/multi/vue/index.vue.vm");
                     templates.add("vm/multi/vue/modal.vue.vm");
-                    break;
-                default:
+                }
+                default -> {
+                }
             }
         }
         return templates;
@@ -323,33 +295,33 @@ public class VelocityUtils {
         else if (template.contains("sql.sql.vm")) return StrUtil.format("sql/{}.sql", businessName);
 
         switch (fromSource) {
-            case CLOUD:
+            case CLOUD -> {
                 if (template.contains("api.js.vm"))
-                return StrUtil.format("xueyi-ui/src/api/{}/{}/{}.js", moduleName, authorityName, businessName);
-            else if (template.contains("auth.js.vm"))
-                return StrUtil.format("xueyi-ui/src/constants/auth/{}/{}/{}.auth.js", moduleName, authorityName, businessName);
-            else if (template.contains("enum.js.vm"))
-                return StrUtil.format("xueyi-ui/src/constants/enums/{}/{}/{}.enum.js", moduleName, authorityName, businessName);
+                    return StrUtil.format("xueyi-ui/src/api/{}/{}/{}.js", moduleName, authorityName, businessName);
+                else if (template.contains("auth.js.vm"))
+                    return StrUtil.format("xueyi-ui/src/constants/auth/{}/{}/{}.auth.js", moduleName, authorityName, businessName);
+                else if (template.contains("enum.js.vm"))
+                    return StrUtil.format("xueyi-ui/src/constants/enums/{}/{}/{}.enum.js", moduleName, authorityName, businessName);
 
-            else if (template.contains("index.vue.vm"))
-                return StrUtil.format("xueyi-ui/src/views/{}/{}/{}/index.vue", moduleName, authorityName, businessName);
-                break;
-            case MULTI:
+                else if (template.contains("index.vue.vm"))
+                    return StrUtil.format("xueyi-ui/src/views/{}/{}/{}/index.vue", moduleName, authorityName, businessName);
+            }
+            case MULTI -> {
                 if (template.contains("api.ts.vm"))
                     return StrUtil.format("multi-ui/src/api/{}/{}/{}.ts", moduleName, authorityName, businessName);
                 else if (template.contains("infoModel.ts.vm")) {
-                    String prefixPath = "multi-ui/src/model" ;
-                    String suffixFile = "" ;
+                    String prefixPath = "multi-ui/src/model";
+                    String suffixFile = "";
                     initIndexFile(realPath, prefixPath, suffixFile, moduleName, authorityName, businessName);
                     return StrUtil.format("{}/{}/{}/{}.ts", prefixPath, moduleName, authorityName, businessName);
                 } else if (template.contains("auth.ts.vm")) {
-                    String prefixPath = "multi-ui/src/auth" ;
-                    String suffixFile = ".auth" ;
+                    String prefixPath = "multi-ui/src/auth";
+                    String suffixFile = ".auth";
                     initIndexFile(realPath, prefixPath, suffixFile, moduleName, authorityName, businessName);
                     return StrUtil.format("{}/{}/{}/{}{}.ts", prefixPath, moduleName, authorityName, businessName, suffixFile);
                 } else if (template.contains("enum.ts.vm")) {
-                    String prefixPath = "multi-ui/src/enums" ;
-                    String suffixFile = ".enum" ;
+                    String prefixPath = "multi-ui/src/enums";
+                    String suffixFile = ".enum";
                     initIndexFile(realPath, prefixPath, suffixFile, moduleName, authorityName, businessName);
                     return StrUtil.format("{}/{}/{}/{}{}.ts", prefixPath, moduleName, authorityName, businessName, suffixFile);
                 } else if (template.contains("data.ts.vm"))
@@ -360,43 +332,12 @@ public class VelocityUtils {
                     return StrUtil.format("multi-ui/src/views/{}/{}/{}/{}Detail.vue", moduleName, authorityName, businessName, BusinessName);
                 else if (template.contains("modal.vue.vm"))
                     return StrUtil.format("multi-ui/src/views/{}/{}/{}/{}Modal.vue", moduleName, authorityName, businessName, BusinessName);
-                break;
-            default:
-        }
-
-        return "" ;
-    }
-
-    /**
-     * 获取主子表外键关联的主表信息
-     *
-     * @param genTable 业务表对象
-     * @return 外键关联的主表字段对象
-     */
-    public static GenTableColumnDto getForeignMainColumn(GenTableDto genTable) {
-        JSONObject optionsObj = JSON.parseObject(genTable.getOptions());
-        for (GenTableColumnDto column : genTable.getSubList()) {
-            if (ObjectUtil.equals(column.getId(), optionsObj.getLong(GenConstants.OptionField.FOREIGN_ID.getCode()))) {
-                return column;
+            }
+            default -> {
             }
         }
-        return null;
-    }
 
-    /**
-     * 获取主子表外键信息
-     *
-     * @param genTable 业务表对象
-     * @return 外键对象
-     */
-    public static GenTableColumnDto getForeignColumn(GenTableDto genTable) {
-        JSONObject optionsObj = JSON.parseObject(genTable.getOptions());
-        for (GenTableColumnDto subColumn : genTable.getSubTable().getSubList()) {
-            if (ObjectUtil.equals(subColumn.getId(), optionsObj.getLong(GenConstants.OptionField.SUB_FOREIGN_ID.getCode()))) {
-                return subColumn;
-            }
-        }
-        return null;
+        return "";
     }
 
     /**
@@ -414,29 +355,19 @@ public class VelocityUtils {
      * 获取覆盖与隐藏字段信息
      */
     public static Map<String, Set<String>> getCoverMap(GenTableDto genTable) {
-        Set<String> coverSet = genTable.getSubList().stream().filter(GenTableColumnDto::isCover).map(GenTableColumnDto::getJavaField).collect(Collectors.toSet());
-        Set<String> hideSet = genTable.getSubList().stream().filter(GenTableColumnDto::isHide).map(GenTableColumnDto::getJavaField).collect(Collectors.toSet());
+        Set<String> coverSet = genTable.getSubList().stream().filter(GenTableColumnDto::getIsCover).map(GenTableColumnDto::getJavaField).collect(Collectors.toSet());
+        Set<String> hideSet = genTable.getSubList().stream().filter(GenTableColumnDto::getIsHide).map(GenTableColumnDto::getJavaField).collect(Collectors.toSet());
         switch (GenConstants.TemplateType.getByCode(genTable.getTplCategory())) {
-            case TREE:
+            case TREE -> {
                 Set<String> treeSet = new HashSet<>(Arrays.asList(ArrayUtil.addAll(GenConfig.getEntity().getBack().getBase(), GenConfig.getEntity().getBack().getTree())));
                 treeSet.removeAll(coverSet);
                 hideSet.addAll(treeSet);
-                break;
-            case SUB_TREE:
-                Set<String> subTreeSet = new HashSet<>(Arrays.asList(ArrayUtil.addAll(GenConfig.getEntity().getBack().getBase(), GenConfig.getEntity().getBack().getTree(), GenConfig.getEntity().getBack().getSub())));
-                subTreeSet.removeAll(coverSet);
-                hideSet.addAll(subTreeSet);
-                break;
-            case SUB_BASE:
-                Set<String> subBaseSet = new HashSet<>(Arrays.asList(ArrayUtil.addAll(GenConfig.getEntity().getBack().getBase(), GenConfig.getEntity().getBack().getSub())));
-                subBaseSet.removeAll(coverSet);
-                hideSet.addAll(subBaseSet);
-                break;
-            case BASE:
+            }
+            case BASE -> {
                 Set<String> baseSet = new HashSet<>(Arrays.asList(ArrayUtil.addAll(GenConfig.getEntity().getBack().getBase())));
                 baseSet.removeAll(coverSet);
                 hideSet.addAll(baseSet);
-                break;
+            }
         }
         Map<String, Set<String>> map = new HashMap<>();
         map.put(COVER, coverSet);
@@ -474,16 +405,11 @@ public class VelocityUtils {
     public static Set<String> getFrontHideField(String tplCategory) {
         Set<String> stringSet = new HashSet<>(Arrays.asList(GenConfig.getEntity().getMustHide()));
         switch (GenConstants.TemplateType.getByCode(tplCategory)) {
-            case TREE:
+            case TREE -> {
                 stringSet.addAll(Arrays.asList(GenConfig.getEntity().getFront().getTree()));
                 stringSet.addAll(Arrays.asList(GenConfig.getEntity().getFront().getBase()));
-                break;
-            case SUB_TREE:
-                stringSet.addAll(Arrays.asList(GenConfig.getEntity().getFront().getTree()));
-            case SUB_BASE:
-                stringSet.addAll(Arrays.asList(GenConfig.getEntity().getFront().getSub()));
-            case BASE:
-                stringSet.addAll(Arrays.asList(GenConfig.getEntity().getFront().getBase()));
+            }
+            case BASE -> stringSet.addAll(Arrays.asList(GenConfig.getEntity().getFront().getBase()));
         }
         return stringSet;
     }
@@ -576,15 +502,8 @@ public class VelocityUtils {
                 }
             }
         }
-        if ((genTable.isTree() || genTable.isSubTree()) && ArrayUtil.isNotEmpty(GenConfig.getEntity().getBack().getTree())) {
+        if (genTable.isTree() && ArrayUtil.isNotEmpty(GenConfig.getEntity().getBack().getTree())) {
             for (String field : GenConfig.getEntity().getBack().getTree()) {
-                if (!StrUtil.equalsAny(field, columnNames)) {
-                    excludeList.add(field);
-                }
-            }
-        }
-        if ((genTable.isSubBase() || genTable.isSubTree()) && ArrayUtil.isNotEmpty(GenConfig.getEntity().getBack().getSub())) {
-            for (String field : GenConfig.getEntity().getBack().getSub()) {
                 if (!StrUtil.equalsAny(field, columnNames)) {
                     excludeList.add(field);
                 }
@@ -636,8 +555,8 @@ public class VelocityUtils {
      */
     public static void initIndexFile(String realPath, String prefixPath, String suffixFile, String moduleName, String authorityName, String businessName) {
         if (StrUtil.isEmpty(realPath)) return;
-        String indexName = "index.ts" ;
-        String importSentence = "export * from './{}'" ;
+        String indexName = "index.ts";
+        String importSentence = "export * from './{}'";
         StringBuilder sb = new StringBuilder(realPath + prefixPath + File.separator + moduleName + File.separator);
         outIndexFile(sb + indexName, StrUtil.format(importSentence, authorityName));
         sb.append(authorityName).append(File.separator);

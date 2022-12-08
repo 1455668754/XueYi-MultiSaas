@@ -22,50 +22,6 @@ public class GenTableColumnDto extends GenTableColumnPo {
     /** 字典名称 */
     private String dictName;
 
-    public boolean isPk() {
-        return getIsPk();
-    }
-
-    public boolean isList() {
-        return getIsList();
-    }
-
-    public boolean isInsert() {
-        return getIsInsert();
-    }
-
-    public boolean isView() {
-        return getIsView();
-    }
-
-    public boolean isEdit() {
-        return getIsEdit();
-    }
-
-    public boolean isRequired() {
-        return getIsRequired();
-    }
-
-    public boolean isQuery() {
-        return getIsQuery();
-    }
-
-    public boolean isImport() {
-        return getIsImport();
-    }
-
-    public boolean isExport() {
-        return getIsExport();
-    }
-
-    public boolean isHide() {
-        return getIsHide();
-    }
-
-    public boolean isCover() {
-        return getIsCover();
-    }
-
     public String readConverterExp() {
         String remarks = StrUtil.subBetween(this.getComment(), "（", "）");
         StringBuilder sb = new StringBuilder();

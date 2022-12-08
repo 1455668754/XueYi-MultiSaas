@@ -43,14 +43,6 @@ public class GenTableDto extends GenTablePo {
         return tplCategory != null && StrUtil.equals(GenConstants.TemplateType.TREE.getCode(), tplCategory);
     }
 
-    public static boolean isSubBase(String tplCategory) {
-        return tplCategory != null && StrUtil.equals(GenConstants.TemplateType.SUB_BASE.getCode(), tplCategory);
-    }
-
-    public static boolean isSubTree(String tplCategory) {
-        return tplCategory != null && StrUtil.equals(GenConstants.TemplateType.SUB_TREE.getCode(), tplCategory);
-    }
-
     public static boolean isMerge(String tplCategory) {
         return tplCategory != null && StrUtil.equals(GenConstants.TemplateType.MERGE.getCode(), tplCategory);
     }
@@ -63,16 +55,6 @@ public class GenTableDto extends GenTablePo {
     /** 是否为树表 */
     public boolean isTree() {
         return isTree(getTplCategory());
-    }
-
-    /** 是否为主子单表 */
-    public boolean isSubBase() {
-        return isSubBase(getTplCategory());
-    }
-
-    /** 是否为主子树表 */
-    public boolean isSubTree() {
-        return isSubTree(getTplCategory());
     }
 
     /** 是否为关联表 */

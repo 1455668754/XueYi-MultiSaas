@@ -70,9 +70,9 @@ public class GenConstants {
         TREE_NAME("treeName", "树名称字段", "name"),
         ANCESTORS("ancestors", "祖籍列表字段", "ancestors"),
 
-        FOREIGN_ID("foreignId", "外键关联的主表字段字段", null),
-        SUB_TABLE_ID("subTableId", "关联子表的表名字段", null),
-        SUB_FOREIGN_ID("subForeignId", "关联子表的外键名字段", null),
+//        FOREIGN_ID("foreignId", "外键关联的主表字段字段", null),
+//        SUB_TABLE_ID("subTableId", "关联子表的表名字段", null),
+//        SUB_FOREIGN_ID("subForeignId", "关联子表的外键名字段", null),
 
         ID("id", "主键字段", "id"),
         NAME("name", "名称字段", "name"),
@@ -82,16 +82,13 @@ public class GenConstants {
         SOURCE_MODE("sourceMode", "源策略模式", null),
 
         API_LIST("apiList", "接口：查询列表", null),
+        API_IMPORT("apiImport", "接口：导入", null),
         API_EXPORT("apiExport", "接口：导出", null),
         API_GET_INFO("apiGetInfo", "接口：查询详情", null),
         API_ADD("apiAdd", "接口：新增", null),
-        API_ADD_FORCE("apiAddForce", "接口：强制新增", null),
         API_EDIT("apiEdit", "接口：修改", null),
-        API_EDIT_FORCE("apiEditForce", "接口：强制修改", null),
         API_ES("apiEditStatus", "接口：修改状态", null),
-        API_ES_FORCE("apiEditStatusForce", "接口：强制修改状态", null),
-        API_BATCH_REMOVE("apiBatchRemove", "接口：批量删除", null),
-        API_BATCH_REMOVE_FORCE("apiBatchRemoveForce", "接口：强制批量删除", null);
+        API_BATCH_REMOVE("apiBatchRemove", "接口：批量删除", null);
 
         private final String code;
         private final String info;
@@ -106,8 +103,6 @@ public class GenConstants {
 
         BASE("base", "单表"),
         TREE("tree", "树表"),
-        SUB_BASE("subBase", "主子表"),
-        SUB_TREE("subTree", "主子树表"),
         MERGE("merge", "关联表");
 
         private final String code;
