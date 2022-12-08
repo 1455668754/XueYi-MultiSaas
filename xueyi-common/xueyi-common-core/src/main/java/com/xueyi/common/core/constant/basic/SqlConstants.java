@@ -26,7 +26,7 @@ public class SqlConstants {
     public static final String ANCESTORS_FIND = "find_in_set({0}, ancestors)";
 
     /** sql 祖籍字符串部分更新 */
-    public static final String ANCESTORS_PART_UPDATE = "{} = insert({},{},{},{})";
+    public static final String ANCESTORS_PART_UPDATE = "{} = insert({},{},{},'{}')";
 
     /** sql 树层级更新 */
     public static final String TREE_LEVEL_UPDATE = "{} = {} + {}";
