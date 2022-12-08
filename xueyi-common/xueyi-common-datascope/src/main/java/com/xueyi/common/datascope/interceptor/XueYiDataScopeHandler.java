@@ -79,12 +79,10 @@ public class XueYiDataScopeHandler implements DataPermissionHandler {
         Long userId = scope.getUserId();
         String scopeType = scope.getDataScope();
         switch (AuthorityConstants.DataScope.getByCode(scopeType)) {
-            case ALL:
+            case ALL -> {
                 return where;
-            case CUSTOM:
-            case DEPT:
-            case DEPT_AND_CHILD:
-            case POST:
+            }
+            case CUSTOM, DEPT, DEPT_AND_CHILD, POST -> {
                 if (StrUtil.isNotEmpty(dataScope.userAlias())) {
                     Set<Long> userScope = scope.getUserScope();
                     if (ArrayUtil.isEmpty(userScope)) break;
@@ -104,18 +102,17 @@ public class XueYiDataScopeHandler implements DataPermissionHandler {
                     InExpression deptInExpression = new InExpression(new Column(dataScope.deptAlias()), itemsList);
                     return new AndExpression(where, deptInExpression);
                 }
-                break;
-            case SELF:
+            }
+            case SELF -> {
                 if (StrUtil.isNotEmpty(dataScope.userAlias())) {
                     EqualsTo selfEqualsTo = new EqualsTo();
                     selfEqualsTo.setLeftExpression(new Column(dataScope.userAlias()));
                     selfEqualsTo.setRightExpression(new LongValue(userId));
                     return new AndExpression(where, selfEqualsTo);
                 }
-                break;
-            case NONE:
-            default:
-                break;
+            }
+            default -> {
+            }
         }
         EqualsTo noEqualsTo = new EqualsTo();
         noEqualsTo.setLeftExpression(new Column("1"));

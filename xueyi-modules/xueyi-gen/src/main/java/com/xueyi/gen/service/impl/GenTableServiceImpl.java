@@ -134,7 +134,6 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
                     List<GenTableColumnDto> columnList = subService.selectDbTableColumnsByName(table.getName());
                     columnList.forEach(column -> GenUtils.initColumnField(column, table));
                     subService.insertBatch(columnList);
-//                    columnList = baseManager.selectSubByForeignKey(table.getId());
                     GenUtils.initTableOptions(columnList, table);
                     baseManager.update(table);
                 }
