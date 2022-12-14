@@ -144,11 +144,15 @@
 
       /** 树表配置初始化 */
       function initTree(subList: any[]) {
-        treeUpdateSchema({ field: 'treeCode', componentProps: { options: subList } });
-        treeUpdateSchema({ field: 'parentId', componentProps: { options: subList } });
-        treeUpdateSchema({ field: 'treeName', componentProps: { options: subList } });
-        treeUpdateSchema({ field: 'ancestors', componentProps: { options: subList } });
-        treeUpdateSchema({ field: 'level', componentProps: { options: subList } });
+        treeUpdateSchema([
+          { field: 'treeCode', componentProps: { options: subList } },
+          { field: 'parentId', componentProps: { options: subList } },
+        ]);
+        // treeUpdateSchema({ field: 'treeCode', componentProps: { options: subList } });
+        // treeUpdateSchema({ field: 'parentId', componentProps: { options: subList } });
+        // treeUpdateSchema({ field: 'treeName', componentProps: { options: subList } });
+        // treeUpdateSchema({ field: 'ancestors', componentProps: { options: subList } });
+        // treeUpdateSchema({ field: 'level', componentProps: { options: subList } });
       }
 
       /** 保存校验 */

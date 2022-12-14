@@ -105,7 +105,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { reactive, ref, unref, computed } from 'vue';
+  import { reactive, ref, unref, computed, onMounted } from 'vue';
 
   import { Checkbox, Form, Input, Row, Col, Button, Divider, Image } from 'ant-design-vue';
   import {
@@ -217,8 +217,12 @@
     captchaData.uuid = data.uuid;
   }
 
-  // 初始执行一次验证码获取
-  handleCodeImage();
+  onMounted(() => {
+    // 初始执行一次验证码获取
+    handleCodeImage();
+    console.error(unref(formRef));
+    console.error(unref('formRef'));
+  });
 </script>
 
 <style lang="less" scoped>

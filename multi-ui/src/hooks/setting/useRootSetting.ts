@@ -21,8 +21,6 @@ export function useRootSetting() {
 
   const getCanEmbedIFramePage = computed(() => appStore.getProjectConfig.canEmbedIFramePage);
 
-  const getPermissionMode = computed(() => appStore.getProjectConfig.permissionMode);
-
   const getShowLogo = computed(() => appStore.getProjectConfig.showLogo);
 
   const getContentMode = computed(() => appStore.getProjectConfig.contentMode);
@@ -66,6 +64,7 @@ export function useRootSetting() {
   function setDarkMode(mode: ThemeEnum) {
     appStore.setDarkMode(mode);
   }
+
   return {
     setRootSetting,
 
@@ -77,7 +76,6 @@ export function useRootSetting() {
     getPageLoading,
     getOpenKeepAlive,
     getCanEmbedIFramePage,
-    getPermissionMode,
     getShowLogo,
     getUseErrorHandle,
     getShowBreadCrumb,
