@@ -30,6 +30,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.xueyi.common.core.constant.basic.BaseConstants.TOP_ID;
+
 /**
  * 租户管理 服务层处理
  *
@@ -148,6 +150,7 @@ public class TeTenantServiceImpl extends BaseServiceImpl<TeTenantQuery, TeTenant
     public void organizeInit(TeTenantRegister tenantRegister) {
         Long enterpriseId = tenantRegister.getTenant().getId();
         String sourceName = tenantRegister.getSourceName();
+        tenantRegister.getDept().setParentId(TOP_ID);
         R<SysDeptDto> deptR = deptService.addInner(tenantRegister.getDept(), enterpriseId, sourceName, SecurityConstants.INNER);
         if (deptR.isFail())
             AjaxResult.warn("新增失败，请检查！");

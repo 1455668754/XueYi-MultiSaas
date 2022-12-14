@@ -45,7 +45,7 @@ public class SysPostServiceImpl extends BaseServiceImpl<SysPostQuery, SysPostDto
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public int addInner(SysPostDto post) {
-        return baseManager.insert(post);
+        return super.insert(post);
     }
 
     /**

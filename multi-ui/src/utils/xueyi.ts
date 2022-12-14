@@ -3,6 +3,7 @@ import { h } from 'vue';
 import { Tag } from 'ant-design-vue';
 import { isArray } from './is';
 import { deepMerge } from '/@/utils/index';
+import { cloneDeep } from 'lodash-es';
 
 /** 字典转换 */
 export function dictConversion(dictOptions: DictLM, val: string) {
@@ -39,6 +40,7 @@ export function sourceCopy(source, data) {
  *  @param: data 赋值数据
  */
 export function sourceAssign(source: any, ...target: any) {
+  let res: any = cloneDeep(source);
   if (isArray(target)) {
     let data = {};
     target.forEach((item) => {
@@ -52,11 +54,11 @@ export function sourceAssign(source: any, ...target: any) {
           data = {};
           data[key] = item[key];
         }
-        deepMerge(source, data);
+        res = deepMerge(res, data);
       }
     });
   }
-  return source;
+  return res;
 }
 
 /**

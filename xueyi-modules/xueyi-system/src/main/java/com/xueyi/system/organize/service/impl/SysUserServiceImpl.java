@@ -48,7 +48,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserQuery, SysUserDto
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public int addInner(SysUserDto user) {
-        return baseManager.insert(user);
+        return super.insert(user);
     }
 
     /**

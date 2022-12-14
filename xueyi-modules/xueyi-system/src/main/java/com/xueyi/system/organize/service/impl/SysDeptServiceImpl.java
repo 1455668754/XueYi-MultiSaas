@@ -33,7 +33,7 @@ public class SysDeptServiceImpl extends TreeServiceImpl<SysDeptQuery, SysDeptDto
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public int addInner(SysDeptDto dept) {
-        return baseManager.insert(dept);
+        return super.insert(dept);
     }
 
     /**
