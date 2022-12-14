@@ -33,6 +33,10 @@ public class TreeEntity<D> extends BaseEntity {
     /** 层级 */
     protected Integer level;
 
+    /** 是否存在默认顶级（true存在 false不存在） */
+    @TableField(exist = false)
+    protected Boolean defaultNode;
+
     /** 子节点集合 */
     @TableField(exist = false)
     protected List<D> children;
