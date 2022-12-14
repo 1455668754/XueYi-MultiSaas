@@ -1,7 +1,7 @@
 package com.xueyi.file.api.feign.factory;
 
 import com.xueyi.common.core.web.result.R;
-import com.xueyi.file.api.domain.SysFile;
+import com.xueyi.file.api.domain.dto.SysFileDto;
 import com.xueyi.file.api.feign.RemoteFileService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.openfeign.FallbackFactory;
@@ -22,7 +22,7 @@ public class RemoteFileFallbackFactory implements FallbackFactory<RemoteFileServ
         log.error("文件服务调用失败:{}", throwable.getMessage());
         return new RemoteFileService() {
             @Override
-            public R<SysFile> upload(MultipartFile file) {
+            public R<SysFileDto> upload(MultipartFile file) {
                 return R.fail("上传文件失败:" + throwable.getMessage());
             }
 

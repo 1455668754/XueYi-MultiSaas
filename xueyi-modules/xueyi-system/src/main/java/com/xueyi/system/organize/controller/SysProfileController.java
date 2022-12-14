@@ -11,7 +11,7 @@ import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.service.TokenService;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.entity.controller.BasisController;
-import com.xueyi.file.api.domain.SysFile;
+import com.xueyi.file.api.domain.dto.SysFileDto;
 import com.xueyi.file.api.feign.RemoteFileService;
 import com.xueyi.system.api.model.LoginUser;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
@@ -162,7 +162,7 @@ public class SysProfileController extends BasisController {
             if (!StrUtil.equalsAnyIgnoreCase(extension, MimeTypeUtil.IMAGE_EXTENSION)) {
                 return error("文件格式不正确，请上传" + Arrays.toString(MimeTypeUtil.IMAGE_EXTENSION) + "格式");
             }
-            R<SysFile> fileResult = remoteFileService.upload(file);
+            R<SysFileDto> fileResult = remoteFileService.upload(file);
             if (ObjectUtil.isNull(fileResult) || ObjectUtil.isNull(fileResult.getData()))
                 return error("文件服务异常，请联系管理员！");
             String url = fileResult.getData().getUrl();

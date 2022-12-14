@@ -40,13 +40,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-		
+
         <!-- FastDFS -->
         <dependency>
             <groupId>com.github.tobato</groupId>
             <artifactId>fastdfs-client</artifactId>
         </dependency>
-        
+
         <!-- Minio -->
         <dependency>
             <groupId>io.minio</groupId>
@@ -64,6 +64,12 @@
         <dependency>
             <groupId>com.xueyi</groupId>
             <artifactId>xueyi-api-file</artifactId>
+        </dependency>
+
+        <!-- XueYi Api File -->
+        <dependency>
+            <groupId>com.xueyi</groupId>
+            <artifactId>xueyi-common-security</artifactId>
         </dependency>
 
     </dependencies>

@@ -1,5 +1,6 @@
 package com.xueyi.file;
 
+import com.xueyi.common.security.annotation.EnableRyFeignClients;
 import com.xueyi.common.swagger.annotation.EnableCustomSwagger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,6 +11,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
  *
  * @author xueyi
  */
+@EnableRyFeignClients
 @EnableCustomSwagger
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 public class XueYiFileApplication {

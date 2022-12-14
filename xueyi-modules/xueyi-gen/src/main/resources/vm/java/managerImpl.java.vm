@@ -10,7 +10,7 @@ import ${packageName}.domain.dto.${ClassName}Dto;
 import ${packageName}.domain.query.${ClassName}Query;
 import ${packageName}.domain.model.${ClassName}Converter;
 import ${packageName}.mapper.${ClassName}Mapper;
-import com.xueyi.common.web.entity.manager.impl.${Entity}Manager;
+import com.xueyi.common.web.entity.manager.impl.${Entity}BaseManagerImpl;
 import ${packageName}.manager.I${ClassName}Manager;
 import org.springframework.stereotype.Component;
 
@@ -20,5 +20,5 @@ import org.springframework.stereotype.Component;
  * @author ${author}
  */
 @Component
-public class ${ClassName}Manager extends ${Entity}Manager<${ClassName}Query, ${ClassName}Dto, ${ClassName}Po, ${ClassName}Mapper, ${ClassName}Converter> implements I${ClassName}Manager {
+public class ${ClassName}Manager extends ${Entity}ManagerImpl<${ClassName}Query, ${ClassName}Dto, ${ClassName}Po, ${ClassName}Mapper, ${ClassName}Converter> implements I${ClassName}Manager {
 }

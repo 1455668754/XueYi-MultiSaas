@@ -14,7 +14,7 @@ import java.nio.charset.StandardCharsets;
  *
  * @author xueyi
  */
-public class FileUtil {
+public class FileUtil extends cn.hutool.core.io.FileUtil {
 
     /**
      * 字符常量：斜杠 {@code '/'}

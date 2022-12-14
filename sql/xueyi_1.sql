@@ -589,7 +589,52 @@ create table sys_job_log (
 ) engine = innodb comment = '定时任务调度日志表';
 
 -- ----------------------------
--- 13、代码生成业务表
+-- 13、文件信息表
+-- ----------------------------
+drop table if exists sys_file;
+create table sys_file (
+  id		                bigint	            not null                                comment '文件Id',
+  folder_id		            bigint	            not null default 0	                    comment '分类Id',
+  name		                varchar(100)	    not null	                            comment '文件名称',
+  nick	                    varchar(100)	    default null	                        comment '文件别名',
+  url		                varchar(500)	    not null 	                            comment '文件地址',
+  size		                decimal(8,4)	    not null 	                            comment '文件大小',
+  type		                char(1)	            not null default '0'	                comment '文件类型（0默认 1系统）',
+  sort                      int unsigned        not null default 0                      comment '显示顺序',
+  status                    char(1)             not null default '0'                    comment '状态（0正常 1停用）',
+  create_by                 bigint              default null                            comment '创建者',
+  create_time               datetime            default current_timestamp               comment '创建时间',
+  update_by                 bigint              default null                            comment '更新者',
+  update_time               datetime            on update current_timestamp             comment '更新时间',
+  del_flag		            tinyint             not null default 0                      comment '删除标志（0正常 1删除）',
+  tenant_id		            bigint	            not null                                comment '租户Id',
+  primary key (id)
+) engine = innodb comment = '文件信息表';
+
+-- ----------------------------
+-- 14、文件分类信息表
+-- ----------------------------
+drop table if exists sys_file_folder;
+create table sys_file_folder (
+  id		                bigint	            not null                                comment '分类Id',
+  parent_id		            bigint	            not null default 0                      comment '父分类Id',
+  name		                varchar(100)	    not null	                            comment '分类名称',
+  level                     int                 not null                                comment '树层级',
+  ancestors                 varchar(500)        default ''                              comment '祖级列表',
+  type		                char(1)	            not null default '0'	                comment '分类类型（0默认文件夹 1系统文件夹）',
+  sort                      int unsigned        not null default 0                      comment '显示顺序',
+  status                    char(1)             not null default '0'                    comment '状态（0正常 1停用）',
+  create_by                 bigint              default null                            comment '创建者',
+  create_time               datetime            default current_timestamp               comment '创建时间',
+  update_by                 bigint              default null                            comment '更新者',
+  update_time               datetime            on update current_timestamp             comment '更新时间',
+  del_flag		            tinyint             not null default 0                      comment '删除标志（0正常 1删除）',
+  tenant_id		            bigint	            not null                                comment '租户Id',
+  primary key (id)
+) engine = innodb comment = '文件分类信息表';
+
+-- ----------------------------
+-- 15、代码生成业务表
 -- ----------------------------
 drop table if exists gen_table;
 create table gen_table (
@@ -617,7 +662,7 @@ create table gen_table (
 ) engine=innodb auto_increment=1 comment = '代码生成业务表';
 
 -- ----------------------------
--- 14、代码生成业务表字段
+-- 16、代码生成业务表字段
 -- ----------------------------
 drop table if exists gen_table_column;
 create table gen_table_column (
@@ -651,3 +696,4 @@ create table gen_table_column (
   update_time               datetime            on update current_timestamp             comment '更新时间',
   primary key (id)
 ) engine=innodb auto_increment=1 comment = '代码生成业务表字段';
+
