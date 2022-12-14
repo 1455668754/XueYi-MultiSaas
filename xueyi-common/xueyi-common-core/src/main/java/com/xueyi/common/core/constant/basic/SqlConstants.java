@@ -76,4 +76,5 @@ public class SqlConstants {
         private final String info;
 
     }
+
 }

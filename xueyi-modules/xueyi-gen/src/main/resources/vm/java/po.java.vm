@@ -5,141 +5,123 @@ import ${import};
 #end
 #if($table.base)
 #set($Entity="BaseEntity")
+#set($generics = "")
 #elseif($table.tree)
-#set($Entity="TreeEntity")
-#set($generics = "<"+${ClassName}+"Dto>")
-#elseif($table.subBase)
-#set($Entity="SubBaseEntity")
-#set($generics = "<"+${subClassName}+"Dto>")
-#elseif($table.subTree)
-#set($Entity="SubTreeEntity")
-#set($generics = "<D"+${ClassName}+"Dto, "+${subClassName}+"Dto>")
+#set($Entity="TreeEntity<"+${ClassName}+"Dto>")
+#set($generics="<"+${ClassName}+"Dto>")
 #end
+#set($entityUrl="entity")
+#set($baseUrl="base")
 #if($isTenant)
 #set($Entity = "T" + $Entity)
-import com.xueyi.common.core.web.tenant.base.${Entity};
-#else
-import com.xueyi.common.core.web.entity.base.${Entity};
+#set($entityUrl="tenant")
 #end
-#if($table.subBase || $table.subTree)
-import ${subPackageName}.domain.dto.${subClassName}Dto;
-#end
+import com.xueyi.common.core.web.${entityUrl}.${baseUrl}.${Entity};
 import ${packageName}.domain.dto.${ClassName}Dto;
+#set($tableIdShow=true)
+#set($excelShow=true)
+#set($jsonFormatShow=true)
 #foreach ($column in $columns)
-#set($hide = true)
-#foreach($item in $mustHideField)
-#if($column.javaField == $item)
-#set($hide = false)
-#break
+#if($column.isPo)
+#if($column.isPk || $column.isDivideTable)
+#if($tableIdShow)
+import com.baomidou.mybatisplus.annotation.*;
+#set($tableIdShow=false)
 #end
 #end
-#foreach($item in $hideField)
-#if($column.javaField == $item)
-#set($hide = false)
-#break
-#end
-#end
-#if($hide && $column.isPk())
-import com.baomidou.mybatisplus.annotation.TableId;
-#break
-#end
-#end
-import com.baomidou.mybatisplus.annotation.TableField;
+#if($column.isImport || $column.isExport)
+#if($excelShow)
 import com.xueyi.common.core.annotation.Excel;
+#set($excelShow=false)
+#end
+#end
+#if($column.javaType == 'LocalDateTime')
+#if($jsonFormatShow)
+import com.fasterxml.jackson.annotation.JsonFormat;
+#set($jsonFormatShow=false)
+#end
+#end
+#end
+#end
+#if($tableIdShow)
+import com.baomidou.mybatisplus.annotation.TableName;
+#end
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import java.io.Serial;
+
+#set($excludeTimes=${excludeProperty.size()} > 4)
+#if($excludeTimes)
+import static com.xueyi.common.core.constant.basic.EntityConstants.*;
+#end
+#set($times = 0)
+#foreach($field in $excludeProperty)
+#if($times == 0)
+#set($excludeField="excludeProperty = { "+${field})
+#else
+#set($excludeField= $excludeField + ", "+${field})
+#end
+#if(!$excludeTimes)
+import static com.xueyi.common.core.constant.basic.EntityConstants.${field};
+#end
+#set($times = $times + 1)
+#end
+#set($excludeField= $excludeField + " }")
 
 /**
  * ${functionName} 持久化对象
  *
  * @author ${author}
  */
-@TableName(#if(${excludeProperty.size()} > 0 )value = "${tableName}", excludeProperty = {#set($times = true)#foreach($field in $excludeProperty)#if($times)#set($times = false)#else,#end"${field}"#end}#else"${tableName}"#end)
-public class ${ClassName}Po extends ${Entity}#if($generics)${generics}#end {
+@Data
+@EqualsAndHashCode(callSuper = true)
+@TableName(#if(${excludeProperty.size()} > 0 )value = "${tableName}", ${excludeField}#else"${tableName}"#end)
+public class ${ClassName}Po extends ${Entity}${generics} {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
 #foreach ($column in $columns)
-#set($hide = true)
-#foreach($item in $mustHideField)
-#if($column.javaField == $item)
-#set($hide = false)
-#break
+#if($column.isPo)
+    /** ${column.comment} */
+#if($column.javaType == 'LocalDateTime')
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 #end
-#end
-#foreach($item in $hideField)
-#if($column.javaField == $item)
-#set($hide = false)
-#break
-#end
-#end
-#if($hide)
-    /** $column.comment */
-#if($column.list)
+#if($column.isImport || $column.isExport)
 #set($parentheseIndex=$column.comment.indexOf("（"))
 #if($parentheseIndex != -1)
-#set($comment=$column.comment.substring(0, $parentheseIndex))
+#set($excelStr='@Excel(name = "' + $column.comment.substring(0, $parentheseIndex) + '", readConverterExp = "' + $column.readConverterExp() + '"')
 #else
-#set($comment=$column.comment)
+#set($excelStr='@Excel(name = "' + $column.comment + '"')
 #end
-#if($parentheseIndex != -1)
-@Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
-#elseif($column.javaType == 'LocalDateTime')
-@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-@Excel(name = "${comment}", width = 30, dateFormat = "yyyy-MM-dd")
+#if($column.javaType == 'LocalDateTime')
+#set($excelStr=$excelStr + ', width = 30, dateFormat = ' + $dMark+ 'yyyy-MM-dd' + $dMark)
+#end
+#if($column.isImport && $column.isExport)
+#elseif($column.isImport)
+#set($excelStr=$excelStr + ", type = Excel.Type.IMPORT")
+#elseif($column.isExport)
+#set($excelStr=$excelStr + ", type = Excel.Type.EXPORT")
+#end
+#set($excelStr=$excelStr + ')')
+    ${excelStr}
+#end
+#if($column.isPk)
+#set($tableField='@TableId')
+#if($column.isDivideTable)
+#set($tableField=$tableField + '("' + $column.name + '")')
+#end
 #else
-@Excel(name = "${comment}")
+#set($tableField="")
+#if($column.isDivideTable)
+#set($tableField='@TableField("' + $column.name + '")')
 #end
 #end
-#if($column.isPk())
-@TableId("${column.name}")
-#else
-@TableField("${column.name}")
+#if(${tableField.length()} > 0)
+    ${tableField}
 #end
-private $column.javaType $column.javaField;
-
-#end
-#end
-#foreach ($column in $columns)
-#set($hide = true)
-#foreach($item in $mustHideField)
-#if($column.javaField == $item)
-#set($hide = false)
-#break
-#end
-#end
-#foreach($item in $hideField)
-#if($column.javaField == $item)
-#set($hide = false)
-#break
-#end
-#end
-#if($hide)
-#set($cover = false)
-#foreach($item in $coverField)
-#if($column.javaField == $item)
-#set($cover = true)
-#break
-#end
-#end
-#set($AttrName = $column.javaField)
-#if($AttrName.length() > 2 && $AttrName.substring(1,2).matches("[A-Z]"))
-#set($field=$AttrName)
-#else
-#set($field=$AttrName.substring(0,1).toUpperCase() + ${AttrName.substring(1)})
-#end
-#if($cover)
-@Override
-#end
-public void set${field}($column.javaType $AttrName) {
-    this.$AttrName = $AttrName;
-}
-
-#if($cover)
-@Override
-#end
-public $column.javaType get${field}() {
-    return $AttrName;
-}
+    protected $column.javaType $column.javaField;
 
 #end
 #end

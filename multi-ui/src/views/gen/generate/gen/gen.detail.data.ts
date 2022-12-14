@@ -723,4 +723,15 @@ export const generateApiSchema: FormSchema[] = [
     required: true,
     colProps: { span: 12 },
   },
+  {
+    label: '缓存',
+    field: 'apiCache',
+    component: 'RadioButtonGroup',
+    defaultValue: GenStatusEnum.FALSE,
+    componentProps: {
+      options: dict.genStatus,
+    },
+    required: true,
+    colProps: { span: 12 },
+  },
 ];

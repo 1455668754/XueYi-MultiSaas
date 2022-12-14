@@ -27,13 +27,13 @@ import java.util.stream.Collectors;
 public class VelocityUtils {
 
     /** 主目录 */
-    private static final String PROJECT_PATH = "main/java";
+    private static final String PROJECT_PATH = "main/java" ;
 
     /** 隐藏字段数组 */
-    private static final String HIDE = "hide";
+    private static final String HIDE = "hide" ;
 
     /** 覆写字段数组 */
-    private static final String COVER = "cover";
+    private static final String COVER = "cover" ;
 
     /**
      * 设置模板变量信息
@@ -47,7 +47,7 @@ public class VelocityUtils {
         String functionName = genTable.getFunctionName();
         JSONObject optionsObj = JSON.parseObject(genTable.getOptions());
         Map<String, Set<String>> domainMap = getCoverMap(genTable);
-
+        initTableField(genTable);
         VelocityContext velocityContext = new VelocityContext();
         // 模板类型
         velocityContext.put("tplCategory", genTable.getTplCategory());
@@ -180,7 +180,7 @@ public class VelocityUtils {
         apiJSon.put("batchRemove", checkApiStatus(optionsObj, GenConstants.OptionField.API_BATCH_REMOVE));
         apiJSon.put("import", checkApiStatus(optionsObj, GenConstants.OptionField.API_IMPORT));
         apiJSon.put("export", checkApiStatus(optionsObj, GenConstants.OptionField.API_EXPORT));
-        // 接口
+        apiJSon.put("cache", checkApiStatus(optionsObj, GenConstants.OptionField.API_CACHE));
         context.put("api", apiJSon);
     }
 
@@ -310,18 +310,18 @@ public class VelocityUtils {
                 if (template.contains("api.ts.vm"))
                     return StrUtil.format("multi-ui/src/api/{}/{}/{}.ts", moduleName, authorityName, businessName);
                 else if (template.contains("infoModel.ts.vm")) {
-                    String prefixPath = "multi-ui/src/model";
-                    String suffixFile = "";
+                    String prefixPath = "multi-ui/src/model" ;
+                    String suffixFile = "" ;
                     initIndexFile(realPath, prefixPath, suffixFile, moduleName, authorityName, businessName);
                     return StrUtil.format("{}/{}/{}/{}.ts", prefixPath, moduleName, authorityName, businessName);
                 } else if (template.contains("auth.ts.vm")) {
-                    String prefixPath = "multi-ui/src/auth";
-                    String suffixFile = ".auth";
+                    String prefixPath = "multi-ui/src/auth" ;
+                    String suffixFile = ".auth" ;
                     initIndexFile(realPath, prefixPath, suffixFile, moduleName, authorityName, businessName);
                     return StrUtil.format("{}/{}/{}/{}{}.ts", prefixPath, moduleName, authorityName, businessName, suffixFile);
                 } else if (template.contains("enum.ts.vm")) {
-                    String prefixPath = "multi-ui/src/enums";
-                    String suffixFile = ".enum";
+                    String prefixPath = "multi-ui/src/enums" ;
+                    String suffixFile = ".enum" ;
                     initIndexFile(realPath, prefixPath, suffixFile, moduleName, authorityName, businessName);
                     return StrUtil.format("{}/{}/{}/{}{}.ts", prefixPath, moduleName, authorityName, businessName, suffixFile);
                 } else if (template.contains("data.ts.vm"))
@@ -337,7 +337,7 @@ public class VelocityUtils {
             }
         }
 
-        return "";
+        return "" ;
     }
 
     /**
@@ -349,6 +349,70 @@ public class VelocityUtils {
     public static String getPackagePrefix(String packageName) {
         int lastIndex = packageName.lastIndexOf(StrUtil.DOT);
         return StrUtil.sub(packageName, 0, lastIndex);
+    }
+
+    /**
+     * 初始化表字段
+     *
+     * @param genTable 业务表对象
+     */
+    public static void initTableField(GenTableDto genTable) {
+        genTable.getSubList().forEach(item -> {
+            item.setIsDivideTable(StrUtil.notEquals(item.getJavaField(), StrUtil.toCamelCase(item.getName())));
+            item.setIsPo(Boolean.TRUE);
+            if (item.getIsHide()) {
+                item.setIsPo(Boolean.FALSE);
+            } else if (ArrayUtil.contains(GenConfig.getEntity().getMustHide(), item.getJavaField())) {
+                item.setIsPo(Boolean.FALSE);
+            } else if (!genTable.isMerge() && ArrayUtil.contains(GenConfig.getEntity().getBack().getBase(), item.getJavaField())) {
+                item.setIsPo(Boolean.FALSE);
+            } else if (genTable.isTree() && ArrayUtil.contains(GenConfig.getEntity().getBack().getTree(), item.getJavaField())) {
+                item.setIsPo(Boolean.FALSE);
+            }
+            GenConstants.GenField field = GenConstants.GenField.getByCode(item.getJavaField());
+            if (ObjectUtil.isNotNull(field)) {
+                switch (field) {
+                    case ID, PARENT_ID -> {
+                        if (item.getIsDivideTable()
+                                || StrUtil.notEquals(item.getJavaType(), GenConstants.JavaType.LONG.getCode())
+                                || StrUtil.notEquals(item.getQueryType(), GenConstants.QueryType.EQ.getCode())) {
+                            item.setIsPo(Boolean.TRUE);
+                        }
+                    }
+                    case NAME, REMARK -> {
+                        if (item.getIsDivideTable()
+                                || StrUtil.notEquals(item.getJavaType(), GenConstants.JavaType.STRING.getCode())
+                                || StrUtil.notEquals(item.getQueryType(), GenConstants.QueryType.LIKE.getCode())) {
+                            item.setIsPo(Boolean.TRUE);
+                        }
+                    }
+                    case STATUS -> {
+                        if (item.getIsDivideTable()
+                                || StrUtil.notEquals(item.getJavaType(), GenConstants.JavaType.STRING.getCode())
+                                || StrUtil.notEquals(item.getQueryType(), GenConstants.QueryType.EQ.getCode())
+                                || !StrUtil.contains(item.getComment(), GenConstants.GenCheck.NORMAL_DISABLE.getInfo())) {
+                            item.setIsPo(Boolean.TRUE);
+                        }
+                    }
+                    case SORT -> {
+                        if (item.getIsDivideTable()
+                                || StrUtil.notEquals(item.getJavaType(), GenConstants.JavaType.INTEGER.getCode())
+                                || StrUtil.notEquals(item.getQueryType(), GenConstants.QueryType.EQ.getCode())) {
+                            item.setIsPo(Boolean.TRUE);
+                        }
+                    }
+                    case ANCESTORS -> {
+                        if (item.getIsDivideTable()
+                                || StrUtil.notEquals(item.getJavaType(), GenConstants.JavaType.STRING.getCode())
+                                || StrUtil.notEquals(item.getQueryType(), GenConstants.QueryType.EQ.getCode())) {
+                            item.setIsPo(Boolean.TRUE);
+                        }
+                    }
+                    default -> {
+                    }
+                }
+            }
+        });
     }
 
     /**
@@ -493,21 +557,21 @@ public class VelocityUtils {
      * @return 返回字典组
      */
     public static Set<String> getExcludePropertyList(GenTableDto genTable) {
-        Set<String> excludeList = new HashSet<>();
         String[] columnNames = genTable.getSubList().stream().map(GenTableColumnDto::getJavaField).toArray(String[]::new);
-        if (!genTable.isMerge() && ArrayUtil.isNotEmpty(GenConfig.getEntity().getBack().getBase())) {
-            for (String field : GenConfig.getEntity().getBack().getBase()) {
-                if (!StrUtil.equalsAny(field, columnNames)) {
-                    excludeList.add(field);
-                }
-            }
+        if (genTable.isMerge())
+            return new HashSet<>();
+        Set<String> excludeList = new HashSet<>();
+        if (ArrayUtil.isNotEmpty(GenConfig.getEntity().getBack().getBase())) {
+            Set<String> filedSet = Arrays.stream(GenConfig.getEntity().getBack().getBase())
+                    .filter(item -> !ArrayUtil.contains(columnNames, item)).map(item -> StrUtil.toUnderlineCase(item).toUpperCase()).collect(Collectors.toSet());
+            if (CollUtil.isNotEmpty(filedSet))
+                excludeList.addAll(filedSet);
         }
         if (genTable.isTree() && ArrayUtil.isNotEmpty(GenConfig.getEntity().getBack().getTree())) {
-            for (String field : GenConfig.getEntity().getBack().getTree()) {
-                if (!StrUtil.equalsAny(field, columnNames)) {
-                    excludeList.add(field);
-                }
-            }
+            Set<String> filedSet = Arrays.stream(GenConfig.getEntity().getBack().getTree())
+                    .filter(item -> !ArrayUtil.contains(columnNames, item)).map(item -> StrUtil.toUnderlineCase(item).toUpperCase()).collect(Collectors.toSet());
+            if (CollUtil.isNotEmpty(filedSet))
+                excludeList.addAll(filedSet);
         }
         return excludeList;
     }
@@ -555,8 +619,8 @@ public class VelocityUtils {
      */
     public static void initIndexFile(String realPath, String prefixPath, String suffixFile, String moduleName, String authorityName, String businessName) {
         if (StrUtil.isEmpty(realPath)) return;
-        String indexName = "index.ts";
-        String importSentence = "export * from './{}'";
+        String indexName = "index.ts" ;
+        String importSentence = "export * from './{}'" ;
         StringBuilder sb = new StringBuilder(realPath + prefixPath + File.separator + moduleName + File.separator);
         outIndexFile(sb + indexName, StrUtil.format(importSentence, authorityName));
         sb.append(authorityName).append(File.separator);

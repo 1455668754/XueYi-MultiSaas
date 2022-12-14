@@ -78,7 +78,7 @@ public class GenTableColumnPo extends BaseEntity {
     /** 隐藏字段（1是 0否） */
     protected Boolean isHide;
 
-    /** 覆盖字段（1是 0否） */
+    /** 掩蔽字段 - 仅针对基类（1是 0否） */
     protected Boolean isCover;
 
     /** 查询方式（EQ等于、NE不等于、GT大于、LT小于、LIKE模糊、BETWEEN范围） */

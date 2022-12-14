@@ -9,6 +9,7 @@ import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.basic.ServiceConstants;
 import com.xueyi.common.core.constant.gen.GenConstants.OptionField;
 import com.xueyi.common.core.constant.gen.GenConstants.TemplateType;
+import com.xueyi.common.core.utils.core.ArrayUtil;
 import com.xueyi.common.core.utils.core.CharsetUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
@@ -127,17 +128,17 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
     @DSTransactional
     public void importGenTable(List<GenTableDto> tableList) {
 //        try {
-            tableList.forEach(table -> {
-                GenUtils.initTable(table);
-                int row = baseManager.insert(table);
-                if (row > 0) {
-                    List<GenTableColumnDto> columnList = subService.selectDbTableColumnsByName(table.getName());
-                    columnList.forEach(column -> GenUtils.initColumnField(column, table));
-                    subService.insertBatch(columnList);
-                    GenUtils.initTableOptions(columnList, table);
-                    baseManager.update(table);
-                }
-            });
+        tableList.forEach(table -> {
+            GenUtils.initTable(table);
+            int row = baseManager.insert(table);
+            if (row > 0) {
+                List<GenTableColumnDto> columnList = subService.selectDbTableColumnsByName(table.getName());
+                columnList.forEach(column -> GenUtils.initColumnField(column, table));
+                subService.insertBatch(columnList);
+                GenUtils.initTableOptions(columnList, table);
+                baseManager.update(table);
+            }
+        });
 //        } catch (Exception e) {
 //            AjaxResult.warn(StrUtil.format("导入失败：{}", e.getMessage()));
 //        }
@@ -307,7 +308,7 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
             case TREE:
                 checkTclTree(optionsObj);
             case BASE:
-                checkTclBase(genTable, optionsObj);
+                checkTclBase(optionsObj);
         }
     }
 
@@ -318,12 +319,24 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
      * @param optionsObj 其它生成选项信息
      */
     private void checkTclBasic(GenTableDto genTable, JSONObject optionsObj) {
+        checkSourceMode(genTable, optionsObj);
+        checkCommonMode(genTable, optionsObj);
+
+    }
+
+    /**
+     * 校验基础源策略模式配置
+     *
+     * @param genTable   业务表
+     * @param optionsObj 其它生成选项信息
+     */
+    private void checkSourceMode(GenTableDto genTable, JSONObject optionsObj) {
         if (StrUtil.isEmpty(optionsObj.getString(OptionField.SOURCE_MODE.getCode()))) {
             AjaxResult.warn("未设置源策略模式！");
         }
         if (StrUtil.isNotEmpty(optionsObj.getString(OptionField.IS_TENANT.getCode())) && StrUtil.equals(optionsObj.getString(OptionField.IS_TENANT.getCode()), DictConstants.DicYesNo.YES.getCode())) {
             for (GenTableColumnDto column : genTable.getSubList()) {
-                if (StrUtil.equalsAny(column.getJavaField(), GenConfig.getEntity().getBack().getTenant())) {
+                if (ArrayUtil.contains(GenConfig.getEntity().getBack().getTenant(), column.getJavaField())) {
                     return;
                 }
             }
@@ -332,21 +345,37 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
     }
 
     /**
-     * 校验单表配置
+     * 校验数据混合模式配置
      *
      * @param genTable   业务表
      * @param optionsObj 其它生成选项信息
      */
-    private void checkTclBase(GenTableDto genTable, JSONObject optionsObj) {
+    private void checkCommonMode(GenTableDto genTable, JSONObject optionsObj) {
+        if (StrUtil.isEmpty(optionsObj.getString(OptionField.COMMON_MODE.getCode()))) {
+            // 暂不开启 | 兼容vue2 next-ui变更
+//            AjaxResult.warn("未设置数据混合模式！");
+            return;
+        }
+        if (StrUtil.isNotEmpty(optionsObj.getString(OptionField.IS_COMMON.getCode())) && StrUtil.equals(optionsObj.getString(OptionField.IS_COMMON.getCode()), DictConstants.DicYesNo.YES.getCode())) {
+            for (GenTableColumnDto column : genTable.getSubList()) {
+                if (ArrayUtil.contains(GenConfig.getEntity().getBack().getCommon(), column.getJavaField())) {
+                    return;
+                }
+            }
+            AjaxResult.warn("未在业务表中发现公共数据关键字，请关闭数据混合模式重试！");
+        }
+    }
+
+    /**
+     * 校验单表配置
+     *
+     * @param optionsObj 其它生成选项信息
+     */
+    private void checkTclBase(JSONObject optionsObj) {
         if (StrUtil.isEmpty(optionsObj.getString(OptionField.PARENT_MODULE_ID.getCode())))
             AjaxResult.warn("归属模块不能为空");
         else if (StrUtil.isEmpty(optionsObj.getString(OptionField.PARENT_MENU_ID.getCode())))
             AjaxResult.warn("归属菜单不能为空");
-        else if (StrUtil.isEmpty(optionsObj.getString(OptionField.ID.getCode())))
-            AjaxResult.warn("主键字段不能为空");
-        for (GenTableColumnDto column : genTable.getSubList())
-            if (column.getIsPk() && !ObjectUtil.equals(column.getId(), optionsObj.getLong(OptionField.ID.getCode())))
-                AjaxResult.warn("主键字段只能为数据表主键");
     }
 
     /**

@@ -1,103 +1,65 @@
 package ${packageName}.domain.po;
 
-#foreach ($import in $importList)
-import ${import};
-#end
 #set($Entity="BasisEntity")
+#set($entityUrl="entity")
+#set($baseUrl="base")
 #if($isTenant)
 #set($Entity = "T" + $Entity)
-import com.xueyi.common.core.web.tenant.base.${Entity};
-#else
-import com.xueyi.common.core.web.entity.base.${Entity};
+#set($entityUrl="tenant")
 #end
-import com.baomidou.mybatisplus.annotation.TableField;
+#set($tableIdShow=true)
+#foreach ($column in $columns)
+#if($column.isPo)
+#if($column.isPk || $column.isDivideTable)
+#if($tableIdShow)
+import com.baomidou.mybatisplus.annotation.*;
+#set($tableIdShow=false)
+#end
+#end
+#end
+#end
+#if($tableIdShow)
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.xueyi.common.core.annotation.Excel;
+#end
+import com.xueyi.common.core.web.${entityUrl}.${baseUrl}.${Entity};
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
+import java.io.Serial;
 
 /**
  * ${functionName} 持久化对象
  *
  * @author ${author}
  */
-@TableName(#if(${excludeProperty.size()} > 0 )value = "${tableName}", excludeProperty = {#set($times = true)#foreach($field in $excludeProperty)#if($times)#set($times = false)#else,#end"${field}"#end}#else"${tableName}"#end)
-public class ${ClassName}#if($generics)${generics}#end extends ${Entity} {
+@Data
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+@TableName("${tableName}")
+public class ${ClassName}Merge extends ${Entity} {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
 #foreach ($column in $columns)
-#set($show = true)
-#if($column.isPk())
-#set($show = false)
+#if($column.isPo)
+    /** ${column.comment} */
+#if($column.isPk)
+#set($tableField='@TableId')
+#if($column.isDivideTable)
+#set($tableField=$tableField + '("' + $column.name + '")')
 #end
-#foreach($item in $mustHideField)
-#if($column.javaField == $item)
-#set($show = false)
-#break
-#end
-#end
-#foreach($item in $showField)
-#if($column.javaField == $item)
-#set($show = false)
-#break
-#end
-#end
-#if($show)
-    /** $column.comment */
-#if($column.list)
-#if($column.javaType == 'Date')
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-#end
-#end
-    @TableField("${column.name}")
-    private $column.javaType $column.javaField;
-
-#end
-#end
-#foreach ($column in $columns)
-#set($show = true)
-#if($column.isPk())
-#set($show = false)
-#end
-#foreach($item in $mustHideField)
-#if($column.javaField == $item)
-#set($show = false)
-#break
-#end
-#end
-#foreach($item in $showField)
-#if($column.javaField == $item)
-#set($show = false)
-#break
-#end
-#end
-#if($show)
-#set($cover = false)
-#foreach($item in $coverField)
-#if($column.javaField == $item)
-#set($cover = true)
-#break
-#end
-#end
-#set($AttrName = $column.javaField)
-#if($AttrName.length() > 2 && $AttrName.substring(1,2).matches("[A-Z]"))
-#set($field=$AttrName)
 #else
-#set($field=$AttrName.substring(0,1).toUpperCase() + ${AttrName.substring(1)})
+#set($tableField="")
+#if($column.isDivideTable)
+#set($tableField='@TableField("' + $column.name + '")')
 #end
-#if($cover)
-    @Override
 #end
-    public void set${field}($column.javaType $AttrName) {
-        this.$AttrName = $AttrName;
-    }
-
-#if($cover)
-    @Override
+#if(${tableField.length()} > 0)
+    ${tableField}
 #end
-    public $column.javaType get${field}() {
-        return $AttrName;
-    }
+    protected $column.javaType $column.javaField;
 
 #end
 #end

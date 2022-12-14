@@ -1,58 +1,21 @@
 package ${packageName}.domain.dto;
 
 import ${packageName}.domain.po.${ClassName}Po;
-import com.baomidou.mybatisplus.annotation.TableName;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import java.io.Serial;
 
 /**
  * ${functionName} 数据传输对象
  *
  * @author ${author}
  */
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class ${ClassName}Dto extends ${ClassName}Po {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-#foreach ($column in $columns)
-#set($hide = true)
-#foreach($item in $mustHideField)
-#if($column.javaField == $item)
-#set($hide = false)
-#break
-#end
-#end
-#set($AttrName = $column.javaField)
-#if($hide)
-#if($AttrName == 'createBy')
-            .append("createBy", getCreateBy())
-            .append("createName", getCreateName())
-#elseif($AttrName == 'updateBy')
-            .append("updateBy", getUpdateBy())
-            .append("updateName", getUpdateName())
-#elseif($AttrName == 'parentId' && $table.tree)
-            .append("parentId", getParentId())
-            .append("parentName", getParentName())
-#else
-#if($AttrName.length() > 2 && $AttrName.substring(1,2).matches("[A-Z]"))
-#set($field=$AttrName)
-#else
-#set($field=$AttrName.substring(0,1).toUpperCase() + ${AttrName.substring(1)})
-#end
-            .append("${AttrName}", get${field}())
-#end
-#end
-#end
-#if($table.tree || $table.subTree)
-            .append("children", getChildren())
-#end
-#if($table.subBase || $table.subTree)
-            .append("subList", getSubList())
-#end
-            .toString();
-    }
 }

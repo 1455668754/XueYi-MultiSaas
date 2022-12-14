@@ -80,18 +80,22 @@ public class GenConstants {
         STATUS("status", "状态字段", "status"),
         SORT("sort", "序号字段", "sort"),
         IS_TENANT("isTenant", "多租户", null),
+        IS_COMMON("isCommon", "数据混合", null),
         SOURCE_MODE("sourceMode", "源策略模式", null),
+        COMMON_MODE("commonMode", "数据混合模式", null),
 
         HAS_API_ES("hasApiES", "存在接口：修改状态", null),
 
         API_LIST("apiList", "接口：查询列表", null),
-        API_IMPORT("apiImport", "接口：导入", null),
-        API_EXPORT("apiExport", "接口：导出", null),
         API_GET_INFO("apiGetInfo", "接口：查询详情", null),
+
         API_ADD("apiAdd", "接口：新增", null),
         API_EDIT("apiEdit", "接口：修改", null),
         API_ES("apiEditStatus", "接口：修改状态", null),
-        API_BATCH_REMOVE("apiBatchRemove", "接口：批量删除", null);
+        API_BATCH_REMOVE("apiBatchRemove", "接口：批量删除", null),
+        API_IMPORT("apiImport", "接口：导入", null),
+        API_EXPORT("apiExport", "接口：导出", null),
+        API_CACHE("apiCache", "接口：缓存", null);
 
         private final String code;
         private final String info;

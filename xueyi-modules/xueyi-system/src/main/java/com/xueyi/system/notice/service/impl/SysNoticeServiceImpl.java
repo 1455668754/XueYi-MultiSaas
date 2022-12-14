@@ -21,7 +21,7 @@ import static com.xueyi.common.core.constant.basic.SecurityConstants.CREATE_BY;
 public class SysNoticeServiceImpl extends BaseServiceImpl<SysNoticeQuery, SysNoticeDto, ISysNoticeManager> implements ISysNoticeService {
 
     /**
-     * 查询通知公告对象列表 | 数据权限 | 附加数据
+     * 查询通知公告对象列表 | 数据权限
      *
      * @param notice 通知公告对象
      * @return 通知公告对象集合

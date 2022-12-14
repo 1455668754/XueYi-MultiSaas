@@ -2,34 +2,13 @@ package ${packageName}.service.impl;
 
 #if($table.base)
 #set($Entity="Base")
-#set($generics = "<"+${ClassName}+"Query, "+${ClassName}+"Dto, I"+${ClassName}+"Manager>")
 #elseif($table.tree)
 #set($Entity="Tree")
-#set($generics = "<"+${ClassName}+"Query, "+${ClassName}+"Dto, I"+${ClassName}+"Manager>")
-#elseif($table.subBase)
-#set($Entity="SubBase")
-#set($generics =
-"<"+${ClassName}+"Query, "+${ClassName}+"Dto, I"+${ClassName}+"Manager, "+${subClassName}+"Query, "+${subClassName}+
-"Dto, I"+${subClassName}+"Service>")
-#elseif($table.subTree)
-#set($Entity="SubTree")
-#set($generics =
-"<"+${ClassName}+"Query, "+${ClassName}+"Dto, I"+${ClassName}+"Manager, "+${subClassName}+"Query, "+${subClassName}+
-"Dto, I"+${subClassName}+"Service>")
 #end
-import ${packageName}.domain.query.${ClassName}Query;
 import ${packageName}.domain.dto.${ClassName}Dto;
+import ${packageName}.domain.query.${ClassName}Query;
 import ${packageName}.service.I${ClassName}Service;
 import ${packageName}.manager.I${ClassName}Manager;
-#if($table.subBase || $table.subTree)
-import ${subPackageName}.domain.query.${subClassName}Query;
-import ${subPackageName}.domain.dto.${subClassName}Dto;
-import ${subPackageName}.service.I${subClassName}Service;
-import com.xueyi.common.core.utils.core.ObjectUtil;
-
-import java.io.Serializable;
-import java.util.Collection;
-#end
 import com.xueyi.common.web.entity.service.impl.${Entity}ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -41,10 +20,10 @@ import java.util.List;
  * @author ${author}
  */
 @Service
-public class ${ClassName}ServiceImpl extends ${Entity}ServiceImpl${generics} implements I${ClassName}Service {
+public class ${ClassName}ServiceImpl extends ${Entity}ServiceImpl<${ClassName}Query, ${ClassName}Dto, I${ClassName}Manager> implements I${ClassName}Service {
 
     /**
-     * 查询${functionName}对象列表 | 数据权限 | 附加数据
+     * 查询${functionName}对象列表 | 数据权限
      *
      * @param ${classNameNoPrefix} ${functionName}对象
      * @return ${functionName}对象集合
@@ -52,35 +31,7 @@ public class ${ClassName}ServiceImpl extends ${Entity}ServiceImpl${generics} imp
     @Override
     //@DataScope(userAlias = "createBy", mapperScope = {"${ClassName}Mapper"})
     public List<${ClassName}Dto> selectListScope(${ClassName}Query ${classNameNoPrefix}) {
-        return baseManager.selectListExtra(${classNameNoPrefix});
+        return baseManager.selectList(${classNameNoPrefix});
     }
 
-#if($table.subBase || $table.subTree)
-#set($AttrName = $foreignColumn.javaField)
-#if($AttrName.length() > 2 && $AttrName.substring(1,2).matches("[A-Z]"))
-#set($field=$AttrName)
-#else
-#set($field=$AttrName.substring(0,1).toUpperCase() + ${AttrName.substring(1)})
-#end
-#set($subAttrName = $subForeignColumn.javaField)
-#if($subAttrName.length() > 2 && $subAttrName.substring(1,2).matches("[A-Z]"))
-#set($subField=$subAttrName)
-#else
-#set($subField=$subAttrName.substring(0,1).toUpperCase() + ${subAttrName.substring(1)})
-#end
-
-    /**
-     * 设置子数据的外键值
-     */
-    @Override
-    protected void setForeignKey(Collection<${subClassName}Dto> ${subclassNameNoPrefix}List, ${subClassName}Dto ${subclassNameNoPrefix}, ${ClassName}Dto ${classNameNoPrefix}, Serializable key) {
-    ${subForeignColumn.javaType} ${subForeignColumn.javaField} =
-        ObjectUtil.isNotNull(${classNameNoPrefix}) ? ${classNameNoPrefix}.get${field}() :(${subForeignColumn.javaType})
-        key;
-        if (ObjectUtil.isNotNull(${subclassNameNoPrefix}))
-    ${subclassNameNoPrefix}.set${subField}(${subForeignColumn.javaField});
-        else
-    ${subclassNameNoPrefix}List.forEach(sub -> sub.set${subField}(${subForeignColumn.javaField}));
-    }
-#end
 }

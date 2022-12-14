@@ -19,6 +19,12 @@ public class GenTableColumnDto extends GenTableColumnPo {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    /** 字段判别 - Po显示 */
+    private Boolean isPo;
+
+    /** 字段判别 - 与表一致 */
+    private Boolean isDivideTable;
+
     /** 字典名称 */
     private String dictName;
 

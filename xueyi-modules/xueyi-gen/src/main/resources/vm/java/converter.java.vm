@@ -4,10 +4,6 @@ package ${packageName}.domain.model;
 #set($Entity="BaseConverter")
 #elseif($table.tree)
 #set($Entity="TreeConverter")
-#elseif($table.subBase)
-#set($Entity="SubBaseConverter")
-#elseif($table.subTree)
-#set($Entity="SubTreeConverter")
 #end
 import com.xueyi.common.core.web.entity.model.${Entity};
 import ${packageName}.domain.dto.${ClassName}Dto;

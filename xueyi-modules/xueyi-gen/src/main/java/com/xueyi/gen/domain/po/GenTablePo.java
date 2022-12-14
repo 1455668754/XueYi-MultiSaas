@@ -10,6 +10,8 @@ import javax.validation.constraints.NotBlank;
 import java.io.Serial;
 
 import static com.baomidou.mybatisplus.annotation.SqlCondition.LIKE;
+import static com.xueyi.common.core.constant.basic.EntityConstants.*;
+
 
 /**
  * 业务 持久化对象
@@ -18,7 +20,7 @@ import static com.baomidou.mybatisplus.annotation.SqlCondition.LIKE;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName(value = "gen_table", excludeProperty = {"status", "sort", "delFlag"})
+@TableName(value = "gen_table", excludeProperty = {STATUS, SORT, DEL_FLAG})
 public class GenTablePo extends BaseEntity {
 
     @Serial
@@ -36,7 +38,7 @@ public class GenTablePo extends BaseEntity {
     /** 实体类名称前缀(首字母大写) */
     protected String prefix;
 
-    /** 使用的模板（base单表操作 tree树表操作 subBase主子单表操作 subTree主子树表操作） */
+    /** 使用的模板（base单表操作 tree树表操作） */
     protected String tplCategory;
 
     /** 生成包路径 */

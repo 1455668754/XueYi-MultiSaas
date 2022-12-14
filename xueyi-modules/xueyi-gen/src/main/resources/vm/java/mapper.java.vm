@@ -2,30 +2,12 @@ package ${packageName}.mapper;
 
 #if($table.base)
 #set($Entity="Base")
-#set($generics = "<"+${ClassName}+"Query, "+${ClassName}+"Dto, "+${ClassName}+"Po>")
 #elseif($table.tree)
 #set($Entity="Tree")
-#set($generics =
-"<"+${ClassName}+"Query, "+${ClassName}+"Dto, "+${ClassName}+"Po>")
-#elseif($table.subBase)
-#set($Entity="SubBase")
-#set($generics =
-"<"+${ClassName}+"Query, "+${ClassName}+"Dto, "+${ClassName}+"Po, "+${subClassName}+"Query, "+${subClassName}+
-"Dto, "+${subClassName}+"Po>")
-#elseif($table.subTree)
-#set($Entity="SubTree")
-#set($generics =
-"<"+${ClassName}+"Query, "+${ClassName}+"Dto, "+${ClassName}+"Po, "+${subClassName}+"Query, "+${subClassName}+
-"Dto, "+${subClassName}+"Po>")
 #end
 import ${packageName}.domain.query.${ClassName}Query;
 import ${packageName}.domain.dto.${ClassName}Dto;
 import ${packageName}.domain.po.${ClassName}Po;
-#if($table.subBase || $table.subTree)
-import ${subPackageName}.domain.query.${subClassName}Query;
-import ${subPackageName}.domain.dto.${subClassName}Dto;
-import ${subPackageName}.domain.po.${subClassName}Po;
-#end
 import com.xueyi.common.web.entity.mapper.${Entity}Mapper;
 import com.xueyi.common.datasource.annotation.${sourceMode};
 
@@ -35,5 +17,5 @@ import com.xueyi.common.datasource.annotation.${sourceMode};
  * @author ${author}
  */
 @${sourceMode}
-public interface ${ClassName}Mapper extends ${Entity}Mapper${generics} {
+public interface ${ClassName}Mapper extends ${Entity}Mapper<${ClassName}Query, ${ClassName}Dto, ${ClassName}Po> {
 }

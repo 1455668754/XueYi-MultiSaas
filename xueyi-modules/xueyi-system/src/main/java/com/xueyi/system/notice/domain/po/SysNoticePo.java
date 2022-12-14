@@ -2,7 +2,7 @@ package com.xueyi.system.notice.domain.po;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.common.core.annotation.Excel;
-import com.xueyi.common.core.web.entity.base.BaseEntity;
+import com.xueyi.common.core.web.tenant.base.TBaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -16,7 +16,7 @@ import java.io.Serial;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName(value = "sys_notice",excludeProperty = {"sort"})
-public class SysNoticePo extends BaseEntity {
+public class SysNoticePo extends TBaseEntity {
 
     @Serial
     private static final long serialVersionUID = 1L;
