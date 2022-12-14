@@ -1,4 +1,4 @@
-package com.xueyi.file.api.domain.po;
+package com.xueyi.system.file.domain.po;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.common.core.annotation.Excel;

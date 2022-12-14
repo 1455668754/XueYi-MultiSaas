@@ -516,7 +516,7 @@ create table sys_file (
   name		                varchar(100)	    not null	                            comment '文件名称',
   nick	                    varchar(100)	    default null	                        comment '文件别名',
   url		                varchar(500)	    not null 	                            comment '文件地址',
-  size		                decimal(8,4)	    not null 	                            comment '文件大小',
+  size		                bigint	            not null default 0	                    comment '文件大小',
   type		                char(1)	            not null default '0'	                comment '文件类型（0默认 1系统）',
   sort                      int unsigned        not null default 0                      comment '显示顺序',
   status                    char(1)             not null default '0'                    comment '状态（0正常 1停用）',

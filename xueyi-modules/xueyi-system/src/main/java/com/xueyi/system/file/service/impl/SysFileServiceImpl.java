@@ -1,8 +1,10 @@
 package com.xueyi.system.file.service.impl;
 
+import com.xueyi.common.datasource.annotation.Isolate;
+import com.xueyi.common.datasource.annotation.Master;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
-import com.xueyi.file.api.domain.dto.SysFileDto;
-import com.xueyi.file.api.domain.query.SysFileQuery;
+import com.xueyi.system.file.domain.dto.SysFileDto;
+import com.xueyi.system.file.domain.query.SysFileQuery;
 import com.xueyi.system.file.manager.ISysFileManager;
 import com.xueyi.system.file.service.ISysFileService;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,7 @@ import java.util.List;
  *
  * @author xueyi
  */
+@Isolate
 @Service
 public class SysFileServiceImpl extends BaseServiceImpl<SysFileQuery, SysFileDto, ISysFileManager> implements ISysFileService {
 
@@ -29,4 +32,15 @@ public class SysFileServiceImpl extends BaseServiceImpl<SysFileQuery, SysFileDto
         return baseManager.selectList(file);
     }
 
+    /**
+     * 新增文件记录
+     *
+     * @param file 文件记录对象
+     * @return 结果
+     */
+    @Master
+    @Override
+    public int insertToMaster(SysFileDto file) {
+        return super.insert(file);
+    }
 }

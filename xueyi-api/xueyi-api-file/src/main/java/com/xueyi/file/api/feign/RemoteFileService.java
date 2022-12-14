@@ -2,7 +2,7 @@ package com.xueyi.file.api.feign;
 
 import com.xueyi.common.core.constant.basic.ServiceConstants;
 import com.xueyi.common.core.web.result.R;
-import com.xueyi.file.api.domain.dto.SysFileDto;
+import com.xueyi.file.api.domain.SysFile;
 import com.xueyi.file.api.feign.factory.RemoteFileFallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
@@ -27,7 +27,7 @@ public interface RemoteFileService {
      * @return 结果
      */
     @PostMapping(value = "/inner/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    R<SysFileDto> upload(@RequestPart(value = "file") MultipartFile file);
+    R<SysFile> upload(@RequestPart(value = "file") MultipartFile file);
 
     /**
      * 删除文件

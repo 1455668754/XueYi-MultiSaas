@@ -1,18 +1,23 @@
 package com.xueyi.file;
 
 import com.xueyi.common.security.annotation.EnableRyFeignClients;
+import com.xueyi.common.security.config.ApplicationConfig;
+import com.xueyi.common.security.config.JacksonConfig;
+import com.xueyi.common.security.feign.FeignAutoConfiguration;
 import com.xueyi.common.swagger.annotation.EnableCustomSwagger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.context.annotation.Import;
 
 /**
  * 文件服务
  *
  * @author xueyi
  */
-@EnableRyFeignClients
 @EnableCustomSwagger
+@EnableRyFeignClients
+@Import({ApplicationConfig.class, FeignAutoConfiguration.class, JacksonConfig.class})
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 public class XueYiFileApplication {
     public static void main(String[] args) {
