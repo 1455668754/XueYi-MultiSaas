@@ -48,6 +48,9 @@ public class SubRelation {
     /** 关联类class */
     private Class<? extends BasicMapper<? extends BasisEntity>> mergeClass;
 
+    /** 关联类对象class */
+    private Class<? extends BasisEntity> mergePoClass;
+
     /** 间接关联 - 关联主键字段 */
     private Field mergeMainKeyField;
 

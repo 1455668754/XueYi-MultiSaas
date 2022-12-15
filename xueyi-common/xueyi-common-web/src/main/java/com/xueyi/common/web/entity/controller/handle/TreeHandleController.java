@@ -37,30 +37,30 @@ public abstract class TreeHandleController<Q extends TreeEntity<D>, D extends Tr
     /**
      * 树型 树死循环逻辑校验 | 父节点不能为自己或自己的子节点
      *
-     * @param d 待修改数据对象
+     * @param dto 待修改数据对象
      */
-    protected void TreeLoopHandle(D d) {
-        if (ObjectUtil.equals(d.getId(), d.getParentId()))
-            warn(StrUtil.format("修改{}{}失败，上级{}不能是自己！", getNodeName(), d.getName(), getNodeName()));
-        else if (baseService.checkIsChild(d.getParentId(), d.getId()))
-            warn(StrUtil.format("修改{}{}失败，上级{}不能是自己的子{}！", getNodeName(), d.getName(), getNodeName(), getNodeName()));
+    protected void TreeLoopHandle(D dto) {
+        if (ObjectUtil.equals(dto.getId(), dto.getParentId()))
+            warn(StrUtil.format("修改{}{}失败，上级{}不能是自己！", getNodeName(), dto.getName(), getNodeName()));
+        else if (baseService.checkIsChild(dto.getParentId(), dto.getId()))
+            warn(StrUtil.format("修改{}{}失败，上级{}不能是自己的子{}！", getNodeName(), dto.getName(), getNodeName(), getNodeName()));
     }
 
     /**
      * 树型 增加/修改 父子节点逻辑校验
      *
      * @param operate 操作类型
-     * @param d       数据对象
+     * @param dto     数据对象
      */
-    protected void AETreeStatusHandle(BaseConstants.Operate operate, D d) {
-        if (StrUtil.equals(BaseConstants.Status.NORMAL.getCode(), d.getStatus())
-                && BaseConstants.Status.DISABLE == baseService.checkStatus(d.getParentId()))
-            warn(StrUtil.format("{}{}「{}」失败，该{}的父级{}已被停用，禁止启用！！",operate.getInfo(), getNodeName(), d.getName(), getNodeName(), getNodeName()));
+    protected void AETreeStatusHandle(BaseConstants.Operate operate, D dto) {
+        if (StrUtil.equals(BaseConstants.Status.NORMAL.getCode(), dto.getStatus())
+                && BaseConstants.Status.DISABLE == baseService.checkStatus(dto.getParentId()))
+            warn(StrUtil.format("{}{}「{}」失败，该{}的父级{}已被停用，禁止启用！！", operate.getInfo(), getNodeName(), dto.getName(), getNodeName(), getNodeName()));
         switch (operate) {
             case EDIT, EDIT_STATUS -> {
-                if (StrUtil.equals(BaseConstants.Status.DISABLE.getCode(), d.getStatus())
-                        && baseService.checkHasNormalChild(d.getId()))
-                    warn(StrUtil.format("{}{}「{}」失败，该{}包含未停用的子{}，禁止禁用！", operate.getInfo(), getNodeName(), d.getName(), getNodeName(), getNodeName()));
+                if (StrUtil.equals(BaseConstants.Status.DISABLE.getCode(), dto.getStatus())
+                        && baseService.checkHasNormalChild(dto.getId()))
+                    warn(StrUtil.format("{}{}「{}」失败，该{}包含未停用的子{}，禁止禁用！", operate.getInfo(), getNodeName(), dto.getName(), getNodeName(), getNodeName()));
             }
         }
     }

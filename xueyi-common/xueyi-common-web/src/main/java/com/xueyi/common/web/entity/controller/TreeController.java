@@ -50,11 +50,11 @@ public abstract class TreeController<Q extends TreeEntity<D>, D extends TreeEnti
      * 考虑父节点状态
      */
     @Override
-    public AjaxResult add(@Validated({V_A.class}) @RequestBody D d) {
-        d.initOperate(BaseConstants.Operate.ADD);
-        AEHandle(d.getOperate(), d);
-        AETreeStatusHandle(d.getOperate(), d);
-        return toAjax(baseService.insert(d));
+    public AjaxResult add(@Validated({V_A.class}) @RequestBody D dto) {
+        dto.initOperate(BaseConstants.Operate.ADD);
+        AEHandle(dto.getOperate(), dto);
+        AETreeStatusHandle(dto.getOperate(), dto);
+        return toAjax(baseService.insert(dto));
     }
 
     /**
@@ -62,12 +62,12 @@ public abstract class TreeController<Q extends TreeEntity<D>, D extends TreeEnti
      * 考虑子节点状态
      */
     @Override
-    public AjaxResult edit(@Validated({V_E.class}) @RequestBody D d) {
-        d.initOperate(BaseConstants.Operate.EDIT);
-        AEHandle(d.getOperate(), d);
-        TreeLoopHandle(d);
-        AETreeStatusHandle(d.getOperate(), d);
-        return toAjax(baseService.update(d));
+    public AjaxResult edit(@Validated({V_E.class}) @RequestBody D dto) {
+        dto.initOperate(BaseConstants.Operate.EDIT);
+        AEHandle(dto.getOperate(), dto);
+        TreeLoopHandle(dto);
+        AETreeStatusHandle(dto.getOperate(), dto);
+        return toAjax(baseService.update(dto));
     }
 
     /**
@@ -75,10 +75,10 @@ public abstract class TreeController<Q extends TreeEntity<D>, D extends TreeEnti
      * 考虑子节点状态
      */
     @Override
-    public AjaxResult editStatus(@RequestBody D d) {
-        d.initOperate(BaseConstants.Operate.EDIT_STATUS);
-        AETreeStatusHandle(d.getOperate(), d);
-        return toAjax(baseService.updateStatus(d));
+    public AjaxResult editStatus(@RequestBody D dto) {
+        dto.initOperate(BaseConstants.Operate.EDIT_STATUS);
+        AETreeStatusHandle(dto.getOperate(), dto);
+        return toAjax(baseService.updateStatus(dto));
     }
 
     /**

@@ -4,6 +4,7 @@ import com.xueyi.common.core.web.entity.base.TreeEntity;
 import com.xueyi.common.core.web.vo.TreeSelect;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -30,6 +31,14 @@ public interface ITreeService<Q extends TreeEntity<D>, D extends TreeEntity<D>> 
      * @return 本节点及其所有子节点数据对象集合
      */
     List<D> selectChildListById(Serializable id);
+
+    /**
+     * 根据Id集合查询节点及子节点（批量）
+     *
+     * @param idList Id集合
+     * @return 节点及子节点数据对象集合
+     */
+    List<D> selectChildListByIds(Collection<? extends Serializable> idList);
 
     /**
      * 校验是否为父级的子级

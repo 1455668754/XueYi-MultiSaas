@@ -6,7 +6,9 @@ import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.NumberUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
+import com.xueyi.common.core.web.entity.base.BasisEntity;
 import com.xueyi.common.core.web.entity.base.TreeEntity;
+import com.xueyi.common.redis.constant.RedisConstants;
 import com.xueyi.common.web.entity.manager.ITreeManager;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 
@@ -52,29 +54,54 @@ public class TreeHandleServiceImpl<Q extends TreeEntity<D>, D extends TreeEntity
     /**
      * 单条操作 - 结束处理
      *
-     * @param operate 服务层 - 操作类型
-     * @param row     操作数据条数
-     * @param dto     数据对象
+     * @param operate   服务层 - 操作类型
+     * @param row       操作数据条数
+     * @param originDto 源数据对象（新增时不存在）
+     * @param newDto    新数据对象（删除时不存在）
      */
-    protected void endHandle(OperateConstants.ServiceType operate, int row, D dto) {
+    protected void endHandle(OperateConstants.ServiceType operate, int row, D originDto, D newDto) {
         if (row <= 0)
             return;
         switch (operate) {
+            case ADD -> {
+                // insert merge data
+                baseManager.insertMerge(newDto);
+                // refresh cache
+                refreshCache(operate, RedisConstants.OperateType.REFRESH, newDto);
+            }
             case EDIT -> {
-                if (ObjectUtil.equals(BaseConstants.Status.DISABLE.getCode(), dto.getStatus())) {
-                    baseManager.updateChildren(dto);
-                } else {
-                    baseManager.updateChildrenAncestors(dto);
+                // update children data ancestors && level ?.status
+                if (ObjectUtil.equals(BaseConstants.Status.DISABLE.getCode(), newDto.getStatus())) {
+                    baseManager.updateChildren(newDto);
+                } else if (StrUtil.notEquals(newDto.getAncestors(), newDto.getOldAncestors())) {
+                    baseManager.updateChildrenAncestors(newDto);
                 }
+                // update merge data
+                baseManager.updateMerge(originDto, newDto);
+                // refresh cache
+                refreshCache(operate, RedisConstants.OperateType.REFRESH, newDto);
             }
             case EDIT_STATUS -> {
-                if (ObjectUtil.equals(BaseConstants.Status.DISABLE.getCode(), dto.getStatus())) {
-                    baseManager.updateChildrenStatus(dto);
+                // update children data ?.status
+                if (ObjectUtil.equals(BaseConstants.Status.DISABLE.getCode(), newDto.getStatus())) {
+                    baseManager.updateChildrenStatus(newDto);
                 }
+                // refresh cache
+                refreshCache(operate, RedisConstants.OperateType.REFRESH, newDto);
             }
-            case DELETE -> baseManager.deleteChildren(dto.getId());
+            case DELETE -> {
+                // 此处注意：当前Id已被删除，故仅能查询出子节点数据
+                List<D> childList = baseManager.selectChildListById(originDto.getId());
+                // delete children data
+                baseManager.deleteChildByAncestors(originDto.getChildAncestors());
+                // 将当前节点加入变更列表
+                childList.add(originDto);
+                // delete merge data
+                baseManager.deleteMerge(childList);
+                // refresh cache
+                refreshCache(operate, RedisConstants.OperateType.REMOVE, childList);
+            }
         }
-        super.endHandle(operate, row, dto);
     }
 
     /**
@@ -86,7 +113,7 @@ public class TreeHandleServiceImpl<Q extends TreeEntity<D>, D extends TreeEntity
      */
     protected void startBatchHandle(OperateConstants.ServiceType operate, Collection<D> originList, Collection<D> newList) {
         switch (operate) {
-            case EDIT:
+            case BATCH_EDIT:
                 Map<Long, D> originMap = CollUtil.isNotEmpty(originList)
                         ? originList.stream().collect(Collectors.toMap(D::getId, Function.identity()))
                         : new HashMap<>();
@@ -97,7 +124,7 @@ public class TreeHandleServiceImpl<Q extends TreeEntity<D>, D extends TreeEntity
                         item.setOldLevel(originDto.getLevel());
                     }
                 });
-            case ADD:
+            case BATCH_ADD:
                 Set<Long> parentIds = newList.stream().map(TreeEntity::getParentId).collect(Collectors.toSet());
                 if (CollUtil.isNotEmpty(parentIds)) {
                     List<D> parentList = baseManager.selectListByIds(parentIds);
@@ -124,29 +151,47 @@ public class TreeHandleServiceImpl<Q extends TreeEntity<D>, D extends TreeEntity
      *
      * @param operate    服务层 - 操作类型
      * @param rows       操作数据条数
-     * @param entityList 数据对象集合
+     * @param originList 源数据对象集合（新增时不存在）
+     * @param newList    新数据对象集合（删除时不存在）
      */
-    protected void endBatchHandle(OperateConstants.ServiceType operate, int rows, Collection<D> entityList) {
+    protected void endBatchHandle(OperateConstants.ServiceType operate, int rows, Collection<D> originList, Collection<D> newList) {
         if (rows <= 0)
             return;
         switch (operate) {
-            case EDIT -> entityList.forEach(item -> {
-                if (ObjectUtil.equals(BaseConstants.Status.DISABLE.getCode(), item.getStatus())) {
-                    baseManager.updateChildren(item);
-                } else {
-                    baseManager.updateChildrenAncestors(item);
-                }
-            });
-            case EDIT_STATUS -> entityList.forEach(item -> {
-                if (ObjectUtil.equals(BaseConstants.Status.DISABLE.getCode(), item.getStatus())) {
-                    baseManager.updateChildrenStatus(item);
-                }
-            });
+            case BATCH_ADD -> {
+                // insert merge data
+                baseManager.insertMerge(newList);
+                // refresh cache
+                refreshCache(operate, RedisConstants.OperateType.REFRESH, newList);
+            }
+            case BATCH_EDIT -> {
+                // update children data ancestors && level ?.status
+                newList.forEach(item -> {
+                    if (ObjectUtil.equals(BaseConstants.Status.DISABLE.getCode(), item.getStatus())) {
+                        baseManager.updateChildren(item);
+                    } else if (StrUtil.notEquals(item.getAncestors(), item.getOldAncestors())) {
+                        baseManager.updateChildrenAncestors(item);
+                    }
+                });
+                // update merge data
+                baseManager.updateMerge(originList, newList);
+                // refresh cache
+                refreshCache(operate, RedisConstants.OperateType.REFRESH, newList);
+            }
             case BATCH_DELETE -> {
-                for (D dto : entityList)
-                    baseManager.deleteChildren(dto.getId());
+                List<Long> idList = originList.stream().map(BasisEntity::getId).toList();
+                // 此处注意：当前Ids已被删除，故仅能查询出子节点数据
+                List<D> childList = baseManager.selectChildListByIds(idList);
+                String[] childAncestors = childList.stream().map(D::getChildAncestors).toArray(String[]::new);
+                // delete children data
+                baseManager.deleteChildByAncestors(childAncestors);
+                // 将当前节点加入变更列表
+                childList.addAll(originList);
+                // delete merge data
+                baseManager.deleteMerge(childList);
+                // refresh cache
+                refreshCache(operate, RedisConstants.OperateType.REMOVE, originList);
             }
         }
-        super.endBatchHandle(operate, rows, entityList);
     }
 }

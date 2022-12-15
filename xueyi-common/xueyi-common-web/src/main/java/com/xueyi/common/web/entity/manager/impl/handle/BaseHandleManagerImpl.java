@@ -57,6 +57,16 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
     }
 
     /**
+     * 查询条件构造 | 列表查询
+     *
+     * @param query 数据查询对象
+     * @return 条件构造器
+     */
+    protected LambdaQueryWrapper<P> selectListQuery(Q query) {
+        return new LambdaQueryWrapper<>(query);
+    }
+
+    /**
      * 类型转换 | 持久化对象 -> 数据传输对象
      *
      * @param po 持久化对象
@@ -113,7 +123,7 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
      * @param pastePage 粘贴分页对象
      */
     @SuppressWarnings("rawtypes")
-    private void pageCopy(Page copyPage, Page pastePage) {
+    protected void pageCopy(Page copyPage, Page pastePage) {
         pastePage.setPageNum(copyPage.getPageNum());
         pastePage.setPageSize(copyPage.getPageSize());
         pastePage.setStartRow(copyPage.getStartRow());
@@ -129,33 +139,85 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
     }
 
     /**
-     * 子数据组装
-     *
-     * @param dtoList 数据传输对象集合
-     * @return 数据传输对象集合
-     */
-    protected List<D> buildSubRelation(List<D> dtoList) {
-        return MergeUtil.subRelationBuild(dtoList, getSubRelationList(), getDClass());
-    }
-
-    /**
-     * 子数据组装
+     * 子数据组装 | 查询
      *
      * @param dto 数据传输对象
      * @return 数据传输对象
      */
-    protected D buildSubRelation(D dto) {
-        return MergeUtil.subRelationBuild(dto, getSubRelationList(), getDClass());
+    protected D subMerge(D dto) {
+        return MergeUtil.subMerge(dto, getSubRelationList(), getDClass());
     }
 
     /**
-     * 查询条件构造 | 列表查询
+     * 子数据组装 | 查询
      *
-     * @param query 数据查询对象
-     * @return 条件构造器
+     * @param dtoList 数据传输对象集合
+     * @return 数据传输对象集合
      */
-    protected LambdaQueryWrapper<P> selectListQuery(Q query) {
-        return new LambdaQueryWrapper<>(query);
+    protected List<D> subMerge(List<D> dtoList) {
+        return MergeUtil.subMerge(dtoList, getSubRelationList(), getDClass());
+    }
+
+    /**
+     * 子数据映射关联 | 新增
+     *
+     * @param dto 数据对象
+     * @return 结果
+     */
+    public int addMerge(D dto) {
+        return MergeUtil.addMerge(dto, getSubRelationList(), getDClass());
+    }
+
+    /**
+     * 集合子数据映射关联 | 新增
+     *
+     * @param dtoList 数据对象集合
+     * @return 结果
+     */
+    public int addMerge(Collection<D> dtoList) {
+        return MergeUtil.addMerge(dtoList, getSubRelationList(), getDClass());
+    }
+
+    /**
+     * 子数据映射关联 | 修改
+     *
+     * @param originDto 源数据对象
+     * @param newDto    新数据对象
+     * @return 结果
+     */
+    public int editMerge(D originDto, D newDto) {
+        return MergeUtil.editMerge(originDto, newDto, getSubRelationList(), getDClass());
+    }
+
+    /**
+     * 集合子数据映射关联 | 修改
+     *
+     * @param originList 源数据对象集合
+     * @param newList    新数据对象集合
+     * @return 结果
+     */
+    public int editMerge(Collection<D> originList, Collection<D> newList) {
+        return MergeUtil.editMerge(originList, newList, getSubRelationList(), getDClass());
+    }
+
+    /**
+     * 子数据映射关联 | 删除
+     *
+     * @param dto 数据对象
+     * @return 结果
+     */
+    public int delMerge(D dto) {
+        return MergeUtil.delMerge(dto, getSubRelationList(), getDClass());
+    }
+
+    /**
+     * 集合子数据映射关联 | 删除
+     *
+     * @param dtoList 数据对象集合
+     * @return 结果
+     */
+    public int delMerge(Collection<D> dtoList) {
+        return MergeUtil.delMerge(dtoList, getSubRelationList(), getDClass());
     }
 
     /** 子类操作泛型的类型Getter */

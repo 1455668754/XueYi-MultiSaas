@@ -1,5 +1,6 @@
 package com.xueyi.common.web.entity.service.impl;
 
+import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.exception.UtilException;
@@ -73,71 +74,74 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG ext
     /**
      * 新增数据对象
      *
-     * @param d 数据对象
+     * @param dto 数据对象
      * @return 结果
      */
     @Override
-    public int insert(D d) {
-        startHandle(OperateConstants.ServiceType.ADD, null, d);
-        int row = baseManager.insert(d);
-        endHandle(OperateConstants.ServiceType.ADD, row, d);
+    @DSTransactional
+    public int insert(D dto) {
+        startHandle(OperateConstants.ServiceType.ADD, null, dto);
+        int row = baseManager.insert(dto);
+        endHandle(OperateConstants.ServiceType.ADD, row, null, dto);
         return row;
     }
 
     /**
      * 新增数据对象（批量）
      *
-     * @param entityList 数据对象集合
+     * @param dtoList 数据对象集合
      */
     @Override
-    public int insertBatch(Collection<D> entityList) {
-        startBatchHandle(OperateConstants.ServiceType.BATCH_ADD, null, entityList);
-        int rows = baseManager.insertBatch(entityList);
-        endBatchHandle(OperateConstants.ServiceType.BATCH_ADD, rows, entityList);
+    public int insertBatch(Collection<D> dtoList) {
+        startBatchHandle(OperateConstants.ServiceType.BATCH_ADD, null, dtoList);
+        int rows = baseManager.insertBatch(dtoList);
+        endBatchHandle(OperateConstants.ServiceType.BATCH_ADD, rows, null, dtoList);
         return rows;
     }
 
     /**
      * 修改数据对象
      *
-     * @param d 数据对象
+     * @param dto 数据对象
      * @return 结果
      */
     @Override
-    public int update(D d) {
-        D originDto = baseManager.selectById(d.getId());
-        startHandle(OperateConstants.ServiceType.EDIT, originDto, d);
-        int row = baseManager.update(d);
-        endHandle(OperateConstants.ServiceType.EDIT, row, d);
+    @DSTransactional
+    public int update(D dto) {
+        D originDto = baseManager.selectById(dto.getId());
+        startHandle(OperateConstants.ServiceType.EDIT, originDto, dto);
+        int row = baseManager.update(dto);
+        endHandle(OperateConstants.ServiceType.EDIT, row, originDto, dto);
         return row;
     }
 
     /**
      * 修改数据对象（批量）
      *
-     * @param entityList 数据对象集合
+     * @param dtoList 数据对象集合
      */
     @Override
-    public int updateBatch(Collection<D> entityList) {
-        List<D> originList = baseManager.selectListByIds(entityList.stream().map(D::getId).collect(Collectors.toList()));
-        startBatchHandle(OperateConstants.ServiceType.BATCH_EDIT, originList, entityList);
-        int rows = baseManager.updateBatch(entityList);
-        endBatchHandle(OperateConstants.ServiceType.BATCH_EDIT, rows, entityList);
+    public int updateBatch(Collection<D> dtoList) {
+        List<D> originList = baseManager.selectListByIds(dtoList.stream().map(D::getId).collect(Collectors.toList()));
+        startBatchHandle(OperateConstants.ServiceType.BATCH_EDIT, originList, dtoList);
+        int rows = baseManager.updateBatch(dtoList);
+        endBatchHandle(OperateConstants.ServiceType.BATCH_EDIT, rows, originList, dtoList);
         return rows;
     }
 
     /**
      * 修改数据对象状态
      *
-     * @param d 数据对象
+     * @param dto 数据对象
      * @return 结果
      */
     @Override
-    public int updateStatus(D d) {
-        D originDto = baseManager.selectById(d.getId());
-        startHandle(OperateConstants.ServiceType.EDIT_STATUS, originDto, d);
-        int row = baseManager.updateStatus(d);
-        endHandle(OperateConstants.ServiceType.EDIT_STATUS, row, d);
+    @DSTransactional
+    public int updateStatus(D dto) {
+        D originDto = baseManager.selectById(dto.getId());
+        startHandle(OperateConstants.ServiceType.EDIT_STATUS, originDto, dto);
+        int row = baseManager.updateStatus(dto);
+        endHandle(OperateConstants.ServiceType.EDIT_STATUS, row, originDto, dto);
         return row;
     }
 
@@ -148,26 +152,28 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG ext
      * @return 结果
      */
     @Override
+    @DSTransactional
     public int deleteById(Serializable id) {
         D originDto = baseManager.selectById(id);
         startHandle(OperateConstants.ServiceType.DELETE, originDto, null);
         int row = baseManager.deleteById(id);
-        endHandle(OperateConstants.ServiceType.DELETE, row, originDto);
+        endHandle(OperateConstants.ServiceType.DELETE, row, originDto, null);
         return row;
     }
 
     /**
-     * 根据Id集合删除数据对象
+     * 根据Id删除数据对象（批量）
      *
      * @param idList Id集合
      * @return 结果
      */
     @Override
+    @DSTransactional
     public int deleteByIds(Collection<? extends Serializable> idList) {
         List<D> originList = baseManager.selectListByIds(idList);
         startBatchHandle(OperateConstants.ServiceType.BATCH_DELETE, originList, null);
         int rows = baseManager.deleteByIds(idList);
-        endBatchHandle(OperateConstants.ServiceType.BATCH_DELETE, rows, originList);
+        endBatchHandle(OperateConstants.ServiceType.BATCH_DELETE, rows, originList, null);
         return rows;
     }
 

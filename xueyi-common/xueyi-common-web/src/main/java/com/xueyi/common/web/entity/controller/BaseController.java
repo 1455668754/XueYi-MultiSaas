@@ -75,28 +75,28 @@ public abstract class BaseController<Q extends BaseEntity, D extends BaseEntity,
     /**
      * 新增
      */
-    public AjaxResult add(@Validated({V_A.class}) @RequestBody D d) {
-        d.initOperate(BaseConstants.Operate.ADD);
-        AEHandle(d.getOperate(), d);
-        return toAjax(baseService.insert(d));
+    public AjaxResult add(@Validated({V_A.class}) @RequestBody D dto) {
+        dto.initOperate(BaseConstants.Operate.ADD);
+        AEHandle(dto.getOperate(), dto);
+        return toAjax(baseService.insert(dto));
     }
 
     /**
      * 修改
      */
-    public AjaxResult edit(@Validated({V_E.class}) @RequestBody D d) {
-        d.initOperate(BaseConstants.Operate.EDIT);
-        AEHandle(d.getOperate(), d);
-        return toAjax(baseService.update(d));
+    public AjaxResult edit(@Validated({V_E.class}) @RequestBody D dto) {
+        dto.initOperate(BaseConstants.Operate.EDIT);
+        AEHandle(dto.getOperate(), dto);
+        return toAjax(baseService.update(dto));
     }
 
     /**
      * 修改状态
      */
-    public AjaxResult editStatus(@RequestBody D d) {
-        d.initOperate(BaseConstants.Operate.EDIT_STATUS);
-        AEHandle(d.getOperate(), d);
-        return toAjax(baseService.updateStatus(d));
+    public AjaxResult editStatus(@RequestBody D dto) {
+        dto.initOperate(BaseConstants.Operate.EDIT_STATUS);
+        AEHandle(dto.getOperate(), dto);
+        return toAjax(baseService.updateStatus(dto));
     }
 
     /**

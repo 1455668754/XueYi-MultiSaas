@@ -34,7 +34,7 @@ public class BaseManagerImpl<Q extends P, D extends P, P extends BaseEntity, PM 
     @Override
     public List<D> selectList(Q query) {
         List<P> poList = baseMapper.selectList(selectListQuery(query));
-        return buildSubRelation(mapperDto(poList));
+        return subMerge(mapperDto(poList));
     }
 
     /**
@@ -46,7 +46,7 @@ public class BaseManagerImpl<Q extends P, D extends P, P extends BaseEntity, PM 
     @Override
     public List<D> selectListByIds(Collection<? extends Serializable> idList) {
         List<P> poList = baseMapper.selectBatchIds(idList);
-        return buildSubRelation(mapperDto(poList));
+        return subMerge(mapperDto(poList));
     }
 
     /**
@@ -58,69 +58,115 @@ public class BaseManagerImpl<Q extends P, D extends P, P extends BaseEntity, PM 
     @Override
     public D selectById(Serializable id) {
         P po = baseMapper.selectById(id);
-        return buildSubRelation(mapperDto(po));
+        return subMerge(mapperDto(po));
     }
 
     /**
      * 新增数据对象
      *
-     * @param d 数据对象
+     * @param dto 数据对象
      * @return 结果
      */
     @Override
-    public int insert(D d) {
-        return baseMapper.insert(d);
+    public int insert(D dto) {
+        return baseMapper.insert(dto);
+    }
+
+    /**
+     * 新增子数据映射关联
+     *
+     * @param dto 数据对象
+     * @return 结果
+     */
+    @Override
+    public int insertMerge(D dto) {
+        return addMerge(dto);
     }
 
     /**
      * 新增数据对象（批量）
      *
-     * @param entityList 数据对象集合
+     * @param dtoList 数据对象集合
      * @return 结果
      */
     @Override
     @DSTransactional
     @SuppressWarnings("unchecked")
-    public int insertBatch(Collection<D> entityList) {
-        return baseMapper.insertBatch((Collection<P>) entityList);
+    public int insertBatch(Collection<D> dtoList) {
+        return baseMapper.insertBatch((Collection<P>) dtoList);
+    }
+
+    /**
+     * 新增子数据映射关联（批量）
+     *
+     * @param dtoList 数据对象集合
+     * @return 结果
+     */
+    @Override
+    public int insertMerge(Collection<D> dtoList) {
+        return addMerge(dtoList);
     }
 
     /**
      * 修改数据对象
      *
-     * @param d 数据对象
+     * @param dto 数据对象
      * @return 结果
      */
     @Override
-    public int update(D d) {
-        return baseMapper.updateById(d);
+    public int update(D dto) {
+        return baseMapper.updateById(dto);
+    }
+
+    /**
+     * 修改子数据映射关联
+     *
+     * @param originDto 源数据对象
+     * @param newDto    新数据对象
+     * @return 结果
+     */
+    @Override
+    public int updateMerge(D originDto, D newDto) {
+        return editMerge(originDto, newDto);
     }
 
     /**
      * 修改数据对象（批量）
      *
-     * @param entityList 数据对象集合
+     * @param dtoList 数据对象集合
      * @return 结果
      */
     @Override
     @DSTransactional
     @SuppressWarnings("unchecked")
-    public int updateBatch(Collection<D> entityList) {
-        return baseMapper.updateBatch((Collection<P>) entityList);
+    public int updateBatch(Collection<D> dtoList) {
+        return baseMapper.updateBatch((Collection<P>) dtoList);
+    }
+
+    /**
+     * 修改子数据映射关联（批量）
+     *
+     * @param originList 源数据对象集合
+     * @param newList    新数据对象集合
+     * @return 结果
+     */
+    @Override
+    public int updateMerge(Collection<D> originList, Collection<D> newList) {
+        return editMerge(originList, newList);
     }
 
     /**
      * 修改状态
      *
-     * @param d 数据对象
+     * @param dto 数据对象
      * @return 结果
      */
     @Override
-    public int updateStatus(D d) {
+    public int updateStatus(D dto) {
         return baseMapper.update(null,
                 Wrappers.<P>update().lambda()
-                        .set(P::getStatus, d.getStatus())
-                        .eq(P::getId, d.getId()));
+                        .set(P::getStatus, dto.getStatus())
+                        .eq(P::getId, dto.getId()));
     }
 
     /**
@@ -135,7 +181,18 @@ public class BaseManagerImpl<Q extends P, D extends P, P extends BaseEntity, PM 
     }
 
     /**
-     * 根据Id集合批量删除数据对象
+     * 删除子数据映射关联
+     *
+     * @param dto 数据对象
+     * @return 结果
+     */
+    @Override
+    public int deleteMerge(D dto) {
+        return delMerge(dto);
+    }
+
+    /**
+     * 根据Id集合删除数据对象（批量）
      *
      * @param idList Id集合
      * @return 结果
@@ -143,6 +200,17 @@ public class BaseManagerImpl<Q extends P, D extends P, P extends BaseEntity, PM 
     @Override
     public int deleteByIds(Collection<? extends Serializable> idList) {
         return baseMapper.deleteBatchIds(idList);
+    }
+
+    /**
+     * 删除子数据映射关联（批量）
+     *
+     * @param dtoList 数据对象集合
+     * @return 结果
+     */
+    @Override
+    public int deleteMerge(Collection<D> dtoList) {
+        return delMerge(dtoList);
     }
 
     /**

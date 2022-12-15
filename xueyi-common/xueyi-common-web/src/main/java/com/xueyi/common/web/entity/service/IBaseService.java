@@ -51,40 +51,40 @@ public interface IBaseService<Q extends BaseEntity, D extends BaseEntity> {
     /**
      * 新增数据对象
      *
-     * @param d 数据对象
+     * @param dto 数据对象
      * @return 结果
      */
-    int insert(D d);
+    int insert(D dto);
 
     /**
      * 新增数据对象（批量）
      *
-     * @param entityList 数据对象集合
+     * @param dtoList 数据对象集合
      */
-    int insertBatch(Collection<D> entityList);
+    int insertBatch(Collection<D> dtoList);
 
     /**
      * 修改数据对象
      *
-     * @param d 数据对象
+     * @param dto 数据对象
      * @return 结果
      */
-    int update(D d);
+    int update(D dto);
 
     /**
      * 修改数据对象（批量）
      *
-     * @param entityList 数据对象集合
+     * @param dtoList 数据对象集合
      */
-    int updateBatch(Collection<D> entityList);
+    int updateBatch(Collection<D> dtoList);
 
     /**
      * 修改数据对象状态
      *
-     * @param d 数据对象
+     * @param dto 数据对象
      * @return 结果
      */
-    int updateStatus(D d);
+    int updateStatus(D dto);
 
     /**
      * 根据Id删除数据对象
@@ -95,7 +95,7 @@ public interface IBaseService<Q extends BaseEntity, D extends BaseEntity> {
     int deleteById(Serializable id);
 
     /**
-     * 根据Id集合删除数据对象
+     * 根据Id删除数据对象（批量）
      *
      * @param idList Id集合
      * @return 结果

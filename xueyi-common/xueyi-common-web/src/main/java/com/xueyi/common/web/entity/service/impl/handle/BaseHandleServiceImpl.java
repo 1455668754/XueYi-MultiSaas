@@ -51,6 +51,28 @@ public class BaseHandleServiceImpl<Q extends BaseEntity, D extends BaseEntity, I
      * @param operate      服务层 - 操作类型
      * @param operateCache 缓存操作类型
      * @param dto          数据对象
+     */
+    protected void refreshCache(OperateConstants.ServiceType operate, RedisConstants.OperateType operateCache, D dto) {
+        refreshCache(operate, operateCache, dto, null);
+    }
+
+    /**
+     * 缓存更新
+     *
+     * @param operate      服务层 - 操作类型
+     * @param operateCache 缓存操作类型
+     * @param dtoList      数据对象集合
+     */
+    protected void refreshCache(OperateConstants.ServiceType operate, RedisConstants.OperateType operateCache, Collection<D> dtoList) {
+        refreshCache(operate, operateCache, null, dtoList);
+    }
+
+    /**
+     * 缓存更新
+     *
+     * @param operate      服务层 - 操作类型
+     * @param operateCache 缓存操作类型
+     * @param dto          数据对象
      * @param dtoList      数据对象集合
      */
     protected void refreshCache(OperateConstants.ServiceType operate, RedisConstants.OperateType operateCache, D dto, Collection<D> dtoList) {
@@ -91,15 +113,33 @@ public class BaseHandleServiceImpl<Q extends BaseEntity, D extends BaseEntity, I
     /**
      * 单条操作 - 结束处理
      *
-     * @param operate 服务层 - 操作类型
-     * @param row     操作数据条数
-     * @param dto     数据对象
+     * @param operate   服务层 - 操作类型
+     * @param row       操作数据条数
+     * @param originDto 源数据对象（新增时不存在）
+     * @param newDto    新数据对象（删除时不存在）
      */
-    protected void endHandle(OperateConstants.ServiceType operate, int row, D dto) {
-        if (row > 0) {
-            switch (operate) {
-                case ADD, EDIT, EDIT_STATUS -> refreshCache(operate, RedisConstants.OperateType.REFRESH, dto, null);
-                case DELETE -> refreshCache(operate, RedisConstants.OperateType.REMOVE, dto, null);
+    protected void endHandle(OperateConstants.ServiceType operate, int row, D originDto, D newDto) {
+        if (row <= 0)
+            return;
+        switch (operate) {
+            case ADD -> {
+                // insert merge data
+                baseManager.insertMerge(newDto);
+                // refresh cache
+                refreshCache(operate, RedisConstants.OperateType.REFRESH, newDto);
+            }
+            case EDIT -> {
+                // update merge data
+                baseManager.updateMerge(originDto, newDto);
+                // refresh cache
+                refreshCache(operate, RedisConstants.OperateType.REFRESH, newDto);
+            }
+            case EDIT_STATUS -> refreshCache(operate, RedisConstants.OperateType.REFRESH, newDto);
+            case DELETE -> {
+                // delete merge data
+                baseManager.deleteMerge(originDto);
+                // refresh cache
+                refreshCache(operate, RedisConstants.OperateType.REMOVE, originDto);
             }
         }
     }
@@ -114,21 +154,31 @@ public class BaseHandleServiceImpl<Q extends BaseEntity, D extends BaseEntity, I
     protected void startBatchHandle(OperateConstants.ServiceType operate, Collection<D> originList, Collection<D> newList) {
     }
 
-
     /**
      * 批量操作 - 结束处理
      *
      * @param operate    服务层 - 操作类型
      * @param rows       操作数据条数
-     * @param entityList 数据对象集合
+     * @param originList 源数据对象集合（新增时不存在）
+     * @param newList    新数据对象集合（删除时不存在）
      */
-    protected void endBatchHandle(OperateConstants.ServiceType operate, int rows, Collection<D> entityList) {
-        if (rows > 0) {
-            switch (operate) {
-                case BATCH_ADD, BATCH_EDIT ->
-                        refreshCache(operate, RedisConstants.OperateType.REFRESH, null, entityList);
-                case BATCH_DELETE -> refreshCache(operate, RedisConstants.OperateType.REMOVE, null, entityList);
+    protected void endBatchHandle(OperateConstants.ServiceType operate, int rows, Collection<D> originList, Collection<D> newList) {
+        if (rows <= 0)
+            return;
+        switch (operate) {
+            case BATCH_ADD -> {
+                baseManager.insertMerge(newList);
+                refreshCache(operate, RedisConstants.OperateType.REFRESH, newList);
+            }
+            case BATCH_EDIT -> {
+                baseManager.updateMerge(originList, newList);
+                refreshCache(operate, RedisConstants.OperateType.REFRESH, newList);
+            }
+            case BATCH_DELETE -> {
+                baseManager.deleteMerge(originList);
+                refreshCache(operate, RedisConstants.OperateType.REMOVE, originList);
             }
         }
     }
+
 }

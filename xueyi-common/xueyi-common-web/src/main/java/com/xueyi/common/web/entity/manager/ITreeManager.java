@@ -3,6 +3,7 @@ package com.xueyi.common.web.entity.manager;
 import com.xueyi.common.core.web.entity.base.TreeEntity;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -23,12 +24,20 @@ public interface ITreeManager<Q extends TreeEntity<D>, D extends TreeEntity<D>> 
     List<D> selectAncestorsListById(Serializable id);
 
     /**
-     * 根据Id查询本节点及其所有子节点
+     * 根据Id查询节点及子节点
      *
      * @param id Id
      * @return 本节点及其所有子节点数据对象集合
      */
     List<D> selectChildListById(Serializable id);
+
+    /**
+     * 根据Id集合查询节点及子节点（批量）
+     *
+     * @param idList Id集合
+     * @return 节点及子节点数据对象集合
+     */
+    List<D> selectChildListByIds(Collection<? extends Serializable> idList);
 
     /**
      * 修改子节点的状态
@@ -61,6 +70,14 @@ public interface ITreeManager<Q extends TreeEntity<D>, D extends TreeEntity<D>> 
      * @return 结果
      */
     int deleteChildren(Serializable id);
+
+    /**
+     * 根据祖籍删除对应子节点
+     *
+     * @param ancestors 祖籍
+     * @return 结果
+     */
+    int deleteChildByAncestors(String... ancestors);
 
     /**
      * 校验是否为父级的子级

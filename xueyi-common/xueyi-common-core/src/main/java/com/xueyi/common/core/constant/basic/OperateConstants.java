@@ -47,6 +47,8 @@ public class OperateConstants {
         SUB_KEY("sub_key", "子关联键"),
         RECEIVE_KEY("receive_key", "值接收键"),
         MERGE_MAIN_KEY("merge_main_key", "间接关联 - 关联主键"),
+        MERGE_CLASS_KEY("merge_class_key", "间接关联 - 关联类class"),
+        MERGE_PO_CLASS_KEY("merge_po_class_key", "间接关联 - 关联类对象class"),
         MERGE_SUB_KEY("merge_sub_key", "间接关联 - 关联子键"),
         RECEIVE_ARR_KEY("receive_arr_key", "间接关联 - 关联子键值接收键");
 

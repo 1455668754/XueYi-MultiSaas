@@ -1,6 +1,5 @@
 package com.xueyi.common.web.entity.service.impl;
 
-import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.utils.TreeUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
@@ -48,63 +47,14 @@ public class TreeServiceImpl<Q extends TreeEntity<D>, D extends TreeEntity<D>, I
     }
 
     /**
-     * 新增修改数据对象
-     *
-     * @param d 数据对象
-     * @return 结果
-     */
-    @Override
-    @DSTransactional
-    public int insert(D d) {
-        return super.insert(d);
-    }
-
-    /**
-     * 修改数据对象 | 同步 修改子节点祖籍 || 停用子节点
-     *
-     * @param d 数据对象
-     * @return 结果
-     */
-    @Override
-    @DSTransactional
-    public int update(D d) {
-        return super.update(d);
-    }
-
-    /**
-     * 修改数据对象状态 | 同步停用子节点
-     *
-     * @param d 数据对象
-     * @return 结果
-     */
-    @Override
-    @DSTransactional
-    public int updateStatus(D d) {
-        return super.updateStatus(d);
-    }
-
-    /**
-     * 根据Id删除数据对象 | 同步删除 子节点
-     *
-     * @param id Id
-     * @return 结果
-     */
-    @Override
-    @DSTransactional
-    public int deleteById(Serializable id) {
-        return super.deleteById(id);
-    }
-
-    /**
-     * 根据Id集合删除数据对象 | 同步删除 子节点
+     * 根据Id集合查询节点及子节点（批量）
      *
      * @param idList Id集合
-     * @return 结果
+     * @return 节点及子节点数据对象集合
      */
     @Override
-    @DSTransactional
-    public int deleteByIds(Collection<? extends Serializable> idList) {
-        return super.deleteByIds(idList);
+    public List<D> selectChildListByIds(Collection<? extends Serializable> idList) {
+        return baseManager.selectChildListByIds(idList);
     }
 
     /**

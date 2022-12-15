@@ -42,9 +42,9 @@ public abstract class BaseHandleController<Q extends BaseEntity, D extends BaseE
      * 必须满足内容
      *
      * @param operate 操作类型
-     * @param d       数据对象
+     * @param dto     数据对象
      */
-    protected void AEHandle(BaseConstants.Operate operate, D d) {
+    protected void AEHandle(BaseConstants.Operate operate, D dto) {
     }
 
     /**

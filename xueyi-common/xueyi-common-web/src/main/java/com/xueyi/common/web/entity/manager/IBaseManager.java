@@ -43,42 +43,76 @@ public interface IBaseManager<Q extends BaseEntity, D extends BaseEntity> {
     /**
      * 新增数据对象
      *
-     * @param d 数据对象
+     * @param dto 数据对象
      * @return 结果
      */
-    int insert(D d);
+    int insert(D dto);
+
+    /**
+     * 新增子数据映射关联
+     *
+     * @param dto 数据对象
+     * @return 结果
+     */
+    int insertMerge(D dto);
 
     /**
      * 新增数据对象（批量）
      *
-     * @param entityList 数据对象集合
+     * @param dtoList 数据对象集合
      * @return 结果
      */
-    int insertBatch(Collection<D> entityList);
+    int insertBatch(Collection<D> dtoList);
+
+    /**
+     * 新增子数据映射关联（批量）
+     *
+     * @param dtoList 数据对象集合
+     * @return 结果
+     */
+    int insertMerge(Collection<D> dtoList);
 
     /**
      * 修改数据对象
      *
-     * @param d 数据对象
+     * @param dto 数据对象
      * @return 结果
      */
-    int update(D d);
+    int update(D dto);
+
+    /**
+     * 修改子数据映射关联
+     *
+     * @param originDto 源数据对象
+     * @param newDto    新数据对象
+     * @return 结果
+     */
+    int updateMerge(D originDto, D newDto);
 
     /**
      * 修改数据对象（批量）
      *
-     * @param entityList 数据对象集合
+     * @param dtoList 数据对象集合
      * @return 结果
      */
-    int updateBatch(Collection<D> entityList);
+    int updateBatch(Collection<D> dtoList);
+
+    /**
+     * 修改子数据映射关联（批量）
+     *
+     * @param originList 源数据对象集合
+     * @param newList    新数据对象集合
+     * @return 结果
+     */
+    int updateMerge(Collection<D> originList, Collection<D> newList);
 
     /**
      * 修改状态
      *
-     * @param d 数据对象
+     * @param dto 数据对象
      * @return 结果
      */
-    int updateStatus(D d);
+    int updateStatus(D dto);
 
     /**
      * 根据Id删除数据对象
@@ -89,12 +123,28 @@ public interface IBaseManager<Q extends BaseEntity, D extends BaseEntity> {
     int deleteById(Serializable id);
 
     /**
-     * 根据Id集合批量删除数据对象
+     * 删除子数据映射关联
+     *
+     * @param dto 数据对象
+     * @return 结果
+     */
+    int deleteMerge(D dto);
+
+    /**
+     * 根据Id集合删除数据对象（批量）
      *
      * @param idList Id集合
      * @return 结果
      */
     int deleteByIds(Collection<? extends Serializable> idList);
+
+    /**
+     * 删除子数据映射关联（批量）
+     *
+     * @param dtoList 数据对象集合
+     * @return 结果
+     */
+    int deleteMerge(Collection<D> dtoList);
 
     /**
      * 根据动态SQL控制对象查询数据对象集合
