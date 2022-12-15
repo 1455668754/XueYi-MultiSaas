@@ -5,12 +5,13 @@ import com.xueyi.system.file.domain.dto.SysFileDto;
 import com.xueyi.system.file.domain.po.SysFilePo;
 import com.xueyi.system.file.domain.query.SysFileQuery;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingConstants;
 
 /**
  * 文件 对象映射器
  *
  * @author xueyi
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface SysFileConverter extends BaseConverter<SysFileQuery, SysFileDto, SysFilePo> {
 }

@@ -5,12 +5,13 @@ import com.xueyi.job.api.domain.dto.SysJobDto;
 import com.xueyi.job.api.domain.po.SysJobPo;
 import com.xueyi.job.api.domain.query.SysJobQuery;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingConstants;
 
 /**
  * 调度任务 对象映射器
  *
  * @author xueyi
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface SysJobConverter extends BaseConverter<SysJobQuery, SysJobDto, SysJobPo> {
 }

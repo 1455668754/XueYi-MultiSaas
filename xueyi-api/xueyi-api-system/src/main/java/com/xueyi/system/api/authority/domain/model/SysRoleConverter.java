@@ -5,12 +5,13 @@ import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
 import com.xueyi.system.api.authority.domain.po.SysRolePo;
 import com.xueyi.system.api.authority.domain.query.SysRoleQuery;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingConstants;
 
 /**
  * 角色 对象映射器
  *
  * @author xueyi
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface SysRoleConverter extends BaseConverter<SysRoleQuery, SysRoleDto, SysRolePo> {
 }

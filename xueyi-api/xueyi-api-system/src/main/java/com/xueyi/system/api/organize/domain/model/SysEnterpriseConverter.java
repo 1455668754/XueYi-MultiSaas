@@ -5,12 +5,13 @@ import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
 import com.xueyi.system.api.organize.domain.po.SysEnterprisePo;
 import com.xueyi.system.api.organize.domain.query.SysEnterpriseQuery;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingConstants;
 
 /**
  * 企业 对象映射器
  *
  * @author xueyi
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface SysEnterpriseConverter extends BaseConverter<SysEnterpriseQuery, SysEnterpriseDto, SysEnterprisePo> {
 }

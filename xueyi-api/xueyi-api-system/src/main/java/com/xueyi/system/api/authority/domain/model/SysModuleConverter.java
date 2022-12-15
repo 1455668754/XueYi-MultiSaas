@@ -5,12 +5,13 @@ import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
 import com.xueyi.system.api.authority.domain.po.SysModulePo;
 import com.xueyi.system.api.authority.domain.query.SysModuleQuery;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingConstants;
 
 /**
  * 模块 对象映射器
  *
  * @author xueyi
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface SysModuleConverter extends BaseConverter<SysModuleQuery, SysModuleDto, SysModulePo> {
 }

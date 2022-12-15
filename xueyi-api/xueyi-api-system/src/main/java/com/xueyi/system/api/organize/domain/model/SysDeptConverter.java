@@ -5,12 +5,13 @@ import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
 import com.xueyi.system.api.organize.domain.po.SysDeptPo;
 import com.xueyi.system.api.organize.domain.query.SysDeptQuery;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingConstants;
 
 /**
  * 部门 对象映射器
  *
  * @author xueyi
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface SysDeptConverter extends TreeConverter<SysDeptQuery, SysDeptDto, SysDeptPo> {
 }
