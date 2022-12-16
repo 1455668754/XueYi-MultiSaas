@@ -28,20 +28,18 @@ public class MergeUtil {
     /**
      * 子数据映射关联 | 查询
      *
-     * @param dto             数据对象
-     * @param subRelationList 子类关联对象集合
-     * @param DClass          数据对象Class
+     * @param dto         数据对象
+     * @param subRelation 子类关联对象
+     * @param DClass      数据对象Class
      * @return 数据对象
      */
-    public static <D> D subMerge(D dto, List<SubRelation> subRelationList, Class<D> DClass) {
-        if (ObjectUtil.isNull(dto) || CollUtil.isEmpty(subRelationList))
+    public static <D> D subMerge(D dto, SubRelation subRelation, Class<D> DClass) {
+        if (ObjectUtil.isNull(dto) || ObjectUtil.isNull(subRelation))
             return dto;
-        for (SubRelation subRelation : subRelationList) {
-            initRelationField(subRelation, DClass);
-            switch (subRelation.getRelationType()) {
-                case DIRECT -> assembleDirectObj(dto, subRelation);
-                case INDIRECT -> assembleIndirectObj(dto, subRelation);
-            }
+        initRelationField(subRelation, DClass);
+        switch (subRelation.getRelationType()) {
+            case DIRECT -> assembleDirectObj(dto, subRelation);
+            case INDIRECT -> assembleIndirectObj(dto, subRelation);
         }
         return dto;
     }
@@ -49,20 +47,18 @@ public class MergeUtil {
     /**
      * 子数据映射关联 | 查询（批量）
      *
-     * @param dtoList         数据对象集合
-     * @param subRelationList 子类关联对象集合
-     * @param DClass          数据对象Class
+     * @param dtoList     数据对象集合
+     * @param subRelation 子类关联对象
+     * @param DClass      数据对象Class
      * @return 数据对象集合
      */
-    public static <D> List<D> subMerge(List<D> dtoList, List<SubRelation> subRelationList, Class<D> DClass) {
-        if (CollUtil.isEmpty(subRelationList) || CollUtil.isEmpty(dtoList))
+    public static <D> List<D> subMerge(List<D> dtoList, SubRelation subRelation, Class<D> DClass) {
+        if (ObjectUtil.isNull(subRelation) || CollUtil.isEmpty(dtoList))
             return dtoList;
-        for (SubRelation subRelation : subRelationList) {
-            initRelationField(subRelation, DClass);
-            switch (subRelation.getRelationType()) {
-                case DIRECT -> assembleDirectList(dtoList, subRelation);
-                case INDIRECT -> assembleIndirectList(dtoList, subRelation);
-            }
+        initRelationField(subRelation, DClass);
+        switch (subRelation.getRelationType()) {
+            case DIRECT -> assembleDirectList(dtoList, subRelation);
+            case INDIRECT -> assembleIndirectList(dtoList, subRelation);
         }
         return dtoList;
     }
@@ -71,125 +67,107 @@ public class MergeUtil {
     /**
      * 子数据映射关联 | 新增
      *
-     * @param dto             数据对象
-     * @param subRelationList 子类关联对象集合
-     * @param DClass          数据对象Class
+     * @param dto         数据对象
+     * @param subRelation 子类关联对象
+     * @param DClass      数据对象Class
      * @return 结果
      */
-    public static <D> int addMerge(D dto, List<SubRelation> subRelationList, Class<D> DClass) {
-        if (ObjectUtil.isNull(dto) || CollUtil.isEmpty(subRelationList))
+    public static <D> int addMerge(D dto, SubRelation subRelation, Class<D> DClass) {
+        if (ObjectUtil.isNull(dto) || ObjectUtil.isNull(subRelation))
             return NumberUtil.Zero;
-        int rows = NumberUtil.Zero;
-        for (SubRelation subRelation : subRelationList) {
-            initRelationField(subRelation, DClass);
-            if (subRelation.getRelationType().isIndirect()) {
-                rows += insertIndirectObj(dto, subRelation);
-            }
+        initRelationField(subRelation, DClass);
+        if (subRelation.getRelationType().isIndirect()) {
+            return insertIndirectObj(dto, subRelation);
         }
-        return rows;
+        return NumberUtil.Zero;
     }
 
     /**
      * 子数据映射关联 | 新增（批量）
      *
-     * @param dtoList         数据对象集合
-     * @param subRelationList 子类关联对象集合
-     * @param DClass          数据对象Class
+     * @param dtoList     数据对象集合
+     * @param subRelation 子类关联对象
+     * @param DClass      数据对象Class
      * @return 结果
      */
-    public static <D> int addMerge(Collection<D> dtoList, List<SubRelation> subRelationList, Class<D> DClass) {
-        if (CollUtil.isEmpty(dtoList) || CollUtil.isEmpty(subRelationList))
+    public static <D> int addMerge(Collection<D> dtoList, SubRelation subRelation, Class<D> DClass) {
+        if (CollUtil.isEmpty(dtoList) || ObjectUtil.isNull(subRelation))
             return NumberUtil.Zero;
-        int rows = NumberUtil.Zero;
-        for (SubRelation subRelation : subRelationList) {
-            initRelationField(subRelation, DClass);
-            if (subRelation.getRelationType().isIndirect()) {
-                rows += insertIndirectList(dtoList, subRelation);
-            }
+        initRelationField(subRelation, DClass);
+        if (subRelation.getRelationType().isIndirect()) {
+            return insertIndirectList(dtoList, subRelation);
         }
-        return rows;
+        return NumberUtil.Zero;
     }
 
     /**
      * 子数据映射关联 | 修改
      *
-     * @param originDto       源数据对象
-     * @param newDto          新数据对象
-     * @param subRelationList 子类关联对象集合
-     * @param DClass          数据对象Class
+     * @param originDto   源数据对象
+     * @param newDto      新数据对象
+     * @param subRelation 子类关联对象
+     * @param DClass      数据对象Class
      */
-    public static <D> int editMerge(D originDto, D newDto, List<SubRelation> subRelationList, Class<D> DClass) {
-        if (ObjectUtil.isAllEmpty(originDto, newDto) || CollUtil.isEmpty(subRelationList))
+    public static <D> int editMerge(D originDto, D newDto, SubRelation subRelation, Class<D> DClass) {
+        if (ObjectUtil.isAllEmpty(originDto, newDto) || ObjectUtil.isNull(subRelation))
             return NumberUtil.Zero;
-        int rows = NumberUtil.Zero;
-        for (SubRelation subRelation : subRelationList) {
-            initRelationField(subRelation, DClass);
-            if (subRelation.getRelationType().isIndirect()) {
-                rows += updateIndirectObj(originDto, newDto, subRelation);
-            }
+        initRelationField(subRelation, DClass);
+        if (subRelation.getRelationType().isIndirect()) {
+            return updateIndirectObj(originDto, newDto, subRelation);
         }
-        return rows;
+        return NumberUtil.Zero;
     }
 
     /**
      * 子数据映射关联 | 修改（批量）
      *
-     * @param originList      源数据对象集合
-     * @param newList         新数据对象集合
-     * @param subRelationList 子类关联对象集合
-     * @param DClass          数据对象Class
+     * @param originList  源数据对象集合
+     * @param newList     新数据对象集合
+     * @param subRelation 子类关联对象
+     * @param DClass      数据对象Class
      */
-    public static <D> int editMerge(Collection<D> originList, Collection<D> newList, List<SubRelation> subRelationList, Class<D> DClass) {
-        if ((CollUtil.isEmpty(originList) && CollUtil.isEmpty(newList)) || CollUtil.isEmpty(subRelationList))
+    public static <D> int editMerge(Collection<D> originList, Collection<D> newList, SubRelation subRelation, Class<D> DClass) {
+        if ((CollUtil.isEmpty(originList) && CollUtil.isEmpty(newList)) || ObjectUtil.isNull(subRelation))
             return NumberUtil.Zero;
-        int rows = NumberUtil.Zero;
-        for (SubRelation subRelation : subRelationList) {
-            initRelationField(subRelation, DClass);
-            if (subRelation.getRelationType().isIndirect()) {
-                rows += updateIndirectList(originList, newList, subRelation);
-            }
+        initRelationField(subRelation, DClass);
+        if (subRelation.getRelationType().isIndirect()) {
+            return updateIndirectList(originList, newList, subRelation);
         }
-        return rows;
+        return NumberUtil.Zero;
     }
 
     /**
      * 子数据映射关联 | 删除
      *
-     * @param dto             数据对象
-     * @param subRelationList 子类关联对象集合
-     * @param DClass          数据对象Class
+     * @param dto         数据对象
+     * @param subRelation 子类关联对象
+     * @param DClass      数据对象Class
      */
-    public static <D> int delMerge(D dto, List<SubRelation> subRelationList, Class<D> DClass) {
-        if (ObjectUtil.isNull(dto) || CollUtil.isEmpty(subRelationList))
+    public static <D> int delMerge(D dto, SubRelation subRelation, Class<D> DClass) {
+        if (ObjectUtil.isNull(dto) || ObjectUtil.isNull(subRelation))
             return NumberUtil.Zero;
-        int rows = NumberUtil.Zero;
-        for (SubRelation subRelation : subRelationList) {
-            initRelationField(subRelation, DClass);
-            if (subRelation.getRelationType().isIndirect()) {
-                rows += deleteIndirectObj(dto, subRelation);
-            }
+        initRelationField(subRelation, DClass);
+        if (subRelation.getRelationType().isIndirect()) {
+            return deleteIndirectObj(dto, subRelation);
         }
-        return rows;
+        return NumberUtil.Zero;
     }
 
     /**
      * 子数据映射关联 | 删除（批量）
      *
-     * @param dtoList         数据对象集合
-     * @param subRelationList 子类关联对象集合
-     * @param DClass          数据对象Class
+     * @param dtoList     数据对象集合
+     * @param subRelation 子类关联对象
+     * @param DClass      数据对象Class
      */
-    public static <D> int delMerge(Collection<D> dtoList, List<SubRelation> subRelationList, Class<D> DClass) {
-        if (CollUtil.isEmpty(dtoList) || CollUtil.isEmpty(subRelationList))
+    public static <D> int delMerge(Collection<D> dtoList, SubRelation subRelation, Class<D> DClass) {
+        if (CollUtil.isEmpty(dtoList) || ObjectUtil.isNull(subRelation))
             return NumberUtil.Zero;
-        int rows = NumberUtil.Zero;
-        for (SubRelation subRelation : subRelationList) {
-            initRelationField(subRelation, DClass);
-            if (subRelation.getRelationType().isIndirect()) {
-                rows += deleteIndirectList(dtoList, subRelation);
-            }
+        initRelationField(subRelation, DClass);
+        if (subRelation.getRelationType().isIndirect()) {
+            return deleteIndirectList(dtoList, subRelation);
         }
-        return rows;
+        return NumberUtil.Zero;
     }
 
     /**
