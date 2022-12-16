@@ -1,9 +1,10 @@
 package com.xueyi.system.organize.manager.impl;
 
-import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.constant.basic.SqlConstants;
 import com.xueyi.common.core.utils.core.CollUtil;
+import com.xueyi.common.web.entity.domain.SlaveRelation;
 import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 import com.xueyi.system.api.organize.domain.model.SysPostConverter;
@@ -15,13 +16,14 @@ import com.xueyi.system.organize.manager.ISysPostManager;
 import com.xueyi.system.organize.mapper.SysPostMapper;
 import com.xueyi.system.organize.mapper.merge.SysOrganizeRoleMergeMapper;
 import com.xueyi.system.organize.mapper.merge.SysRolePostMergeMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import static com.xueyi.system.api.organize.domain.merge.MergeGroup.POST_OrganizeRoleMerge_GROUP;
+import static com.xueyi.system.api.organize.domain.merge.MergeGroup.POST_SysRolePostMerge_GROUP;
 
 /**
  * 岗位管理 数据封装层处理
@@ -31,52 +33,16 @@ import java.util.List;
 @Component
 public class SysPostManagerImpl extends BaseManagerImpl<SysPostQuery, SysPostDto, SysPostPo, SysPostMapper, SysPostConverter> implements ISysPostManager {
 
-    @Autowired
-    SysOrganizeRoleMergeMapper organizeRoleMergeMapper;
-
-    @Autowired
-    SysRolePostMergeMapper rolePostMergeMapper;
-
     /**
-     * 根据Id删除岗位对象
+     * 初始化从属关联关系
      *
-     * @param id Id
-     * @return 结果
+     * @return 关系对象集合
      */
-    @Override
-    @DSTransactional
-    public int deleteById(Serializable id) {
-        int row = baseMapper.deleteById(id);
-        if (row > 0) {
-            organizeRoleMergeMapper.delete(
-                    Wrappers.<SysOrganizeRoleMerge>update().lambda()
-                            .eq(SysOrganizeRoleMerge::getPostId, id));
-            rolePostMergeMapper.delete(
-                    Wrappers.<SysRolePostMerge>update().lambda()
-                            .eq(SysRolePostMerge::getPostId, id));
-        }
-        return row;
-    }
-
-    /**
-     * 根据Id集合批量删除岗位对象
-     *
-     * @param idList Id集合
-     * @return 结果
-     */
-    @Override
-    @DSTransactional
-    public int deleteByIds(Collection<? extends Serializable> idList) {
-        int rows = baseMapper.deleteBatchIds(idList);
-        if (rows > 0) {
-            organizeRoleMergeMapper.delete(
-                    Wrappers.<SysOrganizeRoleMerge>update().lambda()
-                            .in(SysOrganizeRoleMerge::getPostId, idList));
-            rolePostMergeMapper.delete(
-                    Wrappers.<SysRolePostMerge>update().lambda()
-                            .in(SysRolePostMerge::getPostId, idList));
-        }
-        return rows;
+    protected List<SlaveRelation> subRelationInit() {
+        return new ArrayList<>(){{
+            add(new SlaveRelation(POST_OrganizeRoleMerge_GROUP, SysOrganizeRoleMergeMapper.class, SysOrganizeRoleMerge.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
+            add(new SlaveRelation(POST_SysRolePostMerge_GROUP, SysRolePostMergeMapper.class, SysRolePostMerge.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
+        }};
     }
 
     /**
@@ -92,7 +58,7 @@ public class SysPostManagerImpl extends BaseManagerImpl<SysPostQuery, SysPostDto
         List<SysPostPo> postList = baseMapper.selectList(
                 Wrappers.<SysPostPo>query().lambda()
                         .in(SysPostPo::getDeptId, deptIds));
-        return baseConverter.mapperDto(postList);
+        return mapperDto(postList);
     }
 
     /**
@@ -109,6 +75,6 @@ public class SysPostManagerImpl extends BaseManagerImpl<SysPostQuery, SysPostDto
                         .ne(SysPostPo::getId, Id)
                         .eq(SysPostPo::getCode, code)
                         .last(SqlConstants.LIMIT_ONE));
-        return baseConverter.mapperDto(post);
+        return mapperDto(post);
     }
 }

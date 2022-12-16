@@ -2,11 +2,13 @@ package com.xueyi.system.organize.manager.impl;
 
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.constant.basic.SqlConstants;
 import com.xueyi.common.core.utils.core.ArrayUtil;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.security.utils.SecurityUtils;
+import com.xueyi.common.web.entity.domain.SlaveRelation;
 import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.system.api.authority.domain.model.SysRoleConverter;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
@@ -32,9 +34,11 @@ import org.springframework.stereotype.Component;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.xueyi.system.api.organize.domain.merge.MergeGroup.USER_OrganizeRoleMerge_GROUP;
+import static com.xueyi.system.api.organize.domain.merge.MergeGroup.USER_SysUserPostMerge_GROUP;
 
 /**
  * 用户管理 数据封装层处理
@@ -67,6 +71,18 @@ public class SysUserManagerImpl extends BaseManagerImpl<SysUserQuery, SysUserDto
 
     @Autowired
     SysRoleConverter roleConverter;
+
+    /**
+     * 初始化从属关联关系
+     *
+     * @return 关系对象集合
+     */
+    protected List<SlaveRelation> subRelationInit() {
+        return new ArrayList<>(){{
+            add(new SlaveRelation(USER_OrganizeRoleMerge_GROUP, SysOrganizeRoleMergeMapper.class, SysOrganizeRoleMerge.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
+            add(new SlaveRelation(USER_SysUserPostMerge_GROUP, SysUserPostMergeMapper.class, SysUserPostMerge.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
+        }};
+    }
 
     /**
      * 用户登录校验 | 查询用户信息
@@ -300,48 +316,6 @@ public class SysUserManagerImpl extends BaseManagerImpl<SysUserQuery, SysUserDto
                 Wrappers.<SysUserPo>update().lambda()
                         .set(SysUserPo::getPassword, password)
                         .eq(SysUserPo::getId, id));
-    }
-
-    /**
-     * 根据Id删除用户对象
-     *
-     * @param id Id
-     * @return 结果
-     */
-    @Override
-    @DSTransactional
-    public int deleteById(Serializable id) {
-        int row = baseMapper.deleteById(id);
-        if (row > 0) {
-            organizeRoleMergeMapper.delete(
-                    Wrappers.<SysOrganizeRoleMerge>update().lambda()
-                            .eq(SysOrganizeRoleMerge::getUserId, id));
-            userPostMergeMapper.delete(
-                    Wrappers.<SysUserPostMerge>update().lambda()
-                            .eq(SysUserPostMerge::getUserId, id));
-        }
-        return row;
-    }
-
-    /**
-     * 根据Id集合批量删除用户对象
-     *
-     * @param idList Id集合
-     * @return 结果
-     */
-    @Override
-    @DSTransactional
-    public int deleteByIds(Collection<? extends Serializable> idList) {
-        int rows = baseMapper.deleteBatchIds(idList);
-        if (rows > 0) {
-            organizeRoleMergeMapper.delete(
-                    Wrappers.<SysOrganizeRoleMerge>update().lambda()
-                            .in(SysOrganizeRoleMerge::getUserId, idList));
-            userPostMergeMapper.delete(
-                    Wrappers.<SysUserPostMerge>update().lambda()
-                            .in(SysUserPostMerge::getUserId, idList));
-        }
-        return rows;
     }
 
     /**

@@ -26,7 +26,7 @@ import static com.xueyi.gen.domain.merge.MergeGroup.GEN_TABLE_GROUP;
 public class GenTableManagerImpl extends BaseManagerImpl<GenTableQuery, GenTableDto, GenTablePo, GenTableMapper, GenTableConverter> implements IGenTableManager {
 
     /**
-     * 初始化子类关联
+     * 初始化从属关联关系
      *
      * @return 关系对象集合
      */

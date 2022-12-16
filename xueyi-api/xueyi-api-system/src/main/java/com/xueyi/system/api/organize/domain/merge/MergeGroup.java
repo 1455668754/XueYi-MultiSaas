@@ -7,12 +7,27 @@ package com.xueyi.system.api.organize.domain.merge;
  */
 public interface MergeGroup {
 
-    /** 部门 | 岗位 */
-    String DEPT_POST_GROUP = "dept_post_direct_group";
+    /** 部门岗位关联 -》 部门 */
+    String DEPT_SysPost_GROUP = "DEPT_SysPost_GROUP";
 
-    /** 部门 | 角色 */
-    String DEPT_ROLE_INDIRECT_GROUP = "dept_role_indirect_group";
+    /** 组织-角色关联（角色绑定） -》 部门 */
+    String DEPT_OrganizeRoleMerge_GROUP = "DEPT_OrganizeRoleMerge_GROUP";
 
-    /** 角色 | 部门 */
-    String ROLE_DEPT_INDIRECT_GROUP = "role_dept_indirect_group";
+    /** 组织-角色关联（角色绑定） -》 岗位 */
+    String POST_OrganizeRoleMerge_GROUP = "POST_OrganizeRoleMerge_GROUP";
+
+    /** 组织-角色关联（角色绑定） -》 用户 */
+    String USER_OrganizeRoleMerge_GROUP = "USER_OrganizeRoleMerge_GROUP";
+
+    /** 角色-部门关联（权限范围） -》 部门 */
+    String DEPT_SysRoleDeptMerge_GROUP = "DEPT_SysRoleDeptMerge_GROUP";
+
+    /** 角色-岗位关联（权限范围） -》 岗位 */
+    String POST_SysRolePostMerge_GROUP = "SYS_POST_SysRolePostMerge_GROUP";
+
+    /** 用户岗位关联 -》 用户 */
+    String USER_SysUserPostMerge_GROUP = "USER_SysUserPostMerge_GROUP";
+
+    /** 用户岗位关联 -》 岗位 */
+    String POST_SysUserPostMerge_GROUP = "POST_SysUserPostMerge_GROUP";
 }

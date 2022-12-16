@@ -26,7 +26,7 @@ import static com.xueyi.job.api.constant.MergeConstants.JOB_LOG_GROUP;
 public class SysJobManagerImpl extends BaseManagerImpl<SysJobQuery, SysJobDto, SysJobPo, SysJobMapper, SysJobConverter> implements ISysJobManager {
 
     /**
-     * 初始化子类关联
+     * 初始化从属关联关系
      *
      * @return 关系对象集合
      */

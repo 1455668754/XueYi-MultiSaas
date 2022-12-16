@@ -16,7 +16,7 @@ import javax.validation.constraints.Size;
 import java.io.Serial;
 
 import static com.baomidou.mybatisplus.annotation.SqlCondition.LIKE;
-import static com.xueyi.system.api.organize.domain.merge.MergeGroup.DEPT_POST_GROUP;
+import static com.xueyi.system.api.organize.domain.merge.MergeGroup.DEPT_SysPost_GROUP;
 
 /**
  * 岗位 持久化对象
@@ -33,7 +33,7 @@ public class SysPostPo extends TBaseEntity {
 
     /** 部门Id */
     @NotNull(message = "归属部门不能为空")
-    @Correlation(groupName = DEPT_POST_GROUP, keyType = OperateConstants.SubKeyType.SLAVE)
+    @Correlation(groupName = DEPT_SysPost_GROUP, keyType = OperateConstants.SubKeyType.SLAVE)
     protected Long deptId;
 
     /** 岗位编码 */

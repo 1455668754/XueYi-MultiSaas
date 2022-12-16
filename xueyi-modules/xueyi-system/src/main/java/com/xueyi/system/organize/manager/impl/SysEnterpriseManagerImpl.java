@@ -31,6 +31,6 @@ public class SysEnterpriseManagerImpl extends BaseManagerImpl<SysEnterpriseQuery
                 Wrappers.<SysEnterprisePo>query().lambda()
                         .eq(SysEnterprisePo::getName, name)
                         .eq(SysEnterprisePo::getStatus, BaseConstants.Status.NORMAL.getCode()));
-        return baseConverter.mapperDto(enterprise);
+        return mapperDto(enterprise);
     }
 }

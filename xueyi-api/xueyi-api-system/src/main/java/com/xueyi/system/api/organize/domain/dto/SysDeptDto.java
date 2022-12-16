@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 import java.io.Serial;
 import java.util.List;
 
-import static com.xueyi.system.api.organize.domain.merge.MergeGroup.DEPT_POST_GROUP;
+import static com.xueyi.system.api.organize.domain.merge.MergeGroup.DEPT_SysPost_GROUP;
 
 /**
  * 部门 数据传输对象
@@ -31,7 +31,7 @@ public class SysDeptDto extends SysDeptPo {
     private Long[] roleIds;
 
     /** 部门数据 */
-    @Correlation(groupName = DEPT_POST_GROUP, keyType = OperateConstants.SubKeyType.RECEIVE)
+    @Correlation(groupName = DEPT_SysPost_GROUP, keyType = OperateConstants.SubKeyType.RECEIVE)
     private List<SysPostDto> subList;
 
 }

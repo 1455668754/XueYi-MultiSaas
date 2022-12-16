@@ -46,7 +46,7 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
     private Map<String, SlaveRelation> subRelationMap;
 
     /**
-     * 初始化子类关联
+     * 初始化从属关联关系
      *
      * @return 关系对象集合
      */

@@ -15,7 +15,6 @@ import com.xueyi.system.organize.manager.ISysDeptManager;
 import com.xueyi.system.organize.mapper.SysDeptMapper;
 import com.xueyi.system.organize.mapper.merge.SysOrganizeRoleMergeMapper;
 import com.xueyi.system.organize.mapper.merge.SysRoleDeptMergeMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -31,22 +30,16 @@ import static com.xueyi.system.api.organize.domain.merge.MergeGroup.*;
 @Component
 public class SysDeptManagerImpl extends TreeManagerImpl<SysDeptQuery, SysDeptDto, SysDeptPo, SysDeptMapper, SysDeptConverter> implements ISysDeptManager {
 
-    @Autowired
-    SysOrganizeRoleMergeMapper organizeRoleMergeMapper;
-
-    @Autowired
-    SysRoleDeptMergeMapper roleDeptMergeMapper;
-
     /**
-     * 初始化子类关联
+     * 初始化从属关联关系
      *
      * @return 关系对象集合
      */
     protected List<SlaveRelation> subRelationInit() {
         return new ArrayList<>(){{
-            add(new SlaveRelation(DEPT_POST_GROUP, SysPostManagerImpl.class, OperateConstants.SubOperateLimit.EX_ADD_OR_EDIT));
-            add(new SlaveRelation(DEPT_ROLE_INDIRECT_GROUP, SysOrganizeRoleMergeMapper.class, SysOrganizeRoleMerge.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
-            add(new SlaveRelation(ROLE_DEPT_INDIRECT_GROUP, SysRoleDeptMergeMapper.class, SysRoleDeptMerge.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
+            add(new SlaveRelation(DEPT_SysPost_GROUP, SysPostManagerImpl.class, OperateConstants.SubOperateLimit.EX_ADD_OR_EDIT));
+            add(new SlaveRelation(DEPT_OrganizeRoleMerge_GROUP, SysOrganizeRoleMergeMapper.class, SysOrganizeRoleMerge.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
+            add(new SlaveRelation(DEPT_SysRoleDeptMerge_GROUP, SysRoleDeptMergeMapper.class, SysRoleDeptMerge.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
         }};
     }
 
@@ -64,7 +57,7 @@ public class SysDeptManagerImpl extends TreeManagerImpl<SysDeptQuery, SysDeptDto
                         .ne(SysDeptPo::getId, Id)
                         .eq(SysDeptPo::getCode, code)
                         .last(SqlConstants.LIMIT_ONE));
-        return baseConverter.mapperDto(dept);
+        return mapperDto(dept);
     }
 
 }

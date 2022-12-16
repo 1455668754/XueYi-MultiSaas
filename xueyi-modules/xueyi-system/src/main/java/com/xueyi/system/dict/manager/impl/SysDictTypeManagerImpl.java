@@ -26,7 +26,7 @@ import static com.xueyi.system.api.dict.domain.merge.MergeGroup.DICT_DATA_GROUP;
 public class SysDictTypeManagerImpl extends BaseManagerImpl<SysDictTypeQuery, SysDictTypeDto, SysDictTypePo, SysDictTypeMapper, SysDictTypeConverter> implements ISysDictTypeManager {
 
     /**
-     * 初始化子类关联
+     * 初始化从属关联关系
      *
      * @return 关系对象集合
      */
