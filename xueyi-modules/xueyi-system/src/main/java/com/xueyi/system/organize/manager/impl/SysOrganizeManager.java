@@ -143,7 +143,7 @@ public class SysOrganizeManager implements ISysOrganizeManager {
         List<SysOrganizeRoleMerge> organizeRoleMerges = organizeRoleMergeMapper.selectList(
                 Wrappers.<SysOrganizeRoleMerge>query().lambda()
                         .eq(SysOrganizeRoleMerge::getDeptId, deptId));
-        return organizeRoleMerges.stream().map(SysOrganizeRoleMerge::getRoleId).collect(Collectors.toList()).toArray(new Long[]{});
+        return organizeRoleMerges.stream().map(SysOrganizeRoleMerge::getRoleId).toList().toArray(new Long[]{});
     }
 
     /**
@@ -157,7 +157,7 @@ public class SysOrganizeManager implements ISysOrganizeManager {
         List<SysOrganizeRoleMerge> organizeRoleMerges = organizeRoleMergeMapper.selectList(
                 Wrappers.<SysOrganizeRoleMerge>query().lambda()
                         .eq(SysOrganizeRoleMerge::getPostId, postId));
-        return organizeRoleMerges.stream().map(SysOrganizeRoleMerge::getRoleId).collect(Collectors.toList()).toArray(new Long[]{});
+        return organizeRoleMerges.stream().map(SysOrganizeRoleMerge::getRoleId).toList().toArray(new Long[]{});
     }
 
     /**
@@ -171,7 +171,7 @@ public class SysOrganizeManager implements ISysOrganizeManager {
         List<SysOrganizeRoleMerge> organizeRoleMerges = organizeRoleMergeMapper.selectList(
                 Wrappers.<SysOrganizeRoleMerge>query().lambda()
                         .eq(SysOrganizeRoleMerge::getUserId, userId));
-        return organizeRoleMerges.stream().map(SysOrganizeRoleMerge::getRoleId).collect(Collectors.toList()).toArray(new Long[]{});
+        return organizeRoleMerges.stream().map(SysOrganizeRoleMerge::getRoleId).toList().toArray(new Long[]{});
     }
 
     /**
@@ -187,7 +187,7 @@ public class SysOrganizeManager implements ISysOrganizeManager {
             List<SysDeptDto> deptList = deptManager.selectListByIds(organizeIdList);
             if (CollUtil.isNotEmpty(deptList)) {
                 // 1.组织Ids中的部门Ids与岗位Ids分开
-                List<Long> deptIdList = deptList.stream().map(SysDeptDto::getId).collect(Collectors.toList());
+                List<Long> deptIdList = deptList.stream().map(SysDeptDto::getId).toList();
                 organizeIdList.removeAll(deptIdList);
                 // 2.存储角色与部门的关联数据
                 List<SysRoleDeptMerge> roleDeptMerges = deptIdList.stream().map(deptId -> new SysRoleDeptMerge(roleId, deptId)).collect(Collectors.toList());
@@ -221,7 +221,7 @@ public class SysOrganizeManager implements ISysOrganizeManager {
                         Wrappers.<SysRoleDeptMerge>query().lambda()
                                 .eq(SysRoleDeptMerge::getRoleId, roleId));
                 if (CollUtil.isNotEmpty(originalDeptList)) {
-                    List<Long> originalDeptIds = originalDeptList.stream().map(SysRoleDeptMerge::getDeptId).collect(Collectors.toList());
+                    List<Long> originalDeptIds = originalDeptList.stream().map(SysRoleDeptMerge::getDeptId).toList();
                     List<Long> delDeptIds = new ArrayList<>(originalDeptIds);
                     delDeptIds.removeAll(deptIdList);
                     if (CollUtil.isNotEmpty(delDeptIds)) {
@@ -244,7 +244,7 @@ public class SysOrganizeManager implements ISysOrganizeManager {
                     Wrappers.<SysRolePostMerge>query().lambda()
                             .eq(SysRolePostMerge::getRoleId, roleId));
             if (CollUtil.isNotEmpty(originalPostList)) {
-                List<Long> originalPostIds = originalPostList.stream().map(SysRolePostMerge::getPostId).collect(Collectors.toList());
+                List<Long> originalPostIds = originalPostList.stream().map(SysRolePostMerge::getPostId).toList();
                 List<Long> delPostIds = new ArrayList<>(originalPostIds);
                 delPostIds.removeAll(organizeIdList);
                 if (CollUtil.isNotEmpty(delPostIds)) {
@@ -284,7 +284,7 @@ public class SysOrganizeManager implements ISysOrganizeManager {
                     Wrappers.<SysOrganizeRoleMerge>query().lambda()
                             .eq(SysOrganizeRoleMerge::getDeptId, deptId));
             if (CollUtil.isNotEmpty(originalRoleList)) {
-                List<Long> originalRoleIds = originalRoleList.stream().map(SysOrganizeRoleMerge::getRoleId).collect(Collectors.toList());
+                List<Long> originalRoleIds = originalRoleList.stream().map(SysOrganizeRoleMerge::getRoleId).toList();
                 List<Long> delRoleIds = new ArrayList<>(originalRoleIds);
                 delRoleIds.removeAll(roleIdList);
                 if (CollUtil.isNotEmpty(delRoleIds)) {
@@ -321,7 +321,7 @@ public class SysOrganizeManager implements ISysOrganizeManager {
                     Wrappers.<SysOrganizeRoleMerge>query().lambda()
                             .eq(SysOrganizeRoleMerge::getPostId, postId));
             if (CollUtil.isNotEmpty(originalRoleList)) {
-                List<Long> originalRoleIds = originalRoleList.stream().map(SysOrganizeRoleMerge::getRoleId).collect(Collectors.toList());
+                List<Long> originalRoleIds = originalRoleList.stream().map(SysOrganizeRoleMerge::getRoleId).toList();
                 List<Long> delRoleIds = new ArrayList<>(originalRoleIds);
                 delRoleIds.removeAll(roleIdList);
                 if (CollUtil.isNotEmpty(delRoleIds)) {
@@ -358,7 +358,7 @@ public class SysOrganizeManager implements ISysOrganizeManager {
                     Wrappers.<SysOrganizeRoleMerge>query().lambda()
                             .eq(SysOrganizeRoleMerge::getUserId, userId));
             if (CollUtil.isNotEmpty(originalRoleList)) {
-                List<Long> originalRoleIds = originalRoleList.stream().map(SysOrganizeRoleMerge::getRoleId).collect(Collectors.toList());
+                List<Long> originalRoleIds = originalRoleList.stream().map(SysOrganizeRoleMerge::getRoleId).toList();
                 List<Long> delRoleIds = new ArrayList<>(originalRoleIds);
                 delRoleIds.removeAll(roleIdList);
                 if (CollUtil.isNotEmpty(delRoleIds)) {

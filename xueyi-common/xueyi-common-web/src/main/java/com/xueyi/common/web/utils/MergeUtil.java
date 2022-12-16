@@ -34,7 +34,7 @@ public class MergeUtil {
      * @return 数据对象
      */
     public static <D> D subMerge(D dto, SubRelation subRelation, Class<D> DClass) {
-        if (ObjectUtil.isNull(dto) || ObjectUtil.isNull(subRelation))
+        if (ObjectUtil.isNull(dto) || ObjectUtil.isNull(subRelation) || !subRelation.getIsSelect())
             return dto;
         initRelationField(subRelation, DClass);
         switch (subRelation.getRelationType()) {
@@ -53,7 +53,7 @@ public class MergeUtil {
      * @return 数据对象集合
      */
     public static <D> List<D> subMerge(List<D> dtoList, SubRelation subRelation, Class<D> DClass) {
-        if (ObjectUtil.isNull(subRelation) || CollUtil.isEmpty(dtoList))
+        if (CollUtil.isEmpty(dtoList) || ObjectUtil.isNull(subRelation) || !subRelation.getIsSelect())
             return dtoList;
         initRelationField(subRelation, DClass);
         switch (subRelation.getRelationType()) {
@@ -73,7 +73,7 @@ public class MergeUtil {
      * @return 结果
      */
     public static <D> int addMerge(D dto, SubRelation subRelation, Class<D> DClass) {
-        if (ObjectUtil.isNull(dto) || ObjectUtil.isNull(subRelation))
+        if (ObjectUtil.isNull(dto) || ObjectUtil.isNull(subRelation) || !subRelation.getIsAdd())
             return NumberUtil.Zero;
         initRelationField(subRelation, DClass);
         if (subRelation.getRelationType().isIndirect()) {
@@ -91,7 +91,7 @@ public class MergeUtil {
      * @return 结果
      */
     public static <D> int addMerge(Collection<D> dtoList, SubRelation subRelation, Class<D> DClass) {
-        if (CollUtil.isEmpty(dtoList) || ObjectUtil.isNull(subRelation))
+        if (CollUtil.isEmpty(dtoList) || ObjectUtil.isNull(subRelation) || !subRelation.getIsAdd())
             return NumberUtil.Zero;
         initRelationField(subRelation, DClass);
         if (subRelation.getRelationType().isIndirect()) {
@@ -109,7 +109,7 @@ public class MergeUtil {
      * @param DClass      数据对象Class
      */
     public static <D> int editMerge(D originDto, D newDto, SubRelation subRelation, Class<D> DClass) {
-        if (ObjectUtil.isAllEmpty(originDto, newDto) || ObjectUtil.isNull(subRelation))
+        if (ObjectUtil.isAllEmpty(originDto, newDto) || ObjectUtil.isNull(subRelation) || !subRelation.getIsEdit())
             return NumberUtil.Zero;
         initRelationField(subRelation, DClass);
         if (subRelation.getRelationType().isIndirect()) {
@@ -127,7 +127,7 @@ public class MergeUtil {
      * @param DClass      数据对象Class
      */
     public static <D> int editMerge(Collection<D> originList, Collection<D> newList, SubRelation subRelation, Class<D> DClass) {
-        if ((CollUtil.isEmpty(originList) && CollUtil.isEmpty(newList)) || ObjectUtil.isNull(subRelation))
+        if ((CollUtil.isEmpty(originList) && CollUtil.isEmpty(newList)) || ObjectUtil.isNull(subRelation) || !subRelation.getIsEdit())
             return NumberUtil.Zero;
         initRelationField(subRelation, DClass);
         if (subRelation.getRelationType().isIndirect()) {
@@ -144,7 +144,7 @@ public class MergeUtil {
      * @param DClass      数据对象Class
      */
     public static <D> int delMerge(D dto, SubRelation subRelation, Class<D> DClass) {
-        if (ObjectUtil.isNull(dto) || ObjectUtil.isNull(subRelation))
+        if (ObjectUtil.isNull(dto) || ObjectUtil.isNull(subRelation) || !subRelation.getIsDelete())
             return NumberUtil.Zero;
         initRelationField(subRelation, DClass);
         if (subRelation.getRelationType().isIndirect()) {
@@ -161,7 +161,7 @@ public class MergeUtil {
      * @param DClass      数据对象Class
      */
     public static <D> int delMerge(Collection<D> dtoList, SubRelation subRelation, Class<D> DClass) {
-        if (CollUtil.isEmpty(dtoList) || ObjectUtil.isNull(subRelation))
+        if (CollUtil.isEmpty(dtoList) || ObjectUtil.isNull(subRelation) || !subRelation.getIsDelete())
             return NumberUtil.Zero;
         initRelationField(subRelation, DClass);
         if (subRelation.getRelationType().isIndirect()) {

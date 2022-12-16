@@ -1,11 +1,12 @@
 package com.xueyi.system.api.authority.domain.merge;
 
 /**
- * 关联命名常量
+ * 权限管理 关联命名常量
  *
  * @author xueyi
  */
 public interface MergeGroup {
 
-    String MODULE_MENU_GROUP = "module_menu_group";
+    /** 模块 | 菜单 */
+    String MODULE_MENU_GROUP = "module_menu_direct_group";
 }

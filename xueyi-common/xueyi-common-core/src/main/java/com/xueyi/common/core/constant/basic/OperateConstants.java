@@ -136,4 +136,20 @@ public class OperateConstants {
         private final String code;
         private final String info;
     }
+
+    /** 主子关联 - 操作类型 */
+    @Getter
+    @AllArgsConstructor
+    public enum SubOperateType {
+
+        EX_SEL("exclude select", "排除 查询"),
+        EX_ADD("exclude insert", "排除 新增"),
+        EX_EDIT("exclude update", "排除 修改"),
+        EX_DEL("exclude delete", "排除 删除"),
+        EX_SEL_OR_EDIT("exclude select or update", "排除 查询 and 修改"),
+        EX_SEL_OR_ADD_OR_EDIT("exclude select or insert or update", "排除 查询 and 新增 and 修改");
+
+        private final String code;
+        private final String info;
+    }
 }

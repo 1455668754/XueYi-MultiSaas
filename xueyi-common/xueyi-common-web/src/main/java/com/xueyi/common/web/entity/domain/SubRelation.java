@@ -1,6 +1,10 @@
 package com.xueyi.common.web.entity.domain;
 
-import com.xueyi.common.core.constant.basic.OperateConstants;
+import com.xueyi.common.core.constant.basic.OperateConstants.SubDeleteType;
+import com.xueyi.common.core.constant.basic.OperateConstants.SubOperateType;
+import com.xueyi.common.core.constant.basic.OperateConstants.SubTableType;
+import com.xueyi.common.core.utils.core.ArrayUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.core.web.entity.base.BasisEntity;
 import com.xueyi.common.core.web.entity.model.BaseConverter;
@@ -28,10 +32,10 @@ public class SubRelation {
     private String groupName;
 
     /** 表关联类型 */
-    private OperateConstants.SubTableType relationType;
+    private SubTableType relationType;
 
     /** 删除类型 */
-    private OperateConstants.SubDeleteType deleteType;
+    private SubDeleteType deleteType;
 
     /** 主关联键字段 */
     private Field mainKeyField;
@@ -66,33 +70,83 @@ public class SubRelation {
     /** 间接关联 - 关联子键值接收键字段 */
     private Field receiveArrKeyField;
 
-    public SubRelation(String groupName, Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> subClass) {
+    /** 查询操作 */
+    private Boolean isSelect;
+
+    /** 新增操作 */
+    private Boolean isAdd;
+
+    /** 修改操作 */
+    private Boolean isEdit;
+
+    /** 删除操作 */
+    private Boolean isDelete;
+
+
+    public SubRelation(String groupName, Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> subClass, SubOperateType... operateTypes) {
         this.groupName = groupName;
         this.subClass = subClass;
-        this.relationType = OperateConstants.SubTableType.DIRECT;
-        this.deleteType = OperateConstants.SubDeleteType.NORMAL;
+        this.relationType = SubTableType.DIRECT;
+        this.deleteType = SubDeleteType.NORMAL;
+        initOperate(operateTypes);
     }
 
-    public SubRelation(String groupName, Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> subClass, OperateConstants.SubDeleteType deleteType) {
+    public SubRelation(String groupName, Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> subClass, SubDeleteType deleteType, SubOperateType... operateTypes) {
         this.groupName = groupName;
         this.subClass = subClass;
-        this.relationType = OperateConstants.SubTableType.DIRECT;
+        this.relationType = SubTableType.DIRECT;
         this.deleteType = deleteType;
+        initOperate(operateTypes);
     }
 
-    public SubRelation(String groupName, Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> subClass, Class<? extends BasicMapper<? extends BasisEntity>> mergeClass) {
+    public SubRelation(String groupName, Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> subClass, Class<? extends BasicMapper<? extends BasisEntity>> mergeClass, SubOperateType... operateTypes) {
         this.groupName = groupName;
         this.subClass = subClass;
         this.mergeClass = mergeClass;
-        this.relationType = OperateConstants.SubTableType.INDIRECT;
-        this.deleteType = OperateConstants.SubDeleteType.NORMAL;
+        this.relationType = SubTableType.INDIRECT;
+        this.deleteType = SubDeleteType.NORMAL;
+        initOperate(operateTypes);
     }
 
-    public SubRelation(String groupName, Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> subClass, Class<? extends BasicMapper<? extends BasisEntity>> mergeClass, OperateConstants.SubDeleteType deleteType) {
+    public SubRelation(String groupName, Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> subClass, Class<? extends BasicMapper<? extends BasisEntity>> mergeClass, SubDeleteType deleteType, SubOperateType... operateTypes) {
         this.groupName = groupName;
         this.subClass = subClass;
         this.mergeClass = mergeClass;
-        this.relationType = OperateConstants.SubTableType.INDIRECT;
+        this.relationType = SubTableType.INDIRECT;
         this.deleteType = deleteType;
+        initOperate(operateTypes);
+    }
+
+    /** 初始化操作 */
+    public void initOperate(SubOperateType... operateTypes) {
+        if (ArrayUtil.isNotEmpty(operateTypes)) {
+            for (SubOperateType operateType : operateTypes) {
+                switch (operateType) {
+                    case EX_SEL -> this.isSelect = Boolean.FALSE;
+                    case EX_ADD -> this.isAdd = Boolean.FALSE;
+                    case EX_EDIT -> this.isEdit = Boolean.FALSE;
+                    case EX_DEL -> this.isDelete = Boolean.FALSE;
+                    case EX_SEL_OR_ADD_OR_EDIT -> {
+                        this.isSelect = Boolean.FALSE;
+                        this.isAdd = Boolean.FALSE;
+                        this.isEdit = Boolean.FALSE;
+                    }
+                    case EX_SEL_OR_EDIT -> {
+                        this.isSelect = Boolean.FALSE;
+                        this.isEdit = Boolean.FALSE;
+                    }
+                    default -> {
+                    }
+                }
+            }
+        }
+        if (ObjectUtil.isNull(this.isSelect))
+            this.isSelect = Boolean.TRUE;
+        if (ObjectUtil.isNull(this.isAdd))
+            this.isAdd = Boolean.TRUE;
+        if (ObjectUtil.isNull(this.isEdit))
+            this.isEdit = Boolean.TRUE;
+        if (ObjectUtil.isNull(this.isDelete))
+            this.isDelete = Boolean.TRUE;
     }
 }

@@ -1,11 +1,12 @@
 package com.xueyi.gen.domain.merge;
 
 /**
- * 关联命名常量
+ * 代码生成 关联命名常量
  *
  * @author xueyi
  */
 public interface MergeGroup {
 
-    String GEN_TABLE_GROUP = "gen_table_group";
+    /** 业务 | 业务字段 */
+    String GEN_TABLE_GROUP = "gen_table_direct_group";
 }

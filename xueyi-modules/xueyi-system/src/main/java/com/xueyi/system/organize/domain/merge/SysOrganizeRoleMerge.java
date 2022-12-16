@@ -37,15 +37,9 @@ public class SysOrganizeRoleMerge extends TBasisEntity {
 
     public SysOrganizeRoleMerge(Long organizeId, Long roleId, OrganizeConstants.OrganizeType organizeType) {
         switch (organizeType) {
-            case DEPT:
-                this.deptId = organizeId;
-                break;
-            case POST:
-                this.postId = organizeId;
-                break;
-            case USER:
-                this.userId = organizeId;
-                break;
+            case DEPT -> this.deptId = organizeId;
+            case POST -> this.postId = organizeId;
+            case USER -> this.userId = organizeId;
         }
         this.roleId = roleId;
     }
