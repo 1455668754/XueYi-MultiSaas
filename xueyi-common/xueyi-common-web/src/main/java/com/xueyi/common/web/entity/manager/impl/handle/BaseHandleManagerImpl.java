@@ -147,7 +147,7 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
         if (ArrayUtil.isNotEmpty(groupNames))
             Arrays.stream(groupNames).forEach(item -> MergeUtil.subMerge(dto, getSubRelationMap().get(item), getDClass()));
         else
-            getSubRelationMap().values().stream().filter(SlaveRelation::getIsSelect).forEach(item -> MergeUtil.addMerge(dto, item, getDClass()));
+            getSubRelationMap().values().stream().filter(SlaveRelation::getIsSelect).forEach(item -> MergeUtil.subMerge(dto, item, getDClass()));
         return dto;
     }
 
@@ -162,7 +162,7 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
         if (ArrayUtil.isNotEmpty(groupNames))
             Arrays.stream(groupNames).forEach(item -> MergeUtil.subMerge(dtoList, getSubRelationMap().get(item), getDClass()));
         else
-            getSubRelationMap().values().stream().filter(SlaveRelation::getIsSelect).forEach(item -> MergeUtil.addMerge(dtoList, item, getDClass()));
+            getSubRelationMap().values().stream().filter(SlaveRelation::getIsSelect).forEach(item -> MergeUtil.subMerge(dtoList, item, getDClass()));
         return dtoList;
     }
 

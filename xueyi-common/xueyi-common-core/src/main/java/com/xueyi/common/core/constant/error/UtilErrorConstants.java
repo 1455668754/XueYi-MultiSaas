@@ -10,7 +10,7 @@ import lombok.Getter;
  */
 public class UtilErrorConstants {
 
-    /** 校验内容 */
+    /** 主从关联工具类 - 校验内容 */
     @Getter
     @AllArgsConstructor
     public enum MergeError {

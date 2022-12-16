@@ -1,6 +1,5 @@
 package com.xueyi.system.organize.manager.impl;
 
-import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.constant.basic.SqlConstants;
@@ -19,13 +18,10 @@ import com.xueyi.system.organize.mapper.merge.SysRoleDeptMergeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-import static com.xueyi.system.api.organize.domain.merge.MergeGroup.DEPT_POST_GROUP;
-import static com.xueyi.system.api.organize.domain.merge.MergeGroup.DEPT_ROLE_INDIRECT_GROUP;
+import static com.xueyi.system.api.organize.domain.merge.MergeGroup.*;
 
 /**
  * 部门管理 数据封装层处理
@@ -49,50 +45,9 @@ public class SysDeptManagerImpl extends TreeManagerImpl<SysDeptQuery, SysDeptDto
     protected List<SlaveRelation> subRelationInit() {
         return new ArrayList<>(){{
             add(new SlaveRelation(DEPT_POST_GROUP, SysPostManagerImpl.class));
-            add(new SlaveRelation(DEPT_ROLE_INDIRECT_GROUP, SysPostManagerImpl.class, SysOrganizeRoleMergeMapper.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
+            add(new SlaveRelation(DEPT_ROLE_INDIRECT_GROUP, SysOrganizeRoleMergeMapper.class, SysOrganizeRoleMerge.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
+            add(new SlaveRelation(ROLE_DEPT_INDIRECT_GROUP, SysRoleDeptMergeMapper.class, SysRoleDeptMerge.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
         }};
-    }
-
-    /**
-     * 根据Id删除部门对象
-     *
-     * @param id Id
-     * @return 结果
-     */
-    @Override
-    @DSTransactional
-    public int deleteById(Serializable id) {
-        int row = baseMapper.deleteById(id);
-        if (row > 0) {
-            organizeRoleMergeMapper.delete(
-                    Wrappers.<SysOrganizeRoleMerge>update().lambda()
-                            .eq(SysOrganizeRoleMerge::getDeptId, id));
-            roleDeptMergeMapper.delete(
-                    Wrappers.<SysRoleDeptMerge>update().lambda()
-                            .eq(SysRoleDeptMerge::getDeptId, id));
-        }
-        return row;
-    }
-
-    /**
-     * 根据Id集合批量删除部门对象
-     *
-     * @param idList Id集合
-     * @return 结果
-     */
-    @Override
-    @DSTransactional
-    public int deleteByIds(Collection<? extends Serializable> idList) {
-        int rows = baseMapper.deleteBatchIds(idList);
-        if (rows > 0) {
-            organizeRoleMergeMapper.delete(
-                    Wrappers.<SysOrganizeRoleMerge>update().lambda()
-                            .in(SysOrganizeRoleMerge::getDeptId, idList));
-            roleDeptMergeMapper.delete(
-                    Wrappers.<SysRoleDeptMerge>update().lambda()
-                            .in(SysRoleDeptMerge::getDeptId, idList));
-        }
-        return rows;
     }
 
     /**

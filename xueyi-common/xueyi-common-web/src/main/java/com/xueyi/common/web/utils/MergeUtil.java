@@ -21,7 +21,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * 主子关联工具类
+ * 主从关联工具类
  *
  * @author xueyi
  */
@@ -459,7 +459,7 @@ public class MergeUtil {
         // 4.初始化中间数据对象映射关系
         initMergeCorrelation(slaveRelation);
         // 5.二次校验 - 如果依旧未通过，则代表人为配置出错，检查代码
-        if(!checkOperateLegal(slaveRelation, operate))
+        if (!checkOperateLegal(slaveRelation, operate))
             throw new UtilException(StrUtil.format(UtilErrorConstants.MergeError.CORRELATION_ERROR.getInfo(), slaveRelation.getGroupName()));
     }
 
@@ -470,14 +470,17 @@ public class MergeUtil {
      * @param operate  操作类型
      */
     private static boolean checkOperateLegal(SlaveRelation relation, SubOperate operate) {
-        // 主数据的主键 及 子数据class 不能为null
-        if (ObjectUtil.hasNull(relation.getMainField(), relation.getSlaveClass()))
+        // 主数据的主键不能为null
+        if (ObjectUtil.isNull(relation.getMainField()))
             return Boolean.FALSE;
         switch (relation.getRelationType()) {
             case DIRECT -> {
+                // 主数据的从数据class不能为null
+                if (ObjectUtil.isNull(relation.getSlaveClass()))
+                    return Boolean.FALSE;
                 switch (operate) {
                     case SELECT -> {
-                        return ObjectUtil.hasNull(relation.getSlaveField(), relation.getSlaveFieldSqlName(), relation.getReceiveField());
+                        return ObjectUtil.isAllNotEmpty(relation.getSlaveField(), relation.getSlaveFieldSqlName(), relation.getReceiveField());
                     }
                     case ADD, EDIT, DELETE -> {
 
@@ -490,11 +493,11 @@ public class MergeUtil {
                     return Boolean.FALSE;
                 switch (operate) {
                     case SELECT -> {
-                        return ObjectUtil.hasNull(relation.getMergeSlaveField(), relation.getSlaveField(),
+                        return ObjectUtil.isAllNotEmpty(relation.getSlaveClass(), relation.getMergeSlaveField(), relation.getSlaveField(),
                                 relation.getSlaveFieldSqlName(), relation.getReceiveField());
                     }
                     case ADD -> {
-                        return ObjectUtil.hasNull(relation.getMergePoClass(), relation.getMergeSlaveField(),
+                        return ObjectUtil.isAllNotEmpty(relation.getSlaveClass(), relation.getMergePoClass(), relation.getMergeSlaveField(),
                                 relation.getSlaveFieldSqlName());
                     }
                     case DELETE -> {
@@ -502,7 +505,7 @@ public class MergeUtil {
                 }
             }
         }
-        return Boolean.FALSE;
+        return Boolean.TRUE;
     }
 
     /**
@@ -678,15 +681,10 @@ public class MergeUtil {
      * @param slaveRelation 从属关联关系定义对象
      */
     private static void initMergeCorrelation(SlaveRelation slaveRelation) {
-        // 1.校验中间数据方法类class是否为null
-        if (ObjectUtil.isNull(slaveRelation.getMergeClass()))
+        // 1.校验中间类数据对象class是否为null
+        if (ObjectUtil.isNull(slaveRelation.getMergePoClass()))
             return;
-        Class<? extends BasisEntity> mergePoClass = TypeUtil.getClazz(slaveRelation.getMergeClass().getGenericSuperclass(), NumberUtil.Zero);
-        // 2.校验中间类数据对象class是否为null
-        if (ObjectUtil.isNull(mergePoClass))
-            return;
-        slaveRelation.setMergePoClass(mergePoClass);
-        Field[] fields = ReflectUtil.getFields(mergePoClass);
+        Field[] fields = ReflectUtil.getFields(slaveRelation.getMergePoClass());
         for (Field field : fields) {
             // 单注解模式
             if (field.isAnnotationPresent(Correlation.class)) {
@@ -720,7 +718,7 @@ public class MergeUtil {
             case MERGE_MAIN -> {
                 if (ObjectUtil.isNull(slaveRelation.getMergeMainField())) {
                     slaveRelation.setMergeMainField(field);
-                    slaveRelation.getMergeSlaveField().setAccessible(Boolean.TRUE);
+                    slaveRelation.getMergeMainField().setAccessible(Boolean.TRUE);
                     TableField tableField = slaveRelation.getMergeMainField().getAnnotation(TableField.class);
                     String fieldName = ObjectUtil.isNotNull(tableField) && StrUtil.isNotEmpty(tableField.value())
                             ? tableField.value()

@@ -2,12 +2,17 @@ package com.xueyi.system.organize.domain.merge;
 
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.xueyi.common.core.annotation.Correlation;
+import com.xueyi.common.core.annotation.Correlations;
+import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.web.tenant.base.TBasisEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serial;
+
+import static com.xueyi.system.api.organize.domain.merge.MergeGroup.ROLE_DEPT_INDIRECT_GROUP;
 
 /**
  * 角色-部门关联（权限范围） 持久化对象
@@ -24,9 +29,15 @@ public class SysRoleDeptMerge extends TBasisEntity {
     private static final long serialVersionUID = 1L;
 
     /** 角色Id */
+    @Correlations({
+            @Correlation(groupName = ROLE_DEPT_INDIRECT_GROUP, keyType = OperateConstants.SubKeyType.MERGE_SLAVE)
+    })
     private Long roleId;
 
     /** 部门Id */
+    @Correlations({
+            @Correlation(groupName = ROLE_DEPT_INDIRECT_GROUP, keyType = OperateConstants.SubKeyType.MERGE_MAIN)
+    })
     private Long deptId;
 
     public SysRoleDeptMerge(Long roleId, Long deptId) {

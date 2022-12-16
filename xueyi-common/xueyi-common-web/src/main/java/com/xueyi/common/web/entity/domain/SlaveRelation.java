@@ -83,7 +83,9 @@ public class SlaveRelation {
     private Boolean isDelete;
 
 
-    public SlaveRelation(String groupName, Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> slaveClass, SubOperateLimit... operateTypes) {
+    public SlaveRelation(String groupName,
+                         Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> slaveClass,
+                         SubOperateLimit... operateTypes) {
         this.groupName = groupName;
         this.slaveClass = slaveClass;
         this.relationType = SubTableType.DIRECT;
@@ -91,7 +93,10 @@ public class SlaveRelation {
         initOperate(operateTypes);
     }
 
-    public SlaveRelation(String groupName, Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> slaveClass, SubDeleteType deleteType, SubOperateLimit... operateTypes) {
+    public SlaveRelation(String groupName,
+                         Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> slaveClass,
+                         SubDeleteType deleteType,
+                         SubOperateLimit... operateTypes) {
         this.groupName = groupName;
         this.slaveClass = slaveClass;
         this.relationType = SubTableType.DIRECT;
@@ -99,19 +104,42 @@ public class SlaveRelation {
         initOperate(operateTypes);
     }
 
-    public SlaveRelation(String groupName, Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> slaveClass, Class<? extends BasicMapper<? extends BasisEntity>> mergeClass, SubOperateLimit... operateTypes) {
+    public SlaveRelation(String groupName,
+                         Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> slaveClass,
+                         Class<? extends BasicMapper<? extends BasisEntity>> mergeClass,
+                         Class<? extends BasisEntity> mergePoClass,
+                         SubOperateLimit... operateTypes) {
         this.groupName = groupName;
         this.slaveClass = slaveClass;
         this.mergeClass = mergeClass;
+        this.mergePoClass = mergePoClass;
         this.relationType = SubTableType.INDIRECT;
         this.deleteType = SubDeleteType.NORMAL;
         initOperate(operateTypes);
     }
 
-    public SlaveRelation(String groupName, Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> slaveClass, Class<? extends BasicMapper<? extends BasisEntity>> mergeClass, SubDeleteType deleteType, SubOperateLimit... operateTypes) {
+    public SlaveRelation(String groupName,
+                         Class<? extends BasicMapper<? extends BasisEntity>> mergeClass,
+                         Class<? extends BasisEntity> mergePoClass,
+                         SubOperateLimit... operateTypes) {
+        this.groupName = groupName;
+        this.mergeClass = mergeClass;
+        this.mergePoClass = mergePoClass;
+        this.relationType = SubTableType.INDIRECT;
+        this.deleteType = SubDeleteType.NORMAL;
+        initOperate(operateTypes);
+    }
+
+    public SlaveRelation(String groupName,
+                         Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> slaveClass,
+                         Class<? extends BasicMapper<? extends BasisEntity>> mergeClass,
+                         Class<? extends BasisEntity> mergePoClass,
+                         SubDeleteType deleteType,
+                         SubOperateLimit... operateTypes) {
         this.groupName = groupName;
         this.slaveClass = slaveClass;
         this.mergeClass = mergeClass;
+        this.mergePoClass = mergePoClass;
         this.relationType = SubTableType.INDIRECT;
         this.deleteType = deleteType;
         initOperate(operateTypes);
