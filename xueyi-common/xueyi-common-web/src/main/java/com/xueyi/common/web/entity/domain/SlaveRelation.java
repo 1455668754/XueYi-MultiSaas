@@ -163,6 +163,10 @@ public class SlaveRelation {
                         this.isSelect = Boolean.FALSE;
                         this.isEdit = Boolean.FALSE;
                     }
+                    case EX_ADD_OR_EDIT -> {
+                        this.isAdd = Boolean.FALSE;
+                        this.isEdit = Boolean.FALSE;
+                    }
                     default -> {
                     }
                 }

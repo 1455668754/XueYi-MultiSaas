@@ -44,7 +44,7 @@ public class SysDeptManagerImpl extends TreeManagerImpl<SysDeptQuery, SysDeptDto
      */
     protected List<SlaveRelation> subRelationInit() {
         return new ArrayList<>(){{
-            add(new SlaveRelation(DEPT_POST_GROUP, SysPostManagerImpl.class));
+            add(new SlaveRelation(DEPT_POST_GROUP, SysPostManagerImpl.class, OperateConstants.SubOperateLimit.EX_ADD_OR_EDIT));
             add(new SlaveRelation(DEPT_ROLE_INDIRECT_GROUP, SysOrganizeRoleMergeMapper.class, SysOrganizeRoleMerge.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
             add(new SlaveRelation(ROLE_DEPT_INDIRECT_GROUP, SysRoleDeptMergeMapper.class, SysRoleDeptMerge.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
         }};

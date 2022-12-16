@@ -159,6 +159,7 @@ public class OperateConstants {
         EX_EDIT("exclude update", "排除 修改"),
         EX_DEL("exclude delete", "排除 删除"),
         EX_SEL_OR_EDIT("exclude select or update", "排除 查询 and 修改"),
+        EX_ADD_OR_EDIT("exclude insert or update", "排除 新增 and 修改"),
         EX_SEL_OR_ADD_OR_EDIT("exclude select or insert or update", "排除 查询 and 新增 and 修改");
 
         private final String code;
