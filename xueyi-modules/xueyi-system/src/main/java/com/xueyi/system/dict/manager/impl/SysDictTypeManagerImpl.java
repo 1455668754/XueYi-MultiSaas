@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.xueyi.system.api.constant.MergeConstants.DICT_DATA_GROUP;
+import static com.xueyi.system.api.dict.domain.merge.MergeGroup.DICT_DATA_GROUP;
 
 /**
  * 字典类型管理 数据封装层处理

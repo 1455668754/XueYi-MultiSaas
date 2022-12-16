@@ -16,7 +16,7 @@ import javax.validation.constraints.Size;
 import java.io.Serial;
 
 import static com.baomidou.mybatisplus.annotation.SqlCondition.LIKE;
-import static com.xueyi.system.api.constant.MergeConstants.DICT_DATA_GROUP;
+import static com.xueyi.system.api.dict.domain.merge.MergeGroup.DICT_DATA_GROUP;
 
 /**
  * 字典类型 持久化对象

@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 import java.io.Serial;
 import java.util.List;
 
-import static com.xueyi.system.api.constant.MergeConstants.DICT_DATA_GROUP;
+import static com.xueyi.system.api.dict.domain.merge.MergeGroup.DICT_DATA_GROUP;
 
 /**
  * 字典类型 数据传输对象

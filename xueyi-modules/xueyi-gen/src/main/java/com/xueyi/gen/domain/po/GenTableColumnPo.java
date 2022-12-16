@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 import javax.validation.constraints.NotBlank;
 import java.io.Serial;
 
-import static com.xueyi.system.api.constant.MergeConstants.GEN_TABLE_GROUP;
+import static com.xueyi.gen.domain.merge.MergeGroup.GEN_TABLE_GROUP;
 
 /**
  * 业务字段 持久化对象

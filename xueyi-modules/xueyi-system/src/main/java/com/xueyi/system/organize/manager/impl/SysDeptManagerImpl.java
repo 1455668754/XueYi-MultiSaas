@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static com.xueyi.system.api.constant.MergeConstants.DEPT_POST_GROUP;
+import static com.xueyi.system.api.organize.domain.merge.MergeGroup.DEPT_POST_GROUP;
 
 /**
  * 部门管理 数据封装层处理

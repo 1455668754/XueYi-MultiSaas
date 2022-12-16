@@ -15,7 +15,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.xueyi.system.api.constant.MergeConstants.GEN_TABLE_GROUP;
+import static com.xueyi.gen.domain.merge.MergeGroup.GEN_TABLE_GROUP;
 
 /**
  * 业务管理 数据封装层处理

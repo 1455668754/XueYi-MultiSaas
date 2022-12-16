@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 import java.io.Serial;
 import java.util.List;
 
-import static com.xueyi.system.api.constant.MergeConstants.DEPT_POST_GROUP;
+import static com.xueyi.system.api.organize.domain.merge.MergeGroup.DEPT_POST_GROUP;
 
 /**
  * 部门 数据传输对象

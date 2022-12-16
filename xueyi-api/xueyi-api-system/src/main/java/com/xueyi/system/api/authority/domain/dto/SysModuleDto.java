@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 import java.io.Serial;
 import java.util.List;
 
-import static com.xueyi.system.api.constant.MergeConstants.MODULE_MENU_GROUP;
+import static com.xueyi.system.api.authority.domain.merge.MergeGroup.MODULE_MENU_GROUP;
 
 /**
  * 模块 数据传输对象

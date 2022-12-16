@@ -16,7 +16,7 @@ import javax.validation.constraints.Size;
 import java.io.Serial;
 
 import static com.baomidou.mybatisplus.annotation.SqlCondition.LIKE;
-import static com.xueyi.system.api.constant.MergeConstants.DEPT_POST_GROUP;
+import static com.xueyi.system.api.organize.domain.merge.MergeGroup.DEPT_POST_GROUP;
 
 /**
  * 岗位 持久化对象

@@ -13,7 +13,7 @@ import lombok.EqualsAndHashCode;
 import javax.validation.constraints.NotNull;
 import java.io.Serial;
 
-import static com.xueyi.system.api.constant.MergeConstants.MODULE_MENU_GROUP;
+import static com.xueyi.system.api.authority.domain.merge.MergeGroup.MODULE_MENU_GROUP;
 
 /**
  * 菜单 持久化对象

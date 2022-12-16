@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 import java.io.Serial;
 import java.util.List;
 
-import static com.xueyi.system.api.constant.MergeConstants.GEN_TABLE_GROUP;
+import static com.xueyi.gen.domain.merge.MergeGroup.GEN_TABLE_GROUP;
 
 /**
  * 业务 数据传输对象

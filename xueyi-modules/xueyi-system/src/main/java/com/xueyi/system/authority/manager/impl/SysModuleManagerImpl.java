@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.xueyi.system.api.constant.MergeConstants.MODULE_MENU_GROUP;
+import static com.xueyi.system.api.authority.domain.merge.MergeGroup.MODULE_MENU_GROUP;
 
 /**
  * 模块管理 数据封装层处理
