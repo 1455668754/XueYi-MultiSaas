@@ -28,7 +28,7 @@ public class SysOrganizeRoleMerge extends TBasisEntity {
     private static final long serialVersionUID = 1L;
 
     /** 部门Id */
-    @Correlation(groupName = DEPT_ROLE_INDIRECT_GROUP, keyType = OperateConstants.SubKeyType.MERGE_MAIN_KEY)
+    @Correlation(groupName = DEPT_ROLE_INDIRECT_GROUP, keyType = OperateConstants.SubKeyType.MERGE_MAIN)
     private Long deptId;
 
     /** 岗位Id */
@@ -38,7 +38,7 @@ public class SysOrganizeRoleMerge extends TBasisEntity {
     private Long userId;
 
     /** 角色Id */
-    @Correlation(groupName = DEPT_ROLE_INDIRECT_GROUP, keyType = OperateConstants.SubKeyType.MERGE_SUB_KEY)
+    @Correlation(groupName = DEPT_ROLE_INDIRECT_GROUP, keyType = OperateConstants.SubKeyType.MERGE_SLAVE)
     private Long roleId;
 
     public SysOrganizeRoleMerge(Long organizeId, Long roleId, OrganizeConstants.OrganizeType organizeType) {

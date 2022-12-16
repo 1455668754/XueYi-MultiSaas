@@ -24,6 +24,6 @@ public class SysJobDto extends SysJobPo {
     private static final long serialVersionUID = 1L;
 
     /** 任务记录数据集合 */
-    @Correlation(groupName = JOB_LOG_GROUP, keyType = OperateConstants.SubKeyType.RECEIVE_KEY)
+    @Correlation(groupName = JOB_LOG_GROUP, keyType = OperateConstants.SubKeyType.RECEIVE)
     private List<SysJobLogDto> subList;
 }

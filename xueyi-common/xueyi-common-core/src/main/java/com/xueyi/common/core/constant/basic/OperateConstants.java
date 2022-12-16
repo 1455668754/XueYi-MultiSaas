@@ -43,40 +43,38 @@ public class OperateConstants {
     @AllArgsConstructor
     public enum SubKeyType {
 
-        MAIN_KEY("main_key", "主关联键"),
-        SUB_KEY("sub_key", "子关联键"),
-        RECEIVE_KEY("receive_key", "值接收键"),
-        MERGE_MAIN_KEY("merge_main_key", "间接关联 - 关联主键"),
-        MERGE_CLASS_KEY("merge_class_key", "间接关联 - 关联类class"),
-        MERGE_PO_CLASS_KEY("merge_po_class_key", "间接关联 - 关联类对象class"),
-        MERGE_SUB_KEY("merge_sub_key", "间接关联 - 关联子键"),
-        RECEIVE_ARR_KEY("receive_arr_key", "间接关联 - 关联子键值接收键");
+        MAIN("main_key", "主数据对象 - 关联键字段"),
+        SLAVE("slave_key", "从数据对象 - 关联键字段"),
+        RECEIVE("receive_key", "主数据对象 - 关联数据接收字段"),
+        MERGE_MAIN("merge_main_key", "中间数据对象 - 间接关联 - 主数据关联键字段"),
+        MERGE_SLAVE("merge_slave_key", "中间数据对象 - 间接关联 - 从数据关联键字段"),
+        RECEIVE_ARR("receive_arr_key", "主数据对象 - 间接关联 - 关联数据键值接收字段");
 
         private final String code;
         private final String info;
 
         public boolean isMainKey() {
-            return StrUtil.equals(name(), MAIN_KEY.name());
+            return StrUtil.equals(name(), MAIN.name());
         }
 
-        public boolean isSubKey() {
-            return StrUtil.equals(name(), SUB_KEY.name());
+        public boolean isSlaveKey() {
+            return StrUtil.equals(name(), SLAVE.name());
         }
 
         public boolean isReceiveKey() {
-            return StrUtil.equals(name(), RECEIVE_KEY.name());
+            return StrUtil.equals(name(), RECEIVE.name());
         }
 
         public boolean isMergeMainKey() {
-            return StrUtil.equals(name(), MERGE_MAIN_KEY.name());
+            return StrUtil.equals(name(), MERGE_MAIN.name());
         }
 
         public boolean isMergeSubKey() {
-            return StrUtil.equals(name(), MERGE_SUB_KEY.name());
+            return StrUtil.equals(name(), MERGE_SLAVE.name());
         }
 
         public boolean isReceiveArrKey() {
-            return StrUtil.equals(name(), RECEIVE_ARR_KEY.name());
+            return StrUtil.equals(name(), RECEIVE_ARR.name());
         }
     }
 

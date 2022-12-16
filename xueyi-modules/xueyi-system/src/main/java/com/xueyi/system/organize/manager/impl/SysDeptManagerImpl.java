@@ -4,7 +4,7 @@ import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.constant.basic.SqlConstants;
-import com.xueyi.common.web.entity.domain.SubRelation;
+import com.xueyi.common.web.entity.domain.SlaveRelation;
 import com.xueyi.common.web.entity.manager.impl.TreeManagerImpl;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
 import com.xueyi.system.api.organize.domain.model.SysDeptConverter;
@@ -46,10 +46,10 @@ public class SysDeptManagerImpl extends TreeManagerImpl<SysDeptQuery, SysDeptDto
      *
      * @return 关系对象集合
      */
-    protected List<SubRelation> subRelationInit() {
+    protected List<SlaveRelation> subRelationInit() {
         return new ArrayList<>(){{
-            add(new SubRelation(DEPT_POST_GROUP, SysPostManagerImpl.class));
-            add(new SubRelation(DEPT_ROLE_INDIRECT_GROUP, SysPostManagerImpl.class, SysOrganizeRoleMergeMapper.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
+            add(new SlaveRelation(DEPT_POST_GROUP, SysPostManagerImpl.class));
+            add(new SlaveRelation(DEPT_ROLE_INDIRECT_GROUP, SysPostManagerImpl.class, SysOrganizeRoleMergeMapper.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
         }};
     }
 

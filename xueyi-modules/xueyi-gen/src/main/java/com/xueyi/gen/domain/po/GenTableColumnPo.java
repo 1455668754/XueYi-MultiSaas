@@ -26,7 +26,7 @@ public class GenTableColumnPo extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /** 归属表Id */
-    @Correlation(groupName = GEN_TABLE_GROUP, keyType = OperateConstants.SubKeyType.SUB_KEY)
+    @Correlation(groupName = GEN_TABLE_GROUP, keyType = OperateConstants.SubKeyType.SLAVE)
     protected Long tableId;
 
     /** 列描述 */

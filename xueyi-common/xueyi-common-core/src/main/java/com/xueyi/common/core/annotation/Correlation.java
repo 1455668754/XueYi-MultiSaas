@@ -5,7 +5,7 @@ import com.xueyi.common.core.constant.basic.OperateConstants;
 import java.lang.annotation.*;
 
 /**
- * 关联关系定义注解
+ * 从属关联关系定义注解
  *
  * @author xueyi
  */

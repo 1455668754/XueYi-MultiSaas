@@ -15,6 +15,16 @@ public class ClassUtil extends cn.hutool.core.util.ClassUtil {
      * @param fieldType 类型
      * @return 结果
      */
+    public static boolean isNotArray(Class<?> fieldType) {
+        return !isArray(fieldType);
+    }
+
+    /**
+     * 判断返回值类型是否是数组类型
+     *
+     * @param fieldType 类型
+     * @return 结果
+     */
     public static boolean isArray(Class<?> fieldType) {
         return fieldType.isArray();
     }
@@ -25,7 +35,21 @@ public class ClassUtil extends cn.hutool.core.util.ClassUtil {
      * @param fieldType 类型
      * @return 结果
      */
+    public static boolean isNotCollection(Class<?> fieldType) {
+        return !isCollection(fieldType);
+    }
+
+    /**
+     * 判断返回值类型是否是集合类型
+     *
+     * @param fieldType 类型
+     * @return 结果
+     */
     public static boolean isCollection(Class<?> fieldType) {
         return Collection.class.isAssignableFrom(fieldType);
+    }
+
+    public static boolean isNotNormalClass(Class<?> clazz) {
+        return !isNormalClass(clazz);
     }
 }

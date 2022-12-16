@@ -29,7 +29,7 @@ public class SysDictDataPo extends BaseEntity {
 
     /** 字典编码 */
     @Excel(name = "字典编码")
-    @Correlation(groupName = DICT_DATA_GROUP, keyType = OperateConstants.SubKeyType.SUB_KEY)
+    @Correlation(groupName = DICT_DATA_GROUP, keyType = OperateConstants.SubKeyType.SLAVE)
     @TableField(updateStrategy = FieldStrategy.NEVER)
     protected String code;
 

@@ -26,7 +26,7 @@ public class SysJobLogPo extends TBaseEntity {
     private static final long serialVersionUID = 1L;
 
     /** 任务Id */
-    @Correlation(groupName = JOB_LOG_GROUP, keyType = OperateConstants.SubKeyType.SUB_KEY)
+    @Correlation(groupName = JOB_LOG_GROUP, keyType = OperateConstants.SubKeyType.SLAVE)
     protected Long jobId;
 
     /** 任务组名 */

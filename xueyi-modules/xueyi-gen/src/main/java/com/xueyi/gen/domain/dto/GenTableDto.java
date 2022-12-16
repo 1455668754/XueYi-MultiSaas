@@ -32,7 +32,7 @@ public class GenTableDto extends GenTablePo {
     private GenTableDto subTable;
 
     /** 业务字段数据集合 */
-    @Correlation(groupName = GEN_TABLE_GROUP, keyType = OperateConstants.SubKeyType.RECEIVE_KEY)
+    @Correlation(groupName = GEN_TABLE_GROUP, keyType = OperateConstants.SubKeyType.RECEIVE)
     private List<GenTableColumnDto> subList;
 
     public static boolean isBase(String tplCategory) {

@@ -13,17 +13,12 @@ public class UtilErrorConstants {
     /** 校验内容 */
     @Getter
     @AllArgsConstructor
-    public enum MergeUtil {
-
-        MAIN_CLASS_NULL("400", "映射对象未正常传入！"),
-        FIELD_NULL("400", "分组{}的主子映射关系未正常映射，请检查{}是否正常进行注解！"),
-        RECEIVE_NULL("400", "分组{}属于间接连接，值接收键至少存在一个，请检查是否正常进行注解！"),
-        RECEIVE_KEY_TYPE_ERROR("400", "值接收键的类型必须是对象或者集合！"),
-        RECEIVE_KEY_TYPE_INDIRECT_ERROR("400", "间接关联类型 - 值接收键的类型必须是集合！"),
-        MERGE_CLASS_NULL("400", "分组{}属于间接连接，关联类class必须存在！"),
-        MERGE_PO_CLASS_NULL("400", "分组{}属于间接连接，关联类对象class必须存在！"),
+    public enum MergeError {
         MERGE_PO_CLASS_EQUAL("400", "关联类对象class与Mapper对应Class不一致！"),
-        RECEIVE_ARR_KEY_TYPE_ERROR("400", "值子关联接收键的类型必须是数组或者集合！");
+        CORRELATION_ERROR("400", "分组{}中，映射对象配置错误，请检查代码！"),
+        RECEIVE_DIRECT_TYPE_ERROR("400", "分组{}中，直接关联时，主数据对象中，关联数据接收字段的类型必须是对象或者集合！"),
+        RECEIVE_INDIRECT_TYPE_ERROR("400", "分组{}中，间接关联时，主数据对象中，关联数据接收字段的类型必须是集合！"),
+        RECEIVE_ARR_TYPE_ERROR("400", "分组{}中，主数据对象中，关联数据键值接收字段的类型必须是数组或者集合！");
 
         private final String code;
         private final String info;

@@ -2,7 +2,7 @@ package com.xueyi.system.dict.manager.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.basic.SqlConstants;
-import com.xueyi.common.web.entity.domain.SubRelation;
+import com.xueyi.common.web.entity.domain.SlaveRelation;
 import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.system.api.dict.domain.dto.SysDictTypeDto;
 import com.xueyi.system.api.dict.domain.model.SysDictTypeConverter;
@@ -30,9 +30,9 @@ public class SysDictTypeManagerImpl extends BaseManagerImpl<SysDictTypeQuery, Sy
      *
      * @return 关系对象集合
      */
-    protected List<SubRelation> subRelationInit() {
+    protected List<SlaveRelation> subRelationInit() {
         return new ArrayList<>(){{
-            add(new SubRelation(DICT_DATA_GROUP, SysDictDataManagerImpl.class));
+            add(new SlaveRelation(DICT_DATA_GROUP, SysDictDataManagerImpl.class));
         }};
     }
 

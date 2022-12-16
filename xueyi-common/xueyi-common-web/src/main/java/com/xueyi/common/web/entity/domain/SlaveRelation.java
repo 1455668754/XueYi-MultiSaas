@@ -17,58 +17,58 @@ import lombok.NoArgsConstructor;
 import java.lang.reflect.Field;
 
 /**
- * 子类关联对象
+ * 从属关联关系定义对象
  *
  * @author xueyi
  */
 @Data
 @NoArgsConstructor
-public class SubRelation {
+public class SlaveRelation {
 
-    /** 子类class */
-    private Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> subClass;
+    /** 从数据 - 方法类class */
+    private Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> slaveClass;
 
     /** 分组名称 */
     private String groupName;
 
-    /** 表关联类型 */
+    /** 关联类型 */
     private SubTableType relationType;
 
     /** 删除类型 */
     private SubDeleteType deleteType;
 
-    /** 主关联键字段 */
-    private Field mainKeyField;
+    /** 主数据对象 - 关联键字段 */
+    private Field mainField;
 
-    /** 子关联键字段 */
-    private Field subKeyField;
+    /** 从数据对象 - 关联键字段 */
+    private Field slaveField;
 
-    /** 子关联键 - 数据库字段名 */
-    private String subFieldSqlName;
+    /** 从数据对象 - 关联键字段 - 数据库字段名 */
+    private String slaveFieldSqlName;
 
-    /** 值接收键字段 */
-    private Field receiveKeyField;
+    /** 主数据对象 - 关联数据接收字段 */
+    private Field receiveField;
 
-    /** 关联类class */
+    /** 间接关联 - 中间类class */
     private Class<? extends BasicMapper<? extends BasisEntity>> mergeClass;
 
-    /** 关联类对象class */
+    /** 中间数据对象 - 间接关联 - 中间类数据对象class */
     private Class<? extends BasisEntity> mergePoClass;
 
-    /** 间接关联 - 关联主键字段 */
-    private Field mergeMainKeyField;
+    /** 中间数据对象 - 间接关联 - 主数据关联键字段 */
+    private Field mergeMainField;
 
-    /** 间接关联 - 关联主键 - 数据库字段名 */
+    /** 中间数据对象 - 间接关联 - 主数据关联键字段 - 数据库字段名 */
     private String mergeMainFieldSqlName;
 
-    /** 间接关联 - 关联子键字段 */
-    private Field mergeSubKeyField;
+    /** 中间数据对象 - 间接关联 - 从数据关联键字段 */
+    private Field mergeSlaveField;
 
-    /** 间接关联 - 关联子键 - 数据库字段名 */
-    private String mergeSubFieldSqlName;
+    /** 中间数据对象 - 间接关联 - 从数据关联键字段 - 数据库字段名 */
+    private String mergeSlaveFieldSqlName;
 
-    /** 间接关联 - 关联子键值接收键字段 */
-    private Field receiveArrKeyField;
+    /** 主数据对象 - 间接关联 - 关联数据键值接收字段 */
+    private Field receiveArrField;
 
     /** 查询操作 */
     private Boolean isSelect;
@@ -83,34 +83,34 @@ public class SubRelation {
     private Boolean isDelete;
 
 
-    public SubRelation(String groupName, Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> subClass, SubOperateLimit... operateTypes) {
+    public SlaveRelation(String groupName, Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> slaveClass, SubOperateLimit... operateTypes) {
         this.groupName = groupName;
-        this.subClass = subClass;
+        this.slaveClass = slaveClass;
         this.relationType = SubTableType.DIRECT;
         this.deleteType = SubDeleteType.NORMAL;
         initOperate(operateTypes);
     }
 
-    public SubRelation(String groupName, Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> subClass, SubDeleteType deleteType, SubOperateLimit... operateTypes) {
+    public SlaveRelation(String groupName, Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> slaveClass, SubDeleteType deleteType, SubOperateLimit... operateTypes) {
         this.groupName = groupName;
-        this.subClass = subClass;
+        this.slaveClass = slaveClass;
         this.relationType = SubTableType.DIRECT;
         this.deleteType = deleteType;
         initOperate(operateTypes);
     }
 
-    public SubRelation(String groupName, Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> subClass, Class<? extends BasicMapper<? extends BasisEntity>> mergeClass, SubOperateLimit... operateTypes) {
+    public SlaveRelation(String groupName, Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> slaveClass, Class<? extends BasicMapper<? extends BasisEntity>> mergeClass, SubOperateLimit... operateTypes) {
         this.groupName = groupName;
-        this.subClass = subClass;
+        this.slaveClass = slaveClass;
         this.mergeClass = mergeClass;
         this.relationType = SubTableType.INDIRECT;
         this.deleteType = SubDeleteType.NORMAL;
         initOperate(operateTypes);
     }
 
-    public SubRelation(String groupName, Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> subClass, Class<? extends BasicMapper<? extends BasisEntity>> mergeClass, SubDeleteType deleteType, SubOperateLimit... operateTypes) {
+    public SlaveRelation(String groupName, Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> slaveClass, Class<? extends BasicMapper<? extends BasisEntity>> mergeClass, SubDeleteType deleteType, SubOperateLimit... operateTypes) {
         this.groupName = groupName;
-        this.subClass = subClass;
+        this.slaveClass = slaveClass;
         this.mergeClass = mergeClass;
         this.relationType = SubTableType.INDIRECT;
         this.deleteType = deleteType;

@@ -33,7 +33,7 @@ public class SysPostPo extends TBaseEntity {
 
     /** 部门Id */
     @NotNull(message = "归属部门不能为空")
-    @Correlation(groupName = DEPT_POST_GROUP, keyType = OperateConstants.SubKeyType.SUB_KEY)
+    @Correlation(groupName = DEPT_POST_GROUP, keyType = OperateConstants.SubKeyType.SLAVE)
     protected Long deptId;
 
     /** 岗位编码 */

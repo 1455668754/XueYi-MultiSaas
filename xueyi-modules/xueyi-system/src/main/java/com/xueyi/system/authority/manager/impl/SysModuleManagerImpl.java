@@ -6,7 +6,7 @@ import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.security.utils.SecurityUtils;
-import com.xueyi.common.web.entity.domain.SubRelation;
+import com.xueyi.common.web.entity.domain.SlaveRelation;
 import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
 import com.xueyi.system.api.authority.domain.model.SysModuleConverter;
@@ -49,9 +49,9 @@ public class SysModuleManagerImpl extends BaseManagerImpl<SysModuleQuery, SysMod
      *
      * @return 关系对象集合
      */
-    protected List<SubRelation> subRelationInit() {
+    protected List<SlaveRelation> subRelationInit() {
         return new ArrayList<>(){{
-            add(new SubRelation(MODULE_MENU_GROUP, SysMenuManagerImpl.class));
+            add(new SlaveRelation(MODULE_MENU_GROUP, SysMenuManagerImpl.class));
         }};
     }
 

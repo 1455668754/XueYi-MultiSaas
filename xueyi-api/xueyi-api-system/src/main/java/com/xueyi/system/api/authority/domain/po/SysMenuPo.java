@@ -30,7 +30,7 @@ public class SysMenuPo extends TCTreeEntity<SysMenuDto> {
 
     /** 模块Id */
     @NotNull(message = "模块Id不能为空")
-    @Correlation(groupName = MODULE_MENU_GROUP, keyType = OperateConstants.SubKeyType.SUB_KEY)
+    @Correlation(groupName = MODULE_MENU_GROUP, keyType = OperateConstants.SubKeyType.SLAVE)
     protected Long moduleId;
 
     /** 菜单标题 | 多语言 */

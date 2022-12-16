@@ -79,7 +79,7 @@ public interface BasicMapper<P extends BasisEntity> extends com.baomidou.mybatis
             Collection<P> coll = (Collection<P>) fieldColl;
             return this.insertBatch(coll);
         } else {
-            throw new UtilException(UtilErrorConstants.MergeUtil.MERGE_PO_CLASS_EQUAL.getInfo());
+            throw new UtilException(UtilErrorConstants.MergeError.MERGE_PO_CLASS_EQUAL.getInfo());
         }
     }
 

@@ -3,7 +3,7 @@ package com.xueyi.common.core.annotation;
 import java.lang.annotation.*;
 
 /**
- * 关联关系定义注解集
+ * 从属关联关系定义注解集
  *
  * @author xueyi
  */
