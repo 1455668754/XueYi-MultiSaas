@@ -119,13 +119,13 @@ public class MergeUtil {
      * @param DClass          数据对象Class
      */
     public static <D> int editMerge(D originDto, D newDto, List<SubRelation> subRelationList, Class<D> DClass) {
-        if (ObjectUtil.isNull(originDto) || CollUtil.isEmpty(subRelationList))
+        if (ObjectUtil.isAllEmpty(originDto, newDto) || CollUtil.isEmpty(subRelationList))
             return NumberUtil.Zero;
         int rows = NumberUtil.Zero;
         for (SubRelation subRelation : subRelationList) {
             initRelationField(subRelation, DClass);
             if (subRelation.getRelationType().isIndirect()) {
-                rows += insertIndirectObj(originDto, subRelation);
+                rows += updateIndirectObj(originDto, newDto, subRelation);
             }
         }
         return rows;
@@ -140,13 +140,13 @@ public class MergeUtil {
      * @param DClass          数据对象Class
      */
     public static <D> int editMerge(Collection<D> originList, Collection<D> newList, List<SubRelation> subRelationList, Class<D> DClass) {
-        if (CollUtil.isEmpty(originList) || CollUtil.isEmpty(subRelationList))
+        if ((CollUtil.isEmpty(originList) && CollUtil.isEmpty(newList)) || CollUtil.isEmpty(subRelationList))
             return NumberUtil.Zero;
         int rows = NumberUtil.Zero;
         for (SubRelation subRelation : subRelationList) {
             initRelationField(subRelation, DClass);
             if (subRelation.getRelationType().isIndirect()) {
-                rows += insertIndirectList(originList, subRelation);
+                rows += updateIndirectList(originList, newList, subRelation);
             }
         }
         return rows;
@@ -166,7 +166,7 @@ public class MergeUtil {
         for (SubRelation subRelation : subRelationList) {
             initRelationField(subRelation, DClass);
             if (subRelation.getRelationType().isIndirect()) {
-                rows += insertIndirectObj(dto, subRelation);
+                rows += deleteIndirectObj(dto, subRelation);
             }
         }
         return rows;
@@ -186,7 +186,7 @@ public class MergeUtil {
         for (SubRelation subRelation : subRelationList) {
             initRelationField(subRelation, DClass);
             if (subRelation.getRelationType().isIndirect()) {
-                rows += insertIndirectList(dtoList, subRelation);
+                rows += deleteIndirectList(dtoList, subRelation);
             }
         }
         return rows;
@@ -322,11 +322,16 @@ public class MergeUtil {
                     : StrUtil.toUnderlineCase(subRelation.getSubKeyField().getName()));
         }
 
+        // init mergeKeyField sql name
         if (subRelation.getRelationType().isIndirect()) {
-            TableField mergeTableField = subRelation.getMergeMainKeyField().getAnnotation(TableField.class);
-            subRelation.setMergeMainFieldSqlName(ObjectUtil.isNotNull(mergeTableField) && StrUtil.isNotEmpty(mergeTableField.value())
-                    ? mergeTableField.value()
+            TableField mergeMainKeyField = subRelation.getMergeMainKeyField().getAnnotation(TableField.class);
+            subRelation.setMergeMainFieldSqlName(ObjectUtil.isNotNull(mergeMainKeyField) && StrUtil.isNotEmpty(mergeMainKeyField.value())
+                    ? mergeMainKeyField.value()
                     : StrUtil.toUnderlineCase(subRelation.getMergeMainKeyField().getName()));
+            TableField mergeSubKeyField = subRelation.getMergeSubKeyField().getAnnotation(TableField.class);
+            subRelation.setMergeMainFieldSqlName(ObjectUtil.isNotNull(mergeSubKeyField) && StrUtil.isNotEmpty(mergeSubKeyField.value())
+                    ? mergeSubKeyField.value()
+                    : StrUtil.toUnderlineCase(subRelation.getMergeSubKeyField().getName()));
         }
     }
 
@@ -519,6 +524,52 @@ public class MergeUtil {
         if (CollUtil.isEmpty(list))
             return NumberUtil.Zero;
         return SpringUtil.getBean(subRelation.getMergeClass()).insertByField(list, subRelation.getMergePoClass());
+    }
+
+    /**
+     * 新增关联数据 | 间接关联
+     *
+     * @param originDto   源数据对象
+     * @param newDto      新数据对象
+     * @param subRelation 子类关联对象
+     */
+    private static <D, MP extends BasisEntity> int updateIndirectObj(D originDto, D newDto, SubRelation subRelation) {
+        return 0;
+    }
+
+    /**
+     * 新增关联数据 | 间接关联
+     *
+     * @param originList  源数据对象集合
+     * @param newList     新数据对象集合
+     * @param subRelation 子类关联对象
+     */
+    private static <D, MP extends BasisEntity> int updateIndirectList(Collection<D> originList, Collection<D> newList, SubRelation subRelation) {
+        return 0;
+    }
+
+    /**
+     * 新增关联数据 | 间接关联
+     *
+     * @param dto         数据对象
+     * @param subRelation 子类关联对象
+     */
+    private static <D> int deleteIndirectObj(D dto, SubRelation subRelation) {
+        Object delKey = getFieldObj(dto, subRelation.getMainKeyField());
+        SqlField sqlField = new SqlField(SqlConstants.OperateType.EQ, subRelation.getMergeMainFieldSqlName(), delKey);
+        return SpringUtil.getBean(subRelation.getMergeClass()).deleteByField(sqlField);
+    }
+
+    /**
+     * 新增关联数据 | 间接关联
+     *
+     * @param dtoList     数据对象集合
+     * @param subRelation 子类关联对象
+     */
+    private static <D> int deleteIndirectList(Collection<D> dtoList, SubRelation subRelation) {
+        Set<Object> delKeys = dtoList.stream().map(item -> getFieldObj(item, subRelation.getMainKeyField())).collect(Collectors.toSet());
+        SqlField sqlField = new SqlField(SqlConstants.OperateType.IN, subRelation.getMergeMainFieldSqlName(), delKeys);
+        return SpringUtil.getBean(subRelation.getMergeClass()).deleteByField(sqlField);
     }
 
     /**

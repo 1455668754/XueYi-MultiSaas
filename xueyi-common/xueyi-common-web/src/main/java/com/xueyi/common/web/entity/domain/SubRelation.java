@@ -60,6 +60,9 @@ public class SubRelation {
     /** 间接关联 - 关联子键字段 */
     private Field mergeSubKeyField;
 
+    /** 间接关联 - 关联子键 - 数据库字段名 */
+    private String mergeSubKeyFieldSqlName;
+
     /** 间接关联 - 关联子键值接收键字段 */
     private Field receiveArrKeyField;
 
