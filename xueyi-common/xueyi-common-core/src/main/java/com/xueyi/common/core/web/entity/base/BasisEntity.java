@@ -45,6 +45,7 @@ public class BasisEntity implements Serializable {
     @TableField(exist = false)
     protected Map<String, Object> params;
 
+    @JsonIgnore
     public String getIdStr() {
         return ObjectUtil.isNotNull(id) ? id.toString() : null;
     }
@@ -54,6 +55,7 @@ public class BasisEntity implements Serializable {
      *
      * @param operate 操作类型
      */
+    @JsonIgnore
     public void initOperate(BaseConstants.Operate operate) {
         if (ObjectUtil.isNull(this.operate))
             this.operate = operate;
