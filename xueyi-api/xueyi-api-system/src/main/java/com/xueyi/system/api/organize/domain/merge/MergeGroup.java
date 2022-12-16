@@ -11,5 +11,5 @@ public interface MergeGroup {
     String DEPT_POST_GROUP = "dept_post_direct_group";
 
     /** 部门 | 角色 */
-    String DEPT_ROLE_GROUP = "dept_role_indirect_group";
+    String DEPT_ROLE_INDIRECT_GROUP = "dept_role_indirect_group";
 }

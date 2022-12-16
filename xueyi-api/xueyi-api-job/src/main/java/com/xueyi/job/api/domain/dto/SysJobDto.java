@@ -1,6 +1,6 @@
 package com.xueyi.job.api.domain.dto;
 
-import com.xueyi.common.core.annotation.SubRelation;
+import com.xueyi.common.core.annotation.Correlation;
 import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.job.api.domain.po.SysJobPo;
 import lombok.Data;
@@ -24,6 +24,6 @@ public class SysJobDto extends SysJobPo {
     private static final long serialVersionUID = 1L;
 
     /** 任务记录数据集合 */
-    @SubRelation(groupName = JOB_LOG_GROUP, keyType = OperateConstants.SubKeyType.RECEIVE_KEY)
+    @Correlation(groupName = JOB_LOG_GROUP, keyType = OperateConstants.SubKeyType.RECEIVE_KEY)
     private List<SysJobLogDto> subList;
 }

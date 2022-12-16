@@ -3,13 +3,14 @@ package com.xueyi.common.core.annotation;
 import java.lang.annotation.*;
 
 /**
- * 树转换注解
+ * 关联关系定义注解集
  *
  * @author xueyi
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD, ElementType.ANNOTATION_TYPE})
-public @interface TreeRelation {
+@Target({ElementType.FIELD})
+public @interface Correlations {
 
+    Correlation[] value();
 }

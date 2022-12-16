@@ -2,8 +2,8 @@ package com.xueyi.system.api.organize.domain.po;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.xueyi.common.core.annotation.Correlation;
 import com.xueyi.common.core.annotation.Excel;
-import com.xueyi.common.core.annotation.SubRelation;
 import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.web.tenant.base.TBaseEntity;
 import com.xueyi.common.core.xss.Xss;
@@ -33,7 +33,7 @@ public class SysPostPo extends TBaseEntity {
 
     /** 部门Id */
     @NotNull(message = "归属部门不能为空")
-    @SubRelation(groupName = DEPT_POST_GROUP, keyType = OperateConstants.SubKeyType.SUB_KEY)
+    @Correlation(groupName = DEPT_POST_GROUP, keyType = OperateConstants.SubKeyType.SUB_KEY)
     protected Long deptId;
 
     /** 岗位编码 */

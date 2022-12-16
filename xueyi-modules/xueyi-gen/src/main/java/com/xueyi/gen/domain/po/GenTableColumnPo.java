@@ -1,7 +1,7 @@
 package com.xueyi.gen.domain.po;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.xueyi.common.core.annotation.SubRelation;
+import com.xueyi.common.core.annotation.Correlation;
 import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import lombok.Data;
@@ -26,7 +26,7 @@ public class GenTableColumnPo extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /** 归属表Id */
-    @SubRelation(groupName = GEN_TABLE_GROUP, keyType = OperateConstants.SubKeyType.SUB_KEY)
+    @Correlation(groupName = GEN_TABLE_GROUP, keyType = OperateConstants.SubKeyType.SUB_KEY)
     protected Long tableId;
 
     /** 列描述 */

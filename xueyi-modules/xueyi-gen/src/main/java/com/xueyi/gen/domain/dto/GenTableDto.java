@@ -1,6 +1,6 @@
 package com.xueyi.gen.domain.dto;
 
-import com.xueyi.common.core.annotation.SubRelation;
+import com.xueyi.common.core.annotation.Correlation;
 import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.constant.gen.GenConstants;
 import com.xueyi.common.core.utils.core.StrUtil;
@@ -32,7 +32,7 @@ public class GenTableDto extends GenTablePo {
     private GenTableDto subTable;
 
     /** 业务字段数据集合 */
-    @SubRelation(groupName = GEN_TABLE_GROUP, keyType = OperateConstants.SubKeyType.RECEIVE_KEY)
+    @Correlation(groupName = GEN_TABLE_GROUP, keyType = OperateConstants.SubKeyType.RECEIVE_KEY)
     private List<GenTableColumnDto> subList;
 
     public static boolean isBase(String tplCategory) {

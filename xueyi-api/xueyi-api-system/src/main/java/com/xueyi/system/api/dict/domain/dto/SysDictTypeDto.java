@@ -1,6 +1,6 @@
 package com.xueyi.system.api.dict.domain.dto;
 
-import com.xueyi.common.core.annotation.SubRelation;
+import com.xueyi.common.core.annotation.Correlation;
 import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.dict.domain.po.SysDictTypePo;
@@ -25,7 +25,7 @@ public class SysDictTypeDto extends SysDictTypePo {
     private static final long serialVersionUID = 1L;
 
     /** 字典数据 */
-    @SubRelation(groupName = DICT_DATA_GROUP, keyType = OperateConstants.SubKeyType.RECEIVE_KEY)
+    @Correlation(groupName = DICT_DATA_GROUP, keyType = OperateConstants.SubKeyType.RECEIVE_KEY)
     private List<SysMenuDto> subList;
 
 }

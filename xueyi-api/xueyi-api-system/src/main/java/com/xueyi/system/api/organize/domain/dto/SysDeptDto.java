@@ -1,6 +1,6 @@
 package com.xueyi.system.api.organize.domain.dto;
 
-import com.xueyi.common.core.annotation.SubRelation;
+import com.xueyi.common.core.annotation.Correlation;
 import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
 import com.xueyi.system.api.organize.domain.po.SysDeptPo;
@@ -31,7 +31,7 @@ public class SysDeptDto extends SysDeptPo {
     private Long[] roleIds;
 
     /** 部门数据 */
-    @SubRelation(groupName = DEPT_POST_GROUP, keyType = OperateConstants.SubKeyType.RECEIVE_KEY)
+    @Correlation(groupName = DEPT_POST_GROUP, keyType = OperateConstants.SubKeyType.RECEIVE_KEY)
     private List<SysPostDto> subList;
 
 }

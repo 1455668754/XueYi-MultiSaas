@@ -1,8 +1,8 @@
 package com.xueyi.job.api.domain.po;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.xueyi.common.core.annotation.Correlation;
 import com.xueyi.common.core.annotation.Excel;
-import com.xueyi.common.core.annotation.SubRelation;
 import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.web.tenant.base.TBaseEntity;
 import lombok.Data;
@@ -26,7 +26,7 @@ public class SysJobLogPo extends TBaseEntity {
     private static final long serialVersionUID = 1L;
 
     /** 任务Id */
-    @SubRelation(groupName = JOB_LOG_GROUP, keyType = OperateConstants.SubKeyType.SUB_KEY)
+    @Correlation(groupName = JOB_LOG_GROUP, keyType = OperateConstants.SubKeyType.SUB_KEY)
     protected Long jobId;
 
     /** 任务组名 */

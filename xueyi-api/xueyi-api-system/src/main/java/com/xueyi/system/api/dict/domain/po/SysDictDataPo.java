@@ -3,8 +3,8 @@ package com.xueyi.system.api.dict.domain.po;
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.xueyi.common.core.annotation.Correlation;
 import com.xueyi.common.core.annotation.Excel;
-import com.xueyi.common.core.annotation.SubRelation;
 import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import lombok.Data;
@@ -29,7 +29,7 @@ public class SysDictDataPo extends BaseEntity {
 
     /** 字典编码 */
     @Excel(name = "字典编码")
-    @SubRelation(groupName = DICT_DATA_GROUP, keyType = OperateConstants.SubKeyType.SUB_KEY)
+    @Correlation(groupName = DICT_DATA_GROUP, keyType = OperateConstants.SubKeyType.SUB_KEY)
     @TableField(updateStrategy = FieldStrategy.NEVER)
     protected String code;
 

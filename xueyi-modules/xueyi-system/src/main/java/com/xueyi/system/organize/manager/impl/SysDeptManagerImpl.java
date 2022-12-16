@@ -2,6 +2,7 @@ package com.xueyi.system.organize.manager.impl;
 
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.constant.basic.SqlConstants;
 import com.xueyi.common.web.entity.domain.SubRelation;
 import com.xueyi.common.web.entity.manager.impl.TreeManagerImpl;
@@ -24,6 +25,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static com.xueyi.system.api.organize.domain.merge.MergeGroup.DEPT_POST_GROUP;
+import static com.xueyi.system.api.organize.domain.merge.MergeGroup.DEPT_ROLE_INDIRECT_GROUP;
 
 /**
  * 部门管理 数据封装层处理
@@ -47,6 +49,7 @@ public class SysDeptManagerImpl extends TreeManagerImpl<SysDeptQuery, SysDeptDto
     protected List<SubRelation> subRelationInit() {
         return new ArrayList<>(){{
             add(new SubRelation(DEPT_POST_GROUP, SysPostManagerImpl.class));
+            add(new SubRelation(DEPT_ROLE_INDIRECT_GROUP, SysPostManagerImpl.class, SysOrganizeRoleMergeMapper.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
         }};
     }
 

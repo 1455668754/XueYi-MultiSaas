@@ -1,7 +1,7 @@
 package com.xueyi.common.web.entity.domain;
 
 import com.xueyi.common.core.constant.basic.OperateConstants.SubDeleteType;
-import com.xueyi.common.core.constant.basic.OperateConstants.SubOperateType;
+import com.xueyi.common.core.constant.basic.OperateConstants.SubOperateLimit;
 import com.xueyi.common.core.constant.basic.OperateConstants.SubTableType;
 import com.xueyi.common.core.utils.core.ArrayUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
@@ -65,7 +65,7 @@ public class SubRelation {
     private Field mergeSubKeyField;
 
     /** 间接关联 - 关联子键 - 数据库字段名 */
-    private String mergeSubKeyFieldSqlName;
+    private String mergeSubFieldSqlName;
 
     /** 间接关联 - 关联子键值接收键字段 */
     private Field receiveArrKeyField;
@@ -83,7 +83,7 @@ public class SubRelation {
     private Boolean isDelete;
 
 
-    public SubRelation(String groupName, Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> subClass, SubOperateType... operateTypes) {
+    public SubRelation(String groupName, Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> subClass, SubOperateLimit... operateTypes) {
         this.groupName = groupName;
         this.subClass = subClass;
         this.relationType = SubTableType.DIRECT;
@@ -91,7 +91,7 @@ public class SubRelation {
         initOperate(operateTypes);
     }
 
-    public SubRelation(String groupName, Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> subClass, SubDeleteType deleteType, SubOperateType... operateTypes) {
+    public SubRelation(String groupName, Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> subClass, SubDeleteType deleteType, SubOperateLimit... operateTypes) {
         this.groupName = groupName;
         this.subClass = subClass;
         this.relationType = SubTableType.DIRECT;
@@ -99,7 +99,7 @@ public class SubRelation {
         initOperate(operateTypes);
     }
 
-    public SubRelation(String groupName, Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> subClass, Class<? extends BasicMapper<? extends BasisEntity>> mergeClass, SubOperateType... operateTypes) {
+    public SubRelation(String groupName, Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> subClass, Class<? extends BasicMapper<? extends BasisEntity>> mergeClass, SubOperateLimit... operateTypes) {
         this.groupName = groupName;
         this.subClass = subClass;
         this.mergeClass = mergeClass;
@@ -108,7 +108,7 @@ public class SubRelation {
         initOperate(operateTypes);
     }
 
-    public SubRelation(String groupName, Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> subClass, Class<? extends BasicMapper<? extends BasisEntity>> mergeClass, SubDeleteType deleteType, SubOperateType... operateTypes) {
+    public SubRelation(String groupName, Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> subClass, Class<? extends BasicMapper<? extends BasisEntity>> mergeClass, SubDeleteType deleteType, SubOperateLimit... operateTypes) {
         this.groupName = groupName;
         this.subClass = subClass;
         this.mergeClass = mergeClass;
@@ -118,9 +118,9 @@ public class SubRelation {
     }
 
     /** 初始化操作 */
-    public void initOperate(SubOperateType... operateTypes) {
+    public void initOperate(SubOperateLimit... operateTypes) {
         if (ArrayUtil.isNotEmpty(operateTypes)) {
-            for (SubOperateType operateType : operateTypes) {
+            for (SubOperateLimit operateType : operateTypes) {
                 switch (operateType) {
                     case EX_SEL -> this.isSelect = Boolean.FALSE;
                     case EX_ADD -> this.isAdd = Boolean.FALSE;

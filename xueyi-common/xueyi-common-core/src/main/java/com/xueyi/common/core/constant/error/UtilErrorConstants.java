@@ -15,6 +15,7 @@ public class UtilErrorConstants {
     @AllArgsConstructor
     public enum MergeUtil {
 
+        MAIN_CLASS_NULL("400", "映射对象未正常传入！"),
         FIELD_NULL("400", "分组{}的主子映射关系未正常映射，请检查{}是否正常进行注解！"),
         RECEIVE_NULL("400", "分组{}属于间接连接，值接收键至少存在一个，请检查是否正常进行注解！"),
         RECEIVE_KEY_TYPE_ERROR("400", "值接收键的类型必须是对象或者集合！"),

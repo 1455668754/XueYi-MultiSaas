@@ -140,7 +140,21 @@ public class OperateConstants {
     /** 主子关联 - 操作类型 */
     @Getter
     @AllArgsConstructor
-    public enum SubOperateType {
+    public enum SubOperate {
+
+        SELECT("select", "查询类型"),
+        ADD("insert", "新增类型"),
+        EDIT("update", "修改类型"),
+        DELETE("delete", "删除类型");
+
+        private final String code;
+        private final String info;
+    }
+
+    /** 主子关联 - 操作类型限制 */
+    @Getter
+    @AllArgsConstructor
+    public enum SubOperateLimit {
 
         EX_SEL("exclude select", "排除 查询"),
         EX_ADD("exclude insert", "排除 新增"),
@@ -152,4 +166,5 @@ public class OperateConstants {
         private final String code;
         private final String info;
     }
+
 }

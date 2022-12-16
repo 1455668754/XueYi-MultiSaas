@@ -3,7 +3,7 @@ package com.xueyi.system.api.authority.domain.po;
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.xueyi.common.core.annotation.SubRelation;
+import com.xueyi.common.core.annotation.Correlation;
 import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.web.tenant.common.TCTreeEntity;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
@@ -30,7 +30,7 @@ public class SysMenuPo extends TCTreeEntity<SysMenuDto> {
 
     /** 模块Id */
     @NotNull(message = "模块Id不能为空")
-    @SubRelation(groupName = MODULE_MENU_GROUP, keyType = OperateConstants.SubKeyType.SUB_KEY)
+    @Correlation(groupName = MODULE_MENU_GROUP, keyType = OperateConstants.SubKeyType.SUB_KEY)
     protected Long moduleId;
 
     /** 菜单标题 | 多语言 */

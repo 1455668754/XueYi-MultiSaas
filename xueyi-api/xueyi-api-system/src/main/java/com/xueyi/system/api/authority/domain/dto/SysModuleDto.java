@@ -1,6 +1,6 @@
 package com.xueyi.system.api.authority.domain.dto;
 
-import com.xueyi.common.core.annotation.SubRelation;
+import com.xueyi.common.core.annotation.Correlation;
 import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.system.api.authority.domain.po.SysModulePo;
 import lombok.Data;
@@ -24,6 +24,6 @@ public class SysModuleDto extends SysModulePo {
     private static final long serialVersionUID = 1L;
 
     /** 菜单数据 */
-    @SubRelation(groupName = MODULE_MENU_GROUP, keyType = OperateConstants.SubKeyType.RECEIVE_KEY)
+    @Correlation(groupName = MODULE_MENU_GROUP, keyType = OperateConstants.SubKeyType.RECEIVE_KEY)
     private List<SysMenuDto> subList;
 }
