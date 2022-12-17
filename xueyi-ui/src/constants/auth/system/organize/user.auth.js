@@ -11,7 +11,7 @@ export const UserAuth = {
   // 修改用户状态
   EDIT_STATUS: 'organize:user:es',
   // 用户密码修改
-  EDIT_PASSWORD: 'organize:user:rs',
+  EDIT_PASSWORD: 'organize:user:rp',
   // 删除用户
   DELETE: 'organize:user:delete',
   // 用户角色分配
