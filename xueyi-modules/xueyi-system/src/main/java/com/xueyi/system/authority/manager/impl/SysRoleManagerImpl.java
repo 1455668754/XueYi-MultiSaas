@@ -1,8 +1,9 @@
 package com.xueyi.system.authority.manager.impl;
 
-import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.constant.basic.SqlConstants;
+import com.xueyi.common.web.entity.domain.SlaveRelation;
 import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
 import com.xueyi.system.api.authority.domain.model.SysRoleConverter;
@@ -20,11 +21,12 @@ import com.xueyi.system.organize.domain.merge.SysRolePostMerge;
 import com.xueyi.system.organize.mapper.merge.SysOrganizeRoleMergeMapper;
 import com.xueyi.system.organize.mapper.merge.SysRoleDeptMergeMapper;
 import com.xueyi.system.organize.mapper.merge.SysRolePostMergeMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.Serializable;
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.xueyi.system.api.authority.domain.merge.MergeGroup.*;
 
 /**
  * 角色管理 数据封装层处理
@@ -34,94 +36,19 @@ import java.util.Collection;
 @Component
 public class SysRoleManagerImpl extends BaseManagerImpl<SysRoleQuery, SysRoleDto, SysRolePo, SysRoleMapper, SysRoleConverter> implements ISysRoleManager {
 
-    @Autowired
-    private SysRoleModuleMergeMapper roleModuleMergeMapper;
-
-    @Autowired
-    private SysRoleMenuMergeMapper roleMenuMergeMapper;
-
-    @Autowired
-    private SysRoleDeptMergeMapper roleDeptMergeMapper;
-
-    @Autowired
-    private SysRolePostMergeMapper rolePostMergeMapper;
-
-    @Autowired
-    private SysOrganizeRoleMergeMapper organizeRoleMergeMapper;
-
     /**
      * 初始化从属关联关系
      *
      * @return 关系对象集合
      */
-//    protected List<SlaveRelation> subRelationInit() {
-//        return new ArrayList<>(){{
-//            add(new SlaveRelation(ROLE_SysRoleModuleMerge_GROUP, SysRoleModuleMergeMapper.class, SysRoleModuleMerge.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
-//            add(new SlaveRelation(ROLE_SysRoleMenuMerge_GROUP, SysRoleMenuMergeMapper.class, SysRoleMenuMerge.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
-//            add(new SlaveRelation(ROLE_SysRoleDeptMerge_GROUP, SysRoleDeptMergeMapper.class, SysRoleDeptMerge.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
-//            add(new SlaveRelation(ROLE_SysRolePostMerge_GROUP, SysRolePostMergeMapper.class, SysRolePostMerge.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
-//            add(new SlaveRelation(ROLE_SysOrganizeRoleMerge_GROUP, SysOrganizeRoleMergeMapper.class, SysOrganizeRoleMerge.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
-//        }};
-//    }
-
-    /**
-     * 根据Id删除角色对象
-     *
-     * @param id Id
-     * @return 结果
-     */
-    @Override
-    @DSTransactional
-    public int deleteById(Serializable id) {
-        int row = baseMapper.deleteById(id);
-        if (row > 0) {
-            roleModuleMergeMapper.delete(
-                    Wrappers.<SysRoleModuleMerge>update().lambda()
-                            .eq(SysRoleModuleMerge::getRoleId, id));
-            roleMenuMergeMapper.delete(
-                    Wrappers.<SysRoleMenuMerge>update().lambda()
-                            .eq(SysRoleMenuMerge::getRoleId, id));
-            roleDeptMergeMapper.delete(
-                    Wrappers.<SysRoleDeptMerge>update().lambda()
-                            .eq(SysRoleDeptMerge::getRoleId, id));
-            rolePostMergeMapper.delete(
-                    Wrappers.<SysRolePostMerge>update().lambda()
-                            .eq(SysRolePostMerge::getRoleId, id));
-            organizeRoleMergeMapper.delete(
-                    Wrappers.<SysOrganizeRoleMerge>update().lambda()
-                            .eq(SysOrganizeRoleMerge::getRoleId, id));
-        }
-        return row;
-    }
-
-    /**
-     * 根据Id集合批量删除角色对象
-     *
-     * @param idList Id集合
-     * @return 结果
-     */
-    @Override
-    @DSTransactional
-    public int deleteByIds(Collection<? extends Serializable> idList) {
-        int rows = baseMapper.deleteBatchIds(idList);
-        if (rows > 0) {
-            roleModuleMergeMapper.delete(
-                    Wrappers.<SysRoleModuleMerge>update().lambda()
-                            .in(SysRoleModuleMerge::getRoleId, idList));
-            roleMenuMergeMapper.delete(
-                    Wrappers.<SysRoleMenuMerge>update().lambda()
-                            .in(SysRoleMenuMerge::getRoleId, idList));
-            roleDeptMergeMapper.delete(
-                    Wrappers.<SysRoleDeptMerge>update().lambda()
-                            .in(SysRoleDeptMerge::getRoleId, idList));
-            rolePostMergeMapper.delete(
-                    Wrappers.<SysRolePostMerge>update().lambda()
-                            .in(SysRolePostMerge::getRoleId, idList));
-            organizeRoleMergeMapper.delete(
-                    Wrappers.<SysOrganizeRoleMerge>update().lambda()
-                            .in(SysOrganizeRoleMerge::getRoleId, idList));
-        }
-        return rows;
+    protected List<SlaveRelation> subRelationInit() {
+        return new ArrayList<>(){{
+            add(new SlaveRelation(ROLE_SysRoleModuleMerge_GROUP, SysRoleModuleMergeMapper.class, SysRoleModuleMerge.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
+            add(new SlaveRelation(ROLE_SysRoleMenuMerge_GROUP, SysRoleMenuMergeMapper.class, SysRoleMenuMerge.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
+            add(new SlaveRelation(ROLE_SysRoleDeptMerge_GROUP, SysRoleDeptMergeMapper.class, SysRoleDeptMerge.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
+            add(new SlaveRelation(ROLE_SysRolePostMerge_GROUP, SysRolePostMergeMapper.class, SysRolePostMerge.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
+            add(new SlaveRelation(ROLE_SysOrganizeRoleMerge_GROUP, SysOrganizeRoleMergeMapper.class, SysOrganizeRoleMerge.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
+        }};
     }
 
     /**

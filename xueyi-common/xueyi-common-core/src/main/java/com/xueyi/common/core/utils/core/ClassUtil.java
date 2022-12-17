@@ -9,6 +9,18 @@ import java.util.Collection;
  */
 public class ClassUtil extends cn.hutool.core.util.ClassUtil {
 
+    public static boolean notEqual(Class<?> clazz1, Class<?> clazz2) {
+        return !equals(clazz1, clazz2);
+    }
+
+    public static boolean equals(Class<?> clazz1, Class<?> clazz2) {
+        if (ObjectUtil.hasNull(clazz1, clazz2) && !ObjectUtil.isAllEmpty(clazz1, clazz2))
+            return Boolean.FALSE;
+        ClassLoader loader1 = clazz1.getClassLoader();
+        ClassLoader loader2 = clazz2.getClassLoader();
+        return ObjectUtil.equals(loader1, loader2) && ObjectUtil.equals(clazz1.getName(), clazz2.getName()) && ObjectUtil.equals(clazz1.getPackageName(), clazz2.getPackageName());
+    }
+
     /**
      * 判断返回值类型是否是数组类型
      *

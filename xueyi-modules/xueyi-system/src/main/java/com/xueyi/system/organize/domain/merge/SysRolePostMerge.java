@@ -2,6 +2,7 @@ package com.xueyi.system.organize.domain.merge;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.common.core.annotation.Correlation;
+import com.xueyi.common.core.annotation.Correlations;
 import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.web.tenant.base.TBasisEntity;
 import lombok.Data;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 
+import static com.xueyi.system.api.authority.domain.merge.MergeGroup.ROLE_SysRolePostMerge_GROUP;
 import static com.xueyi.system.api.organize.domain.merge.MergeGroup.POST_SysRolePostMerge_GROUP;
 
 /**
@@ -27,11 +29,17 @@ public class SysRolePostMerge extends TBasisEntity {
     private static final long serialVersionUID = 1L;
 
     /** 角色Id */
-    @Correlation(groupName = POST_SysRolePostMerge_GROUP, keyType = OperateConstants.SubKeyType.MERGE_SLAVE)
+    @Correlations({
+            @Correlation(groupName = ROLE_SysRolePostMerge_GROUP, keyType = OperateConstants.SubKeyType.MERGE_MAIN),
+            @Correlation(groupName = POST_SysRolePostMerge_GROUP, keyType = OperateConstants.SubKeyType.MERGE_SLAVE)
+    })
     private Long roleId;
 
     /** 岗位Id */
-    @Correlation(groupName = POST_SysRolePostMerge_GROUP, keyType = OperateConstants.SubKeyType.MERGE_MAIN)
+    @Correlations({
+            @Correlation(groupName = ROLE_SysRolePostMerge_GROUP, keyType = OperateConstants.SubKeyType.MERGE_SLAVE),
+            @Correlation(groupName = POST_SysRolePostMerge_GROUP, keyType = OperateConstants.SubKeyType.MERGE_MAIN)
+    })
     private Long postId;
 
     public SysRolePostMerge(Long roleId, Long postId) {

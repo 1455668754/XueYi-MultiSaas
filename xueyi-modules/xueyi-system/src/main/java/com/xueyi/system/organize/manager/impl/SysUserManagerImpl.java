@@ -78,9 +78,9 @@ public class SysUserManagerImpl extends BaseManagerImpl<SysUserQuery, SysUserDto
      * @return 关系对象集合
      */
     protected List<SlaveRelation> subRelationInit() {
-        return new ArrayList<>(){{
+        return new ArrayList<>() {{
             add(new SlaveRelation(USER_OrganizeRoleMerge_GROUP, SysOrganizeRoleMergeMapper.class, SysOrganizeRoleMerge.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
-            add(new SlaveRelation(USER_SysUserPostMerge_GROUP, SysUserPostMergeMapper.class, SysUserPostMerge.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
+            add(new SlaveRelation(USER_SysUserPostMerge_GROUP, SysPostManagerImpl.class, SysUserPostMergeMapper.class, SysUserPostMerge.class));
         }};
     }
 
@@ -93,7 +93,7 @@ public class SysUserManagerImpl extends BaseManagerImpl<SysUserQuery, SysUserDto
      */
     @Override
     public SysUserDto userLogin(String userName, String password) {
-        SysUserDto userDto = baseConverter.mapperDto(baseMapper.selectOne(
+        SysUserDto userDto = mapperDto(baseMapper.selectOne(
                 Wrappers.<SysUserPo>query().lambda()
                         .eq(SysUserPo::getUserName, userName)));
         // check password is true
@@ -145,45 +145,6 @@ public class SysUserManagerImpl extends BaseManagerImpl<SysUserQuery, SysUserDto
                     : new ArrayList<>());
         }
         return userDto;
-    }
-
-    /**
-     * 根据Id查询单条用户对象 | 附加数据
-     *
-     * @param id Id
-     * @return 用户对象
-     */
-    @Override
-    public SysUserDto selectById(Serializable id) {
-        SysUserDto user = baseConverter.mapperDto(baseMapper.selectById(id));
-        if (ObjectUtil.isNotNull(user)) {
-            List<SysUserPostMerge> userPostMerges = userPostMergeMapper.selectList(
-                    Wrappers.<SysUserPostMerge>query().lambda()
-                            .eq(SysUserPostMerge::getUserId, user.getId()));
-            user.setPostIds(userPostMerges.stream().map(SysUserPostMerge::getPostId).toArray(Long[]::new));
-        }
-        return user;
-    }
-
-    /**
-     * 新增用户对象
-     *
-     * @param user 用户对象
-     * @return 结果
-     */
-    @Override
-    @DSTransactional
-    public int insert(SysUserDto user) {
-        int row = baseMapper.insert(user);
-        if (row > 0) {
-            if (ArrayUtil.isNotEmpty(user.getPostIds())) {
-                userPostMergeMapper.insertBatch(
-                        Arrays.stream(user.getPostIds())
-                                .map(postId -> new SysUserPostMerge(user.getId(), postId))
-                                .collect(Collectors.toSet()));
-            }
-        }
-        return row;
     }
 
     /**
@@ -327,7 +288,7 @@ public class SysUserManagerImpl extends BaseManagerImpl<SysUserQuery, SysUserDto
      */
     @Override
     public SysUserDto checkUserCodeUnique(Long id, String code) {
-        return baseConverter.mapperDto(baseMapper.selectOne(
+        return mapperDto(baseMapper.selectOne(
                 Wrappers.<SysUserPo>query().lambda()
                         .ne(SysUserPo::getId, id)
                         .eq(SysUserPo::getCode, code)
@@ -343,7 +304,7 @@ public class SysUserManagerImpl extends BaseManagerImpl<SysUserQuery, SysUserDto
      */
     @Override
     public SysUserDto checkUserNameUnique(Serializable id, String userName) {
-        return baseConverter.mapperDto(baseMapper.selectOne(
+        return mapperDto(baseMapper.selectOne(
                 Wrappers.<SysUserPo>query().lambda()
                         .ne(SysUserPo::getId, id)
                         .eq(SysUserPo::getUserName, userName)
@@ -359,7 +320,7 @@ public class SysUserManagerImpl extends BaseManagerImpl<SysUserQuery, SysUserDto
      */
     @Override
     public SysUserDto checkNameUnique(Serializable id, String userName) {
-        return baseConverter.mapperDto(baseMapper.selectOne(
+        return mapperDto(baseMapper.selectOne(
                 Wrappers.<SysUserPo>query().lambda()
                         .ne(SysUserPo::getId, id)
                         .eq(SysUserPo::getUserName, userName)
@@ -375,7 +336,7 @@ public class SysUserManagerImpl extends BaseManagerImpl<SysUserQuery, SysUserDto
      */
     @Override
     public SysUserDto checkPhoneUnique(Long id, String phone) {
-        return baseConverter.mapperDto(baseMapper.selectOne(
+        return mapperDto(baseMapper.selectOne(
                 Wrappers.<SysUserPo>query().lambda()
                         .ne(SysUserPo::getId, id)
                         .eq(SysUserPo::getPhone, phone)
@@ -391,7 +352,7 @@ public class SysUserManagerImpl extends BaseManagerImpl<SysUserQuery, SysUserDto
      */
     @Override
     public SysUserDto checkEmailUnique(Long id, String email) {
-        return baseConverter.mapperDto(baseMapper.selectOne(
+        return mapperDto(baseMapper.selectOne(
                 Wrappers.<SysUserPo>query().lambda()
                         .ne(SysUserPo::getId, id)
                         .eq(SysUserPo::getEmail, email)

@@ -5,11 +5,14 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.DictConstants;
+import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.constant.basic.SqlConstants;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.core.utils.core.CollUtil;
+import com.xueyi.common.core.utils.core.NumberUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.security.utils.SecurityUtils;
+import com.xueyi.common.web.entity.domain.SlaveRelation;
 import com.xueyi.common.web.entity.manager.impl.TreeManagerImpl;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.authority.domain.model.SysMenuConverter;
@@ -27,12 +30,12 @@ import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.xueyi.common.core.constant.basic.SqlConstants.*;
+import static com.xueyi.system.api.authority.domain.merge.MergeGroup.MENU_SysRoleMenuMerge_GROUP;
 
 /**
  * 菜单管理 数据封装层处理
@@ -47,6 +50,17 @@ public class SysMenuManagerImpl extends TreeManagerImpl<SysMenuQuery, SysMenuDto
 
     @Autowired
     SysRoleMenuMergeMapper roleMenuMergeMapper;
+
+    /**
+     * 初始化从属关联关系
+     *
+     * @return 关系对象集合
+     */
+    protected List<SlaveRelation> subRelationInit() {
+        return new ArrayList<>() {{
+            add(new SlaveRelation(MENU_SysRoleMenuMerge_GROUP, SysRoleMenuMergeMapper.class, SysRoleMenuMerge.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
+        }};
+    }
 
     /**
      * 登录校验 | 获取超管租户超管用户菜单集合
@@ -243,15 +257,16 @@ public class SysMenuManagerImpl extends TreeManagerImpl<SysMenuQuery, SysMenuDto
      */
     @Override
     public int updateChildrenAncestors(SysMenuDto dto) {
-        String newAncestors = dto.getAncestors() + StrUtil.COMMA + dto.getId();
-        String oldAncestors = dto.getOldAncestors() + StrUtil.COMMA + dto.getId();
-        int levelChange = dto.getLevel() - dto.getOldLevel();
-        return baseMapper.update(null,
-                Wrappers.<SysMenuPo>update().lambda()
+        String newAncestors = dto.getChildAncestors();
+        String oldAncestors = dto.getOldChildAncestors();
+        return StrUtil.notEquals(newAncestors, oldAncestors)
+                ? baseMapper.update(
+                null, Wrappers.<SysMenuPo>update().lambda()
                         .set(SysMenuPo::getModuleId, dto.getModuleId())
-                        .setSql(StrUtil.format(ANCESTORS_PART_UPDATE, SqlConstants.Entity.ANCESTORS.getCode(), SqlConstants.Entity.ANCESTORS.getCode(), 1, oldAncestors.length(), newAncestors))
-                        .setSql(StrUtil.format(TREE_LEVEL_UPDATE, SqlConstants.Entity.LEVEL.getCode(), SqlConstants.Entity.LEVEL.getCode(), levelChange))
-                        .likeRight(SysMenuPo::getAncestors, oldAncestors));
+                        .setSql(StrUtil.format(ANCESTORS_PART_UPDATE, SqlConstants.Entity.ANCESTORS.getCode(), SqlConstants.Entity.ANCESTORS.getCode(), NumberUtil.One, oldAncestors.length(), newAncestors))
+                        .setSql(StrUtil.format(TREE_LEVEL_UPDATE, SqlConstants.Entity.LEVEL.getCode(), SqlConstants.Entity.LEVEL.getCode(), dto.getLevelChange()))
+                        .likeRight(SysMenuPo::getAncestors, oldAncestors))
+                : NumberUtil.Zero;
     }
 
     /**
@@ -262,46 +277,19 @@ public class SysMenuManagerImpl extends TreeManagerImpl<SysMenuQuery, SysMenuDto
      */
     @Override
     public int updateChildren(SysMenuDto dto) {
-        String newAncestors = dto.getAncestors() + StrUtil.COMMA + dto.getId();
-        String oldAncestors = dto.getOldAncestors() + StrUtil.COMMA + dto.getId();
-        int levelChange = dto.getLevel() - dto.getOldLevel();
+        String newAncestors = dto.getChildAncestors();
+        String oldAncestors = dto.getOldChildAncestors();
         return baseMapper.update(null,
                 Wrappers.<SysMenuPo>update().lambda()
-                        .set(SysMenuPo::getModuleId, dto.getModuleId())
                         .set(SysMenuPo::getStatus, dto.getStatus())
-                        .setSql(StrUtil.format(ANCESTORS_PART_UPDATE, SqlConstants.Entity.ANCESTORS.getCode(), SqlConstants.Entity.ANCESTORS.getCode(), 1, oldAncestors.length(), newAncestors))
-                        .setSql(StrUtil.format(TREE_LEVEL_UPDATE, SqlConstants.Entity.LEVEL.getCode(), SqlConstants.Entity.LEVEL.getCode(), levelChange))
+                        .set(SysMenuPo::getModuleId, dto.getModuleId())
+                        .func(i -> {
+                            if (StrUtil.notEquals(newAncestors, oldAncestors)) {
+                                i.setSql(StrUtil.format(ANCESTORS_PART_UPDATE, SqlConstants.Entity.ANCESTORS.getCode(), SqlConstants.Entity.ANCESTORS.getCode(), NumberUtil.One, oldAncestors.length(), newAncestors))
+                                        .setSql(StrUtil.format(TREE_LEVEL_UPDATE, SqlConstants.Entity.LEVEL.getCode(), SqlConstants.Entity.LEVEL.getCode(), dto.getLevelChange()));
+                            }
+                        })
                         .likeRight(SysMenuPo::getAncestors, oldAncestors));
-    }
-
-    /**
-     * 根据Id删除菜单对象 | 同步删除关联表数据
-     *
-     * @param id Id
-     * @return 结果
-     */
-    @Override
-    @DSTransactional
-    public int deleteById(Serializable id) {
-        roleMenuMergeMapper.delete(
-                Wrappers.<SysRoleMenuMerge>update().lambda()
-                        .eq(SysRoleMenuMerge::getMenuId, id));
-        return super.deleteById(id);
-    }
-
-    /**
-     * 根据Id集合批量删除菜单对象 | 同步删除关联表数据
-     *
-     * @param idList Id集合
-     * @return 结果
-     */
-    @Override
-    @DSTransactional
-    public int deleteByIds(Collection<? extends Serializable> idList) {
-        roleMenuMergeMapper.delete(
-                Wrappers.<SysRoleMenuMerge>update().lambda()
-                        .in(SysRoleMenuMerge::getMenuId, idList));
-        return super.deleteByIds(idList);
     }
 
     /**

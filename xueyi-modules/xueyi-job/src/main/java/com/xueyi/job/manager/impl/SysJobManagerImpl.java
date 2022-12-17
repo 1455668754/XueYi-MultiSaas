@@ -1,6 +1,7 @@
 package com.xueyi.job.manager.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.web.annotation.TenantIgnore;
 import com.xueyi.common.web.entity.domain.SlaveRelation;
 import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
@@ -32,7 +33,7 @@ public class SysJobManagerImpl extends BaseManagerImpl<SysJobQuery, SysJobDto, S
      */
     protected List<SlaveRelation> subRelationInit() {
         return new ArrayList<>(){{
-            add(new SlaveRelation(JOB_LOG_GROUP, SysJobLogManagerImpl.class));
+            add(new SlaveRelation(JOB_LOG_GROUP, SysJobLogManagerImpl.class, OperateConstants.SubOperateLimit.EX_ADD_OR_EDIT));
         }};
     }
 

@@ -2,11 +2,8 @@ package com.xueyi.common.web.entity.mapper;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.basic.SqlConstants;
-import com.xueyi.common.core.constant.error.UtilErrorConstants;
-import com.xueyi.common.core.exception.UtilException;
 import com.xueyi.common.core.utils.core.ArrayUtil;
 import com.xueyi.common.core.utils.core.NumberUtil;
-import com.xueyi.common.core.utils.core.TypeUtil;
 import com.xueyi.common.core.web.entity.base.BasisEntity;
 import com.xueyi.common.web.annotation.AutoInject;
 import com.xueyi.common.web.entity.domain.SqlField;
@@ -70,17 +67,12 @@ public interface BasicMapper<P extends BasisEntity> extends com.baomidou.mybatis
      * 批量插入数据
      *
      * @param fieldColl 数据对象集合
-     * @param clazz     数据对象Class
      * @return 结果
      */
     @SuppressWarnings("unchecked")
-    default int insertByField(Collection<?> fieldColl, Class<?> clazz) {
-        if (clazz == TypeUtil.getClazz(getClass().getGenericSuperclass(), NumberUtil.Zero)) {
-            Collection<P> coll = (Collection<P>) fieldColl;
-            return this.insertBatch(coll);
-        } else {
-            throw new UtilException(UtilErrorConstants.MergeError.MERGE_PO_CLASS_EQUAL.getInfo());
-        }
+    default int insertByField(Collection<?> fieldColl) {
+        Collection<P> coll = (Collection<P>) fieldColl;
+        return this.insertBatch(coll);
     }
 
     /**

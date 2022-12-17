@@ -13,7 +13,7 @@ import lombok.EqualsAndHashCode;
 import javax.validation.constraints.NotNull;
 import java.io.Serial;
 
-import static com.xueyi.system.api.authority.domain.merge.MergeGroup.MODULE_MENU_GROUP;
+import static com.xueyi.system.api.authority.domain.merge.MergeGroup.MODULE_SysMenu_GROUP;
 
 /**
  * 菜单 持久化对象
@@ -30,7 +30,7 @@ public class SysMenuPo extends TCTreeEntity<SysMenuDto> {
 
     /** 模块Id */
     @NotNull(message = "模块Id不能为空")
-    @Correlation(groupName = MODULE_MENU_GROUP, keyType = OperateConstants.SubKeyType.SLAVE)
+    @Correlation(groupName = MODULE_SysMenu_GROUP, keyType = OperateConstants.SubKeyType.SLAVE)
     protected Long moduleId;
 
     /** 菜单标题 | 多语言 */

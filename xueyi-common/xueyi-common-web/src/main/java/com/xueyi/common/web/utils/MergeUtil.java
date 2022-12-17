@@ -16,6 +16,8 @@ import com.xueyi.common.web.entity.domain.SqlField;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -63,7 +65,6 @@ public class MergeUtil {
         return dtoList;
     }
 
-
     /**
      * 子数据映射关联 | 新增
      *
@@ -74,7 +75,7 @@ public class MergeUtil {
     public static <D> int addMerge(D dto, SlaveRelation slaveRelation) {
         if (ObjectUtil.isNull(dto) || ObjectUtil.isNull(slaveRelation))
             return NumberUtil.Zero;
-        initCorrelationField(slaveRelation,SubOperate.ADD);
+        initCorrelationField(slaveRelation, SubOperate.ADD);
         if (slaveRelation.getRelationType().isIndirect()) {
             return insertIndirectObj(dto, slaveRelation);
         }
@@ -91,7 +92,7 @@ public class MergeUtil {
     public static <D> int addMerge(Collection<D> dtoList, SlaveRelation slaveRelation) {
         if (CollUtil.isEmpty(dtoList) || ObjectUtil.isNull(slaveRelation))
             return NumberUtil.Zero;
-        initCorrelationField(slaveRelation,SubOperate.ADD);
+        initCorrelationField(slaveRelation, SubOperate.ADD);
         if (slaveRelation.getRelationType().isIndirect()) {
             return insertIndirectList(dtoList, slaveRelation);
         }
@@ -125,7 +126,7 @@ public class MergeUtil {
     public static <D> int editMerge(Collection<D> originList, Collection<D> newList, SlaveRelation slaveRelation) {
         if ((CollUtil.isEmpty(originList) && CollUtil.isEmpty(newList)) || ObjectUtil.isNull(slaveRelation))
             return NumberUtil.Zero;
-        initCorrelationField(slaveRelation,  SubOperate.EDIT);
+        initCorrelationField(slaveRelation, SubOperate.EDIT);
         if (slaveRelation.getRelationType().isIndirect()) {
             return updateIndirectList(originList, newList, slaveRelation);
         }
@@ -157,7 +158,7 @@ public class MergeUtil {
     public static <D> int delMerge(Collection<D> dtoList, SlaveRelation slaveRelation) {
         if (CollUtil.isEmpty(dtoList) || ObjectUtil.isNull(slaveRelation))
             return NumberUtil.Zero;
-        initCorrelationField(slaveRelation,SubOperate.DELETE);
+        initCorrelationField(slaveRelation, SubOperate.DELETE);
         if (slaveRelation.getRelationType().isIndirect()) {
             return deleteIndirectList(dtoList, slaveRelation);
         }
@@ -333,7 +334,7 @@ public class MergeUtil {
         Collection<MP> mergeList = insertIndirectBuild(dto, slaveRelation);
         if (CollUtil.isEmpty(mergeList))
             return NumberUtil.Zero;
-        return SpringUtil.getBean(slaveRelation.getMergeClass()).insertByField(mergeList, slaveRelation.getMergePoClass());
+        return SpringUtil.getBean(slaveRelation.getMergeClass()).insertByField(mergeList);
     }
 
     /**
@@ -352,7 +353,7 @@ public class MergeUtil {
         }
         if (CollUtil.isEmpty(list))
             return NumberUtil.Zero;
-        return SpringUtil.getBean(slaveRelation.getMergeClass()).insertByField(list, slaveRelation.getMergePoClass());
+        return SpringUtil.getBean(slaveRelation.getMergeClass()).insertByField(list);
     }
 
     /**
@@ -411,8 +412,8 @@ public class MergeUtil {
     @SuppressWarnings("unchecked")
     private static <D, MP extends BasisEntity> List<MP> insertIndirectBuild(D dto, SlaveRelation slaveRelation) {
         Object mainKey = getFieldObj(dto, slaveRelation.getMainField());
-        Object mergeObj = getFieldObj(dto, slaveRelation.getMergeSlaveField());
-        Class<?> fieldType = slaveRelation.getMergeSlaveField().getType();
+        Object mergeObj = getFieldObj(dto, slaveRelation.getReceiveArrField());
+        Class<?> fieldType = slaveRelation.getReceiveArrField().getType();
         List<MP> mergeList = new ArrayList<>();
         if (ClassUtil.isCollection(fieldType)) {
             Collection<Object> objColl = (Collection<Object>) mergeObj;
@@ -462,7 +463,7 @@ public class MergeUtil {
      */
     private static boolean checkOperateLegal(SlaveRelation relation, SubOperate operate) {
         // 主数据的主键不能为null
-        if (ObjectUtil.isNull(relation.getMainField()))
+        if (ObjectUtil.hasNull(relation.getMainField(), relation.getMainDtoClass()))
             return Boolean.FALSE;
         switch (relation.getRelationType()) {
             case DIRECT -> {
@@ -488,7 +489,7 @@ public class MergeUtil {
                                 relation.getSlaveFieldSqlName(), relation.getReceiveField());
                     }
                     case ADD -> {
-                        return ObjectUtil.isAllNotEmpty(relation.getSlaveClass(), relation.getMergePoClass(), relation.getMergeSlaveField(),
+                        return ObjectUtil.isAllNotEmpty(relation.getSlaveClass(), relation.getReceiveArrField(), relation.getMergePoClass(), relation.getMergeSlaveField(),
                                 relation.getSlaveFieldSqlName());
                     }
                     case DELETE -> {
@@ -670,10 +671,22 @@ public class MergeUtil {
      *
      * @param slaveRelation 从属关联关系定义对象
      */
+    @SuppressWarnings("unchecked")
     private static void initMergeCorrelation(SlaveRelation slaveRelation) {
         // 1.校验中间类数据对象class是否为null
         if (ObjectUtil.isNull(slaveRelation.getMergePoClass()))
             return;
+        ParameterizedType mergeClass = TypeUtil.toParameterizedType(slaveRelation.getMergeClass());
+        if (ObjectUtil.isNotNull(mergeClass) || ArrayUtil.isEmpty(mergeClass.getActualTypeArguments())) {
+            Type type = mergeClass.getActualTypeArguments()[NumberUtil.Zero];
+            boolean isNotEqual = true;
+            if (type instanceof Class<?> clazz) {
+                isNotEqual = ClassUtil.notEqual(clazz, slaveRelation.getMergePoClass());
+            }
+            if (isNotEqual) {
+                throw new UtilException(StrUtil.format(UtilErrorConstants.MergeError.MERGE_PO_CLASS_EQUAL.getInfo(), slaveRelation.getGroupName()));
+            }
+        }
         Field[] fields = ReflectUtil.getFields(slaveRelation.getMergePoClass());
         for (Field field : fields) {
             // 单注解模式
@@ -773,7 +786,7 @@ public class MergeUtil {
      */
     private static void setField(Object item, Field field, Object obj) {
         try {
-            field.set(item, obj);
+            field.set(item, ConvertUtil.convert(field.getType(), obj));
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
@@ -788,7 +801,7 @@ public class MergeUtil {
      */
     private static void setField(Object item, Field field, Collection<?> coll) {
         try {
-            field.set(item, coll);
+            field.set(item, ConvertUtil.convert(field.getType(), coll));
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }

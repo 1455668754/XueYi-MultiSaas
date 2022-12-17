@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 
+import static com.xueyi.system.api.authority.domain.merge.MergeGroup.ROLE_SysOrganizeRoleMerge_GROUP;
 import static com.xueyi.system.api.organize.domain.merge.MergeGroup.*;
 
 /**
@@ -29,19 +30,29 @@ public class SysOrganizeRoleMerge extends TBasisEntity {
     private static final long serialVersionUID = 1L;
 
     /** 部门Id */
-    @Correlation(groupName = DEPT_OrganizeRoleMerge_GROUP, keyType = OperateConstants.SubKeyType.MERGE_MAIN)
+    @Correlations({
+            @Correlation(groupName = ROLE_SysOrganizeRoleMerge_GROUP, keyType = OperateConstants.SubKeyType.MERGE_SLAVE),
+            @Correlation(groupName = DEPT_OrganizeRoleMerge_GROUP, keyType = OperateConstants.SubKeyType.MERGE_MAIN)
+    })
     private Long deptId;
 
     /** 岗位Id */
-    @Correlation(groupName = POST_OrganizeRoleMerge_GROUP, keyType = OperateConstants.SubKeyType.MERGE_MAIN)
+    @Correlations({
+            @Correlation(groupName = ROLE_SysOrganizeRoleMerge_GROUP, keyType = OperateConstants.SubKeyType.MERGE_SLAVE),
+            @Correlation(groupName = POST_OrganizeRoleMerge_GROUP, keyType = OperateConstants.SubKeyType.MERGE_MAIN)
+    })
     private Long postId;
 
     /** 用户Id */
-    @Correlation(groupName = USER_OrganizeRoleMerge_GROUP, keyType = OperateConstants.SubKeyType.MERGE_MAIN)
+    @Correlations({
+            @Correlation(groupName = ROLE_SysOrganizeRoleMerge_GROUP, keyType = OperateConstants.SubKeyType.MERGE_SLAVE),
+            @Correlation(groupName = USER_OrganizeRoleMerge_GROUP, keyType = OperateConstants.SubKeyType.MERGE_MAIN)
+    })
     private Long userId;
 
     /** 角色Id */
     @Correlations({
+            @Correlation(groupName = ROLE_SysOrganizeRoleMerge_GROUP, keyType = OperateConstants.SubKeyType.MERGE_MAIN),
             @Correlation(groupName = DEPT_OrganizeRoleMerge_GROUP, keyType = OperateConstants.SubKeyType.MERGE_SLAVE),
             @Correlation(groupName = POST_OrganizeRoleMerge_GROUP, keyType = OperateConstants.SubKeyType.MERGE_SLAVE),
             @Correlation(groupName = USER_OrganizeRoleMerge_GROUP, keyType = OperateConstants.SubKeyType.MERGE_SLAVE)

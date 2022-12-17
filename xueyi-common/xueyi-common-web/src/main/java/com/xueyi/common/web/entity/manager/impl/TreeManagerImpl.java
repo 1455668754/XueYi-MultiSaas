@@ -116,7 +116,7 @@ public class TreeManagerImpl<Q extends P, D extends P, P extends TreeEntity<D>, 
         return StrUtil.notEquals(newAncestors, oldAncestors)
                 ? baseMapper.update(
                 null, Wrappers.<P>update().lambda()
-                        .setSql(StrUtil.format(ANCESTORS_PART_UPDATE, SqlConstants.Entity.ANCESTORS.getCode(), SqlConstants.Entity.ANCESTORS.getCode(), 1, oldAncestors.length(), newAncestors))
+                        .setSql(StrUtil.format(ANCESTORS_PART_UPDATE, SqlConstants.Entity.ANCESTORS.getCode(), SqlConstants.Entity.ANCESTORS.getCode(), NumberUtil.One, oldAncestors.length(), newAncestors))
                         .setSql(StrUtil.format(TREE_LEVEL_UPDATE, SqlConstants.Entity.LEVEL.getCode(), SqlConstants.Entity.LEVEL.getCode(), dto.getLevelChange()))
                         .likeRight(P::getAncestors, oldAncestors))
                 : NumberUtil.Zero;
@@ -137,7 +137,7 @@ public class TreeManagerImpl<Q extends P, D extends P, P extends TreeEntity<D>, 
                         .set(P::getStatus, dto.getStatus())
                         .func(i -> {
                             if (StrUtil.notEquals(newAncestors, oldAncestors)) {
-                                i.setSql(StrUtil.format(ANCESTORS_PART_UPDATE, SqlConstants.Entity.ANCESTORS.getCode(), SqlConstants.Entity.ANCESTORS.getCode(), 1, oldAncestors.length(), newAncestors))
+                                i.setSql(StrUtil.format(ANCESTORS_PART_UPDATE, SqlConstants.Entity.ANCESTORS.getCode(), SqlConstants.Entity.ANCESTORS.getCode(), NumberUtil.One, oldAncestors.length(), newAncestors))
                                         .setSql(StrUtil.format(TREE_LEVEL_UPDATE, SqlConstants.Entity.LEVEL.getCode(), SqlConstants.Entity.LEVEL.getCode(), dto.getLevelChange()));
                             }
                         })

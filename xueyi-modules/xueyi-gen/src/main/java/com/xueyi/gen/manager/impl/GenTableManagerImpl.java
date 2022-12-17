@@ -1,6 +1,7 @@
 package com.xueyi.gen.manager.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.web.entity.domain.SlaveRelation;
 import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.gen.domain.dto.GenTableDto;
@@ -32,7 +33,7 @@ public class GenTableManagerImpl extends BaseManagerImpl<GenTableQuery, GenTable
      */
     protected List<SlaveRelation> subRelationInit() {
         return new ArrayList<>(){{
-            add(new SlaveRelation(GEN_TABLE_GROUP, GenTableColumnManagerImpl.class));
+            add(new SlaveRelation(GEN_TABLE_GROUP, GenTableColumnManagerImpl.class, OperateConstants.SubOperateLimit.EX_ADD_OR_EDIT));
         }};
     }
 

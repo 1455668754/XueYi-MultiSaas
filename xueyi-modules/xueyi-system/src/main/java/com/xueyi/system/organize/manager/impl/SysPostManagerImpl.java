@@ -12,18 +12,19 @@ import com.xueyi.system.api.organize.domain.po.SysPostPo;
 import com.xueyi.system.api.organize.domain.query.SysPostQuery;
 import com.xueyi.system.organize.domain.merge.SysOrganizeRoleMerge;
 import com.xueyi.system.organize.domain.merge.SysRolePostMerge;
+import com.xueyi.system.organize.domain.merge.SysUserPostMerge;
 import com.xueyi.system.organize.manager.ISysPostManager;
 import com.xueyi.system.organize.mapper.SysPostMapper;
 import com.xueyi.system.organize.mapper.merge.SysOrganizeRoleMergeMapper;
 import com.xueyi.system.organize.mapper.merge.SysRolePostMergeMapper;
+import com.xueyi.system.organize.mapper.merge.SysUserPostMergeMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static com.xueyi.system.api.organize.domain.merge.MergeGroup.POST_OrganizeRoleMerge_GROUP;
-import static com.xueyi.system.api.organize.domain.merge.MergeGroup.POST_SysRolePostMerge_GROUP;
+import static com.xueyi.system.api.organize.domain.merge.MergeGroup.*;
 
 /**
  * 岗位管理 数据封装层处理
@@ -42,6 +43,7 @@ public class SysPostManagerImpl extends BaseManagerImpl<SysPostQuery, SysPostDto
         return new ArrayList<>(){{
             add(new SlaveRelation(POST_OrganizeRoleMerge_GROUP, SysOrganizeRoleMergeMapper.class, SysOrganizeRoleMerge.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
             add(new SlaveRelation(POST_SysRolePostMerge_GROUP, SysRolePostMergeMapper.class, SysRolePostMerge.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
+            add(new SlaveRelation(POST_SysUserPostMerge_GROUP, SysUserPostMergeMapper.class, SysUserPostMerge.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
         }};
     }
 

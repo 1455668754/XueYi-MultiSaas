@@ -1,9 +1,9 @@
 package com.xueyi.system.authority.manager.impl;
 
-import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.DictConstants;
+import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.entity.domain.SlaveRelation;
@@ -21,14 +21,13 @@ import com.xueyi.system.authority.mapper.merge.SysTenantModuleMergeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.xueyi.system.api.authority.domain.merge.MergeGroup.MODULE_MENU_GROUP;
+import static com.xueyi.system.api.authority.domain.merge.MergeGroup.MODULE_SysMenu_GROUP;
+import static com.xueyi.system.api.authority.domain.merge.MergeGroup.MODULE_SysRoleModuleMerge_GROUP;
 
 /**
  * 模块管理 数据封装层处理
@@ -51,7 +50,8 @@ public class SysModuleManagerImpl extends BaseManagerImpl<SysModuleQuery, SysMod
      */
     protected List<SlaveRelation> subRelationInit() {
         return new ArrayList<>(){{
-            add(new SlaveRelation(MODULE_MENU_GROUP, SysMenuManagerImpl.class));
+            add(new SlaveRelation(MODULE_SysMenu_GROUP, SysMenuManagerImpl.class, OperateConstants.SubOperateLimit.EX_ADD_OR_EDIT));
+            add(new SlaveRelation(MODULE_SysRoleModuleMerge_GROUP, SysRoleModuleMergeMapper.class, SysRoleModuleMerge.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
         }};
     }
 
@@ -70,7 +70,7 @@ public class SysModuleManagerImpl extends BaseManagerImpl<SysModuleQuery, SysMod
                         Wrappers.<SysModulePo>query().lambda()
                                 .eq(SysModulePo::getStatus, BaseConstants.Status.NORMAL.getCode())
                                 .eq(SysModulePo::getHideModule, DictConstants.DicShowHide.SHOW.getCode()));
-                return baseConverter.mapperDto(moduleList);
+                return mapperDto(moduleList);
             } else {
                 List<SysTenantModuleMerge> tenantModuleMerges = tenantModuleMergeMapper.selectList(Wrappers.query());
                 List<SysModulePo> moduleList = baseMapper.selectList(
@@ -87,7 +87,7 @@ public class SysModuleManagerImpl extends BaseManagerImpl<SysModuleQuery, SysMod
                                             }
                                         })
                                 ));
-                return baseConverter.mapperDto(moduleList);
+                return mapperDto(moduleList);
             }
         } else {
             if (CollUtil.isEmpty(roleIds))
@@ -96,7 +96,7 @@ public class SysModuleManagerImpl extends BaseManagerImpl<SysModuleQuery, SysMod
                     Wrappers.<SysRoleModuleMerge>query().lambda()
                             .in(SysRoleModuleMerge::getRoleId, roleIds));
             return CollUtil.isNotEmpty(roleModuleMerges)
-                    ? baseConverter.mapperDto(baseMapper.selectList(
+                    ? mapperDto(baseMapper.selectList(
                     Wrappers.<SysModulePo>query().lambda()
                             .eq(SysModulePo::getStatus, BaseConstants.Status.NORMAL.getCode())
                             .eq(SysModulePo::getHideModule, DictConstants.DicShowHide.SHOW.getCode())
@@ -117,11 +117,11 @@ public class SysModuleManagerImpl extends BaseManagerImpl<SysModuleQuery, SysMod
             List<SysModulePo> moduleList = baseMapper.selectList(Wrappers.<SysModulePo>query().lambda()
                     .eq(SysModulePo::getIsCommon, DictConstants.DicCommonPrivate.COMMON.getCode())
                     .eq(SysModulePo::getStatus, BaseConstants.Status.NORMAL.getCode()));
-            return baseConverter.mapperDto(moduleList);
+            return mapperDto(moduleList);
         } else {
             List<SysTenantModuleMerge> tenantModuleMerges = tenantModuleMergeMapper.selectList(Wrappers.query());
             return CollUtil.isNotEmpty(tenantModuleMerges)
-                    ? baseConverter.mapperDto(baseMapper.selectList(Wrappers.<SysModulePo>query().lambda()
+                    ? mapperDto(baseMapper.selectList(Wrappers.<SysModulePo>query().lambda()
                     .eq(SysModulePo::getIsCommon, DictConstants.DicCommonPrivate.COMMON.getCode())
                     .eq(SysModulePo::getStatus, BaseConstants.Status.NORMAL.getCode())
                     .in(SysModulePo::getId, tenantModuleMerges.stream().map(SysTenantModuleMerge::getModuleId).collect(Collectors.toList()))))
@@ -140,7 +140,7 @@ public class SysModuleManagerImpl extends BaseManagerImpl<SysModuleQuery, SysMod
         if (SecurityUtils.isAdminTenant()) {
             List<SysModulePo> moduleList = baseMapper.selectList(Wrappers.<SysModulePo>query().lambda()
                     .eq(SysModulePo::getStatus, BaseConstants.Status.NORMAL.getCode()));
-            return baseConverter.mapperDto(moduleList);
+            return mapperDto(moduleList);
         } else {
             List<SysTenantModuleMerge> tenantModuleMerges = tenantModuleMergeMapper.selectList(Wrappers.query());
             List<SysModulePo> moduleList = baseMapper.selectList(Wrappers.<SysModulePo>query().lambda()
@@ -154,38 +154,8 @@ public class SysModuleManagerImpl extends BaseManagerImpl<SysModuleQuery, SysMod
                         else
                             i.eq(SysModulePo::getIsCommon, DictConstants.DicCommonPrivate.PRIVATE.getCode());
                     }));
-            return baseConverter.mapperDto(moduleList);
+            return mapperDto(moduleList);
         }
-    }
-
-    /**
-     * 根据Id删除模块对象 | 同步删除关联表数据
-     *
-     * @param id Id
-     * @return 结果
-     */
-    @Override
-    @DSTransactional
-    public int deleteById(Serializable id) {
-        roleModuleMergeMapper.delete(
-                Wrappers.<SysRoleModuleMerge>update().lambda()
-                        .eq(SysRoleModuleMerge::getModuleId, id));
-        return super.deleteById(id);
-    }
-
-    /**
-     * 根据Id集合批量删除模块对象 | 同步删除关联表数据
-     *
-     * @param idList Id集合
-     * @return 结果
-     */
-    @Override
-    @DSTransactional
-    public int deleteByIds(Collection<? extends Serializable> idList) {
-        roleModuleMergeMapper.delete(
-                Wrappers.<SysRoleModuleMerge>update().lambda()
-                        .in(SysRoleModuleMerge::getModuleId, idList));
-        return super.deleteByIds(idList);
     }
 
 }

@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 import java.io.Serial;
 import java.util.List;
 
-import static com.xueyi.system.api.authority.domain.merge.MergeGroup.MODULE_MENU_GROUP;
+import static com.xueyi.system.api.authority.domain.merge.MergeGroup.MODULE_SysMenu_GROUP;
 
 /**
  * 模块 数据传输对象
@@ -24,6 +24,6 @@ public class SysModuleDto extends SysModulePo {
     private static final long serialVersionUID = 1L;
 
     /** 菜单数据 */
-    @Correlation(groupName = MODULE_MENU_GROUP, keyType = OperateConstants.SubKeyType.RECEIVE)
+    @Correlation(groupName = MODULE_SysMenu_GROUP, keyType = OperateConstants.SubKeyType.RECEIVE)
     private List<SysMenuDto> subList;
 }

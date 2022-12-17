@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 
+import static com.xueyi.system.api.authority.domain.merge.MergeGroup.ROLE_SysRoleDeptMerge_GROUP;
 import static com.xueyi.system.api.organize.domain.merge.MergeGroup.DEPT_SysRoleDeptMerge_GROUP;
 
 /**
@@ -30,12 +31,14 @@ public class SysRoleDeptMerge extends TBasisEntity {
 
     /** 角色Id */
     @Correlations({
+            @Correlation(groupName = ROLE_SysRoleDeptMerge_GROUP, keyType = OperateConstants.SubKeyType.MERGE_MAIN),
             @Correlation(groupName = DEPT_SysRoleDeptMerge_GROUP, keyType = OperateConstants.SubKeyType.MERGE_SLAVE)
     })
     private Long roleId;
 
     /** 部门Id */
     @Correlations({
+            @Correlation(groupName = ROLE_SysRoleDeptMerge_GROUP, keyType = OperateConstants.SubKeyType.MERGE_SLAVE),
             @Correlation(groupName = DEPT_SysRoleDeptMerge_GROUP, keyType = OperateConstants.SubKeyType.MERGE_MAIN)
     })
     private Long deptId;
