@@ -145,9 +145,9 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
      */
     protected D subMerge(D dto, String... groupNames) {
         if (ArrayUtil.isNotEmpty(groupNames))
-            Arrays.stream(groupNames).forEach(item -> MergeUtil.subMerge(dto, getSubRelationMap().get(item), getDClass()));
+            Arrays.stream(groupNames).forEach(item -> MergeUtil.subMerge(dto, getSubRelationMap().get(item)));
         else
-            getSubRelationMap().values().stream().filter(SlaveRelation::getIsSelect).forEach(item -> MergeUtil.subMerge(dto, item, getDClass()));
+            getSubRelationMap().values().stream().filter(SlaveRelation::getIsSelect).forEach(item -> MergeUtil.subMerge(dto, item));
         return dto;
     }
 
@@ -160,9 +160,9 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
      */
     protected List<D> subMerge(List<D> dtoList, String... groupNames) {
         if (ArrayUtil.isNotEmpty(groupNames))
-            Arrays.stream(groupNames).forEach(item -> MergeUtil.subMerge(dtoList, getSubRelationMap().get(item), getDClass()));
+            Arrays.stream(groupNames).forEach(item -> MergeUtil.subMerge(dtoList, getSubRelationMap().get(item)));
         else
-            getSubRelationMap().values().stream().filter(SlaveRelation::getIsSelect).forEach(item -> MergeUtil.subMerge(dtoList, item, getDClass()));
+            getSubRelationMap().values().stream().filter(SlaveRelation::getIsSelect).forEach(item -> MergeUtil.subMerge(dtoList, item));
         return dtoList;
     }
 
@@ -175,8 +175,8 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
      */
     protected int addMerge(D dto, String... groupNames) {
         return ArrayUtil.isNotEmpty(groupNames)
-                ? Arrays.stream(groupNames).mapToInt(item -> MergeUtil.addMerge(dto, getSubRelationMap().get(item), getDClass())).sum()
-                : getSubRelationMap().values().stream().filter(SlaveRelation::getIsAdd).mapToInt(item -> MergeUtil.addMerge(dto, item, getDClass())).sum();
+                ? Arrays.stream(groupNames).mapToInt(item -> MergeUtil.addMerge(dto, getSubRelationMap().get(item))).sum()
+                : getSubRelationMap().values().stream().filter(SlaveRelation::getIsAdd).mapToInt(item -> MergeUtil.addMerge(dto, item)).sum();
     }
 
     /**
@@ -188,8 +188,8 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
      */
     protected int addMerge(Collection<D> dtoList, String... groupNames) {
         return ArrayUtil.isNotEmpty(groupNames)
-                ? Arrays.stream(groupNames).mapToInt(item -> MergeUtil.addMerge(dtoList, getSubRelationMap().get(item), getDClass())).sum()
-                : getSubRelationMap().values().stream().filter(SlaveRelation::getIsAdd).mapToInt(item -> MergeUtil.addMerge(dtoList, item, getDClass())).sum();
+                ? Arrays.stream(groupNames).mapToInt(item -> MergeUtil.addMerge(dtoList, getSubRelationMap().get(item))).sum()
+                : getSubRelationMap().values().stream().filter(SlaveRelation::getIsAdd).mapToInt(item -> MergeUtil.addMerge(dtoList, item)).sum();
     }
 
     /**
@@ -202,8 +202,8 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
      */
     protected int editMerge(D originDto, D newDto, String... groupNames) {
         return ArrayUtil.isNotEmpty(groupNames)
-                ? Arrays.stream(groupNames).mapToInt(item -> MergeUtil.editMerge(originDto, newDto, getSubRelationMap().get(item), getDClass())).sum()
-                : getSubRelationMap().values().stream().filter(SlaveRelation::getIsEdit).mapToInt(item -> MergeUtil.editMerge(originDto, newDto, item, getDClass())).sum();
+                ? Arrays.stream(groupNames).mapToInt(item -> MergeUtil.editMerge(originDto, newDto, getSubRelationMap().get(item))).sum()
+                : getSubRelationMap().values().stream().filter(SlaveRelation::getIsEdit).mapToInt(item -> MergeUtil.editMerge(originDto, newDto, item)).sum();
     }
 
     /**
@@ -216,8 +216,8 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
      */
     protected int editMerge(Collection<D> originList, Collection<D> newList, String... groupNames) {
         return ArrayUtil.isNotEmpty(groupNames)
-                ? Arrays.stream(groupNames).mapToInt(item -> MergeUtil.editMerge(originList, newList, getSubRelationMap().get(item), getDClass())).sum()
-                : getSubRelationMap().values().stream().filter(SlaveRelation::getIsEdit).mapToInt(item -> MergeUtil.editMerge(originList, newList, item, getDClass())).sum();
+                ? Arrays.stream(groupNames).mapToInt(item -> MergeUtil.editMerge(originList, newList, getSubRelationMap().get(item))).sum()
+                : getSubRelationMap().values().stream().filter(SlaveRelation::getIsEdit).mapToInt(item -> MergeUtil.editMerge(originList, newList, item)).sum();
     }
 
     /**
@@ -229,8 +229,8 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
      */
     protected int delMerge(D dto, String... groupNames) {
         return ArrayUtil.isNotEmpty(groupNames)
-                ? Arrays.stream(groupNames).mapToInt(item -> MergeUtil.delMerge(dto, getSubRelationMap().get(item), getDClass())).sum()
-                : getSubRelationMap().values().stream().filter(SlaveRelation::getIsDelete).mapToInt(item -> MergeUtil.delMerge(dto, item, getDClass())).sum();
+                ? Arrays.stream(groupNames).mapToInt(item -> MergeUtil.delMerge(dto, getSubRelationMap().get(item))).sum()
+                : getSubRelationMap().values().stream().filter(SlaveRelation::getIsDelete).mapToInt(item -> MergeUtil.delMerge(dto, item)).sum();
     }
 
     /**
@@ -242,8 +242,8 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
      */
     protected int delMerge(Collection<D> dtoList, String... groupNames) {
         return ArrayUtil.isNotEmpty(groupNames)
-                ? Arrays.stream(groupNames).mapToInt(item -> MergeUtil.delMerge(dtoList, getSubRelationMap().get(item), getDClass())).sum()
-                : getSubRelationMap().values().stream().filter(SlaveRelation::getIsDelete).mapToInt(item -> MergeUtil.delMerge(dtoList, item, getDClass())).sum();
+                ? Arrays.stream(groupNames).mapToInt(item -> MergeUtil.delMerge(dtoList, getSubRelationMap().get(item))).sum()
+                : getSubRelationMap().values().stream().filter(SlaveRelation::getIsDelete).mapToInt(item -> MergeUtil.delMerge(dtoList, item)).sum();
     }
 
     /** 子类操作泛型的类型Getter */
@@ -251,7 +251,7 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
         if (MapUtil.isNull(this.subRelationMap)) {
             List<SlaveRelation> subList = subRelationInit();
             this.subRelationMap = CollUtil.isNotEmpty(subList)
-                    ? subList.stream().collect(Collectors.toMap(SlaveRelation::getGroupName, Function.identity()))
+                    ? subList.stream().peek(item -> item.setMainDtoClass(getDClass())).collect(Collectors.toMap(SlaveRelation::getGroupName, Function.identity()))
                     : new HashMap<>();
         }
         return this.subRelationMap;

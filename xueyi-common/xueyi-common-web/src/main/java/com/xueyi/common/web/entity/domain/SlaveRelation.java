@@ -25,9 +25,6 @@ import java.lang.reflect.Field;
 @NoArgsConstructor
 public class SlaveRelation {
 
-    /** 从数据 - 方法类class */
-    private Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> slaveClass;
-
     /** 分组名称 */
     private String groupName;
 
@@ -36,6 +33,12 @@ public class SlaveRelation {
 
     /** 删除类型 */
     private SubDeleteType deleteType;
+
+    /** 主数据对象 - 主数据Dto对象class */
+    private Class<? extends BaseEntity> mainDtoClass;
+
+    /** 从数据 - 方法类class */
+    private Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> slaveClass;
 
     /** 主数据对象 - 关联键字段 */
     private Field mainField;

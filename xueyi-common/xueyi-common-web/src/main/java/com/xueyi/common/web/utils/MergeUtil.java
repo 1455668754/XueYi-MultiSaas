@@ -32,13 +32,12 @@ public class MergeUtil {
      *
      * @param dto           数据对象
      * @param slaveRelation 从属关联关系定义对象
-     * @param DClass        数据对象Class
      * @return 数据对象
      */
-    public static <D> D subMerge(D dto, SlaveRelation slaveRelation, Class<D> DClass) {
+    public static <D> D subMerge(D dto, SlaveRelation slaveRelation) {
         if (ObjectUtil.isNull(dto) || ObjectUtil.isNull(slaveRelation))
             return dto;
-        initCorrelationField(slaveRelation, DClass, SubOperate.SELECT);
+        initCorrelationField(slaveRelation, SubOperate.SELECT);
         switch (slaveRelation.getRelationType()) {
             case DIRECT -> assembleDirectObj(dto, slaveRelation);
             case INDIRECT -> assembleIndirectObj(dto, slaveRelation);
@@ -51,13 +50,12 @@ public class MergeUtil {
      *
      * @param dtoList       数据对象集合
      * @param slaveRelation 从属关联关系定义对象
-     * @param DClass        数据对象Class
      * @return 数据对象集合
      */
-    public static <D> List<D> subMerge(List<D> dtoList, SlaveRelation slaveRelation, Class<D> DClass) {
+    public static <D> List<D> subMerge(List<D> dtoList, SlaveRelation slaveRelation) {
         if (CollUtil.isEmpty(dtoList) || ObjectUtil.isNull(slaveRelation))
             return dtoList;
-        initCorrelationField(slaveRelation, DClass, SubOperate.SELECT);
+        initCorrelationField(slaveRelation, SubOperate.SELECT);
         switch (slaveRelation.getRelationType()) {
             case DIRECT -> assembleDirectList(dtoList, slaveRelation);
             case INDIRECT -> assembleIndirectList(dtoList, slaveRelation);
@@ -71,13 +69,12 @@ public class MergeUtil {
      *
      * @param dto           数据对象
      * @param slaveRelation 从属关联关系定义对象
-     * @param DClass        数据对象Class
      * @return 结果
      */
-    public static <D> int addMerge(D dto, SlaveRelation slaveRelation, Class<D> DClass) {
+    public static <D> int addMerge(D dto, SlaveRelation slaveRelation) {
         if (ObjectUtil.isNull(dto) || ObjectUtil.isNull(slaveRelation))
             return NumberUtil.Zero;
-        initCorrelationField(slaveRelation, DClass, SubOperate.ADD);
+        initCorrelationField(slaveRelation,SubOperate.ADD);
         if (slaveRelation.getRelationType().isIndirect()) {
             return insertIndirectObj(dto, slaveRelation);
         }
@@ -89,13 +86,12 @@ public class MergeUtil {
      *
      * @param dtoList       数据对象集合
      * @param slaveRelation 从属关联关系定义对象
-     * @param DClass        数据对象Class
      * @return 结果
      */
-    public static <D> int addMerge(Collection<D> dtoList, SlaveRelation slaveRelation, Class<D> DClass) {
+    public static <D> int addMerge(Collection<D> dtoList, SlaveRelation slaveRelation) {
         if (CollUtil.isEmpty(dtoList) || ObjectUtil.isNull(slaveRelation))
             return NumberUtil.Zero;
-        initCorrelationField(slaveRelation, DClass, SubOperate.ADD);
+        initCorrelationField(slaveRelation,SubOperate.ADD);
         if (slaveRelation.getRelationType().isIndirect()) {
             return insertIndirectList(dtoList, slaveRelation);
         }
@@ -108,12 +104,11 @@ public class MergeUtil {
      * @param originDto     源数据对象
      * @param newDto        新数据对象
      * @param slaveRelation 从属关联关系定义对象
-     * @param DClass        数据对象Class
      */
-    public static <D> int editMerge(D originDto, D newDto, SlaveRelation slaveRelation, Class<D> DClass) {
+    public static <D> int editMerge(D originDto, D newDto, SlaveRelation slaveRelation) {
         if (ObjectUtil.isAllEmpty(originDto, newDto) || ObjectUtil.isNull(slaveRelation))
             return NumberUtil.Zero;
-        initCorrelationField(slaveRelation, DClass, SubOperate.EDIT);
+        initCorrelationField(slaveRelation, SubOperate.EDIT);
         if (slaveRelation.getRelationType().isIndirect()) {
             return updateIndirectObj(originDto, newDto, slaveRelation);
         }
@@ -126,12 +121,11 @@ public class MergeUtil {
      * @param originList    源数据对象集合
      * @param newList       新数据对象集合
      * @param slaveRelation 从属关联关系定义对象
-     * @param DClass        数据对象Class
      */
-    public static <D> int editMerge(Collection<D> originList, Collection<D> newList, SlaveRelation slaveRelation, Class<D> DClass) {
+    public static <D> int editMerge(Collection<D> originList, Collection<D> newList, SlaveRelation slaveRelation) {
         if ((CollUtil.isEmpty(originList) && CollUtil.isEmpty(newList)) || ObjectUtil.isNull(slaveRelation))
             return NumberUtil.Zero;
-        initCorrelationField(slaveRelation, DClass, SubOperate.EDIT);
+        initCorrelationField(slaveRelation,  SubOperate.EDIT);
         if (slaveRelation.getRelationType().isIndirect()) {
             return updateIndirectList(originList, newList, slaveRelation);
         }
@@ -143,12 +137,11 @@ public class MergeUtil {
      *
      * @param dto           数据对象
      * @param slaveRelation 从属关联关系定义对象
-     * @param DClass        数据对象Class
      */
-    public static <D> int delMerge(D dto, SlaveRelation slaveRelation, Class<D> DClass) {
+    public static <D> int delMerge(D dto, SlaveRelation slaveRelation) {
         if (ObjectUtil.isNull(dto) || ObjectUtil.isNull(slaveRelation))
             return NumberUtil.Zero;
-        initCorrelationField(slaveRelation, DClass, SubOperate.DELETE);
+        initCorrelationField(slaveRelation, SubOperate.DELETE);
         if (slaveRelation.getRelationType().isIndirect()) {
             return deleteIndirectObj(dto, slaveRelation);
         }
@@ -160,12 +153,11 @@ public class MergeUtil {
      *
      * @param dtoList       数据对象集合
      * @param slaveRelation 从属关联关系定义对象
-     * @param DClass        数据对象Class
      */
-    public static <D> int delMerge(Collection<D> dtoList, SlaveRelation slaveRelation, Class<D> DClass) {
+    public static <D> int delMerge(Collection<D> dtoList, SlaveRelation slaveRelation) {
         if (CollUtil.isEmpty(dtoList) || ObjectUtil.isNull(slaveRelation))
             return NumberUtil.Zero;
-        initCorrelationField(slaveRelation, DClass, SubOperate.DELETE);
+        initCorrelationField(slaveRelation,SubOperate.DELETE);
         if (slaveRelation.getRelationType().isIndirect()) {
             return deleteIndirectList(dtoList, slaveRelation);
         }
@@ -446,14 +438,13 @@ public class MergeUtil {
      * 初始化数据字段关系 | 初始化校验
      *
      * @param slaveRelation 从属关联关系定义对象
-     * @param mainDClass    数据对象Class
      */
-    private static <D> void initCorrelationField(SlaveRelation slaveRelation, Class<D> mainDClass, SubOperate operate) {
+    private static <D> void initCorrelationField(SlaveRelation slaveRelation, SubOperate operate) {
         // 1.校验数据字段是否合规
         if (checkOperateLegal(slaveRelation, operate))
             return;
         // 2.初始化主数据对象映射关系
-        initMainCorrelation(slaveRelation, mainDClass);
+        initMainCorrelation(slaveRelation);
         // 3.初始化子数据对象映射关系
         initSlaveCorrelation(slaveRelation);
         // 4.初始化中间数据对象映射关系
@@ -512,13 +503,12 @@ public class MergeUtil {
      * 初始化主数据对象映射关系 | 初始化校验
      *
      * @param slaveRelation 从属关联关系定义对象
-     * @param mainDClass    主数据对象Class
      */
-    private static <D> void initMainCorrelation(SlaveRelation slaveRelation, Class<D> mainDClass) {
+    private static <D> void initMainCorrelation(SlaveRelation slaveRelation) {
         // 1.校验主数据对象Class是否存在
-        if (ObjectUtil.isNull(mainDClass))
+        if (ObjectUtil.isNull(slaveRelation.getMainDtoClass()))
             return;
-        Field[] fields = ReflectUtil.getFields(mainDClass);
+        Field[] fields = ReflectUtil.getFields(slaveRelation.getMainDtoClass());
         for (Field field : fields) {
             // 单注解模式
             if (field.isAnnotationPresent(Correlation.class)) {
