@@ -1,10 +1,8 @@
 package com.xueyi.system.organize.manager.impl;
 
-import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.constant.basic.SqlConstants;
-import com.xueyi.common.core.utils.core.ArrayUtil;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.security.utils.SecurityUtils;
@@ -33,7 +31,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -145,44 +142,6 @@ public class SysUserManagerImpl extends BaseManagerImpl<SysUserQuery, SysUserDto
                     : new ArrayList<>());
         }
         return userDto;
-    }
-
-    /**
-     * 修改用户对象
-     *
-     * @param user 用户对象
-     * @return 结果
-     */
-    @Override
-    @DSTransactional
-    public int update(SysUserDto user) {
-        int row = baseMapper.updateById(user);
-        if (row > 0) {
-            // 查询原关联，判断前后是否变更 ？ 新增/移除变更 : 不操作
-            List<SysUserPostMerge> userPostMerges = userPostMergeMapper.selectList(
-                    Wrappers.<SysUserPostMerge>query().lambda()
-                            .eq(SysUserPostMerge::getUserId, user.getId()));
-            List<Long> delPostIds = userPostMerges.stream().map(SysUserPostMerge::getPostId).collect(Collectors.toList());
-
-            if (ArrayUtil.isNotEmpty(user.getPostIds())) {
-                List<Long> postIds = Arrays.asList(user.getPostIds());
-                List<Long> addPostIds = CollUtil.subtractToList(postIds, delPostIds);
-                delPostIds.removeAll(postIds);
-                if (CollUtil.isNotEmpty(addPostIds)) {
-                    userPostMergeMapper.insertBatch(
-                            addPostIds.stream()
-                                    .map(postId -> new SysUserPostMerge(user.getId(), postId))
-                                    .collect(Collectors.toSet()));
-                }
-            }
-            if (CollUtil.isNotEmpty(delPostIds)) {
-                userPostMergeMapper.delete(
-                        Wrappers.<SysUserPostMerge>update().lambda()
-                                .in(SysUserPostMerge::getPostId, delPostIds)
-                                .eq(SysUserPostMerge::getUserId, user.getId()));
-            }
-        }
-        return row;
     }
 
     /**

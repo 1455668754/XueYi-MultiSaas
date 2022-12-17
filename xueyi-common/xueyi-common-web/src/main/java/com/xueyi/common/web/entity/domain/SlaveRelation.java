@@ -40,6 +40,9 @@ public class SlaveRelation {
     /** 从数据 - 方法类class */
     private Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> slaveClass;
 
+    /** 主数据对象 - 主键字段 */
+    private Field mainIdField;
+
     /** 主数据对象 - 关联键字段 */
     private Field mainField;
 

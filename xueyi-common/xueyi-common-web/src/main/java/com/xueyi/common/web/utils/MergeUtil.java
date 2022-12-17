@@ -244,9 +244,9 @@ public class MergeUtil {
             if (ObjectUtil.isNotNull(slaveRelation.getReceiveArrField())) {
                 Class<?> fieldType = slaveRelation.getReceiveArrField().getType();
                 if (ClassUtil.isArray(fieldType)) {
-                    slaveRelation.getReceiveArrField().set(dto, mergeKeyList.toArray());
+                    setField(dto, slaveRelation.getReceiveArrField(), mergeKeyList.toArray());
                 } else if (ClassUtil.isCollection(fieldType)) {
-                    slaveRelation.getReceiveArrField().set(dto, mergeKeyList);
+                    setField(dto, slaveRelation.getReceiveArrField(), mergeKeyList);
                 }
             }
             if (ObjectUtil.isNull(slaveRelation.getReceiveField()))
@@ -364,7 +364,23 @@ public class MergeUtil {
      * @param slaveRelation 从属关联关系定义对象
      */
     private static <D, MP extends BasisEntity> int updateIndirectObj(D originDto, D newDto, SlaveRelation slaveRelation) {
-        return 0;
+        List<MP> insertList = new ArrayList<>();
+        Set<Object> delKeys = new HashSet<>();
+        // 1.组装操作数据
+        updateIndirectBuild(originDto, newDto, slaveRelation, insertList, delKeys);
+        int rows = NumberUtil.Zero;
+        // 2.判断是否执行新增
+        if (CollUtil.isNotEmpty(insertList))
+            rows += SpringUtil.getBean(slaveRelation.getMergeClass()).insertByField(insertList);
+        // 3.判断是否执行删除
+        if (CollUtil.isNotEmpty(delKeys)) {
+            Object delMainKey = getFieldObj(newDto, slaveRelation.getMainField());
+            SqlField sqlMainField = new SqlField(SqlConstants.OperateType.EQ, slaveRelation.getMergeMainFieldSqlName(), delMainKey);
+            SqlField sqlArrField = new SqlField(SqlConstants.OperateType.IN, slaveRelation.getMergeSlaveFieldSqlName(), delKeys);
+            rows += SpringUtil.getBean(slaveRelation.getMergeClass()).deleteByField(sqlMainField, sqlArrField);
+        }
+        // 4.返回操作结果
+        return rows;
     }
 
     /**
@@ -375,7 +391,28 @@ public class MergeUtil {
      * @param slaveRelation 从属关联关系定义对象
      */
     private static <D, MP extends BasisEntity> int updateIndirectList(Collection<D> originList, Collection<D> newList, SlaveRelation slaveRelation) {
-        return 0;
+        List<MP> insertList = new ArrayList<>();
+        Set<Object> delKeys = new HashSet<>();
+        // 1.组装操作数据
+        Map<Object, D> originMap = originList.stream().collect(
+                Collectors.toMap(item -> getFieldObj(item, slaveRelation.getMainIdField()), Function.identity()));
+        newList.forEach(newDto -> {
+            D originDto = originMap.get(getFieldObj(newDto, slaveRelation.getMainIdField()));
+            updateIndirectBuild(originDto, newDto, slaveRelation, insertList, delKeys);
+        });
+        int rows = NumberUtil.Zero;
+        // 2.判断是否执行新增
+        if (CollUtil.isNotEmpty(insertList))
+            rows += SpringUtil.getBean(slaveRelation.getMergeClass()).insertByField(insertList);
+        // 3.判断是否执行删除
+        if (CollUtil.isNotEmpty(delKeys)) {
+            Set<Object> delMainKeys = newList.stream().map(item -> getFieldObj(item, slaveRelation.getMainField())).collect(Collectors.toSet());
+            SqlField sqlMainField = new SqlField(SqlConstants.OperateType.IN, slaveRelation.getMergeMainFieldSqlName(), delMainKeys);
+            SqlField sqlArrField = new SqlField(SqlConstants.OperateType.IN, slaveRelation.getMergeSlaveFieldSqlName(), delKeys);
+            rows += SpringUtil.getBean(slaveRelation.getMergeClass()).deleteByField(sqlMainField, sqlArrField);
+        }
+        // 4.返回操作结果
+        return rows;
     }
 
     /**
@@ -436,11 +473,63 @@ public class MergeUtil {
     }
 
     /**
+     * 修改关联数据 | 数据组装 | 间接关联
+     *
+     * @param originDto     源数据对象
+     * @param newDto        新数据对象
+     * @param slaveRelation 从属关联关系定义对象
+     * @param insertList    待新增数据对象集合
+     * @param delKeys       待删除键值集合
+     */
+    @SuppressWarnings("unchecked")
+    private static <D, MP extends BasisEntity> void updateIndirectBuild(D originDto, D newDto, SlaveRelation slaveRelation, List<MP> insertList, Set<Object> delKeys) {
+        Field receiveArrField = slaveRelation.getReceiveArrField();
+        Set<Object> originSet = new HashSet<>();
+        Set<Object> newSet = new HashSet<>();
+        Object originArr = getFieldObj(originDto, receiveArrField);
+        Object newArr = getFieldObj(newDto, receiveArrField);
+        if (ObjectUtil.isNotNull(originArr)) {
+            if (ClassUtil.isArray(receiveArrField.getType())) {
+                originSet.addAll(Arrays.asList((Object[]) originArr));
+            } else if (ClassUtil.isNotCollection(receiveArrField.getType())) {
+                originSet.addAll((Collection<?>) originArr);
+            }
+        }
+        if (ObjectUtil.isNotNull(newArr)) {
+            if (ClassUtil.isArray(receiveArrField.getType())) {
+                newSet.addAll(Arrays.asList((Object[]) newArr));
+            } else if (ClassUtil.isNotCollection(receiveArrField.getType())) {
+                newSet.addAll((Collection<?>) newArr);
+            }
+        }
+        // 1.获取待删除从数据键值
+        Set<Object> delSet = new HashSet<>(originSet);
+        delSet.removeAll(newSet);
+        if (CollUtil.isNotEmpty(delSet))
+            delKeys.addAll(delSet);
+        // 2.获取待新增从数据键值
+        Set<Object> insertSet = new HashSet<>(newSet);
+        insertSet.removeAll(originSet);
+        // 3.组装待新增从数据对象
+        if (CollUtil.isNotEmpty(insertSet)) {
+            Object mainKey = getFieldObj(newDto, slaveRelation.getMainField());
+            List<MP> mergeList = insertSet.stream().distinct().map(item -> {
+                Object mergePo = createObj(slaveRelation.getMergePoClass());
+                setField(mergePo, slaveRelation.getMergeMainField(), mainKey);
+                setField(mergePo, slaveRelation.getMergeSlaveField(), item);
+                return (MP) mergePo;
+            }).toList();
+            if (CollUtil.isNotEmpty(mergeList))
+                insertList.addAll(mergeList);
+        }
+    }
+
+    /**
      * 初始化数据字段关系 | 初始化校验
      *
      * @param slaveRelation 从属关联关系定义对象
      */
-    private static <D> void initCorrelationField(SlaveRelation slaveRelation, SubOperate operate) {
+    private static void initCorrelationField(SlaveRelation slaveRelation, SubOperate operate) {
         // 1.校验数据字段是否合规
         if (checkOperateLegal(slaveRelation, operate))
             return;
@@ -489,7 +578,11 @@ public class MergeUtil {
                                 relation.getSlaveFieldSqlName(), relation.getReceiveField());
                     }
                     case ADD -> {
-                        return ObjectUtil.isAllNotEmpty(relation.getSlaveClass(), relation.getReceiveArrField(), relation.getMergePoClass(), relation.getMergeSlaveField(),
+                        return ObjectUtil.isAllNotEmpty(relation.getReceiveArrField(), relation.getMergePoClass(), relation.getMergeSlaveField(),
+                                relation.getSlaveFieldSqlName());
+                    }
+                    case EDIT -> {
+                        return ObjectUtil.isAllNotEmpty(relation.getMainIdField(), relation.getReceiveArrField(), relation.getMergePoClass(), relation.getMergeSlaveField(),
                                 relation.getSlaveFieldSqlName());
                     }
                     case DELETE -> {
@@ -505,7 +598,7 @@ public class MergeUtil {
      *
      * @param slaveRelation 从属关联关系定义对象
      */
-    private static <D> void initMainCorrelation(SlaveRelation slaveRelation) {
+    private static void initMainCorrelation(SlaveRelation slaveRelation) {
         // 1.校验主数据对象Class是否存在
         if (ObjectUtil.isNull(slaveRelation.getMainDtoClass()))
             return;
@@ -528,10 +621,12 @@ public class MergeUtil {
             }
         }
 
-        // 2.如果主数据主键未定义 -> 取主数据表主键
-        if (ObjectUtil.isNull(slaveRelation.getMainField())) {
-            Field idField = Arrays.stream(fields).filter(field -> field.getAnnotation(TableId.class) != null).findFirst().orElse(null);
-            if (ObjectUtil.isNotNull(idField)) {
+        Field idField = Arrays.stream(fields).filter(field -> field.getAnnotation(TableId.class) != null).findFirst().orElse(null);
+        if (ObjectUtil.isNotNull(idField)) {
+            // 2.赋值主键字段
+            slaveRelation.setMainIdField(idField);
+            // 3.如果主数据主键未定义 -> 取主数据表主键
+            if (ObjectUtil.isNull(slaveRelation.getMainField())) {
                 slaveRelation.setMainField(idField);
                 slaveRelation.getMainField().setAccessible(Boolean.TRUE);
             }
@@ -671,7 +766,6 @@ public class MergeUtil {
      *
      * @param slaveRelation 从属关联关系定义对象
      */
-    @SuppressWarnings("unchecked")
     private static void initMergeCorrelation(SlaveRelation slaveRelation) {
         // 1.校验中间类数据对象class是否为null
         if (ObjectUtil.isNull(slaveRelation.getMergePoClass()))
