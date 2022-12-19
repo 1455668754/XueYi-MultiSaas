@@ -93,6 +93,7 @@
           disabled: unref(getDisable),
         } as any;
       });
+
       function upEditDynamicDisabled(record, column, value) {
         if (!record) return false;
         const { key, dataIndex } = column;
@@ -100,6 +101,7 @@
         const dataKey = (dataIndex || key) as string;
         set(record, dataKey, value);
       }
+
       const getDisable = computed(() => {
         const { editDynamicDisabled } = props.column;
         let disabled = false;
@@ -404,9 +406,7 @@
                     column: this.column,
                     index: this.index,
                   })
-                : this.getValues
-                ? this.getValues
-                : '\u00A0'}
+                : this.getValues ?? '\u00A0'}
             </div>
             {!this.column.editRow && <FormOutlined class={`${this.prefixCls}__normal-icon`} />}
           </div>
@@ -478,6 +478,7 @@
       border-radius: 2px;
     }
   }
+
   .@{prefix-cls} {
     position: relative;
 
