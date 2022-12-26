@@ -1,6 +1,5 @@
 package com.xueyi.system.authority.manager.impl;
 
-import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.basic.BaseConstants;
@@ -28,13 +27,13 @@ import com.xueyi.system.authority.mapper.merge.SysTenantMenuMergeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.xueyi.common.core.constant.basic.SqlConstants.*;
+import static com.xueyi.common.core.constant.basic.SqlConstants.ANCESTORS_PART_UPDATE;
+import static com.xueyi.common.core.constant.basic.SqlConstants.TREE_LEVEL_UPDATE;
 import static com.xueyi.system.api.authority.domain.merge.MergeGroup.MENU_SysRoleMenuMerge_GROUP;
 
 /**
@@ -290,27 +289,6 @@ public class SysMenuManagerImpl extends TreeManagerImpl<SysMenuQuery, SysMenuDto
                             }
                         })
                         .likeRight(SysMenuPo::getAncestors, oldAncestors));
-    }
-
-    /**
-     * 根据Id删除其子菜单对象 | 同步删除关联表数据
-     *
-     * @param id Id
-     * @return 结果
-     */
-    @Override
-    @DSTransactional
-    public int deleteChildren(Serializable id) {
-        List<SysMenuPo> children = baseMapper.selectList(
-                Wrappers.<SysMenuPo>update().lambda()
-                        .apply(ANCESTORS_FIND, id));
-        if (CollUtil.isNotEmpty(children)) {
-            Set<Long> idSet = children.stream().map(SysMenuPo::getId).collect(Collectors.toSet());
-            roleMenuMergeMapper.delete(
-                    Wrappers.<SysRoleMenuMerge>update().lambda()
-                            .in(SysRoleMenuMerge::getMenuId, idSet));
-        }
-        return super.deleteChildren(id);
     }
 
     /**

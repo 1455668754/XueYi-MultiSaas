@@ -33,6 +33,7 @@ public class TreeHandleServiceImpl<Q extends TreeEntity<D>, D extends TreeEntity
      * @param originDto 源数据对象（新增时不存在）
      * @param newDto    新数据对象（删除时不存在）
      */
+    @Override
     protected void startHandle(OperateConstants.ServiceType operate, D originDto, D newDto) {
         switch (operate) {
             case EDIT:
@@ -59,6 +60,7 @@ public class TreeHandleServiceImpl<Q extends TreeEntity<D>, D extends TreeEntity
      * @param originDto 源数据对象（新增时不存在）
      * @param newDto    新数据对象（删除时不存在）
      */
+    @Override
     protected void endHandle(OperateConstants.ServiceType operate, int row, D originDto, D newDto) {
         if (row <= 0)
             return;
@@ -111,6 +113,7 @@ public class TreeHandleServiceImpl<Q extends TreeEntity<D>, D extends TreeEntity
      * @param originList 源数据对象集合（新增时不存在）
      * @param newList    新数据对象集合（删除时不存在）
      */
+    @Override
     protected void startBatchHandle(OperateConstants.ServiceType operate, Collection<D> originList, Collection<D> newList) {
         switch (operate) {
             case BATCH_EDIT:
@@ -154,6 +157,7 @@ public class TreeHandleServiceImpl<Q extends TreeEntity<D>, D extends TreeEntity
      * @param originList 源数据对象集合（新增时不存在）
      * @param newList    新数据对象集合（删除时不存在）
      */
+    @Override
     protected void endBatchHandle(OperateConstants.ServiceType operate, int rows, Collection<D> originList, Collection<D> newList) {
         if (rows <= 0)
             return;

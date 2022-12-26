@@ -1,11 +1,13 @@
 package com.xueyi.job.service.impl;
 
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
+import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.constant.job.ScheduleConstants;
 import com.xueyi.common.core.exception.job.TaskException;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.security.utils.SecurityUtils;
+import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.job.api.domain.dto.SysJobDto;
 import com.xueyi.job.api.domain.query.SysJobQuery;
 import com.xueyi.job.manager.impl.SysJobManagerImpl;
@@ -19,7 +21,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 import static com.xueyi.common.core.constant.basic.SecurityConstants.CREATE_BY;
 
@@ -29,10 +33,7 @@ import static com.xueyi.common.core.constant.basic.SecurityConstants.CREATE_BY;
  * @author xueyi
  */
 @Service
-public class SysJobServiceImpl implements ISysJobService {
-
-    @Autowired
-    private SysJobManagerImpl baseManager;
+public class SysJobServiceImpl extends BaseServiceImpl<SysJobQuery, SysJobDto, SysJobManagerImpl> implements ISysJobService {
 
     @Autowired
     private Scheduler scheduler;
@@ -57,85 +58,7 @@ public class SysJobServiceImpl implements ISysJobService {
     @Override
     @DataScope(userAlias = CREATE_BY, mapperScope = "SysJobMapper")
     public List<SysJobDto> selectListScope(SysJobQuery job) {
-        return baseManager.selectList(job);
-    }
-
-    /**
-     * 根据Id查询单条调度任务对象
-     *
-     * @param id Id
-     * @return 调度任务对象
-     */
-    @Override
-    public SysJobDto selectById(Long id) {
-        return baseManager.selectById(id);
-    }
-
-    /**
-     * 新增调度任务对象
-     *
-     * @param job 调度任务对象
-     * @return 结果
-     */
-    @Override
-    @DSTransactional
-    public int insert(SysJobDto job) throws SchedulerException, TaskException {
-        job.setStatus(ScheduleConstants.Status.PAUSE.getCode());
-        initInvokeTenant(job);
-        int rows = baseManager.insert(job);
-        if (rows > 0) ScheduleUtils.createScheduleJob(scheduler, job);
-        return rows;
-    }
-
-    /**
-     * 修改调度任务对象
-     *
-     * @param job 调度任务对象
-     * @return 结果
-     */
-    @Override
-    @DSTransactional
-    public int update(SysJobDto job) throws SchedulerException, TaskException {
-        SysJobDto properties = baseManager.selectById(job.getId());
-        int rows = baseManager.update(job);
-        if (rows > 0) {
-            job.setInvokeTenant(properties.getInvokeTenant());
-            updateSchedulerJob(job, properties.getJobGroup());
-        }
-        return rows;
-    }
-
-    /**
-     * 修改调度任务对象状态
-     *
-     * @param id     Id
-     * @param status 状态
-     * @return 结果
-     */
-    @Override
-    @DSTransactional
-    public int updateStatus(Long id, String status) throws SchedulerException {
-        SysJobDto job = baseManager.selectById(id);
-        return StrUtil.equals(status, ScheduleConstants.Status.NORMAL.getCode()) ? resumeJob(job) : StrUtil.equals(status, ScheduleConstants.Status.PAUSE.getCode()) ? pauseJob(job) : 0;
-    }
-
-    /**
-     * 根据Id集合删除调度任务对象
-     *
-     * @param idList Id集合
-     * @return 结果
-     */
-    @Override
-    @DSTransactional
-    public int deleteByIds(List<Long> idList) throws SchedulerException {
-        List<SysJobDto> jobList = baseManager.selectListByIds(idList);
-        int rows = baseManager.deleteByIds(idList);
-        if (rows > 0) {
-            for (SysJobDto job : jobList) {
-                scheduler.deleteJob(ScheduleUtils.getJobKey(job.getId(), job.getJobGroup()));
-            }
-        }
-        return rows;
+        return super.selectListScope(job);
     }
 
     /**
@@ -209,5 +132,96 @@ public class SysJobServiceImpl implements ISysJobService {
      */
     private void initInvokeTenant(SysJobDto job) {
         job.setInvokeTenant(SecurityUtils.getEnterpriseId() + "L, '" + SecurityUtils.getIsLessor() + "', '" + SecurityUtils.getSourceName() + "'");
+    }
+
+    /**
+     * 单条操作 - 开始处理
+     *
+     * @param operate   服务层 - 操作类型
+     * @param originDto 源数据对象（新增时不存在）
+     * @param newDto    新数据对象（删除时不存在）
+     */
+    @Override
+    protected void startHandle(OperateConstants.ServiceType operate, SysJobDto originDto, SysJobDto newDto) {
+        if (Objects.requireNonNull(operate) == OperateConstants.ServiceType.ADD) {
+            newDto.setStatus(ScheduleConstants.Status.PAUSE.getCode());
+            initInvokeTenant(newDto);
+        }
+    }
+
+    /**
+     * 单条操作 - 结束处理
+     *
+     * @param operate   服务层 - 操作类型
+     * @param row       操作数据条数
+     * @param originDto 源数据对象（新增时不存在）
+     * @param newDto    新数据对象（删除时不存在）
+     */
+    @Override
+    protected void endHandle(OperateConstants.ServiceType operate, int row, SysJobDto originDto, SysJobDto newDto) {
+        if (row <= 0)
+            return;
+        switch (operate) {
+            case ADD -> {
+                try {
+                    ScheduleUtils.createScheduleJob(scheduler, newDto);
+                } catch (SchedulerException | TaskException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            case EDIT -> {
+                newDto.setInvokeTenant(originDto.getInvokeTenant());
+                try {
+                    updateSchedulerJob(newDto, originDto.getJobGroup());
+                } catch (SchedulerException | TaskException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            case EDIT_STATUS -> {
+                if (StrUtil.notEquals(originDto.getStatus(), newDto.getStatus())) {
+                    try {
+                        if (StrUtil.equals(newDto.getStatus(), ScheduleConstants.Status.NORMAL.getCode())) {
+                            resumeJob(originDto);
+                        } else {
+                            pauseJob(originDto);
+                        }
+                    } catch (SchedulerException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+            case DELETE -> {
+                try {
+                    scheduler.deleteJob(ScheduleUtils.getJobKey(originDto.getId(), originDto.getJobGroup()));
+                } catch (SchedulerException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        super.endHandle(operate, row, originDto, newDto);
+    }
+
+    /**
+     * 批量操作 - 结束处理
+     *
+     * @param operate    服务层 - 操作类型
+     * @param rows       操作数据条数
+     * @param originList 源数据对象集合（新增时不存在）
+     * @param newList    新数据对象集合（删除时不存在）
+     */
+    @Override
+    protected void endBatchHandle(OperateConstants.ServiceType operate, int rows, Collection<SysJobDto> originList, Collection<SysJobDto> newList) {
+        if (rows <= 0)
+            return;
+        if (Objects.requireNonNull(operate) == OperateConstants.ServiceType.BATCH_DELETE) {
+            for (SysJobDto job : originList) {
+                try {
+                    scheduler.deleteJob(ScheduleUtils.getJobKey(job.getId(), job.getJobGroup()));
+                } catch (SchedulerException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        super.endBatchHandle(operate, rows, originList, newList);
     }
 }
