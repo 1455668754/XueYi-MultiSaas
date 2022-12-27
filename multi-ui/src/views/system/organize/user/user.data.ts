@@ -128,7 +128,7 @@ export const formSchema: FormSchema[] = [
         api: organizeOptionApi,
         showSearch: true,
         multiple: true,
-        treeNodeFilterProp: 'title',
+        treeNodeFilterProp: 'label',
         fieldNames: {
           label: 'label',
           key: 'id',
