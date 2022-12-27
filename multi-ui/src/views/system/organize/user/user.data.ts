@@ -76,7 +76,7 @@ export const searchFormSchema: FormSchema[] = [
   },
   {
     label: '用户昵称',
-    field: 'name',
+    field: 'nickName',
     component: 'Input',
     colProps: { span: 6 },
   },
