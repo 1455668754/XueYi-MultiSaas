@@ -1,9 +1,8 @@
 package com.xueyi.job.util;
 
-import com.xueyi.common.core.utils.core.CollUtil;
-import com.xueyi.common.core.utils.core.NumberUtil;
-import com.xueyi.common.core.utils.core.SpringUtil;
-import com.xueyi.common.core.utils.core.StrUtil;
+import com.xueyi.common.core.context.SecurityContextHolder;
+import com.xueyi.common.core.exception.UtilException;
+import com.xueyi.common.core.utils.core.*;
 import com.xueyi.job.api.domain.dto.SysJobDto;
 
 import java.lang.reflect.InvocationTargetException;
@@ -28,14 +27,14 @@ public class JobInvokeUtil {
         String invokeTenant = sysJob.getInvokeTenant();
         String beanName = getBeanName(invokeTarget);
         String methodName = getMethodName(invokeTarget);
-        List<Object[]> methodParams = getMethodParams(invokeTarget, invokeTenant);
-
+        List<Object[]> methodParams = getMethodParams(invokeTarget);
+        List<String> methodTenant = StrUtil.split(invokeTenant, StrUtil.COMMA);
         if (!isValidClassName(beanName)) {
             Object bean = SpringUtil.getBean(beanName);
-            invokeMethod(bean, methodName, methodParams);
+            invokeMethod(bean, methodName, methodParams, methodTenant);
         } else {
-            Object bean = Class.forName(beanName).newInstance();
-            invokeMethod(bean, methodName, methodParams);
+            Object bean = Class.forName(beanName).getDeclaredConstructor().newInstance();
+            invokeMethod(bean, methodName, methodParams, methodTenant);
         }
     }
 
@@ -45,10 +44,18 @@ public class JobInvokeUtil {
      * @param bean         目标对象
      * @param methodName   方法名称
      * @param methodParams 方法参数
+     * @param methodTenant 租户参数 | enterpriseId | isLessor | sourceName
      */
-    private static void invokeMethod(Object bean, String methodName, List<Object[]> methodParams)
+    private static void invokeMethod(Object bean, String methodName, List<Object[]> methodParams, List<String> methodTenant)
             throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException,
             InvocationTargetException {
+        if (CollUtil.isNotEmpty(methodTenant)) {
+            SecurityContextHolder.setEnterpriseId(ConvertUtil.toStr(methodTenant.get(NumberUtil.Zero)));
+            SecurityContextHolder.setIsLessor(ConvertUtil.toStr(methodTenant.get(NumberUtil.One)));
+            SecurityContextHolder.setSourceName(ConvertUtil.toStr(methodTenant.get(NumberUtil.Two)));
+        } else {
+            throw new UtilException("定时任务的租户配置不存在！");
+        }
         if (CollUtil.isNotEmpty(methodParams)) {
             Method method = bean.getClass().getMethod(methodName, getMethodParamsType(methodParams));
             method.invoke(bean, getMethodParamsValue(methodParams));
@@ -96,9 +103,10 @@ public class JobInvokeUtil {
      * @param invokeTarget 目标字符串
      * @return method方法相关参数列表
      */
-    public static List<Object[]> getMethodParams(String invokeTarget, String invokeTenant) {
-        String targetStr = StrUtil.subBetween(invokeTarget, StrUtil.PARENTHESES_START, StrUtil.PARENTHESES_END);
-        String methodStr = StrUtil.isNotEmpty(targetStr) ? StrUtil.concat(true, invokeTenant, StrUtil.COMMA, targetStr) : invokeTenant;
+    public static List<Object[]> getMethodParams(String invokeTarget) {
+        String methodStr = StrUtil.subBetween(invokeTarget, StrUtil.PARENTHESES_START, StrUtil.PARENTHESES_END);
+        if (StrUtil.isEmpty(methodStr))
+            return null;
         String[] methodParams = methodStr.split(",(?=([^\"']*[\"'][^\"']*[\"'])*[^\"']*$)");
         List<Object[]> clazz = new LinkedList<>();
         for (String methodParam : methodParams) {
@@ -153,7 +161,7 @@ public class JobInvokeUtil {
         Object[] clazz = new Object[methodParams.size()];
         int index = NumberUtil.Zero;
         for (Object[] os : methodParams) {
-            clazz[index] = (Object) os[NumberUtil.Zero];
+            clazz[index] = os[NumberUtil.Zero];
             index++;
         }
         return clazz;

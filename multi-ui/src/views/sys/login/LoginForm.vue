@@ -105,21 +105,21 @@
 </template>
 
 <script lang="ts" setup>
-  import { reactive, ref, unref, computed, onMounted } from 'vue';
+  import { computed, onMounted, reactive, ref, unref } from 'vue';
 
-  import { Checkbox, Form, Input, Row, Col, Button, Divider, Image } from 'ant-design-vue';
+  import { Button, Checkbox, Col, Divider, Form, Image, Input, Row } from 'ant-design-vue';
   import {
-    GithubFilled,
-    WechatFilled,
     AlipayCircleFilled,
+    GithubFilled,
     GoogleCircleFilled,
     TwitterCircleFilled,
+    WechatFilled,
   } from '@ant-design/icons-vue';
   import LoginFormTitle from './LoginFormTitle.vue';
   import { onKeyStroke } from '@vueuse/core';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { useUserStore } from '/@/store/modules/user';
-  import { LoginStateEnum, useLoginState, useFormRules, useFormValid } from './useLogin';
+  import { LoginStateEnum, useFormRules, useFormValid, useLoginState } from './useLogin';
   import { useDesign } from '/@/hooks/web/useDesign';
   import { useI18n } from '/@/hooks/web/useI18n';
   import {
@@ -220,8 +220,6 @@
   onMounted(() => {
     // 初始执行一次验证码获取
     handleCodeImage();
-    console.error(unref(formRef));
-    console.error(unref('formRef'));
   });
 </script>
 

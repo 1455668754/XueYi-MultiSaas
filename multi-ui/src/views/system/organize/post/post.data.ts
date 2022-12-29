@@ -43,6 +43,7 @@ export const searchFormSchema: FormSchema[] = [
   {
     label: '部门Id',
     field: 'deptId',
+    show: false,
     component: 'Input',
     colProps: { span: 6 },
   },
@@ -87,7 +88,7 @@ export const formSchema: FormSchema[] = [
     componentProps: {
       showSearch: true,
       api: listDeptApi,
-      treeNodeFilterProp: 'title',
+      treeNodeFilterProp: 'name',
       fieldNames: {
         label: 'name',
         key: 'id',

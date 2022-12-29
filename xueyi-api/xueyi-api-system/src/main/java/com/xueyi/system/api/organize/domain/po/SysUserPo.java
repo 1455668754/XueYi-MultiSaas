@@ -16,6 +16,8 @@ import javax.validation.constraints.Size;
 import java.io.Serial;
 import java.time.LocalDateTime;
 
+import static com.baomidou.mybatisplus.annotation.SqlCondition.LIKE;
+
 /**
  * 用户 持久化对象
  *
@@ -47,6 +49,7 @@ public class SysUserPo extends TBaseEntity {
 
     /** 用户昵称 */
     @Excel(name = "用户名称")
+    @TableField(condition = LIKE)
     @Xss(message = "用户编码不能包含脚本字符")
     @NotBlank(message = "用户账号不能为空")
     @Size(max = 30, message = "用户昵称长度不能超过30个字符")

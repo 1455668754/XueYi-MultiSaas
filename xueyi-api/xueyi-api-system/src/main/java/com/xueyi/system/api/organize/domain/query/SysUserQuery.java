@@ -18,4 +18,9 @@ public class SysUserQuery extends SysUserPo {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    /** 岗位Id - 查询 */
+    private Long postId;
+
+    /** 部门Id - 查询 */
+    private Long deptId;
 }

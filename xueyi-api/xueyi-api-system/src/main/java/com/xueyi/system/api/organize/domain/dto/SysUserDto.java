@@ -43,12 +43,6 @@ public class SysUserDto extends SysUserPo {
     /** 角色组 */
     private Long[] roleIds;
 
-    /** 岗位Id - 查询 */
-    private Long postId;
-
-    /** 部门Id - 查询 */
-    private Long deptId;
-
     public boolean isNotAdmin() {
         return !isAdmin(this.getUserType());
     }

@@ -1,14 +1,16 @@
 <template>
-  <div class="m-4 mr-0 overflow-hidden bg-white">
-    <BasicTree
-      title="组织列表"
-      toolbar
-      search
-      :clickRowToExpand="false"
-      :treeData="treeData"
-      :fieldNames="{ key: 'id', title: 'label' }"
-      @select="handleSelect"
-    />
+  <div class="m-4 mr-0 overflow-hidden bg-white scroll-wrap">
+    <ScrollContainer>
+      <BasicTree
+        title="组织列表"
+        toolbar
+        search
+        :clickRowToExpand="false"
+        :treeData="treeData"
+        :fieldNames="{ key: 'id', title: 'label' }"
+        @select="handleSelect"
+      />
+    </ScrollContainer>
   </div>
 </template>
 
@@ -17,11 +19,11 @@
   import { BasicTree, TreeItem } from '/@/components/Tree';
   import { organizeOptionApi } from '/@/api/system/organize/organize';
   import { OrganizeTypeEnum } from '/@/enums/system';
+  import { ScrollContainer } from '/@/components/Container';
 
   export default defineComponent({
     name: 'OrganizeTree',
-    components: { BasicTree },
-
+    components: { ScrollContainer, BasicTree },
     emits: ['select'],
     setup(_, { emit }) {
       const treeData = ref<TreeItem[]>([]);

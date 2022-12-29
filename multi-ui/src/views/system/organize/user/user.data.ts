@@ -76,7 +76,7 @@ export const searchFormSchema: FormSchema[] = [
   },
   {
     label: '用户昵称',
-    field: 'name',
+    field: 'nickName',
     component: 'Input',
     colProps: { span: 6 },
   },
@@ -128,7 +128,7 @@ export const formSchema: FormSchema[] = [
         api: organizeOptionApi,
         showSearch: true,
         multiple: true,
-        treeNodeFilterProp: 'title',
+        treeNodeFilterProp: 'label',
         fieldNames: {
           label: 'label',
           key: 'id',

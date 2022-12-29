@@ -1,5 +1,6 @@
 package com.xueyi.system.organize.manager.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.constant.basic.SqlConstants;
@@ -316,5 +317,26 @@ public class SysUserManagerImpl extends BaseManagerImpl<SysUserQuery, SysUserDto
                         .ne(SysUserPo::getId, id)
                         .eq(SysUserPo::getEmail, email)
                         .last(SqlConstants.LIMIT_ONE)));
+    }
+
+    /**
+     * 查询条件构造 | 列表查询
+     *
+     * @param query 数据查询对象
+     * @return 条件构造器
+     */
+    @Override
+    protected LambdaQueryWrapper<SysUserPo> selectListQuery(SysUserQuery query) {
+        return Wrappers.<SysUserPo>query(query).lambda()
+                .func(i -> {
+                    if (cn.hutool.core.util.ObjectUtil.isNotNull(query.getPostId()))
+                        i.apply("id in ( select user_id from sys_user_post_merge where post_id = {0} )", query.getPostId());
+                })
+                .func(i -> {
+                    if (cn.hutool.core.util.ObjectUtil.isNotNull(query.getDeptId())) {
+                        i.apply("id in ( select upm.user_id from sys_user_post_merge upm " +
+                                "left join sys_post p on upm.post_id = p.id where p.dept_id = {0} )", query.getDeptId());
+                    }
+                });
     }
 }
