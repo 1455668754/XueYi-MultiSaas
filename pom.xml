@@ -22,7 +22,7 @@
         <spring-cloud.version>2021.0.4</spring-cloud.version>
         <spring-cloud-alibaba.version>2021.0.4.0</spring-cloud-alibaba.version>
         <spring-boot-admin.version>2.7.5</spring-boot-admin.version>
-        <mybatis-plus.version>3.5.2</mybatis-plus.version>
+        <mybatis-plus.version>3.5.3</mybatis-plus.version>
         <pagehelper.version>5.3.2</pagehelper.version>
         <netty.version>4.1.67.Final</netty.version>
         <spring-doc.version>1.6.13</spring-doc.version>

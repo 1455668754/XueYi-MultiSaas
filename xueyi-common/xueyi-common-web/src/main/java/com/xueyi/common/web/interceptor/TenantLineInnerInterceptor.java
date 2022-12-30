@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.plugins.InterceptorIgnoreHelper;
 import com.baomidou.mybatisplus.core.toolkit.ClassUtils;
 import com.baomidou.mybatisplus.core.toolkit.ExceptionUtils;
 import com.baomidou.mybatisplus.core.toolkit.PluginUtils;
-import com.baomidou.mybatisplus.extension.parser.JsqlParserSupport;
+import com.baomidou.mybatisplus.extension.plugins.inner.BaseMultiTableInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.InnerInterceptor;
 import com.baomidou.mybatisplus.extension.toolkit.PropertyMapper;
 import com.xueyi.common.core.utils.core.CollUtil;
@@ -12,7 +12,8 @@ import com.xueyi.common.core.utils.core.NumberUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.web.handler.TenantLineHandler;
 import lombok.*;
-import net.sf.jsqlparser.expression.*;
+import net.sf.jsqlparser.expression.Expression;
+import net.sf.jsqlparser.expression.Parenthesis;
 import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
 import net.sf.jsqlparser.expression.operators.conditional.OrExpression;
 import net.sf.jsqlparser.expression.operators.relational.*;
@@ -32,7 +33,8 @@ import org.apache.ibatis.session.RowBounds;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * 租户拦截器
@@ -44,7 +46,7 @@ import java.util.*;
 @AllArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class TenantLineInnerInterceptor extends JsqlParserSupport implements InnerInterceptor {
+public class TenantLineInnerInterceptor extends BaseMultiTableInnerInterceptor implements InnerInterceptor {
 
     /** 租户处理器 */
     private TenantLineHandler tenantLineHandler;
@@ -56,7 +58,7 @@ public class TenantLineInnerInterceptor extends JsqlParserSupport implements Inn
     public void beforeQuery(Executor executor, MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, BoundSql boundSql) throws SQLException {
         if (InterceptorIgnoreHelper.willIgnoreTenantLine(ms.getId())) return;
         PluginUtils.MPBoundSql mpBs = PluginUtils.mpBoundSql(boundSql);
-        mpBs.sql(parserSingle(mpBs.sql(), null));
+        mpBs.sql(this.parserSingle(mpBs.sql(), null));
     }
 
     /**
@@ -71,7 +73,7 @@ public class TenantLineInnerInterceptor extends JsqlParserSupport implements Inn
             if (InterceptorIgnoreHelper.willIgnoreTenantLine(ms.getId()))
                 return;
             PluginUtils.MPBoundSql mpBs = mpSh.mPBoundSql();
-            mpBs.sql(parserMulti(mpBs.sql(), null));
+            mpBs.sql(this.parserMulti(mpBs.sql(), null));
         }
     }
 
@@ -80,27 +82,11 @@ public class TenantLineInnerInterceptor extends JsqlParserSupport implements Inn
      */
     @Override
     protected void processSelect(Select select, int index, String sql, Object obj) {
-        processSelectBody(select.getSelectBody());
+        String whereSegment = (String) obj;
+        this.processSelectBody(select.getSelectBody(), whereSegment);
         List<WithItem> withItemsList = select.getWithItemsList();
         if (CollUtil.isNotEmpty(withItemsList))
-            withItemsList.forEach(this::processSelectBody);
-    }
-
-    /**
-     * select body process
-     */
-    protected void processSelectBody(SelectBody selectBody) {
-        if (selectBody == null) return;
-        if (selectBody instanceof PlainSelect) {
-            processPlainSelect((PlainSelect) selectBody);
-        } else if (selectBody instanceof WithItem withItem) {
-            processSelectBody(withItem.getSubSelect().getSelectBody());
-        } else {
-            SetOperationList operationList = (SetOperationList) selectBody;
-            List<SelectBody> selectBodyList = operationList.getSelects();
-            if (CollUtil.isNotEmpty(selectBodyList))
-                selectBodyList.forEach(this::processSelectBody);
-        }
+            withItemsList.forEach((withItem) -> this.processSelectBody(withItem, whereSegment));
     }
 
     /**
@@ -110,7 +96,7 @@ public class TenantLineInnerInterceptor extends JsqlParserSupport implements Inn
     protected void processInsert(Insert insert, int index, String sql, Object obj) {
         String tableName = insert.getTable().getName();
         // 忽略租户控制退出执行
-        if (tenantLineHandler.ignoreTable(tableName))
+        if (this.tenantLineHandler.ignoreTable(tableName))
             return;
 
         List<Column> columns = insert.getColumns();
@@ -119,26 +105,29 @@ public class TenantLineInnerInterceptor extends JsqlParserSupport implements Inn
             return;
 
         // 增加租户列
-        String tenantIdColumn = tenantLineHandler.getTenantIdColumn();
+        String tenantIdColumn = this.tenantLineHandler.getTenantIdColumn();
         columns.add(new Column(tenantIdColumn));
         List<Expression> duplicateUpdateColumns = insert.getDuplicateUpdateExpressionList();
         if (CollUtil.isNotEmpty(duplicateUpdateColumns)) {
-            duplicateUpdateColumns.add(tenantLineHandler.getInsertTenantEqualsTo(tableName));
+            EqualsTo equalsTo = this.tenantLineHandler.getInsertTenantEqualsTo(tableName);
+            duplicateUpdateColumns.add(equalsTo);
         }
 
         Select select = insert.getSelect();
         if (select != null) {
-            processInsertSelect(select.getSelectBody());
-        } else if (insert.getItemsList() != null) {
-            ItemsList itemsList = insert.getItemsList();
-            if (itemsList instanceof MultiExpressionList) {
-                ((MultiExpressionList) itemsList).getExpressionLists()
-                        .forEach((el) -> el.getExpressions().add(tenantLineHandler.getInsertTenantId(tableName)));
-            } else {
-                ((ExpressionList) itemsList).getExpressions().add(tenantLineHandler.getInsertTenantId(tableName));
-            }
+            this.processInsertSelect(select.getSelectBody(), (String) obj);
         } else {
-            throw ExceptionUtils.mpe("Failed to process multiple-table update, please exclude the tableName or statementId");
+            if (insert.getItemsList() == null) {
+                throw ExceptionUtils.mpe("Failed to process multiple-table update, please exclude the tableName or statementId", new Object[0]);
+            }
+            ItemsList itemsList = insert.getItemsList();
+            Expression tenantId = this.tenantLineHandler.getInsertTenantId(tableName);
+            if (itemsList instanceof MultiExpressionList multiExpressionList) {
+                multiExpressionList.getExpressionLists()
+                        .forEach((el) -> el.getExpressions().add(tenantId));
+            } else {
+                ((ExpressionList) itemsList).getExpressions().add(tenantId);
+            }
         }
     }
 
@@ -147,10 +136,11 @@ public class TenantLineInnerInterceptor extends JsqlParserSupport implements Inn
      */
     @Override
     protected void processUpdate(Update update, int index, String sql, Object obj) {
+        Table table = update.getTable();
         // 过滤退出执行
-        if (tenantLineHandler.ignoreTable(update.getTable().getName()))
+        if (this.tenantLineHandler.ignoreTable(table.getName()))
             return;
-        update.setWhere(tenantLineHandler.updateExpression(update.getTable(), update.getWhere()));
+        update.setWhere(this.buildTableExpression(table, update.getWhere(), (String) obj));
     }
 
     /**
@@ -161,23 +151,24 @@ public class TenantLineInnerInterceptor extends JsqlParserSupport implements Inn
         // 过滤退出执行
         if (tenantLineHandler.ignoreTable(delete.getTable().getName()))
             return;
-        delete.setWhere(tenantLineHandler.updateExpression(delete.getTable(), delete.getWhere()));
+        delete.setWhere(this.buildTableExpression(delete.getTable(), delete.getWhere(), (String) obj));
     }
 
     /**
      * 处理 insert into select
      *
-     * @param selectBody SelectBody
+     * @param selectBody   SelectBody
+     * @param whereSegment whereSegment
      */
-    protected void processInsertSelect(SelectBody selectBody) {
+    protected void processInsertSelect(SelectBody selectBody, final String whereSegment) {
         PlainSelect plainSelect = (PlainSelect) selectBody;
         FromItem fromItem = plainSelect.getFromItem();
         if (fromItem instanceof Table) {
-            processPlainSelect(plainSelect);
-            appendSelectItem(plainSelect.getSelectItems());
+            this.processPlainSelect(plainSelect, whereSegment);
+            this.appendSelectItem(plainSelect.getSelectItems());
         } else if (fromItem instanceof SubSelect subSelect) {
-            appendSelectItem(plainSelect.getSelectItems());
-            processInsertSelect(subSelect.getSelectBody());
+            this.appendSelectItem(plainSelect.getSelectItems());
+            this.processInsertSelect(subSelect.getSelectBody(), whereSegment);
         }
     }
 
@@ -194,282 +185,13 @@ public class TenantLineInnerInterceptor extends JsqlParserSupport implements Inn
             if (item instanceof AllColumns || item instanceof AllTableColumns)
                 return;
         }
-        selectItems.add(new SelectExpressionItem(new Column(tenantLineHandler.getTenantIdColumn())));
-    }
-
-    /**
-     * 处理 PlainSelect
-     *
-     * @param plainSelect PlainSelect
-     */
-    protected void processPlainSelect(PlainSelect plainSelect) {
-        List<SelectItem> selectItems = plainSelect.getSelectItems();
-        if (CollUtil.isNotEmpty(selectItems))
-            selectItems.forEach(this::processSelectItem);
-
-        // 处理 where 中的子查询
-        Expression where = plainSelect.getWhere();
-        processWhereSubSelect(where);
-
-        // 处理 fromItem
-        FromItem fromItem = plainSelect.getFromItem();
-        List<Table> list = processFromItem(fromItem);
-        List<Table> mainTables = new ArrayList<>(list);
-
-        // 处理 join
-        List<Join> joins = plainSelect.getJoins();
-        if (CollUtil.isNotEmpty(joins)) {
-            mainTables = processJoins(mainTables, joins);
-        }
-
-        // 当有 mainTable 时，进行 where 条件追加
-        if (CollUtil.isNotEmpty(mainTables)) {
-            plainSelect.setWhere(builderExpression(where, mainTables));
-        }
-    }
-
-    private List<Table> processFromItem(FromItem fromItem) {
-        // 处理括号括起来的表达式
-        while (fromItem instanceof ParenthesisFromItem)
-            fromItem = ((ParenthesisFromItem) fromItem).getFromItem();
-
-        List<Table> mainTables = new ArrayList<>();
-        // 无 join 时的处理逻辑
-        if (fromItem instanceof Table fromTable) {
-            mainTables.add(fromTable);
-        } else if (fromItem instanceof SubJoin) {
-            // SubJoin 类型则还需要添加上 where 条件
-            List<Table> tables = processSubJoin((SubJoin) fromItem);
-            mainTables.addAll(tables);
-        } else {
-            // 处理下 fromItem
-            processOtherFromItem(fromItem);
-        }
-        return mainTables;
-    }
-
-    /**
-     * 处理where条件内的子查询
-     * <p>
-     * 支持如下:
-     * 1. in
-     * 2. =
-     * 3. >
-     * 4. <
-     * 5. >=
-     * 6. <=
-     * 7. <>
-     * 8. EXISTS
-     * 9. NOT EXISTS
-     * <p>
-     * 前提条件:
-     * 1. 子查询必须放在小括号中
-     * 2. 子查询一般放在比较操作符的右边
-     *
-     * @param where where 条件
-     */
-    protected void processWhereSubSelect(Expression where) {
-        if (ObjectUtil.isNull(where))
-            return;
-        if (where instanceof FromItem) {
-            processOtherFromItem((FromItem) where);
-            return;
-        }
-        if (where.toString().indexOf("SELECT") > NumberUtil.Zero) {
-            // 有子查询
-            if (where instanceof BinaryExpression expression) {
-                // 比较符号 , and , or , 等等
-                processWhereSubSelect(expression.getLeftExpression());
-                processWhereSubSelect(expression.getRightExpression());
-            } else if (where instanceof InExpression expression) {
-                // in
-                Expression inExpression = expression.getRightExpression();
-                if (inExpression instanceof SubSelect) {
-                    processSelectBody(((SubSelect) inExpression).getSelectBody());
-                }
-            } else if (where instanceof ExistsExpression expression) {
-                // exists
-                processWhereSubSelect(expression.getRightExpression());
-            } else if (where instanceof NotExpression expression) {
-                // not exists
-                processWhereSubSelect(expression.getExpression());
-            } else if (where instanceof Parenthesis expression) {
-                processWhereSubSelect(expression.getExpression());
-            }
-        }
-    }
-
-    protected void processSelectItem(SelectItem selectItem) {
-        if (selectItem instanceof SelectExpressionItem selectExpressionItem) {
-            if (selectExpressionItem.getExpression() instanceof SubSelect) {
-                processSelectBody(((SubSelect) selectExpressionItem.getExpression()).getSelectBody());
-            } else if (selectExpressionItem.getExpression() instanceof Function) {
-                processFunction((Function) selectExpressionItem.getExpression());
-            }
-        }
-    }
-
-    /**
-     * 处理函数
-     * <p>支持: 1. select fun(args..) 2. select fun1(fun2(args..),args..)<p>
-     * <p> fixed gitee pulls/141</p>
-     *
-     * @param function Function
-     */
-    protected void processFunction(Function function) {
-        ExpressionList parameters = function.getParameters();
-        if (ObjectUtil.isNotNull(parameters)) {
-            parameters.getExpressions().forEach((expression) -> {
-                if (expression instanceof SubSelect) {
-                    processSelectBody(((SubSelect) expression).getSelectBody());
-                } else if (expression instanceof Function) {
-                    processFunction((Function) expression);
-                }
-            });
-        }
-    }
-
-    /**
-     * 处理子查询等
-     */
-    protected void processOtherFromItem(FromItem fromItem) {
-        // 去除括号
-        while (fromItem instanceof ParenthesisFromItem)
-            fromItem = ((ParenthesisFromItem) fromItem).getFromItem();
-
-        if (fromItem instanceof SubSelect subSelect) {
-            if (ObjectUtil.isNotNull(subSelect.getSelectBody())) {
-                processSelectBody(subSelect.getSelectBody());
-            }
-        } else if (fromItem instanceof ValuesList) {
-            this.logger.debug("Perform a subQuery, if you do not give us feedback");
-        } else if (fromItem instanceof LateralSubSelect lateralSubSelect) {
-            if (ObjectUtil.isNotNull(lateralSubSelect.getSubSelect())) {
-                SubSelect subSelect = lateralSubSelect.getSubSelect();
-                if (ObjectUtil.isNotNull(subSelect.getSelectBody())) {
-                    processSelectBody(subSelect.getSelectBody());
-                }
-            }
-        }
-    }
-
-    /**
-     * 处理 sub join
-     *
-     * @param subJoin subJoin
-     * @return Table subJoin 中的主表
-     */
-    private List<Table> processSubJoin(SubJoin subJoin) {
-        List<Table> mainTables = new ArrayList<>();
-        if (subJoin.getJoinList() != null) {
-            List<Table> list = processFromItem(subJoin.getLeft());
-            mainTables.addAll(list);
-            mainTables = processJoins(mainTables, subJoin.getJoinList());
-        }
-        return mainTables;
-    }
-
-    /**
-     * 处理 joins
-     *
-     * @param mainTables 可以为 null
-     * @param joins      join 集合
-     * @return List<Table> 右连接查询的 Table 列表
-     */
-    private List<Table> processJoins(List<Table> mainTables, List<Join> joins) {
-        // join 表达式中最终的主表
-        Table mainTable = null;
-        // 当前 join 的左表
-        Table leftTable = null;
-
-        if (CollUtil.isEmpty(mainTables)) {
-            mainTables = new ArrayList<>();
-        } else if (mainTables.size() == NumberUtil.One) {
-            mainTable = mainTables.get(NumberUtil.Zero);
-            leftTable = mainTable;
-        }
-
-        //对于 on 表达式写在最后的 join，需要记录下前面多个 on 的表名
-        Deque<List<Table>> onTableDeque = new LinkedList<>();
-
-        for (Join join : joins) {
-            // 处理 on 表达式
-            FromItem joinItem = join.getRightItem();
-
-            // 获取当前 join 的表，subJoint 可以看作是一张表
-            List<Table> joinTables = null;
-            if (joinItem instanceof Table) {
-                joinTables = new ArrayList<>();
-                joinTables.add((Table) joinItem);
-            } else if (joinItem instanceof SubJoin) {
-                joinTables = this.processSubJoin((SubJoin) joinItem);
-            }
-
-            if (joinTables != null) {
-                // 如果是隐式内连接
-                if (join.isSimple()) {
-                    mainTables.addAll(joinTables);
-                    continue;
-                }
-
-                // 当前表是否忽略
-                Table joinTable = joinTables.get(NumberUtil.Zero);
-
-                List<Table> onTables = null;
-
-                // 如果不要忽略，且是右连接，则记录下当前表
-                if (join.isRight()) {
-                    mainTable = joinTable;
-                    if (leftTable != null) {
-                        onTables = Collections.singletonList(leftTable);
-                    }
-                } else if (join.isLeft()) {
-                    onTables = Collections.singletonList(joinTable);
-                } else if (join.isInner()) {
-                    onTables = mainTable == null
-                            ? Collections.singletonList(joinTable)
-                            : Arrays.asList(mainTable, joinTable);
-                    mainTable = null;
-                }
-
-                mainTables = new ArrayList<>();
-                if (mainTable != null)
-                    mainTables.add(mainTable);
-
-                // 获取 join 尾缀的 on 表达式列表
-                Collection<Expression> originOnExpressions = join.getOnExpressions();
-                // 正常 join on 表达式只有一个，立刻处理
-                if (originOnExpressions.size() == NumberUtil.One && onTables != null) {
-                    LinkedList<Expression> onExpressions = new LinkedList<>();
-                    onExpressions.add(builderExpression(originOnExpressions.iterator().next(), onTables));
-                    join.setOnExpressions(onExpressions);
-                    leftTable = joinTable;
-                    continue;
-                }
-                // 表名压栈，忽略的表压入 null，以便后续不处理
-                onTableDeque.push(onTables);
-                // 尾缀多个 on 表达式的时候统一处理
-                if (originOnExpressions.size() > NumberUtil.One) {
-                    Collection<Expression> onExpressions = new LinkedList<>();
-                    for (Expression originOnExpression : originOnExpressions) {
-                        List<Table> currentTableList = onTableDeque.poll();
-                        onExpressions.add(CollUtil.isEmpty(currentTableList) ? originOnExpression : builderExpression(originOnExpression, currentTableList));
-                    }
-                    join.setOnExpressions(onExpressions);
-                }
-                leftTable = joinTable;
-            } else {
-                this.processOtherFromItem(joinItem);
-                leftTable = null;
-            }
-        }
-        return mainTables;
+        selectItems.add(new SelectExpressionItem(new Column(this.tenantLineHandler.getTenantIdColumn())));
     }
 
     /**
      * 构造处理条件
      */
-    protected Expression builderExpression(Expression currentExpression, List<Table> tables) {
+    protected Expression builderExpression(Expression currentExpression, List<Table> tables, final String whereSegment) {
         // 没有表需要处理直接返回
         if (CollUtil.isEmpty(tables))
             return currentExpression;
@@ -500,6 +222,10 @@ public class TenantLineInnerInterceptor extends JsqlParserSupport implements Inn
                 ? new AndExpression(currentExpression instanceof OrExpression ? new Parenthesis(currentExpression) : currentExpression, injectExpression)
                 : injectExpression
                 : currentExpression;
+    }
+
+    public Expression buildTableExpression(final Table table, final Expression where, final String whereSegment) {
+        return this.tenantLineHandler.updateExpression(table, where);
     }
 
     @Override

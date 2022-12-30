@@ -160,7 +160,7 @@ public interface BasicLineHandler {
     default BinaryExpression andExpression(Table table, Expression where) {
         EqualsTo equalsTo = new EqualsTo(getAliasColumn(table), getTenantId());
         return ObjectUtil.isNotNull(where)
-                ? where instanceof OrExpression ? new AndExpression(equalsTo, new Parenthesis(where)) : new AndExpression(equalsTo, where)
+                ? where instanceof OrExpression ? new AndExpression(new Parenthesis(where), equalsTo) : new AndExpression(where, equalsTo)
                 : equalsTo;
     }
 
@@ -176,7 +176,7 @@ public interface BasicLineHandler {
         inExpression.setLeftExpression(getAliasColumn(table));
         inExpression.setRightExpression(getCommonTenantId());
         return ObjectUtil.isNotNull(where)
-                ? where instanceof OrExpression ? new AndExpression(inExpression, new Parenthesis(where)) : new AndExpression(inExpression, where)
+                ? where instanceof OrExpression ? new AndExpression(new Parenthesis(where), inExpression) : new AndExpression(where, inExpression)
                 : inExpression;
     }
 
