@@ -4,7 +4,7 @@
 
 <script lang="ts">
   import { fieldColumns, genList } from './gen.detail.data';
-  import { defineComponent, reactive } from 'vue';
+  import { defineComponent } from 'vue';
   import { BasicTable, useTable } from '/@/components/Table';
   import { GenTableIM } from '/@/model/gen';
 
@@ -13,12 +13,6 @@
     components: { BasicTable },
     emits: ['submit'],
     setup(_, { emit }) {
-      const state = reactive<{
-        info: Nullable<GenTableIM>;
-      }>({
-        info: null,
-      });
-
       const [registerTable, { setTableData, getDataSource }] = useTable({
         title: '字段配置',
         columns: fieldColumns,
@@ -29,16 +23,14 @@
 
       /** 数据初始化 */
       function initialize(info: GenTableIM) {
-        state.info = info;
-        setTableData(state.info.subList as Recordable[]);
+        setTableData(info.subList as Recordable[]);
       }
 
       /** 保存校验 */
-      async function submit() {
+      async function submit(info: GenTableIM) {
         try {
-          if (state.info !== null) {
-            state.info.subList = getDataSource();
-          }
+          info.subList = getDataSource();
+          return info;
         } catch {
           emit('submit', genList[2].key);
         }

@@ -36,7 +36,7 @@
       async function submit() {
         try {
           sourceCopy(state.info, await validate());
-          return true;
+          return state.info;
         } catch {
           emit('submit', genList[0].key);
         }

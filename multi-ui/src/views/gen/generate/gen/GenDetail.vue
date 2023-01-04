@@ -1,7 +1,7 @@
 <template>
   <PageWrapper :title="getTitle" @back="goBack">
     <template #extra>
-      <a-button type="primary" @click="submit" v-auth="GenAuth.EDIT" danger> 保存 </a-button>
+      <a-button type="primary" @click="submit" v-auth="GenAuth.EDIT" danger> 保存</a-button>
     </template>
 
     <template #footer>
@@ -108,12 +108,12 @@
       /** 保存按钮 */
       async function submit() {
         try {
-          await state.basicRef.submit();
-          await state.generateRef.submit();
-          await state.fieldRef.submit();
+          const values1 = await state.basicRef.submit();
+          const values2 = await state.generateRef.submit(values1);
+          const values3 = await state.fieldRef.submit(values2);
           if (submitCheck.value) {
-            if (genState.info !== null) {
-              await editGenApi(genState.info).then(() => {
+            if (values3 !== null) {
+              await editGenApi(values3).then(() => {
                 createMessage.success('修改成功！');
                 goBack();
               });

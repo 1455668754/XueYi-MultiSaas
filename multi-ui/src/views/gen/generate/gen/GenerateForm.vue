@@ -144,31 +144,28 @@
 
       /** 树表配置初始化 */
       function initTree(subList: any[]) {
-        treeUpdateSchema([
-          { field: 'treeCode', componentProps: { options: subList } },
-          { field: 'parentId', componentProps: { options: subList } },
-        ]);
-        // treeUpdateSchema({ field: 'treeCode', componentProps: { options: subList } });
-        // treeUpdateSchema({ field: 'parentId', componentProps: { options: subList } });
-        // treeUpdateSchema({ field: 'treeName', componentProps: { options: subList } });
-        // treeUpdateSchema({ field: 'ancestors', componentProps: { options: subList } });
-        // treeUpdateSchema({ field: 'level', componentProps: { options: subList } });
+        treeUpdateSchema({ field: 'treeCode', componentProps: { options: subList } });
+        treeUpdateSchema({ field: 'parentId', componentProps: { options: subList } });
+        treeUpdateSchema({ field: 'treeName', componentProps: { options: subList } });
+        treeUpdateSchema({ field: 'ancestors', componentProps: { options: subList } });
+        treeUpdateSchema({ field: 'level', componentProps: { options: subList } });
       }
 
       /** 保存校验 */
-      async function submit() {
+      async function submit(info: GenTableIM) {
         try {
-          sourceAssign(state.info, await validate());
+          info = sourceAssign(info, await validate());
           let options = {};
-          sourceAssign(options, await basicValidate());
+          options = sourceAssign(options, await basicValidate());
           if (isTreeTpl(tplType.value)) {
-            sourceAssign(options, await treeValidate());
+            options = sourceAssign(options, await treeValidate());
           }
           if (!isMergeTpl(tplType.value)) {
-            sourceAssign(options, await baseValidate());
+            options = sourceAssign(options, await baseValidate());
           }
-          sourceAssign(options, await apiValidate());
-          sourceAssign(state.info, { options: JSON.stringify(options) });
+          options = sourceAssign(options, await apiValidate());
+          info = sourceAssign(info, { options: JSON.stringify(options) });
+          return info;
         } catch {
           emit('submit', genList[1].key);
         }
