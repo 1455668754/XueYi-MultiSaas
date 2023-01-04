@@ -56,6 +56,8 @@
 
 ~~~
 com.xueyi     
+├── multi-ui              // vue3前端 [3000]
+├── xueyi-ui              // vue2前端 [80]
 ├── xueyi-gateway         // 网关模块 [8080]
 ├── xueyi-auth            // 认证中心 [9200]
 ├── xueyi-api             // 接口模块

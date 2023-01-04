@@ -12,4 +12,4 @@ WORKDIR /home/xueyi/projects/xueyi-ui
 # 复制conf文件到路径
 COPY ./nginx/conf/nginx.conf /etc/nginx/nginx.conf
 # 复制html文件到路径
-COPY ./admin/dist /home/xueyi/projects/xueyi-ui
+COPY ./dist /home/xueyi/projects/xueyi-ui
