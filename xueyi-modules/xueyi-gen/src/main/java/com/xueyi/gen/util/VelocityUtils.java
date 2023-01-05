@@ -139,7 +139,10 @@ public class VelocityUtils {
     public static void setMenuVelocityContext(VelocityContext context, JSONObject optionsObj) {
         context.put("parentModuleId", getParentModuleId(optionsObj));
         context.put("parentMenuId", getParentMenuId(optionsObj));
-        context.put("parentMenuAncestors", optionsObj.getString(GenConstants.OptionField.PARENT_MENU_ANCESTORS.getCode()));
+        String parentMenuAncestors = optionsObj.getString(GenConstants.OptionField.PARENT_MENU_ANCESTORS.getCode());
+        context.put("parentMenuAncestors", parentMenuAncestors);
+        List<String> ancestorsArr = StrUtil.split(parentMenuAncestors, StrUtil.COMMA);
+        context.put("level", ancestorsArr.size());
         // 生成菜单menuId0-9
         for (int i = 0; i < 10; i++) {
             context.put("menuId" + i, IdUtil.getSnowflake(0, 0).nextId());

@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="docker-compose" type="docker-deploy" factoryName="docker-compose.yml" server-name="阿里云 1H2G1M">
+  <configuration default="false" name="docker-compose" type="docker-deploy" factoryName="docker-compose.yml">
     <deployment type="docker-compose.yml">
       <settings>
         <option name="envFilePath" value="" />
