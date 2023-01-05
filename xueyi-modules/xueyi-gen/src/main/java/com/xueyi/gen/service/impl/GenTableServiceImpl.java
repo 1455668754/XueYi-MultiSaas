@@ -127,21 +127,21 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
     @Override
     @DSTransactional
     public void importGenTable(List<GenTableDto> tableList) {
-//        try {
-        tableList.forEach(table -> {
-            GenUtils.initTable(table);
-            int row = baseManager.insert(table);
-            if (row > 0) {
-                List<GenTableColumnDto> columnList = subService.selectDbTableColumnsByName(table.getName());
-                columnList.forEach(column -> GenUtils.initColumnField(column, table));
-                subService.insertBatch(columnList);
-                GenUtils.initTableOptions(columnList, table);
-                baseManager.update(table);
-            }
-        });
-//        } catch (Exception e) {
-//            AjaxResult.warn(StrUtil.format("导入失败：{}", e.getMessage()));
-//        }
+        try {
+            tableList.forEach(table -> {
+                GenUtils.initTable(table);
+                int row = baseManager.insert(table);
+                if (row > 0) {
+                    List<GenTableColumnDto> columnList = subService.selectDbTableColumnsByName(table.getName());
+                    columnList.forEach(column -> GenUtils.initColumnField(column, table));
+                    subService.insertBatch(columnList);
+                    GenUtils.initTableOptions(columnList, table);
+                    baseManager.update(table);
+                }
+            });
+        } catch (Exception e) {
+            AjaxResult.warn(StrUtil.format("导入失败：{}", e.getMessage()));
+        }
     }
 
     /**

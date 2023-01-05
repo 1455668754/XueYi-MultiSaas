@@ -5,15 +5,16 @@
 </template>
 
 <script lang="ts">
-  import {defineComponent, onMounted, ref} from 'vue';
-  import {Description, useDescription} from '/@/components/Description';
-  import {detailSchema} from './';
-  import {useRoute} from 'vue-router';
-  import {${BusinessName}IndexGo} from '/@/enums/';
-  import {useTabs} from '/@/hooks/web/useTabs';
-  import {PageWrapper} from '/@/components/Page';
-  import {useUserStore} from '/@/store/modules/user';
-  import {DescItemSizeEnum} from '/@/enums/appEnum';
+  import { defineComponent, onMounted, ref } from 'vue';
+  import { get${BusinessName}Api } from '/@/api/${moduleName}/${authorityName}/${businessName}';
+  import { Description, useDescription } from '/@/components/Description';
+  import { detailSchema } from './${businessName}.data';
+  import { useRoute } from 'vue-router';
+  import { ${BusinessName}IndexGo } from '/@/enums/${moduleName}';
+  import { useTabs } from '/@/hooks/web/useTabs';
+  import { PageWrapper } from '/@/components/Page';
+  import { useUserStore } from '/@/store/modules/user';
+  import { DescItemSizeEnum } from '/@/enums/appEnum';
 
   export default defineComponent({
     components: { Description, PageWrapper },

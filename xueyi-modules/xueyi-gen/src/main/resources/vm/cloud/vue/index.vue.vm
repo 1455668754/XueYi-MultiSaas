@@ -337,13 +337,13 @@
 </template>
 
 <script>
-  import {list${BusinessName}Api, list${BusinessName}ExNodesApi} from '@/api/'
-  import {${BusinessName}Auth} from '@auth/'
-  import Treeselect from "@riophae/vue-treeselect";
-  import "@riophae/vue-treeselect/dist/vue-treeselect.css";
-  import {IconEnum} from '@enums'
-      #if($table.tree || $table.subTree)
+import { list${BusinessName}Api, get${BusinessName}Api, add${BusinessName}Api, edit${BusinessName}Api, del${BusinessName}Api#if($table.tree || $table.subTree), list${BusinessName}ExNodesApi#end } from '@/api/${moduleName}/${authorityName}/${businessName}'
+import { ${BusinessName}Auth } from '@auth/${moduleName}/${authorityName}/${businessName}.auth'
+#if($table.tree || $table.subTree)
+import Treeselect from "@riophae/vue-treeselect";
+import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 #end
+import { IconEnum } from '@enums'
 
 export default {
   name: "${BusinessName}Management",
