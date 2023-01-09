@@ -139,15 +139,15 @@ public class BaseConstants {
     @AllArgsConstructor
     public enum ImportType {
 
-        DEFAULT("Y", "默认 - 新增&&修改"),
-        ONLY_INSERT("Y", "仅新增"),
-        ONLY_UPDATE("N", "仅修改");
+        DEFAULT("1", "默认 - 新增&&修改"),
+        ONLY_INSERT("2", "仅新增"),
+        ONLY_UPDATE("3", "仅修改");
 
         private final String code;
         private final String info;
 
         public static ImportType getByCode(String code) {
-            return EnumUtil.getByCode(ImportType.class, code);
+            return EnumUtil.getByCodeElseNull(ImportType.class, code);
         }
 
     }
