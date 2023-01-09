@@ -1,5 +1,6 @@
 package com.xueyi.common.core.web.entity.base;
 
+import com.baomidou.mybatisplus.annotation.OrderBy;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -27,6 +28,7 @@ public class BasisEntity implements Serializable {
 
     /** Id */
     @TableId
+    @OrderBy
     @NotNull(message = "id不能为空", groups = {V_E.class})
     protected Long id;
 
