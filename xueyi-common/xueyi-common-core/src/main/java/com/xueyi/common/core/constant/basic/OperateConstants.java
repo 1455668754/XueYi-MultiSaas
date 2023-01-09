@@ -154,13 +154,14 @@ public class OperateConstants {
     @AllArgsConstructor
     public enum SubOperateLimit {
 
+        ONLY_SEL("only select", "仅 查询"),
         EX_SEL("exclude select", "排除 查询"),
         EX_ADD("exclude insert", "排除 新增"),
         EX_EDIT("exclude update", "排除 修改"),
         EX_DEL("exclude delete", "排除 删除"),
         EX_SEL_OR_EDIT("exclude select or update", "排除 查询 and 修改"),
         EX_ADD_OR_EDIT("exclude insert or update", "排除 新增 and 修改"),
-        EX_SEL_OR_ADD_OR_EDIT("exclude select or insert or update", "排除 查询 and 新增 and 修改");
+        ONLY_DEL("exclude select or insert or update", "仅 删除");
 
         private final String code;
         private final String info;

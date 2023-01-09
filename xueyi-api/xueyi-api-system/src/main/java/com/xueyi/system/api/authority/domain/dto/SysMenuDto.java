@@ -1,5 +1,7 @@
 package com.xueyi.system.api.authority.domain.dto;
 
+import com.xueyi.common.core.annotation.Correlation;
+import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.system.api.authority.domain.po.SysMenuPo;
@@ -7,6 +9,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
+
+import static com.xueyi.system.api.authority.domain.merge.MergeGroup.MENU_SysModule_GROUP;
 
 /**
  * 菜单 数据传输对象
@@ -25,6 +29,10 @@ public class SysMenuDto extends SysMenuPo {
 
     /** 详情页激活的菜单 */
     private String currentActiveMenu;
+
+    /** 模块信息 */
+    @Correlation(groupName = MENU_SysModule_GROUP, keyType = OperateConstants.SubKeyType.RECEIVE)
+    private SysModuleDto module;
 
     /**
      * 校验菜单类型是否为目录

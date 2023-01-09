@@ -51,7 +51,7 @@ public class SysModuleManagerImpl extends BaseManagerImpl<SysModuleQuery, SysMod
     protected List<SlaveRelation> subRelationInit() {
         return new ArrayList<>(){{
             add(new SlaveRelation(MODULE_SysMenu_GROUP, SysMenuManagerImpl.class, OperateConstants.SubOperateLimit.EX_ADD_OR_EDIT));
-            add(new SlaveRelation(MODULE_SysRoleModuleMerge_GROUP, SysRoleModuleMergeMapper.class, SysRoleModuleMerge.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
+            add(new SlaveRelation(MODULE_SysRoleModuleMerge_GROUP, SysRoleModuleMergeMapper.class, SysRoleModuleMerge.class, OperateConstants.SubOperateLimit.ONLY_DEL));
         }};
     }
 

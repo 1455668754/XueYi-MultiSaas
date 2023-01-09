@@ -77,7 +77,7 @@ public class SysUserManagerImpl extends BaseManagerImpl<SysUserQuery, SysUserDto
      */
     protected List<SlaveRelation> subRelationInit() {
         return new ArrayList<>() {{
-            add(new SlaveRelation(USER_OrganizeRoleMerge_GROUP, SysOrganizeRoleMergeMapper.class, SysOrganizeRoleMerge.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
+            add(new SlaveRelation(USER_OrganizeRoleMerge_GROUP, SysOrganizeRoleMergeMapper.class, SysOrganizeRoleMerge.class, OperateConstants.SubOperateLimit.ONLY_DEL));
             add(new SlaveRelation(USER_SysUserPostMerge_GROUP, SysPostManagerImpl.class, SysUserPostMergeMapper.class, SysUserPostMerge.class));
         }};
     }

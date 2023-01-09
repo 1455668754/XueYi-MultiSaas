@@ -41,9 +41,9 @@ public class SysPostManagerImpl extends BaseManagerImpl<SysPostQuery, SysPostDto
      */
     protected List<SlaveRelation> subRelationInit() {
         return new ArrayList<>(){{
-            add(new SlaveRelation(POST_OrganizeRoleMerge_GROUP, SysOrganizeRoleMergeMapper.class, SysOrganizeRoleMerge.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
-            add(new SlaveRelation(POST_SysRolePostMerge_GROUP, SysRolePostMergeMapper.class, SysRolePostMerge.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
-            add(new SlaveRelation(POST_SysUserPostMerge_GROUP, SysUserPostMergeMapper.class, SysUserPostMerge.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
+            add(new SlaveRelation(POST_OrganizeRoleMerge_GROUP, SysOrganizeRoleMergeMapper.class, SysOrganizeRoleMerge.class, OperateConstants.SubOperateLimit.ONLY_DEL));
+            add(new SlaveRelation(POST_SysRolePostMerge_GROUP, SysRolePostMergeMapper.class, SysRolePostMerge.class, OperateConstants.SubOperateLimit.ONLY_DEL));
+            add(new SlaveRelation(POST_SysUserPostMerge_GROUP, SysUserPostMergeMapper.class, SysUserPostMerge.class, OperateConstants.SubOperateLimit.ONLY_DEL));
         }};
     }
 

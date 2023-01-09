@@ -43,11 +43,11 @@ public class SysRoleManagerImpl extends BaseManagerImpl<SysRoleQuery, SysRoleDto
      */
     protected List<SlaveRelation> subRelationInit() {
         return new ArrayList<>(){{
-            add(new SlaveRelation(ROLE_SysRoleModuleMerge_GROUP, SysRoleModuleMergeMapper.class, SysRoleModuleMerge.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
-            add(new SlaveRelation(ROLE_SysRoleMenuMerge_GROUP, SysRoleMenuMergeMapper.class, SysRoleMenuMerge.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
-            add(new SlaveRelation(ROLE_SysRoleDeptMerge_GROUP, SysRoleDeptMergeMapper.class, SysRoleDeptMerge.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
-            add(new SlaveRelation(ROLE_SysRolePostMerge_GROUP, SysRolePostMergeMapper.class, SysRolePostMerge.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
-            add(new SlaveRelation(ROLE_SysOrganizeRoleMerge_GROUP, SysOrganizeRoleMergeMapper.class, SysOrganizeRoleMerge.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
+            add(new SlaveRelation(ROLE_SysRoleModuleMerge_GROUP, SysRoleModuleMergeMapper.class, SysRoleModuleMerge.class, OperateConstants.SubOperateLimit.ONLY_DEL));
+            add(new SlaveRelation(ROLE_SysRoleMenuMerge_GROUP, SysRoleMenuMergeMapper.class, SysRoleMenuMerge.class, OperateConstants.SubOperateLimit.ONLY_DEL));
+            add(new SlaveRelation(ROLE_SysRoleDeptMerge_GROUP, SysRoleDeptMergeMapper.class, SysRoleDeptMerge.class, OperateConstants.SubOperateLimit.ONLY_DEL));
+            add(new SlaveRelation(ROLE_SysRolePostMerge_GROUP, SysRolePostMergeMapper.class, SysRolePostMerge.class, OperateConstants.SubOperateLimit.ONLY_DEL));
+            add(new SlaveRelation(ROLE_SysOrganizeRoleMerge_GROUP, SysOrganizeRoleMergeMapper.class, SysOrganizeRoleMerge.class, OperateConstants.SubOperateLimit.ONLY_DEL));
         }};
     }
 

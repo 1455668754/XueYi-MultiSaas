@@ -10,6 +10,9 @@ public interface MergeGroup {
     /** 模块菜单关联 -》 模块 */
     String MODULE_SysMenu_GROUP = "MODULE_SysMenu_GROUP";
 
+    /** 模块菜单关联 -》 菜单 */
+    String MENU_SysModule_GROUP = "MENU_SysModule_GROUP";
+
     /** 角色-模块关联（权限范围） -》 角色 */
     String ROLE_SysRoleModuleMerge_GROUP = "ROLE_SysRoleModuleMerge_GROUP";
 

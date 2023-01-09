@@ -160,7 +160,7 @@ public class SlaveRelation {
                     case EX_ADD -> this.isAdd = Boolean.FALSE;
                     case EX_EDIT -> this.isEdit = Boolean.FALSE;
                     case EX_DEL -> this.isDelete = Boolean.FALSE;
-                    case EX_SEL_OR_ADD_OR_EDIT -> {
+                    case ONLY_DEL -> {
                         this.isSelect = Boolean.FALSE;
                         this.isAdd = Boolean.FALSE;
                         this.isEdit = Boolean.FALSE;
@@ -172,6 +172,11 @@ public class SlaveRelation {
                     case EX_ADD_OR_EDIT -> {
                         this.isAdd = Boolean.FALSE;
                         this.isEdit = Boolean.FALSE;
+                    }
+                    case ONLY_SEL -> {
+                        this.isAdd = Boolean.FALSE;
+                        this.isEdit = Boolean.FALSE;
+                        this.isDelete = Boolean.FALSE;
                     }
                     default -> {
                     }

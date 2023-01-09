@@ -635,8 +635,8 @@ export const detailSchema: DescItem[] = [
     span: 8,
   },
   {
-    label: '模块Id',
-    field: 'moduleId',
+    label: '归属模块',
+    field: 'module.name',
     span: 8,
   },
   {

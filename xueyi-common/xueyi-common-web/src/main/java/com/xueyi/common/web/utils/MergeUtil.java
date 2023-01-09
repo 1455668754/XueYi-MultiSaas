@@ -713,8 +713,8 @@ public class MergeUtil {
             }
         }
 
-        // 3.如果从数据主键未定义 且为间接关联时 -> 取从数据表主键
-        if (slaveRelation.getRelationType().isIndirect() && ObjectUtil.isNull(slaveRelation.getSlaveField())) {
+        // 3.如果从数据主键未定义 -> 取从数据表主键
+        if (ObjectUtil.isNull(slaveRelation.getSlaveField())) {
             Field idField = Arrays.stream(fields).filter(field -> field.isAnnotationPresent(TableId.class)).findFirst().orElse(null);
             if (ObjectUtil.isNotNull(idField)) {
                 slaveRelation.setSlaveField(idField);

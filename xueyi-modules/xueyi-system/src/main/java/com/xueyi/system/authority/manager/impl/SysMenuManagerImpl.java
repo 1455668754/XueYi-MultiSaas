@@ -34,6 +34,7 @@ import java.util.stream.Collectors;
 
 import static com.xueyi.common.core.constant.basic.SqlConstants.ANCESTORS_PART_UPDATE;
 import static com.xueyi.common.core.constant.basic.SqlConstants.TREE_LEVEL_UPDATE;
+import static com.xueyi.system.api.authority.domain.merge.MergeGroup.MENU_SysModule_GROUP;
 import static com.xueyi.system.api.authority.domain.merge.MergeGroup.MENU_SysRoleMenuMerge_GROUP;
 
 /**
@@ -57,7 +58,8 @@ public class SysMenuManagerImpl extends TreeManagerImpl<SysMenuQuery, SysMenuDto
      */
     protected List<SlaveRelation> subRelationInit() {
         return new ArrayList<>() {{
-            add(new SlaveRelation(MENU_SysRoleMenuMerge_GROUP, SysRoleMenuMergeMapper.class, SysRoleMenuMerge.class, OperateConstants.SubOperateLimit.EX_SEL_OR_ADD_OR_EDIT));
+            add(new SlaveRelation(MENU_SysModule_GROUP, SysModuleManagerImpl.class, OperateConstants.SubOperateLimit.ONLY_SEL));
+            add(new SlaveRelation(MENU_SysRoleMenuMerge_GROUP, SysRoleMenuMergeMapper.class, SysRoleMenuMerge.class, OperateConstants.SubOperateLimit.ONLY_DEL));
         }};
     }
 
