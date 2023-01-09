@@ -3,7 +3,6 @@ package com.xueyi.gateway.filter;
 import com.xueyi.common.core.constant.basic.*;
 import com.xueyi.common.core.utils.JwtUtil;
 import com.xueyi.common.core.utils.ServletUtil;
-import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.redis.service.RedisService;
 import com.xueyi.gateway.config.properties.IgnoreWhiteProperties;
@@ -41,7 +40,7 @@ public class AuthFilter implements GlobalFilter, Ordered {
 
         String url = request.getURI().getPath();
         // 跳过不需要验证的路径
-        if (CollUtil.contains(ignoreWhite.getWhites(), url)) {
+        if (StrUtil.matches(url, ignoreWhite.getWhites())) {
             return chain.filter(exchange);
         }
         String token = getToken(request);
