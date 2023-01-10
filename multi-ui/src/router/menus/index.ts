@@ -30,7 +30,17 @@ const staticMenus: Menu[] = [];
 
 async function getAsyncMenus() {
   const permissionStore = usePermissionStore();
-  return permissionStore.getMenuList.filter((item) => !item.meta?.hideMenu && !item.hideMenu);
+  //递归过滤所有隐藏的菜单
+  const menuFilter = (items) => {
+    return items.filter((item) => {
+      const show = !item.meta?.hideMenu && !item.hideMenu;
+      if (show && item.children) {
+        item.children = menuFilter(item.children);
+      }
+      return show;
+    });
+  };
+  return menuFilter(permissionStore.getMenuList);
 }
 
 export const getMenus = async (): Promise<Menu[]> => {
