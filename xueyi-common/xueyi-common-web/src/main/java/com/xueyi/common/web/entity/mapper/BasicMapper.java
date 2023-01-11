@@ -7,7 +7,7 @@ import com.xueyi.common.core.utils.core.NumberUtil;
 import com.xueyi.common.core.web.entity.base.BasisEntity;
 import com.xueyi.common.web.annotation.AutoInject;
 import com.xueyi.common.web.entity.domain.SqlField;
-import com.xueyi.common.web.utils.SqlUtil;
+import com.xueyi.common.web.utils.SqlHandleUtil;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.ArrayList;
@@ -44,7 +44,7 @@ public interface BasicMapper<P extends BasisEntity> extends com.baomidou.mybatis
         if (ArrayUtil.isNotEmpty(field))
             return selectList(
                     Wrappers.<P>query().lambda()
-                            .func(i -> SqlUtil.fieldCondition(i, field)));
+                            .func(i -> SqlHandleUtil.fieldCondition(i, field)));
         return new ArrayList<>();
     }
 
@@ -58,7 +58,7 @@ public interface BasicMapper<P extends BasisEntity> extends com.baomidou.mybatis
         if (ArrayUtil.isNotEmpty(field))
             return selectOne(
                     Wrappers.<P>query().lambda()
-                            .func(i -> SqlUtil.fieldCondition(i, field))
+                            .func(i -> SqlHandleUtil.fieldCondition(i, field))
                             .last(SqlConstants.LIMIT_ONE));
         return null;
     }
@@ -85,7 +85,7 @@ public interface BasicMapper<P extends BasisEntity> extends com.baomidou.mybatis
         if (ArrayUtil.isNotEmpty(field))
             return update(null,
                     Wrappers.<P>update().lambda()
-                            .func(i -> SqlUtil.fieldCondition(i, field)));
+                            .func(i -> SqlHandleUtil.fieldCondition(i, field)));
         return NumberUtil.Zero;
     }
 
@@ -98,7 +98,7 @@ public interface BasicMapper<P extends BasisEntity> extends com.baomidou.mybatis
     default int deleteByField(SqlField... field) {
         if (ArrayUtil.isNotEmpty(field))
             return delete(Wrappers.<P>update().lambda()
-                    .func(i -> SqlUtil.fieldCondition(i, field)));
+                    .func(i -> SqlHandleUtil.fieldCondition(i, field)));
         return NumberUtil.Zero;
     }
 }

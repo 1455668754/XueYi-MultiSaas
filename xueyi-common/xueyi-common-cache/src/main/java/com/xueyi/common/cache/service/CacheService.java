@@ -130,20 +130,11 @@ public class CacheService {
      */
     private void refreshCache(CacheConstants.CacheType cacheType) {
         switch (cacheType) {
-            case SYS_DICT_KEY:
-                SpringUtil.getBean(RemoteDictService.class).refreshCache(SecurityConstants.INNER);
-                break;
-            case SYS_CONFIG_KEY:
-                SpringUtil.getBean(RemoteConfigService.class).refreshCache(SecurityConstants.INNER);
-                break;
-            case TE_STRATEGY_KEY:
-                SpringUtil.getBean(RemoteStrategyService.class).refreshCache(SecurityConstants.INNER);
-                break;
-            case TE_SOURCE_KEY:
-                SpringUtil.getBean(RemoteSourceService.class).refreshCache(SecurityConstants.INNER);
-                break;
-            default:
-                throw new UtilException("缓存更新方法不存在，请先定义！");
+            case SYS_DICT_KEY -> SpringUtil.getBean(RemoteDictService.class).refreshCache(SecurityConstants.INNER);
+            case SYS_CONFIG_KEY -> SpringUtil.getBean(RemoteConfigService.class).refreshCache(SecurityConstants.INNER);
+            case TE_STRATEGY_KEY -> SpringUtil.getBean(RemoteStrategyService.class).refreshCache(SecurityConstants.INNER);
+            case TE_SOURCE_KEY -> SpringUtil.getBean(RemoteSourceService.class).refreshCache(SecurityConstants.INNER);
+            default -> throw new UtilException("缓存更新方法不存在，请先定义！");
         }
     }
 

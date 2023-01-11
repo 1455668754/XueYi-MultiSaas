@@ -3,7 +3,7 @@ package com.xueyi.common.web.entity.domain;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.xueyi.common.core.constant.basic.SqlConstants;
 import com.xueyi.common.core.web.entity.base.BasisEntity;
-import com.xueyi.common.web.utils.SqlUtil;
+import com.xueyi.common.web.utils.SqlHandleUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -37,13 +37,13 @@ public class SqlField implements Serializable {
 
     public SqlField(SqlConstants.OperateType operateType, SFunction<? extends BasisEntity, Object> fieldFun, Object object) {
         this.operateType = operateType;
-        this.fieldStr = SqlUtil.getFieldName(fieldFun);
+        this.fieldStr = SqlHandleUtil.getFieldName(fieldFun);
         this.object = object;
     }
 
     public SqlField(SqlConstants.OperateType operateType, SFunction<? extends BasisEntity, Object> fieldFun, Serializable serial) {
         this.operateType = operateType;
-        this.fieldStr = SqlUtil.getFieldName(fieldFun);
+        this.fieldStr = SqlHandleUtil.getFieldName(fieldFun);
         this.object = serial;
     }
 
@@ -55,7 +55,7 @@ public class SqlField implements Serializable {
 
     public SqlField(SqlConstants.OperateType operateType, SFunction<? extends BasisEntity, Object> fieldFun, Collection<Object> coll) {
         this.operateType = operateType;
-        this.fieldStr = SqlUtil.getFieldName(fieldFun);
+        this.fieldStr = SqlHandleUtil.getFieldName(fieldFun);
         this.coll = coll;
     }
 
@@ -66,6 +66,6 @@ public class SqlField implements Serializable {
     }
 
     public void setField(SFunction<? extends BasisEntity, Object> fieldFun) {
-        this.fieldStr = SqlUtil.getFieldName(fieldFun);
+        this.fieldStr = SqlHandleUtil.getFieldName(fieldFun);
     }
 }

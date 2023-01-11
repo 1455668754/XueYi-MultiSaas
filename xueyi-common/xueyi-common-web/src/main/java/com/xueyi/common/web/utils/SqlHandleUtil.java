@@ -23,7 +23,7 @@ import java.lang.reflect.Method;
  *
  * @author xueyi
  */
-public class SqlUtil {
+public class SqlHandleUtil {
 
     /**
      * Wrapper自定义控制 SQL操作
