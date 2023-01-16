@@ -167,8 +167,4 @@ public class StrUtil extends cn.hutool.core.util.StrUtil implements StrPool {
         return matcher.match(pattern, url);
     }
 
-    @SuppressWarnings("unchecked")
-    public static <T> T cast(Object obj) {
-        return (T) obj;
-    }
 }
