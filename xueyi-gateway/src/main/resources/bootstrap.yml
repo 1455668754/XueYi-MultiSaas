@@ -38,4 +38,4 @@ spring:
             dataId: sentinel-xueyi-gateway
             groupId: DEFAULT_GROUP
             data-type: json
-            rule-type: flow
+            rule-type: gw-flow
