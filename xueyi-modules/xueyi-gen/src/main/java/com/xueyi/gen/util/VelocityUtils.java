@@ -9,6 +9,7 @@ import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.constant.basic.ServiceConstants;
 import com.xueyi.common.core.constant.gen.GenConstants;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
+import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.core.*;
 import com.xueyi.gen.config.GenConfig;
 import com.xueyi.gen.domain.dto.GenTableColumnDto;
@@ -41,6 +42,8 @@ public class VelocityUtils {
      * @return 模板列表
      */
     public static VelocityContext prepareContext(GenTableDto genTable) {
+        if(StrUtil.hasEmpty(genTable.getPackageName(), genTable.getModuleName(), genTable.getBusinessName(), genTable.getAuthorityName()))
+            throw new ServiceException("请先编辑完善信息！");
         String businessName = genTable.getBusinessName();
         String packageName = genTable.getPackageName();
         String tplCategory = genTable.getTplCategory();
