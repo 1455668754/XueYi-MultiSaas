@@ -11,6 +11,8 @@ spring:
     # 环境配置
     active: dev
   cloud:
+    openfeign:
+      lazy-attributes-resolution: true
     nacos:
       discovery:
         # 服务注册地址
