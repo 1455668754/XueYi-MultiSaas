@@ -9,7 +9,6 @@ import com.xueyi.common.core.utils.core.*;
 import com.xueyi.gen.config.GenConfig;
 import com.xueyi.gen.domain.dto.GenTableColumnDto;
 import com.xueyi.gen.domain.dto.GenTableDto;
-import org.apache.commons.lang3.RegExUtils;
 
 import java.util.List;
 
@@ -259,6 +258,6 @@ public class GenUtils {
      * @return 替换后的名字
      */
     public static String replaceText(String text) {
-        return RegExUtils.replaceAll(text, "(?:信息表|表|雪忆)", StrUtil.EMPTY);
+        return ReUtil.replaceAll(text, "(?:信息表|表|雪忆)", StrUtil.EMPTY);
     }
 }

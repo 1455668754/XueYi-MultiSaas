@@ -7,9 +7,9 @@ import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.utils.ip.IpUtil;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**

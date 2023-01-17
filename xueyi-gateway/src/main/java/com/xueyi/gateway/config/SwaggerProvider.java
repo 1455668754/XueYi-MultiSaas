@@ -1,7 +1,7 @@
 package com.xueyi.gateway.config;
 
-import org.springdoc.core.AbstractSwaggerUiConfigProperties;
-import org.springdoc.core.SwaggerUiConfigProperties;
+import org.springdoc.core.properties.AbstractSwaggerUiConfigProperties;
+import org.springdoc.core.properties.SwaggerUiConfigProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.config.GatewayProperties;
 import org.springframework.cloud.gateway.support.NameUtils;

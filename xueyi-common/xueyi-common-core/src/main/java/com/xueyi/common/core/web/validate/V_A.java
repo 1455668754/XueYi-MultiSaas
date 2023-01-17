@@ -1,6 +1,6 @@
 package com.xueyi.common.core.web.validate;
 
-import javax.validation.groups.Default;
+import jakarta.validation.groups.Default;
 
 /**
  * 参数校验 | 新增 && 更新 && 默认

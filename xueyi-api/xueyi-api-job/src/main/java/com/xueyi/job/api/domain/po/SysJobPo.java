@@ -8,11 +8,11 @@ import com.xueyi.common.core.annotation.Excel;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.tenant.base.TBaseEntity;
 import com.xueyi.job.api.utils.CronUtils;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.io.Serial;
 import java.util.Date;
 

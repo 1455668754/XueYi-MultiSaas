@@ -3,10 +3,10 @@ package com.xueyi.gen.domain.po;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.validation.constraints.NotBlank;
 import java.io.Serial;
 
 import static com.baomidou.mybatisplus.annotation.SqlCondition.LIKE;

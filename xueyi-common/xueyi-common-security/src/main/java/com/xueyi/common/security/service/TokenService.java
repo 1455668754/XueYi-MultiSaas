@@ -9,9 +9,9 @@ import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.system.api.model.DataScope;
 import com.xueyi.system.api.model.LoginUser;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 

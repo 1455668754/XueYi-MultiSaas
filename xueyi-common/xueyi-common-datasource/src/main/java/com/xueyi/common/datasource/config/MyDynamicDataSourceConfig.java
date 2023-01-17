@@ -7,11 +7,10 @@ import com.baomidou.dynamic.datasource.processor.DsSpelExpressionProcessor;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceAutoConfiguration;
 import com.xueyi.common.datasource.processor.DsIsolateExpressionProcessor;
 import com.xueyi.common.datasource.processor.DsMasterExpressionProcessor;
+import jakarta.annotation.PostConstruct;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import javax.annotation.PostConstruct;
 
 /**
  * 源访问策略注入

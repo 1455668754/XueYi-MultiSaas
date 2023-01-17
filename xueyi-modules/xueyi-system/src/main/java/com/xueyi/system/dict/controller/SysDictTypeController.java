@@ -16,10 +16,10 @@ import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.system.api.dict.domain.dto.SysDictTypeDto;
 import com.xueyi.system.api.dict.domain.query.SysDictTypeQuery;
 import com.xueyi.system.dict.service.ISysDictTypeService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
 import java.util.List;
 

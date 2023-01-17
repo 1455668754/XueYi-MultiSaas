@@ -4,10 +4,10 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.common.core.annotation.Correlation;
 import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.validation.constraints.NotBlank;
 import java.io.Serial;
 
 import static com.xueyi.gen.domain.merge.MergeGroup.GEN_TABLE_GROUP;

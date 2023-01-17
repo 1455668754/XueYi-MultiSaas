@@ -18,11 +18,11 @@ import com.xueyi.system.api.organize.domain.query.SysPostQuery;
 import com.xueyi.system.organize.service.ISysDeptService;
 import com.xueyi.system.organize.service.ISysOrganizeService;
 import com.xueyi.system.organize.service.ISysPostService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
 import java.util.List;
 

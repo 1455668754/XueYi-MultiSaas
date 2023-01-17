@@ -22,7 +22,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 #if($api.export)
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 #end
 #if($api.getInfo)
 import java.io.Serializable;

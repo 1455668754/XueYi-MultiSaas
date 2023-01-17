@@ -11,11 +11,11 @@ import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.redis.service.RedisService;
 import com.xueyi.gateway.config.properties.CaptchaProperties;
 import com.xueyi.gateway.service.ValidateCodeService;
+import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FastByteArrayOutputStream;
 
-import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;

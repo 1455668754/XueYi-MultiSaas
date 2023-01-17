@@ -11,9 +11,9 @@ import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.job.api.domain.dto.SysJobLogDto;
 import com.xueyi.job.api.domain.query.SysJobLogQuery;
 import com.xueyi.job.service.ISysJobLogService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
 
 /**

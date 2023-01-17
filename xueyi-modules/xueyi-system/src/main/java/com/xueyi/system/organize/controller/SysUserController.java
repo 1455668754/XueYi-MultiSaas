@@ -23,11 +23,11 @@ import com.xueyi.system.api.organize.domain.dto.SysUserDto;
 import com.xueyi.system.api.organize.domain.query.SysUserQuery;
 import com.xueyi.system.organize.service.ISysOrganizeService;
 import com.xueyi.system.organize.service.ISysUserService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;

@@ -11,9 +11,9 @@ import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.system.api.log.domain.dto.SysOperateLogDto;
 import com.xueyi.system.api.log.domain.query.SysOperateLogQuery;
 import com.xueyi.system.monitor.service.ISysOperateLogService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
 import java.util.List;
 

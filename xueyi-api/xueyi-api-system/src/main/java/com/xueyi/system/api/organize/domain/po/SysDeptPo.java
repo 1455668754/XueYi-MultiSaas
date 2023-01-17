@@ -5,12 +5,12 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.common.core.web.tenant.base.TTreeEntity;
 import com.xueyi.common.core.xss.Xss;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.io.Serial;
 
 import static com.baomidou.mybatisplus.annotation.SqlCondition.LIKE;

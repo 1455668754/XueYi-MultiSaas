@@ -7,12 +7,12 @@ import com.xueyi.common.core.annotation.Excel;
 import com.xueyi.common.core.annotation.Excel.Type;
 import com.xueyi.common.core.web.tenant.base.TBaseEntity;
 import com.xueyi.common.core.xss.Xss;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.io.Serial;
 import java.time.LocalDateTime;
 

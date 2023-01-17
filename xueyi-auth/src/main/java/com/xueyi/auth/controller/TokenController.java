@@ -12,13 +12,12 @@ import com.xueyi.common.security.auth.AuthUtil;
 import com.xueyi.common.security.service.TokenService;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.system.api.model.LoginUser;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * token 控制

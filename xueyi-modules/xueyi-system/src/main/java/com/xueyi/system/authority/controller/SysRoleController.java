@@ -18,11 +18,11 @@ import com.xueyi.system.authority.domain.vo.SysAuthTree;
 import com.xueyi.system.authority.service.ISysAuthService;
 import com.xueyi.system.authority.service.ISysRoleService;
 import com.xueyi.system.organize.service.ISysOrganizeService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
 import java.util.List;
 

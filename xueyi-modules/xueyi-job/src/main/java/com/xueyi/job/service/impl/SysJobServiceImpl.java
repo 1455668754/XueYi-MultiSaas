@@ -13,6 +13,7 @@ import com.xueyi.job.api.domain.query.SysJobQuery;
 import com.xueyi.job.manager.impl.SysJobManagerImpl;
 import com.xueyi.job.service.ISysJobService;
 import com.xueyi.job.util.ScheduleUtils;
+import jakarta.annotation.PostConstruct;
 import org.quartz.JobDataMap;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
@@ -20,7 +21,6 @@ import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;

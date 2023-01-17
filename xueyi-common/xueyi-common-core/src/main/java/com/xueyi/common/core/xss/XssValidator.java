@@ -1,9 +1,9 @@
 package com.xueyi.common.core.xss;
 
 import com.xueyi.common.core.utils.core.StrUtil;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

@@ -21,11 +21,11 @@ import com.xueyi.tenant.api.tenant.domain.query.TeStrategyQuery;
 import com.xueyi.tenant.source.service.ITeSourceService;
 import com.xueyi.tenant.tenant.service.ITeStrategyService;
 import com.xueyi.tenant.tenant.service.ITeTenantService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
 import java.util.List;
 

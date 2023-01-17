@@ -15,10 +15,10 @@ import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.system.notice.domain.dto.SysNoticeDto;
 import com.xueyi.system.notice.domain.query.SysNoticeQuery;
 import com.xueyi.system.notice.service.ISysNoticeService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
 import java.util.List;
 

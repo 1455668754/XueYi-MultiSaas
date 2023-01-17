@@ -1,6 +1,7 @@
 package com.xueyi.common.core.exception.auth;
 
-import org.apache.commons.lang3.StringUtils;
+import com.xueyi.common.core.utils.core.ArrayUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 
 import java.io.Serial;
 
@@ -19,6 +20,6 @@ public class NotPermissionException extends RuntimeException {
     }
 
     public NotPermissionException(String[] permissions) {
-        super(StringUtils.join(permissions, ","));
+        super(ArrayUtil.join(permissions, StrUtil.COMMA));
     }
 }

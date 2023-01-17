@@ -4,11 +4,11 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.core.xss.Xss;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.io.Serial;
 
 import static com.baomidou.mybatisplus.annotation.SqlCondition.LIKE;

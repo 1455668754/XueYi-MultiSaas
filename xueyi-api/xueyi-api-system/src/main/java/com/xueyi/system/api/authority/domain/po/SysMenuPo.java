@@ -8,10 +8,10 @@ import com.xueyi.common.core.annotation.Correlations;
 import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.web.tenant.common.TCTreeEntity;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.validation.constraints.NotNull;
 import java.io.Serial;
 
 import static com.xueyi.system.api.authority.domain.merge.MergeGroup.MENU_SysModule_GROUP;

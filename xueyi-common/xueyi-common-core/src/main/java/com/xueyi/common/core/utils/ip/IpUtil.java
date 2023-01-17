@@ -2,8 +2,8 @@ package com.xueyi.common.core.utils.ip;
 
 import com.xueyi.common.core.utils.core.ArrayUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
+import jakarta.servlet.http.HttpServletRequest;
 
-import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 

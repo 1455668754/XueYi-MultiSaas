@@ -1,10 +1,10 @@
 package com.xueyi.common.core.utils.file;
 
+import com.xueyi.common.core.utils.core.ArrayUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
-import org.apache.commons.lang3.ArrayUtils;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -106,7 +106,7 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
             return false;
         }
         // 检查允许下载的文件规则
-        return ArrayUtils.contains(MimeTypeUtil.DEFAULT_ALLOWED_EXTENSION, FileTypeUtil.getFileType(resource));
+        return ArrayUtil.contains(MimeTypeUtil.DEFAULT_ALLOWED_EXTENSION, FileTypeUtil.getFileType(resource));
     }
 
     /**

@@ -7,10 +7,10 @@ import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.validate.V_A_E;
 import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
 import com.xueyi.system.api.organize.domain.po.SysUserPo;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.validation.constraints.NotEmpty;
 import java.io.Serial;
 import java.util.List;
 

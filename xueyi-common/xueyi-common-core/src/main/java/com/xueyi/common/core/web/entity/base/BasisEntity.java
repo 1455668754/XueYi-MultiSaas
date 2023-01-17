@@ -8,9 +8,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.web.validate.V_E;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Map;

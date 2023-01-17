@@ -19,11 +19,11 @@ import com.xueyi.job.api.domain.query.SysJobQuery;
 import com.xueyi.job.api.utils.CronUtils;
 import com.xueyi.job.service.ISysJobService;
 import com.xueyi.job.util.ScheduleUtils;
+import jakarta.servlet.http.HttpServletResponse;
 import org.quartz.SchedulerException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
 import java.util.List;
 

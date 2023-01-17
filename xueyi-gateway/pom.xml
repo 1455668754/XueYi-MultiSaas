@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.xueyi</groupId>
         <artifactId>xueyi</artifactId>
-        <version>2.5.0</version>
+        <version>3.0.0-Alpha1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -79,7 +79,7 @@
         <!-- Swagger -->
         <dependency>
             <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-webflux-ui</artifactId>
+            <artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
             <version>${spring-doc.version}</version>
         </dependency>
 

@@ -18,11 +18,11 @@ import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
 import com.xueyi.system.api.authority.domain.query.SysModuleQuery;
 import com.xueyi.system.api.model.DataScope;
 import com.xueyi.system.authority.service.ISysModuleService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
 import java.util.List;
 

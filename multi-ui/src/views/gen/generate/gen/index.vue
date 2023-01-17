@@ -147,16 +147,12 @@
 
       /** 下载按钮 */
       function handleDownload(record: Recordable) {
-        downloadGenApi(record.id, 'xueyi.zip')
-          .then(() => createMessage.success('下载成功！'))
-          .catch(() => createMessage.warning('下载异常，请联系管理员！'));
+        downloadGenApi(record.id, 'xueyi.zip').then(() => createMessage.success('下载成功！'));
       }
 
       /** 生成代码按钮 */
       function handleGenerate(record: Recordable) {
-        generateGenApi(record.id)
-          .then(() => createMessage.success('生成成功！'))
-          .catch(() => createMessage.warning('生成异常，请联系管理员！'));
+        generateGenApi(record.id).then(() => createMessage.success('生成成功！'));
       }
 
       /** 删除按钮 */

@@ -28,12 +28,13 @@ public class WebSecurityConfigurer {
 
         return httpSecurity
                 .headers().frameOptions().disable()
-                .and().authorizeRequests()
-                .antMatchers(adminContextPath + "/assets/**"
+                .and().authorizeHttpRequests()
+                .requestMatchers(adminContextPath + "/assets/**"
                         , adminContextPath + "/login"
                         , adminContextPath + "/actuator/**"
                         , adminContextPath + "/instances/**"
-                ).permitAll()
+                )
+                .permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage(adminContextPath + "/login")

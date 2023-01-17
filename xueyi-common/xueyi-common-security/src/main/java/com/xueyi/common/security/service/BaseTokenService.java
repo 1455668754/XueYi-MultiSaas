@@ -14,9 +14,9 @@ import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.system.api.model.Source;
 import com.xueyi.system.api.model.base.BaseLoginUser;
 import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;

@@ -4,6 +4,7 @@ import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.ServiceConstants;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.core.utils.TreeUtil;
+import com.xueyi.common.core.utils.core.ArrayUtil;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
@@ -27,7 +28,6 @@ import com.xueyi.system.authority.service.ISysMenuService;
 import com.xueyi.system.authority.service.ISysModuleService;
 import com.xueyi.system.utils.cloud.CRouteUtils;
 import com.xueyi.system.utils.multi.MRouteUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -152,7 +152,7 @@ public class SysMenuController extends TreeController<SysMenuQuery, SysMenuDto, 
         if (ObjectUtil.isNull(menu) || ObjectUtil.isNull(menu.getModuleId()) || ObjectUtil.isNull(menu.getMenuType()))
             warn("请传入有效参数");
         List<SysMenuDto> menus = baseService.getMenuByMenuType(menu.getModuleId(), menu.getMenuType());
-        menus.removeIf(next -> ObjectUtil.equals(next.getId(), menu.getId()) || ArrayUtils.contains(StrUtil.splitToArray(next.getAncestors(), StrUtil.COMMA), menu.getId() + StrUtil.EMPTY));
+        menus.removeIf(next -> ObjectUtil.equals(next.getId(), menu.getId()) || ArrayUtil.contains(StrUtil.splitToArray(next.getAncestors(), StrUtil.COMMA), menu.getId() + StrUtil.EMPTY));
         return success(TreeUtil.buildTree((menus)));
     }
 
