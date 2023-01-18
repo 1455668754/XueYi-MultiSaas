@@ -39,11 +39,12 @@ public class JwtUtil {
     }
 
     /**
-     * 根据令牌获取企业Id
-     *
-     * @param token 令牌
-     * @return 企业Id
-     */
+         * 根据令牌获取企业Id
+         *
+         * @param token 令牌
+         * @return 企业Id
+         */
+
     public static String getEnterpriseId(String token) {
         Claims claims = parseToken(token);
         return getValue(claims, SecurityConstants.BaseSecurity.ENTERPRISE_ID.getCode());
