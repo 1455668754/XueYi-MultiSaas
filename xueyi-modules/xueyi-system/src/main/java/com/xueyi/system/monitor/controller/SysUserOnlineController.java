@@ -41,7 +41,7 @@ public class SysUserOnlineController extends BasisController {
     @GetMapping("/list")
     @RequiresPermissions(Auth.SYS_ONLINE_LIST)
     public AjaxResult list(String ipaddr, String userName) {
-        Collection<String> keys = redisService.keys(CacheConstants.LOGIN_TOKEN_KEY + SecurityUtils.getEnterpriseId() + StrUtil.COLON + "*");
+        Collection<String> keys = redisService.keys(CacheConstants.LoginTokenType.ADMIN.getCode() + SecurityUtils.getEnterpriseId() + StrUtil.COLON + "*");
         List<SysUserOnline> userOnlineList = new ArrayList<>();
         for (String key : keys) {
             LoginUser loginUser = redisService.getCacheMapValue(key, SecurityConstants.BaseSecurity.LOGIN_USER.getCode());
@@ -74,7 +74,7 @@ public class SysUserOnlineController extends BasisController {
     @Log(title = "在线用户", businessType = BusinessType.FORCE)
     public AjaxResult forceLogout(@PathVariable List<String> idList) {
         if (ArrayUtil.isNotEmpty(idList))
-            idList.forEach(id -> redisService.deleteObject(CacheConstants.LOGIN_TOKEN_KEY + id));
+            idList.forEach(id -> redisService.deleteObject(CacheConstants.LoginTokenType.ADMIN.getCode() + id));
         return success();
     }
 }

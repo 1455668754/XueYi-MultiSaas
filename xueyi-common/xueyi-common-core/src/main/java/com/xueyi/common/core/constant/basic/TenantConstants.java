@@ -73,6 +73,10 @@ public class TenantConstants {
             return EnumUtil.getByCode(AccountType.class, code);
         }
 
+        public static AccountType getByCodeElseNull(String code) {
+            return EnumUtil.getByCodeElseNull(AccountType.class, code);
+        }
+
         /** 管理端用户 */
         public static boolean isAdmin(String code) {
             return StrUtil.equals(code, ADMIN.code);

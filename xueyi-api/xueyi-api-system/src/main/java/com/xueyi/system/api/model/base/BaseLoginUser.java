@@ -4,9 +4,11 @@ import com.xueyi.common.core.constant.basic.TenantConstants;
 import com.xueyi.system.api.model.Source;
 import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
 import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serial;
-import java.io.Serializable;
+import java.util.Set;
 
 /**
  * 默认用户信息
@@ -14,7 +16,7 @@ import java.io.Serializable;
  * @author xueyi
  */
 @Data
-public class BaseLoginUser<User> implements Serializable {
+public class BaseLoginUser<User> implements UserDetails {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -33,6 +35,9 @@ public class BaseLoginUser<User> implements Serializable {
 
     /** 用户名 */
     protected String userName;
+
+    /** 密码 */
+    protected String password;
 
     /** 用户昵称 */
     protected String nickName;
@@ -64,4 +69,22 @@ public class BaseLoginUser<User> implements Serializable {
     /** 账户类型 */
     protected TenantConstants.AccountType accountType;
 
+    private Set<GrantedAuthority> authorities;
+
+    private boolean accountNonExpired = true;
+
+    private boolean accountNonLocked = true;
+
+    private boolean credentialsNonExpired = true;
+
+    private boolean enabled = true;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    @Override
+    public String getUsername() {
+        return userName;
+    }
 }

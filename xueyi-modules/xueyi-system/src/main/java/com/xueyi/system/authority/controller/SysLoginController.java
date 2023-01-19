@@ -88,6 +88,7 @@ public class SysLoginController extends BasisController {
         loginUser.setUserId(user.getId());
         loginUser.setUserName(user.getUserName());
         loginUser.setUserType(user.getUserType());
+        loginUser.setPassword(user.getPassword());
         loginUser.setScope(dataScope);
         loginUser.setRouteURL(routeMap);
         return R.ok(loginUser);

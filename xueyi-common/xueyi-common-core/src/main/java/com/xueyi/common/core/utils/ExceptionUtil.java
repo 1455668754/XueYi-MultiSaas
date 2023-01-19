@@ -7,7 +7,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 /**
- * 错误信息处理类。
+ * 错误信息处理类
  *
  * @author xueyi
  */

@@ -1,9 +1,6 @@
 package com.xueyi.common.core.utils.core;
 
-import cn.hutool.core.text.AntPathMatcher;
 import com.xueyi.common.core.utils.core.pool.StrPool;
-
-import java.util.List;
 
 /**
  * 字符串工具类
@@ -134,37 +131,6 @@ public class StrUtil extends cn.hutool.core.util.StrUtil implements StrPool {
      */
     public static String uncapitalize(String str) {
         return lowerFirst(str);
-    }
-
-    /**
-     * 查找指定字符串是否匹配指定字符串列表中的任意一个字符串
-     *
-     * @param str     指定字符串
-     * @param strList 需要检查的字符串数组
-     * @return 是否匹配
-     */
-    public static boolean matches(String str, List<String> strList) {
-        if (isEmpty(str) || CollUtil.isEmpty(strList))
-            return false;
-        for (String pattern : strList)
-            if (isMatch(pattern, str))
-                return true;
-        return false;
-    }
-
-    /**
-     * 判断url是否与规则配置:
-     * ? 表示单个字符;
-     * * 表示一层路径内的任意字符串，不可跨层级;
-     * ** 表示任意层路径;
-     *
-     * @param pattern 匹配规则
-     * @param url     需要匹配的url
-     * @return 结果
-     */
-    public static boolean isMatch(String pattern, String url) {
-        AntPathMatcher matcher = new AntPathMatcher();
-        return matcher.match(pattern, url);
     }
 
 }

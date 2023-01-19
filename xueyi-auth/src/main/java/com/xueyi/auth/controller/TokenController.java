@@ -2,7 +2,7 @@ package com.xueyi.auth.controller;
 
 import com.xueyi.auth.form.LoginBody;
 import com.xueyi.auth.form.RegisterBody;
-import com.xueyi.auth.service.SysLoginService;
+import com.xueyi.auth.service.impl.SysLoginService;
 import com.xueyi.common.core.constant.basic.TenantConstants;
 import com.xueyi.common.core.utils.JwtUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;

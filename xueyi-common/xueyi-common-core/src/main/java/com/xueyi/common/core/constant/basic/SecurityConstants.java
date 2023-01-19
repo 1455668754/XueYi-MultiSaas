@@ -52,6 +52,7 @@ public class SecurityConstants {
         ENTERPRISE("enterprise", "企业信息"),
         ENTERPRISE_ID("enterprise_id", "企业Id"),
         ENTERPRISE_NAME("enterprise_name", "企业账号"),
+        PASSWORD("password", "用户密码"),
         USER("user", "用户信息"),
         USER_ID("user_id", "用户Id"),
         USER_NAME("user_name", "用户账号"),
