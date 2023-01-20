@@ -27,7 +27,6 @@ interface UseFormActionContext {
   schemaRef: Ref<FormSchema[]>;
   handleFormValues: Fn;
 }
-
 export function useFormEvents({
   emit,
   getProps,
@@ -118,7 +117,6 @@ export function useFormEvents({
     });
     validateFields(validKeys).catch((_) => {});
   }
-
   /**
    * @description: Delete based on field name
    */
@@ -163,6 +161,7 @@ export function useFormEvents({
 
     const index = schemaList.findIndex((schema) => schema.field === prefixField);
     const _schemaList = isObject(schema) ? [schema as FormSchema] : (schema as FormSchema[]);
+
     if (!prefixField || index === -1 || first) {
       first ? schemaList.unshift(..._schemaList) : schemaList.push(..._schemaList);
       schemaRef.value = schemaList;

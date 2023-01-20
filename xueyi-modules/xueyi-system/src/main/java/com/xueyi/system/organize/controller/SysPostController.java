@@ -169,23 +169,22 @@ public class SysPostController extends BaseController<SysPostQuery, SysPostDto, 
      */
     @Override
     protected void AEHandle(BaseConstants.Operate operate, SysPostDto post) {
-        switch (operate){
-            case EDIT_STATUS:
+        switch (operate) {
+            case EDIT_STATUS -> {
                 if (StrUtil.equals(BaseConstants.Status.NORMAL.getCode(), post.getStatus())) {
                     SysPostDto original = baseService.selectById(post.getId());
                     if (BaseConstants.Status.DISABLE == deptService.checkStatus(original.getDeptId()))
                         warn(StrUtil.format("启用失败，该{}归属的{}已被禁用！", getNodeName(), getParentName()));
                 }
-                break;
-            case ADD:
-            case EDIT:
+            }
+            case ADD, EDIT -> {
                 if (baseService.checkPostCodeUnique(post.getId(), post.getCode()))
                     warn(StrUtil.format("{}{}{}失败，岗位编码已存在", operate.getInfo(), getNodeName(), post.getName()));
                 else if (baseService.checkNameUnique(post.getId(), post.getName()))
                     warn(StrUtil.format("{}{}{}失败，岗位名称已存在", operate.getInfo(), getNodeName(), post.getName()));
                 if (BaseConstants.Status.DISABLE == deptService.checkStatus(post.getId()))
                     post.setStatus(BaseConstants.Status.DISABLE.getCode());
-                break;
+            }
         }
     }
 
