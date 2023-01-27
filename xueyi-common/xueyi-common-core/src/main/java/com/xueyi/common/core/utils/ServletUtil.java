@@ -1,7 +1,10 @@
 package com.xueyi.common.core.utils;
 
 import com.alibaba.fastjson2.JSON;
+import com.xueyi.common.core.constant.basic.CacheConstants;
 import com.xueyi.common.core.constant.basic.HttpConstants;
+import com.xueyi.common.core.constant.basic.TenantConstants;
+import com.xueyi.common.core.constant.basic.TokenConstants;
 import com.xueyi.common.core.utils.core.ArrayUtil;
 import com.xueyi.common.core.utils.core.ConvertUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
@@ -10,15 +13,18 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.util.LinkedCaseInsensitiveMap;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -35,7 +41,65 @@ import java.util.Map;
  *
  * @author xueyi
  */
+@Slf4j
 public class ServletUtil {
+
+    /**
+     * 获取缓存key
+     */
+    public static String getTokenKey(String token, String accountType) {
+        return switch (TenantConstants.AccountType.getByCode(accountType)) {
+            case ADMIN -> CacheConstants.LoginTokenType.ADMIN.getCode() + token;
+            case MEMBER -> CacheConstants.LoginTokenType.MEMBER.getCode() + token;
+        };
+    }
+
+    /**
+     * 获取缓存key
+     */
+    public static String getTokenKey(String token, TenantConstants.AccountType accountType) {
+        return switch (accountType) {
+            case ADMIN -> CacheConstants.LoginTokenType.ADMIN.getCode() + token;
+            case MEMBER -> CacheConstants.LoginTokenType.MEMBER.getCode() + token;
+        };
+    }
+
+    /**
+     * 获取请求token
+     */
+    public static String getToken(ServerHttpRequest request) {
+        String token = request.getHeaders().getFirst(TokenConstants.AUTHENTICATION);
+        if (StrUtil.isNotEmpty(token) && StrUtil.startWith(token, TokenConstants.PREFIX)) {
+            token = StrUtil.replaceFirst(token, TokenConstants.PREFIX, StrUtil.EMPTY);
+        }
+        return token;
+    }
+
+    /**
+     * 鉴权失败处理
+     */
+    public static Mono<Void> unauthorizedResponse(ServerWebExchange exchange, String msg) {
+        log.error("[鉴权异常处理]请求路径:{}", exchange.getRequest().getPath());
+        return ServletUtil.webFluxResponseWriter(exchange.getResponse(), msg, HttpConstants.Status.UNAUTHORIZED.getCode());
+    }
+
+    /**
+     * 增加请求头
+     */
+    public static void addHeader(ServerHttpRequest.Builder mutate, String name, Object value) {
+        if (value == null)
+            return;
+        String valueStr = value.toString();
+        String valueEncode = ServletUtil.urlEncode(valueStr);
+        mutate.header(name, valueEncode);
+    }
+
+    /**
+     * 移除请求头
+     */
+    public static void removeHeader(ServerHttpRequest.Builder mutate, String name) {
+        mutate.headers(httpHeaders -> httpHeaders.remove(name)).build();
+    }
 
     /**
      * 获取String参数

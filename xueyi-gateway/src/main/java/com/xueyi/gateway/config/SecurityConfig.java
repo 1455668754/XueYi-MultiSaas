@@ -1,16 +1,18 @@
 package com.xueyi.gateway.config;
 
 
+import com.xueyi.common.redis.service.RedisService;
 import com.xueyi.gateway.config.properties.IgnoreWhiteProperties;
 import com.xueyi.gateway.filter.AuthFilter;
+import com.xueyi.gateway.handler.AuthenticationLoseHandler;
+import com.xueyi.gateway.handler.SecurityContextHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
+import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
+import org.springframework.security.config.web.server.ServerHttpSecurity;
+import org.springframework.security.web.server.SecurityWebFilterChain;
 
 /**
  * 安全认证配置
@@ -18,35 +20,30 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  * @author xueyi
  */
 @Configuration
-@EnableWebSecurity
+@EnableWebFluxSecurity
 public class SecurityConfig {
 
     @Autowired
     private IgnoreWhiteProperties ignoreWhite;
 
     @Autowired
-    private AuthFilter authFilter;
+    private RedisService redisService;
 
     /** 不需要拦截地址 */
-    public static final String[] excludeResources = {"/static/**", "/resources/**"};
+    public static final String[] excludeResources = {"/code"};
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        // TODO 调整校验 - 校验是否存在内链标识 - 切换拦截器
-        return http.authorizeHttpRequests(authorize -> {
-                            try {
-                                authorize
-                                        .requestMatchers(ignoreWhite.getWhites()).permitAll()
-                                        .requestMatchers(excludeResources).permitAll()
-                                        .requestMatchers("/**").permitAll()
-                                        .anyRequest().authenticated()
-                                        .and().csrf(AbstractHttpConfigurer::disable);
-                            } catch (Exception e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
+    public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
+        http.authorizeExchange(authority -> authority
+                        .pathMatchers(ignoreWhite.getWhites()).permitAll()
+                        .pathMatchers("/code").permitAll()
+                        .anyExchange().authenticated()
                 )
-                .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class).build();
+                .addFilterAfter(new AuthFilter(redisService, ignoreWhite), SecurityWebFiltersOrder.FIRST)
+                .securityContextRepository(new SecurityContextHandler(redisService, ignoreWhite))
+                .exceptionHandling().authenticationEntryPoint(new AuthenticationLoseHandler())
+                .and().cors().disable().csrf().disable();
+        return http.build();
     }
 }
 

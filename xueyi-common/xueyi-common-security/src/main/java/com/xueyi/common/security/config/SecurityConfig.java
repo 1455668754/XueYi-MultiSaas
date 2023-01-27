@@ -32,6 +32,7 @@ public class SecurityConfig {
                                 .requestMatchers(excludeResources).permitAll()
                                 .requestMatchers("/**").permitAll()
                                 .anyRequest().authenticated()
+//                                .and().exceptionHandling().accessDeniedHandler(accessDeniedHandler)
                                 .and().csrf(AbstractHttpConfigurer::disable);
                     } catch (Exception e) {
                         throw new RuntimeException(e);

@@ -1,29 +1,20 @@
 package com.xueyi.gateway.filter;
 
-import com.xueyi.common.core.constant.basic.CacheConstants;
-import com.xueyi.common.core.constant.basic.HttpConstants;
+import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.basic.TenantConstants.AccountType;
-import com.xueyi.common.core.constant.basic.TokenConstants;
 import com.xueyi.common.core.utils.JwtUtil;
+import com.xueyi.common.core.utils.ServletUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
-import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.redis.service.RedisService;
+import com.xueyi.gateway.config.properties.IgnoreWhiteProperties;
 import io.jsonwebtoken.Claims;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
-import org.springframework.web.filter.OncePerRequestFilter;
-
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.web.server.ServerWebExchange;
+import org.springframework.web.server.WebFilter;
+import org.springframework.web.server.WebFilterChain;
+import reactor.core.publisher.Mono;
 
 /**
  * 网关鉴权
@@ -31,35 +22,43 @@ import java.nio.charset.StandardCharsets;
  * @author xueyi
  */
 @Slf4j
-@Component
-public class AuthFilter extends OncePerRequestFilter {
+public class AuthFilter implements WebFilter {
 
-    @Autowired
-    private RedisService redisService;
+    private final RedisService redisService;
+
+    private final IgnoreWhiteProperties ignoreWhite;
+
+    public AuthFilter(RedisService redisService, IgnoreWhiteProperties ignoreWhite) {
+        this.redisService = redisService;
+        this.ignoreWhite = ignoreWhite;
+    }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String token = getToken(request);
+    public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
+        ServerHttpRequest request = exchange.getRequest();
+        String url = request.getURI().getPath();
+        if (StrUtil.matches(url, ignoreWhite.getWhites())) {
+            return chain.filter(exchange);
+        }
+        ServerHttpRequest.Builder mutate = request.mutate();
+        String token = ServletUtil.getToken(request);
         if (StrUtil.isEmpty(token)) {
-            unauthorizedResponse(request, response, "令牌不能为空");
-            return;
+            return ServletUtil.unauthorizedResponse(exchange, "令牌不能为空");
         }
         Claims claims = JwtUtil.parseToken(token);
         if (ObjectUtil.isNull(claims)) {
-            unauthorizedResponse(request, response, "令牌已过期或验证不正确");
-            return;
+            return ServletUtil.unauthorizedResponse(exchange, "令牌已过期或验证不正确");
         }
         String userKey = JwtUtil.getUserKey(claims);
-        AccountType accountType = AccountType.getByCodeElseNull(JwtUtil.getAccountType(claims));
+        String accountTypeKey = JwtUtil.getAccountType(claims);
+        AccountType accountType = AccountType.getByCodeElseNull(accountTypeKey);
         if (ObjectUtil.isNull(accountType)) {
-            unauthorizedResponse(request, response, "令牌已过期或验证不正确");
-            return;
+            return ServletUtil.unauthorizedResponse(exchange, "令牌已过期或验证不正确");
         }
 
-        Object loginUser = redisService.getCacheObject(getTokenKey(userKey, accountType));
-        if (ObjectUtil.isNotNull(loginUser)) {
-            unauthorizedResponse(request, response, "登录状态已过期");
-            return;
+        Boolean hasLogin = redisService.hasKey(ServletUtil.getTokenKey(userKey, accountType));
+        if (!hasLogin) {
+            return ServletUtil.unauthorizedResponse(exchange, "登录状态已过期");
         }
         String enterpriseId = JwtUtil.getEnterpriseId(claims);
         String enterpriseName = JwtUtil.getEnterpriseName(claims);
@@ -72,47 +71,25 @@ public class AuthFilter extends OncePerRequestFilter {
         switch (accountType) {
             case ADMIN, MEMBER -> {
                 if (StrUtil.hasBlank(enterpriseId, enterpriseName, isLessor, userId, userName, userType, sourceName)) {
-                    unauthorizedResponse(request, response, "令牌验证失败");
-                    return;
+                    return ServletUtil.unauthorizedResponse(exchange, "令牌验证失败");
                 }
             }
         }
 
-        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(loginUser, null));
-        filterChain.doFilter(request, response);
-    }
+        // 设置用户信息到请求
+        ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.ENTERPRISE_ID.getCode(), enterpriseId);
+        ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.ENTERPRISE_NAME.getCode(), enterpriseName);
+        ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.IS_LESSOR.getCode(), isLessor);
+        ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.USER_ID.getCode(), userId);
+        ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.USER_NAME.getCode(), userName);
+        ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.USER_TYPE.getCode(), userType);
+        ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.SOURCE_NAME.getCode(), sourceName);
+        ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.USER_KEY.getCode(), userKey);
+        ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode(), accountTypeKey);
 
-    /**
-     * 鉴权失败处理
-     */
-    private void unauthorizedResponse(HttpServletRequest request, HttpServletResponse response, String msg) throws IOException {
-        log.error("[鉴权异常处理]请求路径:{}", request.getServletPath());
-        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.setStatus(HttpConstants.Status.UNAUTHORIZED.getCode());
-        response.getWriter().println(AjaxResult.error(HttpConstants.Status.UNAUTHORIZED.getCode(), msg));
-    }
-
-    /**
-     * 获取缓存key
-     */
-    private String getTokenKey(String token, AccountType accountType) {
-        return switch (accountType) {
-            case ADMIN -> CacheConstants.LoginTokenType.ADMIN.getCode() + token;
-            case MEMBER -> CacheConstants.LoginTokenType.MEMBER.getCode() + token;
-        };
-    }
-
-    /**
-     * 获取请求token
-     */
-    private String getToken(HttpServletRequest request) {
-        String token = request.getHeader(TokenConstants.AUTHENTICATION);
-        // 如果前端设置了令牌前缀，则裁剪掉前缀
-        if (StrUtil.isNotEmpty(token) && StrUtil.startWith(token, TokenConstants.PREFIX)) {
-            token = StrUtil.replaceFirst(token, TokenConstants.PREFIX, StrUtil.EMPTY);
-        }
-        return token;
+        // 内部请求来源参数清除
+        ServletUtil.removeHeader(mutate, SecurityConstants.FROM_SOURCE);
+        return chain.filter(exchange);
     }
 
 }
