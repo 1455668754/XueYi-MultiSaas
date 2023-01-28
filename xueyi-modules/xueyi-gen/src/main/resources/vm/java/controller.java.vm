@@ -10,10 +10,7 @@ import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
-#if($api.editStatus)
-import com.xueyi.common.security.annotation.Logical;
-#end
-import com.xueyi.common.security.annotation.RequiresPermissions;
+import org.springframework.security.access.prepost.PreAuthorize;
 import com.xueyi.common.web.entity.controller.${Entity}Controller;
 import ${packageName}.domain.dto.${ClassName}Dto;
 import ${packageName}.domain.query.${ClassName}Query;
@@ -62,7 +59,8 @@ public class ${ClassName}Controller extends ${Entity}Controller<${ClassName}Quer
      * 刷新${functionName}缓存
      */
     @Override
-    @RequiresPermissions(Auth.${ClASS_NAME}_CACHE)
+    // @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_CACHE)")
+    @PreAuthorize("@ss.hasAuthority('${authorityName}:${businessName}:cache')")
     @Log(title = "${functionName}管理", businessType = BusinessType.REFRESH)
     @GetMapping("/refresh")
     public AjaxResult refreshCache() {
@@ -76,7 +74,8 @@ public class ${ClassName}Controller extends ${Entity}Controller<${ClassName}Quer
      */
     @Override
     @GetMapping("/list")
-    @RequiresPermissions(Auth.${ClASS_NAME}_LIST)
+    // @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_LIST)")
+    @PreAuthorize("@ss.hasAuthority('${authorityName}:${businessName}:list')")
     public AjaxResult list(${ClassName}Query ${classNameNoPrefix}) {
         return super.list(${classNameNoPrefix});
     }
@@ -86,7 +85,8 @@ public class ${ClassName}Controller extends ${Entity}Controller<${ClassName}Quer
      * 查询${functionName}列表（排除节点）
      */
     @GetMapping("/list/exclude")
-    @RequiresPermissions(Auth.${ClASS_NAME}_LIST)
+    // @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_LIST)")
+    @PreAuthorize("@ss.hasAuthority('${authorityName}:${businessName}:list')")
     public AjaxResult listExNodes(${ClassName}Query ${classNameNoPrefix}) {
         return super.listExNodes(${classNameNoPrefix});
     }
@@ -99,7 +99,8 @@ public class ${ClassName}Controller extends ${Entity}Controller<${ClassName}Quer
      */
     @Override
     @GetMapping(value = "/{id}")
-    @RequiresPermissions(Auth.${ClASS_NAME}_SINGLE)
+    // @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_SINGLE)")
+    @PreAuthorize("@ss.hasAuthority('${authorityName}:${businessName}:single')")
     public AjaxResult getInfo(@PathVariable Serializable id) {
         return super.getInfo(id);
     }
@@ -111,7 +112,8 @@ public class ${ClassName}Controller extends ${Entity}Controller<${ClassName}Quer
      */
     @Override
     @PostMapping("/export")
-    @RequiresPermissions(Auth.${ClASS_NAME}_EXPORT)
+    // @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_EXPORT)")
+    @PreAuthorize("@ss.hasAuthority('${authorityName}:${businessName}:export')")
     @Log(title = "${functionName}管理", businessType = BusinessType.EXPORT)
     public void export(HttpServletResponse response, ${ClassName}Query ${classNameNoPrefix}) {
         super.export(response, ${classNameNoPrefix});
@@ -124,7 +126,8 @@ public class ${ClassName}Controller extends ${Entity}Controller<${ClassName}Quer
      */
     @Override
     @PostMapping
-    @RequiresPermissions(Auth.${ClASS_NAME}_ADD)
+    // @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_ADD)")
+    @PreAuthorize("@ss.hasAuthority('${authorityName}:${businessName}:add')")
     @Log(title = "${functionName}管理", businessType = BusinessType.INSERT)
     public AjaxResult add(@Validated({V_A.class}) @RequestBody ${ClassName}Dto ${classNameNoPrefix}) {
         return super.add(${classNameNoPrefix});
@@ -137,7 +140,8 @@ public class ${ClassName}Controller extends ${Entity}Controller<${ClassName}Quer
      */
     @Override
     @PutMapping
-    @RequiresPermissions(Auth.${ClASS_NAME}_EDIT)
+    // @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_EDIT)")
+    @PreAuthorize("@ss.hasAuthority('${authorityName}:${businessName}:edit')")
     @Log(title = "${functionName}管理", businessType = BusinessType.UPDATE)
     public AjaxResult edit(@Validated({V_E.class}) @RequestBody ${ClassName}Dto ${classNameNoPrefix}) {
         return super.edit(${classNameNoPrefix});
@@ -150,7 +154,8 @@ public class ${ClassName}Controller extends ${Entity}Controller<${ClassName}Quer
      */
     @Override
     @PutMapping("/status")
-    @RequiresPermissions(value = {Auth.${ClASS_NAME}_EDIT, Auth.${ClASS_NAME}_ES}, logical = Logical.OR)
+    // @PreAuthorize("@ss.hasAnyAuthority(@Auth.${ClASS_NAME}_EDIT, @Auth.${ClASS_NAME}_ES)")
+    @PreAuthorize("@ss.hasAnyAuthority('${authorityName}:${businessName}:edit', '${authorityName}:${businessName}:es')")
     @Log(title = "${functionName}管理", businessType = BusinessType.UPDATE_STATUS)
     public AjaxResult editStatus(@RequestBody ${ClassName}Dto ${classNameNoPrefix}) {
         return super.editStatus(${classNameNoPrefix});
@@ -163,7 +168,8 @@ public class ${ClassName}Controller extends ${Entity}Controller<${ClassName}Quer
      */
     @Override
     @DeleteMapping("/batch/{idList}")
-    @RequiresPermissions(Auth.${ClASS_NAME}_DEL)
+    // @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_DEL)")
+    @PreAuthorize("@ss.hasAuthority('${authorityName}:${businessName}:delete')")
     @Log(title = "${functionName}管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);
