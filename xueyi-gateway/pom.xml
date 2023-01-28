@@ -76,7 +76,13 @@
             <artifactId>kaptcha</artifactId>
         </dependency>
 
-        <!-- XueYi Common Redis-->
+        <!-- XueYi Api System -->
+        <dependency>
+            <groupId>com.xueyi</groupId>
+            <artifactId>xueyi-api-system</artifactId>
+        </dependency>
+
+        <!-- XueYi Common Redis -->
         <dependency>
             <groupId>com.xueyi</groupId>
             <artifactId>xueyi-common-redis</artifactId>

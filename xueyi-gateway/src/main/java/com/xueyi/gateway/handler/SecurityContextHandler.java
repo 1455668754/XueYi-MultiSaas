@@ -39,12 +39,13 @@ public class SecurityContextHandler implements ServerSecurityContextRepository {
     public Mono<SecurityContext> load(ServerWebExchange exchange) {
         ServerHttpRequest request = exchange.getRequest();
         String url = request.getURI().getPath();
-        String userKey = ServletUtil.urlDecode(request.getHeaders().getFirst(SecurityConstants.BaseSecurity.USER_KEY.getCode()));
+        String userKey = request.getHeaders().getFirst(SecurityConstants.BaseSecurity.USER_KEY.getCode());
+        userKey = StrUtil.isNotEmpty(userKey) ? ServletUtil.urlDecode(userKey) : userKey;
         String accountType = request.getHeaders().getFirst(SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode());
         if (StrUtil.hasEmpty(userKey, accountType) && StrUtil.matches(url, ignoreWhite.getWhites())) {
             return Mono.fromCallable(() -> new UsernamePasswordAuthenticationToken(new Object(), null)).map(SecurityContextImpl::new);
         } else {
-            Object loginUser = redisService.getCacheObject(ServletUtil.getTokenKey(userKey, accountType));
+            Object loginUser = redisService.getCacheMapValue(ServletUtil.getTokenKey(userKey, accountType), SecurityConstants.BaseSecurity.LOGIN_USER.getCode());
             if (ObjectUtil.isNotNull(loginUser)) {
                 return Mono.fromCallable(() -> new UsernamePasswordAuthenticationToken(loginUser, null)).map(SecurityContextImpl::new);
             } else {

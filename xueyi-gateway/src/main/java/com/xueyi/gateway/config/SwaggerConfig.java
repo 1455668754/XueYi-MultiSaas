@@ -18,11 +18,9 @@ import java.util.Set;
  * @author xueyi
  */
 @Component
-public class SwaggerProvider implements WebFluxConfigurer {
+public class SwaggerConfig implements WebFluxConfigurer {
 
-    /**
-     * Swagger3默认的url后缀
-     */
+    /** Swagger3默认的url后缀 */
     public static final String SWAGGER3URL = "/v3/api-docs";
 
     @Autowired
