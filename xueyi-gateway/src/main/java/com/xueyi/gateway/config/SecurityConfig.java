@@ -29,14 +29,10 @@ public class SecurityConfig {
     @Autowired
     private RedisService redisService;
 
-    /** 不需要拦截地址 */
-    public static final String[] excludeResources = {"/code"};
-
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         http.authorizeExchange(authority -> authority
                         .pathMatchers(ignoreWhite.getWhites()).permitAll()
-                        .pathMatchers("/code").permitAll()
                         .anyExchange().authenticated()
                 )
                 .addFilterAfter(new AuthFilter(redisService, ignoreWhite), SecurityWebFiltersOrder.FIRST)
