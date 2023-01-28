@@ -9,9 +9,6 @@ import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.InnerAuth;
-import com.xueyi.common.security.annotation.Logical;
-import com.xueyi.common.security.annotation.RequiresPermissions;
-import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 import com.xueyi.system.api.organize.domain.query.SysPostQuery;
@@ -20,6 +17,7 @@ import com.xueyi.system.organize.service.ISysOrganizeService;
 import com.xueyi.system.organize.service.ISysPostService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -66,7 +64,7 @@ public class SysPostController extends BaseController<SysPostQuery, SysPostDto, 
      */
     @Override
     @GetMapping("/list")
-    @RequiresPermissions(Auth.SYS_POST_LIST)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_POST_LIST)")
     public AjaxResult list(SysPostQuery post) {
         return super.list(post);
     }
@@ -76,7 +74,7 @@ public class SysPostController extends BaseController<SysPostQuery, SysPostDto, 
      */
     @Override
     @GetMapping(value = "/{id}")
-    @RequiresPermissions(Auth.SYS_POST_SINGLE)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_POST_SINGLE)")
     public AjaxResult getInfo(@PathVariable Serializable id) {
         return super.getInfo(id);
     }
@@ -85,7 +83,7 @@ public class SysPostController extends BaseController<SysPostQuery, SysPostDto, 
      * 查询部门关联的角色Id集
      */
     @GetMapping(value = "/auth/{id}")
-    @RequiresPermissions(Auth.SYS_POST_AUTH)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_POST_AUTH)")
     public AjaxResult getRoleAuth(@PathVariable Long id) {
         return success(organizeService.selectPostRoleMerge(id));
     }
@@ -95,7 +93,7 @@ public class SysPostController extends BaseController<SysPostQuery, SysPostDto, 
      */
     @Override
     @PostMapping("/export")
-    @RequiresPermissions(Auth.SYS_POST_EXPORT)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_POST_EXPORT)")
     @Log(title = "岗位管理", businessType = BusinessType.EXPORT)
     public void export(HttpServletResponse response, SysPostQuery post) {
         super.export(response, post);
@@ -106,7 +104,7 @@ public class SysPostController extends BaseController<SysPostQuery, SysPostDto, 
      */
     @Override
     @PostMapping
-    @RequiresPermissions(Auth.SYS_POST_ADD)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_POST_ADD)")
     @Log(title = "岗位管理", businessType = BusinessType.INSERT)
     public AjaxResult add(@Validated({V_A.class}) @RequestBody SysPostDto post) {
         return super.add(post);
@@ -117,7 +115,7 @@ public class SysPostController extends BaseController<SysPostQuery, SysPostDto, 
      */
     @Override
     @PutMapping
-    @RequiresPermissions(Auth.SYS_POST_EDIT)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_POST_EDIT)")
     @Log(title = "岗位管理", businessType = BusinessType.UPDATE)
     public AjaxResult edit(@Validated({V_E.class}) @RequestBody SysPostDto post) {
         return super.edit(post);
@@ -127,7 +125,7 @@ public class SysPostController extends BaseController<SysPostQuery, SysPostDto, 
      * 查询岗位关联的角色Id集
      */
     @PutMapping(value = "/auth")
-    @RequiresPermissions(Auth.SYS_POST_AUTH)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_POST_AUTH)")
     public AjaxResult editRoleAuth(@RequestBody SysPostDto post) {
         organizeService.editPostIdRoleMerge(post.getId(), post.getRoleIds());
         return success();
@@ -138,7 +136,7 @@ public class SysPostController extends BaseController<SysPostQuery, SysPostDto, 
      */
     @Override
     @PutMapping("/status")
-    @RequiresPermissions(value = {Auth.SYS_POST_EDIT, Auth.SYS_POST_ES}, logical = Logical.OR)
+    @PreAuthorize("@ss.hasAnyAuthority(@Auth.SYS_POST_EDIT, @Auth.SYS_POST_ES)")
     @Log(title = "岗位管理", businessType = BusinessType.UPDATE_STATUS)
     public AjaxResult editStatus(@RequestBody SysPostDto post) {
         return super.editStatus(post);
@@ -149,7 +147,7 @@ public class SysPostController extends BaseController<SysPostQuery, SysPostDto, 
      */
     @Override
     @DeleteMapping("/batch/{idList}")
-    @RequiresPermissions(Auth.SYS_POST_DEL)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_POST_DEL)")
     @Log(title = "岗位管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);

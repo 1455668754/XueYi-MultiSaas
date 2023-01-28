@@ -10,15 +10,13 @@ import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.InnerAuth;
-import com.xueyi.common.security.annotation.Logical;
-import com.xueyi.common.security.annotation.RequiresPermissions;
-import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.tenant.api.tenant.domain.dto.TeTenantDto;
 import com.xueyi.tenant.api.tenant.domain.query.TeTenantQuery;
 import com.xueyi.tenant.tenant.domain.model.TeTenantRegister;
 import com.xueyi.tenant.tenant.service.ITeTenantService;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,7 +43,7 @@ public class TeTenantController extends BaseController<TeTenantQuery, TeTenantDt
      */
     @InnerAuth
     @PostMapping("/register")
-    @RequiresPermissions(Auth.TE_TENANT_ADD)
+    @PreAuthorize("@ss.hasAuthority(@Auth.TE_TENANT_ADD)")
     @Log(title = "租户管理", businessType = BusinessType.INSERT)
     public AjaxResult addInner(@Validated({V_A.class}) @RequestBody TeTenantRegister tenantRegister) {
         return add(tenantRegister);
@@ -56,7 +54,7 @@ public class TeTenantController extends BaseController<TeTenantQuery, TeTenantDt
      */
     @Override
     @GetMapping("/list")
-    @RequiresPermissions(Auth.TE_TENANT_LIST)
+    @PreAuthorize("@ss.hasAuthority(@Auth.TE_TENANT_LIST)")
     public AjaxResult list(TeTenantQuery tenant) {
         return super.list(tenant);
     }
@@ -66,7 +64,7 @@ public class TeTenantController extends BaseController<TeTenantQuery, TeTenantDt
      */
     @Override
     @GetMapping(value = "/{id}")
-    @RequiresPermissions(Auth.TE_TENANT_SINGLE)
+    @PreAuthorize("@ss.hasAuthority(@Auth.TE_TENANT_SINGLE)")
     public AjaxResult getInfo(@PathVariable Serializable id) {
         return super.getInfo(id);
     }
@@ -75,7 +73,7 @@ public class TeTenantController extends BaseController<TeTenantQuery, TeTenantDt
      * 查询租户权限
      */
     @GetMapping("/auth/{id}")
-    @RequiresPermissions(Auth.TE_TENANT_AUTH)
+    @PreAuthorize("@ss.hasAuthority(@Auth.TE_TENANT_AUTH)")
     public AjaxResult getAuth(@PathVariable Long id) {
         return success(baseService.selectAuth(id));
     }
@@ -85,7 +83,7 @@ public class TeTenantController extends BaseController<TeTenantQuery, TeTenantDt
      */
     @Override
     @PostMapping("/export")
-    @RequiresPermissions(Auth.TE_TENANT_EXPORT)
+    @PreAuthorize("@ss.hasAuthority(@Auth.TE_TENANT_EXPORT)")
     public void export(HttpServletResponse response, TeTenantQuery tenant) {
         super.export(response, tenant);
     }
@@ -94,7 +92,7 @@ public class TeTenantController extends BaseController<TeTenantQuery, TeTenantDt
      * 租户新增
      */
     @PostMapping
-    @RequiresPermissions(Auth.TE_TENANT_ADD)
+    @PreAuthorize("@ss.hasAuthority(@Auth.TE_TENANT_ADD)")
     @Log(title = "租户管理", businessType = BusinessType.INSERT)
     public AjaxResult add(@Validated({V_A.class}) @RequestBody TeTenantRegister tenantRegister) {
         registerValidated(tenantRegister);
@@ -106,7 +104,7 @@ public class TeTenantController extends BaseController<TeTenantQuery, TeTenantDt
      */
     @Override
     @PutMapping
-    @RequiresPermissions(Auth.TE_TENANT_EDIT)
+    @PreAuthorize("@ss.hasAuthority(@Auth.TE_TENANT_EDIT)")
     @Log(title = "租户管理", businessType = BusinessType.UPDATE)
     public AjaxResult edit(@Validated({V_E.class}) @RequestBody TeTenantDto tenant) {
         return super.edit(tenant);
@@ -116,7 +114,7 @@ public class TeTenantController extends BaseController<TeTenantQuery, TeTenantDt
      * 租户权限修改
      */
     @PutMapping("/auth")
-    @RequiresPermissions(Auth.TE_TENANT_AUTH)
+    @PreAuthorize("@ss.hasAuthority(@Auth.TE_TENANT_AUTH)")
     @Log(title = "租户管理", businessType = BusinessType.AUTH)
     public AjaxResult editAuth(@RequestBody TeTenantDto tenant) {
         baseService.updateAuth(tenant.getId(), tenant.getAuthIds());
@@ -128,7 +126,7 @@ public class TeTenantController extends BaseController<TeTenantQuery, TeTenantDt
      */
     @Override
     @PutMapping("/status")
-    @RequiresPermissions(value = {Auth.TE_TENANT_EDIT, Auth.TE_TENANT_ES}, logical = Logical.OR)
+    @PreAuthorize("@ss.hasAnyAuthority(@Auth.TE_TENANT_EDIT, @Auth.TE_TENANT_ES)")
     @Log(title = "租户管理", businessType = BusinessType.UPDATE_STATUS)
     public AjaxResult editStatus(@RequestBody TeTenantDto tenant) {
         return super.editStatus(tenant);
@@ -139,7 +137,7 @@ public class TeTenantController extends BaseController<TeTenantQuery, TeTenantDt
      */
     @Override
     @DeleteMapping("/batch/{idList}")
-    @RequiresPermissions(Auth.TE_TENANT_DEL)
+    @PreAuthorize("@ss.hasAuthority(@Auth.TE_TENANT_DEL)")
     @Log(title = "租户管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);

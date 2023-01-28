@@ -10,14 +10,12 @@ import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.InnerAuth;
-import com.xueyi.common.security.annotation.Logical;
-import com.xueyi.common.security.annotation.RequiresPermissions;
-import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.system.api.dict.domain.dto.SysConfigDto;
 import com.xueyi.system.api.dict.domain.query.SysConfigQuery;
 import com.xueyi.system.dict.service.ISysConfigService;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,7 +51,7 @@ public class SysConfigController extends BaseController<SysConfigQuery, SysConfi
      * 刷新参数缓存
      */
     @Override
-    @RequiresPermissions(Auth.SYS_CONFIG_EDIT)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_CONFIG_EDIT)")
     @Log(title = "参数管理", businessType = BusinessType.REFRESH)
     @GetMapping("/refresh")
     public AjaxResult refreshCache() {
@@ -81,7 +79,7 @@ public class SysConfigController extends BaseController<SysConfigQuery, SysConfi
      */
     @Override
     @GetMapping("/list")
-    @RequiresPermissions(Auth.SYS_CONFIG_LIST)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_CONFIG_LIST)")
     public AjaxResult list(SysConfigQuery config) {
         return super.list(config);
     }
@@ -91,7 +89,7 @@ public class SysConfigController extends BaseController<SysConfigQuery, SysConfi
      */
     @Override
     @GetMapping(value = "/{id}")
-    @RequiresPermissions(Auth.SYS_CONFIG_SINGLE)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_CONFIG_SINGLE)")
     public AjaxResult getInfo(@PathVariable Serializable id) {
         return super.getInfo(id);
     }
@@ -101,7 +99,7 @@ public class SysConfigController extends BaseController<SysConfigQuery, SysConfi
      */
     @Override
     @PostMapping("/export")
-    @RequiresPermissions(Auth.SYS_CONFIG_EXPORT)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_CONFIG_EXPORT)")
     @Log(title = "参数管理", businessType = BusinessType.EXPORT)
     public void export(HttpServletResponse response, SysConfigQuery config) {
         super.export(response, config);
@@ -112,7 +110,7 @@ public class SysConfigController extends BaseController<SysConfigQuery, SysConfi
      */
     @Override
     @PostMapping
-    @RequiresPermissions(Auth.SYS_CONFIG_ADD)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_CONFIG_ADD)")
     @Log(title = "参数管理", businessType = BusinessType.INSERT)
     public AjaxResult add(@Validated({V_A.class}) @RequestBody SysConfigDto config) {
         return super.add(config);
@@ -123,7 +121,7 @@ public class SysConfigController extends BaseController<SysConfigQuery, SysConfi
      */
     @Override
     @PutMapping
-    @RequiresPermissions(Auth.SYS_CONFIG_EDIT)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_CONFIG_EDIT)")
     @Log(title = "参数管理", businessType = BusinessType.UPDATE)
     public AjaxResult edit(@Validated({V_E.class}) @RequestBody SysConfigDto config) {
         return super.edit(config);
@@ -134,7 +132,7 @@ public class SysConfigController extends BaseController<SysConfigQuery, SysConfi
      */
     @Override
     @PutMapping("/status")
-    @RequiresPermissions(value = {Auth.SYS_CONFIG_EDIT, Auth.SYS_CONFIG_ES}, logical = Logical.OR)
+    @PreAuthorize("@ss.hasAnyAuthority(@Auth.SYS_CONFIG_EDIT, @Auth.SYS_CONFIG_ES)")
     @Log(title = "参数管理", businessType = BusinessType.UPDATE_STATUS)
     public AjaxResult editStatus(@RequestBody SysConfigDto config) {
         return super.editStatus(config);
@@ -145,7 +143,7 @@ public class SysConfigController extends BaseController<SysConfigQuery, SysConfi
      */
     @Override
     @DeleteMapping("/batch/{idList}")
-    @RequiresPermissions(Auth.SYS_CONFIG_DEL)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_CONFIG_DEL)")
     @Log(title = "参数管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);
@@ -156,7 +154,7 @@ public class SysConfigController extends BaseController<SysConfigQuery, SysConfi
      */
     @Override
     @DeleteMapping("/batch/force/{idList}")
-    @RequiresPermissions(Auth.SYS_CONFIG_DEL_FORCE)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_CONFIG_DEL_FORCE)")
     @Log(title = "参数管理", businessType = BusinessType.DELETE_FORCE)
     public AjaxResult batchRemoveForce(@PathVariable List<Long> idList) {
         return super.batchRemoveForce(idList);

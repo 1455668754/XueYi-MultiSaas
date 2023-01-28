@@ -15,9 +15,6 @@ import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.InnerAuth;
-import com.xueyi.common.security.annotation.Logical;
-import com.xueyi.common.security.annotation.RequiresPermissions;
-import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.security.service.TokenService;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.entity.controller.TreeController;
@@ -29,6 +26,7 @@ import com.xueyi.system.authority.service.ISysModuleService;
 import com.xueyi.system.utils.cloud.CRouteUtils;
 import com.xueyi.system.utils.multi.MRouteUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -109,7 +107,7 @@ public class SysMenuController extends TreeController<SysMenuQuery, SysMenuDto, 
      */
     @Override
     @GetMapping("/list")
-    @RequiresPermissions(Auth.SYS_MENU_LIST)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_MENU_LIST)")
     public AjaxResult list(SysMenuQuery menu) {
         return super.list(menu);
     }
@@ -118,7 +116,7 @@ public class SysMenuController extends TreeController<SysMenuQuery, SysMenuDto, 
      * 查询菜单列表（排除节点）
      */
     @GetMapping("/list/exclude")
-    @RequiresPermissions(Auth.SYS_MENU_LIST)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_MENU_LIST)")
     public AjaxResult listExNodes(SysMenuQuery menu) {
         return super.listExNodes(menu);
     }
@@ -128,7 +126,7 @@ public class SysMenuController extends TreeController<SysMenuQuery, SysMenuDto, 
      */
     @Override
     @GetMapping(value = "/{id}")
-    @RequiresPermissions(Auth.SYS_MENU_SINGLE)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_MENU_SINGLE)")
     public AjaxResult getInfo(@PathVariable Serializable id) {
         return super.getInfo(id);
     }
@@ -161,7 +159,7 @@ public class SysMenuController extends TreeController<SysMenuQuery, SysMenuDto, 
      */
     @Override
     @PostMapping
-    @RequiresPermissions(Auth.SYS_MENU_ADD)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_MENU_ADD)")
     @Log(title = "菜单管理", businessType = BusinessType.INSERT)
     public AjaxResult add(@Validated({V_A.class}) @RequestBody SysMenuDto menu) {
         return super.add(menu);
@@ -172,7 +170,7 @@ public class SysMenuController extends TreeController<SysMenuQuery, SysMenuDto, 
      */
     @Override
     @PutMapping
-    @RequiresPermissions(Auth.SYS_MENU_EDIT)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_MENU_EDIT)")
     @Log(title = "菜单管理", businessType = BusinessType.UPDATE)
     public AjaxResult edit(@Validated({V_E.class}) @RequestBody SysMenuDto menu) {
         return super.edit(menu);
@@ -183,7 +181,7 @@ public class SysMenuController extends TreeController<SysMenuQuery, SysMenuDto, 
      */
     @Override
     @PutMapping("/status")
-    @RequiresPermissions(value = {Auth.SYS_MENU_EDIT, Auth.SYS_MENU_ES}, logical = Logical.OR)
+    @PreAuthorize("@ss.hasAnyAuthority(@Auth.SYS_MENU_EDIT, @Auth.SYS_MENU_ES)")
     @Log(title = "菜单管理", businessType = BusinessType.UPDATE_STATUS)
     public AjaxResult editStatus(@RequestBody SysMenuDto menu) {
         return super.editStatus(menu);
@@ -194,7 +192,7 @@ public class SysMenuController extends TreeController<SysMenuQuery, SysMenuDto, 
      */
     @Override
     @DeleteMapping("/batch/{idList}")
-    @RequiresPermissions(Auth.SYS_MENU_DEL)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_MENU_DEL)")
     @Log(title = "菜单管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);

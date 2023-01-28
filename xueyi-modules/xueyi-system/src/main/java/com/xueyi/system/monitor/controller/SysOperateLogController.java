@@ -5,13 +5,12 @@ import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.InnerAuth;
-import com.xueyi.common.security.annotation.RequiresPermissions;
-import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.system.api.log.domain.dto.SysOperateLogDto;
 import com.xueyi.system.api.log.domain.query.SysOperateLogQuery;
 import com.xueyi.system.monitor.service.ISysOperateLogService;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
@@ -47,7 +46,7 @@ public class SysOperateLogController extends BaseController<SysOperateLogQuery, 
      */
     @Override
     @GetMapping("/list")
-    @RequiresPermissions(Auth.SYS_OPERATE_LOG_LIST)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_OPERATE_LOG_LIST)")
     public AjaxResult list(SysOperateLogQuery operateLog) {
         return super.list(operateLog);
     }
@@ -57,7 +56,7 @@ public class SysOperateLogController extends BaseController<SysOperateLogQuery, 
      */
     @Override
     @GetMapping(value = "/{id}")
-    @RequiresPermissions(Auth.SYS_OPERATE_LOG_SINGLE)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_OPERATE_LOG_SINGLE)")
     public AjaxResult getInfo(@PathVariable Serializable id) {
         return super.getInfo(id);
     }
@@ -67,7 +66,7 @@ public class SysOperateLogController extends BaseController<SysOperateLogQuery, 
      */
     @Override
     @PostMapping("/export")
-    @RequiresPermissions(Auth.SYS_OPERATE_LOG_EXPORT)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_OPERATE_LOG_EXPORT)")
     @Log(title = "操作日志", businessType = BusinessType.EXPORT)
     public void export(HttpServletResponse response, SysOperateLogQuery operateLog) {
         super.export(response, operateLog);
@@ -78,7 +77,7 @@ public class SysOperateLogController extends BaseController<SysOperateLogQuery, 
      */
     @Override
     @DeleteMapping("/batch/{idList}")
-    @RequiresPermissions(Auth.SYS_OPERATE_LOG_DEL)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_OPERATE_LOG_DEL)")
     @Log(title = "操作日志", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);
@@ -88,7 +87,7 @@ public class SysOperateLogController extends BaseController<SysOperateLogQuery, 
      * 操作日志清空
      */
     @DeleteMapping("/clean")
-    @RequiresPermissions(Auth.SYS_OPERATE_LOG_DEL)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_OPERATE_LOG_DEL)")
     @Log(title = "操作日志", businessType = BusinessType.CLEAN)
     public AjaxResult clean() {
         baseService.cleanOperateLog();

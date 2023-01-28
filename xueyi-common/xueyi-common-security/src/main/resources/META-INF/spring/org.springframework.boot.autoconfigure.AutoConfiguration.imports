@@ -1,6 +1,8 @@
 com.xueyi.common.security.config.WebMvcConfig
 com.xueyi.common.security.config.SecurityConfig
 com.xueyi.common.security.service.TokenService
+com.xueyi.common.security.auth.AuthService
+com.xueyi.common.security.auth.Auth
 com.xueyi.common.security.aspect.PreAuthorizeAspect
 com.xueyi.common.security.aspect.InnerAuthAspect
 com.xueyi.common.security.handler.GlobalExceptionHandler

@@ -21,6 +21,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.xueyi.common.core.constant.basic.SecurityConstants.*;
+
 /**
  * 登录管理 服务层处理
  *
@@ -82,10 +84,10 @@ public class SysLoginServiceImpl implements ISysLoginService {
         Set<String> roles = new HashSet<>();
         // 租管租户拥有租管标识权限
         if (SecurityUtils.isAdminTenant())
-            roles.add("administrator");
+            roles.add(ROLE_ADMINISTRATOR);
         // 超管用户拥有超管标识权限
         if (SysUserDto.isAdmin(userType))
-            roles.add("admin");
+            roles.add(ROLE_ADMIN);
         else
             roles.addAll(roleList.stream().map(SysRoleDto::getRoleKey).filter(StrUtil::isNotBlank).collect(Collectors.toSet()));
         return roles;
@@ -103,7 +105,7 @@ public class SysLoginServiceImpl implements ISysLoginService {
         Set<String> perms = new HashSet<>();
         // 租管租户的超管用户拥有所有权限
         if (SecurityUtils.isAdminTenant() && SysUserDto.isAdmin(userType))
-            perms.add("*:*:*");
+            perms.add(PERMISSION_ADMIN);
         else {
             Set<String> set = SysUserDto.isAdmin(userType)
                     ? menuService.loginPermission()
@@ -141,15 +143,15 @@ public class SysLoginServiceImpl implements ISysLoginService {
         int isCustom = 0, isDept = 0, isDeptAndChild = 0, isPost = 0, isSelf = 0;
         for (SysRoleDto role : roleList) {
             switch (AuthorityConstants.DataScope.getByCode(role.getDataScope())) {
-                case CUSTOM:
+                case CUSTOM -> {
                     isCustom++;
                     customRoleId.add(role.getId());
-                    break;
-                case DEPT:
+                }
+                case DEPT -> {
                     if (isDept++ == 0)
                         deptScope.addAll(user.getPosts().stream().map(post -> post.getDept().getId()).collect(Collectors.toSet()));
-                    break;
-                case DEPT_AND_CHILD:
+                }
+                case DEPT_AND_CHILD -> {
                     if (isDeptAndChild++ == 0) {
                         Set<Long> deptIds = user.getPosts().stream().map(post -> post.getDept().getId()).collect(Collectors.toSet());
                         List<SysDeptDto> deptList;
@@ -158,17 +160,17 @@ public class SysLoginServiceImpl implements ISysLoginService {
                             deptScope.addAll(deptList.stream().map(SysDeptDto::getId).collect(Collectors.toSet()));
                         }
                     }
-                    break;
-                case POST:
+                }
+                case POST -> {
                     if (isPost++ == 0)
                         postScope.addAll(user.getPosts().stream().map(SysPostDto::getId).collect(Collectors.toSet()));
-                    break;
-                case SELF:
+                }
+                case SELF -> {
                     if (isSelf++ == 0)
                         userScope.add(user.getId());
-                    break;
-                default:
-                    break;
+                }
+                default -> {
+                }
             }
         }
 

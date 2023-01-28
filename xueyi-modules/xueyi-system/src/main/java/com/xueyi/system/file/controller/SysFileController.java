@@ -6,13 +6,12 @@ import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.InnerAuth;
-import com.xueyi.common.security.annotation.RequiresPermissions;
-import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.security.utils.base.BaseSecurityUtils;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.system.file.domain.dto.SysFileDto;
 import com.xueyi.system.file.domain.query.SysFileQuery;
 import com.xueyi.system.file.service.ISysFileService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,7 +46,7 @@ public class SysFileController extends BaseController<SysFileQuery, SysFileDto, 
      */
     @Override
     @DeleteMapping("/batch/{idList}")
-    @RequiresPermissions(Auth.SYS_FILE_DEL)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_FILE_DEL)")
     @Log(title = "文件管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);

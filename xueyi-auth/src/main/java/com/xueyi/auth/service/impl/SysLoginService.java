@@ -75,13 +75,6 @@ public class SysLoginService {
     }
 
     /**
-     * 退出
-     */
-    public void logout(String sourceName, Long enterpriseId, String enterpriseName, Long userId, String userName, String userNick) {
-        logService.recordLoginInfo(sourceName, enterpriseId, enterpriseName, userId, userName, userNick, Constants.LOGOUT, "退出成功");
-    }
-
-    /**
      * 注册
      */
     public void register(RegisterBody registerBody) {

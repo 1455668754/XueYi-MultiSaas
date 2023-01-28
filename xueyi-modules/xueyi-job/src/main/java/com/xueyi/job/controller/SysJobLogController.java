@@ -5,13 +5,12 @@ import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.InnerAuth;
-import com.xueyi.common.security.annotation.RequiresPermissions;
-import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.job.api.domain.dto.SysJobLogDto;
 import com.xueyi.job.api.domain.query.SysJobLogQuery;
 import com.xueyi.job.service.ISysJobLogService;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
@@ -46,7 +45,7 @@ public class SysJobLogController extends BaseController<SysJobLogQuery, SysJobLo
      */
     @Override
     @GetMapping("/list")
-    @RequiresPermissions(Auth.SCHEDULE_JOB_LIST)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SCHEDULE_JOB_LIST)")
     public AjaxResult list(SysJobLogQuery jobLog) {
         return super.list(jobLog);
     }
@@ -55,7 +54,7 @@ public class SysJobLogController extends BaseController<SysJobLogQuery, SysJobLo
      * 查询调度日志详细
      */
     @GetMapping(value = "/{id}")
-    @RequiresPermissions(Auth.SCHEDULE_JOB_SINGLE)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SCHEDULE_JOB_SINGLE)")
     public AjaxResult getInfoExtra(@PathVariable Serializable id) {
         return super.getInfo(id);
     }
@@ -65,7 +64,7 @@ public class SysJobLogController extends BaseController<SysJobLogQuery, SysJobLo
      */
     @Override
     @PostMapping("/export")
-    @RequiresPermissions(Auth.SCHEDULE_JOB_EXPORT)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SCHEDULE_JOB_EXPORT)")
     @Log(title = "调度日志管理", businessType = BusinessType.EXPORT)
     public void export(HttpServletResponse response, SysJobLogQuery jobLog) {
         super.export(response, jobLog);
@@ -75,7 +74,7 @@ public class SysJobLogController extends BaseController<SysJobLogQuery, SysJobLo
      * 清空调度日志
      */
     @DeleteMapping("/clean")
-    @RequiresPermissions(Auth.SCHEDULE_JOB_DEL)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SCHEDULE_JOB_DEL)")
     @Log(title = "调度日志管理", businessType = BusinessType.CLEAN)
     public AjaxResult clean() {
         baseService.cleanLog();

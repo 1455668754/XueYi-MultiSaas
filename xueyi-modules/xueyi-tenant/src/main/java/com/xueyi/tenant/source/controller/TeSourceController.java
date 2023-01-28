@@ -11,9 +11,6 @@ import com.xueyi.common.datasource.utils.DSUtil;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.InnerAuth;
-import com.xueyi.common.security.annotation.Logical;
-import com.xueyi.common.security.annotation.RequiresPermissions;
-import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.tenant.api.source.domain.dto.TeSourceDto;
 import com.xueyi.tenant.api.source.domain.query.TeSourceQuery;
@@ -21,6 +18,7 @@ import com.xueyi.tenant.source.service.ITeSourceService;
 import com.xueyi.tenant.tenant.service.ITeStrategyService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -60,7 +58,7 @@ public class TeSourceController extends BaseController<TeSourceQuery, TeSourceDt
      * 刷新数据源缓存
      */
     @Override
-    @RequiresPermissions(Auth.TE_SOURCE_EDIT)
+    @PreAuthorize("@ss.hasAuthority(@Auth.TE_SOURCE_EDIT)")
     @Log(title = "数据源管理", businessType = BusinessType.REFRESH)
     @GetMapping("/refresh")
     public AjaxResult refreshCache() {
@@ -72,7 +70,7 @@ public class TeSourceController extends BaseController<TeSourceQuery, TeSourceDt
      */
     @Override
     @GetMapping("/list")
-    @RequiresPermissions(Auth.TE_SOURCE_LIST)
+    @PreAuthorize("@ss.hasAuthority(@Auth.TE_SOURCE_LIST)")
     public AjaxResult list(TeSourceQuery source) {
         return super.list(source);
     }
@@ -82,7 +80,7 @@ public class TeSourceController extends BaseController<TeSourceQuery, TeSourceDt
      */
     @Override
     @GetMapping(value = "/{id}")
-    @RequiresPermissions(Auth.TE_SOURCE_SINGLE)
+    @PreAuthorize("@ss.hasAuthority(@Auth.TE_SOURCE_SINGLE)")
     public AjaxResult getInfo(@PathVariable Serializable id) {
         return super.getInfo(id);
     }
@@ -92,7 +90,7 @@ public class TeSourceController extends BaseController<TeSourceQuery, TeSourceDt
      */
     @Override
     @PostMapping("/export")
-    @RequiresPermissions(Auth.TE_SOURCE_EXPORT)
+    @PreAuthorize("@ss.hasAuthority(@Auth.TE_SOURCE_EXPORT)")
     public void export(HttpServletResponse response, TeSourceQuery source) {
         super.export(response, source);
     }
@@ -111,7 +109,7 @@ public class TeSourceController extends BaseController<TeSourceQuery, TeSourceDt
      */
     @Override
     @PostMapping
-    @RequiresPermissions(Auth.TE_SOURCE_ADD)
+    @PreAuthorize("@ss.hasAuthority(@Auth.TE_SOURCE_ADD)")
     @Log(title = "数据源管理", businessType = BusinessType.INSERT)
     public AjaxResult add(@Validated({V_A.class}) @RequestBody TeSourceDto source) {
         return super.add(source);
@@ -122,7 +120,7 @@ public class TeSourceController extends BaseController<TeSourceQuery, TeSourceDt
      */
     @Override
     @PutMapping
-    @RequiresPermissions(Auth.TE_SOURCE_EDIT)
+    @PreAuthorize("@ss.hasAuthority(@Auth.TE_SOURCE_EDIT)")
     @Log(title = "数据源管理", businessType = BusinessType.UPDATE)
     public AjaxResult edit(@Validated({V_E.class}) @RequestBody TeSourceDto source) {
         return super.edit(source);
@@ -133,7 +131,7 @@ public class TeSourceController extends BaseController<TeSourceQuery, TeSourceDt
      */
     @Override
     @PutMapping("/status")
-    @RequiresPermissions(value = {Auth.TE_SOURCE_EDIT, Auth.TE_SOURCE_ES}, logical = Logical.OR)
+    @PreAuthorize("@ss.hasAnyAuthority(@Auth.TE_SOURCE_EDIT, @Auth.TE_SOURCE_ES)")
     @Log(title = "数据源管理", businessType = BusinessType.UPDATE_STATUS)
     public AjaxResult editStatus(@RequestBody TeSourceDto source) {
         return super.editStatus(source);
@@ -144,7 +142,7 @@ public class TeSourceController extends BaseController<TeSourceQuery, TeSourceDt
      */
     @Override
     @DeleteMapping("/batch/{idList}")
-    @RequiresPermissions(Auth.TE_SOURCE_DEL)
+    @PreAuthorize("@ss.hasAuthority(@Auth.TE_SOURCE_DEL)")
     @Log(title = "数据源管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);

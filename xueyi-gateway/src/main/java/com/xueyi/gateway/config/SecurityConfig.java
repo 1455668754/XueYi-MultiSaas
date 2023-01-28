@@ -31,9 +31,12 @@ public class SecurityConfig {
     @Bean
     public SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http) {
         http.authorizeExchange((authorize) -> authorize.anyExchange().permitAll())
+                // 网关鉴权
                 .addFilterAfter(new AuthFilter(redisService, ignoreWhite), SecurityWebFiltersOrder.FIRST)
                 .securityContextRepository(new SecurityContextHandler(redisService, ignoreWhite))
-                .cors().disable().csrf().disable();
+                .cors().disable()
+                // CSRF禁用，因为不使用session
+                .csrf().disable();
         return http.build();
     }
 }

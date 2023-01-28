@@ -19,6 +19,15 @@ public class SecurityConstants {
     /** 公共数据租户Id */
     public static final Long COMMON_TENANT_ID = BaseConstants.COMMON_ID;
 
+    /** 租管角色标识 */
+    public static final String ROLE_ADMINISTRATOR = "administrator";
+
+    /** 超管角色标识 */
+    public static final String ROLE_ADMIN = "admin";
+
+    /** 超管菜单标识 */
+    public static final String PERMISSION_ADMIN = "*:*:*";
+
     /** 请求来源 */
     public static final String FROM_SOURCE = "from-source";
 
@@ -85,4 +94,5 @@ public class SecurityConstants {
         private final String info;
 
     }
+
 }

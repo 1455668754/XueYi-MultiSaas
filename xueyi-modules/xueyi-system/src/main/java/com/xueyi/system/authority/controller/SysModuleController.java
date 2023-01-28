@@ -8,9 +8,6 @@ import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
-import com.xueyi.common.security.annotation.Logical;
-import com.xueyi.common.security.annotation.RequiresPermissions;
-import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.security.service.TokenService;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.entity.controller.BaseController;
@@ -20,6 +17,7 @@ import com.xueyi.system.api.model.DataScope;
 import com.xueyi.system.authority.service.ISysModuleService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -63,7 +61,7 @@ public class SysModuleController extends BaseController<SysModuleQuery, SysModul
      */
     @Override
     @GetMapping("/list")
-    @RequiresPermissions(Auth.SYS_MODULE_LIST)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_MODULE_LIST)")
     public AjaxResult list(SysModuleQuery module) {
         return super.list(module);
     }
@@ -73,7 +71,7 @@ public class SysModuleController extends BaseController<SysModuleQuery, SysModul
      */
     @Override
     @GetMapping(value = "/{id}")
-    @RequiresPermissions(Auth.SYS_MODULE_SINGLE)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_MODULE_SINGLE)")
     public AjaxResult getInfo(@PathVariable Serializable id) {
         return super.getInfo(id);
     }
@@ -83,7 +81,7 @@ public class SysModuleController extends BaseController<SysModuleQuery, SysModul
      */
     @Override
     @PostMapping("/export")
-    @RequiresPermissions(Auth.SYS_MODULE_EXPORT)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_MODULE_EXPORT)")
     @Log(title = "模块管理", businessType = BusinessType.EXPORT)
     public void export(HttpServletResponse response, SysModuleQuery module) {
         super.export(response, module);
@@ -94,7 +92,7 @@ public class SysModuleController extends BaseController<SysModuleQuery, SysModul
      */
     @Override
     @PostMapping
-    @RequiresPermissions(Auth.SYS_MODULE_ADD)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_MODULE_ADD)")
     @Log(title = "模块管理", businessType = BusinessType.INSERT)
     public AjaxResult add(@Validated({V_A.class}) @RequestBody SysModuleDto module) {
         return super.add(module);
@@ -105,7 +103,7 @@ public class SysModuleController extends BaseController<SysModuleQuery, SysModul
      */
     @Override
     @PutMapping
-    @RequiresPermissions(Auth.SYS_MODULE_EDIT)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_MODULE_EDIT)")
     @Log(title = "模块管理", businessType = BusinessType.UPDATE)
     public AjaxResult edit(@Validated({V_E.class}) @RequestBody SysModuleDto module) {
         return super.edit(module);
@@ -116,7 +114,7 @@ public class SysModuleController extends BaseController<SysModuleQuery, SysModul
      */
     @Override
     @PutMapping("/status")
-    @RequiresPermissions(value = {Auth.SYS_MODULE_EDIT, Auth.SYS_MODULE_ES}, logical = Logical.OR)
+    @PreAuthorize("@ss.hasAnyAuthority(@Auth.SYS_MODULE_EDIT, @Auth.SYS_MODULE_ES)")
     @Log(title = "模块管理", businessType = BusinessType.UPDATE_STATUS)
     public AjaxResult editStatus(@RequestBody SysModuleDto module) {
         return super.editStatus(module);
@@ -127,7 +125,7 @@ public class SysModuleController extends BaseController<SysModuleQuery, SysModul
      */
     @Override
     @DeleteMapping("/batch/{idList}")
-    @RequiresPermissions(Auth.SYS_MODULE_DEL)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_MODULE_DEL)")
     @Log(title = "模块管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);

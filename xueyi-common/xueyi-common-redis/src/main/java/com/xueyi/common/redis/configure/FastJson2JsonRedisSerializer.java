@@ -3,6 +3,7 @@ package com.xueyi.common.redis.configure;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONReader;
 import com.alibaba.fastjson2.JSONWriter;
+import com.xueyi.common.core.utils.core.ArrayUtil;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.SerializationException;
 
@@ -27,15 +28,14 @@ public class FastJson2JsonRedisSerializer<T> implements RedisSerializer<T> {
 
     @Override
     public byte[] serialize(T t) throws SerializationException {
-        if (t == null) {
+        if (t == null)
             return new byte[0];
-        }
         return JSON.toJSONString(t, JSONWriter.Feature.WriteClassName).getBytes(DEFAULT_CHARSET);
     }
 
     @Override
     public T deserialize(byte[] bytes) throws SerializationException {
-        if (bytes == null || bytes.length <= 0)
+        if (ArrayUtil.isEmpty(bytes))
             return null;
         String str = new String(bytes, DEFAULT_CHARSET);
         return JSON.parseObject(str, clazz, JSONReader.Feature.SupportAutoType);

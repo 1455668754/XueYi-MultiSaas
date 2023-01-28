@@ -8,8 +8,6 @@ import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
-import com.xueyi.common.security.annotation.RequiresPermissions;
-import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.gen.domain.dto.GenTableColumnDto;
 import com.xueyi.gen.domain.dto.GenTableDto;
@@ -20,6 +18,7 @@ import com.xueyi.gen.service.IGenTableService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,7 +43,7 @@ public class GenController extends BaseController<GenTableQuery, GenTableDto, IG
      */
     @Override
     protected String getNodeName() {
-        return "业务表" ;
+        return "业务表";
     }
 
     /**
@@ -52,7 +51,7 @@ public class GenController extends BaseController<GenTableQuery, GenTableDto, IG
      */
     @Override
     @GetMapping("/list")
-    @RequiresPermissions(Auth.GENERATE_GEN_LIST)
+    @PreAuthorize("@ss.hasAuthority(@Auth.GENERATE_GEN_LIST)")
     public AjaxResult list(GenTableQuery table) {
         return super.list(table);
     }
@@ -61,7 +60,7 @@ public class GenController extends BaseController<GenTableQuery, GenTableDto, IG
      * 查询数据库列表
      */
     @GetMapping("/db/list")
-    @RequiresPermissions(Auth.GENERATE_GEN_LIST)
+    @PreAuthorize("@ss.hasAuthority(@Auth.GENERATE_GEN_LIST)")
     public AjaxResult dataList(GenTableDto table) {
         startPage();
         List<GenTableDto> list = baseService.selectDbTableList(table);
@@ -72,7 +71,7 @@ public class GenController extends BaseController<GenTableQuery, GenTableDto, IG
      * 查询数据表字段列表
      */
     @GetMapping(value = "/column/list")
-    @RequiresPermissions(Auth.GENERATE_GEN_LIST)
+    @PreAuthorize("@ss.hasAuthority(@Auth.GENERATE_GEN_LIST)")
     public AjaxResult columnList(GenTableColumnQuery query) {
         startPage();
         List<GenTableColumnDto> list = subService.selectList(query);
@@ -84,7 +83,7 @@ public class GenController extends BaseController<GenTableQuery, GenTableDto, IG
      */
     @Override
     @GetMapping(value = "/{id}")
-    @RequiresPermissions(Auth.GENERATE_GEN_SINGLE)
+    @PreAuthorize("@ss.hasAuthority(@Auth.GENERATE_GEN_SINGLE)")
     public AjaxResult getInfo(@PathVariable Serializable id) {
         return super.getInfo(id);
     }
@@ -93,7 +92,7 @@ public class GenController extends BaseController<GenTableQuery, GenTableDto, IG
      * 查询代码生成详细 | 包含代码生成数据
      */
     @GetMapping(value = "/sub/{id}")
-    @RequiresPermissions(Auth.GENERATE_GEN_SINGLE)
+    @PreAuthorize("@ss.hasAuthority(@Auth.GENERATE_GEN_SINGLE)")
     public AjaxResult getInfoExtra(@PathVariable Serializable id) {
         return super.getInfo(id);
     }
@@ -102,7 +101,7 @@ public class GenController extends BaseController<GenTableQuery, GenTableDto, IG
      * 预览代码
      */
     @GetMapping("/cloud/preview/{tableId}")
-    @RequiresPermissions(Auth.GENERATE_GEN_PREVIEW)
+    @PreAuthorize("@ss.hasAuthority(@Auth.GENERATE_GEN_PREVIEW)")
     public AjaxResult previewCloud(@PathVariable("tableId") Long tableId) {
         List<JSONObject> dataMap = baseService.previewCode(tableId, ServiceConstants.FromSource.CLOUD);
         return success(dataMap);
@@ -112,7 +111,7 @@ public class GenController extends BaseController<GenTableQuery, GenTableDto, IG
      * 预览代码
      */
     @GetMapping("/multi/preview/{tableId}")
-    @RequiresPermissions(Auth.GENERATE_GEN_PREVIEW)
+    @PreAuthorize("@ss.hasAuthority(@Auth.GENERATE_GEN_PREVIEW)")
     public AjaxResult previewMulti(@PathVariable("tableId") Long tableId) {
         List<JSONObject> dataMap = baseService.previewCode(tableId, ServiceConstants.FromSource.MULTI);
         return success(dataMap);
@@ -122,7 +121,7 @@ public class GenController extends BaseController<GenTableQuery, GenTableDto, IG
      * 导入表结构（保存）
      */
     @PostMapping("/importTable")
-    @RequiresPermissions(Auth.GENERATE_GEN_IMPORT)
+    @PreAuthorize("@ss.hasAuthority(@Auth.GENERATE_GEN_IMPORT)")
     @Log(title = "代码生成", businessType = BusinessType.IMPORT)
     public AjaxResult importTableSave(@RequestParam("tables") String tables) {
         String[] tableNames = ConvertUtil.toStrArray(tables);
@@ -137,7 +136,7 @@ public class GenController extends BaseController<GenTableQuery, GenTableDto, IG
      */
     @Override
     @PutMapping
-    @RequiresPermissions(Auth.GENERATE_GEN_EDIT)
+    @PreAuthorize("@ss.hasAuthority(@Auth.GENERATE_GEN_EDIT)")
     @Log(title = "代码生成管理", businessType = BusinessType.UPDATE)
     public AjaxResult edit(@Validated({V_E.class}) @RequestBody GenTableDto table) {
         return super.edit(table);
@@ -146,7 +145,7 @@ public class GenController extends BaseController<GenTableQuery, GenTableDto, IG
     /**
      * 生成代码（下载方式）
      */
-    @RequiresPermissions(Auth.GENERATE_GEN_CODE)
+    @PreAuthorize("@ss.hasAuthority(@Auth.GENERATE_GEN_CODE)")
     @Log(title = "代码生成", businessType = BusinessType.GEN_CODE)
     @GetMapping("/cloud/download/{tableId}")
     public void downloadCloud(HttpServletResponse response, @PathVariable("tableId") Long tableId) throws IOException {
@@ -157,7 +156,7 @@ public class GenController extends BaseController<GenTableQuery, GenTableDto, IG
     /**
      * 生成代码（下载方式）
      */
-    @RequiresPermissions(Auth.GENERATE_GEN_CODE)
+    @PreAuthorize("@ss.hasAuthority(@Auth.GENERATE_GEN_CODE)")
     @Log(title = "代码生成", businessType = BusinessType.GEN_CODE)
     @GetMapping("/multi/download/{tableId}")
     public void downloadMulti(HttpServletResponse response, @PathVariable("tableId") Long tableId) throws IOException {
@@ -168,7 +167,7 @@ public class GenController extends BaseController<GenTableQuery, GenTableDto, IG
     /**
      * 生成代码（自定义路径）
      */
-    @RequiresPermissions(Auth.GENERATE_GEN_CODE)
+    @PreAuthorize("@ss.hasAuthority(@Auth.GENERATE_GEN_CODE)")
     @Log(title = "代码生成", businessType = BusinessType.GEN_CODE)
     @GetMapping("/cloud/generate/{tableId}")
     public AjaxResult genCloudCode(@PathVariable("tableId") Long tableId) {
@@ -179,7 +178,7 @@ public class GenController extends BaseController<GenTableQuery, GenTableDto, IG
     /**
      * 生成代码（自定义路径）
      */
-    @RequiresPermissions(Auth.GENERATE_GEN_CODE)
+    @PreAuthorize("@ss.hasAuthority(@Auth.GENERATE_GEN_CODE)")
     @Log(title = "代码生成", businessType = BusinessType.GEN_CODE)
     @GetMapping("/multi/generate/{tableId}")
     public AjaxResult genMultiCode(@PathVariable("tableId") Long tableId) {
@@ -190,7 +189,7 @@ public class GenController extends BaseController<GenTableQuery, GenTableDto, IG
     /**
      * 批量生成代码
      */
-    @RequiresPermissions(Auth.GENERATE_GEN_CODE)
+    @PreAuthorize("@ss.hasAuthority(@Auth.GENERATE_GEN_CODE)")
     @Log(title = "代码生成", businessType = BusinessType.GEN_CODE)
     @GetMapping("/cloud/batchGenCode")
     public void batchCloudGenCode(HttpServletResponse response, Long[] ids) throws IOException {
@@ -201,7 +200,7 @@ public class GenController extends BaseController<GenTableQuery, GenTableDto, IG
     /**
      * 批量生成代码
      */
-    @RequiresPermissions(Auth.GENERATE_GEN_CODE)
+    @PreAuthorize("@ss.hasAuthority(@Auth.GENERATE_GEN_CODE)")
     @Log(title = "代码生成", businessType = BusinessType.GEN_CODE)
     @GetMapping("/multi/batchGenCode")
     public void batchMultiGenCode(HttpServletResponse response, Long[] ids) throws IOException {
@@ -214,7 +213,7 @@ public class GenController extends BaseController<GenTableQuery, GenTableDto, IG
      */
     @Override
     @DeleteMapping("/batch/force/{idList}")
-    @RequiresPermissions(Auth.GENERATE_GEN_DEL)
+    @PreAuthorize("@ss.hasAuthority(@Auth.GENERATE_GEN_DEL)")
     @Log(title = "代码生成管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemoveForce(@PathVariable List<Long> idList) {
         return super.batchRemoveForce(idList);

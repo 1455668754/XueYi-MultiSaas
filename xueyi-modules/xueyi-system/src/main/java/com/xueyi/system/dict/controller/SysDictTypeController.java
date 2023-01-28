@@ -9,14 +9,12 @@ import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.InnerAuth;
-import com.xueyi.common.security.annotation.Logical;
-import com.xueyi.common.security.annotation.RequiresPermissions;
-import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.system.api.dict.domain.dto.SysDictTypeDto;
 import com.xueyi.system.api.dict.domain.query.SysDictTypeQuery;
 import com.xueyi.system.dict.service.ISysDictTypeService;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,7 +51,7 @@ public class SysDictTypeController extends BaseController<SysDictTypeQuery, SysD
      * 刷新字典缓存
      */
     @Override
-    @RequiresPermissions(Auth.SYS_DICT_EDIT)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_DICT_EDIT)")
     @Log(title = "字典类型", businessType = BusinessType.REFRESH)
     @GetMapping("/refresh")
     public AjaxResult refreshCache() {
@@ -65,7 +63,7 @@ public class SysDictTypeController extends BaseController<SysDictTypeQuery, SysD
      */
     @Override
     @GetMapping("/list")
-    @RequiresPermissions(Auth.SYS_DICT_LIST)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_DICT_LIST)")
     public AjaxResult list(SysDictTypeQuery dictType) {
         return super.list(dictType);
     }
@@ -75,7 +73,7 @@ public class SysDictTypeController extends BaseController<SysDictTypeQuery, SysD
      */
     @Override
     @GetMapping(value = "/{id}")
-    @RequiresPermissions(Auth.SYS_DICT_SINGLE)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_DICT_SINGLE)")
     public AjaxResult getInfo(@PathVariable Serializable id) {
         return super.getInfo(id);
     }
@@ -85,7 +83,7 @@ public class SysDictTypeController extends BaseController<SysDictTypeQuery, SysD
      */
     @Override
     @PostMapping("/export")
-    @RequiresPermissions(Auth.SYS_DICT_EXPORT)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_DICT_EXPORT)")
     @Log(title = "字典类型管理", businessType = BusinessType.EXPORT)
     public void export(HttpServletResponse response, SysDictTypeQuery dictType) {
         super.export(response, dictType);
@@ -96,7 +94,7 @@ public class SysDictTypeController extends BaseController<SysDictTypeQuery, SysD
      */
     @Override
     @PostMapping
-    @RequiresPermissions(Auth.SYS_DICT_ADD)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_DICT_ADD)")
     @Log(title = "字典类型管理", businessType = BusinessType.INSERT)
     public AjaxResult add(@Validated({V_A.class}) @RequestBody SysDictTypeDto dictType) {
         return super.add(dictType);
@@ -107,7 +105,7 @@ public class SysDictTypeController extends BaseController<SysDictTypeQuery, SysD
      */
     @Override
     @PutMapping
-    @RequiresPermissions(Auth.SYS_DICT_EDIT)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_DICT_EDIT)")
     @Log(title = "字典类型管理", businessType = BusinessType.UPDATE)
     public AjaxResult edit(@Validated({V_E.class}) @RequestBody SysDictTypeDto dictType) {
         return super.edit(dictType);
@@ -118,7 +116,7 @@ public class SysDictTypeController extends BaseController<SysDictTypeQuery, SysD
      */
     @Override
     @PutMapping("/status")
-    @RequiresPermissions(value = {Auth.SYS_DICT_EDIT, Auth.SYS_DICT_ES}, logical = Logical.OR)
+    @PreAuthorize("@ss.hasAnyAuthority(@Auth.SYS_DICT_EDIT, @Auth.SYS_DICT_ES)")
     @Log(title = "字典类型管理", businessType = BusinessType.UPDATE_STATUS)
     public AjaxResult editStatus(@RequestBody SysDictTypeDto dictType) {
         return super.editStatus(dictType);
@@ -129,7 +127,7 @@ public class SysDictTypeController extends BaseController<SysDictTypeQuery, SysD
      */
     @Override
     @DeleteMapping("/batch/{idList}")
-    @RequiresPermissions(Auth.SYS_DICT_DEL)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_DICT_DEL)")
     @Log(title = "字典类型管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);
@@ -140,7 +138,7 @@ public class SysDictTypeController extends BaseController<SysDictTypeQuery, SysD
      */
     @Override
     @DeleteMapping("/batch/force/{idList}")
-    @RequiresPermissions(Auth.SYS_DICT_DEL)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_DICT_DEL)")
     @Log(title = "字典类型管理", businessType = BusinessType.DELETE_FORCE)
     public AjaxResult batchRemoveForce(@PathVariable List<Long> idList) {
         return super.batchRemoveForce(idList);

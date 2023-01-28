@@ -8,14 +8,13 @@ import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.redis.service.RedisService;
-import com.xueyi.common.security.annotation.RequiresPermissions;
-import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.entity.controller.BasisController;
 import com.xueyi.system.api.model.LoginUser;
 import com.xueyi.system.monitor.domain.SysUserOnline;
 import com.xueyi.system.monitor.service.ISysUserOnlineService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -39,7 +38,7 @@ public class SysUserOnlineController extends BasisController {
     private RedisService redisService;
 
     @GetMapping("/list")
-    @RequiresPermissions(Auth.SYS_ONLINE_LIST)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_ONLINE_LIST)")
     public AjaxResult list(String ipaddr, String userName) {
         Collection<String> keys = redisService.keys(CacheConstants.LoginTokenType.ADMIN.getCode() + SecurityUtils.getEnterpriseId() + StrUtil.COLON + "*");
         List<SysUserOnline> userOnlineList = new ArrayList<>();
@@ -70,7 +69,7 @@ public class SysUserOnlineController extends BasisController {
      * 强退用户
      */
     @DeleteMapping("/batch/{idList}")
-    @RequiresPermissions(Auth.SYS_ONLINE_FORCE_LOGOUT)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_ONLINE_FORCE_LOGOUT)")
     @Log(title = "在线用户", businessType = BusinessType.FORCE)
     public AjaxResult forceLogout(@PathVariable List<String> idList) {
         if (ArrayUtil.isNotEmpty(idList))

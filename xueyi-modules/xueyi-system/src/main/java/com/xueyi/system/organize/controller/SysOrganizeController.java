@@ -2,12 +2,10 @@ package com.xueyi.system.organize.controller;
 
 import com.xueyi.common.core.utils.TreeUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
-import com.xueyi.common.security.annotation.Logical;
-import com.xueyi.common.security.annotation.RequiresPermissions;
-import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.web.entity.controller.BasisController;
 import com.xueyi.system.organize.service.ISysOrganizeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,7 +26,7 @@ public class SysOrganizeController extends BasisController {
      * 获取企业部门|岗位树
      */
     @GetMapping(value = "/organizeScope")
-    @RequiresPermissions(value = {Auth.SYS_ROLE_ADD, Auth.SYS_ROLE_AUTH}, logical = Logical.OR)
+    @PreAuthorize("@ss.hasAnyAuthority(@Auth.SYS_ROLE_ADD, @Auth.SYS_ROLE_AUTH)")
     public AjaxResult getOrganizeScope() {
         return success(TreeUtil.buildTree(organizeService.selectOrganizeScope()));
     }

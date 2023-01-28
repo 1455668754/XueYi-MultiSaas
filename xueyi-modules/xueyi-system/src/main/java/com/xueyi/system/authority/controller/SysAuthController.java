@@ -4,13 +4,11 @@ import com.xueyi.common.core.utils.TreeUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.security.annotation.InnerAuth;
-import com.xueyi.common.security.annotation.Logical;
-import com.xueyi.common.security.annotation.RequiresPermissions;
-import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.web.entity.controller.BasisController;
 import com.xueyi.system.authority.domain.vo.SysAuthTree;
 import com.xueyi.system.authority.service.ISysAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -61,7 +59,7 @@ public class SysAuthController extends BasisController {
      * 获取公共模块|菜单权限树
      */
     @GetMapping(value = "/tenant/authScope")
-    @RequiresPermissions(value = {Auth.TE_TENANT_ADD, Auth.TE_TENANT_AUTH}, logical = Logical.OR)
+    @PreAuthorize("@ss.hasAnyAuthority(@Auth.TE_TENANT_ADD, @Auth.TE_TENANT_AUTH)")
     public AjaxResult getCommonAuthScope() {
         return success(TreeUtil.buildTree(authService.selectCommonAuthScope()));
     }
@@ -70,7 +68,7 @@ public class SysAuthController extends BasisController {
      * 获取企业模块|菜单权限树
      */
     @GetMapping(value = "/enterprise/authScope")
-    @RequiresPermissions(value = {Auth.SYS_ROLE_ADD, Auth.SYS_ROLE_AUTH}, logical = Logical.OR)
+    @PreAuthorize("@ss.hasAnyAuthority(@Auth.SYS_ROLE_ADD, @Auth.SYS_ROLE_AUTH)")
     public AjaxResult getEnterpriseAuthScope() {
         return success(TreeUtil.buildTree(authService.selectEnterpriseAuthScope()));
     }

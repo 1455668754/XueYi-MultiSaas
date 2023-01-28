@@ -11,9 +11,6 @@ import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.InnerAuth;
-import com.xueyi.common.security.annotation.Logical;
-import com.xueyi.common.security.annotation.RequiresPermissions;
-import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.security.service.TokenService;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.entity.controller.BaseController;
@@ -25,6 +22,7 @@ import com.xueyi.system.organize.service.ISysOrganizeService;
 import com.xueyi.system.organize.service.ISysUserService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -86,7 +84,7 @@ public class SysUserController extends BaseController<SysUserQuery, SysUserDto, 
      */
     @Override
     @GetMapping("/list")
-    @RequiresPermissions(Auth.SYS_USER_LIST)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_USER_LIST)")
     public AjaxResult list(SysUserQuery user) {
         startPage();
         List<SysUserDto> list = baseService.selectListScope(user);
@@ -99,7 +97,7 @@ public class SysUserController extends BaseController<SysUserQuery, SysUserDto, 
      */
     @Override
     @GetMapping(value = "/{id}")
-    @RequiresPermissions(Auth.SYS_USER_SINGLE)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_USER_SINGLE)")
     public AjaxResult getInfo(@PathVariable Serializable id) {
         return super.getInfo(id);
     }
@@ -108,7 +106,7 @@ public class SysUserController extends BaseController<SysUserQuery, SysUserDto, 
      * 查询用户关联的角色Id集
      */
     @GetMapping(value = "/auth/{id}")
-    @RequiresPermissions(Auth.SYS_USER_AUTH)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_USER_AUTH)")
     public AjaxResult getRoleAuth(@PathVariable Long id) {
         return success(organizeService.selectUserRoleMerge(id));
     }
@@ -118,7 +116,7 @@ public class SysUserController extends BaseController<SysUserQuery, SysUserDto, 
      */
     @Override
     @PostMapping("/export")
-    @RequiresPermissions(Auth.SYS_USER_EXPORT)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_USER_EXPORT)")
     @Log(title = "用户管理", businessType = BusinessType.EXPORT)
     public void export(HttpServletResponse response, SysUserQuery user) {
         super.export(response, user);
@@ -129,7 +127,7 @@ public class SysUserController extends BaseController<SysUserQuery, SysUserDto, 
      */
     @Override
     @PostMapping
-    @RequiresPermissions(Auth.SYS_USER_ADD)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_USER_ADD)")
     @Log(title = "用户管理", businessType = BusinessType.INSERT)
     public AjaxResult add(@Validated({V_A.class}) @RequestBody SysUserDto user) {
         return super.add(user);
@@ -140,7 +138,7 @@ public class SysUserController extends BaseController<SysUserQuery, SysUserDto, 
      */
     @Override
     @PutMapping
-    @RequiresPermissions(Auth.SYS_USER_EDIT)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_USER_EDIT)")
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
     public AjaxResult edit(@Validated({V_E.class}) @RequestBody SysUserDto user) {
         return super.edit(user);
@@ -150,7 +148,7 @@ public class SysUserController extends BaseController<SysUserQuery, SysUserDto, 
      * 修改用户关联的角色Id集
      */
     @PutMapping(value = "/auth")
-    @RequiresPermissions(Auth.SYS_USER_AUTH)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_USER_AUTH)")
     public AjaxResult editRoleAuth(@RequestBody SysUserDto user) {
         organizeService.editUserRoleMerge(user.getId(), user.getRoleIds());
         return success();
@@ -161,7 +159,7 @@ public class SysUserController extends BaseController<SysUserQuery, SysUserDto, 
      */
     @Override
     @PutMapping("/status")
-    @RequiresPermissions(value = {Auth.SYS_USER_EDIT, Auth.SYS_USER_ES}, logical = Logical.OR)
+    @PreAuthorize("@ss.hasAnyAuthority(@Auth.SYS_USER_EDIT, @Auth.SYS_USER_ES)")
     @Log(title = "用户管理", businessType = BusinessType.UPDATE_STATUS)
     public AjaxResult editStatus(@RequestBody SysUserDto user) {
         return super.editStatus(user);
@@ -172,7 +170,7 @@ public class SysUserController extends BaseController<SysUserQuery, SysUserDto, 
      */
     @Override
     @DeleteMapping("/batch/{idList}")
-    @RequiresPermissions(Auth.SYS_USER_DEL)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_USER_DEL)")
     @Log(title = "用户管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);
@@ -182,7 +180,7 @@ public class SysUserController extends BaseController<SysUserQuery, SysUserDto, 
      * 重置密码
      */
     @PutMapping("/resetPwd")
-    @RequiresPermissions(Auth.SYS_USER_RESET_PASSWORD)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_USER_RESET_PASSWORD)")
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
     public AjaxResult resetPassword(@RequestBody SysUserDto user) {
         adminValidated(user.getId());
@@ -214,7 +212,7 @@ public class SysUserController extends BaseController<SysUserQuery, SysUserDto, 
             warn(StrUtil.format("{}{}{}失败，手机号码已存在", operate.getInfo(), getNodeName(), user.getNickName()));
         else if (StrUtil.isNotEmpty(user.getEmail()) && baseService.checkEmailUnique(user.getId(), user.getName()))
             warn(StrUtil.format("{}{}{}失败，邮箱账号已存在", operate.getInfo(), getNodeName(), user.getNickName()));
-        switch (operate){
+        switch (operate) {
             case ADD:
                 // 防止修改操作更替密码
                 user.setPassword(SecurityUtils.encryptPassword(user.getPassword()));

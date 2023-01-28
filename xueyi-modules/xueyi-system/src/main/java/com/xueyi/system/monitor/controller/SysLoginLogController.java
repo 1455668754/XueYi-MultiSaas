@@ -5,13 +5,12 @@ import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.InnerAuth;
-import com.xueyi.common.security.annotation.RequiresPermissions;
-import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.system.api.log.domain.dto.SysLoginLogDto;
 import com.xueyi.system.api.log.domain.query.SysLoginLogQuery;
 import com.xueyi.system.monitor.service.ISysLoginLogService;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,7 +45,7 @@ public class SysLoginLogController extends BaseController<SysLoginLogQuery, SysL
      */
     @Override
     @GetMapping("/list")
-    @RequiresPermissions(Auth.SYS_LOGIN_LOG_LIST)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_LOGIN_LOG_LIST)")
     public AjaxResult list(SysLoginLogQuery loginLog) {
         return super.list(loginLog);
     }
@@ -56,7 +55,7 @@ public class SysLoginLogController extends BaseController<SysLoginLogQuery, SysL
      */
     @Override
     @PostMapping("/export")
-    @RequiresPermissions(Auth.SYS_LOGIN_LOG_EXPORT)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_LOGIN_LOG_EXPORT)")
     @Log(title = "访问日志", businessType = BusinessType.EXPORT)
     public void export(HttpServletResponse response, SysLoginLogQuery loginLog) {
         super.export(response, loginLog);
@@ -67,7 +66,7 @@ public class SysLoginLogController extends BaseController<SysLoginLogQuery, SysL
      */
     @Override
     @DeleteMapping("/batch/{idList}")
-    @RequiresPermissions(Auth.SYS_LOGIN_LOG_DEL)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_LOGIN_LOG_DEL)")
     @Log(title = "访问日志", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);
@@ -77,7 +76,7 @@ public class SysLoginLogController extends BaseController<SysLoginLogQuery, SysL
      * 系统访问记录清空
      */
     @DeleteMapping("/clean")
-    @RequiresPermissions(Auth.SYS_LOGIN_LOG_DEL)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_LOGIN_LOG_DEL)")
     @Log(title = "访问日志", businessType = BusinessType.CLEAN)
     public AjaxResult clean() {
         baseService.cleanLoginLog();

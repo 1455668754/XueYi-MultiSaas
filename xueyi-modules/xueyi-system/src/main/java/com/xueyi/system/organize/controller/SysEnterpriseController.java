@@ -47,6 +47,7 @@ public class SysEnterpriseController extends BaseController<SysEnterpriseQuery, 
 //    /**
 //     * logo上传
 //     */
+//    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_MODULE_LIST)")
 //    @RequiresPermissions("system:enterpriseAdmin:edit")
 //    @Log(title = "企业Logo修改", businessType = BusinessType.UPDATE)
 //    @PostMapping("/changeLogo")
@@ -80,6 +81,7 @@ public class SysEnterpriseController extends BaseController<SysEnterpriseQuery, 
 //    /**
 //     * 普通信息修改
 //     */
+//    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_MODULE_LIST)")
 //    @RequiresPermissions("system:enterprise:edit")
 //    @Log(title = "企业资料修改", businessType = BusinessType.UPDATE)
 //    @PutMapping("/updateEnterprise")
@@ -90,6 +92,7 @@ public class SysEnterpriseController extends BaseController<SysEnterpriseQuery, 
 //    /**
 //     * 超管信息修改
 //     */
+//    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_MODULE_LIST)")
 //    @RequiresPermissions("system:enterpriseAdmin:edit")
 //    @Log(title = "企业账号修改", businessType = BusinessType.UPDATE)
 //    @PutMapping("/changeEnterpriseName")

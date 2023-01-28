@@ -11,9 +11,6 @@ import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.InnerAuth;
-import com.xueyi.common.security.annotation.Logical;
-import com.xueyi.common.security.annotation.RequiresPermissions;
-import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.tenant.api.source.domain.dto.TeSourceDto;
 import com.xueyi.tenant.api.tenant.domain.dto.TeStrategyDto;
@@ -23,6 +20,7 @@ import com.xueyi.tenant.tenant.service.ITeStrategyService;
 import com.xueyi.tenant.tenant.service.ITeTenantService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -65,19 +63,19 @@ public class TeStrategyController extends BaseController<TeStrategyQuery, TeStra
      * 刷新源策略管理缓存
      */
     @Override
-    @RequiresPermissions(Auth.TE_STRATEGY_EDIT)
+    @PreAuthorize("@ss.hasAuthority(@Auth.TE_STRATEGY_EDIT)")
     @Log(title = "数据源管理", businessType = BusinessType.REFRESH)
     @GetMapping("/refresh")
     public AjaxResult refreshCache() {
         return super.refreshCache();
     }
-    
+
     /**
      * 查询数据源策略列表
      */
     @Override
     @GetMapping("/list")
-    @RequiresPermissions(Auth.TE_STRATEGY_LIST)
+    @PreAuthorize("@ss.hasAuthority(@Auth.TE_STRATEGY_LIST)")
     public AjaxResult list(TeStrategyQuery strategy) {
         return super.list(strategy);
     }
@@ -87,7 +85,7 @@ public class TeStrategyController extends BaseController<TeStrategyQuery, TeStra
      */
     @Override
     @GetMapping(value = "/{id}")
-    @RequiresPermissions(Auth.TE_STRATEGY_SINGLE)
+    @PreAuthorize("@ss.hasAuthority(@Auth.TE_STRATEGY_SINGLE)")
     public AjaxResult getInfo(@PathVariable Serializable id) {
         return super.getInfo(id);
     }
@@ -97,7 +95,7 @@ public class TeStrategyController extends BaseController<TeStrategyQuery, TeStra
      */
     @Override
     @PostMapping("/export")
-    @RequiresPermissions(Auth.TE_STRATEGY_EXPORT)
+    @PreAuthorize("@ss.hasAuthority(@Auth.TE_STRATEGY_EXPORT)")
     public void export(HttpServletResponse response, TeStrategyQuery strategy) {
         super.export(response, strategy);
     }
@@ -107,7 +105,7 @@ public class TeStrategyController extends BaseController<TeStrategyQuery, TeStra
      */
     @Override
     @PostMapping
-    @RequiresPermissions(Auth.TE_STRATEGY_ADD)
+    @PreAuthorize("@ss.hasAuthority(@Auth.TE_STRATEGY_ADD)")
     @Log(title = "源策略管理", businessType = BusinessType.INSERT)
     public AjaxResult add(@Validated({V_A.class}) @RequestBody TeStrategyDto strategy) {
         return super.add(strategy);
@@ -118,7 +116,7 @@ public class TeStrategyController extends BaseController<TeStrategyQuery, TeStra
      */
     @Override
     @PutMapping
-    @RequiresPermissions(Auth.TE_STRATEGY_EDIT)
+    @PreAuthorize("@ss.hasAuthority(@Auth.TE_STRATEGY_EDIT)")
     @Log(title = "源策略管理", businessType = BusinessType.UPDATE)
     public AjaxResult edit(@Validated({V_E.class}) @RequestBody TeStrategyDto strategy) {
         return super.edit(strategy);
@@ -129,7 +127,7 @@ public class TeStrategyController extends BaseController<TeStrategyQuery, TeStra
      */
     @Override
     @PutMapping("/status")
-    @RequiresPermissions(value = {Auth.TE_STRATEGY_EDIT, Auth.TE_STRATEGY_ES}, logical = Logical.OR)
+    @PreAuthorize("@ss.hasAnyAuthority(@Auth.TE_STRATEGY_EDIT, @Auth.TE_STRATEGY_ES)")
     @Log(title = "源策略管理", businessType = BusinessType.UPDATE_STATUS)
     public AjaxResult editStatus(@RequestBody TeStrategyDto strategy) {
         return super.editStatus(strategy);
@@ -140,7 +138,7 @@ public class TeStrategyController extends BaseController<TeStrategyQuery, TeStra
      */
     @Override
     @DeleteMapping("/batch/{idList}")
-    @RequiresPermissions(Auth.TE_STRATEGY_DEL)
+    @PreAuthorize("@ss.hasAuthority(@Auth.TE_STRATEGY_DEL)")
     @Log(title = "源策略管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);

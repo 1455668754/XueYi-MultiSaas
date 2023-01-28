@@ -10,9 +10,6 @@ import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
-import com.xueyi.common.security.annotation.Logical;
-import com.xueyi.common.security.annotation.RequiresPermissions;
-import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.job.api.domain.dto.SysJobDto;
 import com.xueyi.job.api.domain.query.SysJobQuery;
@@ -21,6 +18,7 @@ import com.xueyi.job.service.ISysJobService;
 import com.xueyi.job.util.ScheduleUtils;
 import jakarta.servlet.http.HttpServletResponse;
 import org.quartz.SchedulerException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,7 +44,7 @@ public class SysJobController extends BaseController<SysJobQuery, SysJobDto, ISy
      */
     @Override
     @GetMapping("/list")
-    @RequiresPermissions(Auth.SCHEDULE_JOB_LIST)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SCHEDULE_JOB_LIST)")
     public AjaxResult list(SysJobQuery job) {
         return super.list(job);
     }
@@ -56,7 +54,7 @@ public class SysJobController extends BaseController<SysJobQuery, SysJobDto, ISy
      */
     @Override
     @GetMapping(value = "/{id}")
-    @RequiresPermissions(Auth.SCHEDULE_JOB_SINGLE)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SCHEDULE_JOB_SINGLE)")
     public AjaxResult getInfo(@PathVariable Serializable id) {
         return super.getInfo(id);
     }
@@ -66,7 +64,7 @@ public class SysJobController extends BaseController<SysJobQuery, SysJobDto, ISy
      */
     @Override
     @PostMapping("/export")
-    @RequiresPermissions(Auth.SCHEDULE_JOB_EXPORT)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SCHEDULE_JOB_EXPORT)")
     public void export(HttpServletResponse response, SysJobQuery job) {
         super.export(response, job);
     }
@@ -76,7 +74,7 @@ public class SysJobController extends BaseController<SysJobQuery, SysJobDto, ISy
      */
     @Override
     @PostMapping
-    @RequiresPermissions(Auth.SCHEDULE_JOB_ADD)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SCHEDULE_JOB_ADD)")
     @Log(title = "调度任务管理", businessType = BusinessType.INSERT)
     public AjaxResult add(@Validated({V_A.class}) @RequestBody SysJobDto job) {
         return super.add(job);
@@ -87,7 +85,7 @@ public class SysJobController extends BaseController<SysJobQuery, SysJobDto, ISy
      */
     @Override
     @PutMapping
-    @RequiresPermissions(Auth.SCHEDULE_JOB_EDIT)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SCHEDULE_JOB_EDIT)")
     @Log(title = "调度任务管理", businessType = BusinessType.UPDATE)
     public AjaxResult edit(@Validated({V_E.class}) @RequestBody SysJobDto job) {
         return super.edit(job);
@@ -98,7 +96,7 @@ public class SysJobController extends BaseController<SysJobQuery, SysJobDto, ISy
      */
     @Override
     @PutMapping("/status")
-    @RequiresPermissions(value = {Auth.SCHEDULE_JOB_EDIT, Auth.SCHEDULE_JOB_ES}, logical = Logical.OR)
+    @PreAuthorize("@ss.hasAnyAuthority(@Auth.SCHEDULE_JOB_EDIT, @Auth.SCHEDULE_JOB_ES)")
     @Log(title = "调度任务管理", businessType = BusinessType.UPDATE_STATUS)
     public AjaxResult editStatus(@RequestBody SysJobDto job) {
         return super.editStatus(job);
@@ -108,7 +106,7 @@ public class SysJobController extends BaseController<SysJobQuery, SysJobDto, ISy
      * 定时任务立即执行一次
      */
     @GetMapping("/run/{id}")
-    @RequiresPermissions(Auth.SCHEDULE_JOB_EDIT)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SCHEDULE_JOB_EDIT)")
     @Log(title = "定时任务 - 执行一次", businessType = BusinessType.UPDATE)
     public AjaxResult run(@PathVariable Long id) throws SchedulerException {
         return baseService.run(id) ? success() : error("任务不存在或已过期！");
@@ -118,7 +116,7 @@ public class SysJobController extends BaseController<SysJobQuery, SysJobDto, ISy
      * 调度任务批量删除
      */
     @DeleteMapping("/batch/{idList}")
-    @RequiresPermissions(Auth.SCHEDULE_JOB_DEL)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SCHEDULE_JOB_DEL)")
     @Log(title = "调度任务管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         if (CollUtil.isEmpty(idList))

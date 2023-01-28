@@ -9,9 +9,6 @@ import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.InnerAuth;
-import com.xueyi.common.security.annotation.Logical;
-import com.xueyi.common.security.annotation.RequiresPermissions;
-import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.web.entity.controller.TreeController;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
 import com.xueyi.system.api.organize.domain.query.SysDeptQuery;
@@ -19,6 +16,7 @@ import com.xueyi.system.organize.service.ISysDeptService;
 import com.xueyi.system.organize.service.ISysOrganizeService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,7 +55,7 @@ public class SysDeptController extends TreeController<SysDeptQuery, SysDeptDto, 
      */
     @Override
     @GetMapping("/list")
-    @RequiresPermissions(Auth.SYS_DEPT_LIST)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_DEPT_LIST)")
     public AjaxResult list(SysDeptQuery dept) {
         return super.list(dept);
     }
@@ -66,7 +64,7 @@ public class SysDeptController extends TreeController<SysDeptQuery, SysDeptDto, 
      * 查询部门列表（排除节点）
      */
     @GetMapping("/list/exclude")
-    @RequiresPermissions(Auth.SYS_DEPT_LIST)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_DEPT_LIST)")
     public AjaxResult listExNodes(SysDeptQuery dept) {
         return super.listExNodes(dept);
     }
@@ -76,7 +74,7 @@ public class SysDeptController extends TreeController<SysDeptQuery, SysDeptDto, 
      */
     @Override
     @GetMapping(value = "/{id}")
-    @RequiresPermissions(Auth.SYS_DEPT_SINGLE)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_DEPT_SINGLE)")
     public AjaxResult getInfo(@PathVariable Serializable id) {
         return super.getInfo(id);
     }
@@ -85,7 +83,7 @@ public class SysDeptController extends TreeController<SysDeptQuery, SysDeptDto, 
      * 查询部门关联的角色Id集
      */
     @GetMapping(value = "/auth/{id}")
-    @RequiresPermissions(Auth.SYS_DEPT_AUTH)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_DEPT_AUTH)")
     public AjaxResult getRoleAuth(@PathVariable Long id) {
         return success(organizeService.selectDeptRoleMerge(id));
     }
@@ -95,7 +93,7 @@ public class SysDeptController extends TreeController<SysDeptQuery, SysDeptDto, 
      */
     @Override
     @PostMapping("/export")
-    @RequiresPermissions(Auth.SYS_DEPT_EXPORT)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_DEPT_EXPORT)")
     @Log(title = "部门管理", businessType = BusinessType.EXPORT)
     public void export(HttpServletResponse response, SysDeptQuery dept) {
         super.export(response, dept);
@@ -106,7 +104,7 @@ public class SysDeptController extends TreeController<SysDeptQuery, SysDeptDto, 
      */
     @Override
     @PostMapping
-    @RequiresPermissions(Auth.SYS_DEPT_ADD)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_DEPT_ADD)")
     @Log(title = "部门管理", businessType = BusinessType.INSERT)
     public AjaxResult add(@Validated({V_A.class}) @RequestBody SysDeptDto dept) {
         return super.add(dept);
@@ -117,7 +115,7 @@ public class SysDeptController extends TreeController<SysDeptQuery, SysDeptDto, 
      */
     @Override
     @PutMapping
-    @RequiresPermissions(Auth.SYS_DEPT_EDIT)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_DEPT_EDIT)")
     @Log(title = "部门管理", businessType = BusinessType.UPDATE)
     public AjaxResult edit(@Validated({V_E.class}) @RequestBody SysDeptDto dept) {
         return super.edit(dept);
@@ -127,7 +125,7 @@ public class SysDeptController extends TreeController<SysDeptQuery, SysDeptDto, 
      * 查询部门关联的角色Id集
      */
     @PutMapping(value = "/auth")
-    @RequiresPermissions(Auth.SYS_DEPT_AUTH)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_DEPT_AUTH)")
     public AjaxResult editRoleAuth(@RequestBody SysDeptDto dept) {
         organizeService.editDeptRoleMerge(dept.getId(), dept.getRoleIds());
         return success();
@@ -138,7 +136,7 @@ public class SysDeptController extends TreeController<SysDeptQuery, SysDeptDto, 
      */
     @Override
     @PutMapping("/status")
-    @RequiresPermissions(value = {Auth.SYS_DEPT_EDIT, Auth.SYS_DEPT_ES}, logical = Logical.OR)
+    @PreAuthorize("@ss.hasAnyAuthority(@Auth.SYS_DEPT_EDIT, @Auth.SYS_DEPT_ES)")
     @Log(title = "部门管理", businessType = BusinessType.UPDATE_STATUS)
     public AjaxResult editStatus(@RequestBody SysDeptDto dept) {
         return super.editStatus(dept);
@@ -149,7 +147,7 @@ public class SysDeptController extends TreeController<SysDeptQuery, SysDeptDto, 
      */
     @Override
     @DeleteMapping("/batch/{idList}")
-    @RequiresPermissions(Auth.SYS_DEPT_DEL)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_DEPT_DEL)")
     @Log(title = "部门管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);

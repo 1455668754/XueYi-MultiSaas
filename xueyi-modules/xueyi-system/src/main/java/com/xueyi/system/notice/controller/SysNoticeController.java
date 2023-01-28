@@ -8,14 +8,12 @@ import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
-import com.xueyi.common.security.annotation.Logical;
-import com.xueyi.common.security.annotation.RequiresPermissions;
-import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.system.notice.domain.dto.SysNoticeDto;
 import com.xueyi.system.notice.domain.query.SysNoticeQuery;
 import com.xueyi.system.notice.service.ISysNoticeService;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,7 +40,7 @@ public class SysNoticeController extends BaseController<SysNoticeQuery, SysNotic
      */
     @Override
     @GetMapping("/list")
-    @RequiresPermissions(Auth.SYS_NOTICE_LIST)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_NOTICE_LIST)")
     public AjaxResult list(SysNoticeQuery notice) {
         return super.list(notice);
     }
@@ -52,7 +50,7 @@ public class SysNoticeController extends BaseController<SysNoticeQuery, SysNotic
      */
     @Override
     @GetMapping(value = "/{id}")
-    @RequiresPermissions(Auth.SYS_NOTICE_SINGLE)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_NOTICE_SINGLE)")
     public AjaxResult getInfo(@PathVariable Serializable id) {
         return super.getInfo(id);
     }
@@ -62,7 +60,7 @@ public class SysNoticeController extends BaseController<SysNoticeQuery, SysNotic
      */
     @Override
     @PostMapping("/export")
-    @RequiresPermissions(Auth.SYS_NOTICE_EXPORT)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_NOTICE_EXPORT)")
     @Log(title = "通知公告管理", businessType = BusinessType.EXPORT)
     public void export(HttpServletResponse response, SysNoticeQuery notice) {
         super.export(response, notice);
@@ -73,7 +71,7 @@ public class SysNoticeController extends BaseController<SysNoticeQuery, SysNotic
      */
     @Override
     @PostMapping
-    @RequiresPermissions(Auth.SYS_NOTICE_ADD)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_NOTICE_ADD)")
     @Log(title = "通知公告管理", businessType = BusinessType.INSERT)
     public AjaxResult add(@Validated({V_A.class}) @RequestBody SysNoticeDto notice) {
         return super.add(notice);
@@ -84,7 +82,7 @@ public class SysNoticeController extends BaseController<SysNoticeQuery, SysNotic
      */
     @Override
     @PutMapping
-    @RequiresPermissions(Auth.SYS_NOTICE_EDIT)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_NOTICE_EDIT)")
     @Log(title = "通知公告管理", businessType = BusinessType.UPDATE)
     public AjaxResult edit(@Validated({V_E.class}) @RequestBody SysNoticeDto notice) {
         return super.edit(notice);
@@ -95,7 +93,7 @@ public class SysNoticeController extends BaseController<SysNoticeQuery, SysNotic
      */
     @Override
     @PutMapping("/status")
-    @RequiresPermissions(value = {Auth.SYS_NOTICE_EDIT, Auth.SYS_NOTICE_ES}, logical = Logical.OR)
+    @PreAuthorize("@ss.hasAnyAuthority(@Auth.SYS_NOTICE_EDIT, @Auth.SYS_NOTICE_ES)")
     @Log(title = "通知公告管理", businessType = BusinessType.UPDATE_STATUS)
     public AjaxResult editStatus(@RequestBody SysNoticeDto notice) {
         return super.editStatus(notice);
@@ -106,7 +104,7 @@ public class SysNoticeController extends BaseController<SysNoticeQuery, SysNotic
      */
     @Override
     @DeleteMapping("/batch/{idList}")
-    @RequiresPermissions(Auth.SYS_NOTICE_DEL)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_NOTICE_DEL)")
     @Log(title = "通知公告管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);

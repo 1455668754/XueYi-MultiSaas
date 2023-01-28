@@ -9,6 +9,9 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
@@ -20,6 +23,7 @@ import java.lang.reflect.Method;
  */
 @Aspect
 @Component
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class PreAuthorizeAspect {
     /**
      * 构建
@@ -79,6 +83,7 @@ public class PreAuthorizeAspect {
         }
 
         // 校验 @RequiresPermissions 注解
+        PreAuthorize preAuthorize = method.getAnnotation(PreAuthorize.class);
         RequiresPermissions requiresPermissions = method.getAnnotation(RequiresPermissions.class);
         if (requiresPermissions != null) {
             AuthUtil.checkPerm(requiresPermissions);

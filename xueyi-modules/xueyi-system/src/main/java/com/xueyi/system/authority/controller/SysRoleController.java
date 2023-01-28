@@ -8,9 +8,6 @@ import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
-import com.xueyi.common.security.annotation.Logical;
-import com.xueyi.common.security.annotation.RequiresPermissions;
-import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
 import com.xueyi.system.api.authority.domain.query.SysRoleQuery;
@@ -20,6 +17,7 @@ import com.xueyi.system.authority.service.ISysRoleService;
 import com.xueyi.system.organize.service.ISysOrganizeService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,7 +50,7 @@ public class SysRoleController extends BaseController<SysRoleQuery, SysRoleDto, 
      */
     @Override
     @GetMapping("/list")
-    @RequiresPermissions(Auth.SYS_ROLE_LIST)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_ROLE_LIST)")
     public AjaxResult list(SysRoleQuery role) {
         return super.list(role);
     }
@@ -62,7 +60,7 @@ public class SysRoleController extends BaseController<SysRoleQuery, SysRoleDto, 
      */
     @Override
     @GetMapping(value = "/{id}")
-    @RequiresPermissions(Auth.SYS_ROLE_SINGLE)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_ROLE_SINGLE)")
     public AjaxResult getInfo(@PathVariable Serializable id) {
         return super.getInfo(id);
     }
@@ -71,7 +69,7 @@ public class SysRoleController extends BaseController<SysRoleQuery, SysRoleDto, 
      * 获取角色功能权限 | 叶子节点
      */
     @GetMapping("/auth/{id}")
-    @RequiresPermissions(Auth.SYS_ROLE_AUTH)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_ROLE_AUTH)")
     public AjaxResult getRoleAuth(@PathVariable Long id) {
         List<SysAuthTree> leafNodes = TreeUtil.getLeafNodes(TreeUtil.buildTree(authService.selectRoleAuth(id)));
         return success(leafNodes.stream().map(SysAuthTree::getId).toArray(Long[]::new));
@@ -81,7 +79,7 @@ public class SysRoleController extends BaseController<SysRoleQuery, SysRoleDto, 
      * 获取角色组织权限
      */
     @GetMapping("/organize/{id}")
-    @RequiresPermissions(Auth.SYS_ROLE_AUTH)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_ROLE_AUTH)")
     public AjaxResult getRoleOrganize(@PathVariable Long id) {
         return success(organizeService.selectRoleOrganizeMerge(id));
     }
@@ -91,7 +89,7 @@ public class SysRoleController extends BaseController<SysRoleQuery, SysRoleDto, 
      */
     @Override
     @PostMapping("/export")
-    @RequiresPermissions(Auth.SYS_ROLE_EXPORT)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_ROLE_EXPORT)")
     @Log(title = "角色管理", businessType = BusinessType.EXPORT)
     public void export(HttpServletResponse response, SysRoleQuery role) {
         super.export(response, role);
@@ -102,7 +100,7 @@ public class SysRoleController extends BaseController<SysRoleQuery, SysRoleDto, 
      */
     @Override
     @PostMapping
-    @RequiresPermissions(Auth.SYS_ROLE_ADD)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_ROLE_ADD)")
     @Log(title = "角色管理", businessType = BusinessType.INSERT)
     public AjaxResult add(@Validated({V_A.class}) @RequestBody SysRoleDto role) {
         return super.add(role);
@@ -113,7 +111,7 @@ public class SysRoleController extends BaseController<SysRoleQuery, SysRoleDto, 
      */
     @Override
     @PutMapping
-    @RequiresPermissions(Auth.SYS_ROLE_EDIT)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_ROLE_EDIT)")
     @Log(title = "角色管理", businessType = BusinessType.UPDATE)
     public AjaxResult edit(@Validated({V_E.class}) @RequestBody SysRoleDto role) {
         return super.edit(role);
@@ -123,7 +121,7 @@ public class SysRoleController extends BaseController<SysRoleQuery, SysRoleDto, 
      * 角色修改功能权限
      */
     @PutMapping("/auth")
-    @RequiresPermissions(Auth.SYS_ROLE_AUTH)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_ROLE_AUTH)")
     @Log(title = "角色管理", businessType = BusinessType.AUTH)
     public AjaxResult editAuth(@RequestBody SysRoleDto role) {
         authService.editRoleAuth(role.getId(), role.getAuthIds());
@@ -134,7 +132,7 @@ public class SysRoleController extends BaseController<SysRoleQuery, SysRoleDto, 
      * 角色修改组织权限
      */
     @PutMapping("/organize")
-    @RequiresPermissions(Auth.SYS_ROLE_AUTH)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_ROLE_AUTH)")
     @Log(title = "角色管理", businessType = BusinessType.AUTH)
     public AjaxResult editOrganize(@RequestBody SysRoleDto role) {
         return success(baseService.updateDataScope(role));
@@ -145,7 +143,7 @@ public class SysRoleController extends BaseController<SysRoleQuery, SysRoleDto, 
      */
     @Override
     @PutMapping("/status")
-    @RequiresPermissions(value = {Auth.SYS_ROLE_EDIT, Auth.SYS_ROLE_ES}, logical = Logical.OR)
+    @PreAuthorize("@ss.hasAnyAuthority(@Auth.SYS_ROLE_EDIT, @Auth.SYS_ROLE_ES)")
     @Log(title = "角色管理", businessType = BusinessType.UPDATE_STATUS)
     public AjaxResult editStatus(@RequestBody SysRoleDto role) {
         return super.editStatus(role);
@@ -156,7 +154,7 @@ public class SysRoleController extends BaseController<SysRoleQuery, SysRoleDto, 
      */
     @Override
     @DeleteMapping("/batch/{idList}")
-    @RequiresPermissions(Auth.SYS_ROLE_DEL)
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_ROLE_DEL)")
     @Log(title = "角色管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);
