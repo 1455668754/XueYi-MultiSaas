@@ -9,6 +9,7 @@ import com.xueyi.common.core.constant.basic.TenantConstants;
 import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.exception.UtilException;
 import com.xueyi.common.core.utils.core.CollUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.SpringUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.tenant.api.source.domain.dto.TeSourceDto;
@@ -35,11 +36,13 @@ public class DSUtil {
      * @param sourceName 数据源编码
      */
     public static String loadDs(String sourceName) {
-        if(StrUtil.isEmpty(sourceName))
+        if (StrUtil.isEmpty(sourceName))
             throw new UtilException("数据源不存在！");
-        else if(checkHasDs(sourceName))
+        else if (checkHasDs(sourceName))
             return sourceName;
         TeSourceDto source = SourceUtil.getTeSourceCache(sourceName);
+        if (ObjectUtil.isNull(source))
+            throw new UtilException("数据源缓存不存在！");
         addDs(source);
         return sourceName;
     }
