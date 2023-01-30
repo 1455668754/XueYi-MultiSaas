@@ -1,5 +1,6 @@
 package com.xueyi.gateway.filter;
 
+import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.basic.TenantConstants.AccountType;
 import com.xueyi.common.core.utils.JwtUtil;
@@ -36,11 +37,12 @@ public class AuthFilter implements WebFilter {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
+        ServerHttpRequest.Builder mutate = request.mutate();
         String url = request.getURI().getPath();
         if (StrUtil.matches(url, ignoreWhite.getWhites())) {
+            ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.ALLOW_LIST.getCode(), BaseConstants.Whether.YES.getCode());
             return chain.filter(exchange);
         }
-        ServerHttpRequest.Builder mutate = request.mutate();
         String token = ServletUtil.getToken(request);
         if (StrUtil.isEmpty(token)) {
             return ServletUtil.unauthorizedResponse(exchange, "令牌不能为空");
@@ -60,35 +62,40 @@ public class AuthFilter implements WebFilter {
         if (!hasLogin) {
             return ServletUtil.unauthorizedResponse(exchange, "登录状态已过期");
         }
-        String enterpriseId = JwtUtil.getEnterpriseId(claims);
-        String enterpriseName = JwtUtil.getEnterpriseName(claims);
-        String isLessor = JwtUtil.getIsLessor(claims);
-        String userId = JwtUtil.getUserId(claims);
-        String userName = JwtUtil.getUserName(claims);
-        String userType = JwtUtil.getUserType(claims);
-        String sourceName = JwtUtil.getSourceName(claims);
 
         switch (accountType) {
             case ADMIN, MEMBER -> {
+                String enterpriseId = JwtUtil.getEnterpriseId(claims);
+                String enterpriseName = JwtUtil.getEnterpriseName(claims);
+                String isLessor = JwtUtil.getIsLessor(claims);
+                String userId = JwtUtil.getUserId(claims);
+                String userName = JwtUtil.getUserName(claims);
+                String userType = JwtUtil.getUserType(claims);
+                String sourceName = JwtUtil.getSourceName(claims);
+
                 if (StrUtil.hasBlank(enterpriseId, enterpriseName, isLessor, userId, userName, userType, sourceName)) {
                     return ServletUtil.unauthorizedResponse(exchange, "令牌验证失败");
                 }
+
+                // 设置用户信息到请求
+                ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.ENTERPRISE_ID.getCode(), enterpriseId);
+                ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.ENTERPRISE_NAME.getCode(), enterpriseName);
+                ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.IS_LESSOR.getCode(), isLessor);
+                ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.USER_ID.getCode(), userId);
+                ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.USER_NAME.getCode(), userName);
+                ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.USER_TYPE.getCode(), userType);
+                ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.SOURCE_NAME.getCode(), sourceName);
+                ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.USER_KEY.getCode(), userKey);
+                ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode(), accountTypeKey);
+            }
+            default -> {
+                return ServletUtil.unauthorizedResponse(exchange, "令牌验证失败");
             }
         }
 
-        // 设置用户信息到请求
-        ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.ENTERPRISE_ID.getCode(), enterpriseId);
-        ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.ENTERPRISE_NAME.getCode(), enterpriseName);
-        ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.IS_LESSOR.getCode(), isLessor);
-        ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.USER_ID.getCode(), userId);
-        ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.USER_NAME.getCode(), userName);
-        ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.USER_TYPE.getCode(), userType);
-        ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.SOURCE_NAME.getCode(), sourceName);
-        ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.USER_KEY.getCode(), userKey);
-        ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode(), accountTypeKey);
-
         // 内部请求来源参数清除
-        ServletUtil.removeHeader(mutate, SecurityConstants.FROM_SOURCE);
+        ServletUtil.removeHeader(mutate, SecurityConstants.BaseSecurity.ALLOW_LIST.getCode());
+        ServletUtil.removeHeader(mutate, SecurityConstants.BaseSecurity.FROM_SOURCE.getCode());
         return chain.filter(exchange);
     }
 

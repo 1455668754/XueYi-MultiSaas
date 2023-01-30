@@ -1,7 +1,6 @@
 package com.xueyi.auth;
 
 import com.xueyi.common.security.annotation.EnableRyFeignClients;
-import com.xueyi.common.security.config.SecurityConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -12,7 +11,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
  * @author xueyi
  */
 @EnableRyFeignClients
-@SpringBootApplication(exclude = {SecurityConfig.class, DataSourceAutoConfiguration.class})
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 public class XueYiAuthApplication {
     public static void main(String[] args) {
         SpringApplication.run(XueYiAuthApplication.class, args);

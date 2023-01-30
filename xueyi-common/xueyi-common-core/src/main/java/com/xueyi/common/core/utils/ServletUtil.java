@@ -48,10 +48,7 @@ public class ServletUtil {
      * 获取缓存key
      */
     public static String getTokenKey(String token, String accountType) {
-        return switch (TenantConstants.AccountType.getByCode(accountType)) {
-            case ADMIN -> CacheConstants.LoginTokenType.ADMIN.getCode() + token;
-            case MEMBER -> CacheConstants.LoginTokenType.MEMBER.getCode() + token;
-        };
+        return getTokenKey(token, TenantConstants.AccountType.getByCode(accountType));
     }
 
     /**
@@ -235,8 +232,8 @@ public class ServletUtil {
      */
     public static void renderString(HttpServletResponse response, String string) {
         try {
-            response.setStatus(200);
-            response.setContentType("application/json");
+            response.setStatus(HttpConstants.Status.SUCCESS.getCode());
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             response.setCharacterEncoding("utf-8");
             response.getWriter().print(string);
         } catch (IOException e) {
@@ -251,7 +248,7 @@ public class ServletUtil {
      */
     public static boolean isAjaxRequest(HttpServletRequest request) {
         String accept = request.getHeader("accept");
-        if (accept != null && accept.contains("application/json")) {
+        if (accept != null && accept.contains(MediaType.APPLICATION_JSON_VALUE)) {
             return true;
         }
 

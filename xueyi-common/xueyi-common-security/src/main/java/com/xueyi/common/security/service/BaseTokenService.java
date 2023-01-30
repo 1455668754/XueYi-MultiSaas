@@ -3,6 +3,7 @@ package com.xueyi.common.security.service;
 import com.xueyi.common.core.constant.basic.CacheConstants;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.basic.TenantConstants;
+import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.JwtUtil;
 import com.xueyi.common.core.utils.ServletUtil;
 import com.xueyi.common.core.utils.core.IdUtil;
@@ -27,7 +28,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author xueyi
  */
-public class BaseTokenService<User, LoginUser extends BaseLoginUser<User>> {
+public abstract class BaseTokenService<User, LoginUser extends BaseLoginUser<User>> {
 
     @Autowired
     protected RedisService redisService;
@@ -36,9 +37,7 @@ public class BaseTokenService<User, LoginUser extends BaseLoginUser<User>> {
 
     protected static final long MILLIS_MINUTE = 60 * MILLIS_SECOND;
 
-    protected String getAccessToken() {
-        return CacheConstants.LoginTokenType.ADMIN.getCode();
-    }
+    protected abstract String getAccessToken();
 
     protected long getTacitExpireTime() {
         return CacheConstants.EXPIRATION;
@@ -318,6 +317,8 @@ public class BaseTokenService<User, LoginUser extends BaseLoginUser<User>> {
      */
     public void verifyToken(String token) {
         long expireTime = getExpireTime(token);
+        if (ObjectUtil.isNull(expireTime))
+            throw new ServiceException("令牌已失效！");
         long currentTime = System.currentTimeMillis();
         if (expireTime - currentTime <= getMillisMinuteTen()) {
             refreshToken(token);

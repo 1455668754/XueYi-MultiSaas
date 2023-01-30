@@ -4,7 +4,6 @@ package com.xueyi.gateway.config;
 import com.xueyi.common.redis.service.RedisService;
 import com.xueyi.gateway.config.properties.IgnoreWhiteProperties;
 import com.xueyi.gateway.filter.AuthFilter;
-import com.xueyi.gateway.handler.SecurityContextHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,11 +32,9 @@ public class SecurityConfig {
         http.authorizeExchange((authorize) -> authorize.anyExchange().permitAll())
                 // 网关鉴权
                 .addFilterAfter(new AuthFilter(redisService, ignoreWhite), SecurityWebFiltersOrder.FIRST)
-                .securityContextRepository(new SecurityContextHandler(redisService, ignoreWhite))
                 .cors().disable()
                 // CSRF禁用，因为不使用session
                 .csrf().disable();
         return http.build();
     }
 }
-

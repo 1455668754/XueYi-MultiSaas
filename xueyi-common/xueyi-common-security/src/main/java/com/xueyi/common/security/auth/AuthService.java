@@ -6,7 +6,6 @@ import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.system.api.model.LoginUser;
-import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
@@ -17,7 +16,6 @@ import static com.xueyi.common.core.constant.basic.SecurityConstants.PERMISSION_
  *
  * @author xueyi
  */
-@Service("ss")
 public class AuthService {
 
     /**

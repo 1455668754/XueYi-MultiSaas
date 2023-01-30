@@ -1,5 +1,6 @@
 package com.xueyi.auth.service.impl;
 
+import com.xueyi.auth.service.ISysLogService;
 import com.xueyi.auth.service.IUserDetailsService;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.Constants;
@@ -23,7 +24,7 @@ import org.springframework.stereotype.Component;
 public class UserDetailsServiceImpl implements IUserDetailsService {
 
     @Autowired
-    private SysLogService logService;
+    private ISysLogService logService;
 
     @Autowired
     private RemoteLoginService remoteLoginService;

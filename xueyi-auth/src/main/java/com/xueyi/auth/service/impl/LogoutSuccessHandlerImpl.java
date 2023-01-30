@@ -1,6 +1,7 @@
 package com.xueyi.auth.service.impl;
 
 import com.alibaba.fastjson2.JSON;
+import com.xueyi.auth.service.ISysLogService;
 import com.xueyi.common.core.constant.basic.Constants;
 import com.xueyi.common.core.constant.basic.TenantConstants;
 import com.xueyi.common.core.utils.JwtUtil;
@@ -34,7 +35,7 @@ public class LogoutSuccessHandlerImpl implements LogoutSuccessHandler {
     private TokenService tokenService;
 
     @Autowired
-    private SysLogService logService;
+    private ISysLogService logService;
 
     /**
      * 退出处理

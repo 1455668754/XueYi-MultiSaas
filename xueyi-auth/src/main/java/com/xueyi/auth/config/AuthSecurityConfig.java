@@ -3,14 +3,15 @@ package com.xueyi.auth.config;
 import com.xueyi.auth.provider.XueAuthenticationProvider;
 import com.xueyi.auth.service.IUserDetailsService;
 import com.xueyi.auth.service.impl.LogoutSuccessHandlerImpl;
+import com.xueyi.common.security.config.SecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
@@ -20,7 +21,8 @@ import org.springframework.security.web.SecurityFilterChain;
  */
 @Configuration
 @EnableWebSecurity
-public class AuthSecurityConfig {
+@EnableMethodSecurity
+public class AuthSecurityConfig extends SecurityConfig {
 
     @Autowired
     private IUserDetailsService userDetailsService;
@@ -41,10 +43,10 @@ public class AuthSecurityConfig {
     }
 
     @Bean
+    @Override
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll())
-                .logout().logoutUrl("/logout").logoutSuccessHandler(logoutSuccessHandler)
-                .and().csrf(AbstractHttpConfigurer::disable)
-                .build();
+        // 退出登录逻辑
+        http.logout().logoutUrl("/logout").logoutSuccessHandler(logoutSuccessHandler);
+        return super.filterChain(http);
     }
 }

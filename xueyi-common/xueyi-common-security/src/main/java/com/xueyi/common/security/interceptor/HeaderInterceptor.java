@@ -1,13 +1,8 @@
 package com.xueyi.common.security.interceptor;
 
 import com.xueyi.common.core.constant.basic.SecurityConstants;
-import com.xueyi.common.core.constant.basic.TenantConstants;
 import com.xueyi.common.core.context.SecurityContextHolder;
 import com.xueyi.common.core.utils.ServletUtil;
-import com.xueyi.common.core.utils.core.ObjectUtil;
-import com.xueyi.common.core.utils.core.StrUtil;
-import com.xueyi.common.security.auth.AuthUtil;
-import com.xueyi.common.security.utils.SecurityUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.method.HandlerMethod;
@@ -23,28 +18,17 @@ public class HeaderInterceptor implements AsyncHandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        if (!(handler instanceof HandlerMethod)) {
-            return true;
-        }
-
-        SecurityContextHolder.setEnterpriseId(ServletUtil.getHeader(request, SecurityConstants.BaseSecurity.ENTERPRISE_ID.getCode()));
-        SecurityContextHolder.setEnterpriseName(ServletUtil.getHeader(request, SecurityConstants.BaseSecurity.ENTERPRISE_NAME.getCode()));
-        SecurityContextHolder.setIsLessor(ServletUtil.getHeader(request, SecurityConstants.BaseSecurity.IS_LESSOR.getCode()));
-        SecurityContextHolder.setUserId(ServletUtil.getHeader(request, SecurityConstants.BaseSecurity.USER_ID.getCode()));
-        SecurityContextHolder.setUserName(ServletUtil.getHeader(request, SecurityConstants.BaseSecurity.USER_NAME.getCode()));
-        SecurityContextHolder.setNickName(ServletUtil.getHeader(request, SecurityConstants.BaseSecurity.NICK_NAME.getCode()));
-        SecurityContextHolder.setUserType(ServletUtil.getHeader(request, SecurityConstants.BaseSecurity.USER_TYPE.getCode()));
-        SecurityContextHolder.setSourceName(ServletUtil.getHeader(request, SecurityConstants.BaseSecurity.SOURCE_NAME.getCode()));
-        SecurityContextHolder.setUserKey(ServletUtil.getHeader(request, SecurityConstants.BaseSecurity.USER_KEY.getCode()));
-        SecurityContextHolder.setAccountType(ServletUtil.getHeader(request, SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode()));
-
-        String token = SecurityUtils.getToken();
-
-        if (StrUtil.isNotEmpty(token)) {
-            TenantConstants.AccountType accountType = TenantConstants.AccountType.getByCode(SecurityUtils.getAccountType());
-            if(ObjectUtil.isNotNull(accountType)) {
-                AuthUtil.verifyLoginUserExpire(token, accountType);
-            }
+        if (handler instanceof HandlerMethod) {
+            SecurityContextHolder.setEnterpriseId(ServletUtil.getHeader(request, SecurityConstants.BaseSecurity.ENTERPRISE_ID.getCode()));
+            SecurityContextHolder.setEnterpriseName(ServletUtil.getHeader(request, SecurityConstants.BaseSecurity.ENTERPRISE_NAME.getCode()));
+            SecurityContextHolder.setIsLessor(ServletUtil.getHeader(request, SecurityConstants.BaseSecurity.IS_LESSOR.getCode()));
+            SecurityContextHolder.setUserId(ServletUtil.getHeader(request, SecurityConstants.BaseSecurity.USER_ID.getCode()));
+            SecurityContextHolder.setUserName(ServletUtil.getHeader(request, SecurityConstants.BaseSecurity.USER_NAME.getCode()));
+            SecurityContextHolder.setNickName(ServletUtil.getHeader(request, SecurityConstants.BaseSecurity.NICK_NAME.getCode()));
+            SecurityContextHolder.setUserType(ServletUtil.getHeader(request, SecurityConstants.BaseSecurity.USER_TYPE.getCode()));
+            SecurityContextHolder.setSourceName(ServletUtil.getHeader(request, SecurityConstants.BaseSecurity.SOURCE_NAME.getCode()));
+            SecurityContextHolder.setUserKey(ServletUtil.getHeader(request, SecurityConstants.BaseSecurity.USER_KEY.getCode()));
+            SecurityContextHolder.setAccountType(ServletUtil.getHeader(request, SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode()));
         }
         return true;
     }

@@ -2,7 +2,7 @@ package com.xueyi.auth.controller;
 
 import com.xueyi.auth.form.LoginBody;
 import com.xueyi.auth.form.RegisterBody;
-import com.xueyi.auth.service.impl.SysLoginService;
+import com.xueyi.auth.service.ISysLoginService;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.security.service.TokenService;
 import com.xueyi.system.api.model.LoginUser;
@@ -24,7 +24,7 @@ public class TokenController {
     private TokenService tokenService;
 
     @Autowired
-    private SysLoginService sysLoginService;
+    private ISysLoginService sysLoginService;
 
     @PostMapping("login")
     public AjaxResult login(@RequestBody LoginBody form) {

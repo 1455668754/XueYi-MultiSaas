@@ -1,11 +1,10 @@
-package com.xueyi.gateway.handler;
+package com.xueyi.common.security.handler;
 
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.utils.ServletUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.redis.service.RedisService;
-import com.xueyi.gateway.config.properties.IgnoreWhiteProperties;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
@@ -23,11 +22,8 @@ public class SecurityContextHandler implements ServerSecurityContextRepository {
 
     private final RedisService redisService;
 
-    private final IgnoreWhiteProperties ignoreWhite;
-
-    public SecurityContextHandler(RedisService redisService, IgnoreWhiteProperties ignoreWhite) {
+    public SecurityContextHandler(RedisService redisService) {
         this.redisService = redisService;
-        this.ignoreWhite = ignoreWhite;
     }
 
     @Override
@@ -42,15 +38,12 @@ public class SecurityContextHandler implements ServerSecurityContextRepository {
         String userKey = request.getHeaders().getFirst(SecurityConstants.BaseSecurity.USER_KEY.getCode());
         userKey = StrUtil.isNotEmpty(userKey) ? ServletUtil.urlDecode(userKey) : userKey;
         String accountType = request.getHeaders().getFirst(SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode());
-        if (StrUtil.hasEmpty(userKey, accountType) && StrUtil.matches(url, ignoreWhite.getWhites())) {
-            return Mono.fromCallable(() -> new UsernamePasswordAuthenticationToken(new Object(), null)).map(SecurityContextImpl::new);
-        } else {
+        if (StrUtil.isAllNotEmpty(userKey, accountType)) {
             Object loginUser = redisService.getCacheMapValue(ServletUtil.getTokenKey(userKey, accountType), SecurityConstants.BaseSecurity.LOGIN_USER.getCode());
             if (ObjectUtil.isNotNull(loginUser)) {
                 return Mono.fromCallable(() -> new UsernamePasswordAuthenticationToken(loginUser, null)).map(SecurityContextImpl::new);
-            } else {
-                return Mono.empty();
             }
         }
+        return Mono.fromCallable(() -> new UsernamePasswordAuthenticationToken(new Object(), null)).map(SecurityContextImpl::new);
     }
 }

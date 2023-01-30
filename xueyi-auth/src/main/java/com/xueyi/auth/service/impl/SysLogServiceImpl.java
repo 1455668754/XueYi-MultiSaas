@@ -1,5 +1,6 @@
 package com.xueyi.auth.service.impl;
 
+import com.xueyi.auth.service.ISysLogService;
 import com.xueyi.common.core.constant.basic.Constants;
 import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
@@ -10,15 +11,15 @@ import com.xueyi.common.core.utils.ip.IpUtil;
 import com.xueyi.system.api.log.domain.dto.SysLoginLogDto;
 import com.xueyi.system.api.log.feign.RemoteLogService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  * 日志记录 服务层处理
  *
  * @author xueyi
  */
-@Component
-public class SysLogService {
+@Service
+public class SysLogServiceImpl implements ISysLogService {
 
     @Autowired
     private RemoteLogService remoteLogService;
@@ -31,6 +32,7 @@ public class SysLogService {
      * @param status         状态
      * @param message        消息内容
      */
+    @Override
     public void recordLoginInfo(String enterpriseName, String userName, String status, String message) {
         recordLoginInfo(TenantConstants.Source.SLAVE.getCode(), SecurityConstants.EMPTY_TENANT_ID, enterpriseName, SecurityConstants.EMPTY_USER_ID, userName, StrUtil.EMPTY, status, message);
     }
@@ -45,6 +47,7 @@ public class SysLogService {
      * @param status         状态
      * @param message        消息内容
      */
+    @Override
     public void recordLoginInfo(String sourceName, Long enterpriseId, String enterpriseName, String userName, String status, String message) {
         recordLoginInfo(sourceName, enterpriseId, enterpriseName, SecurityConstants.EMPTY_USER_ID, userName, StrUtil.EMPTY, status, message);
     }
@@ -60,6 +63,7 @@ public class SysLogService {
      * @param status         状态
      * @param message        消息内容
      */
+    @Override
     public void recordLoginInfo(String sourceName, Long enterpriseId, String enterpriseName, Long userId, String userName, String userNick, String status, String message) {
         SysLoginLogDto loginInfo = new SysLoginLogDto();
         loginInfo.setEnterpriseId(enterpriseId);

@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class InnerAuthAspect implements Ordered {
+
     @Around("@annotation(innerAuth)")
     public Object innerAround(ProceedingJoinPoint point, InnerAuth innerAuth) throws Throwable {
         String source = ServletUtil.getRequest().getHeader(SecurityConstants.FROM_SOURCE);
@@ -27,14 +28,14 @@ public class InnerAuthAspect implements Ordered {
             throw new InnerAuthException("没有内部访问权限，不允许访问");
         }
 
-        String enterpriseId = ServletUtil.getRequest()
-                .getHeader(SecurityConstants.BaseSecurity.ENTERPRISE_ID.getCode());
-        String userId = ServletUtil.getRequest().getHeader(SecurityConstants.BaseSecurity.USER_ID.getCode());
-        String sourceName = ServletUtil.getRequest().getHeader(SecurityConstants.BaseSecurity.SOURCE_NAME.getCode());
-        String accountType = ServletUtil.getRequest().getHeader(SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode());
         // 用户信息验证
-        if (innerAuth.isUser() && (StrUtil.hasBlank(enterpriseId, userId, sourceName, accountType))) {
-            throw new InnerAuthException("没有设置用户信息，不允许访问");
+        if (innerAuth.isUser()) {
+            String enterpriseId = ServletUtil.getRequest().getHeader(SecurityConstants.BaseSecurity.ENTERPRISE_ID.getCode());
+            String userId = ServletUtil.getRequest().getHeader(SecurityConstants.BaseSecurity.USER_ID.getCode());
+            String sourceName = ServletUtil.getRequest().getHeader(SecurityConstants.BaseSecurity.SOURCE_NAME.getCode());
+            String accountType = ServletUtil.getRequest().getHeader(SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode());
+            if ((StrUtil.hasBlank(enterpriseId, userId, sourceName, accountType)))
+                throw new InnerAuthException("没有设置用户信息，不允许访问");
         }
         return point.proceed();
     }

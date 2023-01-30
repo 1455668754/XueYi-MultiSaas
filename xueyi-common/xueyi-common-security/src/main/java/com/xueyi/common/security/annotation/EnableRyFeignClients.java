@@ -1,6 +1,8 @@
 package com.xueyi.common.security.annotation;
 
+import com.xueyi.common.security.feign.FeignAutoConfiguration;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;
 
@@ -10,10 +12,12 @@ import java.lang.annotation.*;
  *
  * @author xueyi
  */
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
+@Inherited
 @Documented
 @EnableFeignClients
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Import({FeignAutoConfiguration.class})
 public @interface EnableRyFeignClients {
 
     String[] value() default {};

@@ -1,6 +1,8 @@
 package com.xueyi.auth.service.impl;
 
 import com.xueyi.auth.form.RegisterBody;
+import com.xueyi.auth.service.ISysLogService;
+import com.xueyi.auth.service.ISysLoginService;
 import com.xueyi.common.core.constant.basic.Constants;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.system.OrganizeConstants;
@@ -19,15 +21,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 登录校验方法
+ * 登录校验 服务层处理
  *
  * @author xueyi
  */
 @Component
-public class SysLoginService {
+public class SysLoginServiceImpl implements ISysLoginService {
 
     @Autowired
-    private SysLogService logService;
+    private ISysLogService logService;
 
     @Autowired
     private RemoteTenantService remoteTenantService;
@@ -37,7 +39,12 @@ public class SysLoginService {
 
     /**
      * 登录
+     *
+     * @param enterpriseName 企业名称
+     * @param userName       用户名
+     * @param password       密码
      */
+    @Override
     public LoginUser login(String enterpriseName, String userName, String password) {
         // 企业账号||员工账号||密码为空 错误
         if (StrUtil.hasBlank(enterpriseName, userName, password)) {
@@ -77,6 +84,7 @@ public class SysLoginService {
     /**
      * 注册
      */
+    @Override
     public void register(RegisterBody registerBody) {
         // 注册租户信息
         R<?> registerResult = remoteTenantService.registerTenantInfo(registerBody.buildJson(), SecurityConstants.INNER);

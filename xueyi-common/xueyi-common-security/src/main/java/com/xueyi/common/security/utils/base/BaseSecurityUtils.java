@@ -1,6 +1,8 @@
 package com.xueyi.common.security.utils.base;
 
+import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
+import com.xueyi.common.core.constant.basic.TenantConstants;
 import com.xueyi.common.core.constant.basic.TokenConstants;
 import com.xueyi.common.core.context.SecurityContextHolder;
 import com.xueyi.common.core.utils.ServletUtil;
@@ -71,12 +73,18 @@ public class BaseSecurityUtils {
         return SecurityContextHolder.getUserKey();
     }
 
-
     /**
      * 获取账户类型
      */
-    public static String getAccountType() {
+    public static String getAccountTypeStr() {
         return SecurityContextHolder.getAccountType();
+    }
+
+    /**
+     * 获取账户类型 枚举
+     */
+    public static TenantConstants.AccountType getAccountType() {
+        return TenantConstants.AccountType.getByCodeElseNull(SecurityContextHolder.getAccountType());
     }
 
     /**
@@ -117,4 +125,11 @@ public class BaseSecurityUtils {
         return !isEmptyTenant();
     }
 
+    /**
+     * 是否为白名单
+     */
+    public static boolean isAllowList(HttpServletRequest request) {
+        String allowStr = request.getHeader(SecurityConstants.BaseSecurity.ALLOW_LIST.getCode());
+        return StrUtil.isNotEmpty(allowStr) && StrUtil.equals(BaseConstants.Whether.YES.getCode(), allowStr);
+    }
 }

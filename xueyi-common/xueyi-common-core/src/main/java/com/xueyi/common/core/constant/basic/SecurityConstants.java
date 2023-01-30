@@ -56,7 +56,9 @@ public class SecurityConstants {
     @Getter
     @AllArgsConstructor
     public enum BaseSecurity {
-
+        FROM_SOURCE("from-source", "请求来源"),
+        ALLOW_LIST("allow-list", "白名单标识"),
+        BLOCK_LIST("block-list", "黑名单标识"),
         TOKEN("token", "用户唯一标识"),
         ENTERPRISE("enterprise", "企业信息"),
         ENTERPRISE_ID("enterprise_id", "企业Id"),
