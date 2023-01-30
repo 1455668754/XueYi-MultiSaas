@@ -26,6 +26,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collection;
@@ -106,6 +108,8 @@ public class LogAspect {
             operateLog.setRequestMethod(ServletUtil.getRequest().getMethod());
             // 处理设置注解上的参数
             getControllerMethodDescription(joinPoint, controllerLog, operateLog, jsonResult);
+            ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+            RequestContextHolder.setRequestAttributes(servletRequestAttributes, true);
             // 保存数据库
             asyncLogService.saveOperateLog(operateLog);
         } catch (Exception exp) {
