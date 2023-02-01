@@ -26,7 +26,7 @@ import java.io.IOException;
 /**
  * 自定义退出成功操作类
  *
- * @author ruoyi
+ * @author xueyi
  */
 @Configuration
 public class LogoutSuccessHandlerImpl implements LogoutSuccessHandler {

@@ -4,12 +4,11 @@ import com.xueyi.common.core.constant.basic.HttpConstants;
 import com.xueyi.common.core.exception.DemoModeException;
 import com.xueyi.common.core.exception.InnerAuthException;
 import com.xueyi.common.core.exception.ServiceException;
-import com.xueyi.common.core.exception.auth.NotPermissionException;
-import com.xueyi.common.core.exception.auth.NotRoleException;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -26,22 +25,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     /**
-     * 权限码异常
+     * 权限校验异常
      */
-    @ExceptionHandler(NotPermissionException.class)
-    public AjaxResult handleNotPermissionException(NotPermissionException e, HttpServletRequest request) {
+    @ExceptionHandler(AccessDeniedException.class)
+    public AjaxResult handleAccessDeniedException(AccessDeniedException e, HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         log.error("请求地址'{}',权限码校验失败'{}'", requestURI, e.getMessage());
-        return AjaxResult.error(HttpConstants.Status.FORBIDDEN.getCode(), "没有访问权限，请联系管理员授权");
-    }
-
-    /**
-     * 角色权限异常
-     */
-    @ExceptionHandler(NotRoleException.class)
-    public AjaxResult handleNotRoleException(NotRoleException e, HttpServletRequest request) {
-        String requestURI = request.getRequestURI();
-        log.error("请求地址'{}',角色权限校验失败'{}'", requestURI, e.getMessage());
         return AjaxResult.error(HttpConstants.Status.FORBIDDEN.getCode(), "没有访问权限，请联系管理员授权");
     }
 

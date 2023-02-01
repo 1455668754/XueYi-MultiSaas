@@ -32,6 +32,7 @@ public class SecurityConfig {
     @Autowired
     protected AuthenticationLoseHandler authenticationLoseHandler;
 
+    /** token认证过滤器 */
     @Autowired
     protected TokenAuthenticationFilter tokenAuthenticationFilter;
 
@@ -62,11 +63,12 @@ public class SecurityConfig {
         http.headers().cacheControl().disable();
         // 基于token，所以不需要session
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeHttpRequests(authorize -> authorize
-                        // 静态资源，可匿名访问
-//                        .requestMatchers("/swagger-ui.html", "/swagger-resources/**", "/webjars/**", "/*/api-docs", "/druid/**").permitAll()
-                        // 除上面外的所有请求全部需要鉴权认证
-                        .anyRequest().authenticated()
+        http.authorizeHttpRequests(authorize -> {
+                    // 注解标记允许匿名访问的url
+//                    permitAllUrl.getUrls().forEach(url -> authorize.requestMatchers(url).permitAll());
+                    // 除上面外的所有请求全部需要鉴权认证
+                    authorize.anyRequest().authenticated();
+                }
         );
         // 添加JWT filter
         http.addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

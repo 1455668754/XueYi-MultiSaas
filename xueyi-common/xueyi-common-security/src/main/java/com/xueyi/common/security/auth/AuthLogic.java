@@ -10,7 +10,11 @@ import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.security.service.TokenService;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.security.utils.base.BaseSecurityUtils;
+import com.xueyi.system.api.model.LoginUser;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  * Token 权限验证，逻辑实现类
@@ -36,6 +40,40 @@ public class AuthLogic {
     }
 
     /**
+     * 获取用户信息 | 不存在则创建
+     *
+     * @return 用户缓存信息
+     */
+    public Authentication getAuthenticationDefaultNew() {
+        // 1.从认证信息中获取
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (ObjectUtil.isNotNull(authentication) && ObjectUtil.isNotNull(authentication.getPrincipal()))
+            return authentication;
+        HttpServletRequest request = ServletUtil.getRequest();
+        TenantConstants.AccountType accountType = null;
+        // 2.从缓存中获取
+        if (ObjectUtil.isNotNull(request)) {
+            accountType = TenantConstants.AccountType.getByCodeElseNull(ServletUtil.getHeader(request, SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode()));
+            if (ObjectUtil.isNotNull(accountType)) {
+                Object loginUser = getLoginUser(accountType);
+                if (ObjectUtil.isNotNull(loginUser)) {
+                    return new UsernamePasswordAuthenticationToken(loginUser, null, null);
+                }
+            }
+        }
+        Object loginUser;
+        // 3.重新构建
+        if (ObjectUtil.isNotNull(accountType)) {
+            loginUser = switch (accountType) {
+                case ADMIN, MEMBER -> new LoginUser();
+            };
+        } else {
+            loginUser = new LoginUser();
+        }
+        return new UsernamePasswordAuthenticationToken(loginUser, null, null);
+    }
+
+    /**
      * 检验用户是否已经登录，如未登录，则抛出异常
      */
     public void checkLogin() {
@@ -53,7 +91,7 @@ public class AuthLogic {
     }
 
     /**
-     * 获取用户信息并刷新有效期
+     * 获取用户信息并刷新有效期, 如果未登录，则抛出异常
      *
      * @return 用户缓存信息
      */
@@ -62,25 +100,25 @@ public class AuthLogic {
         if (ObjectUtil.isNull(accountType))
             throw new NotLoginException("无效的token");
         String token = getToken(request, accountType);
-        Object loginUser = getLoginUser(token, accountType);
+        if (StrUtil.isEmpty(token))
+            throw new NotLoginException("未提供token");
+        Object loginUser = getLoginUser(accountType);
+        if (ObjectUtil.isNull(loginUser))
+            throw new NotLoginException("无效的token");
         verifyLoginUserExpire(token, accountType);
         return loginUser;
     }
 
     /**
-     * 获取当前用户缓存信息, 如果未登录，则抛出异常
+     * 获取当前用户缓存信息
      *
+     * @param accountType 用户类型
      * @return 用户缓存信息
      */
-    public Object getLoginUser(String token, TenantConstants.AccountType accountType) {
-        if (StrUtil.isEmpty(token))
-            throw new NotLoginException("未提供token");
-        Object loginUser = switch (accountType) {
+    public Object getLoginUser(TenantConstants.AccountType accountType) {
+        return switch (accountType) {
             case ADMIN, MEMBER -> SecurityUtils.getLoginUser();
         };
-        if (ObjectUtil.isNull(loginUser))
-            throw new NotLoginException("无效的token");
-        return loginUser;
     }
 
     /**

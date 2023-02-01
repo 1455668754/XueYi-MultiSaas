@@ -2,6 +2,7 @@ package com.xueyi.common.security.auth;
 
 import com.xueyi.common.core.constant.basic.TenantConstants;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.security.core.Authentication;
 
 /**
  * Token 权限验证工具类
@@ -36,6 +37,15 @@ public class AuthUtil {
      */
     public static void checkLogin() {
         authLogic.checkLogin();
+    }
+
+    /**
+     * 获取认证信息 | 不存在则创建
+     *
+     * @return 用户缓存信息
+     */
+    public static Authentication getAuthenticationDefaultNew() {
+        return authLogic.getAuthenticationDefaultNew();
     }
 
     /**

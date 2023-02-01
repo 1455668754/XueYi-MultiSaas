@@ -41,13 +41,16 @@ public class XueAuthenticationProvider extends AbstractUserDetailsAuthentication
     }
 
     /** 密码校验 - 无需校验 */
+    @Override
     protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
     }
 
+    @Override
     protected void doAfterPropertiesSet() {
         Assert.notNull(this.userDetailsService, "A UserDetailsService must be set");
     }
 
+    @Override
     protected final UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
         this.prepareTimingAttackProtection();
 
@@ -75,6 +78,7 @@ public class XueAuthenticationProvider extends AbstractUserDetailsAuthentication
         }
     }
 
+    @Override
     protected Authentication createSuccessAuthentication(Object principal, Authentication authentication, UserDetails user) {
         boolean upgradeEncoding = this.userDetailsPasswordService != null && this.passwordEncoder.upgradeEncoding(user.getPassword());
         if (upgradeEncoding) {
@@ -98,7 +102,6 @@ public class XueAuthenticationProvider extends AbstractUserDetailsAuthentication
             String presentedPassword = authentication.getCredentials().toString();
             this.passwordEncoder.matches(presentedPassword, this.userNotFoundEncodedPassword);
         }
-
     }
 
     public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
