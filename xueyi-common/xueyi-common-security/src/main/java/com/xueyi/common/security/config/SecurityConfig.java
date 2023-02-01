@@ -74,9 +74,7 @@ public class SecurityConfig {
         http.addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         http.headers().frameOptions().disable();
         // 认证失败处理类
-        http.exceptionHandling()
-                .accessDeniedHandler(authenticationLoseHandler)
-                .authenticationEntryPoint(authenticationLoseHandler);
+        http.exceptionHandling().authenticationEntryPoint(authenticationLoseHandler);
         return http.build();
     }
 }

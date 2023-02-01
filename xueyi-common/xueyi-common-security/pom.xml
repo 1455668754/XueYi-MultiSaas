@@ -7,7 +7,7 @@
         <version>3.0.0-Alpha1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    
+
     <artifactId>xueyi-common-security</artifactId>
 
     <description>
@@ -20,6 +20,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-oauth2-authorization-server</artifactId>
+            <version>${spring.authorization.version}</version>
         </dependency>
 
         <!-- Spring Web -->
