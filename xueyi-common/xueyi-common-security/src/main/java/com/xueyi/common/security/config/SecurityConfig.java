@@ -1,8 +1,8 @@
 package com.xueyi.common.security.config;
 
+import cn.hutool.core.util.ArrayUtil;
 import com.xueyi.common.redis.service.RedisService;
-import com.xueyi.common.security.auth.Auth;
-import com.xueyi.common.security.auth.AuthService;
+import com.xueyi.common.security.config.properties.PermitAllUrlProperties;
 import com.xueyi.common.security.filter.TokenAuthenticationFilter;
 import com.xueyi.common.security.handler.AuthenticationLoseHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,23 +36,9 @@ public class SecurityConfig {
     @Autowired
     protected TokenAuthenticationFilter tokenAuthenticationFilter;
 
-    /**
-     * 权限验证
-     */
-    @Bean("ss")
-    @ConditionalOnMissingBean(AuthService.class)
-    public AuthService authService() {
-        return new AuthService();
-    }
-
-    /**
-     * 权限标识常量
-     */
-    @Bean("Auth")
-    @ConditionalOnMissingBean(Auth.class)
-    public Auth auth() {
-        return new Auth();
-    }
+    /** 允许匿名访问的地址 */
+    @Autowired
+    protected PermitAllUrlProperties permitAllUrlProperties;
 
     @Bean
     @ConditionalOnMissingBean(SecurityFilterChain.class)
@@ -63,12 +49,11 @@ public class SecurityConfig {
         http.headers().cacheControl().disable();
         // 基于token，所以不需要session
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeHttpRequests(authorize -> {
-                    // 注解标记允许匿名访问的url
-//                    permitAllUrl.getUrls().forEach(url -> authorize.requestMatchers(url).permitAll());
-                    // 除上面外的所有请求全部需要鉴权认证
-                    authorize.anyRequest().authenticated();
-                }
+        http.authorizeHttpRequests(authorize -> authorize
+                // 注解标记允许匿名访问的url
+                .requestMatchers(ArrayUtil.toArray(permitAllUrlProperties.getUrls(), String.class)).permitAll()
+                // 除上面外的所有请求全部需要鉴权认证
+                .anyRequest().authenticated()
         );
         // 添加JWT filter
         http.addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

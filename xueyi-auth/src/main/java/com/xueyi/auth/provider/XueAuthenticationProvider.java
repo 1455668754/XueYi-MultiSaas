@@ -53,7 +53,6 @@ public class XueAuthenticationProvider extends AbstractUserDetailsAuthentication
     @Override
     protected final UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
         this.prepareTimingAttackProtection();
-
         try {
             Map<String, String> loginMap = ConvertUtil.toMap(String.class, String.class, authentication.getDetails());
             if (MapUtil.isEmpty(loginMap)) {
@@ -92,7 +91,7 @@ public class XueAuthenticationProvider extends AbstractUserDetailsAuthentication
 
     private void prepareTimingAttackProtection() {
         if (this.userNotFoundEncodedPassword == null) {
-            this.userNotFoundEncodedPassword = this.passwordEncoder.encode("userNotFoundPassword");
+            this.userNotFoundEncodedPassword = this.passwordEncoder.encode(USER_NOT_FOUND_PASSWORD);
         }
 
     }

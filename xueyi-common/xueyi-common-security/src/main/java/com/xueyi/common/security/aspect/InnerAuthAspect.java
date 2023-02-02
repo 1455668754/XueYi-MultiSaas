@@ -5,37 +5,48 @@ import com.xueyi.common.core.exception.InnerAuthException;
 import com.xueyi.common.core.utils.ServletUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.security.annotation.InnerAuth;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 
 /**
  * 内部服务调用验证处理
  *
  * @author xueyi
  */
+@Slf4j
 @Aspect
 @Component
 public class InnerAuthAspect implements Ordered {
 
-    @Around("@annotation(innerAuth)")
+    @SneakyThrows
+    @Around("@within(innerAuth) || @annotation(innerAuth)")
     public Object innerAround(ProceedingJoinPoint point, InnerAuth innerAuth) throws Throwable {
-        String source = ServletUtil.getRequest().getHeader(SecurityConstants.FROM_SOURCE);
+        HttpServletRequest request = ServletUtil.getRequest();
+        Assert.notNull(request, "request cannot be null");
+        String source = request.getHeader(SecurityConstants.FROM_SOURCE);
         // 内部请求验证
         if (!StrUtil.equals(SecurityConstants.INNER, source)) {
+            log.warn("请求地址'{}'，没有内部访问权限", request.getRequestURI());
             throw new InnerAuthException("没有内部访问权限，不允许访问");
         }
 
         // 用户信息验证
         if (innerAuth.isUser()) {
-            String enterpriseId = ServletUtil.getRequest().getHeader(SecurityConstants.BaseSecurity.ENTERPRISE_ID.getCode());
-            String userId = ServletUtil.getRequest().getHeader(SecurityConstants.BaseSecurity.USER_ID.getCode());
-            String sourceName = ServletUtil.getRequest().getHeader(SecurityConstants.BaseSecurity.SOURCE_NAME.getCode());
-            String accountType = ServletUtil.getRequest().getHeader(SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode());
-            if ((StrUtil.hasBlank(enterpriseId, userId, sourceName, accountType)))
+            String enterpriseId = request.getHeader(SecurityConstants.BaseSecurity.ENTERPRISE_ID.getCode());
+            String userId = request.getHeader(SecurityConstants.BaseSecurity.USER_ID.getCode());
+            String sourceName = request.getHeader(SecurityConstants.BaseSecurity.SOURCE_NAME.getCode());
+            String accountType = request.getHeader(SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode());
+            if ((StrUtil.hasBlank(enterpriseId, userId, sourceName, accountType))) {
+                log.warn("请求地址'{}'，没有设置用户信息", request.getRequestURI());
                 throw new InnerAuthException("没有设置用户信息，不允许访问");
+            }
         }
         return point.proceed();
     }
