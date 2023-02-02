@@ -2,7 +2,7 @@ package com.xueyi.common.cache.service;
 
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ObjectUtil;
-import com.xueyi.common.cache.constant.CacheConstants;
+import com.xueyi.common.core.constant.basic.CacheConstants;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.exception.UtilException;
 import com.xueyi.common.core.utils.core.CollUtil;
@@ -132,7 +132,8 @@ public class CacheService {
         switch (cacheType) {
             case SYS_DICT_KEY -> SpringUtil.getBean(RemoteDictService.class).refreshCache(SecurityConstants.INNER);
             case SYS_CONFIG_KEY -> SpringUtil.getBean(RemoteConfigService.class).refreshCache(SecurityConstants.INNER);
-            case TE_STRATEGY_KEY -> SpringUtil.getBean(RemoteStrategyService.class).refreshCache(SecurityConstants.INNER);
+            case TE_STRATEGY_KEY ->
+                    SpringUtil.getBean(RemoteStrategyService.class).refreshCache(SecurityConstants.INNER);
             case TE_SOURCE_KEY -> SpringUtil.getBean(RemoteSourceService.class).refreshCache(SecurityConstants.INNER);
             default -> throw new UtilException("缓存更新方法不存在，请先定义！");
         }

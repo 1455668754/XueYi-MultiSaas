@@ -34,22 +34,10 @@
             <artifactId>spring-webmvc</artifactId>
         </dependency>
 
-        <!-- XueYi Api System -->
+        <!-- XueYi Common Cache-->
         <dependency>
             <groupId>com.xueyi</groupId>
-            <artifactId>xueyi-api-system</artifactId>
-        </dependency>
-
-        <!-- XueYi Api Tenant -->
-        <dependency>
-            <groupId>com.xueyi</groupId>
-            <artifactId>xueyi-api-tenant</artifactId>
-        </dependency>
-
-        <!-- XueYi Common Redis-->
-        <dependency>
-            <groupId>com.xueyi</groupId>
-            <artifactId>xueyi-common-redis</artifactId>
+            <artifactId>xueyi-common-cache</artifactId>
         </dependency>
 
     </dependencies>

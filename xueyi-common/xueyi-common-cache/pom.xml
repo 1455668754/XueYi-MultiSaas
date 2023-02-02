@@ -8,20 +8,32 @@
         <version>3.0.0-Alpha1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    
+
     <artifactId>xueyi-common-cache</artifactId>
-	
+
     <description>
         xueyi-common-cache缓存管理
     </description>
 
     <dependencies>
 
-        <!-- XueYi Common Security -->
+        <!-- XueYi Common Redis -->
         <dependency>
             <groupId>com.xueyi</groupId>
-            <artifactId>xueyi-common-security</artifactId>
+            <artifactId>xueyi-common-redis</artifactId>
         </dependency>
-        
+
+        <!-- XueYi Api System -->
+        <dependency>
+            <groupId>com.xueyi</groupId>
+            <artifactId>xueyi-api-system</artifactId>
+        </dependency>
+
+        <!-- XueYi Api Tenant -->
+        <dependency>
+            <groupId>com.xueyi</groupId>
+            <artifactId>xueyi-api-tenant</artifactId>
+        </dependency>
+
     </dependencies>
 </project>

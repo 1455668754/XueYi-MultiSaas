@@ -1,7 +1,7 @@
 package com.xueyi.system.dict.service.impl;
 
-import com.xueyi.common.cache.constant.CacheConstants;
 import com.xueyi.common.core.constant.basic.BaseConstants;
+import com.xueyi.common.core.constant.basic.CacheConstants;
 import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.redis.constant.RedisConstants;

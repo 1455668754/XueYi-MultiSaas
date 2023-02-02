@@ -1,7 +1,7 @@
 package com.xueyi.common.cache.utils;
 
-import com.xueyi.common.cache.constant.CacheConstants;
 import com.xueyi.common.cache.service.CacheService;
+import com.xueyi.common.core.constant.basic.CacheConstants;
 import com.xueyi.common.core.utils.core.SpringUtil;
 import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
 

@@ -56,7 +56,7 @@ public class ValidateCodeServiceImpl implements ValidateCodeService {
 
         // 保存验证码信息
         String uuid = IdUtil.simpleUUID();
-        String verifyKey = CacheConstants.CAPTCHA_CODE_KEY + uuid;
+        String verifyKey = CacheConstants.CacheType.CAPTCHA_CODE_KEY.getCode() + uuid;
 
         String capStr = null, code = null;
         BufferedImage image = null;
@@ -97,7 +97,7 @@ public class ValidateCodeServiceImpl implements ValidateCodeService {
         if (StrUtil.isEmpty(uuid)) {
             throw new CaptchaException("验证码已失效");
         }
-        String verifyKey = CacheConstants.CAPTCHA_CODE_KEY + uuid;
+        String verifyKey = CacheConstants.CacheType.CAPTCHA_CODE_KEY.getCode() + uuid;
         String captcha = redisService.getCacheObject(verifyKey);
         redisService.deleteObject(verifyKey);
 
