@@ -11,8 +11,8 @@ import com.xueyi.common.core.web.result.R;
 import com.xueyi.system.api.authority.feign.RemoteLoginService;
 import com.xueyi.system.api.model.LoginUser;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 /**
@@ -38,11 +38,12 @@ public class UserDetailsServiceImpl implements IUserDetailsService {
      * @return 用户信息
      */
     @Override
-    public LoginUser loadUser(String enterpriseName, String userName, String password) throws UsernameNotFoundException {
+    @SneakyThrows
+    public LoginUser loadUser(String enterpriseName, String userName, String password) {
         // 查询登录信息
         R<LoginUser> loginInfoResult = remoteLoginService.getLoginInfoInner(enterpriseName, userName, password, SecurityConstants.INNER);
         if (loginInfoResult.isFail()) {
-            AjaxResult.warn("当前访问人数过多，请稍后再试！");
+            AjaxResult.warn("服务调用失败，请稍后再试！");
         } else if (ObjectUtil.isNull(loginInfoResult.getData())) {
             logService.recordLoginInfo(enterpriseName, userName, Constants.LOGIN_FAIL, loginInfoResult.getMsg());
             AjaxResult.warn("企业账号/员工账号/密码错误，请检查！");

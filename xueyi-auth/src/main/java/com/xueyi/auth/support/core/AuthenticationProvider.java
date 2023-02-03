@@ -1,6 +1,13 @@
-package com.xueyi.auth.provider;
+package com.xueyi.auth.support.core;
 
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.extra.spring.SpringUtil;
 import com.xueyi.auth.service.IUserDetailsService;
+import com.xueyi.common.core.utils.ServletUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.core.Ordered;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
@@ -11,10 +18,16 @@ import org.springframework.security.core.userdetails.UserDetailsPasswordService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
+import org.springframework.security.web.authentication.www.BasicAuthenticationConverter;
 import org.springframework.util.Assert;
 
+import java.util.Comparator;
+import java.util.Map;
+import java.util.Optional;
+
 /**
- * 身份验证 供应器
+ * 身份认证 处理器
  *
  * @author xueyi
  */
@@ -26,42 +39,67 @@ public class AuthenticationProvider extends AbstractUserDetailsAuthenticationPro
 
     private volatile String userNotFoundEncodedPassword;
 
-    private IUserDetailsService userDetailsService;
-
     private UserDetailsPasswordService userDetailsPasswordService;
 
-    public AuthenticationProvider(IUserDetailsService userDetailsService) {
+    private final static BasicAuthenticationConverter basicConvert = new BasicAuthenticationConverter();
+
+    public AuthenticationProvider() {
         this.setPasswordEncoder(PasswordEncoderFactories.createDelegatingPasswordEncoder());
-        this.userDetailsService = userDetailsService;
     }
 
     /** 密码校验 - 无需校验 */
     @Override
     protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
-    }
-
-    @Override
-    protected void doAfterPropertiesSet() {
-        Assert.notNull(this.userDetailsService, "A UserDetailsService must be set");
+        if (authentication.getCredentials() == null) {
+            this.logger.debug("Failed to authenticate since no credentials provided");
+            throw new BadCredentialsException(this.messages
+                    .getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"));
+        }
+        String presentedPassword = authentication.getCredentials().toString();
+        if (!this.passwordEncoder.matches(presentedPassword, userDetails.getPassword())) {
+            this.logger.debug("Failed to authenticate since password does not match stored value");
+            throw new BadCredentialsException(this.messages
+                    .getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"));
+        }
     }
 
     @Override
     protected final UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
         this.prepareTimingAttackProtection();
+        HttpServletRequest request = ServletUtil.getRequest();
+        if (ObjectUtil.isNull(request))
+            throw new InternalAuthenticationServiceException("web request is empty");
+
+        String grantType = request.getParameter(OAuth2ParameterNames.GRANT_TYPE);
+        String clientId = request.getParameter(OAuth2ParameterNames.CLIENT_ID);
+
+        if (StrUtil.isBlank(clientId)) {
+            clientId = basicConvert.convert(request).getName();
+        }
+
+        Map<String, IUserDetailsService> userDetailsServiceMap = SpringUtil.getBeansOfType(IUserDetailsService.class);
+
+        String finalClientId = clientId;
+        Optional<IUserDetailsService> optional = userDetailsServiceMap.values().stream()
+                .filter(service -> service.support(finalClientId, grantType))
+                .max(Comparator.comparingInt(Ordered::getOrder));
+
+        if (optional.isEmpty()) {
+            throw new InternalAuthenticationServiceException("UserDetailsService error , not register");
+        }
+
         try {
-            UserDetails loadedUser = this.getUserDetailsService().loadUser(authentication.getPrincipal());
-            if (loadedUser == null) {
+            UserDetails loadedUser = optional.get().loadUser(authentication.getPrincipal());
+            if (loadedUser == null)
                 throw new InternalAuthenticationServiceException("UserDetailsService returned null, which is an interface contract violation");
-            } else {
-                return loadedUser;
-            }
-        } catch (UsernameNotFoundException var4) {
+            return loadedUser;
+        } catch (UsernameNotFoundException exception) {
             this.mitigateAgainstTimingAttack(authentication);
-            throw var4;
-        } catch (InternalAuthenticationServiceException var5) {
-            throw var5;
-        } catch (Exception var6) {
-            throw new InternalAuthenticationServiceException(var6.getMessage(), var6);
+            throw exception;
+        } catch (InternalAuthenticationServiceException exception) {
+            throw exception;
+        } catch (Exception exception) {
+            throw new InternalAuthenticationServiceException(exception.getMessage(), exception);
         }
     }
 
@@ -95,18 +133,6 @@ public class AuthenticationProvider extends AbstractUserDetailsAuthenticationPro
         Assert.notNull(passwordEncoder, "passwordEncoder cannot be null");
         this.passwordEncoder = passwordEncoder;
         this.userNotFoundEncodedPassword = null;
-    }
-
-    protected PasswordEncoder getPasswordEncoder() {
-        return this.passwordEncoder;
-    }
-
-    public void setUserDetailsService(IUserDetailsService xueUserDetailsService) {
-        this.userDetailsService = xueUserDetailsService;
-    }
-
-    protected IUserDetailsService getUserDetailsService() {
-        return this.userDetailsService;
     }
 
     public void setUserDetailsPasswordService(UserDetailsPasswordService userDetailsPasswordService) {

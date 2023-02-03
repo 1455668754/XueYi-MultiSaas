@@ -6,8 +6,11 @@ import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 
 import java.io.Serial;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -16,7 +19,7 @@ import java.util.Set;
  * @author xueyi
  */
 @Data
-public class BaseLoginUser<User> implements UserDetails {
+public class BaseLoginUser<User> implements UserDetails, OAuth2AuthenticatedPrincipal {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -85,6 +88,17 @@ public class BaseLoginUser<User> implements UserDetails {
 
     @Override
     public String getUsername() {
-        return userName;
+        return this.getUserName();
     }
+
+    @Override
+    public Map<String, Object> getAttributes() {
+        return new HashMap<>();
+    }
+
+    @Override
+    public String getName() {
+        return this.getUserName();
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.xueyi.common.core.constant.basic;
 
+import com.xueyi.common.core.utils.core.StrUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -31,6 +32,12 @@ public class SecurityConstants {
     /** 请求来源 */
     public static final String FROM_SOURCE = "from-source";
 
+    /** 内部请求 */
+    public static final String INNER = "inner";
+
+    /** 请求来源 */
+    public static final String FROM_SOURCE_INNER = FROM_SOURCE + "=" + INNER;
+
     /** 授权信息 */
     public static final String AUTHORIZATION_HEADER = "authorization";
 
@@ -43,19 +50,56 @@ public class SecurityConstants {
     /** 租户策略源名称 */
     public static final String SOURCE_NAME = "source_name";
 
-    /** 内部请求 */
-    public static final String INNER = "inner";
-
     /** 数据权限 - 创建者 */
     public static final String CREATE_BY = "create_by";
 
     /** 数据权限 - 更新者 */
     public static final String UPDATE_BY = "update_by";
 
+    /** 项目的license */
+    public static final String PROJECT_LICENSE = "https://xueyitt.com";
+
+    /** 授权码模式confirm */
+    public static final String CUSTOM_CONSENT_PAGE_URI = "/token/confirm_access";
+
+    /** 认证模式 */
+    @Getter
+    @AllArgsConstructor
+    public enum OauthType {
+
+        AUTHORIZATION_CODE("authorization_code", "授权码模式"),
+        CLIENT_CREDENTIALS("client_credentials", "客户端模式"),
+        PASSWORD("password", "密码模式"),
+        REFRESH_TOKEN("refresh_token", "刷新模式");
+
+        private final String code;
+        private final String info;
+
+        public static boolean isClient(String code) {
+            return StrUtil.equals(CLIENT_CREDENTIALS.code, code);
+        }
+
+    }
+
+    /** 登陆参数 */
+    @Getter
+    @AllArgsConstructor
+    public enum LoginParam {
+
+        ENTERPRISE_NAME("enterpriseName", "企业账号"),
+        USER_NAME("userName", "用户账号"),
+        PASSWORD("password", "用户密码");
+
+        private final String code;
+        private final String info;
+
+    }
+
     /** 通用安全常量 */
     @Getter
     @AllArgsConstructor
     public enum BaseSecurity {
+        CLIENT_ID("clientId", "客户端ID"),
         FROM_SOURCE("from-source", "请求来源"),
         ALLOW_LIST("allow-list", "白名单标识"),
         BLOCK_LIST("block-list", "黑名单标识"),

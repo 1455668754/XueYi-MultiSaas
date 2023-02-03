@@ -1,72 +1,66 @@
 package com.xueyi.common.security.config;
 
-import com.xueyi.common.core.utils.core.ArrayUtil;
-import com.xueyi.common.redis.service.RedisService;
+import cn.hutool.core.util.ArrayUtil;
 import com.xueyi.common.security.config.properties.PermitAllUrlProperties;
-import com.xueyi.common.security.filter.TokenAuthenticationFilter;
-import com.xueyi.common.security.handler.AuthenticationLoseHandler;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import com.xueyi.common.security.handler.BearerTokenHandler;
+import com.xueyi.common.security.handler.ResourceAuthenticationHandler;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.server.resource.introspection.OpaqueTokenIntrospector;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import java.util.Objects;
+import java.util.List;
 
 /**
  * 安全认证配置
  *
  * @author xueyi
  */
-@Configuration
+@Slf4j
 @EnableWebSecurity
-@EnableMethodSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
-    @Autowired
-    protected RedisService redisService;
+    private final ResourceAuthenticationHandler resourceAuthenticationHandler;
 
-    @Autowired
-    protected AuthenticationLoseHandler authenticationLoseHandler;
+    private final PermitAllUrlProperties permitAllUrl;
 
-    /** token认证过滤器 */
-    @Autowired
-    protected TokenAuthenticationFilter tokenAuthenticationFilter;
+    private final BearerTokenHandler bearerTokenHandler;
 
-    /** 允许匿名访问的地址 */
-    @Autowired
-    protected PermitAllUrlProperties permitAllUrlProperties;
+    private final OpaqueTokenIntrospector opaqueTokenIntrospector;
 
     @Bean
-    @ConditionalOnMissingBean(SecurityFilterChain.class)
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        // CSRF禁用，因为不使用session
-        http.csrf().disable();
-        // 禁用HTTP响应标头
-        http.headers().cacheControl().disable();
-        // 基于token，所以不需要session
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeHttpRequests(authorize -> {
-                    // 注解标记允许匿名访问的url
-                    permitAllUrlProperties.getCustom().keySet().forEach(item ->
-                            authorize.requestMatchers(Objects.requireNonNull(HttpMethod.valueOf(item.name())),
-                                    ArrayUtil.toArray(permitAllUrlProperties.getCustom().get(item), String.class)).permitAll());
-                    authorize.requestMatchers(ArrayUtil.toArray(permitAllUrlProperties.getRoutine(), String.class)).permitAll();
-                    // 除上面外的所有请求全部需要鉴权认证
-                    authorize.anyRequest().authenticated();
-                }
-        );
-        // 添加JWT filter
-        http.addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-        http.headers().frameOptions().disable();
-        // 认证失败处理类
-        http.exceptionHandling().authenticationEntryPoint(authenticationLoseHandler);
+    @Order(Ordered.HIGHEST_PRECEDENCE)
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests(authorizeRequests -> {
+                    permitAllUrl.getCustom().keySet().forEach(item -> {
+                        HttpMethod httpMethod = HttpMethod.valueOf(item.name());
+                        List<String> list = permitAllUrl.getCustom().get(item);
+                        authorizeRequests.requestMatchers(httpMethod, ArrayUtil.toArray(list, String.class)).permitAll();
+                    });
+                    authorizeRequests
+                            // 注解标记允许匿名访问的url
+                            .requestMatchers(ArrayUtil.toArray(permitAllUrl.getRoutine(), String.class)).permitAll()
+                            // 除上面外的所有请求全部需要鉴权认证
+                            .anyRequest().authenticated();
+                })
+                .oauth2ResourceServer(
+                        oauth2 -> oauth2.opaqueToken(token -> token
+                                        .introspector(opaqueTokenIntrospector)
+                                )
+                                // 认证失败处理类
+                                .authenticationEntryPoint(resourceAuthenticationHandler)
+                                .bearerTokenResolver(bearerTokenHandler))
+                // 禁用HTTP响应标头
+                .headers().frameOptions().disable()
+                // CSRF禁用，因为不使用session
+                .and().csrf().disable();
         return http.build();
     }
 }

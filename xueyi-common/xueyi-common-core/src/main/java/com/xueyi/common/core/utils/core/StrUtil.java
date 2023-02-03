@@ -2,6 +2,7 @@ package com.xueyi.common.core.utils.core;
 
 import cn.hutool.core.text.AntPathMatcher;
 import com.xueyi.common.core.utils.core.pool.StrPool;
+import org.springframework.lang.Nullable;
 
 /**
  * 字符串工具类
@@ -163,6 +164,22 @@ public class StrUtil extends cn.hutool.core.util.StrUtil implements StrPool {
     public static boolean isMatch(String pattern, String url) {
         AntPathMatcher matcher = new AntPathMatcher();
         return matcher.match(pattern, url);
+    }
+
+    public static boolean hasText(@Nullable CharSequence str) {
+        return str != null && str.length() > 0 && containsText(str);
+    }
+
+    public static boolean hasText(@Nullable String str) {
+        return str != null && !str.isEmpty() && containsText(str);
+    }
+
+    private static boolean containsText(CharSequence str) {
+        int strLen = str.length();
+        for (int i = 0; i < strLen; ++i)
+            if (!Character.isWhitespace(str.charAt(i)))
+                return true;
+        return false;
     }
 
 }

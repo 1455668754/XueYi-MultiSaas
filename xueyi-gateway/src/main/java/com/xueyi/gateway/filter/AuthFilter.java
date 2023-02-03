@@ -39,6 +39,13 @@ public class AuthFilter implements WebFilter {
         ServerHttpRequest request = exchange.getRequest();
         ServerHttpRequest.Builder mutate = request.mutate();
         String url = request.getURI().getPath();
+
+        // TODO 暂时全放行
+        if (true) {
+            return chain.filter(exchange);
+        }
+
+
         if (StrUtil.matches(url, ignoreWhite.getWhites())) {
             ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.ALLOW_LIST.getCode(), BaseConstants.Whether.YES.getCode());
             return chain.filter(exchange);

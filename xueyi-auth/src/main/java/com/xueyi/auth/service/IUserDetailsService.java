@@ -22,7 +22,7 @@ public interface IUserDetailsService extends Ordered {
      * 是否支持此客户端校验
      *
      * @param clientId 目标客户端
-     * @return true/false
+     * @return 结果
      */
     default boolean support(String clientId, String grantType) {
         return true;

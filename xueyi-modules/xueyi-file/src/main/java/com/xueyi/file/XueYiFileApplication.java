@@ -1,5 +1,6 @@
 package com.xueyi.file;
 
+import com.xueyi.common.security.annotation.EnableResourceServer;
 import com.xueyi.common.security.annotation.EnableRyFeignClients;
 import com.xueyi.common.security.config.ApplicationConfig;
 import com.xueyi.common.security.config.JacksonConfig;
@@ -15,6 +16,7 @@ import org.springframework.context.annotation.Import;
  * @author xueyi
  */
 @EnableCustomSwagger
+@EnableResourceServer
 @EnableRyFeignClients
 @Import({ApplicationConfig.class, JacksonConfig.class})
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})

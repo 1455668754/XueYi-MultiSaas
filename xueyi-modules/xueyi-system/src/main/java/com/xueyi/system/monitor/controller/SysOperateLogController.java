@@ -34,8 +34,8 @@ public class SysOperateLogController extends BaseController<SysOperateLogQuery, 
     /**
      * 新增操作日志 | 内部调用
      */
-    @InnerAuth
     @PostMapping
+    @InnerAuth(isAnonymous = true)
     public R<Boolean> addInner(@RequestBody SysOperateLogDto operateLog) {
         baseService.insert(operateLog);
         return R.ok();

@@ -33,8 +33,8 @@ public class SysLoginLogController extends BaseController<SysLoginLogQuery, SysL
     /**
      * 新增访问日志 | 内部调用
      */
-    @InnerAuth
     @PostMapping
+    @InnerAuth(isAnonymous = true)
     public R<Boolean> addInner(@RequestBody SysLoginLogDto loginInfo) {
         baseService.insert(loginInfo);
         return R.ok();

@@ -697,3 +697,38 @@ create table gen_table_column (
   primary key (id)
 ) engine=innodb auto_increment=1 comment = '代码生成业务表字段';
 
+-- ----------------------------
+-- 17、终端信息表
+-- ----------------------------
+drop table if exists sys_oauth_client;
+create table sys_oauth_client (
+  id		                bigint	            not null                                comment '租户Id',
+  client_id                 varchar(32)         not null                                comment '客户端Id',
+  resource_ids              varchar(256)        default null                            comment '资源列表',
+  client_secret             varchar(256)        default null                            comment '客户端密钥',
+  scope                     varchar(256)        default null                            comment '域',
+  authorized_grant_types    varchar(256)        default null                            comment '认证类型',
+  web_server_redirect_uri   varchar(256)        default null                            comment '重定向地址',
+  authorities               varchar(256)        default null                            comment '角色列表',
+  access_token_validity     int                 default null                            comment 'token 有效期',
+  refresh_token_validity    int                 default null                            comment '刷新令牌有效期',
+  additional_information    varchar(4096)       default null                            comment '令牌扩展字段JSON',
+  auto_approve              varchar(256)        default null                            comment '是否自动放行',
+  sort                      int unsigned        not null default 0                      comment '显示顺序',
+  status                    char(1)             not null default '0'                    comment '状态（0正常 1停用）',
+  remark                    varchar(200)        default null                            comment '备注',
+  create_by                 bigint              default null                            comment '创建者',
+  create_time               datetime            default current_timestamp               comment '创建时间',
+  update_by                 bigint              default null                            comment '更新者',
+  update_time               datetime            on update current_timestamp             comment '更新时间',
+  del_flag		            tinyint             not null default 0                      comment '删除标志（0正常 1删除）',
+  primary key (id),
+  unique (client_id)
+) engine=innodb comment = '终端信息表';
+
+insert into sys_oauth_client (id, client_id, resource_ids, client_secret, scope, authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, refresh_token_validity, additional_information, auto_approve, sort, status)
+values (1, 'app',       null, 'app', 'server', 'app,refresh_token', null, null, null, null, null, 'true', 1, '0'),
+       (2, 'client',    null, 'client', 'server', 'client_credentials', null, null, null, null, null, 'true', 1, '0'),
+       (3, 'daemon',    null, 'daemon', 'server', 'password,refresh_token', null, null, null, null, null, 'true', 1, '0'),
+       (4, 'xueyi',     null, 'xueyi', 'server', 'password,app,refresh_token,authorization_code,client_credentials', 'https://xueyitt.cn', null, null, null, null, 'true', 1, '0'),
+       (5, 'gen',       null, 'gen', 'server', 'password,refresh_token', null, null, null, null, null, 'true', 1, '0');

@@ -10,7 +10,6 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -28,7 +27,6 @@ import java.util.regex.Pattern;
  * @author xueyi
  */
 @Slf4j
-@Configuration
 @ConfigurationProperties(prefix = "security.oauth2.ignore.whites")
 public class PermitAllUrlProperties implements InitializingBean {
 

@@ -17,4 +17,5 @@ public interface NumberPool {
     int Seven = 7;
     int Eight = 8;
     int Nine = 9;
+    int Ten = 10;
 }
