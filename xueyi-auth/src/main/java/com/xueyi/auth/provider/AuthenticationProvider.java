@@ -1,9 +1,6 @@
 package com.xueyi.auth.provider;
 
 import com.xueyi.auth.service.IUserDetailsService;
-import com.xueyi.common.core.constant.basic.SecurityConstants;
-import com.xueyi.common.core.utils.core.ConvertUtil;
-import com.xueyi.common.core.utils.core.MapUtil;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
@@ -16,15 +13,12 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.Assert;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * 身份验证 供应器
  *
  * @author xueyi
  */
-public class XueAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
+public class AuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
 
     private static final String USER_NOT_FOUND_PASSWORD = "userNotFoundPassword";
 
@@ -36,8 +30,9 @@ public class XueAuthenticationProvider extends AbstractUserDetailsAuthentication
 
     private UserDetailsPasswordService userDetailsPasswordService;
 
-    public XueAuthenticationProvider() {
+    public AuthenticationProvider(IUserDetailsService userDetailsService) {
         this.setPasswordEncoder(PasswordEncoderFactories.createDelegatingPasswordEncoder());
+        this.userDetailsService = userDetailsService;
     }
 
     /** 密码校验 - 无需校验 */
@@ -54,14 +49,7 @@ public class XueAuthenticationProvider extends AbstractUserDetailsAuthentication
     protected final UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
         this.prepareTimingAttackProtection();
         try {
-            Map<String, String> loginMap = ConvertUtil.toMap(String.class, String.class, authentication.getDetails());
-            if (MapUtil.isEmpty(loginMap)) {
-                loginMap = new HashMap<>();
-            }
-            String enterpriseName = loginMap.get(SecurityConstants.BaseSecurity.ENTERPRISE_NAME.getCode());
-            String userName = loginMap.get(SecurityConstants.BaseSecurity.USER_NAME.getCode());
-            String password = loginMap.get(SecurityConstants.BaseSecurity.PASSWORD.getCode());
-            UserDetails loadedUser = this.getUserDetailsService().loadUser(enterpriseName, userName, password);
+            UserDetails loadedUser = this.getUserDetailsService().loadUser(authentication.getPrincipal());
             if (loadedUser == null) {
                 throw new InternalAuthenticationServiceException("UserDetailsService returned null, which is an interface contract violation");
             } else {

@@ -71,13 +71,12 @@ public class SysLoginServiceImpl implements ISysLoginService {
             logService.recordLoginInfo(enterpriseName, userName, Constants.LOGIN_FAIL, "用户密码不在指定范围");
             AjaxResult.warn("用户密码不在指定范围");
         }
-        UsernamePasswordAuthenticationToken loginBody = new UsernamePasswordAuthenticationToken(userName, password);
+
         Map<String, String> loginMap = new HashMap<>();
         loginMap.put(SecurityConstants.BaseSecurity.ENTERPRISE_NAME.getCode(), enterpriseName);
         loginMap.put(SecurityConstants.BaseSecurity.USER_NAME.getCode(), userName);
         loginMap.put(SecurityConstants.BaseSecurity.PASSWORD.getCode(), password);
-        loginBody.setDetails(loginMap);
-        Authentication authentication = authenticationManager.authenticate(loginBody);
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginMap, password));
         return (LoginUser) authentication.getPrincipal();
     }
 

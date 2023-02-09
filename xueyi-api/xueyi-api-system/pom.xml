@@ -8,7 +8,7 @@
         <version>3.0.0-Alpha1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    
+
     <artifactId>xueyi-api-system</artifactId>
 
     <description>
@@ -21,6 +21,12 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
+        </dependency>
+
+        <!-- SpringBoot Security Oauth2 Core -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-oauth2-core</artifactId>
         </dependency>
 
         <!-- XueYi Common Core -->

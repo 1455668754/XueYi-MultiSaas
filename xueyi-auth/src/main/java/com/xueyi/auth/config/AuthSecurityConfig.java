@@ -1,6 +1,6 @@
 package com.xueyi.auth.config;
 
-import com.xueyi.auth.provider.XueAuthenticationProvider;
+import com.xueyi.auth.provider.AuthenticationProvider;
 import com.xueyi.auth.service.IUserDetailsService;
 import com.xueyi.auth.service.impl.LogoutSuccessHandlerImpl;
 import com.xueyi.common.security.config.SecurityConfig;
@@ -36,10 +36,8 @@ public class AuthSecurityConfig extends SecurityConfig {
     }
 
     @Bean
-    public XueAuthenticationProvider customerDaoAuthenticationProvider() {
-        XueAuthenticationProvider authenticationProvider = new XueAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userDetailsService);
-        return authenticationProvider;
+    public AuthenticationProvider customerDaoAuthenticationProvider() {
+        return new AuthenticationProvider(userDetailsService);
     }
 
     @Bean

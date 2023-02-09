@@ -40,7 +40,7 @@ public class SysLoginController extends BasisController {
     /**
      * 获取登录信息 | 内部调用
      */
-    @InnerAuth
+    @InnerAuth(isAnonymous = true)
     @GetMapping("/inner/loginInfo/{enterpriseName}/{userName}/{password}")
     public R<LoginUser> getLoginInfo(@PathVariable("enterpriseName") String enterpriseName, @PathVariable("userName") String userName, @PathVariable("password") String password) {
         SysEnterpriseDto enterprise = loginService.loginByEnterpriseName(enterpriseName);

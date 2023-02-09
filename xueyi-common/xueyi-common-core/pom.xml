@@ -155,6 +155,12 @@
             <artifactId>hutool-crypto</artifactId>
         </dependency>
 
+        <!-- huTool 工具类库 HTTP包 -->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-http</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

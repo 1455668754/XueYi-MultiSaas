@@ -2,8 +2,6 @@ package com.xueyi.common.security.config;
 
 import com.xueyi.common.security.auth.Auth;
 import com.xueyi.common.security.auth.AuthService;
-import com.xueyi.common.security.config.properties.PermitAllUrlProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
 /**
@@ -11,7 +9,6 @@ import org.springframework.context.annotation.Bean;
  *
  * @author xueyi
  */
-@EnableConfigurationProperties(PermitAllUrlProperties.class)
 public class ResourceConfig {
 
     /**

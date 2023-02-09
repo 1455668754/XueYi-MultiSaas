@@ -31,6 +31,11 @@ public class UserDetailsServiceImpl implements IUserDetailsService {
 
     /**
      * 登录验证
+     *
+     * @param enterpriseName 企业名称
+     * @param userName       用户名
+     * @param password       密码
+     * @return 用户信息
      */
     @Override
     public LoginUser loadUser(String enterpriseName, String userName, String password) throws UsernameNotFoundException {
@@ -55,5 +60,10 @@ public class UserDetailsServiceImpl implements IUserDetailsService {
 
         logService.recordLoginInfo(sourceName, enterpriseId, enterpriseName, userId, userName, userNick, Constants.LOGIN_SUCCESS, "登录成功");
         return loginUser;
+    }
+
+    @Override
+    public int getOrder() {
+        return Integer.MIN_VALUE;
     }
 }

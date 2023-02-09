@@ -8,16 +8,16 @@
         <version>3.0.0-Alpha1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    
+
     <artifactId>xueyi-common-datasource</artifactId>
-	
+
     <description>
         xueyi-common-datasource多数据源
     </description>
 
     <dependencies>
 
-		<!-- HikariCP -->
+        <!-- HikariCP -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jdbc</artifactId>
@@ -30,10 +30,10 @@
             <version>${dynamic-ds.version}</version>
         </dependency>
 
-        <!-- XueYi Common Cache -->
+        <!-- XueYi Common Security -->
         <dependency>
             <groupId>com.xueyi</groupId>
-            <artifactId>xueyi-common-cache</artifactId>
+            <artifactId>xueyi-common-security</artifactId>
         </dependency>
 
     </dependencies>

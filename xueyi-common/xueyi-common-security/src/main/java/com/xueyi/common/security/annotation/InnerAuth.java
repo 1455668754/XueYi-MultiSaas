@@ -12,8 +12,8 @@ import java.lang.annotation.*;
 @Documented
 public @interface InnerAuth {
 
-    /** 是否鉴权认证 */
-    boolean isAnonymous() default true;
+    /** 是否匿名认证 */
+    boolean isAnonymous() default false;
 
     /** 是否校验用户信息 */
     boolean isUser() default false;
