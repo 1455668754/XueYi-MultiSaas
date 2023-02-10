@@ -47,7 +47,7 @@ public class TeSourceController extends BaseController<TeSourceQuery, TeSourceDt
      * 刷新数据源缓存 | 内部调用
      */
     @Override
-    @InnerAuth
+    @InnerAuth(isAnonymous = true)
     @GetMapping("/inner/refresh")
     @Log(title = "数据源管理", businessType = BusinessType.REFRESH)
     public R<Boolean> refreshCacheInner() {

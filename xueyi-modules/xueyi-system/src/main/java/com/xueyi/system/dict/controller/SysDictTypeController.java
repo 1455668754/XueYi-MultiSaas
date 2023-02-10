@@ -40,7 +40,7 @@ public class SysDictTypeController extends BaseController<SysDictTypeQuery, SysD
      * 刷新字典缓存 | 内部调用
      */
     @Override
-    @InnerAuth
+    @InnerAuth(isAnonymous = true)
     @GetMapping("/inner/refresh")
     @Log(title = "字典类型", businessType = BusinessType.REFRESH)
     public R<Boolean> refreshCacheInner() {

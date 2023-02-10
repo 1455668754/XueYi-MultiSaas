@@ -52,7 +52,7 @@ public class TeStrategyController extends BaseController<TeStrategyQuery, TeStra
      * 刷新源策略管理缓存 | 内部调用
      */
     @Override
-    @InnerAuth
+    @InnerAuth(isAnonymous = true)
     @Log(title = "数据源管理", businessType = BusinessType.REFRESH)
     @GetMapping("/inner/refresh")
     public R<Boolean> refreshCacheInner() {

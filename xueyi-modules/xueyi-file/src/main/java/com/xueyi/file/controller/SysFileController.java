@@ -4,6 +4,7 @@ import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.utils.file.FileUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.result.R;
+import com.xueyi.common.security.annotation.InnerAuth;
 import com.xueyi.file.api.domain.SysFile;
 import com.xueyi.file.api.feign.RemoteFileManageService;
 import com.xueyi.file.service.ISysFileService;
@@ -33,6 +34,7 @@ public class SysFileController {
     /**
      * 文件上传 | 内部调用
      */
+    @InnerAuth
     @PostMapping("/inner/upload")
     public R<SysFile> uploadInner(MultipartFile file) {
         try {
@@ -54,6 +56,7 @@ public class SysFileController {
     /**
      * 删除文件 | 内部调用
      */
+    @InnerAuth
     @DeleteMapping(value = "/inner/delete/{url}")
     public R<Boolean> deleteInner(@PathVariable String url) {
         try {

@@ -40,7 +40,7 @@ public class SysConfigController extends BaseController<SysConfigQuery, SysConfi
      * 刷新参数缓存 | 内部调用
      */
     @Override
-    @InnerAuth
+    @InnerAuth(isAnonymous = true)
     @GetMapping("/inner/refresh")
     @Log(title = "参数管理", businessType = BusinessType.REFRESH)
     public R<Boolean> refreshCacheInner() {
@@ -51,9 +51,9 @@ public class SysConfigController extends BaseController<SysConfigQuery, SysConfi
      * 刷新参数缓存
      */
     @Override
+    @GetMapping("/refresh")
     @PreAuthorize("@ss.hasAuthority(@Auth.SYS_CONFIG_EDIT)")
     @Log(title = "参数管理", businessType = BusinessType.REFRESH)
-    @GetMapping("/refresh")
     public AjaxResult refreshCache() {
         return super.refreshCache();
     }
