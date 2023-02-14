@@ -2,7 +2,6 @@ package com.xueyi.system.api.dict.domain.dto;
 
 import com.xueyi.common.core.annotation.Correlation;
 import com.xueyi.common.core.constant.basic.OperateConstants;
-import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.dict.domain.po.SysDictTypePo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -26,6 +25,6 @@ public class SysDictTypeDto extends SysDictTypePo {
 
     /** 字典数据 */
     @Correlation(groupName = DICT_DATA_GROUP, keyType = OperateConstants.SubKeyType.RECEIVE)
-    private List<SysMenuDto> subList;
+    private List<SysDictDataDto> subList;
 
 }
