@@ -1,6 +1,7 @@
 package com.xueyi.job.controller;
 
 import com.xueyi.common.core.constant.basic.BaseConstants;
+import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.constant.basic.HttpConstants;
 import com.xueyi.common.core.constant.job.ScheduleConstants;
 import com.xueyi.common.core.utils.core.CollUtil;
@@ -130,7 +131,7 @@ public class SysJobController extends BaseController<SysJobQuery, SysJobDto, ISy
     @Override
     @GetMapping("/option")
     public AjaxResult option() {
-        return super.option();
+        return super.option(DictConstants.DicYesNo.NO);
     }
 
     /**
