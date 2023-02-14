@@ -6,6 +6,7 @@ import com.xueyi.common.core.utils.file.FileTypeUtil;
 import com.xueyi.common.core.utils.file.MimeTypeUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.result.R;
+import com.xueyi.common.core.web.validate.V_CUS;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.service.TokenService;
@@ -56,7 +57,7 @@ public class SysProfileController extends BasisController {
      */
     @PutMapping
     @Log(title = "个人信息管理 - 基本信息修改", businessType = BusinessType.UPDATE)
-    public AjaxResult editProfile(@Validated @RequestBody SysUserDto user) {
+    public AjaxResult editProfile(@Validated({V_CUS.class}) @RequestBody SysUserDto user) {
         LoginUser loginUser = SecurityUtils.getLoginUser();
         if (userService.updateUserProfile(loginUser.getUserId(), user.getNickName(), user.getSex(), user.getProfile()) > 0) {
             // 更新缓存用户信息

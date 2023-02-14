@@ -2,6 +2,7 @@ package com.xueyi.system.dict.service.impl;
 
 import com.xueyi.common.core.constant.basic.CacheConstants;
 import com.xueyi.common.core.constant.basic.OperateConstants;
+import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.redis.constant.RedisConstants;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -58,10 +60,11 @@ public class SysDictDataServiceImpl extends BaseServiceImpl<SysDictDataQuery, Sy
             redisService.refreshMapValueCache(getCacheKey(), dto::getCode, () -> dictList);
         } else if (operate.isBatch()) {
             Set<String> codes = dtoList.stream().map(SysDictDataPo::getCode).collect(Collectors.toSet());
-            codes.forEach(item -> {
-                List<SysDictDataDto> dictList = baseManager.selectListByCode(dto.getCode());
-                redisService.refreshMapValueCache(getCacheKey(), dto::getCode, () -> dictList);
-            });
+            if (CollUtil.isEmpty(codes))
+                return;
+            List<SysDictDataDto> dictList = baseManager.selectListByCodes(codes);
+            Map<String, List<SysDictDataDto>> dictMap = dictList.stream().collect(Collectors.groupingBy(SysDictDataDto::getCode));
+            codes.forEach(item -> redisService.refreshMapValueCache(getCacheKey(), () -> item, () -> dictMap.get(item)));
         }
     }
 }

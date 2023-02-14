@@ -42,7 +42,7 @@ public class SysRoleManagerImpl extends BaseManagerImpl<SysRoleQuery, SysRoleDto
      * @return 关系对象集合
      */
     protected List<SlaveRelation> subRelationInit() {
-        return new ArrayList<>(){{
+        return new ArrayList<>() {{
             add(new SlaveRelation(ROLE_SysRoleModuleMerge_GROUP, SysRoleModuleMergeMapper.class, SysRoleModuleMerge.class, OperateConstants.SubOperateLimit.ONLY_DEL));
             add(new SlaveRelation(ROLE_SysRoleMenuMerge_GROUP, SysRoleMenuMergeMapper.class, SysRoleMenuMerge.class, OperateConstants.SubOperateLimit.ONLY_DEL));
             add(new SlaveRelation(ROLE_SysRoleDeptMerge_GROUP, SysRoleDeptMergeMapper.class, SysRoleDeptMerge.class, OperateConstants.SubOperateLimit.ONLY_DEL));
@@ -61,10 +61,9 @@ public class SysRoleManagerImpl extends BaseManagerImpl<SysRoleQuery, SysRoleDto
      */
     @Override
     public int updateDataScope(Long id, String roleKey, String dataScope) {
-        return baseMapper.update(new SysRoleDto(),
+        return baseMapper.update(null,
                 Wrappers.<SysRolePo>update().lambda()
                         .set(SysRolePo::getDataScope, dataScope)
-                        .set(SysRolePo::getRoleKey, roleKey)
                         .eq(SysRolePo::getId, id));
     }
 

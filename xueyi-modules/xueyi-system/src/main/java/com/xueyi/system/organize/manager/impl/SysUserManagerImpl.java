@@ -156,7 +156,7 @@ public class SysUserManagerImpl extends BaseManagerImpl<SysUserQuery, SysUserDto
      */
     @Override
     public int updateUserProfile(Long id, String nickName, String sex, String profile) {
-        return baseMapper.update(new SysUserDto(),
+        return baseMapper.update(null,
                 Wrappers.<SysUserPo>update().lambda()
                         .set(SysUserPo::getNickName, nickName)
                         .set(SysUserPo::getSex, sex)
@@ -173,7 +173,7 @@ public class SysUserManagerImpl extends BaseManagerImpl<SysUserQuery, SysUserDto
      */
     @Override
     public int updateUserName(Long id, String userName) {
-        return baseMapper.update(new SysUserDto(),
+        return baseMapper.update(null,
                 Wrappers.<SysUserPo>update().lambda()
                         .set(SysUserPo::getUserName, userName)
                         .eq(SysUserPo::getId, id));
@@ -188,7 +188,7 @@ public class SysUserManagerImpl extends BaseManagerImpl<SysUserQuery, SysUserDto
      */
     @Override
     public int updateEmail(Long id, String email) {
-        return baseMapper.update(new SysUserDto(),
+        return baseMapper.update(null,
                 Wrappers.<SysUserPo>update().lambda()
                         .set(SysUserPo::getEmail, email)
                         .eq(SysUserPo::getId, id));
@@ -203,7 +203,7 @@ public class SysUserManagerImpl extends BaseManagerImpl<SysUserQuery, SysUserDto
      */
     @Override
     public int updatePhone(Long id, String phone) {
-        return baseMapper.update(new SysUserDto(),
+        return baseMapper.update(null,
                 Wrappers.<SysUserPo>update().lambda()
                         .set(SysUserPo::getPhone, phone)
                         .eq(SysUserPo::getId, id));
@@ -218,7 +218,7 @@ public class SysUserManagerImpl extends BaseManagerImpl<SysUserQuery, SysUserDto
      */
     @Override
     public int updateUserAvatar(Long id, String avatar) {
-        return baseMapper.update(new SysUserDto(),
+        return baseMapper.update(null,
                 Wrappers.<SysUserPo>update().lambda()
                         .set(SysUserPo::getAvatar, avatar)
                         .eq(SysUserPo::getId, id));
@@ -233,7 +233,7 @@ public class SysUserManagerImpl extends BaseManagerImpl<SysUserQuery, SysUserDto
      */
     @Override
     public int resetUserPassword(Long id, String password) {
-        return baseMapper.update(new SysUserDto(),
+        return baseMapper.update(null,
                 Wrappers.<SysUserPo>update().lambda()
                         .set(SysUserPo::getPassword, password)
                         .eq(SysUserPo::getId, id));

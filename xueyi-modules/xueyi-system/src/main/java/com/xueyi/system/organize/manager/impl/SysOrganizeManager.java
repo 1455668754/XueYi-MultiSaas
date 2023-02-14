@@ -109,7 +109,8 @@ public class SysOrganizeManager implements ISysOrganizeManager {
         List<SysPostDto> postList = postManager.selectList(null);
         return new ArrayList<>(CollUtil.addAll(
                 postList.stream().map(SysOrganizeTree::new).collect(Collectors.toList()),
-                deptList.stream().map(SysOrganizeTree::new).collect(Collectors.toList())));
+                deptList.stream().map(SysOrganizeTree::new).collect(Collectors.toList()))
+        );
     }
 
     /**
@@ -126,10 +127,10 @@ public class SysOrganizeManager implements ISysOrganizeManager {
         List<SysRolePostMerge> rolePostMerges = rolePostMergeMapper.selectList(
                 Wrappers.<SysRolePostMerge>query().lambda()
                         .eq(SysRolePostMerge::getRoleId, roleId));
-        return CollUtil
-                .addAll(roleDeptMerges.stream().map(SysRoleDeptMerge::getDeptId).collect(Collectors.toList()),
-                        rolePostMerges.stream().map(SysRolePostMerge::getPostId).collect(Collectors.toList()))
-                .toArray(new Long[]{});
+        return CollUtil.addAll(
+                roleDeptMerges.stream().map(SysRoleDeptMerge::getDeptId).collect(Collectors.toList()),
+                rolePostMerges.stream().map(SysRolePostMerge::getPostId).collect(Collectors.toList())
+        ).toArray(new Long[]{});
     }
 
     /**

@@ -216,23 +216,33 @@ public class SysMenuController extends TreeController<SysMenuQuery, SysMenuDto, 
             warn(StrUtil.format("默认{}不允许修改！", getNodeName()));
         if (baseService.checkNameUnique(menu.getId(), menu.getParentId(), menu.getName()))
             warn(StrUtil.format("{}{}{}失败，{}名称已存在！", operate.getInfo(), getNodeName(), menu.getTitle(), getNodeName()));
-        if (operate.isAdd() && SecurityUtils.isNotAdminTenant() && menu.isCommon())
-            warn(StrUtil.format("{}{}{}失败，无操作权限！", operate.getInfo(), getNodeName(), menu.getTitle()));
-        if (operate.isEdit()) {
-            SysMenuDto original = baseService.selectById(menu.getId());
-            if (ObjectUtil.isNull(original)) warn("数据不存在！");
-            if (SecurityUtils.isNotAdminTenant() && original.isCommon())
-                warn(StrUtil.format("{}{}{}失败，无操作权限！", operate.getInfo(), getNodeName(), menu.getTitle()));
-            if (!StrUtil.equals(menu.getIsCommon(), original.getIsCommon()))
-                warn(StrUtil.format("{}{}{}失败，公共{}属性禁止变更！", operate.getInfo(), getNodeName(), menu.getTitle(), getNodeName()));
+
+        switch (operate) {
+            case ADD, ADD_FORCE -> {
+                if (SecurityUtils.isNotAdminTenant() && menu.isCommon())
+                    warn(StrUtil.format("{}{}{}失败，无操作权限！", operate.getInfo(), getNodeName(), menu.getTitle()));
+            }
+            case EDIT, EDIT_FORCE -> {
+                SysMenuDto original = baseService.selectById(menu.getId());
+                if (ObjectUtil.isNull(original))
+                    warn("数据不存在！");
+                if (SecurityUtils.isNotAdminTenant() && original.isCommon())
+                    warn(StrUtil.format("{}{}{}失败，无操作权限！", operate.getInfo(), getNodeName(), menu.getTitle()));
+                if (!StrUtil.equals(menu.getIsCommon(), original.getIsCommon()))
+                    warn(StrUtil.format("{}{}{}失败，公共{}属性禁止变更！", operate.getInfo(), getNodeName(), menu.getTitle(), getNodeName()));
+            }
         }
+
         if (menu.isCommon()) {
             SysModuleDto module = moduleService.selectById(menu.getModuleId());
-            if (ObjectUtil.isNull(module)) warn("数据不存在！");
+            if (ObjectUtil.isNull(module))
+                warn("数据不存在！");
             if (module.isNotCommon())
                 warn(StrUtil.format("{}{}{}失败，公共{}必须挂载在公共{}下！", operate.getInfo(), getNodeName(), menu.getTitle(), getNodeName(), getParentName()));
+
             SysMenuDto parentMenu = baseService.selectById(menu.getParentId());
-            if (ObjectUtil.isNull(parentMenu)) warn("数据不存在！");
+            if (ObjectUtil.isNull(parentMenu))
+                warn("数据不存在！");
             if (parentMenu.isNotCommon())
                 warn(StrUtil.format("{}{}{}失败，公共{}必须挂载在公共{}下！", operate.getInfo(), getNodeName(), menu.getTitle(), getNodeName(), getNodeName()));
         }

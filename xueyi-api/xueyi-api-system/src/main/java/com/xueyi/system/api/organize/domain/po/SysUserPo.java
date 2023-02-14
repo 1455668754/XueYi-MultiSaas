@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.common.core.annotation.Excel;
 import com.xueyi.common.core.annotation.Excel.Type;
 import com.xueyi.common.core.web.tenant.base.TBaseEntity;
+import com.xueyi.common.core.web.validate.V_A_E;
+import com.xueyi.common.core.web.validate.V_CUS;
 import com.xueyi.common.core.xss.Xss;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -34,7 +36,7 @@ public class SysUserPo extends TBaseEntity {
     /** 用户编码 */
     @Excel(name = "用户编码(*)")
     @Xss(message = "用户编码不能包含脚本字符")
-    @NotBlank(message = "用户编码不能为空")
+    @NotBlank(message = "用户编码不能为空", groups = {V_A_E.class})
     @Size(max = 64, message = "用户编码长度不能超过64个字符")
     @TableField(updateStrategy = FieldStrategy.NEVER)
     protected String code;
@@ -42,16 +44,16 @@ public class SysUserPo extends TBaseEntity {
     /** 用户账号 */
     @Excel(name = "登录名称")
     @Xss(message = "用户账号不能包含脚本字符")
-    @NotBlank(message = "用户账号不能为空")
+    @NotBlank(message = "用户账号不能为空", groups = {V_A_E.class})
     @Size(max = 30, message = "用户账号长度不能超过30个字符")
     @TableField(updateStrategy = FieldStrategy.NEVER)
     protected String userName;
 
     /** 用户昵称 */
-    @Excel(name = "用户名称")
+    @Excel(name = "用户昵称")
     @TableField(condition = LIKE)
-    @Xss(message = "用户编码不能包含脚本字符")
-    @NotBlank(message = "用户账号不能为空")
+    @Xss(message = "用户昵称不能包含脚本字符")
+    @NotBlank(message = "用户昵称不能为空", groups = {V_A_E.class, V_CUS.class})
     @Size(max = 30, message = "用户昵称长度不能超过30个字符")
     protected String nickName;
 

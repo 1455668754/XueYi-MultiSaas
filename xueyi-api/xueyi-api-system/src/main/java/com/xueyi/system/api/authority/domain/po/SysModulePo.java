@@ -1,5 +1,7 @@
 package com.xueyi.system.api.authority.domain.po;
 
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.common.core.web.tenant.common.TCBaseEntity;
 import lombok.Data;
@@ -13,8 +15,8 @@ import java.io.Serial;
  * @author xueyi
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @TableName("sys_module")
+@EqualsAndHashCode(callSuper = true)
 public class SysModulePo extends TCBaseEntity {
 
     @Serial
@@ -36,6 +38,7 @@ public class SysModulePo extends TCBaseEntity {
     protected String hideModule;
 
     /** 默认模块（Y是 N否） */
+    @TableField(updateStrategy = FieldStrategy.NEVER)
     protected String isDefault;
 
 }

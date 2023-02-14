@@ -4,6 +4,7 @@ import com.xueyi.common.web.entity.manager.IBaseManager;
 import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
 import com.xueyi.system.api.dict.domain.query.SysDictDataQuery;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -20,4 +21,12 @@ public interface ISysDictDataManager extends IBaseManager<SysDictDataQuery, SysD
      * @return 字典数据对象集合
      */
     List<SysDictDataDto> selectListByCode(String code);
+
+    /**
+     * 批量查询字典数据对象列表
+     *
+     * @param codes 字典编码集合
+     * @return 字典数据对象集合
+     */
+    List<SysDictDataDto> selectListByCodes(Collection<String> codes);
 }

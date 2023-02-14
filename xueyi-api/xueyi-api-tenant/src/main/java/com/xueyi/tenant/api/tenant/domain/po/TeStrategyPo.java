@@ -1,5 +1,7 @@
 package com.xueyi.tenant.api.tenant.domain.po;
 
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import lombok.Data;
@@ -24,9 +26,11 @@ public class TeStrategyPo extends BaseEntity {
     protected Long sourceId;
 
     /** 数据源编码 */
+    @TableField(updateStrategy = FieldStrategy.NEVER)
     protected String sourceSlave;
 
     /** 默认策略（Y是 N否） */
+    @TableField(updateStrategy = FieldStrategy.NEVER)
     protected String isDefault;
 
 }

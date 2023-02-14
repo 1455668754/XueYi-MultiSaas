@@ -1,5 +1,6 @@
 package com.xueyi.tenant.api.tenant.domain.po;
 
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
@@ -27,13 +28,14 @@ public class TeTenantPo extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /** 策略Id */
+    @TableField(updateStrategy = FieldStrategy.NEVER)
     protected Long strategyId;
 
     /** 名称 */
-    @TableField(condition = LIKE)
     @Xss(message = "企业账号不能包含脚本字符")
     @NotBlank(message = "企业账号不能为空")
     @Size(max = 30, message = "企业账号长度不能超过30个字符")
+    @TableField(condition = LIKE, updateStrategy = FieldStrategy.NEVER)
     protected String name;
 
     /** 系统名称 */
@@ -58,6 +60,7 @@ public class TeTenantPo extends BaseEntity {
     protected String isLessor;
 
     /** 默认租户（Y是 N否） */
+    @TableField(updateStrategy = FieldStrategy.NEVER)
     protected String isDefault;
 
 }

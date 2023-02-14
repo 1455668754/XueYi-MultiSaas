@@ -10,6 +10,7 @@ import com.xueyi.system.dict.manager.ISysDictDataManager;
 import com.xueyi.system.dict.mapper.SysDictDataMapper;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -31,6 +32,20 @@ public class SysDictDataManagerImpl extends BaseManagerImpl<SysDictDataQuery, Sy
         List<SysDictDataPo> dictDataList = baseMapper.selectList(
                 Wrappers.<SysDictDataPo>query().lambda()
                         .eq(SysDictDataPo::getCode, code));
+        return baseConverter.mapperDto(dictDataList);
+    }
+
+    /**
+     * 批量查询字典数据对象列表
+     *
+     * @param codes 字典编码集合
+     * @return 字典数据对象集合
+     */
+    @Override
+    public List<SysDictDataDto> selectListByCodes(Collection<String> codes) {
+        List<SysDictDataPo> dictDataList = baseMapper.selectList(
+                Wrappers.<SysDictDataPo>query().lambda()
+                        .in(SysDictDataPo::getCode, codes));
         return baseConverter.mapperDto(dictDataList);
     }
 }

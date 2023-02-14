@@ -23,8 +23,8 @@ import static com.xueyi.system.api.authority.domain.merge.MergeGroup.MODULE_SysM
  * @author xueyi
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @TableName("sys_menu")
+@EqualsAndHashCode(callSuper = true)
 public class SysMenuPo extends TCTreeEntity<SysMenuDto> {
 
     @Serial
