@@ -67,7 +67,6 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigQuery, SysCon
         return ObjectUtil.isNotNull(baseManager.checkIsBuiltIn(ObjectUtil.isNull(Id) ? BaseConstants.NONE_ID : Id));
     }
 
-
     /**
      * 缓存更新
      *
@@ -79,23 +78,23 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigQuery, SysCon
     @Override
     protected void refreshCache(OperateConstants.ServiceType operate, RedisConstants.OperateType operateCache, SysConfigDto dto, Collection<SysConfigDto> dtoList) {
         switch (operateCache) {
-            case REFRESH_ALL:
+            case REFRESH_ALL -> {
                 List<SysConfigDto> allList = baseManager.selectList(null);
                 redisService.deleteObject(getCacheKey());
                 redisService.refreshMapCache(getCacheKey(), allList, SysConfigDto::getCode, SysConfigDto::getValue);
-                break;
-            case REFRESH:
+            }
+            case REFRESH -> {
                 if (operate.isSingle())
                     redisService.refreshMapValueCache(getCacheKey(), dto::getCode, dto::getValue);
                 else if (operate.isBatch())
                     dtoList.forEach(item -> redisService.refreshMapValueCache(getCacheKey(), item::getCode, item::getValue));
-                break;
-            case REMOVE:
+            }
+            case REMOVE -> {
                 if (operate.isSingle())
                     redisService.removeMapValueCache(getCacheKey(), dto.getCode());
                 else if (operate.isBatch())
-                    redisService.removeMapValueCache(getCacheKey(), dtoList.stream().map(SysConfigDto::getCode).toArray());
-                break;
+                    redisService.removeMapValueCache(getCacheKey(), dtoList.stream().map(SysConfigDto::getCode).toArray(String[]::new));
+            }
         }
     }
 }

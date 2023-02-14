@@ -70,23 +70,23 @@ public class TeSourceServiceImpl extends BaseServiceImpl<TeSourceQuery, TeSource
     @Override
     protected void refreshCache(OperateConstants.ServiceType operate, RedisConstants.OperateType operateCache, TeSourceDto dto, Collection<TeSourceDto> dtoList) {
         switch (operateCache) {
-            case REFRESH_ALL:
+            case REFRESH_ALL -> {
                 List<TeSourceDto> allList = baseManager.selectList(null);
                 redisService.deleteObject(getCacheKey());
                 redisService.refreshMapCache(getCacheKey(), allList, TeSourceDto::getSlave, TeSourceDto -> TeSourceDto);
-                break;
-            case REFRESH:
+            }
+            case REFRESH -> {
                 if (operate.isSingle())
                     redisService.refreshMapValueCache(getCacheKey(), dto::getSlave, () -> dto);
                 else if (operate.isBatch())
                     dtoList.forEach(item -> redisService.refreshMapValueCache(getCacheKey(), item::getSlave, () -> item));
-                break;
-            case REMOVE:
+            }
+            case REMOVE -> {
                 if (operate.isSingle())
                     redisService.removeMapValueCache(getCacheKey(), dto.getSlave());
                 else if (operate.isBatch())
-                    redisService.removeMapValueCache(getCacheKey(), dtoList.stream().map(TeSourceDto::getSlave).toArray());
-                break;
+                    redisService.removeMapValueCache(getCacheKey(), dtoList.stream().map(TeSourceDto::getSlave).toArray(String[]::new));
+            }
         }
     }
 }

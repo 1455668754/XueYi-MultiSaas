@@ -54,23 +54,23 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeQuery, Sy
     @Override
     protected void refreshCache(OperateConstants.ServiceType operate, RedisConstants.OperateType operateCache, SysDictTypeDto dto, Collection<SysDictTypeDto> dtoList) {
         switch (operateCache) {
-            case REFRESH_ALL:
+            case REFRESH_ALL -> {
                 List<SysDictTypeDto> allList = baseManager.selectList(null);
                 redisService.deleteObject(getCacheKey());
                 redisService.refreshMapCache(getCacheKey(), allList, SysDictTypeDto::getCode, SysDictTypeDto::getSubList);
-                break;
-            case REFRESH:
+            }
+            case REFRESH -> {
                 if (operate.isSingle())
                     redisService.refreshMapValueCache(getCacheKey(), dto::getCode, dto::getSubList);
                 else if (operate.isBatch())
                     dtoList.forEach(item -> redisService.refreshMapValueCache(getCacheKey(), item::getCode, item::getSubList));
-                break;
-            case REMOVE:
+            }
+            case REMOVE -> {
                 if (operate.isSingle())
                     redisService.removeMapValueCache(getCacheKey(), dto.getCode());
                 else if (operate.isBatch())
-                    redisService.removeMapValueCache(getCacheKey(), dtoList.stream().map(SysDictTypeDto::getCode).toArray());
-                break;
+                    redisService.removeMapValueCache(getCacheKey(), dtoList.stream().map(SysDictTypeDto::getCode).toArray(String[]::new));
+            }
         }
     }
 }

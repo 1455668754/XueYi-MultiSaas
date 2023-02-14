@@ -95,7 +95,7 @@ public class BaseHandleServiceImpl<Q extends BaseEntity, D extends BaseEntity, I
                 if (operate.isSingle())
                     redisService.removeMapValueCache(getCacheKey(), dto.getId());
                 else if (operate.isBatch())
-                    redisService.removeMapValueCache(getCacheKey(), dtoList.stream().map(D::getIdStr).toArray());
+                    redisService.removeMapValueCache(getCacheKey(), dtoList.stream().map(D::getIdStr).toArray(String[]::new));
             }
         }
     }
