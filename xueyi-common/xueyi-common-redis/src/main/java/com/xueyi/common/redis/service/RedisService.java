@@ -1,5 +1,6 @@
 package com.xueyi.common.redis.service;
 
+import com.xueyi.common.core.exception.UtilException;
 import com.xueyi.common.core.utils.core.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundSetOperations;
@@ -293,7 +294,12 @@ public class RedisService {
     public <T, K> void refreshMapCache(String mapKey, List<T> cacheList, Function<? super T, String> keyGet, Function<? super T, K> valueGet) {
         Map<String, K> resultMap = new HashMap<>();
         if (CollUtil.isNotEmpty(cacheList))
-            resultMap = cacheList.stream().collect(Collectors.toMap(keyGet, valueGet));
+            resultMap = cacheList.stream()
+                    .filter(item -> {
+                        if (StrUtil.isEmpty(keyGet.apply(item)))
+                            throw new UtilException("cache key cannot be empty");
+                        return ObjectUtil.isNotNull(valueGet.apply(item));
+                    }).collect(Collectors.toMap(keyGet, valueGet));
         if (MapUtil.isNotEmpty(resultMap)) {
             setCacheMap(mapKey, resultMap);
             expire(mapKey, NumberUtil.Nine, TimeUnit.HOURS);
