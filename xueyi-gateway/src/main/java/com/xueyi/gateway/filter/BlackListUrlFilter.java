@@ -1,6 +1,6 @@
 package com.xueyi.gateway.filter;
 
-import com.xueyi.common.core.utils.ServletUtil;
+import com.xueyi.common.core.utils.servlet.ServletUtil;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.stereotype.Component;

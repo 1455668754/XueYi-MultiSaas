@@ -3,7 +3,7 @@ package com.xueyi.auth.service.impl;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.http.HttpUtil;
 import com.xueyi.auth.service.ISysLogService;
-import com.xueyi.common.core.utils.ServletUtil;
+import com.xueyi.common.core.utils.servlet.ServletUtil;
 import com.xueyi.common.security.service.TokenService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

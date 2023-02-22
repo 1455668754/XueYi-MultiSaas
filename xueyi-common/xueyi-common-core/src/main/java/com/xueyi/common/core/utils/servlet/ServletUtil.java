@@ -1,5 +1,7 @@
-package com.xueyi.common.core.utils;
+package com.xueyi.common.core.utils.servlet;
 
+import cn.hutool.core.exceptions.UtilException;
+import cn.hutool.core.io.IoUtil;
 import com.alibaba.fastjson2.JSON;
 import com.xueyi.common.core.constant.basic.CacheConstants;
 import com.xueyi.common.core.constant.basic.HttpConstants;
@@ -31,6 +33,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Collections;
@@ -362,5 +365,37 @@ public class ServletUtil {
         R<?> result = R.fail(code, value.toString());
         DataBuffer dataBuffer = response.bufferFactory().wrap(JSON.toJSONString(result).getBytes());
         return response.writeWith(Mono.just(dataBuffer));
+    }
+
+
+    /**
+     * 设置servlet响应
+     *
+     * @param response HttpServletResponse
+     * @param value    响应内容
+     */
+    public static void webResponseWriter(HttpServletResponse response, Object value) {
+        webResponseWriter(response, MediaType.APPLICATION_JSON_UTF8_VALUE, value);
+    }
+
+    /**
+     * 设置servlet响应
+     *
+     * @param response    HttpServletResponse
+     * @param contentType content-type
+     * @param value       响应内容
+     */
+    public static void webResponseWriter(HttpServletResponse response, String contentType, Object value) {
+        response.setContentType(contentType);
+        Writer writer = null;
+        try {
+            writer = response.getWriter();
+            writer.write(JSON.toJSONString(value));
+            writer.flush();
+        } catch (IOException var8) {
+            throw new UtilException(var8);
+        } finally {
+            IoUtil.close(writer);
+        }
     }
 }

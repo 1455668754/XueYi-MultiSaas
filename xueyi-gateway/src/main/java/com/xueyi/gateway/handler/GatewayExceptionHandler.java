@@ -1,6 +1,6 @@
 package com.xueyi.gateway.handler;
 
-import com.xueyi.common.core.utils.ServletUtil;
+import com.xueyi.common.core.utils.servlet.ServletUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
 import org.springframework.cloud.gateway.support.NotFoundException;

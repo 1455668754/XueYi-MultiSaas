@@ -3,6 +3,7 @@ package com.xueyi.common.security.handler;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.CacheConstants;
+import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.web.result.R;
 import com.xueyi.system.api.authority.domain.dto.SysClientDto;
 import com.xueyi.system.api.authority.feign.RemoteClientService;
@@ -40,44 +41,21 @@ public class ClientRegisteredRepositoryHandler implements RegisteredClientReposi
 
     private final RemoteClientService remoteClientService;
 
-    /**
-     * Saves the registered client.
-     *
-     * <p>
-     * IMPORTANT: Sensitive information should be encoded externally from the
-     * implementation, e.g. {@link RegisteredClient#getClientSecret()}
-     *
-     * @param registeredClient the {@link RegisteredClient}
-     */
     @Override
     public void save(RegisteredClient registeredClient) {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * Returns the registered client identified by the provided {@code id}, or
-     * {@code null} if not found.
-     *
-     * @param id the registration identifier
-     * @return the {@link RegisteredClient} if found, otherwise {@code null}
-     */
     @Override
     public RegisteredClient findById(String id) {
         throw new UnsupportedOperationException();
     }
 
     /**
-     * Returns the registered client identified by the provided {@code clientId}, or
-     * {@code null} if not found.
-     * @param clientId the client identifier
-     * @return the {@link RegisteredClient} if found, otherwise {@code null}
-     */
-
-    /**
-     * 重写原生方法支持redis缓存
+     * redis缓存支持
      *
-     * @param clientId
-     * @return
+     * @param clientId 客户端Id
+     * @return 结果
      */
     @Override
     @SneakyThrows
@@ -88,11 +66,9 @@ public class ClientRegisteredRepositoryHandler implements RegisteredClientReposi
             throw new OAuth2AuthorizationCodeRequestAuthenticationException(new OAuth2Error("客户端查询异常，请检查数据库链接"), null);
         SysClientDto clientDetails = R.getData();
 
-        // {noop} 加密的特征码
-        String NOOP = "{noop}";
         RegisteredClient.Builder builder = RegisteredClient.withId(clientDetails.getClientId())
                 .clientId(clientDetails.getClientId())
-                .clientSecret(NOOP + clientDetails.getClientSecret())
+                .clientSecret(SecurityConstants.NOOP + clientDetails.getClientSecret())
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC);
 
         // 授权模式

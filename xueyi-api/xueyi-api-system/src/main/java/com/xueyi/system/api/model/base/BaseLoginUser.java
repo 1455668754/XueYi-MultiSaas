@@ -24,8 +24,11 @@ public class BaseLoginUser<User> implements UserDetails, OAuth2AuthenticatedPrin
     @Serial
     private static final long serialVersionUID = 1L;
 
-    /** 用户唯一标识 */
-    protected String token;
+    /** 用户唯一标识 - 访问令牌 */
+    protected String accessToken;
+
+    /** 用户唯一标识 - 刷新令牌 */
+    protected String refreshToken;
 
     /** 企业账号Id */
     protected Long enterpriseId;

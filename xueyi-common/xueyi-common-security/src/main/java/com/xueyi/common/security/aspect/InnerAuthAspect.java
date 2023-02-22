@@ -2,8 +2,8 @@ package com.xueyi.common.security.aspect;
 
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.exception.InnerAuthException;
-import com.xueyi.common.core.utils.ServletUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
+import com.xueyi.common.core.utils.servlet.ServletUtil;
 import com.xueyi.common.security.annotation.InnerAuth;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;

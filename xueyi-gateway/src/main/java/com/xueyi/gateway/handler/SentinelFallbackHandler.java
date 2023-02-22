@@ -2,7 +2,7 @@ package com.xueyi.gateway.handler;
 
 import com.alibaba.csp.sentinel.adapter.gateway.sc.callback.GatewayCallbackManager;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
-import com.xueyi.common.core.utils.ServletUtil;
+import com.xueyi.common.core.utils.servlet.ServletUtil;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebExceptionHandler;

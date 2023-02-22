@@ -60,6 +60,7 @@ public class UserDetailsServiceImpl implements IUserDetailsService {
         }
 
         logService.recordLoginInfo(sourceName, enterpriseId, enterpriseName, userId, userName, userNick, Constants.LOGIN_SUCCESS, "登录成功");
+        loginUser.setPassword(SecurityConstants.BCRYPT + loginUser.getPassword());
         return loginUser;
     }
 

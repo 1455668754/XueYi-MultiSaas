@@ -1,10 +1,10 @@
 package com.xueyi.common.security.feign;
 
 import com.xueyi.common.core.constant.basic.SecurityConstants;
-import com.xueyi.common.core.utils.ServletUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.utils.ip.IpUtil;
+import com.xueyi.common.core.utils.servlet.ServletUtil;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import jakarta.servlet.http.HttpServletRequest;

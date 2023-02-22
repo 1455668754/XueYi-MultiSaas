@@ -2,7 +2,7 @@ package com.xueyi.common.security.interceptor;
 
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.context.SecurityContextHolder;
-import com.xueyi.common.core.utils.ServletUtil;
+import com.xueyi.common.core.utils.servlet.ServletUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.method.HandlerMethod;

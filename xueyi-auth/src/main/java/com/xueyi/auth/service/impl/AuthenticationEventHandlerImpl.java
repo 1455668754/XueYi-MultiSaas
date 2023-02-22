@@ -4,22 +4,20 @@ import cn.hutool.core.map.MapUtil;
 import com.xueyi.auth.service.ISysLogService;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.utils.core.CollUtil;
+import com.xueyi.common.core.utils.servlet.ServletUtil;
+import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.security.service.TokenService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.http.server.ServletServerHttpResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2RefreshToken;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AccessTokenResponse;
-import org.springframework.security.oauth2.core.http.converter.OAuth2AccessTokenResponseHttpMessageConverter;
 import org.springframework.security.oauth2.server.authorization.authentication.OAuth2AccessTokenAuthenticationToken;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -36,12 +34,6 @@ import java.util.Map;
 @Slf4j
 @Component
 public class AuthenticationEventHandlerImpl implements AuthenticationSuccessHandler, AuthenticationFailureHandler {
-
-    private final MappingJackson2HttpMessageConverter errorHttpResponseConverter = new MappingJackson2HttpMessageConverter();
-
-    private final HttpMessageConverter<OAuth2AccessTokenResponse> accessTokenHttpResponseConverter = new OAuth2AccessTokenResponseHttpMessageConverter();
-
-    private static final String REDIRECT_URL = "redirect_url";
 
     @Autowired
     private TokenService tokenService;
@@ -81,7 +73,9 @@ public class AuthenticationEventHandlerImpl implements AuthenticationSuccessHand
         OAuth2RefreshToken refreshToken = accessTokenAuthentication.getRefreshToken();
         Map<String, Object> additionalParameters = accessTokenAuthentication.getAdditionalParameters();
 
-        OAuth2AccessTokenResponse.Builder builder = OAuth2AccessTokenResponse.withToken(accessToken.getTokenValue()).tokenType(accessToken.getTokenType()).scopes(accessToken.getScopes());
+        OAuth2AccessTokenResponse.Builder builder = OAuth2AccessTokenResponse.withToken(accessToken.getTokenValue())
+                .tokenType(accessToken.getTokenType())
+                .scopes(accessToken.getScopes());
         if (accessToken.getIssuedAt() != null && accessToken.getExpiresAt() != null) {
             builder.expiresIn(ChronoUnit.SECONDS.between(accessToken.getIssuedAt(), accessToken.getExpiresAt()));
         }
@@ -92,12 +86,10 @@ public class AuthenticationEventHandlerImpl implements AuthenticationSuccessHand
             builder.additionalParameters(additionalParameters);
         }
         OAuth2AccessTokenResponse accessTokenResponse = builder.build();
-        ServletServerHttpResponse httpResponse = new ServletServerHttpResponse(response);
 
         // 无状态 注意删除 context 上下文的信息
         SecurityContextHolder.clearContext();
-        this.accessTokenHttpResponseConverter.write(accessTokenResponse, null, httpResponse);
-
+        ServletUtil.webResponseWriter(response, AjaxResult.success(accessTokenResponse));
 
 //        tokenService.createToken(userInfo);
     }

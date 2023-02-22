@@ -2,14 +2,13 @@ package com.xueyi.common.security.service;
 
 import com.xueyi.common.core.constant.basic.CacheConstants;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
-import com.xueyi.common.core.constant.basic.TenantConstants;
 import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.JwtUtil;
-import com.xueyi.common.core.utils.ServletUtil;
-import com.xueyi.common.core.utils.core.IdUtil;
+import com.xueyi.common.core.utils.core.MapUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.utils.ip.IpUtil;
+import com.xueyi.common.core.utils.servlet.ServletUtil;
 import com.xueyi.common.redis.service.RedisService;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.system.api.model.Source;
@@ -17,6 +16,7 @@ import com.xueyi.system.api.model.base.BaseLoginUser;
 import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,7 +39,11 @@ public abstract class BaseTokenService<User, LoginUser extends BaseLoginUser<Use
 
     protected abstract String getAccessToken();
 
-    protected long getTacitExpireTime() {
+    protected long getAccessExpireTime() {
+        return CacheConstants.EXPIRATION;
+    }
+
+    protected long getRefreshExpireTime() {
         return CacheConstants.EXPIRATION;
     }
 
@@ -47,65 +51,71 @@ public abstract class BaseTokenService<User, LoginUser extends BaseLoginUser<Use
         return CacheConstants.REFRESH_TIME * MILLIS_MINUTE;
     }
 
+    public Map<String, Object> createCache(OAuth2Authorization authorization) {
+        return null;
+    }
+
+    /**
+     * 创建令牌
+     *
+     * @param loginUser 登录信息
+     * @return JWT令牌
+     */
+    public Map<String, Object> createToken(LoginUser loginUser) {
+        Map<String, Object> claimsMap = new HashMap<>();
+
+        claimsMap.put(SecurityConstants.BaseSecurity.ACCESS_TOKEN.getCode(), loginUser.getAccessToken());
+        claimsMap.put(SecurityConstants.BaseSecurity.REFRESH_TOKEN.getCode(), loginUser.getRefreshToken());
+        claimsMap.put(SecurityConstants.BaseSecurity.ENTERPRISE_ID.getCode(), loginUser.getEnterpriseId());
+        claimsMap.put(SecurityConstants.BaseSecurity.ENTERPRISE_NAME.getCode(), loginUser.getEnterpriseName());
+        claimsMap.put(SecurityConstants.BaseSecurity.IS_LESSOR.getCode(), loginUser.getIsLessor());
+        claimsMap.put(SecurityConstants.BaseSecurity.USER_ID.getCode(), loginUser.getUserId());
+        claimsMap.put(SecurityConstants.BaseSecurity.USER_NAME.getCode(), loginUser.getUserName());
+        claimsMap.put(SecurityConstants.BaseSecurity.NICK_NAME.getCode(), loginUser.getNickName());
+        claimsMap.put(SecurityConstants.BaseSecurity.USER_TYPE.getCode(), loginUser.getUserType());
+        claimsMap.put(SecurityConstants.BaseSecurity.SOURCE_NAME.getCode(), loginUser.getSourceName());
+        claimsMap.put(SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode(), loginUser.getAccountType().getCode());
+
+        claimsMap.put(SecurityConstants.BaseSecurity.USER_KEY.getCode(), loginUser.getAccessToken());
+
+        // 接口返回信息
+        Map<String, Object> rspMap = new HashMap<>();
+        rspMap.put("access_token", JwtUtil.createToken(claimsMap));
+        rspMap.put("expires_in", getRefreshExpireTime());
+        return rspMap;
+    }
+
     /**
      * 创建令牌
      *
      * @param loginUser 登录信息
      * @param loginMap  缓存存储信息
-     * @param claimsMap Jwt存储信息
      */
-    protected Map<String, Object> createToken(LoginUser loginUser, Map<String, Object> loginMap, Map<String, Object> claimsMap) {
+    protected Map<String, Object> createToken(LoginUser loginUser, Map<String, Object> loginMap) {
+        if (MapUtil.isNull(loginMap))
+            loginMap = new HashMap<>();
 
-        Long enterpriseId = loginUser.getEnterprise().getId();
-        String enterpriseName = loginUser.getEnterprise().getName();
-        Long userId = loginUser.getUserId();
-        String userName = loginUser.getUserName();
-        String nickName = loginUser.getNickName();
-        String sourceName = loginUser.getSource().getMaster();
-        TenantConstants.AccountType accountType = loginUser.getAccountType();
-
-        String token = enterpriseId + StrUtil.COLON + IdUtil.fastUUID();
-
-        loginUser.setToken(token);
-        loginUser.setEnterpriseId(enterpriseId);
-        loginUser.setEnterpriseName(enterpriseName);
-        loginUser.setUserId(userId);
-        loginUser.setUserName(userName);
-        loginUser.setNickName(nickName);
-        loginUser.setSourceName(sourceName);
+        loginUser.setEnterpriseId(loginUser.getEnterprise().getId());
+        loginUser.setEnterpriseName(loginUser.getEnterprise().getName());
+        loginUser.setUserId(loginUser.getUserId());
+        loginUser.setUserName(loginUser.getUserName());
+        loginUser.setNickName(loginUser.getNickName());
+        loginUser.setSourceName(loginUser.getSource().getMaster());
         loginUser.setIpaddr(IpUtil.getIpAddr(ServletUtil.getRequest()));
 
         loginUser.setLoginTime(System.currentTimeMillis());
 
         // 根据uuid将loginUser缓存
-        String userKey = getTokenKey(loginUser.getToken());
-        loginMap.put(SecurityConstants.BaseSecurity.TOKEN.getCode(), loginUser.getToken());
+        loginMap.put(SecurityConstants.BaseSecurity.ACCESS_TOKEN.getCode(), loginUser.getAccessToken());
+        loginMap.put(SecurityConstants.BaseSecurity.REFRESH_TOKEN.getCode(), loginUser.getRefreshToken());
         loginMap.put(SecurityConstants.BaseSecurity.ENTERPRISE.getCode(), loginUser.getEnterprise());
         loginMap.put(SecurityConstants.BaseSecurity.USER.getCode(), loginUser.getUser());
         loginMap.put(SecurityConstants.BaseSecurity.SOURCE.getCode(), loginUser.getSource());
         loginMap.put(SecurityConstants.BaseSecurity.EXPIRE_TIME.getCode(), getExpireTime(loginUser.getLoginTime()));
         loginMap.put(SecurityConstants.BaseSecurity.LOGIN_USER.getCode(), loginUser);
-        loginMap.put(SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode(), accountType.getCode());
-        redisService.setCacheMap(userKey, loginMap);
-        redisService.expire(userKey, getTacitExpireTime(), TimeUnit.MINUTES);
+        loginMap.put(SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode(), loginUser.getAccountType().getCode());
 
-        // Jwt存储信息
-        claimsMap.put(SecurityConstants.BaseSecurity.USER_KEY.getCode(), token);
-        claimsMap.put(SecurityConstants.BaseSecurity.ENTERPRISE_ID.getCode(), enterpriseId);
-        claimsMap.put(SecurityConstants.BaseSecurity.ENTERPRISE_NAME.getCode(), enterpriseName);
-        claimsMap.put(SecurityConstants.BaseSecurity.IS_LESSOR.getCode(), loginUser.getIsLessor());
-        claimsMap.put(SecurityConstants.BaseSecurity.USER_ID.getCode(), userId);
-        claimsMap.put(SecurityConstants.BaseSecurity.USER_NAME.getCode(), userName);
-        claimsMap.put(SecurityConstants.BaseSecurity.NICK_NAME.getCode(), nickName);
-        claimsMap.put(SecurityConstants.BaseSecurity.USER_TYPE.getCode(), loginUser.getUserType());
-        claimsMap.put(SecurityConstants.BaseSecurity.SOURCE_NAME.getCode(), sourceName);
-        claimsMap.put(SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode(), accountType.getCode());
-
-        // 接口返回信息
-        Map<String, Object> rspMap = new HashMap<>();
-        rspMap.put("access_token", JwtUtil.createToken(claimsMap));
-        rspMap.put("expires_in", getTacitExpireTime());
-        return rspMap;
+        return loginMap;
     }
 
     /**
@@ -220,10 +230,17 @@ public abstract class BaseTokenService<User, LoginUser extends BaseLoginUser<Use
      * 设置用户身份信息
      */
     public void setLoginUser(LoginUser loginUser) {
-        if (ObjectUtil.isNotNull(loginUser) && StrUtil.isNotEmpty(loginUser.getToken())) {
-            redisService.setCacheMapValue(getTokenKey(loginUser.getToken()), SecurityConstants.BaseSecurity.ENTERPRISE.getCode(), loginUser.getEnterprise());
-            redisService.setCacheMapValue(getTokenKey(loginUser.getToken()), SecurityConstants.BaseSecurity.USER.getCode(), loginUser.getUser());
-            redisService.setCacheMapValue(getTokenKey(loginUser.getToken()), SecurityConstants.BaseSecurity.LOGIN_USER.getCode(), loginUser);
+        if (ObjectUtil.isNotNull(loginUser)) {
+            if (StrUtil.isNotEmpty(loginUser.getAccessToken())) {
+                redisService.setCacheMapValue(loginUser.getAccessToken(), SecurityConstants.BaseSecurity.ENTERPRISE.getCode(), loginUser.getEnterprise());
+                redisService.setCacheMapValue(loginUser.getAccessToken(), SecurityConstants.BaseSecurity.USER.getCode(), loginUser.getUser());
+                redisService.setCacheMapValue(loginUser.getAccessToken(), SecurityConstants.BaseSecurity.LOGIN_USER.getCode(), loginUser);
+            }
+            if (StrUtil.isNotEmpty(loginUser.getRefreshToken())) {
+                redisService.setCacheMapValue(loginUser.getRefreshToken(), SecurityConstants.BaseSecurity.ENTERPRISE.getCode(), loginUser.getEnterprise());
+                redisService.setCacheMapValue(loginUser.getRefreshToken(), SecurityConstants.BaseSecurity.USER.getCode(), loginUser.getUser());
+                redisService.setCacheMapValue(loginUser.getRefreshToken(), SecurityConstants.BaseSecurity.LOGIN_USER.getCode(), loginUser);
+            }
         }
     }
 
@@ -341,7 +358,7 @@ public abstract class BaseTokenService<User, LoginUser extends BaseLoginUser<Use
         long loginTime = System.currentTimeMillis();
         String userKey = getTokenKey(token);
         redisService.setCacheMapValue(userKey, SecurityConstants.BaseSecurity.EXPIRE_TIME.getCode(), getExpireTime(loginTime));
-        redisService.expire(userKey, getTacitExpireTime(), TimeUnit.MINUTES);
+        redisService.expire(userKey, getRefreshExpireTime(), TimeUnit.MINUTES);
     }
 
     /**
@@ -374,7 +391,7 @@ public abstract class BaseTokenService<User, LoginUser extends BaseLoginUser<Use
      * @return 过期时间
      */
     protected long getExpireTime(long loginTime) {
-        return loginTime + getTacitExpireTime() * MILLIS_MINUTE;
+        return loginTime + getRefreshExpireTime() * MILLIS_MINUTE;
     }
 
 }

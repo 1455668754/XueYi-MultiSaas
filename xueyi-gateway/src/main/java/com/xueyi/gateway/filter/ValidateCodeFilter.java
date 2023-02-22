@@ -2,8 +2,8 @@ package com.xueyi.gateway.filter;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
-import com.xueyi.common.core.utils.ServletUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
+import com.xueyi.common.core.utils.servlet.ServletUtil;
 import com.xueyi.gateway.config.properties.CaptchaProperties;
 import com.xueyi.gateway.service.ValidateCodeService;
 import org.springframework.beans.factory.annotation.Autowired;

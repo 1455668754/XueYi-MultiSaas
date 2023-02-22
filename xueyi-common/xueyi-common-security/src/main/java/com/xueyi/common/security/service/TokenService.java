@@ -3,15 +3,19 @@ package com.xueyi.common.security.service;
 import com.xueyi.common.core.constant.basic.CacheConstants;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.utils.JwtUtil;
-import com.xueyi.common.core.utils.ServletUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
+import com.xueyi.common.core.utils.servlet.ServletUtil;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.system.api.model.DataScope;
 import com.xueyi.system.api.model.LoginUser;
+import com.xueyi.system.api.model.base.BaseLoginUser;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
 import org.springframework.stereotype.Component;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,7 +25,7 @@ import java.util.Map;
  * @author xueyi
  */
 @Component
-public class TokenService extends BaseTokenService<SysUserDto, LoginUser>{
+public class TokenService extends BaseTokenService<SysUserDto, LoginUser> {
 
     @Override
     protected String getAccessToken() {
@@ -29,13 +33,19 @@ public class TokenService extends BaseTokenService<SysUserDto, LoginUser>{
     }
 
     @Override
-    protected long getTacitExpireTime() {
+    protected long getRefreshExpireTime() {
         return CacheConstants.EXPIRATION;
     }
 
     @Override
     protected Long getMillisMinuteTen() {
         return CacheConstants.REFRESH_TIME * MILLIS_MINUTE;
+    }
+
+    public Map<String, Object> createCache(OAuth2Authorization authorization) {
+        UsernamePasswordAuthenticationToken authenticationToken = authorization.getAttribute(Principal.class.getName());
+        BaseLoginUser<?> loginUser = (BaseLoginUser<?>) authenticationToken.getPrincipal();
+        return null;
     }
 
     /**
@@ -55,10 +65,7 @@ public class TokenService extends BaseTokenService<SysUserDto, LoginUser>{
         loginMap.put(SecurityConstants.AdminSecurity.ROUTE_URL.getCode(), loginUser.getRouteURL());
         loginUser.initRouteURL();
 
-        // Jwt存储信息
-        Map<String, Object> claimsMap = new HashMap<>();
-
-        return createToken(loginUser, loginMap, claimsMap);
+        return createToken(loginUser, loginMap);
     }
 
     /**

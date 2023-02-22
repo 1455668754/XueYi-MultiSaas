@@ -62,6 +62,12 @@ public class SecurityConstants {
     /** 授权码模式confirm */
     public static final String CUSTOM_CONSENT_PAGE_URI = "/token/confirm_access";
 
+    /** {bcrypt} 加密的特征码 */
+    public static final String BCRYPT = "{bcrypt}";
+
+    /** {noop} 加密的特征码 */
+    public static final String NOOP = "{noop}";
+
     /** 认证模式 */
     @Getter
     @AllArgsConstructor
@@ -104,6 +110,8 @@ public class SecurityConstants {
         ALLOW_LIST("allow-list", "白名单标识"),
         BLOCK_LIST("block-list", "黑名单标识"),
         TOKEN("token", "用户唯一标识"),
+        ACCESS_TOKEN("access_token", "用户唯一标识 - 访问令牌"),
+        REFRESH_TOKEN("refresh_token", "用户唯一标识 - 刷新令牌"),
         ENTERPRISE("enterprise", "企业信息"),
         ENTERPRISE_ID("enterprise_id", "企业Id"),
         ENTERPRISE_NAME("enterprise_name", "企业账号"),

@@ -1,8 +1,8 @@
 package com.xueyi.auth.support.base;
 
-import com.xueyi.common.core.utils.ServletUtil;
 import com.xueyi.common.core.utils.core.NumberUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
+import com.xueyi.common.core.utils.servlet.ServletUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

@@ -1,6 +1,6 @@
 package com.xueyi.common.core.web.page;
 
-import com.xueyi.common.core.utils.ServletUtil;
+import com.xueyi.common.core.utils.servlet.ServletUtil;
 
 /**
  * 表格数据处理
