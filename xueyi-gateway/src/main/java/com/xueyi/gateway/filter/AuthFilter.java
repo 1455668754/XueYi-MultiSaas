@@ -1,6 +1,5 @@
 package com.xueyi.gateway.filter;
 
-import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.basic.TenantConstants.AccountType;
 import com.xueyi.common.core.utils.JwtUtil;
@@ -40,14 +39,7 @@ public class AuthFilter implements WebFilter {
         ServerHttpRequest.Builder mutate = request.mutate();
         String url = request.getURI().getPath();
 
-        // TODO 暂时全放行
-        if (true) {
-            return chain.filter(exchange);
-        }
-
-
         if (StrUtil.matches(url, ignoreWhite.getWhites())) {
-            ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.ALLOW_LIST.getCode(), BaseConstants.Whether.YES.getCode());
             return chain.filter(exchange);
         }
         String token = ServletUtil.getToken(request);
@@ -59,13 +51,15 @@ public class AuthFilter implements WebFilter {
             return ServletUtil.unauthorizedResponse(exchange, "令牌已过期或验证不正确");
         }
         String userKey = JwtUtil.getUserKey(claims);
-        String accountTypeKey = JwtUtil.getAccountType(claims);
-        AccountType accountType = AccountType.getByCodeElseNull(accountTypeKey);
+        if (StrUtil.isBlank(userKey)) {
+            return ServletUtil.unauthorizedResponse(exchange, "令牌已过期或验证不正确");
+        }
+        AccountType accountType = AccountType.getByCodeElseNull(JwtUtil.getAccountType(claims));
         if (ObjectUtil.isNull(accountType)) {
             return ServletUtil.unauthorizedResponse(exchange, "令牌已过期或验证不正确");
         }
 
-        Boolean hasLogin = redisService.hasKey(ServletUtil.getTokenKey(userKey, accountType));
+        Boolean hasLogin = redisService.hasKey(userKey);
         if (!hasLogin) {
             return ServletUtil.unauthorizedResponse(exchange, "登录状态已过期");
         }
@@ -93,7 +87,7 @@ public class AuthFilter implements WebFilter {
                 ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.USER_TYPE.getCode(), userType);
                 ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.SOURCE_NAME.getCode(), sourceName);
                 ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.USER_KEY.getCode(), userKey);
-                ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode(), accountTypeKey);
+                ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode(), accountType.getCode());
             }
             default -> {
                 return ServletUtil.unauthorizedResponse(exchange, "令牌验证失败");
@@ -101,7 +95,6 @@ public class AuthFilter implements WebFilter {
         }
 
         // 内部请求来源参数清除
-        ServletUtil.removeHeader(mutate, SecurityConstants.BaseSecurity.ALLOW_LIST.getCode());
         ServletUtil.removeHeader(mutate, SecurityConstants.BaseSecurity.FROM_SOURCE.getCode());
         return chain.filter(exchange);
     }

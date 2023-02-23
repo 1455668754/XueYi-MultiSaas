@@ -26,7 +26,6 @@ public class FeignRequestInterceptor implements RequestInterceptor {
         if (ObjectUtil.isNotNull(httpServletRequest)) {
             Map<String, String> headers = ServletUtil.getHeaders(httpServletRequest);
             // 传递用户信息请求头，防止丢失
-            setHeaderKey(requestTemplate, headers, SecurityConstants.BaseSecurity.ALLOW_LIST.getCode());
             setHeaderKey(requestTemplate, headers, SecurityConstants.BaseSecurity.ENTERPRISE_ID.getCode());
             setHeaderKey(requestTemplate, headers, SecurityConstants.BaseSecurity.ENTERPRISE_NAME.getCode());
             setHeaderKey(requestTemplate, headers, SecurityConstants.BaseSecurity.IS_LESSOR.getCode());

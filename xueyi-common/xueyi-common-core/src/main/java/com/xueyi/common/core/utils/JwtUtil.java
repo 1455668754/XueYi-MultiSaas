@@ -3,6 +3,7 @@ package com.xueyi.common.core.utils;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.basic.TokenConstants;
 import com.xueyi.common.core.utils.core.ConvertUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -40,15 +41,15 @@ public class JwtUtil {
     }
 
     /**
-         * 根据令牌获取企业Id
-         *
-         * @param token 令牌
-         * @return 企业Id
-         */
+     * 根据令牌获取企业Id
+     *
+     * @param token 令牌
+     * @return 企业Id
+     */
 
     public static String getEnterpriseId(String token) {
         Claims claims = parseToken(token);
-        return getValue(claims, SecurityConstants.BaseSecurity.ENTERPRISE_ID.getCode());
+        return getEnterpriseId(claims);
     }
 
     /**
@@ -69,7 +70,7 @@ public class JwtUtil {
      */
     public static String getEnterpriseName(String token) {
         Claims claims = parseToken(token);
-        return getValue(claims, SecurityConstants.BaseSecurity.ENTERPRISE_NAME.getCode());
+        return getEnterpriseName(claims);
     }
 
     /**
@@ -90,7 +91,7 @@ public class JwtUtil {
      */
     public static String getIsLessor(String token) {
         Claims claims = parseToken(token);
-        return getValue(claims, SecurityConstants.BaseSecurity.IS_LESSOR.getCode());
+        return getIsLessor(claims);
     }
 
     /**
@@ -111,7 +112,7 @@ public class JwtUtil {
      */
     public static String getUserId(String token) {
         Claims claims = parseToken(token);
-        return getValue(claims, SecurityConstants.BaseSecurity.USER_ID.getCode());
+        return getUserId(claims);
     }
 
     /**
@@ -132,7 +133,7 @@ public class JwtUtil {
      */
     public static String getUserName(String token) {
         Claims claims = parseToken(token);
-        return getValue(claims, SecurityConstants.BaseSecurity.USER_NAME.getCode());
+        return getUserName(claims);
     }
 
     /**
@@ -153,7 +154,7 @@ public class JwtUtil {
      */
     public static String getUserType(String token) {
         Claims claims = parseToken(token);
-        return getValue(claims, SecurityConstants.BaseSecurity.USER_TYPE.getCode());
+        return getUserType(claims);
     }
 
     /**
@@ -174,7 +175,7 @@ public class JwtUtil {
      */
     public static String getAccountType(String token) {
         Claims claims = parseToken(token);
-        return getValue(claims, SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode());
+        return getAccountType(claims);
     }
 
     /**
@@ -195,7 +196,7 @@ public class JwtUtil {
      */
     public static String getSourceName(String token) {
         Claims claims = parseToken(token);
-        return getValue(claims, SecurityConstants.BaseSecurity.SOURCE_NAME.getCode());
+        return getSourceName(claims);
     }
 
     /**
@@ -216,7 +217,7 @@ public class JwtUtil {
      */
     public static String getUserKey(String token) {
         Claims claims = parseToken(token);
-        return getValue(claims, SecurityConstants.BaseSecurity.USER_KEY.getCode());
+        return getUserKey(claims);
     }
 
     /**
@@ -226,7 +227,10 @@ public class JwtUtil {
      * @return 用户Id
      */
     public static String getUserKey(Claims claims) {
-        return getValue(claims, SecurityConstants.BaseSecurity.USER_KEY.getCode());
+        String accessToken = getValue(claims, SecurityConstants.BaseSecurity.ACCESS_TOKEN.getCode());
+        if (StrUtil.isNotEmpty(accessToken) && StrUtil.startWith(accessToken, TokenConstants.PREFIX))
+            return StrUtil.replaceFirst(accessToken, TokenConstants.PREFIX, StrUtil.EMPTY);
+        return null;
     }
 
     /**
@@ -237,6 +241,6 @@ public class JwtUtil {
      * @return 值
      */
     public static String getValue(Claims claims, String key) {
-        return ConvertUtil.toStr(claims.get(key), "");
+        return ConvertUtil.toStr(claims.get(key), StrUtil.EMPTY);
     }
 }

@@ -22,7 +22,7 @@ public class CustomTokenCustomizer implements OAuth2TokenCustomizer<OAuth2TokenC
             return;
 
         Object loginUser = context.getPrincipal().getPrincipal();
-        claims.claim(SecurityConstants.BaseSecurity.LOGIN_USER.getCode(), loginUser);
+        claims.claim(SecurityConstants.BaseSecurity.USER_INFO.getCode(), loginUser);
     }
 
 }

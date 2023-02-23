@@ -2,15 +2,12 @@ package com.xueyi.common.security.handler;
 
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.utils.core.ObjectUtil;
-import com.xueyi.common.core.utils.core.SpringUtil;
 import com.xueyi.common.redis.service.RedisService;
 import com.xueyi.common.security.service.ITokenService;
-import com.xueyi.common.security.utils.SecurityUtils;
+import com.xueyi.common.security.utils.base.BaseSecurityUtils;
 import com.xueyi.system.api.model.base.BaseLoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.Ordered;
 import org.springframework.lang.Nullable;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2RefreshToken;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
@@ -21,9 +18,6 @@ import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
-import java.security.Principal;
-import java.util.Comparator;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -42,9 +36,9 @@ public class RedisOAuth2AuthorizationHandler implements OAuth2AuthorizationServi
     @Override
     public void save(OAuth2Authorization authorization) {
         // check loginUser info
-        BaseLoginUser loginUser = getLoginUser(authorization);
+        BaseLoginUser loginUser = BaseSecurityUtils.getLoginUser(authorization);
         // check token service
-        ITokenService tokenService = getTokenService(loginUser.getAccountType().getCode());
+        ITokenService tokenService = BaseSecurityUtils.getTokenService(loginUser.getAccountType().getCode());
 
         // build refresh token
         if (isRefreshToken(authorization)) {
@@ -85,9 +79,9 @@ public class RedisOAuth2AuthorizationHandler implements OAuth2AuthorizationServi
     @Override
     public void remove(OAuth2Authorization authorization) {
         // check loginUser info
-        BaseLoginUser loginUser = getLoginUser(authorization);
+        BaseLoginUser loginUser = BaseSecurityUtils.getLoginUser(authorization);
         // check token service
-        ITokenService tokenService = getTokenService(loginUser.getAccountType().getCode());
+        ITokenService tokenService = BaseSecurityUtils.getTokenService(loginUser.getAccountType().getCode());
         tokenService.removeTokenCache(loginUser);
     }
 
@@ -102,12 +96,7 @@ public class RedisOAuth2AuthorizationHandler implements OAuth2AuthorizationServi
     public OAuth2Authorization findByToken(String token, @Nullable OAuth2TokenType tokenType) {
         Assert.hasText(token, "token cannot be empty");
         Assert.notNull(tokenType, "tokenType cannot be empty");
-        String accountType = SecurityUtils.getAccountTypeStr();
-        Assert.notNull(accountType, "accountType cannot be empty");
-        ITokenService tokenService = getTokenService(accountType);
-        Long enterpriseId = SecurityUtils.getEnterpriseId();
-        Assert.notNull(enterpriseId, "enterpriseId cannot be empty");
-        return redisService.getCacheMapValue(tokenService.getTokenAddress(tokenType.getValue(), enterpriseId, token), SecurityConstants.BaseSecurity.AUTHORIZATION.getCode());
+        return redisService.getCacheMapValue(token, SecurityConstants.BaseSecurity.AUTHORIZATION.getCode());
     }
 
     private static boolean isState(OAuth2Authorization authorization) {
@@ -125,34 +114,5 @@ public class RedisOAuth2AuthorizationHandler implements OAuth2AuthorizationServi
 
     private static boolean isAccessToken(OAuth2Authorization authorization) {
         return ObjectUtil.isNotNull(authorization.getAccessToken());
-    }
-
-    /**
-     * 获取用户信息
-     *
-     * @param authorization 认证信息
-     * @return 用户信息
-     */
-    private <LoginUser> LoginUser getLoginUser(OAuth2Authorization authorization) {
-        return Optional.ofNullable(authorization)
-                .map(item -> (UsernamePasswordAuthenticationToken) authorization.getAttribute(Principal.class.getName()))
-                .map(item -> (LoginUser) item.getPrincipal())
-                .orElseThrow(() -> new NullPointerException("authorization principal cannot be null"));
-    }
-
-    /**
-     * 获取账户类型Token控制器
-     *
-     * @param accountType 账户类型
-     * @return Token控制器
-     */
-    private ITokenService getTokenService(String accountType) {
-        Map<String, ITokenService> tokenServiceMap = SpringUtil.getBeansOfType(ITokenService.class);
-        Optional<ITokenService> optional = tokenServiceMap.values().stream()
-                .filter(service -> service.support(accountType))
-                .max(Comparator.comparingInt(Ordered::getOrder));
-        if (optional.isEmpty())
-            throw new NullPointerException("tokenService error , non-existent");
-        return optional.get();
     }
 }

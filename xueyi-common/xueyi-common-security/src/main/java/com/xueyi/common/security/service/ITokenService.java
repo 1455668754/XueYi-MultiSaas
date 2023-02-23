@@ -1,6 +1,7 @@
 package com.xueyi.common.security.service;
 
 import com.xueyi.common.core.constant.basic.SecurityConstants;
+import com.xueyi.common.core.constant.basic.TokenConstants;
 import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.JwtUtil;
 import com.xueyi.common.core.utils.core.*;
@@ -29,7 +30,7 @@ import static com.xueyi.common.core.constant.basic.CacheConstants.REFRESH_TIME;
  *
  * @author xueyi
  */
-@SuppressWarnings(value = {"unchecked", "rawtypes"})
+@SuppressWarnings(value = {"unchecked"})
 public interface ITokenService<User, LoginUser extends BaseLoginUser<User>> extends Ordered {
 
     RedisService getRedisService();
@@ -95,7 +96,7 @@ public interface ITokenService<User, LoginUser extends BaseLoginUser<User>> exte
      */
     default void createTokenCache(OAuth2Authorization authorization) {
         Map<String, Object> loginMap = buildTokenCache(authorization, new HashMap<>());
-        createTokenCache((LoginUser) loginMap.get(SecurityConstants.BaseSecurity.LOGIN_USER.getCode()), loginMap);
+        createTokenCache((LoginUser) loginMap.get(SecurityConstants.BaseSecurity.USER_INFO.getCode()), loginMap);
     }
 
     /**
@@ -145,8 +146,8 @@ public interface ITokenService<User, LoginUser extends BaseLoginUser<User>> exte
         if (MapUtil.isNull(claimsMap))
             claimsMap = new HashMap<>();
 
-        claimsMap.put(SecurityConstants.BaseSecurity.ACCESS_TOKEN.getCode(), loginUser.getAccessToken());
-        claimsMap.put(SecurityConstants.BaseSecurity.REFRESH_TOKEN.getCode(), loginUser.getRefreshToken());
+        claimsMap.put(SecurityConstants.BaseSecurity.ACCESS_TOKEN.getCode(), TokenConstants.PREFIX + loginUser.getAccessToken());
+        claimsMap.put(SecurityConstants.BaseSecurity.REFRESH_TOKEN.getCode(), TokenConstants.PREFIX + loginUser.getRefreshToken());
         claimsMap.put(SecurityConstants.BaseSecurity.ENTERPRISE_ID.getCode(), loginUser.getEnterpriseId());
         claimsMap.put(SecurityConstants.BaseSecurity.ENTERPRISE_NAME.getCode(), loginUser.getEnterpriseName());
         claimsMap.put(SecurityConstants.BaseSecurity.IS_LESSOR.getCode(), loginUser.getIsLessor());
@@ -156,9 +157,6 @@ public interface ITokenService<User, LoginUser extends BaseLoginUser<User>> exte
         claimsMap.put(SecurityConstants.BaseSecurity.USER_TYPE.getCode(), loginUser.getUserType());
         claimsMap.put(SecurityConstants.BaseSecurity.SOURCE_NAME.getCode(), loginUser.getSourceName());
         claimsMap.put(SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode(), loginUser.getAccountType().getCode());
-
-        // 认证
-        claimsMap.put(SecurityConstants.BaseSecurity.USER_KEY.getCode(), loginUser.getAccessToken());
 
         return claimsMap;
     }
@@ -192,7 +190,7 @@ public interface ITokenService<User, LoginUser extends BaseLoginUser<User>> exte
         loginMap.put(SecurityConstants.BaseSecurity.USER.getCode(), loginUser.getUser());
         loginMap.put(SecurityConstants.BaseSecurity.SOURCE.getCode(), loginUser.getSource());
         loginMap.put(SecurityConstants.BaseSecurity.EXPIRE_TIME.getCode(), getExpireTime(loginUser.getLoginTime()));
-        loginMap.put(SecurityConstants.BaseSecurity.LOGIN_USER.getCode(), loginUser);
+        loginMap.put(SecurityConstants.BaseSecurity.USER_INFO.getCode(), loginUser);
         loginMap.put(SecurityConstants.BaseSecurity.AUTHORIZATION.getCode(), authorization);
         loginMap.put(SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode(), loginUser.getAccountType().getCode());
 
@@ -306,7 +304,7 @@ public interface ITokenService<User, LoginUser extends BaseLoginUser<User>> exte
     default LoginUser getLoginUser(String token) {
         try {
             if (StrUtil.isNotBlank(token))
-                return getRedisService().getCacheMapValue(JwtUtil.getUserKey(token), SecurityConstants.BaseSecurity.LOGIN_USER.getCode());
+                return getRedisService().getCacheMapValue(JwtUtil.getUserKey(token), SecurityConstants.BaseSecurity.USER_INFO.getCode());
         } catch (Exception ignored) {
         }
         return null;
@@ -320,7 +318,7 @@ public interface ITokenService<User, LoginUser extends BaseLoginUser<User>> exte
             Map<String, Object> loginMap = new HashMap<>();
             loginMap.put(SecurityConstants.BaseSecurity.ENTERPRISE.getCode(), loginUser.getEnterprise());
             loginMap.put(SecurityConstants.BaseSecurity.USER.getCode(), loginUser.getUser());
-            loginMap.put(SecurityConstants.BaseSecurity.LOGIN_USER.getCode(), loginUser);
+            loginMap.put(SecurityConstants.BaseSecurity.USER_INFO.getCode(), loginUser);
             if (StrUtil.isNotBlank(loginUser.getAccessToken()))
                 getRedisService().setCacheMap(loginUser.getAccessToken(), loginMap);
             if (StrUtil.isNotBlank(loginUser.getRefreshToken())) {

@@ -1,5 +1,7 @@
 package com.xueyi.auth.service;
 
+import com.xueyi.system.api.model.base.BaseLoginUser;
+
 /**
  * 日志记录 服务层
  *
@@ -28,6 +30,15 @@ public interface ISysLogService {
      * @param message        消息内容
      */
     void recordLoginInfo(String sourceName, Long enterpriseId, String enterpriseName, String userName, String status, String message);
+
+    /**
+     * 记录登录信息
+     *
+     * @param loginUser 用户登录信息
+     * @param status    状态
+     * @param message   消息内容
+     */
+    <LoginUser extends BaseLoginUser<?>> void recordLoginInfo(LoginUser loginUser, String status, String message);
 
     /**
      * 记录登录信息

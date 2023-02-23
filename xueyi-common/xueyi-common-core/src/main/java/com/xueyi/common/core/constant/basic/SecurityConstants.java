@@ -126,7 +126,7 @@ public class SecurityConstants {
         USER_KEY("user_key", "用户标识"),
         SOURCE("source", "租户策略源"),
         SOURCE_NAME("source_name", "租户策略源名称"),
-        LOGIN_USER("login_user", "登录用户"),
+        USER_INFO("user_info", "登录用户"),
         ACCOUNT_TYPE("account_type", "账户类型"),
         EXPIRE_TIME("expire_time", "过期时间");
 

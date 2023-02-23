@@ -10,6 +10,7 @@ import com.xueyi.common.core.utils.ip.IpUtil;
 import com.xueyi.common.core.utils.servlet.ServletUtil;
 import com.xueyi.system.api.log.domain.dto.SysLoginLogDto;
 import com.xueyi.system.api.log.feign.RemoteLogService;
+import com.xueyi.system.api.model.base.BaseLoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,6 +51,18 @@ public class SysLogServiceImpl implements ISysLogService {
     @Override
     public void recordLoginInfo(String sourceName, Long enterpriseId, String enterpriseName, String userName, String status, String message) {
         recordLoginInfo(sourceName, enterpriseId, enterpriseName, SecurityConstants.EMPTY_USER_ID, userName, StrUtil.EMPTY, status, message);
+    }
+
+    /**
+     * 记录登录信息
+     *
+     * @param loginUser 用户登录信息
+     * @param status    状态
+     * @param message   消息内容
+     */
+    @Override
+    public <LoginUser extends BaseLoginUser<?>> void recordLoginInfo(LoginUser loginUser, String status, String message) {
+        recordLoginInfo(loginUser.getSourceName(), loginUser.getEnterpriseId(), loginUser.getEnterpriseName(), loginUser.getUserId(), loginUser.getUserName(), loginUser.getNickName(), status, message);
     }
 
     /**

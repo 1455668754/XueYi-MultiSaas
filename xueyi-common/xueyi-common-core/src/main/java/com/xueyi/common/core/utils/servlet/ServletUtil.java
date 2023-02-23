@@ -3,9 +3,7 @@ package com.xueyi.common.core.utils.servlet;
 import cn.hutool.core.exceptions.UtilException;
 import cn.hutool.core.io.IoUtil;
 import com.alibaba.fastjson2.JSON;
-import com.xueyi.common.core.constant.basic.CacheConstants;
 import com.xueyi.common.core.constant.basic.HttpConstants;
-import com.xueyi.common.core.constant.basic.TenantConstants;
 import com.xueyi.common.core.constant.basic.TokenConstants;
 import com.xueyi.common.core.utils.core.ArrayUtil;
 import com.xueyi.common.core.utils.core.ConvertUtil;
@@ -48,23 +46,6 @@ import java.util.Map;
  */
 @Slf4j
 public class ServletUtil {
-
-    /**
-     * 获取缓存key
-     */
-    public static String getTokenKey(String token, String accountType) {
-        return getTokenKey(token, TenantConstants.AccountType.getByCode(accountType));
-    }
-
-    /**
-     * 获取缓存key
-     */
-    public static String getTokenKey(String token, TenantConstants.AccountType accountType) {
-        return switch (accountType) {
-            case ADMIN -> CacheConstants.LoginTokenType.ADMIN.getCode() + token;
-            case MEMBER -> CacheConstants.LoginTokenType.MEMBER.getCode() + token;
-        };
-    }
 
     /**
      * 获取请求token

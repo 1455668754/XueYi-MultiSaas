@@ -1,8 +1,10 @@
 package com.xueyi.common.security.handler;
 
+import com.xueyi.common.core.constant.basic.SecurityConstants;
+import com.xueyi.common.core.utils.core.StrUtil;
+import com.xueyi.common.core.utils.servlet.ServletUtil;
 import com.xueyi.common.security.config.properties.PermitAllUrlProperties;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.server.resource.BearerTokenError;
@@ -10,13 +12,10 @@ import org.springframework.security.oauth2.server.resource.BearerTokenErrors;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenResolver;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Token解析器
@@ -25,14 +24,9 @@ import java.util.regex.Pattern;
  */
 public class BearerTokenHandler implements BearerTokenResolver {
 
-    private static final Pattern authorizationPattern = Pattern.compile("^Bearer (?<token>[a-zA-Z0-9-:._~+/]+=*)$",
-            Pattern.CASE_INSENSITIVE);
-
     private boolean allowFormEncodedBodyParameter = false;
 
     private boolean allowUriQueryParameter = true;
-
-    private String bearerTokenHeaderName = HttpHeaders.AUTHORIZATION;
 
     private final PathMatcher pathMatcher = new AntPathMatcher();
 
@@ -71,20 +65,12 @@ public class BearerTokenHandler implements BearerTokenResolver {
     }
 
     private String resolveFromAuthorizationHeader(HttpServletRequest request) {
-        String authorization = request.getHeader(this.bearerTokenHeaderName);
-        if (!StringUtils.startsWithIgnoreCase(authorization, "bearer")) {
-            return null;
-        }
-        Matcher matcher = authorizationPattern.matcher(authorization);
-        if (!matcher.matches()) {
-            BearerTokenError error = BearerTokenErrors.invalidToken("Bearer token is malformed");
-            throw new OAuth2AuthenticationException(error);
-        }
-        return matcher.group("token");
+        String authorization = ServletUtil.getHeader(request, SecurityConstants.BaseSecurity.USER_KEY.getCode());
+        return StrUtil.isNotBlank(authorization) ? authorization : null;
     }
 
     private static String resolveFromRequestParameters(HttpServletRequest request) {
-        String[] values = request.getParameterValues("access_token");
+        String[] values = request.getParameterValues(SecurityConstants.BaseSecurity.ACCESS_TOKEN.getCode());
         if (values == null || values.length == 0) {
             return null;
         }
