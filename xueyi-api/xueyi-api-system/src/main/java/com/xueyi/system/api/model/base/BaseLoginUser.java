@@ -30,6 +30,12 @@ public class BaseLoginUser<User> implements UserDetails, OAuth2AuthenticatedPrin
     /** 用户唯一标识 - 刷新令牌 */
     protected String refreshToken;
 
+    /** 用户唯一标识 - 令牌 */
+    protected String stateToken;
+
+    /** 用户唯一标识 - 令牌 */
+    protected String codeToken;
+
     /** 企业账号Id */
     protected Long enterpriseId;
 

@@ -198,6 +198,22 @@ public class RedisService {
     }
 
     /**
+     * 缓存Map
+     *
+     * @param key     Redis键
+     * @param dataMap map
+     * @param timeout 超时时间
+     * @param unit    时间单位
+     */
+    public <T> void setCacheMap(final String key, final Map<String, T> dataMap, final long timeout, final TimeUnit unit) {
+        if (dataMap != null) {
+            redisTemplate.opsForHash().putAll(key, dataMap);
+            expire(key, timeout, unit);
+        }
+    }
+
+
+    /**
      * 获得缓存的Map
      *
      * @param key Redis键
@@ -301,8 +317,7 @@ public class RedisService {
                         return ObjectUtil.isNotNull(valueGet.apply(item));
                     }).collect(Collectors.toMap(keyGet, valueGet));
         if (MapUtil.isNotEmpty(resultMap)) {
-            setCacheMap(mapKey, resultMap);
-            expire(mapKey, NumberUtil.Nine, TimeUnit.HOURS);
+            setCacheMap(mapKey, resultMap, NumberUtil.Nine, TimeUnit.HOURS);
         } else {
             deleteObject(mapKey);
         }
@@ -320,7 +335,8 @@ public class RedisService {
             setCacheMapValue(mapKey, keyGet.get().toString(), valueGet.get());
         else
             deleteCacheMapValue(mapKey, keyGet.get().toString());
-        expire(mapKey, NumberUtil.Nine, TimeUnit.HOURS);
+        if (hasKey(mapKey))
+            expire(mapKey, NumberUtil.Nine, TimeUnit.HOURS);
     }
 
     /**

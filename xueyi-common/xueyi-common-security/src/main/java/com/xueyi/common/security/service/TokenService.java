@@ -2,70 +2,74 @@ package com.xueyi.common.security.service;
 
 import com.xueyi.common.core.constant.basic.CacheConstants;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
+import com.xueyi.common.core.constant.basic.TenantConstants;
 import com.xueyi.common.core.utils.JwtUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.utils.servlet.ServletUtil;
+import com.xueyi.common.redis.service.RedisService;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.system.api.model.DataScope;
 import com.xueyi.system.api.model.LoginUser;
-import com.xueyi.system.api.model.base.BaseLoginUser;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
+import lombok.Getter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.security.Principal;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
- * token验证处理
+ * token控制器 | 后台账户
  *
  * @author xueyi
  */
 @Component
-public class TokenService extends BaseTokenService<SysUserDto, LoginUser> {
+public class TokenService implements ITokenService<SysUserDto, LoginUser> {
 
+    @Getter
+    @Autowired
+    private RedisService redisService;
+
+    /**
+     * 判断账户类型
+     *
+     * @param accountType 账户类型
+     * @return 结果
+     */
     @Override
-    protected String getAccessToken() {
-        return CacheConstants.LoginTokenType.ADMIN.getCode();
-    }
-
-    @Override
-    protected long getRefreshExpireTime() {
-        return CacheConstants.EXPIRATION;
-    }
-
-    @Override
-    protected Long getMillisMinuteTen() {
-        return CacheConstants.REFRESH_TIME * MILLIS_MINUTE;
-    }
-
-    public Map<String, Object> createCache(OAuth2Authorization authorization) {
-        UsernamePasswordAuthenticationToken authenticationToken = authorization.getAttribute(Principal.class.getName());
-        BaseLoginUser<?> loginUser = (BaseLoginUser<?>) authenticationToken.getPrincipal();
-        return null;
+    public boolean support(String accountType) {
+        return StrUtil.equals(TenantConstants.AccountType.ADMIN.getCode(), accountType);
     }
 
     /**
-     * 创建令牌
+     * 构建缓存路径
+     *
+     * @param type         密钥类型
+     * @param enterpriseId 企业Id
+     * @param tokenValue   token值
+     * @return 缓存路径
      */
-    public Map<String, Object> createToken(LoginUser loginUser) {
+    @Override
+    public String getTokenAddress(String type, Long enterpriseId, String tokenValue) {
+        if (ObjectUtil.isNull(enterpriseId) || StrUtil.isBlank(tokenValue))
+            throw new NullPointerException("enterpriseId or tokenValue has empty");
+        return StrUtil.format("{}:{}:{}:{}:{}", CacheConstants.AUTHORIZATION, CacheConstants.LoginTokenType.ADMIN.getCode(), enterpriseId, type, tokenValue);
+    }
 
-        String isLessor = loginUser.getEnterprise().getIsLessor();
-        String userType = loginUser.getUser().getUserType();
-
-        loginUser.setIsLessor(isLessor);
-        loginUser.setUserType(userType);
-
-        Map<String, Object> loginMap = new HashMap<>();
-
+    /**
+     * 构建令牌缓存 | 自定义构建
+     *
+     * @param loginUser 用户登录信息
+     * @param loginMap  缓存存储信息
+     * @return 令牌缓存
+     */
+    @Override
+    public Map<String, Object> buildTokenCache(LoginUser loginUser, Map<String, Object> loginMap) {
         loginMap.put(SecurityConstants.AdminSecurity.DATA_SCOPE.getCode(), loginUser.getDataScope());
         loginMap.put(SecurityConstants.AdminSecurity.ROUTE_URL.getCode(), loginUser.getRouteURL());
         loginUser.initRouteURL();
-
-        return createToken(loginUser, loginMap);
+        return loginMap;
     }
 
     /**
@@ -95,10 +99,8 @@ public class TokenService extends BaseTokenService<SysUserDto, LoginUser> {
      */
     public DataScope getDataScope(String token) {
         try {
-            if (StrUtil.isNotEmpty(token)) {
-                String userKey = JwtUtil.getUserKey(token);
-                return redisService.getCacheMapValue(getTokenKey(userKey), SecurityConstants.AdminSecurity.DATA_SCOPE.getCode());
-            }
+            if (StrUtil.isNotBlank(token))
+                return redisService.getCacheMapValue(JwtUtil.getUserKey(token), SecurityConstants.AdminSecurity.DATA_SCOPE.getCode());
         } catch (Exception ignored) {
         }
         return null;
@@ -111,7 +113,7 @@ public class TokenService extends BaseTokenService<SysUserDto, LoginUser> {
      */
     public Object getModuleRoute() {
         try {
-            return redisService.getCacheMapValue(getTokenKey(getUserKey()), SecurityConstants.AdminSecurity.MODULE_ROUTE.getCode());
+            return redisService.getCacheMapValue(getUserKey(), SecurityConstants.AdminSecurity.MODULE_ROUTE.getCode());
         } catch (Exception ignored) {
         }
         return null;
@@ -121,7 +123,7 @@ public class TokenService extends BaseTokenService<SysUserDto, LoginUser> {
      * 设置模块路由列表信息
      */
     public void setModuleRoute(Object moduleRoute) {
-        redisService.setCacheMapValue(getTokenKey(getUserKey()), SecurityConstants.AdminSecurity.MODULE_ROUTE.getCode(), moduleRoute);
+        redisService.setCacheMapValue(getUserKey(), SecurityConstants.AdminSecurity.MODULE_ROUTE.getCode(), moduleRoute);
     }
 
     /**
@@ -131,7 +133,7 @@ public class TokenService extends BaseTokenService<SysUserDto, LoginUser> {
      */
     public Map<String, Object> getMenuRoute() {
         try {
-            return redisService.getCacheMapValue(getTokenKey(getUserKey()), SecurityConstants.AdminSecurity.MENU_ROUTE.getCode());
+            return redisService.getCacheMapValue(getUserKey(), SecurityConstants.AdminSecurity.MENU_ROUTE.getCode());
         } catch (Exception ignored) {
         }
         return null;
@@ -141,7 +143,7 @@ public class TokenService extends BaseTokenService<SysUserDto, LoginUser> {
      * 设置菜单路由列表信息
      */
     public void setMenuRoute(Map<String, Object> menuRoute) {
-        redisService.setCacheMapValue(getTokenKey(getUserKey()), SecurityConstants.AdminSecurity.MENU_ROUTE.getCode(), menuRoute);
+        redisService.setCacheMapValue(getUserKey(), SecurityConstants.AdminSecurity.MENU_ROUTE.getCode(), menuRoute);
     }
 
     /**
@@ -151,7 +153,7 @@ public class TokenService extends BaseTokenService<SysUserDto, LoginUser> {
      */
     public Map<String, String> getRouteURL() {
         try {
-            return redisService.getCacheMapValue(getTokenKey(getUserKey()), SecurityConstants.AdminSecurity.ROUTE_URL.getCode());
+            return redisService.getCacheMapValue(getUserKey(), SecurityConstants.AdminSecurity.ROUTE_URL.getCode());
         } catch (Exception ignored) {
         }
         return null;
@@ -161,6 +163,6 @@ public class TokenService extends BaseTokenService<SysUserDto, LoginUser> {
      * 设置路由路径映射列表信息
      */
     public void setRouteURL(Map<String, String> routeURL) {
-        redisService.setCacheMapValue(getTokenKey(getUserKey()), SecurityConstants.AdminSecurity.ROUTE_URL.getCode(), routeURL);
+        redisService.setCacheMapValue(getUserKey(), SecurityConstants.AdminSecurity.ROUTE_URL.getCode(), routeURL);
     }
 }

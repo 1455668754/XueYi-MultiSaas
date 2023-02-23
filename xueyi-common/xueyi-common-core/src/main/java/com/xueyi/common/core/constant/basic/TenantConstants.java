@@ -58,13 +58,13 @@ public class TenantConstants {
 
     }
 
-    /** 用户类型 */
+    /** 账户类型 */
     @Getter
     @AllArgsConstructor
     public enum AccountType {
 
-        ADMIN("admin", "后台用户"),
-        MEMBER("member", "会员用户");
+        ADMIN("admin", "后台账户"),
+        MEMBER("member", "会员账户");
 
         private final String code;
         private final String info;

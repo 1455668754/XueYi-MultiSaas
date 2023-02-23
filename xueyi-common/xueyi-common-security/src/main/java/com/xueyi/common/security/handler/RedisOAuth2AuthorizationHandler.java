@@ -1,13 +1,14 @@
 package com.xueyi.common.security.handler;
 
-import com.xueyi.common.core.utils.core.NumberUtil;
+import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.utils.core.ObjectUtil;
-import com.xueyi.common.core.utils.core.StrUtil;
+import com.xueyi.common.core.utils.core.SpringUtil;
 import com.xueyi.common.redis.service.RedisService;
-import com.xueyi.common.security.service.TokenService;
+import com.xueyi.common.security.service.ITokenService;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.system.api.model.base.BaseLoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.Ordered;
 import org.springframework.lang.Nullable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
@@ -21,11 +22,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import java.security.Principal;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Comparator;
+import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
+import java.util.Optional;
 
 /**
  * Redis授权
@@ -33,78 +33,62 @@ import java.util.concurrent.TimeUnit;
  * @author xueyi
  */
 @Component
+@SuppressWarnings(value = {"unchecked", "rawtypes"})
 public class RedisOAuth2AuthorizationHandler implements OAuth2AuthorizationService {
-
-    private static final String AUTHORIZATION = "token";
 
     @Autowired
     private RedisService redisService;
 
-    @Autowired
-    private TokenService tokenService;
-
     @Override
     public void save(OAuth2Authorization authorization) {
-        Assert.notNull(authorization, "authorization cannot be null");
-        UsernamePasswordAuthenticationToken authenticationToken = authorization.getAttribute(Principal.class.getName());
-        BaseLoginUser<?> loginUser = (BaseLoginUser<?>) authenticationToken.getPrincipal();
-        Assert.notNull(loginUser, "authorization principal cannot be null");
+        // check loginUser info
+        BaseLoginUser loginUser = getLoginUser(authorization);
+        // check token service
+        ITokenService tokenService = getTokenService(loginUser.getAccountType().getCode());
 
+        // build refresh token
         if (isRefreshToken(authorization)) {
-            Assert.notNull(authorization.getRefreshToken(), "refreshToken cannot be null");
-            OAuth2RefreshToken refreshToken = authorization.getRefreshToken().getToken();
-            loginUser.setRefreshToken(buildKey(OAuth2ParameterNames.REFRESH_TOKEN, loginUser.getEnterpriseId(), refreshToken.getTokenValue()));
+            String refreshToken = Optional.ofNullable(authorization.getRefreshToken())
+                    .map(OAuth2Authorization.Token::getToken)
+                    .map(OAuth2RefreshToken::getTokenValue)
+                    .orElseThrow(() -> new NullPointerException("refreshToken cannot be null"));
+            loginUser.setRefreshToken(tokenService.getTokenAddress(OAuth2ParameterNames.REFRESH_TOKEN, loginUser.getEnterpriseId(), refreshToken));
         }
 
+        // build access token
         if (isAccessToken(authorization)) {
-            OAuth2AccessToken accessToken = authorization.getAccessToken().getToken();
-            loginUser.setAccessToken(buildKey(OAuth2ParameterNames.ACCESS_TOKEN, loginUser.getEnterpriseId(), accessToken.getTokenValue()));
+            String accessToken = Optional.ofNullable(authorization.getAccessToken())
+                    .map(OAuth2Authorization.Token::getToken)
+                    .map(OAuth2AccessToken::getTokenValue)
+                    .orElseThrow(() -> new NullPointerException("accessToken cannot be null"));
+            loginUser.setAccessToken(tokenService.getTokenAddress(OAuth2ParameterNames.ACCESS_TOKEN, loginUser.getEnterpriseId(), accessToken));
         }
 
+        // build state token
         if (isState(authorization)) {
             String token = authorization.getAttribute(OAuth2ParameterNames.STATE);
-            redisService.setCacheObject(buildKey(OAuth2ParameterNames.STATE, loginUser.getEnterpriseId(), token), authorization, (long) NumberUtil.Ten, TimeUnit.MINUTES);
+            loginUser.setStateToken(tokenService.getTokenAddress(OAuth2ParameterNames.STATE, loginUser.getEnterpriseId(), token));
         }
 
+        // build code token
         if (isCode(authorization)) {
-            OAuth2Authorization.Token<OAuth2AuthorizationCode> authorizationCode = authorization.getToken(OAuth2AuthorizationCode.class);
-            Assert.notNull(authorizationCode, "authorizationCode cannot be null");
-            OAuth2AuthorizationCode authorizationCodeToken = authorizationCode.getToken();
-            Assert.notNull(authorizationCodeToken.getIssuedAt(), "authorizationCodeToken issuedAt cannot be null");
-            long between = ChronoUnit.MINUTES.between(authorizationCodeToken.getIssuedAt(), authorizationCodeToken.getExpiresAt());
-            redisService.setCacheObject(buildKey(OAuth2ParameterNames.CODE, loginUser.getEnterpriseId(), authorizationCodeToken.getTokenValue()), authorization, between, TimeUnit.MINUTES);
+            OAuth2AuthorizationCode authorizationCodeToken = Optional.ofNullable(authorization.getToken(OAuth2AuthorizationCode.class))
+                    .map(OAuth2Authorization.Token::getToken)
+                    .orElseThrow(() -> new NullPointerException("authorizationCodeToken cannot be null"));
+            loginUser.setStateToken(tokenService.getTokenAddress(OAuth2ParameterNames.CODE, loginUser.getEnterpriseId(), authorizationCodeToken.getTokenValue()));
         }
 
-        tokenService.createCache(authorization);
+        // build redis cache
+        tokenService.createTokenCache(authorization);
     }
 
     @Override
     public void remove(OAuth2Authorization authorization) {
-        Assert.notNull(authorization, "authorization cannot be null");
-        BaseLoginUser<?> loginUser = authorization.getAttribute(Principal.class.getName());
-        Assert.notNull(loginUser, "authorization principal cannot be null");
-        List<String> keys = new ArrayList<>();
-        if (isState(authorization)) {
-            String token = authorization.getAttribute(OAuth2ParameterNames.STATE);
-            keys.add(buildKey(OAuth2ParameterNames.STATE, loginUser.getEnterpriseId(), token));
-        }
-
-        if (isCode(authorization)) {
-            OAuth2Authorization.Token<OAuth2AuthorizationCode> authorizationCode = authorization.getToken(OAuth2AuthorizationCode.class);
-            OAuth2AuthorizationCode authorizationCodeToken = authorizationCode.getToken();
-            keys.add(buildKey(OAuth2ParameterNames.CODE, loginUser.getEnterpriseId(), authorizationCodeToken.getTokenValue()));
-        }
-
-        if (isRefreshToken(authorization)) {
-            OAuth2RefreshToken refreshToken = authorization.getRefreshToken().getToken();
-            keys.add(buildKey(OAuth2ParameterNames.REFRESH_TOKEN, loginUser.getEnterpriseId(), refreshToken.getTokenValue()));
-        }
-
-        if (isAccessToken(authorization)) {
-            OAuth2AccessToken accessToken = authorization.getAccessToken().getToken();
-            keys.add(buildKey(OAuth2ParameterNames.ACCESS_TOKEN, loginUser.getEnterpriseId(), accessToken.getTokenValue()));
-        }
-        redisService.deleteObject(keys);
+        // check loginUser info
+        BaseLoginUser loginUser = getLoginUser(authorization);
+        // check token service
+        ITokenService tokenService = getTokenService(loginUser.getAccountType().getCode());
+        tokenService.removeTokenCache(loginUser);
     }
 
     @Override
@@ -117,23 +101,13 @@ public class RedisOAuth2AuthorizationHandler implements OAuth2AuthorizationServi
     @Nullable
     public OAuth2Authorization findByToken(String token, @Nullable OAuth2TokenType tokenType) {
         Assert.hasText(token, "token cannot be empty");
-        Long enterpriseId = SecurityUtils.getEnterpriseId();
-        Assert.hasText(token, "token cannot be empty");
         Assert.notNull(tokenType, "tokenType cannot be empty");
+        String accountType = SecurityUtils.getAccountTypeStr();
+        Assert.notNull(accountType, "accountType cannot be empty");
+        ITokenService tokenService = getTokenService(accountType);
+        Long enterpriseId = SecurityUtils.getEnterpriseId();
         Assert.notNull(enterpriseId, "enterpriseId cannot be empty");
-        return redisService.getCacheObject(buildKey(tokenType.getValue(), enterpriseId, token));
-    }
-
-    /**
-     * 创建令牌
-     *
-     * @param type         类型
-     * @param enterpriseId 企业Id
-     * @param tokenValue   token
-     * @return 令牌
-     */
-    private String buildKey(String type, Long enterpriseId, String tokenValue) {
-        return StrUtil.format("{}:{}:{}:{}", AUTHORIZATION, enterpriseId.toString(), type, tokenValue);
+        return redisService.getCacheMapValue(tokenService.getTokenAddress(tokenType.getValue(), enterpriseId, token), SecurityConstants.BaseSecurity.AUTHORIZATION.getCode());
     }
 
     private static boolean isState(OAuth2Authorization authorization) {
@@ -153,4 +127,32 @@ public class RedisOAuth2AuthorizationHandler implements OAuth2AuthorizationServi
         return ObjectUtil.isNotNull(authorization.getAccessToken());
     }
 
+    /**
+     * 获取用户信息
+     *
+     * @param authorization 认证信息
+     * @return 用户信息
+     */
+    private <LoginUser> LoginUser getLoginUser(OAuth2Authorization authorization) {
+        return Optional.ofNullable(authorization)
+                .map(item -> (UsernamePasswordAuthenticationToken) authorization.getAttribute(Principal.class.getName()))
+                .map(item -> (LoginUser) item.getPrincipal())
+                .orElseThrow(() -> new NullPointerException("authorization principal cannot be null"));
+    }
+
+    /**
+     * 获取账户类型Token控制器
+     *
+     * @param accountType 账户类型
+     * @return Token控制器
+     */
+    private ITokenService getTokenService(String accountType) {
+        Map<String, ITokenService> tokenServiceMap = SpringUtil.getBeansOfType(ITokenService.class);
+        Optional<ITokenService> optional = tokenServiceMap.values().stream()
+                .filter(service -> service.support(accountType))
+                .max(Comparator.comparingInt(Ordered::getOrder));
+        if (optional.isEmpty())
+            throw new NullPointerException("tokenService error , non-existent");
+        return optional.get();
+    }
 }

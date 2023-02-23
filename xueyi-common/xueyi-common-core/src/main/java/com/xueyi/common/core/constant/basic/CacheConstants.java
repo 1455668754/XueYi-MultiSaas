@@ -16,6 +16,8 @@ public class CacheConstants {
     /** 缓存刷新时间，默认120（分钟） */
     public final static long REFRESH_TIME = 120;
 
+    public final static String AUTHORIZATION = "token";
+
     /** oauth 客户端信息 */
     public final static String CLIENT_DETAILS_KEY = "client:details";
 
@@ -40,8 +42,8 @@ public class CacheConstants {
     @AllArgsConstructor
     public enum LoginTokenType {
 
-        ADMIN("login_tokens:", "管理端"),
-        MEMBER("login_member_tokens:", "会员端");
+        ADMIN("login_tokens", "管理端"),
+        MEMBER("login_member_tokens", "会员端");
 
         private final String code;
         private final String info;
