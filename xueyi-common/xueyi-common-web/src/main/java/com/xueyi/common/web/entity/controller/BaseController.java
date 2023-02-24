@@ -139,8 +139,7 @@ public abstract class BaseController<Q extends BaseEntity, D extends BaseEntity,
             Q query = getQClass().getDeclaredConstructor().newInstance();
             if (operateType == DictConstants.DicYesNo.YES)
                 query.setStatus(BaseConstants.Status.NORMAL.getCode());
-            List<D> list = baseService.selectListScope(query);
-            return getDataTable(list);
+            return list(query);
         } catch (Exception ignored) {
         }
         return error();
