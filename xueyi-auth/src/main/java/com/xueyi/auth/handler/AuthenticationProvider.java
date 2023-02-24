@@ -1,4 +1,4 @@
-package com.xueyi.auth.support.core;
+package com.xueyi.auth.handler;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
@@ -47,7 +47,7 @@ public class AuthenticationProvider extends AbstractUserDetailsAuthenticationPro
         this.setPasswordEncoder(PasswordEncoderFactories.createDelegatingPasswordEncoder());
     }
 
-    /** 密码校验 - 无需校验 */
+    /** 密码校验 */
     @Override
     protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
         if (authentication.getCredentials() == null) {

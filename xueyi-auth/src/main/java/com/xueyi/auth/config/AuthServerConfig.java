@@ -1,10 +1,10 @@
 package com.xueyi.auth.config;
 
+import com.xueyi.auth.handler.AuthenticationProvider;
+import com.xueyi.auth.handler.CustomTokenCustomizer;
+import com.xueyi.auth.handler.CustomTokenGenerator;
+import com.xueyi.auth.handler.FormIdentityLoginConfigurer;
 import com.xueyi.auth.service.impl.AuthenticationEventHandlerImpl;
-import com.xueyi.auth.support.core.AuthenticationProvider;
-import com.xueyi.auth.support.core.CustomTokenCustomizer;
-import com.xueyi.auth.support.core.CustomTokenGenerator;
-import com.xueyi.auth.support.core.FormIdentityLoginConfigurer;
 import com.xueyi.auth.support.password.AuthenticationPasswordConverter;
 import com.xueyi.auth.support.password.AuthenticationPasswordProvider;
 import com.xueyi.common.core.constant.basic.SecurityConstants;

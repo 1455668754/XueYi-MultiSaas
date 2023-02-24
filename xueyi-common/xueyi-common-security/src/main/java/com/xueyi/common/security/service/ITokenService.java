@@ -14,8 +14,8 @@ import com.xueyi.system.api.model.base.BaseLoginUser;
 import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.Ordered;
+import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
 
 import java.security.Principal;
@@ -96,24 +96,25 @@ public interface ITokenService<User, LoginUser extends BaseLoginUser<User>> exte
      */
     default void createTokenCache(OAuth2Authorization authorization) {
         Map<String, Object> loginMap = buildTokenCache(authorization, new HashMap<>());
-        createTokenCache((LoginUser) loginMap.get(SecurityConstants.BaseSecurity.USER_INFO.getCode()), loginMap);
+        createTokenCache(authorization, (LoginUser) loginMap.get(SecurityConstants.BaseSecurity.USER_INFO.getCode()), loginMap);
     }
 
     /**
      * 创建令牌缓存 | 定义缓存
      *
-     * @param loginUser 用户认证信息
-     * @param loginMap  缓存存储信息
+     * @param authorization 用户认证信息
+     * @param loginUser     用户认证信息
+     * @param loginMap      缓存存储信息
      */
-    default void createTokenCache(LoginUser loginUser, Map<String, Object> loginMap) {
+    default void createTokenCache(OAuth2Authorization authorization, LoginUser loginUser, Map<String, Object> loginMap) {
         if (ObjectUtil.isNotNull(loginUser.getAccessToken()))
-            getRedisService().setCacheMap(loginUser.getAccessToken(), loginMap, getAccessExpireTime(), TimeUnit.MINUTES);
+            getRedisService().setCacheObject(loginUser.getAccessToken(), authorization, getAccessExpireTime(), TimeUnit.MINUTES, RedisSerializer.java());
         if (ObjectUtil.isNotNull(loginUser.getRefreshToken()))
             getRedisService().setCacheMap(loginUser.getRefreshToken(), loginMap, getRefreshExpireTime(), TimeUnit.MINUTES);
         if (ObjectUtil.isNotNull(loginUser.getStateToken()))
-            getRedisService().setCacheMap(loginUser.getStateToken(), loginMap, getAccessExpireTime(), TimeUnit.MINUTES);
+            getRedisService().setCacheObject(loginUser.getStateToken(), authorization, getAccessExpireTime(), TimeUnit.MINUTES, RedisSerializer.java());
         if (ObjectUtil.isNotNull(loginUser.getCodeToken()))
-            getRedisService().setCacheMap(loginUser.getCodeToken(), loginMap, getAccessExpireTime(), TimeUnit.MINUTES);
+            getRedisService().setCacheObject(loginUser.getCodeToken(), authorization, getAccessExpireTime(), TimeUnit.MINUTES, RedisSerializer.java());
     }
 
     /**
@@ -124,13 +125,13 @@ public interface ITokenService<User, LoginUser extends BaseLoginUser<User>> exte
     default void removeTokenCache(LoginUser loginUser) {
         List<String> keys = new ArrayList<>();
         if (ObjectUtil.isNotNull(loginUser.getAccessToken()))
-            keys.add(getTokenAddress(OAuth2ParameterNames.ACCESS_TOKEN, loginUser.getEnterpriseId(), loginUser.getAccessToken()));
+            keys.add(loginUser.getAccessToken());
         if (ObjectUtil.isNotNull(loginUser.getRefreshToken()))
-            keys.add(getTokenAddress(OAuth2ParameterNames.REFRESH_TOKEN, loginUser.getEnterpriseId(), loginUser.getRefreshToken()));
+            keys.add(loginUser.getRefreshToken());
         if (ObjectUtil.isNotNull(loginUser.getStateToken()))
-            keys.add(getTokenAddress(OAuth2ParameterNames.STATE, loginUser.getEnterpriseId(), loginUser.getStateToken()));
+            keys.add(loginUser.getStateToken());
         if (ObjectUtil.isNotNull(loginUser.getCodeToken()))
-            keys.add(getTokenAddress(OAuth2ParameterNames.CODE, loginUser.getEnterpriseId(), loginUser.getCodeToken()));
+            keys.add(loginUser.getCodeToken());
         if (CollUtil.isNotEmpty(keys))
             getRedisService().deleteObject(keys);
     }
@@ -191,7 +192,6 @@ public interface ITokenService<User, LoginUser extends BaseLoginUser<User>> exte
         loginMap.put(SecurityConstants.BaseSecurity.SOURCE.getCode(), loginUser.getSource());
         loginMap.put(SecurityConstants.BaseSecurity.EXPIRE_TIME.getCode(), getExpireTime(loginUser.getLoginTime()));
         loginMap.put(SecurityConstants.BaseSecurity.USER_INFO.getCode(), loginUser);
-        loginMap.put(SecurityConstants.BaseSecurity.AUTHORIZATION.getCode(), authorization);
         loginMap.put(SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode(), loginUser.getAccountType().getCode());
 
         return loginMap;

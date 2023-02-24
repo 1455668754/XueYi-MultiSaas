@@ -1,4 +1,4 @@
-package com.xueyi.auth.support.core;
+package com.xueyi.auth.handler;
 
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenClaimsContext;

@@ -1,7 +1,7 @@
 package com.xueyi.auth.config;
 
-import com.xueyi.auth.support.core.AuthenticationProvider;
-import com.xueyi.auth.support.core.FormIdentityLoginConfigurer;
+import com.xueyi.auth.handler.AuthenticationProvider;
+import com.xueyi.auth.handler.FormIdentityLoginConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,7 +23,7 @@ public class AuthSecurityConfig {
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         // 开放自定义的部分端点
-                        .requestMatchers("/token/*").permitAll()
+                        .requestMatchers("/*").permitAll()
                         // 避免iframe同源无法登录
                         .anyRequest().authenticated()
                 ).headers().frameOptions().sameOrigin()

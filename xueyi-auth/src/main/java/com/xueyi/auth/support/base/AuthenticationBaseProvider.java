@@ -1,6 +1,6 @@
 package com.xueyi.auth.support.base;
 
-import com.xueyi.auth.OAuth2ErrorConstants;
+import com.xueyi.common.core.constant.error.OAuth2Constants;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
@@ -100,7 +100,7 @@ public abstract class AuthenticationBaseProvider<T extends AuthenticationBaseTok
             }
             authorizedScopes = new LinkedHashSet<>(baseAuthentication.getScopes());
         } else {
-            throw new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorConstants.SCOPE_IS_EMPTY));
+            throw new OAuth2AuthenticationException(new OAuth2Error(OAuth2Constants.Error.SCOPE_IS_EMPTY.getCode()));
         }
 
         Map<String, Object> reqParameters = baseAuthentication.getAdditionalParameters();
@@ -162,40 +162,32 @@ public abstract class AuthenticationBaseProvider<T extends AuthenticationBaseTok
 
         } catch (Exception ex) {
             log.error("problem in authenticate", ex);
-            throw oAuth2AuthenticationException(authentication, (AuthenticationException) ex);
+            throw oAuth2AuthenticationException((AuthenticationException) ex);
         }
     }
 
     /**
      * 登录异常转换为oauth2异常
      *
-     * @param authentication          身份验证
      * @param authenticationException 身份验证异常
      * @return {@link OAuth2AuthenticationException}
      */
-    private OAuth2AuthenticationException oAuth2AuthenticationException(Authentication authentication, AuthenticationException authenticationException) {
-        if (authenticationException instanceof UsernameNotFoundException) {
-            return new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorConstants.USERNAME_NOT_FOUND, StrUtil.format("JdbcDaoImpl.notFound + Username {0} not found", authentication.getName()), ""));
-        }
-        if (authenticationException instanceof BadCredentialsException) {
-            return new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorConstants.BAD_CREDENTIALS, "AbstractUserDetailsAuthenticationProvider.badCredentials ： Bad credentials", ""));
-        }
-        if (authenticationException instanceof LockedException) {
-            return new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorConstants.USER_LOCKED, "AbstractUserDetailsAuthenticationProvider.locked : User account is locked", ""));
-        }
-        if (authenticationException instanceof DisabledException) {
-            return new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorConstants.USER_DISABLE, "AbstractUserDetailsAuthenticationProvider.disabled : User is disabled", ""));
-        }
-        if (authenticationException instanceof AccountExpiredException) {
-            return new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorConstants.USER_EXPIRED, "AbstractUserDetailsAuthenticationProvider.expired : User account has expired", ""));
-        }
-        if (authenticationException instanceof CredentialsExpiredException) {
-            return new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorConstants.CREDENTIALS_EXPIRED, "AbstractUserDetailsAuthenticationProvider.credentialsExpired : User credentials have expired", ""));
-        }
-        if (authenticationException instanceof OAuth2AuthenticationException) {
-            return new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.INVALID_SCOPE, "AbstractAccessDecisionManager.accessDenied : invalid_scope", ""));
-        }
-        return new OAuth2AuthenticationException(OAuth2ErrorConstants.UN_KNOW_LOGIN_ERROR);
+    private OAuth2AuthenticationException oAuth2AuthenticationException(AuthenticationException authenticationException) {
+        if (authenticationException instanceof UsernameNotFoundException)
+            return new OAuth2AuthenticationException(new OAuth2Error(OAuth2Constants.Error.USERNAME_NOT_FOUND.getCode(), authenticationException.getLocalizedMessage(), StrUtil.EMPTY));
+        if (authenticationException instanceof BadCredentialsException)
+            return new OAuth2AuthenticationException(new OAuth2Error(OAuth2Constants.Error.BAD_CREDENTIALS.getCode(), authenticationException.getLocalizedMessage(), StrUtil.EMPTY));
+        if (authenticationException instanceof LockedException)
+            return new OAuth2AuthenticationException(new OAuth2Error(OAuth2Constants.Error.USER_LOCKED.getCode(), OAuth2Constants.Error.USER_LOCKED.getMsg(), StrUtil.EMPTY));
+        if (authenticationException instanceof DisabledException)
+            return new OAuth2AuthenticationException(new OAuth2Error(OAuth2Constants.Error.USER_DISABLE.getCode(), OAuth2Constants.Error.USER_DISABLE.getMsg(), StrUtil.EMPTY));
+        if (authenticationException instanceof AccountExpiredException)
+            return new OAuth2AuthenticationException(new OAuth2Error(OAuth2Constants.Error.USER_EXPIRED.getCode(), OAuth2Constants.Error.USER_EXPIRED.getMsg(), StrUtil.EMPTY));
+        if (authenticationException instanceof CredentialsExpiredException)
+            return new OAuth2AuthenticationException(new OAuth2Error(OAuth2Constants.Error.CREDENTIALS_EXPIRED.getCode(), OAuth2Constants.Error.CREDENTIALS_EXPIRED.getMsg(), StrUtil.EMPTY));
+        if (authenticationException instanceof OAuth2AuthenticationException)
+            return new OAuth2AuthenticationException(new OAuth2Error(OAuth2Constants.Error.INVALID_SCOPE.getCode(), OAuth2Constants.Error.INVALID_SCOPE.getMsg(), StrUtil.EMPTY));
+        return new OAuth2AuthenticationException(OAuth2Constants.Error.UN_KNOW_LOGIN_ERROR.getCode());
     }
 
     private OAuth2ClientAuthenticationToken getAuthenticatedClientElseThrowInvalidClient(Authentication authentication) {

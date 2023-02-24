@@ -1,7 +1,6 @@
-package com.xueyi.auth.support.core;
+package com.xueyi.auth.handler;
 
-import com.xueyi.auth.support.handler.FormAuthenticationFailureHandler;
-import com.xueyi.auth.support.handler.SsoLogoutSuccessHandler;
+import com.xueyi.auth.service.impl.FormEventHandlerImpl;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 
@@ -17,9 +16,9 @@ public final class FormIdentityLoginConfigurer extends AbstractHttpConfigurer<Fo
         http.formLogin(formLogin -> {
                     formLogin.loginPage("/token/login");
                     formLogin.loginProcessingUrl("/token/form");
-                    formLogin.failureHandler(new FormAuthenticationFailureHandler());
+                    formLogin.failureHandler(new FormEventHandlerImpl());
                 }).logout() // SSO登出成功处理
-                .logoutSuccessHandler(new SsoLogoutSuccessHandler()).deleteCookies("JSESSIONID")
+                .logoutSuccessHandler(new FormEventHandlerImpl()).deleteCookies("JSESSIONID")
                 .invalidateHttpSession(true).and().csrf().disable();
     }
 

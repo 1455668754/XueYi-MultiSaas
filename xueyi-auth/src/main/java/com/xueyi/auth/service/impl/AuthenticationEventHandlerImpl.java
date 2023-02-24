@@ -59,26 +59,9 @@ public class AuthenticationEventHandlerImpl implements AuthenticationSuccessHand
     @Override
     @SneakyThrows
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) {
-        String username = request.getParameter(SecurityConstants.LoginParam.USER_NAME.getCode());
-
-        log.info("用户：{} 登录失败，异常：{}", username, exception.getLocalizedMessage());
-        // TODO 插入登录日志
-//        SysLog logVo = SysLogUtils.getSysLog();
-//        logVo.setTitle("登录失败");
-//        logVo.setType(LogTypeEnum.ERROR.getType());
-//        logVo.setException(exception.getLocalizedMessage());
-//        // 发送异步日志事件
-//        String startTimeStr = request.getHeader(CommonConstants.REQUEST_START_TIME);
-//        if (StrUtil.isNotBlank(startTimeStr)) {
-//            Long startTime = Long.parseLong(startTimeStr);
-//            Long endTime = System.currentTimeMillis();
-//            logVo.setTime(endTime - startTime);
-//        }
-//        logVo.setCreateBy(username);
-//        logVo.setUpdateBy(username);
-//        SpringContextHolder.publishEvent(new SysLogEvent(logVo));
-        // 写出错误信息
-//        sendErrorResponse(request, response, exception);
+        String enterpriseName = request.getParameter(SecurityConstants.LoginParam.ENTERPRISE_NAME.getCode());
+        String userName = request.getParameter(SecurityConstants.LoginParam.USER_NAME.getCode());
+        log.info("企业账号：{}，用户账号：{} 登录失败，异常：{}", enterpriseName, userName, exception.getLocalizedMessage());
+        ServletUtil.webResponseWriter(response, AjaxResult.error(exception.getLocalizedMessage()));
     }
-
 }

@@ -24,14 +24,6 @@ public class TokenController {
     @Autowired
     private ISysLoginService sysLoginService;
 
-//    @PostMapping("login")
-//    public AjaxResult login(@RequestBody LoginBody form) {
-//        // 用户登录
-//        LoginUser userInfo = sysLoginService.login(form.getEnterpriseName(), form.getUserName(), form.getPassword());
-//        // 获取登录token
-//        return AjaxResult.success(tokenService.createToken(userInfo));
-//    }
-
     @PostMapping("refresh")
     public AjaxResult refresh(HttpServletRequest request) {
         tokenService.refreshToken(request);

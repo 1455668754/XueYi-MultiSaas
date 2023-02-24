@@ -147,6 +147,27 @@ public class JwtUtil {
     }
 
     /**
+     * 根据令牌获取用户账号
+     *
+     * @param token 令牌
+     * @return 用户账号
+     */
+    public static String getNickName(String token) {
+        Claims claims = parseToken(token);
+        return getNickName(claims);
+    }
+
+    /**
+     * 根据身份信息获取用户账号
+     *
+     * @param claims 身份信息
+     * @return 用户账号
+     */
+    public static String getNickName(Claims claims) {
+        return getValue(claims, SecurityConstants.BaseSecurity.NICK_NAME.getCode());
+    }
+
+    /**
      * 根据令牌获取用户类型
      *
      * @param token 令牌
@@ -210,10 +231,10 @@ public class JwtUtil {
     }
 
     /**
-     * 根据令牌获取用户标识
+     * 根据令牌获取用户令牌
      *
      * @param token 令牌
-     * @return 用户Id
+     * @return 用户令牌
      */
     public static String getUserKey(String token) {
         Claims claims = parseToken(token);
@@ -221,16 +242,37 @@ public class JwtUtil {
     }
 
     /**
-     * 根据令牌获取用户标识
+     * 根据令牌获取用户令牌
      *
      * @param claims 身份信息
-     * @return 用户Id
+     * @return 用户令牌
      */
     public static String getUserKey(Claims claims) {
-        String accessToken = getValue(claims, SecurityConstants.BaseSecurity.ACCESS_TOKEN.getCode());
+        String accessToken = getValue(claims, SecurityConstants.BaseSecurity.REFRESH_TOKEN.getCode());
         if (StrUtil.isNotEmpty(accessToken) && StrUtil.startWith(accessToken, TokenConstants.PREFIX))
             return StrUtil.replaceFirst(accessToken, TokenConstants.PREFIX, StrUtil.EMPTY);
         return null;
+    }
+
+    /**
+     * 根据令牌获取访问令牌
+     *
+     * @param token 令牌
+     * @return 访问令牌
+     */
+    public static String getAccessKey(String token) {
+        Claims claims = parseToken(token);
+        return getUserKey(claims);
+    }
+
+    /**
+     * 根据令牌获取访问令牌
+     *
+     * @param claims 身份信息
+     * @return 访问令牌
+     */
+    public static String getAccessKey(Claims claims) {
+        return getValue(claims, SecurityConstants.BaseSecurity.ACCESS_TOKEN.getCode());
     }
 
     /**

@@ -1,6 +1,8 @@
 package com.xueyi.common.security.handler;
 
 import com.xueyi.common.core.constant.basic.SecurityConstants;
+import com.xueyi.common.core.constant.basic.TokenConstants;
+import com.xueyi.common.core.utils.core.ArrayUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.utils.servlet.ServletUtil;
 import com.xueyi.common.security.config.properties.PermitAllUrlProperties;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Token解析器
@@ -23,6 +27,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author xueyi
  */
 public class BearerTokenHandler implements BearerTokenResolver {
+
+    private static final Pattern authorizationPattern = Pattern.compile("^Bearer (?<token>[a-zA-Z0-9-:._~+/]+=*)$", Pattern.CASE_INSENSITIVE);
 
     private boolean allowFormEncodedBodyParameter = false;
 
@@ -65,13 +71,20 @@ public class BearerTokenHandler implements BearerTokenResolver {
     }
 
     private String resolveFromAuthorizationHeader(HttpServletRequest request) {
-        String authorization = ServletUtil.getHeader(request, SecurityConstants.BaseSecurity.USER_KEY.getCode());
-        return StrUtil.isNotBlank(authorization) ? authorization : null;
+        String authorization = ServletUtil.getHeader(request, SecurityConstants.BaseSecurity.ACCESS_TOKEN.getCode());
+        if (!StrUtil.startWith(authorization, TokenConstants.PREFIX))
+            return null;
+        Matcher matcher = authorizationPattern.matcher(authorization);
+        if (!matcher.matches()) {
+            BearerTokenError error = BearerTokenErrors.invalidToken("Bearer token is malformed");
+            throw new OAuth2AuthenticationException(error);
+        }
+        return matcher.group("token");
     }
 
     private static String resolveFromRequestParameters(HttpServletRequest request) {
         String[] values = request.getParameterValues(SecurityConstants.BaseSecurity.ACCESS_TOKEN.getCode());
-        if (values == null || values.length == 0) {
+        if (ArrayUtil.isEmpty(values)) {
             return null;
         }
         if (values.length == 1) {

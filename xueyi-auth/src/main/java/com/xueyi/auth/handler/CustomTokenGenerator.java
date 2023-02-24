@@ -1,4 +1,4 @@
-package com.xueyi.auth.support.core;
+package com.xueyi.auth.handler;
 
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;

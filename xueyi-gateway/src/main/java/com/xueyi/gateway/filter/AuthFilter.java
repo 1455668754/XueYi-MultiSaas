@@ -2,6 +2,7 @@ package com.xueyi.gateway.filter;
 
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.basic.TenantConstants.AccountType;
+import com.xueyi.common.core.constant.basic.TokenConstants;
 import com.xueyi.common.core.utils.JwtUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
@@ -50,6 +51,11 @@ public class AuthFilter implements WebFilter {
         if (ObjectUtil.isNull(claims)) {
             return ServletUtil.unauthorizedResponse(exchange, "令牌已过期或验证不正确");
         }
+        String accessTokenPrefix = JwtUtil.getAccessKey(claims);
+        if (StrUtil.isBlank(accessTokenPrefix) || !StrUtil.startWith(accessTokenPrefix, TokenConstants.PREFIX)) {
+            return ServletUtil.unauthorizedResponse(exchange, "令牌已过期或验证不正确");
+        }
+        String accessToken = StrUtil.replaceFirst(accessTokenPrefix, TokenConstants.PREFIX, StrUtil.EMPTY);
         String userKey = JwtUtil.getUserKey(claims);
         if (StrUtil.isBlank(userKey)) {
             return ServletUtil.unauthorizedResponse(exchange, "令牌已过期或验证不正确");
@@ -59,7 +65,7 @@ public class AuthFilter implements WebFilter {
             return ServletUtil.unauthorizedResponse(exchange, "令牌已过期或验证不正确");
         }
 
-        Boolean hasLogin = redisService.hasKey(userKey);
+        Boolean hasLogin = redisService.hasKey(accessToken) && redisService.hasKey(userKey);
         if (!hasLogin) {
             return ServletUtil.unauthorizedResponse(exchange, "登录状态已过期");
         }
@@ -71,6 +77,7 @@ public class AuthFilter implements WebFilter {
                 String isLessor = JwtUtil.getIsLessor(claims);
                 String userId = JwtUtil.getUserId(claims);
                 String userName = JwtUtil.getUserName(claims);
+                String nickName = JwtUtil.getNickName(claims);
                 String userType = JwtUtil.getUserType(claims);
                 String sourceName = JwtUtil.getSourceName(claims);
 
@@ -84,8 +91,11 @@ public class AuthFilter implements WebFilter {
                 ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.IS_LESSOR.getCode(), isLessor);
                 ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.USER_ID.getCode(), userId);
                 ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.USER_NAME.getCode(), userName);
+                ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.NICK_NAME.getCode(), nickName);
                 ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.USER_TYPE.getCode(), userType);
                 ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.SOURCE_NAME.getCode(), sourceName);
+                ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.ACCESS_TOKEN.getCode(), accessTokenPrefix);
+                ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.REFRESH_TOKEN.getCode(), userKey);
                 ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.USER_KEY.getCode(), userKey);
                 ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode(), accountType.getCode());
             }

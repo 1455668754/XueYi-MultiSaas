@@ -112,7 +112,6 @@ public class SecurityConstants {
         TOKEN("token", "用户唯一标识"),
         ACCESS_TOKEN("access_token", "用户唯一标识 - 访问令牌"),
         REFRESH_TOKEN("refresh_token", "用户唯一标识 - 刷新令牌"),
-        AUTHORIZATION("authorization", "用户认证信息"),
         ENTERPRISE("enterprise", "企业信息"),
         ENTERPRISE_ID("enterprise_id", "企业Id"),
         ENTERPRISE_NAME("enterprise_name", "企业账号"),

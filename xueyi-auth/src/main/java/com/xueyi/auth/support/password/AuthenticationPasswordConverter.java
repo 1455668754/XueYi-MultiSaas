@@ -9,9 +9,9 @@ import com.xueyi.common.core.constant.system.OrganizeConstants;
 import com.xueyi.common.core.utils.core.SpringUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.utils.servlet.ServletUtil;
-import com.xueyi.common.core.web.result.AjaxResult;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.util.MultiValueMap;
 
 import java.util.Map;
@@ -63,30 +63,30 @@ public class AuthenticationPasswordConverter extends AuthenticationBaseConverter
         String password = parameters.getFirst(LoginParam.PASSWORD.getCode());
 
         // 企业账号||员工账号||密码为空 错误
-        if (StrUtil.hasBlank(enterpriseName, userName, password)) {
+        if (StrUtil.isBlank(enterpriseName) || StrUtil.isBlank(userName) || StrUtil.isBlank(password)) {
             SpringUtil.getBean(ISysLogService.class).recordLoginInfo(enterpriseName, userName, Constants.LOGIN_FAIL, "企业账号/员工账号/密码必须填写");
-            AjaxResult.warn("企业账号/员工账号/密码必须填写");
+            throw new UsernameNotFoundException("企业账号/员工账号/密码必须填写");
         }
 
         // 企业账号不在指定范围内 错误
         if (enterpriseName.length() < OrganizeConstants.ENTERPRISE_NAME_MIN_LENGTH
                 || enterpriseName.length() > OrganizeConstants.ENTERPRISE_NAME_MAX_LENGTH) {
             SpringUtil.getBean(ISysLogService.class).recordLoginInfo(enterpriseName, userName, Constants.LOGIN_FAIL, "企业账号不在指定范围");
-            AjaxResult.warn("企业账号不在指定范围");
+            throw new UsernameNotFoundException("企业账号不在指定范围");
         }
 
         // 员工账号不在指定范围内 错误
         if (userName.length() < OrganizeConstants.USERNAME_MIN_LENGTH
                 || userName.length() > OrganizeConstants.USERNAME_MAX_LENGTH) {
             SpringUtil.getBean(ISysLogService.class).recordLoginInfo(enterpriseName, userName, Constants.LOGIN_FAIL, "员工账号不在指定范围");
-            AjaxResult.warn("员工账号不在指定范围");
+            throw new UsernameNotFoundException("员工账号不在指定范围");
         }
 
         // 密码如果不在指定范围内 错误
         if (password.length() < OrganizeConstants.PASSWORD_MIN_LENGTH
                 || password.length() > OrganizeConstants.PASSWORD_MAX_LENGTH) {
             SpringUtil.getBean(ISysLogService.class).recordLoginInfo(enterpriseName, userName, Constants.LOGIN_FAIL, "用户密码不在指定范围");
-            AjaxResult.warn("用户密码不在指定范围");
+            throw new UsernameNotFoundException("用户密码不在指定范围");
         }
     }
 }

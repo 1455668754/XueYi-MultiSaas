@@ -4,6 +4,7 @@ import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.security.model.ClientAuthenticatedPrincipal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -16,6 +17,7 @@ import org.springframework.security.oauth2.server.resource.introspection.OpaqueT
 
 import java.security.Principal;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * 资源服务器 token处理器
@@ -41,8 +43,8 @@ public class OpaqueTokenHandler implements OpaqueTokenIntrospector {
         }
 
         try {
-            Object userDetails = Objects.requireNonNull(oldAuthorization).getAttributes().get(Principal.class.getName());
-            return (OAuth2AuthenticatedPrincipal) userDetails;
+            return Optional.of(oldAuthorization).map(item -> (UsernamePasswordAuthenticationToken) item.getAttributes().get(Principal.class.getName()))
+                    .map(item -> (OAuth2AuthenticatedPrincipal) item.getPrincipal()).get();
         } catch (UsernameNotFoundException notFoundException) {
             log.warn("用户不存在 {}", notFoundException.getLocalizedMessage());
             throw notFoundException;

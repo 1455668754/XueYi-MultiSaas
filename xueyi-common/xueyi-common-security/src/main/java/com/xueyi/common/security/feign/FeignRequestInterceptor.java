@@ -33,6 +33,7 @@ public class FeignRequestInterceptor implements RequestInterceptor {
             setHeaderKey(requestTemplate, headers, SecurityConstants.BaseSecurity.USER_NAME.getCode());
             setHeaderKey(requestTemplate, headers, SecurityConstants.BaseSecurity.NICK_NAME.getCode());
             setHeaderKey(requestTemplate, headers, SecurityConstants.BaseSecurity.USER_TYPE.getCode());
+            setHeaderKey(requestTemplate, headers, SecurityConstants.BaseSecurity.ACCESS_TOKEN.getCode());
             setHeaderKey(requestTemplate, headers, SecurityConstants.BaseSecurity.USER_KEY.getCode());
             setHeaderKey(requestTemplate, headers, SecurityConstants.BaseSecurity.SOURCE_NAME.getCode());
             setHeaderKey(requestTemplate, headers, SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode());

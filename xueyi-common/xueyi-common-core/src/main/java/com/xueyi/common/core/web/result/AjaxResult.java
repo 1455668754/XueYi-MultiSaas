@@ -212,7 +212,7 @@ public class AjaxResult extends HashMap<String, Object> {
      * @return 结果
      */
     public boolean isError() {
-        return Objects.equals(HttpConstants.ResultType.SUCCESS.getCode(), this.get(CODE_TAG));
+        return Objects.equals(HttpConstants.ResultType.ERROR.getCode(), this.get(CODE_TAG));
     }
 
     /**
