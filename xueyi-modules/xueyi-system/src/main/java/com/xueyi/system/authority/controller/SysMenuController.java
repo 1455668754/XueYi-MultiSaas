@@ -34,6 +34,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * 菜单管理 业务处理
@@ -208,7 +210,7 @@ public class SysMenuController extends TreeController<SysMenuQuery, SysMenuDto, 
     }
 
     /**
-     * 前置校验 （强制）增加/修改
+     * 前置校验 新增/修改
      */
     @Override
     protected void AEHandle(BaseConstants.Operate operate, SysMenuDto menu) {
@@ -219,21 +221,18 @@ public class SysMenuController extends TreeController<SysMenuQuery, SysMenuDto, 
 
         switch (operate) {
             case ADD, ADD_FORCE -> {
-                if (SecurityUtils.isNotAdminTenant() && menu.isCommon())
-                    warn(StrUtil.format("{}{}{}失败，无操作权限！", operate.getInfo(), getNodeName(), menu.getTitle()));
             }
             case EDIT, EDIT_FORCE -> {
                 SysMenuDto original = baseService.selectById(menu.getId());
+                menu.setIsCommon(original.getIsCommon());
                 if (ObjectUtil.isNull(original))
                     warn("数据不存在！");
-                if (SecurityUtils.isNotAdminTenant() && original.isCommon())
-                    warn(StrUtil.format("{}{}{}失败，无操作权限！", operate.getInfo(), getNodeName(), menu.getTitle()));
-                if (!StrUtil.equals(menu.getIsCommon(), original.getIsCommon()))
-                    warn(StrUtil.format("{}{}{}失败，公共{}属性禁止变更！", operate.getInfo(), getNodeName(), menu.getTitle(), getNodeName()));
             }
         }
 
         if (menu.isCommon()) {
+            if (SecurityUtils.isNotAdminTenant())
+                warn(StrUtil.format("{}{}{}失败，无操作权限！", operate.getInfo(), getNodeName(), menu.getTitle()));
             SysModuleDto module = moduleService.selectById(menu.getModuleId());
             if (ObjectUtil.isNull(module))
                 warn("数据不存在！");
@@ -249,17 +248,17 @@ public class SysMenuController extends TreeController<SysMenuQuery, SysMenuDto, 
     }
 
     /**
-     * 前置校验 （强制）删除
-     * 必须满足内容
-     *
-     * @param operate 操作类型
-     * @param idList  Id集合
+     * 前置校验 删除
      */
-    @Override
     protected void RHandle(BaseConstants.Operate operate, List<Long> idList) {
-        // remove top node
+        List<SysMenuDto> moduleList = baseService.selectListByIds(idList);
+        boolean isTenant = SecurityUtils.isAdminTenant();
+        Map<Long, SysMenuDto> moduleMap = moduleList.stream().filter(item -> isTenant || item.isNotCommon())
+                .collect(Collectors.toMap(SysMenuDto::getId, Function.identity()));
         for (int i = idList.size() - 1; i >= 0; i--)
-            if (ObjectUtil.equals(idList.get(i), AuthorityConstants.MENU_TOP_NODE)) idList.remove(i);
-        if (CollUtil.isEmpty(idList)) warn(StrUtil.format("删除失败，无法删除默认{}！", getNodeName()));
+            if (!moduleMap.containsKey(idList.get(i)) || ObjectUtil.equals(idList.get(i), AuthorityConstants.MENU_TOP_NODE))
+                idList.remove(i);
+        if (CollUtil.isEmpty(idList))
+            warn(StrUtil.format("无待删除{}！", getNodeName()));
     }
 }

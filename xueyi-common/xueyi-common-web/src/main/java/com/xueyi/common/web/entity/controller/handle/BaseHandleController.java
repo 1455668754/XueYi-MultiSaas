@@ -38,7 +38,7 @@ public abstract class BaseHandleController<Q extends BaseEntity, D extends BaseE
     protected abstract String getNodeName();
 
     /**
-     * 前置校验 增加/修改
+     * 前置校验 新增/修改
      * 必须满足内容
      *
      * @param operate 操作类型

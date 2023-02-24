@@ -1,6 +1,7 @@
 package com.xueyi.system.authority.controller;
 
 import com.xueyi.common.core.constant.basic.BaseConstants;
+import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
@@ -23,6 +24,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * 模块管理 业务处理
@@ -141,22 +145,41 @@ public class SysModuleController extends BaseController<SysModuleQuery, SysModul
     }
 
     /**
-     * 新增/修改 前置校验
+     * 前置校验 新增/修改
      */
     @Override
     protected void AEHandle(BaseConstants.Operate operate, SysModuleDto module) {
         if (baseService.checkNameUnique(module.getId(), module.getName()))
             warn(StrUtil.format("{}{}{}失败，{}名称已存在！", operate.getInfo(), getNodeName(), module.getName(), getNodeName()));
-        if (operate.isAdd() && SecurityUtils.isNotAdminTenant() && module.isCommon())
-            warn(StrUtil.format("{}{}{}失败，无操作权限！", operate.getInfo(), getNodeName(), module.getName()));
-        if (operate.isEdit()) {
-            SysModuleDto original = baseService.selectById(module.getId());
-            if (ObjectUtil.isNull(original))
-                warn("数据不存在！");
-            if (SecurityUtils.isNotAdminTenant() && original.isCommon())
-                warn(StrUtil.format("{}{}{}失败，无操作权限！", operate.getInfo(), getNodeName(), module.getName()));
-            if (!StrUtil.equals(module.getIsCommon(), original.getIsCommon()))
-                warn(StrUtil.format("{}{}{}失败，公共{}属性禁止变更！", operate.getInfo(), getNodeName(), module.getName(), getNodeName()));
+
+        switch (operate) {
+            case ADD, ADD_FORCE -> {
+            }
+            case EDIT, EDIT_FORCE -> {
+                SysModuleDto original = baseService.selectById(module.getId());
+                module.setIsCommon(original.getIsCommon());
+                if (ObjectUtil.isNull(original))
+                    warn("数据不存在！");
+            }
         }
+
+        if (module.isCommon() && SecurityUtils.isNotAdminTenant()) {
+            warn(StrUtil.format("{}{}{}失败，无操作权限！", operate.getInfo(), getNodeName(), module.getName()));
+        }
+    }
+
+    /**
+     * 前置校验 删除
+     */
+    protected void RHandle(BaseConstants.Operate operate, List<Long> idList) {
+        List<SysModuleDto> moduleList = baseService.selectListByIds(idList);
+        boolean isTenant = SecurityUtils.isAdminTenant();
+        Map<Long, SysModuleDto> moduleMap = moduleList.stream().filter(item -> isTenant || item.isNotCommon())
+                .collect(Collectors.toMap(SysModuleDto::getId, Function.identity()));
+        for (int i = idList.size() - 1; i >= 0; i--)
+            if (!moduleMap.containsKey(idList.get(i)))
+                idList.remove(i);
+        if (CollUtil.isEmpty(idList))
+            warn(StrUtil.format("无待删除{}！", getNodeName()));
     }
 }
