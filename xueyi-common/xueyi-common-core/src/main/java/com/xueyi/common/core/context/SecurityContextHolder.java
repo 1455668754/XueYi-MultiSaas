@@ -118,6 +118,20 @@ public class SecurityContextHolder {
     }
 
     /**
+     * 获取用户令牌
+     */
+    public static String getAccessToken() {
+        return get(SecurityConstants.BaseSecurity.ACCESS_TOKEN.getCode());
+    }
+
+    /**
+     * 设置用户令牌
+     */
+    public static void setAccessToken(String accessToken) {
+        set(SecurityConstants.BaseSecurity.ACCESS_TOKEN.getCode(), accessToken);
+    }
+
+    /**
      * 获取租户策略源
      */
     public static String getSourceName() {

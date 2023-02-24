@@ -2,7 +2,7 @@
 <h4 align="center">基于 Vue3/TypeScript/Ant-Design UI 和 Spring Cloud & Alibaba/Mybatis-Plus 的多租户SaaS开发框架。</h4>
 <p align="center">
     <a style="margin-right: 5px">
-       <img src="https://img.shields.io/badge/XueYi--MultiSaas-v3.0.0-Alpha1-brightgreen" alt="xueYi-MultiSaas">
+       <img src="https://img.shields.io/badge/XueYi--MultiSaas-v3.0.0-brightgreen" alt="xueYi-MultiSaas">
     </a>
     <a style="margin-right: 5px">
        <img src="https://gitee.com/xueyitiantang/XueYi-MultiSaas/badge/star.svg?theme=dark" alt="xueYi-MultiSaas">
@@ -13,7 +13,9 @@
 </p>
 
 ## 简介
-基于SpringBoot | Spring Cloud & Alibaba | Mybatis-Plus | Vue3 | vite2 | TypeScript | Ant-Design-Vue UI 的微服务多租户SaaS开发框架，为企业级多租户Saas及集团化应用提供快速开发解决方案。
+
+基于SpringBoot | Spring Cloud & Alibaba | Mybatis-Plus | Vue3 | vite2 | TypeScript | Ant-Design-Vue UI
+的微服务多租户SaaS开发框架，为企业级多租户Saas及集团化应用提供快速开发解决方案。
 
 ## 特性
 
@@ -26,11 +28,13 @@
 - **微聚合多前端**：公共抽离，降低系统重复冗余
 
 ## 交流
+
 - 请移步右上角  **一键三连** :kissing_heart:
 - QQ群：[![加入QQ群](https://img.shields.io/badge/779343138-blue.svg)](https://jq.qq.com/?_wv=1027&k=zw11JJhj)
 - 若发现bug，请提Issues。
 
 ## 预览
+
 - **普通账户**
   > 企业账号：xueYi   
   员工账号：admin   
@@ -42,13 +46,14 @@
   密码：admin123
 
 - **演示**
-  >[multi.xueyitt.cn](https://multi.xueyitt.cn)
+  > [multi.xueyitt.cn](https://multi.xueyitt.cn)
 - **文档**
-  >[doc.xueyitt.cn](https://doc.xueyitt.cn)
+  > [doc.xueyitt.cn](https://doc.xueyitt.cn)
 - **视频**
-  >[space.bilibili.com](https://space.bilibili.com/479745149)
+  > [space.bilibili.com](https://space.bilibili.com/479745149)
 
 ## 结构
+
 * 采用前后端分离的模式，微服务版本前端。
 * 后端采用Spring Boot、Spring Cloud & Alibaba。
 * 注册中心、配置中心选型Nacos，权限认证使用Redis。
@@ -94,9 +99,11 @@ com.xueyi
 ~~~
 
 ## 架构
+
 <img src="https://images.gitee.com/uploads/images/2021/1108/172436_9deff9ff_7382127.png"/>
 
 ## 演示
+
 <table>
     <tr>
         <td><img src="https://gitee.com/xueyitiantang/images/raw/master/1.png" alt=""/></td>
@@ -121,7 +128,9 @@ com.xueyi
 </table>
 
 ## 开源
+
 **源于开源，回归开源**
+
 * 感谢Vben开源的[vue-vben-admin](https://github.com/vbenjs/vue-vben-admin)
 * 感谢苞米豆开源的[mybatis-plus](https://github.com/baomidou/mybatis-plus)
 * 感谢小锅盖开源的[dynamic](https://gitee.com/baomidou/dynamic-datasource-spring-boot-starter)

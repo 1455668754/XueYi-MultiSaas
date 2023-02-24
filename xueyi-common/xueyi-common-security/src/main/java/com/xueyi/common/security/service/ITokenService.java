@@ -319,14 +319,8 @@ public interface ITokenService<User, LoginUser extends BaseLoginUser<User>> exte
             loginMap.put(SecurityConstants.BaseSecurity.ENTERPRISE.getCode(), loginUser.getEnterprise());
             loginMap.put(SecurityConstants.BaseSecurity.USER.getCode(), loginUser.getUser());
             loginMap.put(SecurityConstants.BaseSecurity.USER_INFO.getCode(), loginUser);
-            if (StrUtil.isNotBlank(loginUser.getAccessToken()))
-                getRedisService().setCacheMap(loginUser.getAccessToken(), loginMap);
-            if (StrUtil.isNotBlank(loginUser.getRefreshToken())) {
+            if (StrUtil.isNotBlank(loginUser.getRefreshToken()))
                 getRedisService().setCacheMap(loginUser.getRefreshToken(), loginMap);
-//                getRedisService().setCacheMapValue(loginUser.getRefreshToken(), SecurityConstants.BaseSecurity.ENTERPRISE.getCode(), loginUser.getEnterprise());
-//                getRedisService().setCacheMapValue(loginUser.getRefreshToken(), SecurityConstants.BaseSecurity.USER.getCode(), loginUser.getUser());
-//                getRedisService().setCacheMapValue(loginUser.getRefreshToken(), SecurityConstants.BaseSecurity.LOGIN_USER.getCode(), loginUser);
-            }
         }
     }
 

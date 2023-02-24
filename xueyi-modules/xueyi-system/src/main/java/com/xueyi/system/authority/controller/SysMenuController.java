@@ -97,7 +97,8 @@ public class SysMenuController extends TreeController<SysMenuQuery, SysMenuDto, 
         String moduleKey = ServiceConstants.FromSource.MULTI.getCode() + moduleId;
         if (ObjectUtil.isNull(menuMap) || ObjectUtil.isNull(menuMap.get(moduleKey))) {
             List<SysMenuDto> menus = baseService.getRoutes(moduleId);
-            if (ObjectUtil.isNull(menuMap)) menuMap = new HashMap<>();
+            if (ObjectUtil.isNull(menuMap))
+                menuMap = new HashMap<>();
             menuMap.put(moduleKey, MRouteUtils.buildMenus(TreeUtil.buildTree(menus)));
             tokenService.setMenuRoute(menuMap);
         }
