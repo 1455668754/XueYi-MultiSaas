@@ -2,11 +2,13 @@ package com.xueyi.common.redis.service;
 
 import com.xueyi.common.core.exception.UtilException;
 import com.xueyi.common.core.utils.core.*;
+import com.xueyi.common.redis.configure.FastJson2JsonRedisSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundSetOperations;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
@@ -28,6 +30,8 @@ public class RedisService {
     @Autowired
     public RedisTemplate redisTemplate;
 
+    private final FastJson2JsonRedisSerializer serializer = new FastJson2JsonRedisSerializer(Object.class);
+
     /**
      * 缓存基本的对象，Integer、String、实体类等
      *
@@ -48,6 +52,34 @@ public class RedisService {
      */
     public <T> void setCacheObject(final String key, final T value, final Long timeout, final TimeUnit timeUnit) {
         redisTemplate.opsForValue().set(key, value, timeout, timeUnit);
+    }
+
+    /**
+     * 缓存基本的对象，Integer、String、实体类等 | 指定序列化
+     *
+     * @param key        Redis键
+     * @param value      缓存的值
+     * @param serializer 序列化类型
+     */
+    public <T> void setCacheObject(final String key, final T value, RedisSerializer<?> serializer) {
+        redisTemplate.setValueSerializer(serializer);
+        setCacheObject(key, value);
+        redisTemplate.setValueSerializer(this.serializer);
+    }
+
+    /**
+     * 缓存基本的对象，Integer、String、实体类等 | 指定序列化
+     *
+     * @param key        Redis键
+     * @param value      缓存的值
+     * @param timeout    时间
+     * @param timeUnit   时间颗粒度
+     * @param serializer 序列化类型
+     */
+    public <T> void setCacheObject(final String key, final T value, final Long timeout, final TimeUnit timeUnit, RedisSerializer<?> serializer) {
+        redisTemplate.setValueSerializer(serializer);
+        setCacheObject(key, value, timeout, timeUnit);
+        redisTemplate.setValueSerializer(this.serializer);
     }
 
     /**
@@ -94,7 +126,7 @@ public class RedisService {
     }
 
     /**
-     * 获得缓存的基本对象。
+     * 获得缓存的基本对象
      *
      * @param key Redis键
      * @return 缓存键值对应的数据
@@ -102,6 +134,20 @@ public class RedisService {
     public <T> T getCacheObject(final String key) {
         ValueOperations<String, T> operation = redisTemplate.opsForValue();
         return operation.get(key);
+    }
+
+    /**
+     * 获得缓存的基本对象 | 指定序列化
+     *
+     * @param key        Redis键
+     * @param serializer 序列化类型
+     * @return 缓存键值对应的数据
+     */
+    public <T> T getCacheObject(final String key, RedisSerializer<?> serializer) {
+        redisTemplate.setValueSerializer(serializer);
+        T obj = getCacheObject(key);
+        redisTemplate.setValueSerializer(this.serializer);
+        return obj;
     }
 
     /**
