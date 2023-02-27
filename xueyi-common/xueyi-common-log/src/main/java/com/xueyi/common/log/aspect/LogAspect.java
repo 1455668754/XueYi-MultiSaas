@@ -92,7 +92,7 @@ public class LogAspect {
             SysOperateLogDto operateLog = new SysOperateLogDto();
             operateLog.setStatus(BusinessStatus.SUCCESS.getCode());
             // 请求的地址
-            String ip = IpUtil.getIpAddr(ServletUtil.getRequest());
+            String ip = IpUtil.getIpAddr();
             operateLog.setIp(ip);
 
             operateLog.setUrl(StrUtil.sub(ServletUtil.getRequest().getRequestURI(), 0, 255));

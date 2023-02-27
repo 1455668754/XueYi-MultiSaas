@@ -39,7 +39,7 @@ public class FeignRequestInterceptor implements RequestInterceptor {
             setHeaderKey(requestTemplate, headers, SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode());
             setHeaderKey(requestTemplate, headers, SecurityConstants.AUTHORIZATION_HEADER);
             // 配置客户端IP
-            requestTemplate.header("X-Forwarded-For", IpUtil.getIpAddr(ServletUtil.getRequest()));
+            requestTemplate.header("X-Forwarded-For", IpUtil.getIpAddr());
         }
     }
 
