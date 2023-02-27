@@ -152,8 +152,8 @@ public class LogAspect {
         operationLog.setOperateType(String.valueOf(log.operatorType().getCode()));
         // 是否需要保存request，参数和值
         if (log.isSaveRequestData()) {
-            // 获取参数的信息，传入到数据库中。
-            setRequestValue(joinPoint, operationLog);
+            // 获取参数的信息，传入到数据库中
+            setRequestValue(joinPoint, operationLog, log.excludeParamNames());
         }
         // 是否需要保存response，参数和值
         if (log.isSaveResponseData() && ObjectUtil.isNotNull(jsonResult)) {
@@ -165,30 +165,31 @@ public class LogAspect {
      * 获取请求的参数，放到log中
      *
      * @param operateLog 操作日志
+     * @param excludeParamNames 排除指定的请求参数
      * @throws Exception 异常
      */
-    private void setRequestValue(JoinPoint joinPoint, SysOperateLogDto operateLog) throws Exception {
+    private void setRequestValue(JoinPoint joinPoint, SysOperateLogDto operateLog, String[] excludeParamNames) throws Exception {
         String requestMethod = operateLog.getRequestMethod();
         if (HttpMethod.PUT.name().equals(requestMethod) || HttpMethod.POST.name().equals(requestMethod)) {
-            String params = argsArrayToString(joinPoint.getArgs());
+            String params = argsArrayToString(joinPoint.getArgs(), excludeParamNames);
             operateLog.setParam(StrUtil.sub(params, 0, 2000));
         } else {
             Map<?, ?> paramsMap = ServletUtil.getParamMap(ServletUtil.getRequest());
-            operateLog.setParam(StrUtil.sub(JSON.toJSONString(paramsMap, excludePropertyPreFilter()), 0, 2000));
+            operateLog.setParam(StrUtil.sub(JSON.toJSONString(paramsMap, excludePropertyPreFilter(excludeParamNames)), 0, 2000));
         }
     }
 
     /**
      * 参数拼装
      */
-    private String argsArrayToString(Object[] paramsArray) {
+    private String argsArrayToString(Object[] paramsArray, String[] excludeParamNames) {
         StringBuilder params = new StringBuilder();
         if (ArrayUtil.isNotEmpty(paramsArray)) {
             for (Object o : paramsArray) {
                 if (ObjectUtil.isNotNull(o) && !isFilterObject(o)) {
                     try {
-                        String jsonObj = JSON.toJSONString(o, excludePropertyPreFilter());
-                        params.append(jsonObj).append(" ");
+                        String jsonObj = JSON.toJSONString(o, excludePropertyPreFilter(excludeParamNames));
+                        params.append(jsonObj).append(StrUtil.SPACE);
                     } catch (Exception ignored) {
                     }
                 }
@@ -200,8 +201,8 @@ public class LogAspect {
     /**
      * 忽略敏感属性
      */
-    public PropertyPreExcludeFilter excludePropertyPreFilter() {
-        return new PropertyPreExcludeFilter().addExcludes(EXCLUDE_PROPERTIES);
+    public PropertyPreExcludeFilter excludePropertyPreFilter(String[] excludeParamNames) {
+        return new PropertyPreExcludeFilter().addExcludes(ArrayUtil.addAll(EXCLUDE_PROPERTIES, excludeParamNames));
     }
 
     /**
