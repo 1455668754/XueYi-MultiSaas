@@ -1,5 +1,6 @@
 package com.xueyi.file;
 
+import com.github.tobato.fastdfs.FdfsClientConfig;
 import com.xueyi.common.security.annotation.EnableResourceServer;
 import com.xueyi.common.security.annotation.EnableRyFeignClients;
 import com.xueyi.common.security.config.ApplicationConfig;
@@ -18,7 +19,7 @@ import org.springframework.context.annotation.Import;
 @EnableCustomSwagger
 @EnableResourceServer
 @EnableRyFeignClients
-@Import({ApplicationConfig.class, JacksonConfig.class})
+@Import({ApplicationConfig.class, JacksonConfig.class, FdfsClientConfig.class})
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 public class XueYiFileApplication {
     public static void main(String[] args) {
