@@ -308,10 +308,10 @@ public class IpUtil {
      * @return boolean 结果
      */
     public static boolean isMatchedIp(String filter, String ip) {
-        if (StrUtil.isEmpty(filter) && StrUtil.isEmpty(ip)) {
+        if (StrUtil.isEmpty(filter) || StrUtil.isEmpty(ip)) {
             return false;
         }
-        String[] ips = filter.split(";");
+        String[] ips = filter.split(StrUtil.SEMICOLON);
         for (String iStr : ips) {
             if (isIP(iStr) && iStr.equals(ip)) {
                 return true;

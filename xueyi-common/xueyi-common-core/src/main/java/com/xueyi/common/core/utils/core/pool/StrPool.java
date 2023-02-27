@@ -16,4 +16,5 @@ public interface StrPool {
     String PARENTHESES_END = ")";
     String DELIM = "{}";
     String BRACKET = "[]";
+    String SEMICOLON = ";";
 }

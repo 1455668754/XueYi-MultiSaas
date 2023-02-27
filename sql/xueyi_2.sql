@@ -426,7 +426,10 @@ create table sys_operate_log (
   del_time                  datetime            on update current_timestamp             comment '删除时间',
   del_flag		            tinyint             not null default 0                      comment '删除标志(0正常 1删除)',
   tenant_id		            bigint	            not null                                comment '租户Id',
-  primary key (id)
+  primary key (id),
+  key idx_sys_operate_log_bt (business_type),
+  key idx_sys_operate_log_s  (status),
+  key idx_sys_operate_log_ot (operate_time)
 ) engine = innodb auto_increment=100 comment = '操作日志记录';
 
 -- ----------------------------
@@ -446,7 +449,9 @@ create table sys_login_log (
   del_time                  datetime            on update current_timestamp             comment '删除时间',
   del_flag		            tinyint             not null default 0                      comment '删除标志(0正常 1删除)',
   tenant_id		            bigint	            not null                                comment '租户Id',
-  primary key (id)
+  primary key (id),
+  key idx_sys_login_log_s  (status),
+  key idx_sys_login_log_lt (access_time)
 ) engine = innodb auto_increment=100 comment = '系统访问记录';
 
 -- ----------------------------
