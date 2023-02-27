@@ -5,7 +5,11 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import java.lang.management.ManagementFactory;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 /**
@@ -115,15 +119,19 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
-     * 计算两个时间差
+     * 计算时间差
+     *
+     * @param startTime 开始时间
+     * @param endTime   最后时间
+     * @return 时间差（天/小时/分钟）
      */
-    public static String getDatePoor(Date endDate, Date nowDate) {
+    public static String timeDistance(Date startTime, Date endTime) {
         long nd = 1000 * 24 * 60 * 60;
         long nh = 1000 * 60 * 60;
         long nm = 1000 * 60;
         // long ns = 1000;
         // 获得两个时间的毫秒时间差异
-        long diff = endDate.getTime() - nowDate.getTime();
+        long diff = endTime.getTime() - startTime.getTime();
         // 计算差多少天
         long day = diff / nd;
         // 计算差多少小时

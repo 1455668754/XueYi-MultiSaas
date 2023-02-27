@@ -50,7 +50,8 @@ public class ValidateCodeFilter extends AbstractGatewayFilterFactory<Object> {
             }
             try {
                 String rspStr = resolveBodyFromRequest(request);
-                JSONObject obj = JSON.parseObject(rspStr);
+                String newStr = StrUtil.DELIM_START + StrUtil.DOUBLE_QUOTES + rspStr.replace(StrUtil.EQUAL, StrUtil.DOUBLE_QUOTES + StrUtil.COLON + StrUtil.DOUBLE_QUOTES).replace(StrUtil.AMPERSAND, StrUtil.DOUBLE_QUOTES + StrUtil.COMMA + StrUtil.DOUBLE_QUOTES) + StrUtil.DOUBLE_QUOTES + StrUtil.DELIM_END;
+                JSONObject obj = JSON.parseObject(newStr);
                 validateCodeService.checkCaptcha(obj.getString(CODE), obj.getString(UUID));
             } catch (Exception e) {
                 return ServletUtil.webFluxResponseWriter(exchange.getResponse(), e.getMessage());
