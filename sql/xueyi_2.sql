@@ -421,6 +421,7 @@ create table sys_operate_log (
   json_result               varchar(2000)       default ''                              comment '返回参数',
   status                    char(1)             default 0                               comment '操作状态（0正常 1异常）',
   error_msg                 varchar(2000)       default ''                              comment '错误消息',
+  cost_time                 bigint              default 0                               comment '消耗时间',
   operate_time              datetime            default current_timestamp               comment '操作时间',
   del_time                  datetime            on update current_timestamp             comment '删除时间',
   del_flag		            tinyint             not null default 0                      comment '删除标志(0正常 1删除)',

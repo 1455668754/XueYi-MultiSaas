@@ -75,4 +75,7 @@ public class SysOperateLogPo extends TBaseEntity {
     @Excel(name = "操作时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     protected LocalDateTime operateTime;
 
+    /** 消耗时间 */
+    @Excel(name = "消耗时间", suffix = "毫秒")
+    private Long costTime;
 }
