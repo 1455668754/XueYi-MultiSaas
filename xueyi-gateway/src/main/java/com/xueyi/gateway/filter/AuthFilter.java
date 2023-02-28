@@ -65,7 +65,7 @@ public class AuthFilter implements WebFilter {
             return ServletUtil.unauthorizedResponse(exchange, "令牌已过期或验证不正确");
         }
 
-        Boolean hasLogin = redisService.hasKey(accessToken) && redisService.hasKey(userKey);
+        boolean hasLogin = redisService.hasKey(accessToken) && redisService.hasKey(userKey);
         if (!hasLogin) {
             return ServletUtil.unauthorizedResponse(exchange, "登录状态已过期");
         }
