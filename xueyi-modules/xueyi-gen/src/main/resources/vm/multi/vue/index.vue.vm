@@ -70,6 +70,7 @@
 </template>
 
 <script lang="ts">
+  import { defineComponent, reactive } from 'vue';
   import { list${BusinessName}Api, del${BusinessName}Api#if($api.export), export${BusinessName}Api#end } from '/@/api/${moduleName}/${authorityName}/${businessName}';
   import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
