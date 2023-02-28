@@ -1,7 +1,7 @@
 package com.xueyi.system.api.model;
 
 import com.xueyi.common.core.constant.basic.TenantConstants;
-import com.xueyi.system.api.model.base.BaseLoginUser;
+import com.xueyi.common.core.web.model.BaseLoginUser;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

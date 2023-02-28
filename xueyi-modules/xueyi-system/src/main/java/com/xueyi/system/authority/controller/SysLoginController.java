@@ -4,13 +4,13 @@ import com.xueyi.common.cache.utils.SourceUtil;
 import com.xueyi.common.core.context.SecurityContextHolder;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
+import com.xueyi.common.core.web.model.SysSource;
 import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.security.annotation.InnerAuth;
 import com.xueyi.common.web.entity.controller.BasisController;
 import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
 import com.xueyi.system.api.model.DataScope;
 import com.xueyi.system.api.model.LoginUser;
-import com.xueyi.system.api.model.Source;
 import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
 import com.xueyi.system.authority.service.ISysLoginService;
@@ -49,7 +49,7 @@ public class SysLoginController extends BasisController {
             return R.ok(null, "企业账号不存在");
         SecurityContextHolder.setEnterpriseId(enterprise.getId().toString());
         SecurityContextHolder.setIsLessor(enterprise.getIsLessor());
-        Source source = SourceUtil.getSourceCache(enterprise.getStrategyId());
+        SysSource source = SourceUtil.getSourceCache(enterprise.getStrategyId());
         // 不存在直接返回空数据 | 与网络调用错误区分
         if (ObjectUtil.isNull(source))
             return R.ok(null, "数据源不存在");

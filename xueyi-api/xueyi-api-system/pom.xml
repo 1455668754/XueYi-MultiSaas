@@ -17,18 +17,6 @@
 
     <dependencies>
 
-        <!-- SpringBoot Security Core -->
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-core</artifactId>
-        </dependency>
-
-        <!-- SpringBoot Security Oauth2 Core -->
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-oauth2-core</artifactId>
-        </dependency>
-
         <!-- XueYi Common Core -->
         <dependency>
             <groupId>com.xueyi</groupId>

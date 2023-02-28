@@ -4,13 +4,17 @@ import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.basic.TokenConstants;
 import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.JwtUtil;
-import com.xueyi.common.core.utils.core.*;
+import com.xueyi.common.core.utils.core.CollUtil;
+import com.xueyi.common.core.utils.core.MapUtil;
+import com.xueyi.common.core.utils.core.NumberUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.utils.ip.IpUtil;
 import com.xueyi.common.core.utils.servlet.ServletUtil;
+import com.xueyi.common.core.web.model.BaseLoginUser;
+import com.xueyi.common.core.web.model.SysSource;
 import com.xueyi.common.redis.service.RedisService;
 import com.xueyi.common.security.utils.SecurityUtils;
-import com.xueyi.system.api.model.Source;
-import com.xueyi.system.api.model.base.BaseLoginUser;
 import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.Ordered;
@@ -19,7 +23,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
 
 import java.security.Principal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import static com.xueyi.common.core.constant.basic.CacheConstants.EXPIRATION;
@@ -329,7 +338,7 @@ public interface ITokenService<User, LoginUser extends BaseLoginUser<User>> exte
      *
      * @return 源策略信息
      */
-    default Source getSource() {
+    default SysSource getSource() {
         return getSource(ServletUtil.getRequest());
     }
 
@@ -338,7 +347,7 @@ public interface ITokenService<User, LoginUser extends BaseLoginUser<User>> exte
      *
      * @return 源策略信息
      */
-    default Source getSource(HttpServletRequest request) {
+    default SysSource getSource(HttpServletRequest request) {
         // 获取请求携带的令牌
         String token = SecurityUtils.getToken(request);
         return getSource(token);
@@ -349,7 +358,7 @@ public interface ITokenService<User, LoginUser extends BaseLoginUser<User>> exte
      *
      * @return 源策略信息
      */
-    default Source getSource(String token) {
+    default SysSource getSource(String token) {
         try {
             if (StrUtil.isNotBlank(token))
                 return getRedisService().getCacheMapValue(JwtUtil.getUserKey(token), SecurityConstants.BaseSecurity.SOURCE.getCode());

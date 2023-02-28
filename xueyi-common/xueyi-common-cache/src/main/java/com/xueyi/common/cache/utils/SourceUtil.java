@@ -4,7 +4,7 @@ import com.xueyi.common.cache.service.CacheService;
 import com.xueyi.common.core.constant.basic.CacheConstants;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.SpringUtil;
-import com.xueyi.system.api.model.Source;
+import com.xueyi.common.core.web.model.SysSource;
 import com.xueyi.tenant.api.source.domain.dto.TeSourceDto;
 import com.xueyi.tenant.api.tenant.domain.dto.TeStrategyDto;
 
@@ -20,11 +20,11 @@ public class SourceUtil {
      *
      * @param id 源策略组Id
      */
-    public static Source getSourceCache(Long id) {
+    public static SysSource getSourceCache(Long id) {
         TeStrategyDto strategy = getTeStrategyCache(id);
         if (ObjectUtil.isNull(strategy))
             return null;
-        Source source = new Source();
+        SysSource source = new SysSource();
         source.setId(strategy.getId());
         source.setSourceId(strategy.getSourceId());
         source.setMaster(strategy.getSourceSlave());

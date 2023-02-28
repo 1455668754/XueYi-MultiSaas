@@ -1,6 +1,6 @@
 package com.xueyi.auth.service;
 
-import com.xueyi.system.api.model.base.BaseLoginUser;
+import com.xueyi.common.core.web.model.BaseLoginUser;
 
 /**
  * 日志记录 服务层

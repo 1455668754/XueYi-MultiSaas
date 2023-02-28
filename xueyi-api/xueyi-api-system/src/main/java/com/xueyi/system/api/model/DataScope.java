@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 /**
- * 数据权限
+ * 数据权限 基础数据对象
  *
  * @author xueyi
  */

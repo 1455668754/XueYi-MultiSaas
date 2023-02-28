@@ -9,9 +9,9 @@ import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.SpringUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.utils.servlet.ServletUtil;
+import com.xueyi.common.core.web.model.BaseLoginUser;
+import com.xueyi.common.core.web.model.SysSource;
 import com.xueyi.common.security.service.ITokenService;
-import com.xueyi.system.api.model.Source;
-import com.xueyi.system.api.model.base.BaseLoginUser;
 import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.Ordered;
@@ -121,7 +121,7 @@ public class BaseSecurityUtils {
     /**
      * 获取源策略信息
      */
-    public static Source getSource() {
+    public static SysSource getSource() {
         return getTokenService().getSource();
     }
 

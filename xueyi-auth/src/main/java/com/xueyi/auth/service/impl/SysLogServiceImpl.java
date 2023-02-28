@@ -8,9 +8,9 @@ import com.xueyi.common.core.constant.basic.TenantConstants;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.utils.ip.IpUtil;
 import com.xueyi.common.core.utils.servlet.ServletUtil;
+import com.xueyi.common.core.web.model.BaseLoginUser;
 import com.xueyi.system.api.log.domain.dto.SysLoginLogDto;
 import com.xueyi.system.api.log.feign.RemoteLogService;
-import com.xueyi.system.api.model.base.BaseLoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

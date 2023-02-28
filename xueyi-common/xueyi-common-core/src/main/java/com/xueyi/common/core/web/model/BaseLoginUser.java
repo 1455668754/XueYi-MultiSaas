@@ -1,8 +1,6 @@
-package com.xueyi.system.api.model.base;
+package com.xueyi.common.core.web.model;
 
 import com.xueyi.common.core.constant.basic.TenantConstants;
-import com.xueyi.system.api.model.Source;
-import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -70,10 +68,10 @@ public class BaseLoginUser<User> implements UserDetails, OAuth2AuthenticatedPrin
     protected String ipaddr;
 
     /** 源策略组 */
-    protected Source source;
+    protected SysSource source;
 
     /** 企业信息 */
-    protected SysEnterpriseDto enterprise;
+    protected SysEnterprise enterprise;
 
     /** 用户信息 */
     protected User user;
