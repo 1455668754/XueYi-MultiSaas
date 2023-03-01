@@ -69,13 +69,14 @@ public class SysMenuDto extends SysMenuPo {
         return StrUtil.equals(AuthorityConstants.FrameType.EXTERNAL_LINKS.getCode(), getFrameType());
     }
 
-
     /**
      * 移除详情菜单动态后缀
      */
     public String getDetailsSuffix() {
         return isDetails()
+                ? getPath().contains(StrUtil.COLON)
                 ? StrUtil.sub(getPath(), 0, getPath().indexOf(StrUtil.COLON))
+                : getPath()
                 : getPath();
     }
 }
