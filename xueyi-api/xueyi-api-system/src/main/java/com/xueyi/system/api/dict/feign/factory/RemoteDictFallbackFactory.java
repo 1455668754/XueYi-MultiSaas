@@ -22,7 +22,7 @@ public class RemoteDictFallbackFactory implements FallbackFactory<RemoteDictServ
         return new RemoteDictService() {
 
             @Override
-            public R<Boolean> refreshCache(String source) {
+            public R<Boolean> refreshCache() {
                 return R.fail("刷新字典缓存失败:" + throwable.getMessage());
             }
         };

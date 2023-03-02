@@ -7,7 +7,6 @@ import com.xueyi.system.api.dict.feign.factory.RemoteConfigFallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
 
 /**
  * 参数服务
@@ -29,10 +28,9 @@ public interface RemoteConfigService {
     /**
      * 刷新参数缓存
      *
-     * @param source 请求来源
      * @return 结果
      */
-    @GetMapping("/config/inner/refresh")
-    R<Boolean> refreshCache(@RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+    @GetMapping(value = "/config/inner/refresh", headers = SecurityConstants.FROM_SOURCE_INNER)
+    R<Boolean> refreshCache();
 
 }

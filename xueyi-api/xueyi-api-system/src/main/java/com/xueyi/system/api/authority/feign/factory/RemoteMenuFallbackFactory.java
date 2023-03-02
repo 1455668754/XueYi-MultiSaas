@@ -21,7 +21,7 @@ public class RemoteMenuFallbackFactory implements FallbackFactory<RemoteMenuServ
         log.error("菜单服务调用失败:{}", throwable.getMessage());
         return new RemoteMenuService() {
             @Override
-            public R<SysMenuDto> getInfoInner(Long id, String source) {
+            public R<SysMenuDto> getInfoInner(Long id) {
                 return R.fail("获取菜单信息失败:" + throwable.getMessage());
             }
         };

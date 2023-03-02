@@ -8,7 +8,6 @@ import com.xueyi.system.api.authority.feign.factory.RemoteMenuFallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
 
 /**
  * 菜单服务
@@ -22,9 +21,8 @@ public interface RemoteMenuService {
      * 根据Id获取菜单信息
      *
      * @param id     菜单Id
-     * @param source 请求来源
      * @return 菜单对象
      */
-    @GetMapping("/menu/inner/{id}")
-    R<SysMenuDto> getInfoInner(@PathVariable("id") Long id, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+    @GetMapping(value = "/menu/inner/{id}", headers = SecurityConstants.FROM_SOURCE_INNER)
+    R<SysMenuDto> getInfoInner(@PathVariable("id") Long id);
 }

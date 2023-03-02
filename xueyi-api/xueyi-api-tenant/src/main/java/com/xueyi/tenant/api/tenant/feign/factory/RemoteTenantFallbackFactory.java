@@ -22,7 +22,7 @@ public class RemoteTenantFallbackFactory implements FallbackFactory<RemoteTenant
         log.error("租户服务调用失败:{}", throwable.getMessage());
         return new RemoteTenantService() {
             @Override
-            public R<Boolean> registerTenantInfo(JSONObject register, String source)
+            public R<Boolean> registerTenantInfo(JSONObject register)
             {
                 return R.fail("注册租户失败:" + throwable.getMessage());
             }

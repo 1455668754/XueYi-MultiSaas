@@ -5,7 +5,6 @@ import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.constant.basic.HttpConstants;
-import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.basic.ServiceConstants;
 import com.xueyi.common.core.constant.gen.GenConstants.OptionField;
 import com.xueyi.common.core.constant.gen.GenConstants.TemplateType;
@@ -443,7 +442,7 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
      */
     private void setMenuOptions(GenTableDto table, JSONObject optionsObj) {
         Long menuId = optionsObj.getLong(OptionField.PARENT_MENU_ID.getCode());
-        R<SysMenuDto> result = remoteMenuService.getInfoInner(menuId, SecurityConstants.INNER);
+        R<SysMenuDto> result = remoteMenuService.getInfoInner(menuId);
         if (result.isFail()) AjaxResult.warn("菜单服务异常，请联系管理员！");
         else if (ObjectUtil.isNull(result.getData())) AjaxResult.warn("该服务对应的菜单已被删除，请先修改后再生成代码！");
         if (StrUtil.isEmpty(result.getData().getAncestors()))

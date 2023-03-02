@@ -41,7 +41,7 @@ public class UserDetailsServiceImpl implements IUserDetailsService {
     @SneakyThrows
     public LoginUser loadUser(String enterpriseName, String userName, String password) {
         // 查询登录信息
-        R<LoginUser> loginInfoResult = remoteLoginService.getLoginInfoInner(enterpriseName, userName, password, SecurityConstants.INNER);
+        R<LoginUser> loginInfoResult = remoteLoginService.getLoginInfoInner(enterpriseName, userName, password);
         if (loginInfoResult.isFail()) {
             throw new UsernameNotFoundException("服务调用失败，请稍后再试！");
         } else if (ObjectUtil.isNull(loginInfoResult.getData())) {

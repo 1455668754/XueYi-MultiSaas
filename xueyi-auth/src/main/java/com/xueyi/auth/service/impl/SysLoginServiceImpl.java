@@ -2,7 +2,6 @@ package com.xueyi.auth.service.impl;
 
 import com.xueyi.auth.form.RegisterBody;
 import com.xueyi.auth.service.ISysLoginService;
-import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.result.R;
 import com.xueyi.tenant.api.tenant.feign.RemoteTenantService;
@@ -26,7 +25,7 @@ public class SysLoginServiceImpl implements ISysLoginService {
     @Override
     public void register(RegisterBody registerBody) {
         // 注册租户信息
-        R<?> registerResult = remoteTenantService.registerTenantInfo(registerBody.buildJson(), SecurityConstants.INNER);
+        R<?> registerResult = remoteTenantService.registerTenantInfo(registerBody.buildJson());
         if (R.FAIL == registerResult.getCode()) {
             AjaxResult.warn(registerResult.getMsg());
         }

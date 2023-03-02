@@ -19,6 +19,6 @@ public class RemoteSourceFallbackFactory implements FallbackFactory<RemoteSource
     @Override
     public RemoteSourceService create(Throwable throwable) {
         log.error("数据源服务调用失败:{}", throwable.getMessage());
-        return source -> R.fail("刷新数据源缓存失败:" + throwable.getMessage());
+        return () -> R.fail("刷新数据源缓存失败:" + throwable.getMessage());
     }
 }

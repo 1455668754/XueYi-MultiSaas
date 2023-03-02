@@ -6,7 +6,6 @@ import com.xueyi.common.core.web.result.R;
 import com.xueyi.system.api.dict.feign.factory.RemoteDictFallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 
 /**
  * 字典服务
@@ -19,10 +18,9 @@ public interface RemoteDictService {
     /**
      * 刷新字典缓存
      *
-     * @param source 请求来源
      * @return 结果
      */
-    @GetMapping("/dict/type/inner/refresh")
-    R<Boolean> refreshCache(@RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+    @GetMapping(value = "/dict/type/inner/refresh", headers = SecurityConstants.FROM_SOURCE_INNER)
+    R<Boolean> refreshCache();
 
 }

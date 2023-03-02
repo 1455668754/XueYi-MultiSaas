@@ -25,7 +25,7 @@ public class RemoteConfigFallbackFactory implements FallbackFactory<RemoteConfig
             }
 
             @Override
-            public R<Boolean> refreshCache(String source) {
+            public R<Boolean> refreshCache() {
                 return R.fail("刷新参数缓存失败:" + throwable.getMessage());
             }
         };

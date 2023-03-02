@@ -19,6 +19,6 @@ public class RemoteStrategyFallbackFactory implements FallbackFactory<RemoteStra
     @Override
     public RemoteStrategyService create(Throwable throwable) {
         log.error("源策略服务调用失败:{}", throwable.getMessage());
-        return source -> R.fail("刷新源策略缓存失败:" + throwable.getMessage());
+        return () -> R.fail("刷新源策略缓存失败:" + throwable.getMessage());
     }
 }
