@@ -20,5 +20,5 @@ import org.springframework.stereotype.Component;
  * @author ${author}
  */
 @Component
-public class ${ClassName}Manager extends ${Entity}ManagerImpl<${ClassName}Query, ${ClassName}Dto, ${ClassName}Po, ${ClassName}Mapper, ${ClassName}Converter> implements I${ClassName}Manager {
+public class ${ClassName}ManagerImpl extends ${Entity}ManagerImpl<${ClassName}Query, ${ClassName}Dto, ${ClassName}Po, ${ClassName}Mapper, ${ClassName}Converter> implements I${ClassName}Manager {
 }

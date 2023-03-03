@@ -10,14 +10,24 @@ import com.xueyi.common.core.constant.basic.ServiceConstants;
 import com.xueyi.common.core.constant.gen.GenConstants;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.core.exception.ServiceException;
-import com.xueyi.common.core.utils.core.*;
+import com.xueyi.common.core.utils.core.ArrayUtil;
+import com.xueyi.common.core.utils.core.CollUtil;
+import com.xueyi.common.core.utils.core.IdUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.gen.config.GenConfig;
 import com.xueyi.gen.domain.dto.GenTableColumnDto;
 import com.xueyi.gen.domain.dto.GenTableDto;
 import org.apache.velocity.VelocityContext;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -290,7 +300,7 @@ public class VelocityUtils {
         else if (template.contains("manager.java.vm"))
             return StrUtil.format("{}/manager/I{}Manager.java", javaPath, className);
         else if (template.contains("managerImpl.java.vm"))
-            return StrUtil.format("{}/manager/impl/{}Manager.java", javaPath, className);
+            return StrUtil.format("{}/manager/impl/{}ManagerImpl.java", javaPath, className);
         else if (template.contains("mapper.java.vm"))
             return StrUtil.format("{}/mapper/{}Mapper.java", javaPath, className);
         else if (template.contains("merge.java.vm"))
