@@ -33,7 +33,7 @@ public class SysJobManagerImpl extends BaseManagerImpl<SysJobQuery, SysJobDto, S
      */
     protected List<SlaveRelation> subRelationInit() {
         return new ArrayList<>(){{
-            add(new SlaveRelation(JOB_LOG_GROUP, SysJobLogManagerImpl.class, OperateConstants.SubOperateLimit.EX_ADD_OR_EDIT));
+            add(new SlaveRelation(JOB_LOG_GROUP, SysJobLogManagerImpl.class, OperateConstants.SubOperateLimit.ONLY_DEL));
         }};
     }
 
