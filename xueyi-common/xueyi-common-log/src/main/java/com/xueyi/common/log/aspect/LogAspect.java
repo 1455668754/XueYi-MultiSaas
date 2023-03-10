@@ -4,6 +4,7 @@ import com.alibaba.fastjson2.JSON;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.basic.TenantConstants;
 import com.xueyi.common.core.utils.core.ArrayUtil;
+import com.xueyi.common.core.utils.core.MapUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.utils.ip.IpUtil;
@@ -164,17 +165,17 @@ public class LogAspect {
     /**
      * 获取请求的参数，放到log中
      *
-     * @param operateLog 操作日志
+     * @param operateLog        操作日志
      * @param excludeParamNames 排除指定的请求参数
      * @throws Exception 异常
      */
     private void setRequestValue(JoinPoint joinPoint, SysOperateLogDto operateLog, String[] excludeParamNames) throws Exception {
         String requestMethod = operateLog.getRequestMethod();
-        if (HttpMethod.PUT.name().equals(requestMethod) || HttpMethod.POST.name().equals(requestMethod)) {
+        Map<?, ?> paramsMap = ServletUtil.getParamMap(ServletUtil.getRequest());
+        if (MapUtil.isEmpty(paramsMap) && (HttpMethod.PUT.name().equals(requestMethod) || HttpMethod.POST.name().equals(requestMethod))) {
             String params = argsArrayToString(joinPoint.getArgs(), excludeParamNames);
             operateLog.setParam(StrUtil.sub(params, 0, 2000));
         } else {
-            Map<?, ?> paramsMap = ServletUtil.getParamMap(ServletUtil.getRequest());
             operateLog.setParam(StrUtil.sub(JSON.toJSONString(paramsMap, excludePropertyPreFilter(excludeParamNames)), 0, 2000));
         }
     }
