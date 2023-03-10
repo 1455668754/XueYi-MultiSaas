@@ -8,7 +8,16 @@ import com.xueyi.common.core.constant.basic.OperateConstants.SubOperate;
 import com.xueyi.common.core.constant.basic.SqlConstants;
 import com.xueyi.common.core.constant.error.UtilErrorConstants;
 import com.xueyi.common.core.exception.UtilException;
-import com.xueyi.common.core.utils.core.*;
+import com.xueyi.common.core.utils.core.ArrayUtil;
+import com.xueyi.common.core.utils.core.ClassUtil;
+import com.xueyi.common.core.utils.core.CollUtil;
+import com.xueyi.common.core.utils.core.ConvertUtil;
+import com.xueyi.common.core.utils.core.NumberUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
+import com.xueyi.common.core.utils.core.ReflectUtil;
+import com.xueyi.common.core.utils.core.SpringUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
+import com.xueyi.common.core.utils.core.TypeUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.core.web.entity.base.BasisEntity;
 import com.xueyi.common.web.entity.domain.SlaveRelation;
@@ -18,7 +27,13 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -27,6 +42,7 @@ import java.util.stream.Collectors;
  *
  * @author xueyi
  */
+@SuppressWarnings("unchecked")
 public class MergeUtil {
 
     /**
@@ -76,10 +92,10 @@ public class MergeUtil {
         if (ObjectUtil.isNull(dto) || ObjectUtil.isNull(slaveRelation))
             return NumberUtil.Zero;
         initCorrelationField(slaveRelation, SubOperate.ADD);
-        if (slaveRelation.getRelationType().isIndirect()) {
-            return insertIndirectObj(dto, slaveRelation);
-        }
-        return NumberUtil.Zero;
+        return switch (slaveRelation.getRelationType()) {
+            case DIRECT ->  insertDirectObj(dto, slaveRelation);
+            case INDIRECT -> insertIndirectObj(dto, slaveRelation);
+        };
     }
 
     /**
@@ -93,10 +109,10 @@ public class MergeUtil {
         if (CollUtil.isEmpty(dtoList) || ObjectUtil.isNull(slaveRelation))
             return NumberUtil.Zero;
         initCorrelationField(slaveRelation, SubOperate.ADD);
-        if (slaveRelation.getRelationType().isIndirect()) {
-            return insertIndirectList(dtoList, slaveRelation);
-        }
-        return NumberUtil.Zero;
+        return switch (slaveRelation.getRelationType()) {
+            case DIRECT ->  insertDirectList(dtoList, slaveRelation);
+            case INDIRECT -> insertIndirectList(dtoList, slaveRelation);
+        };
     }
 
     /**
@@ -143,10 +159,10 @@ public class MergeUtil {
         if (ObjectUtil.isNull(dto) || ObjectUtil.isNull(slaveRelation))
             return NumberUtil.Zero;
         initCorrelationField(slaveRelation, SubOperate.DELETE);
-        if (slaveRelation.getRelationType().isIndirect()) {
-            return deleteIndirectObj(dto, slaveRelation);
-        }
-        return NumberUtil.Zero;
+        return switch (slaveRelation.getRelationType()) {
+            case DIRECT ->  deleteDirectObj(dto, slaveRelation);
+            case INDIRECT -> deleteIndirectObj(dto, slaveRelation);
+        };
     }
 
     /**
@@ -159,10 +175,10 @@ public class MergeUtil {
         if (CollUtil.isEmpty(dtoList) || ObjectUtil.isNull(slaveRelation))
             return NumberUtil.Zero;
         initCorrelationField(slaveRelation, SubOperate.DELETE);
-        if (slaveRelation.getRelationType().isIndirect()) {
-            return deleteIndirectList(dtoList, slaveRelation);
-        }
-        return NumberUtil.Zero;
+        return switch (slaveRelation.getRelationType()) {
+            case DIRECT ->  deleteDirectList(dtoList, slaveRelation);
+            case INDIRECT -> deleteIndirectList(dtoList, slaveRelation);
+        };
     }
 
     /**
@@ -325,6 +341,38 @@ public class MergeUtil {
     }
 
     /**
+     * 新增关联数据 | 直接关联
+     *
+     * @param dto           数据对象
+     * @param slaveRelation 从属关联关系定义对象
+     */
+    private static <D, SD extends BaseEntity> int insertDirectObj(D dto, SlaveRelation slaveRelation) {
+        Collection<SD> subList = insertDirectBuild(dto, slaveRelation);
+        if (CollUtil.isEmpty(subList))
+            return NumberUtil.Zero;
+        return SpringUtil.getBean(slaveRelation.getSlaveClass()).insertByField(subList);
+    }
+
+    /**
+     * 新增关联数据 | 直接关联
+     *
+     * @param dtoList       数据对象集合
+     * @param slaveRelation 从属关联关系定义对象
+     */
+    private static <D, SD extends BaseEntity> int insertDirectList(Collection<D> dtoList, SlaveRelation slaveRelation) {
+        List<SD> list = new ArrayList<>();
+        for (D dto : dtoList) {
+            List<SD> subList = insertIndirectBuild(dto, slaveRelation);
+            if (CollUtil.isNotEmpty(subList)) {
+                list.addAll(subList);
+            }
+        }
+        if (CollUtil.isEmpty(list))
+            return NumberUtil.Zero;
+        return SpringUtil.getBean(slaveRelation.getSlaveClass()).insertByField(list);
+    }
+
+    /**
      * 新增关联数据 | 间接关联
      *
      * @param dto           数据对象
@@ -416,6 +464,18 @@ public class MergeUtil {
     }
 
     /**
+     * 新增关联数据 | 直接关联
+     *
+     * @param dto           数据对象
+     * @param slaveRelation 从属关联关系定义对象
+     */
+    private static <D> int deleteDirectObj(D dto, SlaveRelation slaveRelation) {
+        Object delKey = getFieldObj(dto, slaveRelation.getMainField());
+        SqlField sqlField = new SqlField(SqlConstants.OperateType.EQ, slaveRelation.getSlaveFieldSqlName(), delKey);
+        return SpringUtil.getBean(slaveRelation.getSlaveClass()).deleteByField(sqlField);
+    }
+
+    /**
      * 新增关联数据 | 间接关联
      *
      * @param dto           数据对象
@@ -425,6 +485,18 @@ public class MergeUtil {
         Object delKey = getFieldObj(dto, slaveRelation.getMainField());
         SqlField sqlField = new SqlField(SqlConstants.OperateType.EQ, slaveRelation.getMergeMainFieldSqlName(), delKey);
         return SpringUtil.getBean(slaveRelation.getMergeClass()).deleteByField(sqlField);
+    }
+
+    /**
+     * 新增关联数据 | 直接关联
+     *
+     * @param dtoList       数据对象集合
+     * @param slaveRelation 从属关联关系定义对象
+     */
+    private static <D> int deleteDirectList(Collection<D> dtoList, SlaveRelation slaveRelation) {
+        Set<Object> delKeys = dtoList.stream().map(item -> getFieldObj(item, slaveRelation.getMainField())).collect(Collectors.toSet());
+        SqlField sqlField = new SqlField(SqlConstants.OperateType.IN, slaveRelation.getSlaveFieldSqlName(), delKeys);
+        return SpringUtil.getBean(slaveRelation.getSlaveClass()).deleteByField(sqlField);
     }
 
     /**
@@ -440,13 +512,37 @@ public class MergeUtil {
     }
 
     /**
+     * 新增关联数据 | 数据组装 | 直接关联
+     *
+     * @param dto           数据对象
+     * @param slaveRelation 从属关联关系定义对象
+     * @return 数据对象集合
+     */
+    private static <D, SD extends BaseEntity> List<SD> insertDirectBuild(D dto, SlaveRelation slaveRelation) {
+        Object mainKey = getFieldObj(dto, slaveRelation.getMainField());
+        Object subObj = getFieldObj(dto, slaveRelation.getReceiveField());
+        Class<?> fieldType = slaveRelation.getReceiveField().getType();
+        List<SD> subList = new ArrayList<>();
+        if (ClassUtil.isNormalClass(fieldType)) {
+            setField(subObj, slaveRelation.getSlaveField(), mainKey);
+            subList.add((SD) subObj);
+        } else if (ClassUtil.isCollection(fieldType)) {
+            Collection<Object> objColl = (Collection<Object>) subObj;
+            subList = objColl.stream().map(item -> {
+                setField(item, slaveRelation.getSlaveField(), mainKey);
+                return (SD) item;
+            }).collect(Collectors.toList());
+        }
+        return subList;
+    }
+
+    /**
      * 新增关联数据 | 数据组装 | 间接关联
      *
      * @param dto           数据对象
      * @param slaveRelation 从属关联关系定义对象
      * @return 数据对象集合
      */
-    @SuppressWarnings("unchecked")
     private static <D, MP extends BasisEntity> List<MP> insertIndirectBuild(D dto, SlaveRelation slaveRelation) {
         Object mainKey = getFieldObj(dto, slaveRelation.getMainField());
         Object mergeObj = getFieldObj(dto, slaveRelation.getReceiveArrField());
@@ -481,7 +577,6 @@ public class MergeUtil {
      * @param insertList    待新增数据对象集合
      * @param delKeys       待删除键值集合
      */
-    @SuppressWarnings("unchecked")
     private static <D, MP extends BasisEntity> void updateIndirectBuild(D originDto, D newDto, SlaveRelation slaveRelation, List<MP> insertList, Set<Object> delKeys) {
         Field receiveArrField = slaveRelation.getReceiveArrField();
         Set<Object> originSet = new HashSet<>();
