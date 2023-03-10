@@ -1,3 +1,12 @@
+# DROP DATABASE IF EXISTS `xy-cloud1`;
+#
+# CREATE DATABASE  `xy-cloud1` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+
+# SET NAMES utf8mb4;
+# SET FOREIGN_KEY_CHECKS = 0;
+#
+# USE `xy-cloud1`;
+#
 # SET NAMES utf8mb4;
 #
 # -- ----------------------------
@@ -10,13 +19,13 @@
 #   code                      varchar(64)         default null                            comment '部门编码',
 #   name                      varchar(30)         default ''                              comment '部门名称',
 #   level                     int                 not null                                comment '树层级',
-#   ancestors                 varchar(2000)       default ''                              comment '祖级列表',
+#   ancestors                 varchar(500)        default ''                              comment '祖级列表',
 #   leader                    varchar(20)         default ''                              comment '负责人',
 #   phone                     varchar(11)         default ''                              comment '联系电话',
 #   email                     varchar(50)         default ''                              comment '邮箱',
 #   sort                      int unsigned        not null default 0                      comment '显示顺序',
 #   status                    char(1)             not null default '0'                    comment '状态（0正常 1停用）',
-#   remark                    varchar(2000)       default null                            comment '备注',
+#   remark                    varchar(200)        default null                            comment '备注',
 #   create_by                 bigint              default null                            comment '创建者',
 #   create_time               datetime            default current_timestamp               comment '创建时间',
 #   update_by                 bigint              default null                            comment '更新者',
@@ -213,8 +222,8 @@
 #   nick		                varchar(100)	    not null	                            comment '素材昵称',
 #   name		                varchar(100)	    not null	                            comment '素材名称',
 #   original_name	            varchar(100)	    not null	                            comment '原图名称',
-#   url		                varchar(500)	    not null 	                            comment '素材地址',
-#   original_url		        varchar(500)	    not null 	                            comment '原图地址',
+#   url		                varchar(200)	    not null 	                            comment '素材地址',
+#   original_url		        varchar(200)	    not null 	                            comment '原图地址',
 #   size		                decimal(8,4)	    not null 	                            comment '素材大小',
 #   type		                char(1)	            not null default '0'	                comment '素材类型（0默认素材 1系统素材）',
 #   sort                      int unsigned        not null default 0                      comment '显示顺序',
@@ -261,21 +270,25 @@
 #   method                    varchar(100)        default ''                              comment '方法名称',
 #   request_method            varchar(10)         default ''                              comment '请求方式',
 #   operate_type              char(2)             default '00'                            comment '操作类别（00其它 01后台 02手机端）',
-#   user_id                   bigint              not null                                comment '操作人员',
-#   user_name                 varchar(50)         not null                                comment '操作人员账号',
-#   user_nick                 varchar(50)         not null                                comment '操作人员名称',
+#   user_id                   bigint              not null default -2                     comment '操作人员',
+#   user_name                 varchar(50)         default null                            comment '操作人员账号',
+#   user_nick                 varchar(50)         default null                            comment '操作人员名称',
 #   url                       varchar(255)        default ''                              comment '请求URL',
 #   ip                        varchar(128)        default ''                              comment '主机地址',
 #   param                     varchar(2000)       default ''                              comment '请求参数',
 #   location                  varchar(255)        default ''                              comment '操作地点',
 #   json_result               varchar(2000)       default ''                              comment '返回参数',
-#   status                    char(1)              default 0                               comment '操作状态（0正常 1异常）',
+#   status                    char(1)             default 0                               comment '操作状态（0正常 1异常）',
 #   error_msg                 varchar(2000)       default ''                              comment '错误消息',
+#   cost_time                 bigint              default 0                               comment '消耗时间',
 #   operate_time              datetime            default current_timestamp               comment '操作时间',
 #   del_time                  datetime            on update current_timestamp             comment '删除时间',
 #   del_flag		            tinyint             not null default 0                      comment '删除标志(0正常 1删除)',
 #   tenant_id		            bigint	            not null                                comment '租户Id',
-#   primary key (id)
+#   primary key (id),
+#   key idx_sys_operate_log_bt (business_type),
+#   key idx_sys_operate_log_s  (status),
+#   key idx_sys_operate_log_ot (operate_time)
 # ) engine = innodb auto_increment=100 comment = '操作日志记录';
 #
 # -- ----------------------------
@@ -285,7 +298,7 @@
 # create table sys_login_log (
 #   id                        bigint              not null auto_increment                 comment '访问Id',
 #   enterprise_name           varchar(50)         default ''                              comment '企业账号',
-#   user_id                   bigint              not null                                comment '用户Id',
+#   user_id                   bigint              not null default -2                     comment '用户Id',
 #   user_name                 varchar(50)         default ''                              comment '用户账号',
 #   user_nick                 varchar(50)         default ''                              comment '用户名称',
 #   ipaddr                    varchar(128)        default ''                              comment '登录IP地址',
@@ -295,7 +308,9 @@
 #   del_time                  datetime            on update current_timestamp             comment '删除时间',
 #   del_flag		            tinyint             not null default 0                      comment '删除标志(0正常 1删除)',
 #   tenant_id		            bigint	            not null                                comment '租户Id',
-#   primary key (id)
+#   primary key (id),
+#   key idx_sys_login_log_s  (status),
+#   key idx_sys_login_log_lt (access_time)
 # ) engine = innodb auto_increment=100 comment = '系统访问记录';
 #
 # -- ----------------------------
@@ -335,6 +350,9 @@
 #   primary key (id)
 # ) engine = innodb comment = '通知公告记录表';
 #
+# -- ----------------------------
+# -- 19、定时任务调度日志表
+# -- ----------------------------
 # drop table if exists sys_job_log;
 # create table sys_job_log (
 #   id                        bigint              not null auto_increment                 comment '任务日志Id',
@@ -352,3 +370,48 @@
 #   tenant_id		            bigint	            not null                                comment '租户Id',
 #   primary key (id)
 # ) engine = innodb comment = '定时任务调度日志表';
+#
+# -- ----------------------------
+# -- 20、文件信息表
+# -- ----------------------------
+# drop table if exists sys_file;
+# create table sys_file (
+#   id		                bigint	            not null                                comment '文件Id',
+#   folder_id		            bigint	            not null default 0	                    comment '分类Id',
+#   name		                varchar(100)	    not null	                            comment '文件名称',
+#   nick	                    varchar(100)	    default null	                        comment '文件别名',
+#   url		                varchar(500)	    not null 	                            comment '文件地址',
+#   size		                bigint	            not null default 0	                    comment '文件大小',
+#   type		                char(1)	            not null default '0'	                comment '文件类型（0默认 1系统）',
+#   sort                      int unsigned        not null default 0                      comment '显示顺序',
+#   status                    char(1)             not null default '0'                    comment '状态（0正常 1停用）',
+#   create_by                 bigint              default null                            comment '创建者',
+#   create_time               datetime            default current_timestamp               comment '创建时间',
+#   update_by                 bigint              default null                            comment '更新者',
+#   update_time               datetime            on update current_timestamp             comment '更新时间',
+#   del_flag		            tinyint             not null default 0                      comment '删除标志（0正常 1删除）',
+#   tenant_id		            bigint	            not null                                comment '租户Id',
+#   primary key (id)
+# ) engine = innodb comment = '文件信息表';
+#
+# -- ----------------------------
+# -- 21、文件分类信息表
+# -- ----------------------------
+# drop table if exists sys_file_folder;
+# create table sys_file_folder (
+#   id		                bigint	            not null                                comment '分类Id',
+#   parent_id		            bigint	            not null default 0                      comment '父分类Id',
+#   name		                varchar(100)	    not null	                            comment '分类名称',
+#   level                     int                 not null                                comment '树层级',
+#   ancestors                 varchar(500)        default ''                              comment '祖级列表',
+#   type		                char(1)	            not null default '0'	                comment '分类类型（0默认文件夹 1系统文件夹）',
+#   sort                      int unsigned        not null default 0                      comment '显示顺序',
+#   status                    char(1)             not null default '0'                    comment '状态（0正常 1停用）',
+#   create_by                 bigint              default null                            comment '创建者',
+#   create_time               datetime            default current_timestamp               comment '创建时间',
+#   update_by                 bigint              default null                            comment '更新者',
+#   update_time               datetime            on update current_timestamp             comment '更新时间',
+#   del_flag		            tinyint             not null default 0                      comment '删除标志（0正常 1删除）',
+#   tenant_id		            bigint	            not null                                comment '租户Id',
+#   primary key (id)
+# ) engine = innodb comment = '文件分类信息表';
