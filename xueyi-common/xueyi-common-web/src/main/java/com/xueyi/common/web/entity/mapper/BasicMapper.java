@@ -76,6 +76,18 @@ public interface BasicMapper<P extends BasisEntity> extends com.baomidou.mybatis
     }
 
     /**
+     * 批量更新数据
+     *
+     * @param fieldColl 数据对象集合
+     * @return 结果
+     */
+    @SuppressWarnings("unchecked")
+    default int updateByField(Collection<?> fieldColl) {
+        Collection<P> coll = (Collection<P>) fieldColl;
+        return this.updateBatch(coll);
+    }
+
+    /**
      * 根据动态SQL控制对象更新数据对象
      *
      * @param field 动态SQL控制对象

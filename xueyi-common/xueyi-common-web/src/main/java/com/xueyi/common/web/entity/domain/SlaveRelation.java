@@ -46,6 +46,12 @@ public class SlaveRelation {
     /** 主数据对象 - 关联键字段 */
     private Field mainField;
 
+    /** 从数据对象 - 主键字段 */
+    private Field slaveIdField;
+
+    /** 从数据对象 - 主键字段 - 数据库字段名 */
+    private String slaveIdFieldSqlName;
+
     /** 从数据对象 - 关联键字段 */
     private Field slaveField;
 

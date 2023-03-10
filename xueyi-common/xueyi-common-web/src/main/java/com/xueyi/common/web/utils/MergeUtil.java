@@ -30,6 +30,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -93,7 +94,7 @@ public class MergeUtil {
             return NumberUtil.Zero;
         initCorrelationField(slaveRelation, SubOperate.ADD);
         return switch (slaveRelation.getRelationType()) {
-            case DIRECT ->  insertDirectObj(dto, slaveRelation);
+            case DIRECT -> insertDirectObj(dto, slaveRelation);
             case INDIRECT -> insertIndirectObj(dto, slaveRelation);
         };
     }
@@ -110,7 +111,7 @@ public class MergeUtil {
             return NumberUtil.Zero;
         initCorrelationField(slaveRelation, SubOperate.ADD);
         return switch (slaveRelation.getRelationType()) {
-            case DIRECT ->  insertDirectList(dtoList, slaveRelation);
+            case DIRECT -> insertDirectList(dtoList, slaveRelation);
             case INDIRECT -> insertIndirectList(dtoList, slaveRelation);
         };
     }
@@ -126,10 +127,10 @@ public class MergeUtil {
         if (ObjectUtil.isAllEmpty(originDto, newDto) || ObjectUtil.isNull(slaveRelation))
             return NumberUtil.Zero;
         initCorrelationField(slaveRelation, SubOperate.EDIT);
-        if (slaveRelation.getRelationType().isIndirect()) {
-            return updateIndirectObj(originDto, newDto, slaveRelation);
-        }
-        return NumberUtil.Zero;
+        return switch (slaveRelation.getRelationType()) {
+            case DIRECT -> updateDirectObj(originDto, newDto, slaveRelation);
+            case INDIRECT -> updateIndirectObj(originDto, newDto, slaveRelation);
+        };
     }
 
     /**
@@ -143,10 +144,10 @@ public class MergeUtil {
         if ((CollUtil.isEmpty(originList) && CollUtil.isEmpty(newList)) || ObjectUtil.isNull(slaveRelation))
             return NumberUtil.Zero;
         initCorrelationField(slaveRelation, SubOperate.EDIT);
-        if (slaveRelation.getRelationType().isIndirect()) {
-            return updateIndirectList(originList, newList, slaveRelation);
-        }
-        return NumberUtil.Zero;
+        return switch (slaveRelation.getRelationType()) {
+            case DIRECT -> updateDirectList(originList, newList, slaveRelation);
+            case INDIRECT -> updateIndirectList(originList, newList, slaveRelation);
+        };
     }
 
     /**
@@ -160,7 +161,7 @@ public class MergeUtil {
             return NumberUtil.Zero;
         initCorrelationField(slaveRelation, SubOperate.DELETE);
         return switch (slaveRelation.getRelationType()) {
-            case DIRECT ->  deleteDirectObj(dto, slaveRelation);
+            case DIRECT -> deleteDirectObj(dto, slaveRelation);
             case INDIRECT -> deleteIndirectObj(dto, slaveRelation);
         };
     }
@@ -176,7 +177,7 @@ public class MergeUtil {
             return NumberUtil.Zero;
         initCorrelationField(slaveRelation, SubOperate.DELETE);
         return switch (slaveRelation.getRelationType()) {
-            case DIRECT ->  deleteDirectList(dtoList, slaveRelation);
+            case DIRECT -> deleteDirectList(dtoList, slaveRelation);
             case INDIRECT -> deleteIndirectList(dtoList, slaveRelation);
         };
     }
@@ -405,6 +406,79 @@ public class MergeUtil {
     }
 
     /**
+     * 新增关联数据 | 直接关联
+     *
+     * @param originDto     源数据对象
+     * @param newDto        新数据对象
+     * @param slaveRelation 从属关联关系定义对象
+     */
+    private static <D, SD extends BaseEntity> int updateDirectObj(D originDto, D newDto, SlaveRelation slaveRelation) {
+        List<SD> insertList = new ArrayList<>();
+        List<SD> updateList = new ArrayList<>();
+        Set<Object> delKeys = new HashSet<>();
+        // 1.组装操作数据
+        updateDirectBuild(originDto, newDto, slaveRelation, insertList, updateList, delKeys);
+        int rows = NumberUtil.Zero;
+        // 2.判断是否执行新增
+        if (CollUtil.isNotEmpty(insertList))
+            rows += SpringUtil.getBean(slaveRelation.getSlaveClass()).insertByField(insertList);
+        // 3.判断是否执行修改
+        if (CollUtil.isNotEmpty(updateList))
+            rows += SpringUtil.getBean(slaveRelation.getSlaveClass()).updateByField(updateList);
+        // 4.判断是否执行删除
+        if (CollUtil.isNotEmpty(delKeys)) {
+            Object delMainKey = getFieldObj(newDto, slaveRelation.getMainField());
+            SqlField sqlMainField = new SqlField(SqlConstants.OperateType.EQ, slaveRelation.getSlaveFieldSqlName(), delMainKey);
+            SqlField sqlArrField = new SqlField(SqlConstants.OperateType.IN, slaveRelation.getSlaveIdFieldSqlName(), delKeys);
+            rows += SpringUtil.getBean(slaveRelation.getSlaveClass()).deleteByField(sqlMainField, sqlArrField);
+        }
+        // 5.返回操作结果
+        return rows;
+    }
+
+    /**
+     * 新增关联数据 | 直接关联
+     *
+     * @param originList    源数据对象集合
+     * @param newList       新数据对象集合
+     * @param slaveRelation 从属关联关系定义对象
+     */
+    private static <D, SD extends BaseEntity> int updateDirectList(Collection<D> originList, Collection<D> newList, SlaveRelation slaveRelation) {
+        List<SD> insertList = new ArrayList<>();
+        List<SD> updateList = new ArrayList<>();
+        Set<Object> delKeys = new HashSet<>();
+        // 1.组装操作数据
+        Map<Object, D> originMap = CollUtil.isEmpty(originList)
+                ? new HashMap<>()
+                : originList.stream().collect(
+                Collectors.toMap(item -> getFieldObj(item, slaveRelation.getMainIdField()), Function.identity()));
+
+        if (CollUtil.isNotEmpty(newList)) {
+            newList.forEach(newDto -> {
+                D originDto = originMap.get(getFieldObj(newDto, slaveRelation.getMainIdField()));
+                updateDirectBuild(originDto, newDto, slaveRelation, insertList, updateList, delKeys);
+            });
+        }
+        int rows = NumberUtil.Zero;
+
+        // 2.判断是否执行新增
+        if (CollUtil.isNotEmpty(insertList))
+            rows += SpringUtil.getBean(slaveRelation.getSlaveClass()).insertByField(insertList);
+        // 3.判断是否执行修改
+        if (CollUtil.isNotEmpty(updateList))
+            rows += SpringUtil.getBean(slaveRelation.getSlaveClass()).updateByField(updateList);
+        // 4.判断是否执行删除
+        if (CollUtil.isNotEmpty(delKeys)) {
+            Set<Object> delMainKeys = CollUtil.isNotEmpty(newList) ? newList.stream().map(item -> getFieldObj(item, slaveRelation.getMainField())).collect(Collectors.toSet()) : new HashSet<>();
+            SqlField sqlMainField = new SqlField(SqlConstants.OperateType.IN, slaveRelation.getSlaveFieldSqlName(), delMainKeys);
+            SqlField sqlArrField = new SqlField(SqlConstants.OperateType.IN, slaveRelation.getSlaveIdFieldSqlName(), delKeys);
+            rows += SpringUtil.getBean(slaveRelation.getSlaveClass()).deleteByField(sqlMainField, sqlArrField);
+        }
+        // 5.返回操作结果
+        return rows;
+    }
+
+    /**
      * 新增关联数据 | 间接关联
      *
      * @param originDto     源数据对象
@@ -442,19 +516,23 @@ public class MergeUtil {
         List<MP> insertList = new ArrayList<>();
         Set<Object> delKeys = new HashSet<>();
         // 1.组装操作数据
-        Map<Object, D> originMap = originList.stream().collect(
+        Map<Object, D> originMap = CollUtil.isEmpty(originList)
+                ? new HashMap<>()
+                : originList.stream().collect(
                 Collectors.toMap(item -> getFieldObj(item, slaveRelation.getMainIdField()), Function.identity()));
-        newList.forEach(newDto -> {
-            D originDto = originMap.get(getFieldObj(newDto, slaveRelation.getMainIdField()));
-            updateIndirectBuild(originDto, newDto, slaveRelation, insertList, delKeys);
-        });
+        if (CollUtil.isNotEmpty(newList)) {
+            newList.forEach(newDto -> {
+                D originDto = originMap.get(getFieldObj(newDto, slaveRelation.getMainIdField()));
+                updateIndirectBuild(originDto, newDto, slaveRelation, insertList, delKeys);
+            });
+        }
         int rows = NumberUtil.Zero;
         // 2.判断是否执行新增
         if (CollUtil.isNotEmpty(insertList))
             rows += SpringUtil.getBean(slaveRelation.getMergeClass()).insertByField(insertList);
         // 3.判断是否执行删除
         if (CollUtil.isNotEmpty(delKeys)) {
-            Set<Object> delMainKeys = newList.stream().map(item -> getFieldObj(item, slaveRelation.getMainField())).collect(Collectors.toSet());
+            Set<Object> delMainKeys = CollUtil.isNotEmpty(newList) ? newList.stream().map(item -> getFieldObj(item, slaveRelation.getMainField())).collect(Collectors.toSet()) : new HashSet<>();
             SqlField sqlMainField = new SqlField(SqlConstants.OperateType.IN, slaveRelation.getMergeMainFieldSqlName(), delMainKeys);
             SqlField sqlArrField = new SqlField(SqlConstants.OperateType.IN, slaveRelation.getMergeSlaveFieldSqlName(), delKeys);
             rows += SpringUtil.getBean(slaveRelation.getMergeClass()).deleteByField(sqlMainField, sqlArrField);
@@ -476,18 +554,6 @@ public class MergeUtil {
     }
 
     /**
-     * 新增关联数据 | 间接关联
-     *
-     * @param dto           数据对象
-     * @param slaveRelation 从属关联关系定义对象
-     */
-    private static <D> int deleteIndirectObj(D dto, SlaveRelation slaveRelation) {
-        Object delKey = getFieldObj(dto, slaveRelation.getMainField());
-        SqlField sqlField = new SqlField(SqlConstants.OperateType.EQ, slaveRelation.getMergeMainFieldSqlName(), delKey);
-        return SpringUtil.getBean(slaveRelation.getMergeClass()).deleteByField(sqlField);
-    }
-
-    /**
      * 新增关联数据 | 直接关联
      *
      * @param dtoList       数据对象集合
@@ -497,6 +563,18 @@ public class MergeUtil {
         Set<Object> delKeys = dtoList.stream().map(item -> getFieldObj(item, slaveRelation.getMainField())).collect(Collectors.toSet());
         SqlField sqlField = new SqlField(SqlConstants.OperateType.IN, slaveRelation.getSlaveFieldSqlName(), delKeys);
         return SpringUtil.getBean(slaveRelation.getSlaveClass()).deleteByField(sqlField);
+    }
+
+    /**
+     * 新增关联数据 | 间接关联
+     *
+     * @param dto           数据对象
+     * @param slaveRelation 从属关联关系定义对象
+     */
+    private static <D> int deleteIndirectObj(D dto, SlaveRelation slaveRelation) {
+        Object delKey = getFieldObj(dto, slaveRelation.getMainField());
+        SqlField sqlField = new SqlField(SqlConstants.OperateType.EQ, slaveRelation.getMergeMainFieldSqlName(), delKey);
+        return SpringUtil.getBean(slaveRelation.getMergeClass()).deleteByField(sqlField);
     }
 
     /**
@@ -566,6 +644,70 @@ public class MergeUtil {
             }).collect(Collectors.toList());
         }
         return mergeList;
+    }
+
+    /**
+     * 修改关联数据 | 数据组装 | 直接关联
+     *
+     * @param originDto     源数据对象
+     * @param newDto        新数据对象
+     * @param slaveRelation 从属关联关系定义对象
+     * @param insertList    待新增数据对象集合
+     * @param updateList    待修改数据对象集合
+     * @param delKeys       待删除键值集合
+     */
+    private static <D, SD extends BaseEntity> void updateDirectBuild(D originDto, D newDto, SlaveRelation slaveRelation, List<SD> insertList, List<SD> updateList, Set<Object> delKeys) {
+        Object originSubObj = getFieldObj(originDto, slaveRelation.getReceiveField());
+        Object newSubObj = getFieldObj(newDto, slaveRelation.getReceiveField());
+
+        Class<?> fieldType = slaveRelation.getReceiveField().getType();
+        if (ClassUtil.isNormalClass(fieldType)) {
+            if (ObjectUtil.isNotNull(newSubObj)) {
+                if (ObjectUtil.isNotNull(originSubObj)) {
+                    Object originSlaveId = getFieldObj(originDto, slaveRelation.getSlaveIdField());
+                    Object newSlaveId = getFieldObj(newDto, slaveRelation.getSlaveIdField());
+                    if (ObjectUtil.equals(originSlaveId, newSlaveId)) {
+                        updateList.add((SD) newDto);
+                    } else {
+                        delKeys.add(originSlaveId);
+                        insertList.add((SD) newDto);
+                    }
+                } else {
+                    insertList.add((SD) newDto);
+                }
+            } else if (ObjectUtil.isNotNull(originSubObj)) {
+                Object originSlaveId = getFieldObj(originDto, slaveRelation.getSlaveIdField());
+                delKeys.add(originSlaveId);
+            }
+        } else if (ClassUtil.isCollection(fieldType)) {
+            Collection<Object> originSubColl = (Collection<Object>) originSubObj;
+            Collection<Object> newSubColl = (Collection<Object>) newSubObj;
+            Map<Object, Object> originSubMap = CollUtil.isEmpty(originSubColl)
+                    ? new HashMap<>()
+                    : originSubColl.stream().filter(ObjectUtil::isNotNull)
+                    .map(item -> getFieldObj(item, slaveRelation.getSlaveIdField())).filter(ObjectUtil::isNotNull)
+                    .collect(Collectors.toMap(Function.identity(), Function.identity(), (v1, v2) -> v1));
+
+            Map<Object, Object> newSubMap = CollUtil.isEmpty(newSubColl)
+                    ? new HashMap<>()
+                    : newSubColl.stream().filter(ObjectUtil::isNotNull)
+                    .map(item -> {
+                        Object slaveId = getFieldObj(item, slaveRelation.getSlaveIdField());
+                        if (originSubMap.containsKey(slaveId))
+                            updateList.add((SD) item);
+                        else
+                            insertList.add((SD) item);
+                        return slaveId;
+                    }).filter(ObjectUtil::isNotNull)
+                    .collect(Collectors.toMap(Function.identity(), Function.identity(), (v1, v2) -> v1));
+            if (CollUtil.isNotEmpty(originSubColl)) {
+                originSubColl.stream().filter(ObjectUtil::isNotNull).forEach(item -> {
+                    Object slaveId = getFieldObj(item, slaveRelation.getSlaveIdField());
+                    if (!newSubMap.containsKey(slaveId))
+                        delKeys.add(slaveId);
+                });
+            }
+        }
     }
 
     /**
@@ -808,15 +950,29 @@ public class MergeUtil {
             }
         }
 
-        // 3.如果从数据主键未定义 -> 取从数据表主键
-        if (ObjectUtil.isNull(slaveRelation.getSlaveField())) {
+        // 3.初始化从数据表主键
+        if (ObjectUtil.isNull(slaveRelation.getSlaveIdField())) {
             Field idField = Arrays.stream(fields).filter(field -> field.isAnnotationPresent(TableId.class)).findFirst().orElse(null);
             if (ObjectUtil.isNotNull(idField)) {
-                slaveRelation.setSlaveField(idField);
+
+                TableId tableIdField = idField.getAnnotation(TableId.class);
+                String slaveIdFieldSqlName = ObjectUtil.isNotNull(tableIdField) && StrUtil.isNotEmpty(tableIdField.value())
+                        ? tableIdField.value()
+                        : StrUtil.toUnderlineCase(idField.getName());
+                slaveRelation.setSlaveIdField(idField);
+                slaveRelation.getSlaveIdField().setAccessible(Boolean.TRUE);
+                slaveRelation.setSlaveIdFieldSqlName(slaveIdFieldSqlName);
             }
         }
 
-        // 4.初始化从数据主键数据库字段名
+        // 4.如果从数据主键未定义 -> 取从数据表主键
+        if (ObjectUtil.isNull(slaveRelation.getSlaveField())) {
+            if (ObjectUtil.isNotNull(slaveRelation.getSlaveIdField())) {
+                slaveRelation.setSlaveField(slaveRelation.getSlaveIdField());
+            }
+        }
+
+        // 5.初始化从数据主键数据库字段名
         if (ObjectUtil.isNotNull(slaveRelation.getSlaveField())) {
             Field field = slaveRelation.getSlaveField();
             String slaveFieldSqlName;

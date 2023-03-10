@@ -171,6 +171,14 @@ public interface IBaseManager<Q extends BaseEntity, D extends BaseEntity> {
     int insertByField(Collection<?> fieldColl);
 
     /**
+     * 批量更新数据
+     *
+     * @param fieldColl 数据对象集合
+     * @return 结果
+     */
+    int updateByField(Collection<?> fieldColl);
+
+    /**
      * 根据动态SQL控制对象更新数据对象
      *
      * @param field 动态SQL控制对象
