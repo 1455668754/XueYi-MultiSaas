@@ -2,6 +2,7 @@ package com.xueyi.common.web.entity.manager.impl;
 
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.constant.basic.SqlConstants;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.core.web.entity.model.BaseConverter;
@@ -46,7 +47,7 @@ public class BaseManagerImpl<Q extends P, D extends P, P extends BaseEntity, PM 
     @Override
     public List<D> selectListByIds(Collection<? extends Serializable> idList) {
         List<P> poList = baseMapper.selectBatchIds(idList);
-        return subMerge(mapperDto(poList));
+        return subMerge(mapperDto(poList), OperateConstants.DataRow.SINGLE);
     }
 
     /**

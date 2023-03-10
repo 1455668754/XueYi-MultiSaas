@@ -2,7 +2,12 @@ package com.xueyi.common.web.entity.manager.impl.handle;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.github.pagehelper.Page;
-import com.xueyi.common.core.utils.core.*;
+import com.xueyi.common.core.constant.basic.OperateConstants;
+import com.xueyi.common.core.utils.core.ArrayUtil;
+import com.xueyi.common.core.utils.core.CollUtil;
+import com.xueyi.common.core.utils.core.MapUtil;
+import com.xueyi.common.core.utils.core.NumberUtil;
+import com.xueyi.common.core.utils.core.TypeUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.core.web.entity.model.BaseConverter;
 import com.xueyi.common.web.entity.domain.SlaveRelation;
@@ -12,7 +17,12 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -147,7 +157,7 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
         if (ArrayUtil.isNotEmpty(groupNames))
             Arrays.stream(groupNames).forEach(item -> MergeUtil.subMerge(dto, getSubRelationMap().get(item)));
         else
-            getSubRelationMap().values().stream().filter(SlaveRelation::getIsSelect).forEach(item -> MergeUtil.subMerge(dto, item));
+            getSubRelationMap().values().stream().filter(item -> item.getIsSelect() && item.getIsSingle()).forEach(item -> MergeUtil.subMerge(dto, item));
         return dto;
     }
 
@@ -159,10 +169,27 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
      * @return 数据传输对象集合
      */
     protected List<D> subMerge(List<D> dtoList, String... groupNames) {
+        return subMerge(dtoList, OperateConstants.DataRow.LIST, groupNames);
+    }
+
+    /**
+     * 子数据组装 | 查询
+     *
+     * @param dtoList    数据传输对象集合
+     * @param dataRow    数据类型
+     * @param groupNames 分组名称
+     * @return 数据传输对象集合
+     */
+    protected List<D> subMerge(List<D> dtoList, OperateConstants.DataRow dataRow, String... groupNames) {
         if (ArrayUtil.isNotEmpty(groupNames))
             Arrays.stream(groupNames).forEach(item -> MergeUtil.subMerge(dtoList, getSubRelationMap().get(item)));
         else
-            getSubRelationMap().values().stream().filter(SlaveRelation::getIsSelect).forEach(item -> MergeUtil.subMerge(dtoList, item));
+            switch (dataRow) {
+                case SINGLE ->
+                        getSubRelationMap().values().stream().filter(item -> item.getIsSelect() && item.getIsSingle()).forEach(item -> MergeUtil.subMerge(dtoList, item));
+                case LIST ->
+                        getSubRelationMap().values().stream().filter(item -> item.getIsSelect() && item.getIsList()).forEach(item -> MergeUtil.subMerge(dtoList, item));
+            }
         return dtoList;
     }
 

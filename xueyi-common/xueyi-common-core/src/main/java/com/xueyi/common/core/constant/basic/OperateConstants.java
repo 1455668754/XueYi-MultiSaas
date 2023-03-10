@@ -53,29 +53,6 @@ public class OperateConstants {
         private final String code;
         private final String info;
 
-        public boolean isMainKey() {
-            return StrUtil.equals(name(), MAIN.name());
-        }
-
-        public boolean isSlaveKey() {
-            return StrUtil.equals(name(), SLAVE.name());
-        }
-
-        public boolean isReceiveKey() {
-            return StrUtil.equals(name(), RECEIVE.name());
-        }
-
-        public boolean isMergeMainKey() {
-            return StrUtil.equals(name(), MERGE_MAIN.name());
-        }
-
-        public boolean isMergeSubKey() {
-            return StrUtil.equals(name(), MERGE_SLAVE.name());
-        }
-
-        public boolean isReceiveArrKey() {
-            return StrUtil.equals(name(), RECEIVE_ARR.name());
-        }
     }
 
     /** 数据类型 */
@@ -84,7 +61,7 @@ public class OperateConstants {
     public enum DataRow {
 
         SINGLE("single", "单条数据"),
-        COLLECTION("collection", "数据集合");
+        LIST("list", "数据集合");
 
         private final String code;
         private final String info;
@@ -155,7 +132,11 @@ public class OperateConstants {
     public enum SubOperateLimit {
 
         ONLY_SEL("only select", "仅 查询"),
+        ONLY_LIST_SEL("only list select", "仅 列表查询"),
+        ONLY_SINGLE_SEL("only single select", "仅 单个查询"),
         EX_SEL("exclude select", "排除 查询"),
+        EX_LIST_SEL("exclude list select", "排除 列表查询"),
+        EX_SINGLE_SEL("exclude single select", "排除 单个查询"),
         EX_ADD("exclude insert", "排除 新增"),
         EX_EDIT("exclude update", "排除 修改"),
         EX_DEL("exclude delete", "排除 删除"),

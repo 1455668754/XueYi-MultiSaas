@@ -94,6 +94,11 @@ public class SlaveRelation {
     /** 删除操作 */
     private Boolean isDelete;
 
+    /** 列表查询操作 */
+    private Boolean isList;
+
+    /** 单个查询操作 */
+    private Boolean isSingle;
 
     public SlaveRelation(String groupName,
                          Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> slaveClass,
@@ -163,6 +168,8 @@ public class SlaveRelation {
             for (SubOperateLimit operateType : operateTypes) {
                 switch (operateType) {
                     case EX_SEL -> this.isSelect = Boolean.FALSE;
+                    case EX_LIST_SEL, ONLY_SINGLE_SEL -> this.isList = Boolean.FALSE;
+                    case EX_SINGLE_SEL, ONLY_LIST_SEL -> this.isSingle = Boolean.FALSE;
                     case EX_ADD -> this.isAdd = Boolean.FALSE;
                     case EX_EDIT -> this.isEdit = Boolean.FALSE;
                     case EX_DEL -> this.isDelete = Boolean.FALSE;
@@ -189,8 +196,22 @@ public class SlaveRelation {
                 }
             }
         }
-        if (ObjectUtil.isNull(this.isSelect))
-            this.isSelect = Boolean.TRUE;
+
+        if (ObjectUtil.isNull(this.isSelect)) {
+            if (ObjectUtil.isNull(this.isList))
+                this.isList = Boolean.TRUE;
+            if (ObjectUtil.isNull(this.isSingle))
+                this.isSingle = Boolean.TRUE;
+
+            if (this.isList && this.isSingle)
+                this.isSelect = Boolean.TRUE;
+            else
+                this.isSelect = Boolean.FALSE;
+        } else if (ObjectUtil.equals(this.isSelect, Boolean.FALSE)) {
+            this.isList = Boolean.FALSE;
+            this.isSingle = Boolean.FALSE;
+        }
+
         if (ObjectUtil.isNull(this.isAdd))
             this.isAdd = Boolean.TRUE;
         if (ObjectUtil.isNull(this.isEdit))

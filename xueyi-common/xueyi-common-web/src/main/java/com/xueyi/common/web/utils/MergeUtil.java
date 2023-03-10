@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.xueyi.common.core.annotation.Correlation;
 import com.xueyi.common.core.annotation.Correlations;
+import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.constant.basic.OperateConstants.SubOperate;
 import com.xueyi.common.core.constant.basic.SqlConstants;
 import com.xueyi.common.core.constant.error.UtilErrorConstants;
@@ -1004,7 +1005,7 @@ public class MergeUtil {
     private static void initSlaveCorrelation(SlaveRelation slaveRelation, Field field, Correlation correlation) {
         if (ObjectUtil.isNull(correlation) || StrUtil.notEquals(correlation.groupName(), slaveRelation.getGroupName()))
             return;
-        if (correlation.keyType().isSlaveKey()) {
+        if (ObjectUtil.equals(correlation.keyType(), OperateConstants.SubKeyType.SLAVE)) {
             if (ObjectUtil.isNull(slaveRelation.getSlaveField())) {
                 slaveRelation.setSlaveField(field);
                 slaveRelation.getSlaveField().setAccessible(Boolean.TRUE);
