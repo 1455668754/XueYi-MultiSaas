@@ -70,6 +70,13 @@ public class SecurityUtils {
     }
 
     /**
+     * 获取用户昵称
+     */
+    public static String getNickName() {
+        return SecurityContextHolder.getNickName();
+    }
+
+    /**
      * 获取用户权限标识
      */
     public static String getUserType() {
