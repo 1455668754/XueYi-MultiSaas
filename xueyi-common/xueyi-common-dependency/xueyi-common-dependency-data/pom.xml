@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.xueyi</groupId>
+        <artifactId>xueyi-common-dependency</artifactId>
+        <version>3.0.0-Alpha1</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>xueyi-common-dependency-data</artifactId>
+
+    <description>
+        xueyi-common-dependency-data通用Data依赖
+    </description>
+
+    <dependencies>
+
+        <!-- Xueyi Common Dependency Nacos -->
+        <dependency>
+            <groupId>com.xueyi</groupId>
+            <artifactId>xueyi-common-dependency-nacos</artifactId>
+        </dependency>
+
+        <!-- XueYi Common Log -->
+        <dependency>
+            <groupId>com.xueyi</groupId>
+            <artifactId>xueyi-common-log</artifactId>
+        </dependency>
+
+        <!-- XueYi Common Web -->
+        <dependency>
+            <groupId>com.xueyi</groupId>
+            <artifactId>xueyi-common-web</artifactId>
+        </dependency>
+
+    </dependencies>
+</project>

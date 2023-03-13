@@ -19,6 +19,7 @@
         <module>xueyi-common-security</module>
         <module>xueyi-common-datascope</module>
 		<module>xueyi-common-datasource</module>
+		<module>xueyi-common-dependency</module>
     </modules>
 
     <artifactId>xueyi-common</artifactId>

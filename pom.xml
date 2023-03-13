@@ -262,6 +262,20 @@
                 <version>${xueyi.version}</version>
             </dependency>
 
+            <!-- 通用开发依赖 - Data -->
+            <dependency>
+                <groupId>com.xueyi</groupId>
+                <artifactId>xueyi-common-dependency-data</artifactId>
+                <version>${xueyi.version}</version>
+            </dependency>
+
+            <!-- 通用开发依赖 - Nacos -->
+            <dependency>
+                <groupId>com.xueyi</groupId>
+                <artifactId>xueyi-common-dependency-nacos</artifactId>
+                <version>${xueyi.version}</version>
+            </dependency>
+
             <!-- 日志记录 -->
             <dependency>
                 <groupId>com.xueyi</groupId>

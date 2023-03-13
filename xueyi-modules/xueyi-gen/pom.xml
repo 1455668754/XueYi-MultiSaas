@@ -17,52 +17,16 @@
 
     <dependencies>
 
-        <!-- SpringCloud Alibaba Nacos -->
+        <!-- Xueyi Common Dependency Data -->
         <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-        </dependency>
-
-        <!-- SpringCloud Alibaba Nacos Config -->
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
-        </dependency>
-
-        <!-- SpringCloud Alibaba Sentinel -->
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
-        </dependency>
-
-        <!-- SpringBoot Actuator -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
+            <groupId>com.xueyi</groupId>
+            <artifactId>xueyi-common-dependency-data</artifactId>
         </dependency>
 
         <!-- Apache Velocity -->
         <dependency>
             <groupId>org.apache.velocity</groupId>
             <artifactId>velocity-engine-core</artifactId>
-        </dependency>
-
-        <!-- XueYi Common Log -->
-        <dependency>
-            <groupId>com.xueyi</groupId>
-            <artifactId>xueyi-common-log</artifactId>
-        </dependency>
-
-        <!-- XueYi Common Web -->
-        <dependency>
-            <groupId>com.xueyi</groupId>
-            <artifactId>xueyi-common-web</artifactId>
-        </dependency>
-
-        <!-- XueYi Common Swagger -->
-        <dependency>
-            <groupId>com.xueyi</groupId>
-            <artifactId>xueyi-common-swagger</artifactId>
         </dependency>
 
     </dependencies>
