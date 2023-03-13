@@ -6,14 +6,19 @@ import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.InnerAuth;
-import com.xueyi.common.security.utils.base.BaseSecurityUtils;
+import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.system.file.domain.dto.SysFileDto;
 import com.xueyi.system.file.domain.query.SysFileQuery;
 import com.xueyi.system.file.service.ISysFileService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -38,7 +43,7 @@ public class SysFileController extends BaseController<SysFileQuery, SysFileDto, 
     @InnerAuth
     @PostMapping
     public AjaxResult addInner(@Validated({V_A.class}) @RequestBody SysFileDto file) {
-        return toAjax(StrUtil.isEmpty(BaseSecurityUtils.getSourceName()) ? baseService.insertToMaster(file) : baseService.insert(file));
+        return toAjax(StrUtil.isEmpty(SecurityUtils.getSourceName()) ? baseService.insertToMaster(file) : baseService.insert(file));
     }
 
     /**

@@ -7,7 +7,7 @@ import com.xueyi.common.core.utils.core.NumberUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.datascope.annotation.DataScope;
-import com.xueyi.common.security.utils.SecurityUtils;
+import com.xueyi.common.security.utils.SecurityUserUtils;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.HexValue;
 import net.sf.jsqlparser.expression.LongValue;
@@ -74,7 +74,7 @@ public class XueYiDataScopeHandler implements DataPermissionHandler {
         if (!((ArrayUtil.isEmpty(dataScope.mapperScope()) || ArrayUtil.contains(dataScope.mapperScope(), mapper)) && (ArrayUtil.isEmpty(dataScope.methodScope()) || ArrayUtil.contains(dataScope.methodScope(), method))))
             return where;
         if (where == null) where = new HexValue(" 1 = 1 ");
-        com.xueyi.system.api.model.DataScope scope = SecurityUtils.getDataScope();
+        com.xueyi.system.api.model.DataScope scope = SecurityUserUtils.getDataScope();
         if (ObjectUtil.isNull(scope) || scope.isAdmin()) return where;
         Long userId = scope.getUserId();
         String scopeType = scope.getDataScope();

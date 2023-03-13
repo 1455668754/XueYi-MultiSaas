@@ -11,8 +11,8 @@ import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.InnerAuth;
-import com.xueyi.common.security.service.TokenService;
-import com.xueyi.common.security.utils.SecurityUtils;
+import com.xueyi.common.security.service.TokenUserService;
+import com.xueyi.common.security.utils.SecurityUserUtils;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.system.api.model.DataScope;
 import com.xueyi.system.api.model.LoginUser;
@@ -24,7 +24,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -43,7 +50,7 @@ public class SysUserController extends BaseController<SysUserQuery, SysUserDto, 
     private ISysOrganizeService organizeService;
 
     @Autowired
-    private TokenService tokenService;
+    private TokenUserService tokenService;
 
     /** 定义节点名称 */
     @Override
@@ -184,7 +191,7 @@ public class SysUserController extends BaseController<SysUserQuery, SysUserDto, 
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
     public AjaxResult resetPassword(@RequestBody SysUserDto user) {
         adminValidated(user.getId());
-        return toAjax(baseService.resetUserPassword(user.getId(), SecurityUtils.encryptPassword(user.getPassword())));
+        return toAjax(baseService.resetUserPassword(user.getId(), SecurityUserUtils.encryptPassword(user.getPassword())));
     }
 
     /**
@@ -215,7 +222,7 @@ public class SysUserController extends BaseController<SysUserQuery, SysUserDto, 
         switch (operate) {
             case ADD:
                 // 防止修改操作更替密码
-                user.setPassword(SecurityUtils.encryptPassword(user.getPassword()));
+                user.setPassword(SecurityUserUtils.encryptPassword(user.getPassword()));
                 break;
             case EDIT_STATUS:
                 adminValidated(user.getId());
@@ -231,7 +238,7 @@ public class SysUserController extends BaseController<SysUserQuery, SysUserDto, 
     @Override
     protected void RHandle(BaseConstants.Operate operate, List<Long> idList) {
         int size = idList.size();
-        Long userId = SecurityUtils.getUserId();
+        Long userId = SecurityUserUtils.getUserId();
         // remove oneself or admin
         for (int i = idList.size() - 1; i >= 0; i--)
             if (ObjectUtil.equals(idList.get(i), userId) || !baseService.checkUserAllowed(idList.get(i)))

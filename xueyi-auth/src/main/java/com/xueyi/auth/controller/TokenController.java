@@ -3,7 +3,7 @@ package com.xueyi.auth.controller;
 import com.xueyi.auth.form.RegisterBody;
 import com.xueyi.auth.service.ISysLoginService;
 import com.xueyi.common.core.web.result.AjaxResult;
-import com.xueyi.common.security.service.TokenService;
+import com.xueyi.common.security.service.TokenUserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TokenController {
 
     @Autowired
-    private TokenService tokenService;
+    private TokenUserService tokenService;
 
     @Autowired
     private ISysLoginService sysLoginService;

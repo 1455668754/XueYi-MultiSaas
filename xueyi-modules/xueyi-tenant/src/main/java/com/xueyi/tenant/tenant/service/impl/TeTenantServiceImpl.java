@@ -7,7 +7,7 @@ import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.result.R;
-import com.xueyi.common.security.utils.SecurityUtils;
+import com.xueyi.common.security.utils.SecurityUserUtils;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.authority.feign.RemoteAuthService;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
@@ -160,7 +160,7 @@ public class TeTenantServiceImpl extends BaseServiceImpl<TeTenantQuery, TeTenant
             AjaxResult.warn("新增失败，请检查！");
         tenantRegister.getUser().setPostIds(new Long[]{postR.getData().getId()});
         tenantRegister.getUser().setUserType(AuthorityConstants.UserType.ADMIN.getCode());
-        tenantRegister.getUser().setPassword(SecurityUtils.encryptPassword(tenantRegister.getUser().getPassword()));
+        tenantRegister.getUser().setPassword(SecurityUserUtils.encryptPassword(tenantRegister.getUser().getPassword()));
         R<SysUserDto> userR = userService.addInner(tenantRegister.getUser(), enterpriseId, sourceName, SecurityConstants.INNER);
         if (userR.isFail())
             AjaxResult.warn("新增失败，请检查！");

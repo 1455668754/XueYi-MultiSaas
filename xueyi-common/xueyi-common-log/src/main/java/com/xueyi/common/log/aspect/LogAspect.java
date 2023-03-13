@@ -13,7 +13,7 @@ import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessStatus;
 import com.xueyi.common.log.filter.PropertyPreExcludeFilter;
 import com.xueyi.common.log.service.AsyncLogService;
-import com.xueyi.common.security.service.TokenService;
+import com.xueyi.common.security.service.TokenUserService;
 import com.xueyi.system.api.log.domain.dto.SysOperateLogDto;
 import com.xueyi.system.api.model.LoginUser;
 import jakarta.servlet.http.HttpServletRequest;
@@ -56,7 +56,7 @@ public class LogAspect {
     private AsyncLogService asyncLogService;
 
     @Autowired
-    private TokenService tokenService;
+    private TokenUserService tokenService;
 
     /**
      * 处理请求前执行

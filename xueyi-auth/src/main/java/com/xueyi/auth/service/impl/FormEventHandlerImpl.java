@@ -12,7 +12,7 @@ import com.xueyi.common.core.utils.servlet.ServletUtil;
 import com.xueyi.common.core.web.model.BaseLoginUser;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.security.service.ITokenService;
-import com.xueyi.common.security.utils.base.BaseSecurityUtils;
+import com.xueyi.common.security.utils.SecurityUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
@@ -72,14 +72,14 @@ public class FormEventHandlerImpl implements ApplicationListener<LogoutSuccessEv
     @Override
     @SneakyThrows
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-        String token = BaseSecurityUtils.getToken(request);
+        String token = SecurityUtils.getToken(request);
         if (StrUtil.isNotEmpty(token)) {
             String accountType = JwtUtil.getAccountType(token);
             String userKey = JwtUtil.getUserKey(token);
 
             // 移除缓存
             if (StrUtil.isAllNotBlank(accountType, userKey)) {
-                ITokenService tokenService = BaseSecurityUtils.getTokenService(accountType);
+                ITokenService tokenService = SecurityUtils.getTokenService(accountType);
                 BaseLoginUser loginUser = tokenService.getLoginUser();
 
                 // 记录用户日志

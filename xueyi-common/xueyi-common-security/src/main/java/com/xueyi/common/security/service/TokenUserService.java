@@ -8,7 +8,7 @@ import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.utils.servlet.ServletUtil;
 import com.xueyi.common.redis.service.RedisService;
-import com.xueyi.common.security.utils.SecurityUtils;
+import com.xueyi.common.security.utils.SecurityUserUtils;
 import com.xueyi.system.api.model.DataScope;
 import com.xueyi.system.api.model.LoginUser;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
@@ -25,7 +25,7 @@ import java.util.Map;
  * @author xueyi
  */
 @Component
-public class TokenService implements ITokenService<SysUserDto, LoginUser> {
+public class TokenUserService implements ITokenService<SysUserDto, LoginUser> {
 
     @Getter
     @Autowired
@@ -88,7 +88,7 @@ public class TokenService implements ITokenService<SysUserDto, LoginUser> {
      */
     public DataScope getDataScope(HttpServletRequest request) {
         // 获取请求携带的令牌
-        String token = SecurityUtils.getToken(request);
+        String token = SecurityUserUtils.getToken(request);
         return getDataScope(token);
     }
 

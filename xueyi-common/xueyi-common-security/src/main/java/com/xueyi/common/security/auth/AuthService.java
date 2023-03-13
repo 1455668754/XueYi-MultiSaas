@@ -4,7 +4,7 @@ import com.xueyi.common.core.utils.core.ArrayUtil;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
-import com.xueyi.common.security.utils.SecurityUtils;
+import com.xueyi.common.security.utils.SecurityUserUtils;
 import com.xueyi.system.api.model.LoginUser;
 
 import java.util.Set;
@@ -27,7 +27,7 @@ public class AuthService {
     public boolean hasAuthority(String... authorities) {
         if (ArrayUtil.isEmpty(authorities))
             return false;
-        LoginUser loginUser = SecurityUtils.getLoginUser();
+        LoginUser loginUser = SecurityUserUtils.getLoginUser();
         if (ObjectUtil.hasNull(loginUser, loginUser.getDataScope()) || CollUtil.isEmpty(loginUser.getDataScope().getPermissions()))
             return false;
         for (String authority : authorities)
@@ -55,7 +55,7 @@ public class AuthService {
     public boolean hasAnyAuthority(String... authorities) {
         if (ArrayUtil.isEmpty(authorities))
             return false;
-        LoginUser loginUser = SecurityUtils.getLoginUser();
+        LoginUser loginUser = SecurityUserUtils.getLoginUser();
         if (ObjectUtil.hasNull(loginUser, loginUser.getDataScope()) || CollUtil.isEmpty(loginUser.getDataScope().getPermissions()))
             return false;
         for (String authority : authorities)
@@ -73,7 +73,7 @@ public class AuthService {
     public boolean hasRole(String... roles) {
         if (ArrayUtil.isEmpty(roles))
             return false;
-        LoginUser loginUser = SecurityUtils.getLoginUser();
+        LoginUser loginUser = SecurityUserUtils.getLoginUser();
         if (ObjectUtil.hasNull(loginUser, loginUser.getDataScope()) || CollUtil.isEmpty(loginUser.getDataScope().getRoles()))
             return false;
         for (String role : roles)
@@ -101,7 +101,7 @@ public class AuthService {
     public boolean hasAnyRole(String... roles) {
         if (ArrayUtil.isEmpty(roles))
             return false;
-        LoginUser loginUser = SecurityUtils.getLoginUser();
+        LoginUser loginUser = SecurityUserUtils.getLoginUser();
         if (ObjectUtil.hasNull(loginUser, loginUser.getDataScope()) || CollUtil.isEmpty(loginUser.getDataScope().getRoles()))
             return false;
         for (String role : roles)

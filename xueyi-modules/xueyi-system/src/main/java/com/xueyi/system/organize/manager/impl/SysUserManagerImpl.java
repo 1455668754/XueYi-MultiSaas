@@ -6,7 +6,7 @@ import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.constant.basic.SqlConstants;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
-import com.xueyi.common.security.utils.SecurityUtils;
+import com.xueyi.common.security.utils.SecurityUserUtils;
 import com.xueyi.common.web.entity.domain.SlaveRelation;
 import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.system.api.authority.domain.model.SysRoleConverter;
@@ -95,7 +95,7 @@ public class SysUserManagerImpl extends BaseManagerImpl<SysUserQuery, SysUserDto
                 Wrappers.<SysUserPo>query().lambda()
                         .eq(SysUserPo::getUserName, userName)));
         // check password is true
-        if (ObjectUtil.isNull(userDto) || !SecurityUtils.matchesPassword(password, userDto.getPassword()))
+        if (ObjectUtil.isNull(userDto) || !SecurityUserUtils.matchesPassword(password, userDto.getPassword()))
             return null;
 
         // select posts in user && select depts in post

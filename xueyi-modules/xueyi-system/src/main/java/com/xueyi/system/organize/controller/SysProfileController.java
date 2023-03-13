@@ -9,8 +9,8 @@ import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.core.web.validate.V_CUS;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
-import com.xueyi.common.security.service.TokenService;
-import com.xueyi.common.security.utils.SecurityUtils;
+import com.xueyi.common.security.service.TokenUserService;
+import com.xueyi.common.security.utils.SecurityUserUtils;
 import com.xueyi.common.web.entity.controller.BasisController;
 import com.xueyi.file.api.domain.SysFile;
 import com.xueyi.file.api.feign.RemoteFileService;
@@ -19,7 +19,13 @@ import com.xueyi.system.api.organize.domain.dto.SysUserDto;
 import com.xueyi.system.organize.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
@@ -34,7 +40,7 @@ import java.util.Arrays;
 public class SysProfileController extends BasisController {
 
     @Autowired
-    private TokenService tokenService;
+    private TokenUserService tokenService;
 
     @Autowired
     private RemoteFileService remoteFileService;
@@ -47,7 +53,7 @@ public class SysProfileController extends BasisController {
      */
     @GetMapping
     public AjaxResult profile() {
-        SysUserDto user = SecurityUtils.getUser();
+        SysUserDto user = SecurityUserUtils.getUser();
         userService.userDesensitized(user);
         return success(user);
     }
@@ -58,7 +64,7 @@ public class SysProfileController extends BasisController {
     @PutMapping
     @Log(title = "个人信息管理 - 基本信息修改", businessType = BusinessType.UPDATE)
     public AjaxResult editProfile(@Validated({V_CUS.class}) @RequestBody SysUserDto user) {
-        LoginUser loginUser = SecurityUtils.getLoginUser();
+        LoginUser loginUser = SecurityUserUtils.getLoginUser();
         if (userService.updateUserProfile(loginUser.getUserId(), user.getNickName(), user.getSex(), user.getProfile()) > 0) {
             // 更新缓存用户信息
             loginUser.getUser().setNickName(user.getNickName());
@@ -76,7 +82,7 @@ public class SysProfileController extends BasisController {
     @PutMapping("/userName")
     @Log(title = "个人信息管理 - 修改账号", businessType = BusinessType.UPDATE)
     public AjaxResult editUserName(String userName) {
-        LoginUser loginUser = SecurityUtils.getLoginUser();
+        LoginUser loginUser = SecurityUserUtils.getLoginUser();
         if (StrUtil.isEmpty(userName)) return error("不能设置为空账号！");
         else if (StrUtil.equals(userName, loginUser.getUser().getUserName()))
             return error("该账号为当前使用账号，无需更换！");
@@ -97,7 +103,7 @@ public class SysProfileController extends BasisController {
     @PutMapping("/email")
     @Log(title = "个人信息管理 - 更绑邮箱", businessType = BusinessType.UPDATE)
     public AjaxResult editEmail(String email) {
-        LoginUser loginUser = SecurityUtils.getLoginUser();
+        LoginUser loginUser = SecurityUserUtils.getLoginUser();
         if (StrUtil.isEmpty(email)) return error("不能设置为空邮箱！");
         else if (StrUtil.equals(email, loginUser.getUser().getEmail()))
             return error("该邮箱为当前使用邮箱，无需更换！");
@@ -117,7 +123,7 @@ public class SysProfileController extends BasisController {
     @PutMapping("/phone")
     @Log(title = "个人信息管理 - 更绑手机号", businessType = BusinessType.UPDATE)
     public AjaxResult editPhone(String phone) {
-        LoginUser loginUser = SecurityUtils.getLoginUser();
+        LoginUser loginUser = SecurityUserUtils.getLoginUser();
         if (StrUtil.isEmpty(phone)) return error("不能设置为空手机号！");
         else if (StrUtil.equals(phone, loginUser.getUser().getPhone()))
             return error("该邮箱为当前使用手机号，无需更换！");
@@ -138,13 +144,13 @@ public class SysProfileController extends BasisController {
     @PutMapping("/password")
     @Log(title = "个人信息管理 - 重置密码", businessType = BusinessType.UPDATE)
     public AjaxResult editPassword(String oldPassword, String newPassword) {
-        LoginUser loginUser = SecurityUtils.getLoginUser();
+        LoginUser loginUser = SecurityUserUtils.getLoginUser();
         String password = loginUser.getUser().getPassword();
-        if (!SecurityUtils.matchesPassword(oldPassword, password)) return error("修改失败，旧密码错误！");
-        if (SecurityUtils.matchesPassword(newPassword, password)) return error("新旧密码不能相同！");
-        if (userService.resetUserPassword(loginUser.getUserId(), SecurityUtils.encryptPassword(newPassword)) > 0) {
+        if (!SecurityUserUtils.matchesPassword(oldPassword, password)) return error("修改失败，旧密码错误！");
+        if (SecurityUserUtils.matchesPassword(newPassword, password)) return error("新旧密码不能相同！");
+        if (userService.resetUserPassword(loginUser.getUserId(), SecurityUserUtils.encryptPassword(newPassword)) > 0) {
             // 更新缓存用户密码
-            loginUser.getUser().setPassword(SecurityUtils.encryptPassword(newPassword));
+            loginUser.getUser().setPassword(SecurityUserUtils.encryptPassword(newPassword));
             tokenService.setLoginUser(loginUser);
             return success();
         }
@@ -158,7 +164,7 @@ public class SysProfileController extends BasisController {
     @Log(title = "个人信息管理 - 修改头像", businessType = BusinessType.UPDATE)
     public AjaxResult editAvatar(@RequestParam("file") MultipartFile file) {
         if (!file.isEmpty()) {
-            LoginUser loginUser = SecurityUtils.getLoginUser();
+            LoginUser loginUser = SecurityUserUtils.getLoginUser();
             String extension = FileTypeUtil.getExtension(file);
             if (!StrUtil.equalsAnyIgnoreCase(extension, MimeTypeUtil.IMAGE_EXTENSION)) {
                 return error("文件格式不正确，请上传" + Arrays.toString(MimeTypeUtil.IMAGE_EXTENSION) + "格式");
@@ -167,7 +173,7 @@ public class SysProfileController extends BasisController {
             if (ObjectUtil.isNull(fileResult) || ObjectUtil.isNull(fileResult.getData()))
                 return error("文件服务异常，请联系管理员！");
             String url = fileResult.getData().getUrl();
-            if (userService.updateUserAvatar(SecurityUtils.getUserId(), url) > 0) {
+            if (userService.updateUserAvatar(SecurityUserUtils.getUserId(), url) > 0) {
                 String oldAvatarUrl = loginUser.getUser().getAvatar();
                 if (StrUtil.isNotEmpty(oldAvatarUrl)) {
                     remoteFileService.delete(oldAvatarUrl);

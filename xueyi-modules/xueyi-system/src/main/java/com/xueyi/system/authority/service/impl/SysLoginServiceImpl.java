@@ -2,7 +2,7 @@ package com.xueyi.system.authority.service.impl;
 
 import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.core.utils.core.StrUtil;
-import com.xueyi.common.security.utils.SecurityUtils;
+import com.xueyi.common.security.utils.SecurityUserUtils;
 import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
 import com.xueyi.system.api.model.DataScope;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
@@ -11,7 +11,11 @@ import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
 import com.xueyi.system.authority.service.ISysLoginService;
 import com.xueyi.system.authority.service.ISysMenuService;
-import com.xueyi.system.organize.service.*;
+import com.xueyi.system.organize.service.ISysDeptService;
+import com.xueyi.system.organize.service.ISysEnterpriseService;
+import com.xueyi.system.organize.service.ISysOrganizeService;
+import com.xueyi.system.organize.service.ISysPostService;
+import com.xueyi.system.organize.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -83,7 +87,7 @@ public class SysLoginServiceImpl implements ISysLoginService {
     public Set<String> getRolePermission(List<SysRoleDto> roleList, String userType) {
         Set<String> roles = new HashSet<>();
         // 租管租户拥有租管标识权限
-        if (SecurityUtils.isAdminTenant())
+        if (SecurityUserUtils.isAdminTenant())
             roles.add(ROLE_ADMINISTRATOR);
         // 超管用户拥有超管标识权限
         if (SysUserDto.isAdmin(userType))
@@ -104,7 +108,7 @@ public class SysLoginServiceImpl implements ISysLoginService {
     public Set<String> getMenuPermission(Set<Long> roleIds, String userType) {
         Set<String> perms = new HashSet<>();
         // 租管租户的超管用户拥有所有权限
-        if (SecurityUtils.isAdminTenant() && SysUserDto.isAdmin(userType))
+        if (SecurityUserUtils.isAdminTenant() && SysUserDto.isAdmin(userType))
             perms.add(PERMISSION_ADMIN);
         else {
             Set<String> set = SysUserDto.isAdmin(userType)
@@ -213,7 +217,7 @@ public class SysLoginServiceImpl implements ISysLoginService {
      */
     @Override
     public Map<String, String> getMenuRouteMap(Set<Long> roleIds, String userType) {
-        if (SecurityUtils.isAdminTenant())
+        if (SecurityUserUtils.isAdminTenant())
             return SysUserDto.isAdmin(userType)
                     ? menuService.getLessorRouteMap()
                     : menuService.getRouteMap(roleIds);

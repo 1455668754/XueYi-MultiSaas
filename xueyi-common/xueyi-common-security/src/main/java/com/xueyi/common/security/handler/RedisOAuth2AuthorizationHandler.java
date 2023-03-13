@@ -4,7 +4,7 @@ import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.web.model.BaseLoginUser;
 import com.xueyi.common.redis.service.RedisService;
 import com.xueyi.common.security.service.ITokenService;
-import com.xueyi.common.security.utils.base.BaseSecurityUtils;
+import com.xueyi.common.security.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.lang.Nullable;
@@ -36,9 +36,9 @@ public class RedisOAuth2AuthorizationHandler implements OAuth2AuthorizationServi
     @Override
     public void save(OAuth2Authorization authorization) {
         // check loginUser info
-        BaseLoginUser loginUser = BaseSecurityUtils.getLoginUser(authorization);
+        BaseLoginUser loginUser = SecurityUtils.getLoginUser(authorization);
         // check token service
-        ITokenService tokenService = BaseSecurityUtils.getTokenService(loginUser.getAccountType().getCode());
+        ITokenService tokenService = SecurityUtils.getTokenService(loginUser.getAccountType().getCode());
 
         // build refresh token
         if (isRefreshToken(authorization)) {
@@ -79,9 +79,9 @@ public class RedisOAuth2AuthorizationHandler implements OAuth2AuthorizationServi
     @Override
     public void remove(OAuth2Authorization authorization) {
         // check loginUser info
-        BaseLoginUser loginUser = BaseSecurityUtils.getLoginUser(authorization);
+        BaseLoginUser loginUser = SecurityUtils.getLoginUser(authorization);
         // check token service
-        ITokenService tokenService = BaseSecurityUtils.getTokenService(loginUser.getAccountType().getCode());
+        ITokenService tokenService = SecurityUtils.getTokenService(loginUser.getAccountType().getCode());
         tokenService.removeTokenCache(loginUser);
     }
 

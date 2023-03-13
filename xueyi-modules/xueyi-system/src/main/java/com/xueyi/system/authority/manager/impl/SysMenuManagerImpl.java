@@ -10,7 +10,7 @@ import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.NumberUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
-import com.xueyi.common.security.utils.SecurityUtils;
+import com.xueyi.common.security.utils.SecurityUserUtils;
 import com.xueyi.common.web.entity.domain.SlaveRelation;
 import com.xueyi.common.web.entity.manager.impl.TreeManagerImpl;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
@@ -124,7 +124,7 @@ public class SysMenuManagerImpl extends TreeManagerImpl<SysMenuQuery, SysMenuDto
     @Override
     public List<SysMenuDto> selectCommonList() {
         // 校验租管租户 ? 查询所有 : 查询租户-菜单关联表,校验是否有数据 ? 查有关联权限的公共菜单与所有私有菜单 : 查询所有私有菜单
-        if (SecurityUtils.isAdminTenant()) {
+        if (SecurityUserUtils.isAdminTenant()) {
             List<SysMenuPo> menuList = baseMapper.selectList(Wrappers.<SysMenuPo>query().lambda()
                     .ne(SysMenuPo::getId, AuthorityConstants.MENU_TOP_NODE)
                     .eq(SysMenuPo::getIsCommon, DictConstants.DicCommonPrivate.COMMON.getCode())
@@ -150,7 +150,7 @@ public class SysMenuManagerImpl extends TreeManagerImpl<SysMenuQuery, SysMenuDto
     @Override
     public List<SysMenuDto> selectTenantList() {
         // 校验租管租户 ? 查询所有 : 查询租户-菜单关联表,校验是否有数据 ? 查有关联权限的公共菜单 : 返回空集合
-        if (SecurityUtils.isAdminTenant()) {
+        if (SecurityUserUtils.isAdminTenant()) {
             List<SysMenuPo> menuList = baseMapper.selectList(Wrappers.<SysMenuPo>query().lambda()
                     .ne(SysMenuPo::getId, AuthorityConstants.MENU_TOP_NODE)
                     .eq(SysMenuPo::getStatus, BaseConstants.Status.NORMAL.getCode()));
@@ -182,8 +182,8 @@ public class SysMenuManagerImpl extends TreeManagerImpl<SysMenuQuery, SysMenuDto
     @Override
     public List<SysMenuDto> getRoutes(Long moduleId) {
         LambdaQueryWrapper<SysMenuPo> menuQueryWrapper = new LambdaQueryWrapper<>();
-        if (SecurityUtils.isAdminUser()) {
-            if (SecurityUtils.isNotAdminTenant()) {
+        if (SecurityUserUtils.isAdminUser()) {
+            if (SecurityUserUtils.isNotAdminTenant()) {
                 // 1.获取租户授权的公共菜单Ids
                 List<SysTenantMenuMerge> tenantMenuMerges = tenantMenuMergeMapper.selectList(Wrappers.query());
                 // 2.获取租户全部可使用的菜单
@@ -196,7 +196,7 @@ public class SysMenuManagerImpl extends TreeManagerImpl<SysMenuQuery, SysMenuDto
                         });
             }
         } else {
-            DataScope dataScope = SecurityUtils.getDataScope();
+            DataScope dataScope = SecurityUserUtils.getDataScope();
             Set<Long> roleIds = dataScope.getRoleIds();
             if (CollUtil.isEmpty(roleIds))
                 return new ArrayList<>();

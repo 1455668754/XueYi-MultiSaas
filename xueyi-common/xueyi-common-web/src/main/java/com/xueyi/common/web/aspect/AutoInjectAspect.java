@@ -6,7 +6,7 @@ import com.xueyi.common.core.utils.core.NumberUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.core.web.entity.base.BasisEntity;
-import com.xueyi.common.security.utils.base.BaseSecurityUtils;
+import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.annotation.AutoInject;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
@@ -63,11 +63,11 @@ public class AutoInjectAspect {
         if (obj instanceof BaseEntity base) {
             if (autoInject.user()) {
                 if (autoInject.isInsert()) {
-                    base.setCreateBy(BaseSecurityUtils.getUserId());
-                    base.setCreateName(BaseSecurityUtils.getUserName());
+                    base.setCreateBy(SecurityUtils.getUserId());
+                    base.setCreateName(SecurityUtils.getUserName());
                 } else {
-                    base.setUpdateBy(BaseSecurityUtils.getUserId());
-                    base.setUpdateName(BaseSecurityUtils.getUserName());
+                    base.setUpdateBy(SecurityUtils.getUserId());
+                    base.setUpdateName(SecurityUtils.getUserName());
                 }
             }
             if (autoInject.isInsert() && autoInject.key() && ObjectUtil.isNull(base.getId()))

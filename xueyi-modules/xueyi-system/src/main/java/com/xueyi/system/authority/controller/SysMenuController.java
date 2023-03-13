@@ -15,8 +15,8 @@ import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.InnerAuth;
-import com.xueyi.common.security.service.TokenService;
-import com.xueyi.common.security.utils.SecurityUtils;
+import com.xueyi.common.security.service.TokenUserService;
+import com.xueyi.common.security.utils.SecurityUserUtils;
 import com.xueyi.common.web.entity.controller.TreeController;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
@@ -28,7 +28,14 @@ import com.xueyi.system.utils.multi.MRouteUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -47,7 +54,7 @@ import java.util.stream.Collectors;
 public class SysMenuController extends TreeController<SysMenuQuery, SysMenuDto, ISysMenuService> {
 
     @Autowired
-    private TokenService tokenService;
+    private TokenUserService tokenService;
 
     @Autowired
     private ISysModuleService moduleService;
@@ -232,7 +239,7 @@ public class SysMenuController extends TreeController<SysMenuQuery, SysMenuDto, 
         }
 
         if (menu.isCommon()) {
-            if (SecurityUtils.isNotAdminTenant())
+            if (SecurityUserUtils.isNotAdminTenant())
                 warn(StrUtil.format("{}{}{}失败，无操作权限！", operate.getInfo(), getNodeName(), menu.getTitle()));
             SysModuleDto module = moduleService.selectById(menu.getModuleId());
             if (ObjectUtil.isNull(module))
@@ -253,7 +260,7 @@ public class SysMenuController extends TreeController<SysMenuQuery, SysMenuDto, 
      */
     protected void RHandle(BaseConstants.Operate operate, List<Long> idList) {
         List<SysMenuDto> moduleList = baseService.selectListByIds(idList);
-        boolean isTenant = SecurityUtils.isAdminTenant();
+        boolean isTenant = SecurityUserUtils.isAdminTenant();
         Map<Long, SysMenuDto> moduleMap = moduleList.stream().filter(item -> isTenant || item.isNotCommon())
                 .collect(Collectors.toMap(SysMenuDto::getId, Function.identity()));
         for (int i = idList.size() - 1; i >= 0; i--)

@@ -9,8 +9,8 @@ import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
-import com.xueyi.common.security.service.TokenService;
-import com.xueyi.common.security.utils.SecurityUtils;
+import com.xueyi.common.security.service.TokenUserService;
+import com.xueyi.common.security.utils.SecurityUserUtils;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
 import com.xueyi.system.api.authority.domain.query.SysModuleQuery;
@@ -20,7 +20,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.Serializable;
 import java.util.List;
@@ -38,7 +45,7 @@ import java.util.stream.Collectors;
 public class SysModuleController extends BaseController<SysModuleQuery, SysModuleDto, ISysModuleService> {
 
     @Autowired
-    private TokenService tokenService;
+    private TokenUserService tokenService;
 
     /** 定义节点名称 */
     @Override
@@ -163,7 +170,7 @@ public class SysModuleController extends BaseController<SysModuleQuery, SysModul
             }
         }
 
-        if (module.isCommon() && SecurityUtils.isNotAdminTenant()) {
+        if (module.isCommon() && SecurityUserUtils.isNotAdminTenant()) {
             warn(StrUtil.format("{}{}{}失败，无操作权限！", operate.getInfo(), getNodeName(), module.getName()));
         }
     }
@@ -173,7 +180,7 @@ public class SysModuleController extends BaseController<SysModuleQuery, SysModul
      */
     protected void RHandle(BaseConstants.Operate operate, List<Long> idList) {
         List<SysModuleDto> moduleList = baseService.selectListByIds(idList);
-        boolean isTenant = SecurityUtils.isAdminTenant();
+        boolean isTenant = SecurityUserUtils.isAdminTenant();
         Map<Long, SysModuleDto> moduleMap = moduleList.stream().filter(item -> isTenant || item.isNotCommon())
                 .collect(Collectors.toMap(SysModuleDto::getId, Function.identity()));
         for (int i = idList.size() - 1; i >= 0; i--)

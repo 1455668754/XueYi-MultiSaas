@@ -5,7 +5,7 @@ import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.utils.core.CollUtil;
-import com.xueyi.common.security.utils.SecurityUtils;
+import com.xueyi.common.security.utils.SecurityUserUtils;
 import com.xueyi.common.web.entity.domain.SlaveRelation;
 import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
@@ -64,8 +64,8 @@ public class SysModuleManagerImpl extends BaseManagerImpl<SysModuleQuery, SysMod
     @Override
     public List<SysModuleDto> getRoutes(Set<Long> roleIds) {
         // 超管用户 ? 租管租户 ? 查所有公共 + 所有私有模块 : 查权限内的公共 + 所有私有 : 根据拥有的角色查询权限
-        if (SecurityUtils.isAdminUser()) {
-            if (SecurityUtils.isAdminTenant()) {
+        if (SecurityUserUtils.isAdminUser()) {
+            if (SecurityUserUtils.isAdminTenant()) {
                 List<SysModulePo> moduleList = baseMapper.selectList(
                         Wrappers.<SysModulePo>query().lambda()
                                 .eq(SysModulePo::getStatus, BaseConstants.Status.NORMAL.getCode())
@@ -113,7 +113,7 @@ public class SysModuleManagerImpl extends BaseManagerImpl<SysModuleQuery, SysMod
     @Override
     public List<SysModuleDto> selectCommonList() {
         // 校验租管租户 ? 查询所有 : 查询租户-模块关联表,校验是否有数据 ? 查有关联权限的公共模块 : 返回空集合
-        if (SecurityUtils.isAdminTenant()) {
+        if (SecurityUserUtils.isAdminTenant()) {
             List<SysModulePo> moduleList = baseMapper.selectList(Wrappers.<SysModulePo>query().lambda()
                     .eq(SysModulePo::getIsCommon, DictConstants.DicCommonPrivate.COMMON.getCode())
                     .eq(SysModulePo::getStatus, BaseConstants.Status.NORMAL.getCode()));
@@ -137,7 +137,7 @@ public class SysModuleManagerImpl extends BaseManagerImpl<SysModuleQuery, SysMod
     @Override
     public List<SysModuleDto> selectTenantList() {
         // 校验租管租户 ? 查询所有 : 查询租户-模块关联表,校验是否有数据 ? 查有关联权限的公共模块与所有私有模块 : 查询所有私有模块
-        if (SecurityUtils.isAdminTenant()) {
+        if (SecurityUserUtils.isAdminTenant()) {
             List<SysModulePo> moduleList = baseMapper.selectList(Wrappers.<SysModulePo>query().lambda()
                     .eq(SysModulePo::getStatus, BaseConstants.Status.NORMAL.getCode()));
             return mapperDto(moduleList);

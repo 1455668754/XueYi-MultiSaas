@@ -8,7 +8,7 @@ import com.xueyi.common.core.utils.servlet.ServletUtil;
 import com.xueyi.common.core.web.model.BaseLoginUser;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.security.service.ITokenService;
-import com.xueyi.common.security.utils.base.BaseSecurityUtils;
+import com.xueyi.common.security.utils.SecurityUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
@@ -46,7 +46,7 @@ public class AuthenticationEventHandlerImpl implements AuthenticationSuccessHand
         Assert.notNull(loginUser, "loginUser cannot be null");
         // output login log
         logService.recordLoginInfo(loginUser, Constants.LOGIN_SUCCESS, "登录成功");
-        ITokenService tokenService = BaseSecurityUtils.getTokenService(loginUser.getAccountType().getCode());
+        ITokenService tokenService = SecurityUtils.getTokenService(loginUser.getAccountType().getCode());
         Assert.notNull(tokenService, "tokenService cannot be null");
         // 无状态 注意删除 context 上下文的信息
         SecurityContextHolder.clearContext();

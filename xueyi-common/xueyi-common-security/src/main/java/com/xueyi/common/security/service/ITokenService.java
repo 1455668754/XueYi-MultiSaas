@@ -14,7 +14,7 @@ import com.xueyi.common.core.utils.servlet.ServletUtil;
 import com.xueyi.common.core.web.model.BaseLoginUser;
 import com.xueyi.common.core.web.model.SysSource;
 import com.xueyi.common.redis.service.RedisService;
-import com.xueyi.common.security.utils.base.BaseSecurityUtils;
+import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.Ordered;
@@ -233,7 +233,7 @@ public interface ITokenService<User, LoginUser extends BaseLoginUser<User>> exte
      */
     default SysEnterpriseDto getEnterprise(HttpServletRequest request) {
         // 获取请求携带的令牌
-        String token = BaseSecurityUtils.getToken(request);
+        String token = SecurityUtils.getToken(request);
         return getEnterprise(token);
     }
 
@@ -267,7 +267,7 @@ public interface ITokenService<User, LoginUser extends BaseLoginUser<User>> exte
      */
     default User getUser(HttpServletRequest request) {
         // 获取请求携带的令牌
-        String token = BaseSecurityUtils.getToken(request);
+        String token = SecurityUtils.getToken(request);
         return getUser(token);
     }
 
@@ -301,7 +301,7 @@ public interface ITokenService<User, LoginUser extends BaseLoginUser<User>> exte
      */
     default LoginUser getLoginUser(HttpServletRequest request) {
         // 获取请求携带的令牌
-        String token = BaseSecurityUtils.getToken(request);
+        String token = SecurityUtils.getToken(request);
         return getLoginUser(token);
     }
 
@@ -349,7 +349,7 @@ public interface ITokenService<User, LoginUser extends BaseLoginUser<User>> exte
      */
     default SysSource getSource(HttpServletRequest request) {
         // 获取请求携带的令牌
-        String token = BaseSecurityUtils.getToken(request);
+        String token = SecurityUtils.getToken(request);
         return getSource(token);
     }
 
@@ -383,7 +383,7 @@ public interface ITokenService<User, LoginUser extends BaseLoginUser<User>> exte
      */
     default Long getExpireTime(HttpServletRequest request) {
         // 获取请求携带的令牌
-        return getExpireTime(BaseSecurityUtils.getToken(request));
+        return getExpireTime(SecurityUtils.getToken(request));
     }
 
     /**
@@ -427,7 +427,7 @@ public interface ITokenService<User, LoginUser extends BaseLoginUser<User>> exte
      * 刷新令牌有效期
      */
     default void refreshToken(HttpServletRequest request) {
-        refreshToken(BaseSecurityUtils.getToken(request));
+        refreshToken(SecurityUtils.getToken(request));
     }
 
     /**
@@ -447,7 +447,7 @@ public interface ITokenService<User, LoginUser extends BaseLoginUser<User>> exte
      * @return UserKey
      */
     default String getUserKey() {
-        String token = BaseSecurityUtils.getToken(Objects.requireNonNull(ServletUtil.getRequest()));
+        String token = SecurityUtils.getToken(Objects.requireNonNull(ServletUtil.getRequest()));
         return StrUtil.isNotBlank(token) ? JwtUtil.getUserKey(token) : null;
     }
 
