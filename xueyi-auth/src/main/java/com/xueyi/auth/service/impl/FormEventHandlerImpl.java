@@ -12,7 +12,6 @@ import com.xueyi.common.core.utils.servlet.ServletUtil;
 import com.xueyi.common.core.web.model.BaseLoginUser;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.security.service.ITokenService;
-import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.security.utils.base.BaseSecurityUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -73,7 +72,7 @@ public class FormEventHandlerImpl implements ApplicationListener<LogoutSuccessEv
     @Override
     @SneakyThrows
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-        String token = SecurityUtils.getToken(request);
+        String token = BaseSecurityUtils.getToken(request);
         if (StrUtil.isNotEmpty(token)) {
             String accountType = JwtUtil.getAccountType(token);
             String userKey = JwtUtil.getUserKey(token);

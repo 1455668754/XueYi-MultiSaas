@@ -6,9 +6,16 @@ import com.xueyi.common.core.constant.basic.TenantConstants;
 import com.xueyi.common.core.utils.core.ArrayUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
-import com.xueyi.common.security.utils.SecurityUtils;
+import com.xueyi.common.security.utils.base.BaseSecurityUtils;
 import com.xueyi.common.web.config.properties.TenantProperties;
-import net.sf.jsqlparser.expression.*;
+import net.sf.jsqlparser.expression.BinaryExpression;
+import net.sf.jsqlparser.expression.CaseExpression;
+import net.sf.jsqlparser.expression.Expression;
+import net.sf.jsqlparser.expression.HexValue;
+import net.sf.jsqlparser.expression.LongValue;
+import net.sf.jsqlparser.expression.Parenthesis;
+import net.sf.jsqlparser.expression.StringValue;
+import net.sf.jsqlparser.expression.WhenClause;
 import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
 import net.sf.jsqlparser.expression.operators.conditional.OrExpression;
 import net.sf.jsqlparser.expression.operators.relational.EqualsTo;
@@ -63,7 +70,7 @@ public interface BasicLineHandler {
      */
     default MultipleExpression getCommonTenantId() {
         List<Expression> childList = new ArrayList<>();
-        if (SecurityUtils.isNotEmptyTenant())
+        if (BaseSecurityUtils.isNotEmptyTenant())
             childList.add(new LongValue(BaseConstants.COMMON_ID));
         childList.add(getTenantId());
         return new MultipleExpression(childList) {
@@ -116,7 +123,7 @@ public interface BasicLineHandler {
      * @return 结果
      */
     default boolean isLessor() {
-        return SecurityUtils.isAdminTenant();
+        return BaseSecurityUtils.isAdminTenant();
     }
 
     /**

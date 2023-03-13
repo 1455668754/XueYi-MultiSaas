@@ -2,7 +2,7 @@ package com.xueyi.common.web.handler;
 
 import com.xueyi.common.core.constant.basic.TenantConstants;
 import com.xueyi.common.core.utils.core.ObjectUtil;
-import com.xueyi.common.security.utils.SecurityUtils;
+import com.xueyi.common.security.utils.base.BaseSecurityUtils;
 import com.xueyi.common.web.annotation.TenantIgnore;
 import com.xueyi.common.web.handler.basic.BasicLineHandler;
 import net.sf.jsqlparser.expression.Expression;
@@ -60,7 +60,7 @@ public class TenantLineHandler implements BasicLineHandler {
      * @return 租户值
      */
     public Expression getTenantId() {
-        return new LongValue(SecurityUtils.getEnterpriseId());
+        return new LongValue(BaseSecurityUtils.getEnterpriseId());
     }
 
     /**

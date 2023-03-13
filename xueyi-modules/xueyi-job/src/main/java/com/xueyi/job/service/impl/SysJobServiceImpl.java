@@ -6,7 +6,7 @@ import com.xueyi.common.core.constant.job.ScheduleConstants;
 import com.xueyi.common.core.exception.job.TaskException;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.datascope.annotation.DataScope;
-import com.xueyi.common.security.utils.SecurityUtils;
+import com.xueyi.common.security.utils.base.BaseSecurityUtils;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.job.api.domain.dto.SysJobDto;
 import com.xueyi.job.api.domain.query.SysJobQuery;
@@ -131,7 +131,7 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobQuery, SysJobDto, S
      * @param job 任务对象
      */
     private void initInvokeTenant(SysJobDto job) {
-        job.setInvokeTenant(SecurityUtils.getEnterpriseId() + "L, '" + SecurityUtils.getIsLessor() + "', '" + SecurityUtils.getSourceName() + "'");
+        job.setInvokeTenant(BaseSecurityUtils.getEnterpriseId() + "L, '" + BaseSecurityUtils.getIsLessor() + "', '" + BaseSecurityUtils.getSourceName() + "'");
     }
 
     /**
