@@ -86,7 +86,6 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
-            <version>${spring-doc.version}</version>
         </dependency>
 
     </dependencies>

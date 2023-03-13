@@ -27,7 +27,6 @@
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
-            <version>${dynamic-ds.version}</version>
         </dependency>
 
         <!-- XueYi Common Security -->
