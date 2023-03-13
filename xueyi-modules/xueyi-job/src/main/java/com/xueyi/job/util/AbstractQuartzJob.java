@@ -62,7 +62,7 @@ public abstract class AbstractQuartzJob implements Job {
      * 执行后
      *
      * @param context 工作执行上下文对象
-     * @param job  系统计划任务
+     * @param job     系统计划任务
      */
     protected void after(JobExecutionContext context, SysJobDto job, Exception e) {
         LocalDateTime startTime = threadLocal.get();
@@ -76,7 +76,7 @@ public abstract class AbstractQuartzJob implements Job {
         jobLog.setInvokeTenant(job.getInvokeTenant());
         jobLog.setStartTime(startTime);
         jobLog.setStopTime(LocalDateTime.now());
-        Duration between = LocalDateTimeUtil.between(jobLog.getStopTime(), jobLog.getStartTime());
+        Duration between = LocalDateTimeUtil.between(jobLog.getStartTime(), jobLog.getStopTime());
         jobLog.setJobMessage(jobLog.getName() + " 总共耗时：" + between.toMillis() + "毫秒");
         if (e != null) {
             jobLog.setStatus(DictConstants.DicStatus.FAIL.getCode());
