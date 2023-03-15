@@ -68,39 +68,67 @@ public class AuthFilter implements WebFilter {
             return unauthorizedResponse(exchange, chain, isWhites, "登录状态已过期");
         }
 
+        String enterpriseId = JwtUtil.getEnterpriseId(claims);
+        String enterpriseName = JwtUtil.getEnterpriseName(claims);
+        String isLessor = JwtUtil.getIsLessor(claims);
+        String sourceName = JwtUtil.getSourceName(claims);
+
+        if (StrUtil.hasBlank(enterpriseId, enterpriseName, isLessor, sourceName)) {
+            return unauthorizedResponse(exchange, chain, isWhites, "令牌验证失败");
+        }
+
         switch (accountType) {
-            case ADMIN, MEMBER -> {
-                String enterpriseId = JwtUtil.getEnterpriseId(claims);
-                String enterpriseName = JwtUtil.getEnterpriseName(claims);
-                String isLessor = JwtUtil.getIsLessor(claims);
+            case ADMIN -> {
                 String userId = JwtUtil.getUserId(claims);
                 String userName = JwtUtil.getUserName(claims);
                 String nickName = JwtUtil.getNickName(claims);
                 String userType = JwtUtil.getUserType(claims);
-                String sourceName = JwtUtil.getSourceName(claims);
 
-                if (StrUtil.hasBlank(enterpriseId, enterpriseName, isLessor, userId, userName, userType, sourceName)) {
+                if (StrUtil.hasBlank(userId, userName, userType)) {
                     return unauthorizedResponse(exchange, chain, isWhites, "令牌验证失败");
                 }
 
-                // 设置用户信息到请求
-                ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.ENTERPRISE_ID.getCode(), enterpriseId);
-                ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.ENTERPRISE_NAME.getCode(), enterpriseName);
-                ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.IS_LESSOR.getCode(), isLessor);
                 ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.USER_ID.getCode(), userId);
                 ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.USER_NAME.getCode(), userName);
                 ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.NICK_NAME.getCode(), nickName);
                 ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.USER_TYPE.getCode(), userType);
-                ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.SOURCE_NAME.getCode(), sourceName);
-                ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.ACCESS_TOKEN.getCode(), accessTokenPrefix);
-                ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.REFRESH_TOKEN.getCode(), userKey);
-                ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.USER_KEY.getCode(), userKey);
-                ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode(), accountType.getCode());
+            }
+            case MEMBER -> {
+                String userId = JwtUtil.getUserId(claims);
+                String userName = JwtUtil.getUserName(claims);
+                String nickName = JwtUtil.getNickName(claims);
+
+                if (StrUtil.hasBlank(userId, userName)) {
+                    return unauthorizedResponse(exchange, chain, isWhites, "令牌验证失败");
+                }
+
+                ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.USER_ID.getCode(), userId);
+                ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.USER_NAME.getCode(), userName);
+                ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.NICK_NAME.getCode(), nickName);
+            }
+            case PLATFORM -> {
+                String appId = JwtUtil.getAppId(claims);
+
+                if (StrUtil.hasBlank(appId)) {
+                    return unauthorizedResponse(exchange, chain, isWhites, "令牌验证失败");
+                }
+
+                ServletUtil.addHeader(mutate, SecurityConstants.PlatformSecurity.APP_ID.getCode(), appId);
             }
             default -> {
                 return unauthorizedResponse(exchange, chain, isWhites, "令牌验证失败");
             }
         }
+
+        // 设置用户信息到请求
+        ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.ENTERPRISE_ID.getCode(), enterpriseId);
+        ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.ENTERPRISE_NAME.getCode(), enterpriseName);
+        ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode(), accountType.getCode());
+        ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.IS_LESSOR.getCode(), isLessor);
+        ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.SOURCE_NAME.getCode(), sourceName);
+        ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.ACCESS_TOKEN.getCode(), accessTokenPrefix);
+        ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.REFRESH_TOKEN.getCode(), userKey);
+        ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.USER_KEY.getCode(), userKey);
 
         // 内部请求来源参数清除
         ServletUtil.removeHeader(mutate, SecurityConstants.BaseSecurity.FROM_SOURCE.getCode());

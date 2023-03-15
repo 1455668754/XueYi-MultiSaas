@@ -255,6 +255,27 @@ public class JwtUtil {
     }
 
     /**
+     * 根据令牌获取平台应用Id
+     *
+     * @param token 令牌
+     * @return 平台应用Id
+     */
+    public static String getAppId(String token) {
+        Claims claims = parseToken(token);
+        return getAppId(claims);
+    }
+
+    /**
+     * 根据令牌获取平台应用Id
+     *
+     * @param claims 身份信息
+     * @return 平台应用Id
+     */
+    public static String getAppId(Claims claims) {
+        return getValue(claims, SecurityConstants.PlatformSecurity.APP_ID.getCode());
+    }
+
+    /**
      * 根据令牌获取访问令牌
      *
      * @param token 令牌
