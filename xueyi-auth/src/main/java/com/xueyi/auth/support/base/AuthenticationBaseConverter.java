@@ -1,9 +1,9 @@
 package com.xueyi.auth.support.base;
 
-import cn.hutool.extra.spring.SpringUtil;
 import com.xueyi.auth.login.base.IUserDetailsService;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.utils.core.NumberUtil;
+import com.xueyi.common.core.utils.core.SpringUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.utils.servlet.ServletUtil;
 import jakarta.servlet.http.HttpServletRequest;

@@ -89,8 +89,8 @@ public class SecurityConstants {
         AUTHORIZATION_CODE("authorization_code", "授权码模式"),
         CLIENT_CREDENTIALS("client_credentials", "客户端模式"),
         PASSWORD("password", "密码模式"),
-        WECHAT_ACCOUNT("wechat_mp", "微信公众号"),
-        WECHAT_APPLET("wechat_ma", "微信小程序"),
+        WECHAT_MP("wechat_mp", "微信公众号模式"),
+        WECHAT_MA("wechat_ma", "微信小程序模式"),
         REFRESH_TOKEN("refresh_token", "刷新模式");
 
         private final String code;
@@ -143,10 +143,41 @@ public class SecurityConstants {
         }
     }
 
-    /** 登陆参数 */
+    /** 后台账户 - 登陆参数 */
     @Getter
     @AllArgsConstructor
     public enum LoginParam {
+
+        ENTERPRISE_NAME("enterpriseName", "企业账号"),
+        USER_NAME("userName", "用户账号"),
+        PASSWORD("password", "用户密码");
+
+        private final String code;
+        private final String info;
+
+    }
+
+    /** 会员账户 - 登陆参数 */
+    @Getter
+    @AllArgsConstructor
+    public enum LoginMemberParam {
+
+        CODE("code", "code"),
+        SIGNATURE("signature", "signature"),
+        SESSION_KEY("sessionKey", "完整用户信息的加密数据"),
+        ENCRYPTED_DATA("encryptedData", "完整用户信息的加密数据"),
+        iv("iv", "加密算法的初始向量"),
+        ENTERPRISE_ID("enterpriseId", "企业Id");
+
+        private final String code;
+        private final String info;
+
+    }
+
+    /** 平台账户 - 登陆参数 */
+    @Getter
+    @AllArgsConstructor
+    public enum LoginPlatformParam {
 
         ENTERPRISE_NAME("enterpriseName", "企业账号"),
         USER_NAME("userName", "用户账号"),

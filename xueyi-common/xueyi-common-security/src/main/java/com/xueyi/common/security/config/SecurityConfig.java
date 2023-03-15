@@ -1,6 +1,6 @@
 package com.xueyi.common.security.config;
 
-import cn.hutool.core.util.ArrayUtil;
+import com.xueyi.common.core.utils.core.ArrayUtil;
 import com.xueyi.common.security.config.properties.PermitAllUrlProperties;
 import com.xueyi.common.security.handler.BearerTokenHandler;
 import com.xueyi.common.security.handler.ResourceAuthenticationHandler;

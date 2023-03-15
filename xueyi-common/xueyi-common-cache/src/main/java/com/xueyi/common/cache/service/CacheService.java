@@ -1,10 +1,10 @@
 package com.xueyi.common.cache.service;
 
 import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.util.ObjectUtil;
 import com.xueyi.common.core.constant.basic.CacheConstants;
 import com.xueyi.common.core.exception.UtilException;
 import com.xueyi.common.core.utils.core.CollUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.SpringUtil;
 import com.xueyi.common.redis.service.RedisService;
 import com.xueyi.system.api.dict.feign.RemoteConfigService;

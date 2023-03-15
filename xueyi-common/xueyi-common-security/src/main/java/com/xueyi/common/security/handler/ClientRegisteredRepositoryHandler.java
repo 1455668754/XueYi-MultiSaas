@@ -1,9 +1,9 @@
 package com.xueyi.common.security.handler;
 
-import cn.hutool.core.util.BooleanUtil;
-import cn.hutool.core.util.StrUtil;
 import com.xueyi.common.core.constant.basic.CacheConstants;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
+import com.xueyi.common.core.utils.core.BooleanUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.result.R;
 import com.xueyi.system.api.authority.domain.dto.SysClientDto;
 import com.xueyi.system.api.authority.feign.RemoteClientService;

@@ -181,5 +181,4 @@ public class StrUtil extends cn.hutool.core.util.StrUtil implements StrPool {
                 return true;
         return false;
     }
-
 }

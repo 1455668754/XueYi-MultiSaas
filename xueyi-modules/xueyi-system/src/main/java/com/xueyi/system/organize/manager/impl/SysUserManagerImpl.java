@@ -329,11 +329,11 @@ public class SysUserManagerImpl extends BaseManagerImpl<SysUserQuery, SysUserDto
     protected LambdaQueryWrapper<SysUserPo> selectListQuery(SysUserQuery query) {
         return Wrappers.<SysUserPo>query(query).lambda()
                 .func(i -> {
-                    if (cn.hutool.core.util.ObjectUtil.isNotNull(query.getPostId()))
+                    if (ObjectUtil.isNotNull(query.getPostId()))
                         i.apply("id in ( select user_id from sys_user_post_merge where post_id = {0} )", query.getPostId());
                 })
                 .func(i -> {
-                    if (cn.hutool.core.util.ObjectUtil.isNotNull(query.getDeptId())) {
+                    if (ObjectUtil.isNotNull(query.getDeptId())) {
                         i.apply("id in ( select upm.user_id from sys_user_post_merge upm " +
                                 "left join sys_post p on upm.post_id = p.id where p.dept_id = {0} )", query.getDeptId());
                     }

@@ -18,5 +18,4 @@ public class TypeUtil extends cn.hutool.core.util.TypeUtil {
     public static <T> Class<T> getClazz(Type type, int index) {
         return (Class<T>)TypeUtil.getTypeArgument(type, index);
     }
-
 }

@@ -1,13 +1,13 @@
 package com.xueyi.auth.service.impl;
 
-import cn.hutool.core.util.CharsetUtil;
-import cn.hutool.http.HttpUtil;
 import com.xueyi.auth.service.ISysLogService;
 import com.xueyi.common.core.constant.basic.Constants;
 import com.xueyi.common.core.utils.JwtUtil;
+import com.xueyi.common.core.utils.core.CharsetUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.SpringUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
+import com.xueyi.common.core.utils.http.HttpUtil;
 import com.xueyi.common.core.utils.servlet.ServletUtil;
 import com.xueyi.common.core.web.model.BaseLoginUser;
 import com.xueyi.common.core.web.result.AjaxResult;
