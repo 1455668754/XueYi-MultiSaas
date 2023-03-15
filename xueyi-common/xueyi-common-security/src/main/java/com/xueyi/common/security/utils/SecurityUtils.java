@@ -193,6 +193,22 @@ public class SecurityUtils {
     }
 
     /**
+     * 校验是否已登录
+     *
+     * @return 结果
+     */
+    public static boolean hasLogin() {
+        try {
+            String accountType = getAccountTypeStr();
+            if (StrUtil.isBlank(accountType))
+                return false;
+            return getTokenService(accountType).hasLogin();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
      * 裁剪token前缀
      */
     public static String replaceTokenPrefix(String token) {

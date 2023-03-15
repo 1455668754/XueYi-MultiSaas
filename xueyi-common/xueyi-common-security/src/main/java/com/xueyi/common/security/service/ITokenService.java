@@ -461,4 +461,17 @@ public interface ITokenService<User, LoginUser extends BaseLoginUser<User>> exte
         return loginTime + getRefreshExpireTime();
     }
 
+    /**
+     * 校验是否已登录
+     *
+     * @return 结果
+     */
+    default boolean hasLogin() {
+        try {
+            String token = SecurityUtils.getToken(Objects.requireNonNull(ServletUtil.getRequest()));
+            return getRedisService().hasKey(JwtUtil.getUserKey(token));
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
