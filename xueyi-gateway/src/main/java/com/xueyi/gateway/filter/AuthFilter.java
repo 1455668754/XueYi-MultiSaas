@@ -39,34 +39,33 @@ public class AuthFilter implements WebFilter {
         ServerHttpRequest.Builder mutate = request.mutate();
         String url = request.getURI().getPath();
 
-        if (StrUtil.matches(url, ignoreWhite.getWhites())) {
-            return chain.filter(exchange);
-        }
+        boolean isWhites = StrUtil.matches(url, ignoreWhite.getWhites());
+
         String token = ServletUtil.getToken(request);
         if (StrUtil.isEmpty(token)) {
-            return ServletUtil.unauthorizedResponse(exchange, "令牌不能为空");
+            return unauthorizedResponse(exchange, chain, isWhites, "令牌不能为空");
         }
         Claims claims = JwtUtil.parseToken(token);
         if (ObjectUtil.isNull(claims)) {
-            return ServletUtil.unauthorizedResponse(exchange, "令牌已过期或验证不正确");
+            return unauthorizedResponse(exchange, chain, isWhites, "令牌已过期或验证不正确");
         }
         String accessTokenPrefix = JwtUtil.getAccessKey(claims);
         if (StrUtil.isBlank(accessTokenPrefix) || !StrUtil.startWith(accessTokenPrefix, TokenConstants.PREFIX)) {
-            return ServletUtil.unauthorizedResponse(exchange, "令牌已过期或验证不正确");
+            return unauthorizedResponse(exchange, chain, isWhites, "令牌已过期或验证不正确");
         }
         String accessToken = StrUtil.replaceFirst(accessTokenPrefix, TokenConstants.PREFIX, StrUtil.EMPTY);
         String userKey = JwtUtil.getUserKey(claims);
         if (StrUtil.isBlank(userKey)) {
-            return ServletUtil.unauthorizedResponse(exchange, "令牌已过期或验证不正确");
+            return unauthorizedResponse(exchange, chain, isWhites, "令牌已过期或验证不正确");
         }
         SecurityConstants.AccountType accountType = SecurityConstants.AccountType.getByCodeElseNull(JwtUtil.getAccountType(claims));
         if (ObjectUtil.isNull(accountType)) {
-            return ServletUtil.unauthorizedResponse(exchange, "令牌已过期或验证不正确");
+            return unauthorizedResponse(exchange, chain, isWhites, "令牌已过期或验证不正确");
         }
 
         boolean hasLogin = redisService.hasKey(accessToken) && redisService.hasKey(userKey);
         if (!hasLogin) {
-            return ServletUtil.unauthorizedResponse(exchange, "登录状态已过期");
+            return unauthorizedResponse(exchange, chain, isWhites, "登录状态已过期");
         }
 
         switch (accountType) {
@@ -81,7 +80,7 @@ public class AuthFilter implements WebFilter {
                 String sourceName = JwtUtil.getSourceName(claims);
 
                 if (StrUtil.hasBlank(enterpriseId, enterpriseName, isLessor, userId, userName, userType, sourceName)) {
-                    return ServletUtil.unauthorizedResponse(exchange, "令牌验证失败");
+                    return unauthorizedResponse(exchange, chain, isWhites, "令牌验证失败");
                 }
 
                 // 设置用户信息到请求
@@ -99,7 +98,7 @@ public class AuthFilter implements WebFilter {
                 ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode(), accountType.getCode());
             }
             default -> {
-                return ServletUtil.unauthorizedResponse(exchange, "令牌验证失败");
+                return unauthorizedResponse(exchange, chain, isWhites, "令牌验证失败");
             }
         }
 
@@ -108,4 +107,7 @@ public class AuthFilter implements WebFilter {
         return chain.filter(exchange);
     }
 
+    private Mono<Void> unauthorizedResponse(ServerWebExchange exchange, WebFilterChain chain, boolean isWhites, String msg) {
+        return isWhites ? chain.filter(exchange) : ServletUtil.unauthorizedResponse(exchange, msg);
+    }
 }
