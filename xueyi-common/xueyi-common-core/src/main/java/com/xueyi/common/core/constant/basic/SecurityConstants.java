@@ -167,7 +167,7 @@ public class SecurityConstants {
         SESSION_KEY("sessionKey", "完整用户信息的加密数据"),
         ENCRYPTED_DATA("encryptedData", "完整用户信息的加密数据"),
         iv("iv", "加密算法的初始向量"),
-        ENTERPRISE_ID("enterpriseId", "企业Id");
+        SECRET("secret", "平台账户Token");
 
         private final String code;
         private final String info;

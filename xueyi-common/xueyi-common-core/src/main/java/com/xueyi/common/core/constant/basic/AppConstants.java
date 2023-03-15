@@ -16,8 +16,8 @@ public class AppConstants {
     @AllArgsConstructor
     public enum AppType {
 
-        WECHAT_ACCOUNT("0", "微信公众号"),
-        WECHAT_APPLET("1", "微信小程序"),
+        WECHAT_MP("0", "微信公众号"),
+        WECHAT_MA("1", "微信小程序"),
         SMS("2", "短信"),
         EMAIL("3", "邮件"),
         DING_DING("4", "钉钉"),

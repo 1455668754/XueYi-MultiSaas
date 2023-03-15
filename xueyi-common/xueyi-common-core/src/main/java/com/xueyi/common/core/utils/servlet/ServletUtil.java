@@ -52,6 +52,13 @@ public class ServletUtil {
      */
     public static String getToken(ServerHttpRequest request) {
         String token = request.getHeaders().getFirst(TokenConstants.AUTHENTICATION);
+        return getToken(token);
+    }
+
+    /**
+     * 获取请求token
+     */
+    public static String getToken(String token) {
         if (StrUtil.isNotEmpty(token) && StrUtil.startWith(token, TokenConstants.PREFIX)) {
             token = StrUtil.replaceFirst(token, TokenConstants.PREFIX, StrUtil.EMPTY);
         }
