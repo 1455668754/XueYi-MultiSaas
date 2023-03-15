@@ -2,7 +2,6 @@ package com.xueyi.common.security.service;
 
 import com.xueyi.common.core.constant.basic.CacheConstants;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
-import com.xueyi.common.core.constant.basic.TenantConstants;
 import com.xueyi.common.core.utils.JwtUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
@@ -39,7 +38,7 @@ public class TokenUserService implements ITokenService<SysUserDto, LoginUser> {
      */
     @Override
     public boolean support(String accountType) {
-        return StrUtil.equals(TenantConstants.AccountType.ADMIN.getCode(), accountType);
+        return StrUtil.equals(SecurityConstants.AccountType.ADMIN.getCode(), accountType);
     }
 
     /**

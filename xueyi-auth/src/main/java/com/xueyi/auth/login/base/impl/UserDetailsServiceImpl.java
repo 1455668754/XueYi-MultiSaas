@@ -1,22 +1,29 @@
-package com.xueyi.auth.service.impl;
+package com.xueyi.auth.login.base.impl;
 
+import com.xueyi.auth.login.base.IUserDetailsService;
 import com.xueyi.auth.service.ISysLogService;
-import com.xueyi.auth.service.IUserDetailsService;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.Constants;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
+import com.xueyi.common.core.utils.core.ConvertUtil;
+import com.xueyi.common.core.utils.core.MapUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.result.R;
 import com.xueyi.system.api.authority.feign.RemoteLoginService;
 import com.xueyi.system.api.model.LoginUser;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- * 登录验证
+ * 登录验证 | 密码模式
  *
  * @author xueyi
  */
@@ -30,6 +37,38 @@ public class UserDetailsServiceImpl implements IUserDetailsService {
     private RemoteLoginService remoteLoginService;
 
     /**
+     * 是否支持此客户端校验
+     *
+     * @param clientId    目标客户端
+     * @param grantType   授权类型
+     * @param accountType 账户类型
+     * @return 结果
+     */
+    @Override
+    public boolean support(String clientId, String grantType, String accountType) {
+        return StrUtil.equals(SecurityConstants.GrantType.PASSWORD.getCode(), grantType) && StrUtil.equals(SecurityConstants.AccountType.ADMIN.getCode(), grantType);
+    }
+
+    /**
+     * 登录验证
+     *
+     * @param principal 登录信息
+     * @return 用户信息
+     */
+    @Override
+    @SneakyThrows
+    public UserDetails loadUser(Object principal) {
+        Map<String, String> loginMap = ConvertUtil.toMap(String.class, String.class, principal);
+        if (MapUtil.isEmpty(loginMap)) {
+            loginMap = new HashMap<>();
+        }
+        String enterpriseName = loginMap.get(SecurityConstants.BaseSecurity.ENTERPRISE_NAME.getCode());
+        String userName = loginMap.get(SecurityConstants.BaseSecurity.USER_NAME.getCode());
+        String password = loginMap.get(SecurityConstants.BaseSecurity.PASSWORD.getCode());
+        return loadUser(enterpriseName, userName, password);
+    }
+
+    /**
      * 登录验证
      *
      * @param enterpriseName 企业名称
@@ -37,7 +76,6 @@ public class UserDetailsServiceImpl implements IUserDetailsService {
      * @param password       密码
      * @return 用户信息
      */
-    @Override
     @SneakyThrows
     public LoginUser loadUser(String enterpriseName, String userName, String password) {
         // 查询登录信息

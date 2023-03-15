@@ -3,8 +3,7 @@ package com.xueyi.auth.support.password;
 import com.xueyi.auth.support.base.AuthenticationBaseProvider;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.utils.core.CollUtil;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -23,9 +22,8 @@ import java.util.Map;
  *
  * @author xueyi
  */
+@Slf4j
 public class AuthenticationPasswordProvider extends AuthenticationBaseProvider<AuthenticationPasswordToken> {
-
-    private static final Logger LOGGER = LogManager.getLogger(AuthenticationPasswordProvider.class);
 
     public AuthenticationPasswordProvider(AuthenticationManager authenticationManager, OAuth2AuthorizationService authorizationService, OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator) {
         super(authenticationManager, authorizationService, tokenGenerator);
@@ -46,7 +44,7 @@ public class AuthenticationPasswordProvider extends AuthenticationBaseProvider<A
     @Override
     public boolean supports(Class<?> authentication) {
         boolean supports = AuthenticationPasswordToken.class.isAssignableFrom(authentication);
-        LOGGER.debug("supports authentication=" + authentication + " returning " + supports);
+        log.debug("supports authentication=" + authentication + " returning " + supports);
         return supports;
     }
 

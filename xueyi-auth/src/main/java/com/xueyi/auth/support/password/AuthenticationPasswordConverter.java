@@ -3,8 +3,8 @@ package com.xueyi.auth.support.password;
 import com.xueyi.auth.service.ISysLogService;
 import com.xueyi.auth.support.base.AuthenticationBaseConverter;
 import com.xueyi.common.core.constant.basic.Constants;
+import com.xueyi.common.core.constant.basic.SecurityConstants.GrantType;
 import com.xueyi.common.core.constant.basic.SecurityConstants.LoginParam;
-import com.xueyi.common.core.constant.basic.SecurityConstants.OauthType;
 import com.xueyi.common.core.constant.system.OrganizeConstants;
 import com.xueyi.common.core.utils.core.SpringUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
@@ -32,7 +32,7 @@ public class AuthenticationPasswordConverter extends AuthenticationBaseConverter
      */
     @Override
     public boolean support(String grantType) {
-        return StrUtil.equals(OauthType.PASSWORD.getCode(), grantType);
+        return StrUtil.equals(GrantType.PASSWORD.getCode(), grantType);
     }
 
     /**

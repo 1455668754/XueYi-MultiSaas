@@ -18,7 +18,7 @@ public class CustomTokenCustomizer implements OAuth2TokenCustomizer<OAuth2TokenC
         String clientId = context.getAuthorizationGrant().getName();
         claims.claim(SecurityConstants.BaseSecurity.CLIENT_ID.getCode(), clientId);
         // 客户端模式不返回具体用户信息
-        if (SecurityConstants.OauthType.isClient(context.getAuthorizationGrantType().getValue()))
+        if (SecurityConstants.GrantType.isClient(context.getAuthorizationGrantType().getValue()))
             return;
 
         Object loginUser = context.getPrincipal().getPrincipal();

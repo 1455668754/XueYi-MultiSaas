@@ -1,6 +1,6 @@
 package com.xueyi.common.core.web.model;
 
-import com.xueyi.common.core.constant.basic.TenantConstants;
+import com.xueyi.common.core.constant.basic.SecurityConstants;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -77,7 +77,7 @@ public class BaseLoginUser<User> implements UserDetails, OAuth2AuthenticatedPrin
     protected User user;
 
     /** 账户类型 */
-    protected TenantConstants.AccountType accountType;
+    protected SecurityConstants.AccountType accountType;
 
     private Set<GrantedAuthority> authorities;
 

@@ -1,7 +1,6 @@
 package com.xueyi.common.security.utils;
 
 import com.xueyi.common.core.constant.basic.SecurityConstants;
-import com.xueyi.common.core.constant.basic.TenantConstants;
 import com.xueyi.common.core.constant.basic.TokenConstants;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.core.context.SecurityContextHolder;
@@ -107,8 +106,8 @@ public class SecurityUtils {
     /**
      * 获取账户类型 枚举
      */
-    public static TenantConstants.AccountType getAccountType() {
-        return TenantConstants.AccountType.getByCodeElseNull(SecurityContextHolder.getAccountType());
+    public static SecurityConstants.AccountType getAccountType() {
+        return SecurityConstants.AccountType.getByCodeElseNull(SecurityContextHolder.getAccountType());
     }
 
     /**

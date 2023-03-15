@@ -1,7 +1,5 @@
 package com.xueyi.common.core.constant.basic;
 
-import com.xueyi.common.core.utils.core.EnumUtil;
-import com.xueyi.common.core.utils.core.StrUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -57,45 +55,4 @@ public class TenantConstants {
         private final String info;
 
     }
-
-    /** 账户类型 */
-    @Getter
-    @AllArgsConstructor
-    public enum AccountType {
-
-        ADMIN("admin", "后台账户"),
-        MEMBER("member", "会员账户");
-
-        private final String code;
-        private final String info;
-
-        public static AccountType getByCode(String code) {
-            return EnumUtil.getByCode(AccountType.class, code);
-        }
-
-        public static AccountType getByCodeElseNull(String code) {
-            return EnumUtil.getByCodeElseNull(AccountType.class, code);
-        }
-
-        /** 管理端用户 */
-        public static boolean isAdmin(String code) {
-            return StrUtil.equals(code, ADMIN.code);
-        }
-
-        /** 管理端用户 */
-        public boolean isAdmin() {
-            return StrUtil.equals(code, ADMIN.code);
-        }
-
-        /** 会员端用户 */
-        public static boolean isMember(String code) {
-            return StrUtil.equals(code, MEMBER.code);
-        }
-
-        /** 会员端用户 */
-        public boolean isMember() {
-            return StrUtil.equals(code, MEMBER.code);
-        }
-    }
-
 }

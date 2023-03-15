@@ -1,6 +1,6 @@
 package com.xueyi.system.api.model;
 
-import com.xueyi.common.core.constant.basic.TenantConstants;
+import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.web.model.BaseLoginUser;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
 import lombok.Data;
@@ -28,7 +28,7 @@ public class LoginUser extends BaseLoginUser<SysUserDto> {
     private Map<String, String> routeURL;
 
     /** 账户类型 */
-    private TenantConstants.AccountType accountType = TenantConstants.AccountType.ADMIN;
+    private SecurityConstants.AccountType accountType = SecurityConstants.AccountType.ADMIN;
 
     /** 初始化权限范围 */
     public DataScope getDataScope() {

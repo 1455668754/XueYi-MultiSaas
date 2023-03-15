@@ -1,7 +1,6 @@
 package com.xueyi.gateway.filter;
 
 import com.xueyi.common.core.constant.basic.SecurityConstants;
-import com.xueyi.common.core.constant.basic.TenantConstants.AccountType;
 import com.xueyi.common.core.constant.basic.TokenConstants;
 import com.xueyi.common.core.utils.JwtUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
@@ -60,7 +59,7 @@ public class AuthFilter implements WebFilter {
         if (StrUtil.isBlank(userKey)) {
             return ServletUtil.unauthorizedResponse(exchange, "令牌已过期或验证不正确");
         }
-        AccountType accountType = AccountType.getByCodeElseNull(JwtUtil.getAccountType(claims));
+        SecurityConstants.AccountType accountType = SecurityConstants.AccountType.getByCodeElseNull(JwtUtil.getAccountType(claims));
         if (ObjectUtil.isNull(accountType)) {
             return ServletUtil.unauthorizedResponse(exchange, "令牌已过期或验证不正确");
         }

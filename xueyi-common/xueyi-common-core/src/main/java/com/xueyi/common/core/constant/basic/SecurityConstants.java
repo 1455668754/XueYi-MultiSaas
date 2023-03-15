@@ -1,5 +1,6 @@
 package com.xueyi.common.core.constant.basic;
 
+import com.xueyi.common.core.utils.core.EnumUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -68,14 +69,28 @@ public class SecurityConstants {
     /** {noop} 加密的特征码 */
     public static final String NOOP = "{noop}";
 
+    /** oauth参数名称 */
+    @Getter
+    @AllArgsConstructor
+    public enum OAuth2ParameterNames {
+
+        GRANT_TYPE("grantType", "授权类型"),
+        ACCOUNT_TYPE("accountType", "账户类型");
+
+        private final String code;
+        private final String info;
+    }
+
     /** 认证模式 */
     @Getter
     @AllArgsConstructor
-    public enum OauthType {
+    public enum GrantType {
 
         AUTHORIZATION_CODE("authorization_code", "授权码模式"),
         CLIENT_CREDENTIALS("client_credentials", "客户端模式"),
         PASSWORD("password", "密码模式"),
+        WECHAT_ACCOUNT("wechat_mp", "微信公众号"),
+        WECHAT_APPLET("wechat_ma", "微信小程序"),
         REFRESH_TOKEN("refresh_token", "刷新模式");
 
         private final String code;
@@ -85,6 +100,47 @@ public class SecurityConstants {
             return StrUtil.equals(CLIENT_CREDENTIALS.code, code);
         }
 
+    }
+
+    /** 账户类型 */
+    @Getter
+    @AllArgsConstructor
+    public enum AccountType {
+
+        ADMIN("admin", "后台账户"),
+        MEMBER("member", "会员账户"),
+        PLATFORM("platform", "平台账户");
+
+        private final String code;
+        private final String info;
+
+        public static SecurityConstants.AccountType getByCode(String code) {
+            return EnumUtil.getByCode(SecurityConstants.AccountType.class, code);
+        }
+
+        public static SecurityConstants.AccountType getByCodeElseNull(String code) {
+            return EnumUtil.getByCodeElseNull(SecurityConstants.AccountType.class, code);
+        }
+
+        /** 管理端用户 */
+        public static boolean isAdmin(String code) {
+            return StrUtil.equals(code, ADMIN.code);
+        }
+
+        /** 管理端用户 */
+        public boolean isAdmin() {
+            return StrUtil.equals(code, ADMIN.code);
+        }
+
+        /** 会员端用户 */
+        public static boolean isMember(String code) {
+            return StrUtil.equals(code, MEMBER.code);
+        }
+
+        /** 会员端用户 */
+        public boolean isMember() {
+            return StrUtil.equals(code, MEMBER.code);
+        }
     }
 
     /** 登陆参数 */

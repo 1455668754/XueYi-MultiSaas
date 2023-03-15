@@ -1,5 +1,6 @@
 package com.xueyi.auth.support.base;
 
+import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.utils.core.NumberUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.utils.servlet.ServletUtil;
@@ -63,7 +64,7 @@ public abstract class AuthenticationBaseConverter<T extends AuthenticationBaseTo
     @Override
     public Authentication convert(HttpServletRequest request) {
         // 获取授权类型
-        String grantType = request.getParameter(OAuth2ParameterNames.GRANT_TYPE);
+        String grantType = request.getParameter(SecurityConstants.OAuth2ParameterNames.GRANT_TYPE.getCode());
         if (!support(grantType)) {
             return null;
         }
@@ -93,7 +94,7 @@ public abstract class AuthenticationBaseConverter<T extends AuthenticationBaseTo
 
         // 扩展信息
         Map<String, Object> additionalParameters = parameters.entrySet().stream()
-                .filter(e -> !e.getKey().equals(OAuth2ParameterNames.GRANT_TYPE) && !e.getKey().equals(OAuth2ParameterNames.SCOPE))
+                .filter(e -> !e.getKey().equals(SecurityConstants.OAuth2ParameterNames.GRANT_TYPE.getCode()) && !e.getKey().equals(OAuth2ParameterNames.SCOPE))
                 .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().get(0)));
 
         // 创建token

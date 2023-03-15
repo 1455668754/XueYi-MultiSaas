@@ -2,7 +2,8 @@ package com.xueyi.auth.handler;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
-import com.xueyi.auth.service.IUserDetailsService;
+import com.xueyi.auth.login.base.IUserDetailsService;
+import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.servlet.ServletUtil;
 import jakarta.servlet.http.HttpServletRequest;
@@ -70,7 +71,8 @@ public class AuthenticationProvider extends AbstractUserDetailsAuthenticationPro
         if (ObjectUtil.isNull(request))
             throw new InternalAuthenticationServiceException("web request is empty");
 
-        String grantType = request.getParameter(OAuth2ParameterNames.GRANT_TYPE);
+        String grantType = request.getParameter(SecurityConstants.OAuth2ParameterNames.GRANT_TYPE.getCode());
+        String accountType = request.getParameter(SecurityConstants.OAuth2ParameterNames.ACCOUNT_TYPE.getCode());
         String clientId = request.getParameter(OAuth2ParameterNames.CLIENT_ID);
 
         if (StrUtil.isBlank(clientId)) {
@@ -81,7 +83,7 @@ public class AuthenticationProvider extends AbstractUserDetailsAuthenticationPro
 
         String finalClientId = clientId;
         Optional<IUserDetailsService> optional = userDetailsServiceMap.values().stream()
-                .filter(service -> service.support(finalClientId, grantType))
+                .filter(service -> service.support(finalClientId, grantType, accountType))
                 .max(Comparator.comparingInt(Ordered::getOrder));
 
         if (optional.isEmpty()) {
