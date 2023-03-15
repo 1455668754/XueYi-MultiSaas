@@ -179,9 +179,8 @@ public class SecurityConstants {
     @AllArgsConstructor
     public enum LoginPlatformParam {
 
-        ENTERPRISE_NAME("enterpriseName", "企业账号"),
-        USER_NAME("userName", "用户账号"),
-        PASSWORD("password", "用户密码");
+        ENTERPRISE_ID("enterpriseId", "企业Id"),
+        APP_ID("appId", "应用Id");
 
         private final String code;
         private final String info;

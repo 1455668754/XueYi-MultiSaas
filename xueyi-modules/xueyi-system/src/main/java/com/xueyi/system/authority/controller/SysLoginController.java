@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 public class SysLoginController extends BasisController {
 
     @Autowired
-    ISysLoginService loginService;
+    private ISysLoginService loginService;
 
     /**
      * 获取登录信息 | 内部调用
@@ -78,12 +78,8 @@ public class SysLoginController extends BasisController {
         // 路由路径集合
         Map<String, String> routeMap = loginService.getMenuRouteMap(roleIds, user.getUserType());
         LoginUser loginUser = new LoginUser();
-        loginUser.setEnterprise(enterprise);
-        loginUser.setEnterpriseId(enterprise.getId());
-        loginUser.setEnterpriseName(enterprise.getName());
-        loginUser.setIsLessor(enterprise.getIsLessor());
-        loginUser.setSource(source);
-        loginUser.setSourceName(source.getMaster());
+        loginUser.initEnterprise(enterprise);
+        loginUser.initSource(source);
         loginUser.setUser(user);
         loginUser.setUserId(user.getId());
         loginUser.setUserName(user.getUserName());
