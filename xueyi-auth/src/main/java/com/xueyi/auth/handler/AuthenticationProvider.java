@@ -1,10 +1,10 @@
 package com.xueyi.auth.handler;
 
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.extra.spring.SpringUtil;
 import com.xueyi.auth.login.base.IUserDetailsService;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.utils.core.ObjectUtil;
+import com.xueyi.common.core.utils.core.SpringUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.utils.servlet.ServletUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Setter;
@@ -53,6 +53,9 @@ public class AuthenticationProvider extends AbstractUserDetailsAuthenticationPro
     /** 密码校验 */
     @Override
     protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
+        String grantType = ServletUtil.getParameter(SecurityConstants.OAuth2ParameterNames.GRANT_TYPE.getCode());
+        if (StrUtil.notEquals(SecurityConstants.GrantType.PASSWORD.getCode(), grantType))
+            return;
         if (authentication.getCredentials() == null) {
             this.logger.debug("Failed to authenticate since no credentials provided");
             throw new BadCredentialsException(this.messages
