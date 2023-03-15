@@ -1,15 +1,37 @@
 package com.xueyi.auth.support.base;
 
+import cn.hutool.extra.spring.SpringUtil;
+import com.xueyi.auth.login.base.IUserDetailsService;
+import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.error.OAuth2Constants;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
+import com.xueyi.common.core.utils.servlet.ServletUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.*;
+import org.springframework.core.Ordered;
+import org.springframework.security.authentication.AccountExpiredException;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.CredentialsExpiredException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
+import org.springframework.security.authentication.LockedException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.oauth2.core.*;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.ClaimAccessor;
+import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
+import org.springframework.security.oauth2.core.OAuth2AccessToken;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.OAuth2Error;
+import org.springframework.security.oauth2.core.OAuth2ErrorCodes;
+import org.springframework.security.oauth2.core.OAuth2RefreshToken;
+import org.springframework.security.oauth2.core.OAuth2Token;
 import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
@@ -24,9 +46,11 @@ import org.springframework.util.Assert;
 
 import java.security.Principal;
 import java.time.Instant;
+import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
 
@@ -63,7 +87,31 @@ public abstract class AuthenticationBaseProvider<T extends AuthenticationBaseTok
         this.refreshTokenGenerator = refreshTokenGenerator;
     }
 
-    public abstract UsernamePasswordAuthenticationToken buildToken(Map<String, Object> reqParameters);
+    /**
+     * 构建登录验证信息体
+     *
+     * @param reqParameters 请求参数
+     * @return 登录验证信息体
+     */
+    public UsernamePasswordAuthenticationToken buildToken(Map<String, Object> reqParameters) {
+        HttpServletRequest request = ServletUtil.getRequest();
+        if (ObjectUtil.isNull(request))
+            throw new InternalAuthenticationServiceException("web request is empty");
+
+        String grantType = request.getParameter(SecurityConstants.OAuth2ParameterNames.GRANT_TYPE.getCode());
+        String accountType = request.getParameter(SecurityConstants.OAuth2ParameterNames.ACCOUNT_TYPE.getCode());
+
+        Map<String, IUserDetailsService> userDetailsServiceMap = SpringUtil.getBeansOfType(IUserDetailsService.class);
+
+        Optional<IUserDetailsService> optional = userDetailsServiceMap.values().stream()
+                .filter(service -> service.support(grantType, accountType))
+                .max(Comparator.comparingInt(Ordered::getOrder));
+
+        if (optional.isEmpty()) {
+            throw new InternalAuthenticationServiceException("UserDetailsService error , not register");
+        }
+        return optional.get().buildToken(reqParameters);
+    }
 
     /**
      * 校验是否支持此令牌类型

@@ -7,6 +7,7 @@ import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.servlet.ServletUtil;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.Setter;
 import org.springframework.core.Ordered;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -40,6 +41,7 @@ public class AuthenticationProvider extends AbstractUserDetailsAuthenticationPro
 
     private volatile String userNotFoundEncodedPassword;
 
+    @Setter
     private UserDetailsPasswordService userDetailsPasswordService;
 
     private final static BasicAuthenticationConverter basicConvert = new BasicAuthenticationConverter();
@@ -135,10 +137,6 @@ public class AuthenticationProvider extends AbstractUserDetailsAuthenticationPro
         Assert.notNull(passwordEncoder, "passwordEncoder cannot be null");
         this.passwordEncoder = passwordEncoder;
         this.userNotFoundEncodedPassword = null;
-    }
-
-    public void setUserDetailsPasswordService(UserDetailsPasswordService userDetailsPasswordService) {
-        this.userDetailsPasswordService = userDetailsPasswordService;
     }
 }
 

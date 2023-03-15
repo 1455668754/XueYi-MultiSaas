@@ -74,8 +74,8 @@ public class SecurityConstants {
     @AllArgsConstructor
     public enum OAuth2ParameterNames {
 
-        GRANT_TYPE("grantType", "授权类型"),
-        ACCOUNT_TYPE("accountType", "账户类型");
+        GRANT_TYPE("grant_type", "授权类型"),
+        ACCOUNT_TYPE("account_type", "账户类型");
 
         private final String code;
         private final String info;

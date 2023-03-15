@@ -17,5 +17,4 @@ public class AuthenticationPasswordToken extends AuthenticationBaseToken {
     public AuthenticationPasswordToken(Authentication clientPrincipal, Set<String> scopes, Map<String, Object> additionalParameters) {
         super(SecurityConstants.GrantType.PASSWORD, clientPrincipal, scopes, additionalParameters);
     }
-
 }

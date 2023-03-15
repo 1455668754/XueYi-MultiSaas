@@ -1,10 +1,14 @@
 package com.xueyi.auth.support.base;
 
+import cn.hutool.extra.spring.SpringUtil;
+import com.xueyi.auth.login.base.IUserDetailsService;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.utils.core.NumberUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.utils.servlet.ServletUtil;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.core.Ordered;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -16,8 +20,10 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -44,6 +50,19 @@ public abstract class AuthenticationBaseConverter<T extends AuthenticationBaseTo
      * @param request 请求体
      */
     public void checkParams(HttpServletRequest request) {
+        Map<String, IUserDetailsService> userDetailsServiceMap = SpringUtil.getBeansOfType(IUserDetailsService.class);
+
+        String grantType = request.getParameter(SecurityConstants.OAuth2ParameterNames.GRANT_TYPE.getCode());
+        String accountType = request.getParameter(SecurityConstants.OAuth2ParameterNames.ACCOUNT_TYPE.getCode());
+
+        Optional<IUserDetailsService> optional = userDetailsServiceMap.values().stream()
+                .filter(service -> service.support(grantType, accountType))
+                .max(Comparator.comparingInt(Ordered::getOrder));
+
+        if (optional.isEmpty()) {
+            throw new InternalAuthenticationServiceException("UserDetailsService error , not register");
+        }
+        optional.get().checkParams(request);
     }
 
     /**

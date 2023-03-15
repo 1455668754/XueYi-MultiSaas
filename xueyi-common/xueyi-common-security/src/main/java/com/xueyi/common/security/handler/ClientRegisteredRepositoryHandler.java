@@ -95,6 +95,5 @@ public class ClientRegisteredRepositoryHandler implements RegisteredClientReposi
                         .requireAuthorizationConsent(!BooleanUtil.toBoolean(clientDetails.getAutoApprove())).build())
                 .build();
     }
-
 }
 
