@@ -41,7 +41,7 @@ public class SysJobManagerImpl extends BaseManagerImpl<SysJobQuery, SysJobDto, S
      * 项目启动时
      */
     @Override
-    @TenantIgnore(tenantLine = true)
+    @TenantIgnore
     public List<SysJobDto> initScheduler() {
         List<SysJobPo> jobList = baseMapper.selectList(Wrappers.query());
         return baseConverter.mapperDto(jobList);
