@@ -46,7 +46,8 @@ public class CacheConstants {
     public enum LoginTokenType {
 
         ADMIN("login_tokens", "管理端"),
-        MEMBER("login_member_tokens", "会员端");
+        MEMBER("login_member_tokens", "会员端"),
+        PLATFORM("login_platform_tokens", "平台端");
 
         private final String code;
         private final String info;
