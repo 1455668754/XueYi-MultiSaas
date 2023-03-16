@@ -45,10 +45,16 @@ public class AuthFilter implements WebFilter {
         if (StrUtil.isEmpty(token)) {
             return unauthorizedResponse(exchange, chain, isWhites, "令牌不能为空");
         }
-        Claims claims = JwtUtil.parseToken(token);
+        Claims claims;
+        try {
+            claims = JwtUtil.parseToken(token);
+        } catch (Exception e) {
+            return unauthorizedResponse(exchange, chain, isWhites, "令牌已过期或验证不正确");
+        }
         if (ObjectUtil.isNull(claims)) {
             return unauthorizedResponse(exchange, chain, isWhites, "令牌已过期或验证不正确");
         }
+
         String accessTokenPrefix = JwtUtil.getAccessKey(claims);
         if (StrUtil.isBlank(accessTokenPrefix) || !StrUtil.startWith(accessTokenPrefix, TokenConstants.PREFIX)) {
             return unauthorizedResponse(exchange, chain, isWhites, "令牌已过期或验证不正确");
