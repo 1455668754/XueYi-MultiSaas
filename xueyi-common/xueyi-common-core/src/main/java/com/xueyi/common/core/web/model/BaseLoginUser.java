@@ -109,12 +109,14 @@ public class BaseLoginUser<User> implements UserDetails, OAuth2AuthenticatedPrin
     }
 
     public void initEnterprise(SysEnterprise enterprise) {
+        setEnterprise(enterprise);
         setEnterpriseId(enterprise.getId());
         setEnterpriseName(enterprise.getName());
         setIsLessor(enterprise.getIsLessor());
     }
 
     public void initSource(SysSource source) {
+        setSource(source);
         setSourceName(source.getMaster());
     }
 }
