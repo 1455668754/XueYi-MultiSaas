@@ -47,6 +47,13 @@
             <artifactId>xueyi-common-security</artifactId>
         </dependency>
 
+
+        <!-- XueYi Common Swagger -->
+        <dependency>
+            <groupId>com.xueyi</groupId>
+            <artifactId>xueyi-common-swagger</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

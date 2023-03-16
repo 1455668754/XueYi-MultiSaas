@@ -41,11 +41,5 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
-        <!-- XueYi Common Swagger -->
-        <dependency>
-            <groupId>com.xueyi</groupId>
-            <artifactId>xueyi-common-swagger</artifactId>
-        </dependency>
-
     </dependencies>
 </project>
