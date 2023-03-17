@@ -51,7 +51,9 @@ public class ServletUtil {
      * 获取请求token
      */
     public static String getToken(ServerHttpRequest request) {
-        String token = request.getHeaders().getFirst(TokenConstants.AUTHENTICATION);
+        String token = request.getHeaders().getFirst(TokenConstants.SUPPLY_AUTHORIZATION);
+        if (StrUtil.isBlank(token))
+            token = request.getHeaders().getFirst(TokenConstants.AUTHENTICATION);
         return getToken(token);
     }
 

@@ -10,6 +10,9 @@ public class TokenConstants {
     /** 令牌自定义标识 */
     public static final String AUTHENTICATION = "Authorization";
 
+    /** 补充令牌自定义标识 */
+    public static final String SUPPLY_AUTHORIZATION = "Supply-Authorization";
+
     /** 令牌前缀 */
     public static final String PREFIX = "Bearer ";
 

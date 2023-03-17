@@ -191,6 +191,8 @@ public class SecurityConstants {
     @Getter
     @AllArgsConstructor
     public enum BaseSecurity {
+        AUTHORIZATION_HEADER("authorization", "授权信息"),
+        SUPPLY_AUTHORIZATION_HEADER("supply-authorization", "补充授权信息"),
         CLIENT_ID("clientId", "客户端ID"),
         FROM_SOURCE("from-source", "请求来源"),
         ALLOW_LIST("allow-list", "白名单标识"),

@@ -37,7 +37,21 @@ public class FeignRequestInterceptor implements RequestInterceptor {
             setHeaderKey(requestTemplate, headers, SecurityConstants.BaseSecurity.USER_KEY.getCode());
             setHeaderKey(requestTemplate, headers, SecurityConstants.BaseSecurity.SOURCE_NAME.getCode());
             setHeaderKey(requestTemplate, headers, SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode());
-            setHeaderKey(requestTemplate, headers, SecurityConstants.AUTHORIZATION_HEADER);
+            setHeaderKey(requestTemplate, headers, SecurityConstants.BaseSecurity.AUTHORIZATION_HEADER.getCode());
+            setHeaderKey(requestTemplate, headers, SecurityConstants.BaseSecurity.SUPPLY_AUTHORIZATION_HEADER.getCode());
+
+            String accountType = SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode();
+
+            // 会员端专属参数
+            if (StrUtil.equals(SecurityConstants.AccountType.MEMBER.getCode(), accountType)) {
+                setHeaderKey(requestTemplate, headers, SecurityConstants.MemberSecurity.APPLICATION_ID.getCode());
+                setHeaderKey(requestTemplate, headers, SecurityConstants.MemberSecurity.APP_ID.getCode());
+            }
+            // 平台端专属参数
+            else if (StrUtil.equals(SecurityConstants.AccountType.PLATFORM.getCode(), accountType)) {
+                setHeaderKey(requestTemplate, headers, SecurityConstants.PlatformSecurity.APP_ID.getCode());
+            }
+
             // 配置客户端IP
             requestTemplate.header("X-Forwarded-For", IpUtil.getIpAddr());
         }

@@ -138,6 +138,8 @@ public class AuthFilter implements WebFilter {
 
         // 内部请求来源参数清除
         ServletUtil.removeHeader(mutate, SecurityConstants.BaseSecurity.FROM_SOURCE.getCode());
+        if(!isWhites)
+            ServletUtil.removeHeader(mutate, TokenConstants.SUPPLY_AUTHORIZATION);
         return chain.filter(exchange);
     }
 

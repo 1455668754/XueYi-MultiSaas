@@ -149,8 +149,10 @@ public class SecurityUtils {
      * 根据request获取请求token
      */
     public static String getToken(HttpServletRequest request) {
-        // 从header获取token标识
-        String token = request.getHeader(TokenConstants.AUTHENTICATION);
+        // 从header获取token标识 | 优先识别补充Token
+        String token = request.getHeader(TokenConstants.SUPPLY_AUTHORIZATION);
+        if (StrUtil.isBlank(token))
+            token = request.getHeader(TokenConstants.AUTHENTICATION);
         return replaceTokenPrefix(token);
     }
 
@@ -200,6 +202,8 @@ public class SecurityUtils {
     public static boolean hasLogin() {
         try {
             String accountType = getAccountTypeStr();
+            if (StrUtil.isBlank(accountType))
+                accountType = ServletUtil.getHeader(Objects.requireNonNull(ServletUtil.getRequest()), SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode());
             if (StrUtil.isBlank(accountType))
                 return false;
             return getTokenService(accountType).hasLogin();
