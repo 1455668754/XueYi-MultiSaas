@@ -237,4 +237,28 @@ public class SecurityConstants {
 
     }
 
+    /** 会员端安全常量 */
+    @Getter
+    @AllArgsConstructor
+    public enum MemberSecurity {
+
+        APPLICATION_ID("application_id", "应用Id"),
+        APP_ID("app_id", "AppId");
+
+        private final String code;
+        private final String info;
+
+    }
+
+    /** 平台端安全常量 */
+    @Getter
+    @AllArgsConstructor
+    public enum PlatformSecurity {
+
+        APP_ID("app_id", "AppId");
+
+        private final String code;
+        private final String info;
+
+    }
 }
