@@ -21,6 +21,6 @@ public interface RemoteDictService {
      * @return 结果
      */
     @GetMapping(value = "/dict/type/inner/refresh", headers = SecurityConstants.FROM_SOURCE_INNER)
-    R<Boolean> refreshCache();
+    R<Boolean> refreshCacheInner();
 
 }

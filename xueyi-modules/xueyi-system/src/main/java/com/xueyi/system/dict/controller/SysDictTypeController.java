@@ -48,17 +48,6 @@ public class SysDictTypeController extends BaseController<SysDictTypeQuery, SysD
     }
 
     /**
-     * 刷新字典缓存
-     */
-    @Override
-    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_DICT_EDIT)")
-    @Log(title = "字典类型", businessType = BusinessType.REFRESH)
-    @GetMapping("/refresh")
-    public AjaxResult refreshCache() {
-        return super.refreshCache();
-    }
-
-    /**
      * 查询字典类型列表
      */
     @Override
@@ -142,6 +131,17 @@ public class SysDictTypeController extends BaseController<SysDictTypeQuery, SysD
     @Log(title = "字典类型管理", businessType = BusinessType.DELETE_FORCE)
     public AjaxResult batchRemoveForce(@PathVariable List<Long> idList) {
         return super.batchRemoveForce(idList);
+    }
+
+    /**
+     * 刷新字典缓存
+     */
+    @Override
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_DICT_EDIT)")
+    @Log(title = "字典类型", businessType = BusinessType.REFRESH)
+    @GetMapping("/refresh")
+    public AjaxResult refreshCache() {
+        return super.refreshCache();
     }
 
     /**
