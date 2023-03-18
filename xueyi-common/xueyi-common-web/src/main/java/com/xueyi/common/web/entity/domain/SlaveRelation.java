@@ -9,6 +9,7 @@ import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.core.web.entity.base.BasisEntity;
 import com.xueyi.common.web.entity.manager.IBaseManager;
 import com.xueyi.common.web.entity.mapper.BasicMapper;
+import com.xueyi.common.web.entity.service.IBaseService;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -35,8 +36,11 @@ public class SlaveRelation {
     /** 主数据对象 - 主数据Dto对象class */
     private Class<? extends BaseEntity> mainDtoClass;
 
-    /** 从数据 - 方法类class */
-    private Class<? extends IBaseManager<? extends BaseEntity, ? extends BaseEntity>> slaveClass;
+    /** 从数据 - Service接口class */
+    private Class<? extends IBaseService<? extends BaseEntity, ? extends BaseEntity>> slaveServiceClass;
+
+    /** 从数据 - Manager接口class */
+    private Class<? extends IBaseManager<? extends BaseEntity, ? extends BaseEntity>> slaveManagerClass;
 
     /** 主数据对象 - 主键字段 */
     private Field mainIdField;
@@ -59,10 +63,10 @@ public class SlaveRelation {
     /** 主数据对象 - 关联数据接收字段 */
     private Field receiveField;
 
-    /** 间接关联 - 中间类class */
+    /** 间接关联 - 关联Mapper接口class */
     private Class<? extends BasicMapper<? extends BasisEntity>> mergeClass;
 
-    /** 中间数据对象 - 间接关联 - 中间类数据对象class */
+    /** 中间数据对象 - 间接关联 - 关联数据对象class */
     private Class<? extends BasisEntity> mergePoClass;
 
     /** 中间数据对象 - 间接关联 - 主数据关联键字段 */
@@ -98,70 +102,117 @@ public class SlaveRelation {
     /** 单个查询操作 */
     private Boolean isSingle;
 
+    /** 联动操作控制 */
+    private LinkageOperate linkageOperate;
+
     public SlaveRelation(String groupName,
-                         Class<? extends IBaseManager<? extends BaseEntity, ? extends BaseEntity>> slaveClass,
+                         Class<? extends IBaseManager<? extends BaseEntity, ? extends BaseEntity>> slaveManagerClass,
                          SubOperateLimit... operateTypes) {
-        this.groupName = groupName;
-        this.deleteType = SubDeleteType.NORMAL;
-        this.slaveClass = slaveClass;
-        this.relationType = SubTableType.DIRECT;
-        initOperate(operateTypes);
+        initOperate(groupName, null, slaveManagerClass, null, null, SubTableType.DIRECT, SubDeleteType.NORMAL, null, operateTypes);
     }
 
     public SlaveRelation(String groupName,
-                         Class<? extends IBaseManager<? extends BaseEntity, ? extends BaseEntity>> slaveClass,
+                         Class<? extends IBaseService<? extends BaseEntity, ? extends BaseEntity>> slaveServiceClass,
+                         Class<? extends IBaseManager<? extends BaseEntity, ? extends BaseEntity>> slaveManagerClass,
+                         LinkageOperate linkageOperate,
+                         SubOperateLimit... operateTypes) {
+        initOperate(groupName, slaveServiceClass, slaveManagerClass, null, null, SubTableType.DIRECT, SubDeleteType.NORMAL, linkageOperate, operateTypes);
+    }
+
+    public SlaveRelation(String groupName,
+                         Class<? extends IBaseManager<? extends BaseEntity, ? extends BaseEntity>> slaveManagerClass,
                          SubDeleteType deleteType,
                          SubOperateLimit... operateTypes) {
-        this.groupName = groupName;
-        this.slaveClass = slaveClass;
-        this.relationType = SubTableType.DIRECT;
-        this.deleteType = deleteType;
-        initOperate(operateTypes);
+        initOperate(groupName, null, slaveManagerClass, null, null, SubTableType.DIRECT, deleteType, null, operateTypes);
     }
 
     public SlaveRelation(String groupName,
-                         Class<? extends IBaseManager<? extends BaseEntity, ? extends BaseEntity>> slaveClass,
+                         Class<? extends IBaseService<? extends BaseEntity, ? extends BaseEntity>> slaveServiceClass,
+                         Class<? extends IBaseManager<? extends BaseEntity, ? extends BaseEntity>> slaveManagerClass,
+                         SubDeleteType deleteType,
+                         LinkageOperate linkageOperate,
+                         SubOperateLimit... operateTypes) {
+        initOperate(groupName, slaveServiceClass, slaveManagerClass, null, null, SubTableType.DIRECT, deleteType, linkageOperate, operateTypes);
+    }
+
+    public SlaveRelation(String groupName,
+                         Class<? extends IBaseManager<? extends BaseEntity, ? extends BaseEntity>> slaveManagerClass,
                          Class<? extends BasicMapper<? extends BasisEntity>> mergeClass,
                          Class<? extends BasisEntity> mergePoClass,
                          SubOperateLimit... operateTypes) {
-        this.groupName = groupName;
-        this.slaveClass = slaveClass;
-        this.mergeClass = mergeClass;
-        this.mergePoClass = mergePoClass;
-        this.relationType = SubTableType.INDIRECT;
-        this.deleteType = SubDeleteType.NORMAL;
-        initOperate(operateTypes);
+        initOperate(groupName, null, slaveManagerClass, mergeClass, mergePoClass, SubTableType.INDIRECT, SubDeleteType.NORMAL, null, operateTypes);
+    }
+
+    public SlaveRelation(String groupName,
+                         Class<? extends IBaseService<? extends BaseEntity, ? extends BaseEntity>> slaveServiceClass,
+                         Class<? extends IBaseManager<? extends BaseEntity, ? extends BaseEntity>> slaveManagerClass,
+                         Class<? extends BasicMapper<? extends BasisEntity>> mergeClass,
+                         Class<? extends BasisEntity> mergePoClass,
+                         LinkageOperate linkageOperate,
+                         SubOperateLimit... operateTypes) {
+        initOperate(groupName, slaveServiceClass, slaveManagerClass, mergeClass, mergePoClass, SubTableType.INDIRECT, SubDeleteType.NORMAL, linkageOperate, operateTypes);
     }
 
     public SlaveRelation(String groupName,
                          Class<? extends BasicMapper<? extends BasisEntity>> mergeClass,
                          Class<? extends BasisEntity> mergePoClass,
                          SubOperateLimit... operateTypes) {
-        this.groupName = groupName;
-        this.mergeClass = mergeClass;
-        this.mergePoClass = mergePoClass;
-        this.relationType = SubTableType.INDIRECT;
-        this.deleteType = SubDeleteType.NORMAL;
-        initOperate(operateTypes);
+        initOperate(groupName, null, null, mergeClass, mergePoClass, SubTableType.INDIRECT, SubDeleteType.NORMAL, null, operateTypes);
     }
 
     public SlaveRelation(String groupName,
-                         Class<? extends IBaseManager<? extends BaseEntity, ? extends BaseEntity>> slaveClass,
+                         Class<? extends IBaseManager<? extends BaseEntity, ? extends BaseEntity>> slaveManagerClass,
                          Class<? extends BasicMapper<? extends BasisEntity>> mergeClass,
                          Class<? extends BasisEntity> mergePoClass,
                          SubDeleteType deleteType,
                          SubOperateLimit... operateTypes) {
-        this.groupName = groupName;
-        this.slaveClass = slaveClass;
-        this.mergeClass = mergeClass;
-        this.mergePoClass = mergePoClass;
-        this.relationType = SubTableType.INDIRECT;
-        this.deleteType = deleteType;
-        initOperate(operateTypes);
+        initOperate(groupName, null, slaveManagerClass, mergeClass, mergePoClass, SubTableType.INDIRECT, deleteType, null, operateTypes);
     }
 
-    /** 初始化操作 */
-    public void initOperate(SubOperateLimit... operateTypes) {
+    public SlaveRelation(String groupName,
+                         Class<? extends IBaseService<? extends BaseEntity, ? extends BaseEntity>> slaveServiceClass,
+                         Class<? extends IBaseManager<? extends BaseEntity, ? extends BaseEntity>> slaveManagerClass,
+                         Class<? extends BasicMapper<? extends BasisEntity>> mergeClass,
+                         Class<? extends BasisEntity> mergePoClass,
+                         SubDeleteType deleteType,
+                         LinkageOperate linkageOperate,
+                         SubOperateLimit... operateTypes) {
+        initOperate(groupName, slaveServiceClass, slaveManagerClass, mergeClass, mergePoClass, SubTableType.INDIRECT, deleteType, linkageOperate, operateTypes);
+    }
+
+    /**
+     * 初始化操作
+     *
+     * @param groupName         分组名称 | 必须全局唯一
+     * @param slaveServiceClass 从数据 - Service接口class
+     * @param slaveManagerClass 从数据 - Manager接口class
+     * @param mergeClass        间接关联 - 关联Mapper接口class
+     * @param mergePoClass      中间数据对象 - 间接关联 - 关联数据对象class
+     * @param relationType      关联类型
+     * @param deleteType        删除类型
+     * @param linkageOperate    联动操作控制
+     * @param operateTypes      操作控制类型
+     */
+    private void initOperate(String groupName,
+                             Class<? extends IBaseService<? extends BaseEntity, ? extends BaseEntity>> slaveServiceClass,
+                             Class<? extends IBaseManager<? extends BaseEntity, ? extends BaseEntity>> slaveManagerClass,
+                             Class<? extends BasicMapper<? extends BasisEntity>> mergeClass,
+                             Class<? extends BasisEntity> mergePoClass,
+                             SubTableType relationType,
+                             SubDeleteType deleteType,
+                             LinkageOperate linkageOperate,
+                             SubOperateLimit... operateTypes) {
+        this.groupName = groupName;
+        this.slaveServiceClass = slaveServiceClass;
+        this.slaveManagerClass = slaveManagerClass;
+        this.mergeClass = mergeClass;
+        this.mergePoClass = mergePoClass;
+        this.relationType = relationType;
+        this.deleteType = deleteType;
+        this.linkageOperate = ObjectUtil.isNotNull(slaveServiceClass) && ObjectUtil.isNotNull(linkageOperate)
+                ? linkageOperate
+                : new LinkageOperate(ObjectUtil.isNotNull(slaveServiceClass) ? Boolean.TRUE : Boolean.FALSE);
+
         if (ArrayUtil.isNotEmpty(operateTypes)) {
             for (SubOperateLimit operateType : operateTypes) {
                 switch (operateType) {
@@ -216,5 +267,39 @@ public class SlaveRelation {
             this.isEdit = Boolean.TRUE;
         if (ObjectUtil.isNull(this.isDelete))
             this.isDelete = Boolean.TRUE;
+    }
+
+    /**
+     * 联动操作控制
+     */
+    @Data
+    @NoArgsConstructor
+    public static class LinkageOperate {
+
+        /** 查询操作 */
+        private Boolean isSelect = true;
+
+        /** 新增操作 */
+        private Boolean isAdd = true;
+
+        /** 修改操作 */
+        private Boolean isEdit = true;
+
+        /** 删除操作 */
+        private Boolean isDelete = true;
+
+        public LinkageOperate(Boolean operate) {
+            this.isSelect = operate;
+            this.isAdd = operate;
+            this.isEdit = operate;
+            this.isDelete = operate;
+        }
+
+        public LinkageOperate(Boolean isSelect, Boolean isAdd, Boolean isEdit, Boolean isDelete) {
+            this.isSelect = isSelect;
+            this.isAdd = isAdd;
+            this.isEdit = isEdit;
+            this.isDelete = isDelete;
+        }
     }
 }

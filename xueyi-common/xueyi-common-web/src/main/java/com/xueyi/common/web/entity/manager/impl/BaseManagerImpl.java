@@ -4,6 +4,7 @@ import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.constant.basic.SqlConstants;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.core.web.entity.model.BaseConverter;
 import com.xueyi.common.web.entity.domain.SqlField;
@@ -12,8 +13,10 @@ import com.xueyi.common.web.entity.manager.impl.handle.BaseHandleManagerImpl;
 import com.xueyi.common.web.entity.mapper.BaseMapper;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 数据封装层处理 基类通用数据处理
@@ -91,7 +94,7 @@ public class BaseManagerImpl<Q extends P, D extends P, P extends BaseEntity, PM 
      * @return 数据对象
      */
     @Override
-    public D selectByIdMerge(Serializable id){
+    public D selectByIdMerge(Serializable id) {
         return subMerge(selectById(id));
     }
 
@@ -255,7 +258,16 @@ public class BaseManagerImpl<Q extends P, D extends P, P extends BaseEntity, PM 
      */
     @Override
     public List<D> selectListByField(SqlField... field) {
-        return mapperDto(baseMapper.selectListByField(field));
+        List<D> list = mapperDto(baseMapper.selectListByField(field));
+        Optional.of(field).map(item -> Arrays.stream(item).filter(operate -> ObjectUtil.isNotNull(operate.getLinkageOperate()))
+                .map(operate -> operate.getLinkageOperate().getIsSelect())
+                .filter(isSelect -> ObjectUtil.isNotNull(isSelect) && isSelect)
+                .findFirst()).ifPresent(item -> {
+                    if (item.isPresent())
+                        subMerge(list);
+                }
+        );
+        return list;
     }
 
     /**
@@ -266,7 +278,16 @@ public class BaseManagerImpl<Q extends P, D extends P, P extends BaseEntity, PM 
      */
     @Override
     public D selectByField(SqlField... field) {
-        return mapperDto(baseMapper.selectByField(field));
+        D dto = mapperDto(baseMapper.selectByField(field));
+        Optional.ofNullable(field).map(item -> Arrays.stream(item).filter(operate -> ObjectUtil.isNotNull(operate.getLinkageOperate()))
+                .map(operate -> operate.getLinkageOperate().getIsSelect())
+                .filter(isSelect -> ObjectUtil.isNotNull(isSelect) && isSelect)
+                .findFirst()).ifPresent(item -> {
+                    if (item.isPresent())
+                        subMerge(dto);
+                }
+        );
+        return dto;
     }
 
     /**
