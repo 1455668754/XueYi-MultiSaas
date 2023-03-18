@@ -3,6 +3,7 @@ package com.xueyi.system.api.organize.domain.po;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.common.core.annotation.Correlation;
+import com.xueyi.common.core.annotation.Correlations;
 import com.xueyi.common.core.annotation.Excel;
 import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.web.tenant.base.TBaseEntity;
@@ -17,6 +18,7 @@ import java.io.Serial;
 
 import static com.baomidou.mybatisplus.annotation.SqlCondition.LIKE;
 import static com.xueyi.system.api.organize.domain.merge.MergeGroup.DEPT_SysPost_GROUP;
+import static com.xueyi.system.api.organize.domain.merge.MergeGroup.POST_SysDept_GROUP;
 
 /**
  * 岗位 持久化对象
@@ -33,7 +35,10 @@ public class SysPostPo extends TBaseEntity {
 
     /** 部门Id */
     @NotNull(message = "归属部门不能为空")
-    @Correlation(groupName = DEPT_SysPost_GROUP, keyType = OperateConstants.SubKeyType.SLAVE)
+    @Correlations ({
+        @Correlation(groupName = DEPT_SysPost_GROUP, keyType = OperateConstants.SubKeyType.SLAVE),
+        @Correlation(groupName = POST_SysDept_GROUP, keyType = OperateConstants.SubKeyType.MAIN)
+    })
     protected Long deptId;
 
     /** 岗位编码 */
