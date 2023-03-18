@@ -14,6 +14,7 @@ import com.xueyi.system.api.authority.domain.po.SysModulePo;
 import com.xueyi.system.api.authority.domain.query.SysModuleQuery;
 import com.xueyi.system.authority.domain.merge.SysRoleModuleMerge;
 import com.xueyi.system.authority.domain.merge.SysTenantModuleMerge;
+import com.xueyi.system.authority.manager.ISysMenuManager;
 import com.xueyi.system.authority.manager.ISysModuleManager;
 import com.xueyi.system.authority.mapper.SysModuleMapper;
 import com.xueyi.system.authority.mapper.merge.SysRoleModuleMergeMapper;
@@ -50,7 +51,7 @@ public class SysModuleManagerImpl extends BaseManagerImpl<SysModuleQuery, SysMod
      */
     protected List<SlaveRelation> subRelationInit() {
         return new ArrayList<>(){{
-            add(new SlaveRelation(MODULE_SysMenu_GROUP, SysMenuManagerImpl.class, OperateConstants.SubOperateLimit.EX_ADD_OR_EDIT));
+            add(new SlaveRelation(MODULE_SysMenu_GROUP, ISysMenuManager.class, OperateConstants.SubOperateLimit.EX_ADD_OR_EDIT));
             add(new SlaveRelation(MODULE_SysRoleModuleMerge_GROUP, SysRoleModuleMergeMapper.class, SysRoleModuleMerge.class, OperateConstants.SubOperateLimit.ONLY_DEL));
         }};
     }

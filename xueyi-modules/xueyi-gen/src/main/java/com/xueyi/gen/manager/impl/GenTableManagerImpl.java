@@ -8,6 +8,7 @@ import com.xueyi.gen.domain.dto.GenTableDto;
 import com.xueyi.gen.domain.model.GenTableConverter;
 import com.xueyi.gen.domain.po.GenTablePo;
 import com.xueyi.gen.domain.query.GenTableQuery;
+import com.xueyi.gen.manager.IGenTableColumnManager;
 import com.xueyi.gen.manager.IGenTableManager;
 import com.xueyi.gen.mapper.GenTableMapper;
 import org.springframework.stereotype.Component;
@@ -33,7 +34,7 @@ public class GenTableManagerImpl extends BaseManagerImpl<GenTableQuery, GenTable
      */
     protected List<SlaveRelation> subRelationInit() {
         return new ArrayList<>(){{
-            add(new SlaveRelation(GEN_TABLE_GROUP, GenTableColumnManagerImpl.class, OperateConstants.SubOperateLimit.EX_ADD_OR_EDIT));
+            add(new SlaveRelation(GEN_TABLE_GROUP, IGenTableColumnManager.class, OperateConstants.SubOperateLimit.EX_ADD_OR_EDIT));
         }};
     }
 

@@ -7,9 +7,7 @@ import com.xueyi.common.core.utils.core.ArrayUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.core.web.entity.base.BasisEntity;
-import com.xueyi.common.core.web.entity.model.BaseConverter;
-import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
-import com.xueyi.common.web.entity.mapper.BaseMapper;
+import com.xueyi.common.web.entity.manager.IBaseManager;
 import com.xueyi.common.web.entity.mapper.BasicMapper;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -38,7 +36,7 @@ public class SlaveRelation {
     private Class<? extends BaseEntity> mainDtoClass;
 
     /** 从数据 - 方法类class */
-    private Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> slaveClass;
+    private Class<? extends IBaseManager<? extends BaseEntity, ? extends BaseEntity>> slaveClass;
 
     /** 主数据对象 - 主键字段 */
     private Field mainIdField;
@@ -101,17 +99,17 @@ public class SlaveRelation {
     private Boolean isSingle;
 
     public SlaveRelation(String groupName,
-                         Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> slaveClass,
+                         Class<? extends IBaseManager<? extends BaseEntity, ? extends BaseEntity>> slaveClass,
                          SubOperateLimit... operateTypes) {
         this.groupName = groupName;
+        this.deleteType = SubDeleteType.NORMAL;
         this.slaveClass = slaveClass;
         this.relationType = SubTableType.DIRECT;
-        this.deleteType = SubDeleteType.NORMAL;
         initOperate(operateTypes);
     }
 
     public SlaveRelation(String groupName,
-                         Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> slaveClass,
+                         Class<? extends IBaseManager<? extends BaseEntity, ? extends BaseEntity>> slaveClass,
                          SubDeleteType deleteType,
                          SubOperateLimit... operateTypes) {
         this.groupName = groupName;
@@ -122,7 +120,7 @@ public class SlaveRelation {
     }
 
     public SlaveRelation(String groupName,
-                         Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> slaveClass,
+                         Class<? extends IBaseManager<? extends BaseEntity, ? extends BaseEntity>> slaveClass,
                          Class<? extends BasicMapper<? extends BasisEntity>> mergeClass,
                          Class<? extends BasisEntity> mergePoClass,
                          SubOperateLimit... operateTypes) {
@@ -148,7 +146,7 @@ public class SlaveRelation {
     }
 
     public SlaveRelation(String groupName,
-                         Class<? extends BaseManagerImpl<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity, ? extends BaseMapper<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>, ? extends BaseConverter<? extends BaseEntity, ? extends BaseEntity, ? extends BaseEntity>>> slaveClass,
+                         Class<? extends IBaseManager<? extends BaseEntity, ? extends BaseEntity>> slaveClass,
                          Class<? extends BasicMapper<? extends BasisEntity>> mergeClass,
                          Class<? extends BasisEntity> mergePoClass,
                          SubDeleteType deleteType,

@@ -21,6 +21,7 @@ import com.xueyi.system.api.organize.domain.query.SysUserQuery;
 import com.xueyi.system.authority.mapper.SysRoleMapper;
 import com.xueyi.system.organize.domain.merge.SysOrganizeRoleMerge;
 import com.xueyi.system.organize.domain.merge.SysUserPostMerge;
+import com.xueyi.system.organize.manager.ISysPostManager;
 import com.xueyi.system.organize.manager.ISysUserManager;
 import com.xueyi.system.organize.mapper.SysDeptMapper;
 import com.xueyi.system.organize.mapper.SysPostMapper;
@@ -78,7 +79,7 @@ public class SysUserManagerImpl extends BaseManagerImpl<SysUserQuery, SysUserDto
     protected List<SlaveRelation> subRelationInit() {
         return new ArrayList<>() {{
             add(new SlaveRelation(USER_OrganizeRoleMerge_GROUP, SysOrganizeRoleMergeMapper.class, SysOrganizeRoleMerge.class, OperateConstants.SubOperateLimit.ONLY_DEL));
-            add(new SlaveRelation(USER_SysUserPostMerge_GROUP, SysPostManagerImpl.class, SysUserPostMergeMapper.class, SysUserPostMerge.class));
+            add(new SlaveRelation(USER_SysUserPostMerge_GROUP, ISysPostManager.class, SysUserPostMergeMapper.class, SysUserPostMerge.class));
         }};
     }
 

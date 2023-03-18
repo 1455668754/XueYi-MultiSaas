@@ -16,6 +16,9 @@ import java.util.List;
  */
 public interface IBaseManager<Q extends BaseEntity, D extends BaseEntity> {
 
+    /** 获取Po泛型的类型 */
+    Class<? extends BaseEntity> getPClass();
+
     /**
      * 查询数据对象列表
      *
