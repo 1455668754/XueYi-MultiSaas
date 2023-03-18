@@ -71,7 +71,7 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
      * @param po 持久化对象
      * @return dto
      */
-    protected final D mapperDto(P po) {
+    protected D mapperDto(P po) {
         return baseConverter.mapperDto(po);
     }
 
@@ -81,7 +81,7 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
      * @param poList 持久化对象集合
      * @return dtoList
      */
-    protected final List<D> mapperDto(Collection<P> poList) {
+    protected List<D> mapperDto(Collection<P> poList) {
         if (poList instanceof Page<P> pagePoList) {
             Page<D> pageDtoList = baseConverter.mapperPageDto(poList);
             pageCopy(pagePoList, pageDtoList);
@@ -96,7 +96,7 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
      * @param dto 数据传输对象
      * @return po
      */
-    protected final P mapperPo(D dto) {
+    protected P mapperPo(D dto) {
         return baseConverter.mapperPo(dto);
     }
 
@@ -106,7 +106,7 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
      * @param dtoList 数据传输对象集合
      * @return poList
      */
-    protected final List<P> mapperPo(Collection<D> dtoList) {
+    protected List<P> mapperPo(Collection<D> dtoList) {
         if (dtoList instanceof Page<D> pageDtoList) {
             Page<P> pagePoList = baseConverter.mapperPagePo(dtoList);
             pageCopy(pageDtoList, pagePoList);
@@ -122,7 +122,7 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
      * @param pastePage 粘贴分页对象
      */
     @SuppressWarnings("rawtypes")
-    protected final void pageCopy(Page copyPage, Page pastePage) {
+    protected void pageCopy(Page copyPage, Page pastePage) {
         pastePage.setPageNum(copyPage.getPageNum());
         pastePage.setPageSize(copyPage.getPageSize());
         pastePage.setStartRow(copyPage.getStartRow());
@@ -144,7 +144,7 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
      * @param groupNames 分组名称
      * @return 数据传输对象
      */
-    protected final D subMerge(D dto, String... groupNames) {
+    protected D subMerge(D dto, String... groupNames) {
         if (ArrayUtil.isNotEmpty(groupNames))
             Arrays.stream(groupNames).forEach(item -> MergeUtil.subMerge(dto, getSubRelationMap().get(item)));
         else
@@ -159,7 +159,7 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
      * @param groupNames 分组名称
      * @return 数据传输对象集合
      */
-    protected final List<D> subMerge(List<D> dtoList, String... groupNames) {
+    protected List<D> subMerge(List<D> dtoList, String... groupNames) {
         return subMerge(dtoList, OperateConstants.DataRow.LIST, groupNames);
     }
 
@@ -171,7 +171,7 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
      * @param groupNames 分组名称
      * @return 数据传输对象集合
      */
-    protected final List<D> subMerge(List<D> dtoList, OperateConstants.DataRow dataRow, String... groupNames) {
+    protected List<D> subMerge(List<D> dtoList, OperateConstants.DataRow dataRow, String... groupNames) {
         if (ArrayUtil.isNotEmpty(groupNames))
             Arrays.stream(groupNames).forEach(item -> MergeUtil.subMerge(dtoList, getSubRelationMap().get(item)));
         else
@@ -191,7 +191,7 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
      * @param groupNames 分组名称
      * @return 结果
      */
-    protected final int addMerge(D dto, String... groupNames) {
+    protected int addMerge(D dto, String... groupNames) {
         return ArrayUtil.isNotEmpty(groupNames)
                 ? Arrays.stream(groupNames).mapToInt(item -> MergeUtil.addMerge(dto, getSubRelationMap().get(item))).sum()
                 : getSubRelationMap().values().stream().filter(SlaveRelation::getIsAdd).mapToInt(item -> MergeUtil.addMerge(dto, item)).sum();
@@ -204,7 +204,7 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
      * @param groupNames 分组名称
      * @return 结果
      */
-    protected final int addMerge(Collection<D> dtoList, String... groupNames) {
+    protected int addMerge(Collection<D> dtoList, String... groupNames) {
         return ArrayUtil.isNotEmpty(groupNames)
                 ? Arrays.stream(groupNames).mapToInt(item -> MergeUtil.addMerge(dtoList, getSubRelationMap().get(item))).sum()
                 : getSubRelationMap().values().stream().filter(SlaveRelation::getIsAdd).mapToInt(item -> MergeUtil.addMerge(dtoList, item)).sum();
@@ -218,7 +218,7 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
      * @param groupNames 分组名称
      * @return 结果
      */
-    protected final int editMerge(D originDto, D newDto, String... groupNames) {
+    protected int editMerge(D originDto, D newDto, String... groupNames) {
         return ArrayUtil.isNotEmpty(groupNames)
                 ? Arrays.stream(groupNames).mapToInt(item -> MergeUtil.editMerge(originDto, newDto, getSubRelationMap().get(item))).sum()
                 : getSubRelationMap().values().stream().filter(SlaveRelation::getIsEdit).mapToInt(item -> MergeUtil.editMerge(originDto, newDto, item)).sum();
@@ -232,7 +232,7 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
      * @param groupNames 分组名称
      * @return 结果
      */
-    protected final int editMerge(Collection<D> originList, Collection<D> newList, String... groupNames) {
+    protected int editMerge(Collection<D> originList, Collection<D> newList, String... groupNames) {
         return ArrayUtil.isNotEmpty(groupNames)
                 ? Arrays.stream(groupNames).mapToInt(item -> MergeUtil.editMerge(originList, newList, getSubRelationMap().get(item))).sum()
                 : getSubRelationMap().values().stream().filter(SlaveRelation::getIsEdit).mapToInt(item -> MergeUtil.editMerge(originList, newList, item)).sum();
@@ -245,7 +245,7 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
      * @param groupNames 分组名称
      * @return 结果
      */
-    protected final int delMerge(D dto, String... groupNames) {
+    protected int delMerge(D dto, String... groupNames) {
         return ArrayUtil.isNotEmpty(groupNames)
                 ? Arrays.stream(groupNames).mapToInt(item -> MergeUtil.delMerge(dto, getSubRelationMap().get(item))).sum()
                 : getSubRelationMap().values().stream().filter(SlaveRelation::getIsDelete).mapToInt(item -> MergeUtil.delMerge(dto, item)).sum();
@@ -258,14 +258,14 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
      * @param groupNames 分组名称
      * @return 结果
      */
-    protected final int delMerge(Collection<D> dtoList, String... groupNames) {
+    protected int delMerge(Collection<D> dtoList, String... groupNames) {
         return ArrayUtil.isNotEmpty(groupNames)
                 ? Arrays.stream(groupNames).mapToInt(item -> MergeUtil.delMerge(dtoList, getSubRelationMap().get(item))).sum()
                 : getSubRelationMap().values().stream().filter(SlaveRelation::getIsDelete).mapToInt(item -> MergeUtil.delMerge(dtoList, item)).sum();
     }
 
     /** 子类操作泛型的类型Getter */
-    protected final Map<String, SlaveRelation> getSubRelationMap() {
+    protected Map<String, SlaveRelation> getSubRelationMap() {
         if (MapUtil.isNull(this.subRelationMap)) {
             List<SlaveRelation> subList = subRelationInit();
             this.subRelationMap = CollUtil.isNotEmpty(subList)

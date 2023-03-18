@@ -12,6 +12,7 @@ import com.xueyi.system.api.organize.domain.query.SysDeptQuery;
 import com.xueyi.system.organize.domain.merge.SysOrganizeRoleMerge;
 import com.xueyi.system.organize.domain.merge.SysRoleDeptMerge;
 import com.xueyi.system.organize.manager.ISysDeptManager;
+import com.xueyi.system.organize.manager.ISysPostManager;
 import com.xueyi.system.organize.mapper.SysDeptMapper;
 import com.xueyi.system.organize.mapper.merge.SysOrganizeRoleMergeMapper;
 import com.xueyi.system.organize.mapper.merge.SysRoleDeptMergeMapper;
@@ -37,7 +38,7 @@ public class SysDeptManagerImpl extends TreeManagerImpl<SysDeptQuery, SysDeptDto
      */
     protected List<SlaveRelation> subRelationInit() {
         return new ArrayList<>(){{
-            add(new SlaveRelation(DEPT_SysPost_GROUP, SysPostManagerImpl.class, OperateConstants.SubOperateLimit.EX_ADD_OR_EDIT));
+            add(new SlaveRelation(DEPT_SysPost_GROUP, ISysPostManager.class, OperateConstants.SubOperateLimit.EX_ADD_OR_EDIT));
             add(new SlaveRelation(DEPT_OrganizeRoleMerge_GROUP, SysOrganizeRoleMergeMapper.class, SysOrganizeRoleMerge.class, OperateConstants.SubOperateLimit.ONLY_DEL));
             add(new SlaveRelation(DEPT_SysRoleDeptMerge_GROUP, SysRoleDeptMergeMapper.class, SysRoleDeptMerge.class, OperateConstants.SubOperateLimit.ONLY_DEL));
         }};

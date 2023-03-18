@@ -21,6 +21,7 @@ import com.xueyi.system.api.model.DataScope;
 import com.xueyi.system.authority.domain.merge.SysRoleMenuMerge;
 import com.xueyi.system.authority.domain.merge.SysTenantMenuMerge;
 import com.xueyi.system.authority.manager.ISysMenuManager;
+import com.xueyi.system.authority.manager.ISysModuleManager;
 import com.xueyi.system.authority.mapper.SysMenuMapper;
 import com.xueyi.system.authority.mapper.merge.SysRoleMenuMergeMapper;
 import com.xueyi.system.authority.mapper.merge.SysTenantMenuMergeMapper;
@@ -58,7 +59,7 @@ public class SysMenuManagerImpl extends TreeManagerImpl<SysMenuQuery, SysMenuDto
      */
     protected List<SlaveRelation> subRelationInit() {
         return new ArrayList<>() {{
-            add(new SlaveRelation(MENU_SysModule_GROUP, SysModuleManagerImpl.class, OperateConstants.SubOperateLimit.ONLY_SEL));
+            add(new SlaveRelation(MENU_SysModule_GROUP, ISysModuleManager.class, OperateConstants.SubOperateLimit.ONLY_SEL));
             add(new SlaveRelation(MENU_SysRoleMenuMerge_GROUP, SysRoleMenuMergeMapper.class, SysRoleMenuMerge.class, OperateConstants.SubOperateLimit.ONLY_DEL));
         }};
     }

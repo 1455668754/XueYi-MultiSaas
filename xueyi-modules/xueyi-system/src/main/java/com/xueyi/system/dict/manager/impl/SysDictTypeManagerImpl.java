@@ -9,6 +9,7 @@ import com.xueyi.system.api.dict.domain.dto.SysDictTypeDto;
 import com.xueyi.system.api.dict.domain.model.SysDictTypeConverter;
 import com.xueyi.system.api.dict.domain.po.SysDictTypePo;
 import com.xueyi.system.api.dict.domain.query.SysDictTypeQuery;
+import com.xueyi.system.dict.manager.ISysDictDataManager;
 import com.xueyi.system.dict.manager.ISysDictTypeManager;
 import com.xueyi.system.dict.mapper.SysDictTypeMapper;
 import org.springframework.stereotype.Component;
@@ -33,7 +34,7 @@ public class SysDictTypeManagerImpl extends BaseManagerImpl<SysDictTypeQuery, Sy
      */
     protected List<SlaveRelation> subRelationInit() {
         return new ArrayList<>(){{
-            add(new SlaveRelation(DICT_DATA_GROUP, SysDictDataManagerImpl.class, OperateConstants.SubOperateLimit.EX_ADD_OR_EDIT));
+            add(new SlaveRelation(DICT_DATA_GROUP, ISysDictDataManager.class, OperateConstants.SubOperateLimit.EX_ADD_OR_EDIT));
         }};
     }
 

@@ -9,6 +9,7 @@ import com.xueyi.job.api.domain.dto.SysJobDto;
 import com.xueyi.job.api.domain.model.SysJobConverter;
 import com.xueyi.job.api.domain.po.SysJobPo;
 import com.xueyi.job.api.domain.query.SysJobQuery;
+import com.xueyi.job.manager.ISysJobLogManager;
 import com.xueyi.job.manager.ISysJobManager;
 import com.xueyi.job.mapper.SysJobMapper;
 import org.springframework.stereotype.Component;
@@ -33,7 +34,7 @@ public class SysJobManagerImpl extends BaseManagerImpl<SysJobQuery, SysJobDto, S
      */
     protected List<SlaveRelation> subRelationInit() {
         return new ArrayList<>(){{
-            add(new SlaveRelation(JOB_LOG_GROUP, SysJobLogManagerImpl.class, OperateConstants.SubOperateLimit.ONLY_DEL));
+            add(new SlaveRelation(JOB_LOG_GROUP, ISysJobLogManager.class, OperateConstants.SubOperateLimit.ONLY_DEL));
         }};
     }
 
