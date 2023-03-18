@@ -14,10 +14,10 @@ public interface ISysConfigService extends IBaseService<SysConfigQuery, SysConfi
     /**
      * 根据参数编码查询参数值
      *
-     * @param configCode 参数编码
-     * @return 参数值
+     * @param code 参数编码
+     * @return 参数对象
      */
-    String selectConfigByCode(String configCode);
+    SysConfigDto selectConfigByCode(String code);
 
     /**
      * 校验参数编码是否唯一

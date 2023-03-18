@@ -23,7 +23,7 @@ public class DictUtil {
      * @param code 参数编码
      * @return 参数数据
      */
-    public static String getConfigCacheToStr(String code) {
+    public static String getConfigCache(String code) {
         return getConfigCache(code, String.class);
     }
 

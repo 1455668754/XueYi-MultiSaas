@@ -4,7 +4,6 @@ import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.CacheConstants;
 import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.utils.core.ObjectUtil;
-import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.redis.constant.RedisConstants;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.dict.domain.dto.SysConfigDto;
@@ -35,13 +34,12 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigQuery, SysCon
     /**
      * 根据参数编码查询参数值
      *
-     * @param configCode 参数编码
-     * @return 参数值
+     * @param code 参数编码
+     * @return 参数对象
      */
     @Override
-    public String selectConfigByCode(String configCode) {
-        SysConfigDto config = baseManager.selectConfigByCode(configCode);
-        return ObjectUtil.isNotNull(config) ? config.getValue() : StrUtil.EMPTY;
+    public SysConfigDto selectConfigByCode(String code) {
+        return baseManager.selectConfigByCode(code);
     }
 
     /**

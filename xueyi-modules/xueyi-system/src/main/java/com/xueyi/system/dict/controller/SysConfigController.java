@@ -1,5 +1,6 @@
 package com.xueyi.system.dict.controller;
 
+import com.xueyi.common.cache.utils.DictUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
@@ -48,30 +49,50 @@ public class SysConfigController extends BaseController<SysConfigQuery, SysConfi
     }
 
     /**
-     * 刷新参数缓存
+     * 查询参数对象
+     *
+     * @param code 参数编码
+     * @return 参数对象
      */
-    @Override
-    @GetMapping("/refresh")
-    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_CONFIG_EDIT)")
-    @Log(title = "参数管理", businessType = BusinessType.REFRESH)
-    public AjaxResult refreshCache() {
-        return super.refreshCache();
+    @InnerAuth
+    @GetMapping("/inner/code/{code}")
+    public R<SysConfigDto> getConfigByCodeInner(@PathVariable("code") String code) {
+        return R.ok(baseService.selectConfigByCode(code));
     }
 
     /**
-     * 查询参数值
+     * 查询参数
+     *
+     * @param code 参数编码
+     * @return 参数
      */
-    @GetMapping(value = "/innerCode/{configCode}")
-    public R<String> getCode(@PathVariable String configCode) {
-        return R.ok(baseService.selectConfigByCode(configCode));
+    @InnerAuth
+    @GetMapping("/inner/value/{code}")
+    public R<String> getValueByCodeInner(@PathVariable("code") String code) {
+        return R.ok(DictUtil.getConfigCache(code));
     }
 
     /**
-     * 查询参数值
+     * 查询参数对象
+     *
+     * @param code 参数编码
+     * @return 参数对象
      */
-    @GetMapping(value = "/code/{configCode}")
-    public AjaxResult getConfigCode(@PathVariable String configCode) {
-        return success(baseService.selectConfigByCode(configCode));
+    @GetMapping("/code/{code}")
+    public AjaxResult getConfigByCode(@PathVariable("code") String code) {
+        return success(baseService.selectConfigByCode(code));
+    }
+
+    /**
+     * 查询参数
+     *
+     * @param code 参数编码
+     * @return 参数
+     */
+    @GetMapping("/value/{code}")
+    public AjaxResult getValueByCode(@PathVariable("code") String code) {
+        Object obj = DictUtil.getConfigCache(code);
+        return success(obj);
     }
 
     /**
@@ -158,6 +179,17 @@ public class SysConfigController extends BaseController<SysConfigQuery, SysConfi
     @Log(title = "参数管理", businessType = BusinessType.DELETE_FORCE)
     public AjaxResult batchRemoveForce(@PathVariable List<Long> idList) {
         return super.batchRemoveForce(idList);
+    }
+
+    /**
+     * 刷新参数缓存
+     */
+    @Override
+    @GetMapping("/refresh")
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_CONFIG_EDIT)")
+    @Log(title = "参数管理", businessType = BusinessType.REFRESH)
+    public AjaxResult refreshCache() {
+        return super.refreshCache();
     }
 
     /**

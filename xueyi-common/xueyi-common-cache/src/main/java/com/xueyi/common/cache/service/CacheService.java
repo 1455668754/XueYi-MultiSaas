@@ -129,8 +129,8 @@ public class CacheService {
      */
     private void refreshCache(CacheConstants.CacheType cacheType) {
         switch (cacheType) {
-            case SYS_DICT_KEY -> SpringUtil.getBean(RemoteDictService.class).refreshCache();
-            case SYS_CONFIG_KEY -> SpringUtil.getBean(RemoteConfigService.class).refreshCache();
+            case SYS_DICT_KEY -> SpringUtil.getBean(RemoteDictService.class).refreshCacheInner();
+            case SYS_CONFIG_KEY -> SpringUtil.getBean(RemoteConfigService.class).refreshCacheInner();
             case TE_STRATEGY_KEY ->
                     SpringUtil.getBean(RemoteStrategyService.class).refreshCache();
             case TE_SOURCE_KEY -> SpringUtil.getBean(RemoteSourceService.class).refreshCache();
