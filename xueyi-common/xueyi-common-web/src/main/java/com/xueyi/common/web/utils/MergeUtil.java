@@ -9,16 +9,7 @@ import com.xueyi.common.core.constant.basic.OperateConstants.SubOperate;
 import com.xueyi.common.core.constant.basic.SqlConstants;
 import com.xueyi.common.core.constant.error.UtilErrorConstants;
 import com.xueyi.common.core.exception.UtilException;
-import com.xueyi.common.core.utils.core.ArrayUtil;
-import com.xueyi.common.core.utils.core.ClassUtil;
-import com.xueyi.common.core.utils.core.CollUtil;
-import com.xueyi.common.core.utils.core.ConvertUtil;
-import com.xueyi.common.core.utils.core.NumberUtil;
-import com.xueyi.common.core.utils.core.ObjectUtil;
-import com.xueyi.common.core.utils.core.ReflectUtil;
-import com.xueyi.common.core.utils.core.SpringUtil;
-import com.xueyi.common.core.utils.core.StrUtil;
-import com.xueyi.common.core.utils.core.TypeUtil;
+import com.xueyi.common.core.utils.core.*;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.core.web.entity.base.BasisEntity;
 import com.xueyi.common.web.entity.domain.SlaveRelation;
@@ -28,14 +19,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -627,6 +611,8 @@ public class MergeUtil {
         Object mergeObj = getFieldObj(dto, slaveRelation.getReceiveArrField());
         Class<?> fieldType = slaveRelation.getReceiveArrField().getType();
         List<MP> mergeList = new ArrayList<>();
+        if(ObjectUtil.isNull(mergeObj))
+            return mergeList;
         if (ClassUtil.isCollection(fieldType)) {
             Collection<Object> objColl = (Collection<Object>) mergeObj;
             mergeList = objColl.stream().distinct().map(item -> {
