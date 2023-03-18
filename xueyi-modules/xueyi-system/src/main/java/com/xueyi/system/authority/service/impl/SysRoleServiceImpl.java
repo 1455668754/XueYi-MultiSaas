@@ -43,7 +43,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleQuery, SysRoleDto
     @Override
     @DataScope(userAlias = CREATE_BY, mapperScope = {"SysRoleMapper"})
     public List<SysRoleDto> selectListScope(SysRoleQuery role) {
-        return baseManager.selectList(role);
+        return super.selectListScope(role);
     }
 
     /**

@@ -39,6 +39,17 @@ public class BaseManagerImpl<Q extends P, D extends P, P extends BaseEntity, PM 
     }
 
     /**
+     * 查询数据对象列表 | 组装子数据映射关联
+     *
+     * @param query 数据查询对象
+     * @return 数据对象集合
+     */
+    @Override
+    public final List<D> selectListMerge(Q query) {
+        return subMerge(selectList(query));
+    }
+
+    /**
      * 根据Id集合查询数据对象列表
      *
      * @param idList Id集合
@@ -51,6 +62,17 @@ public class BaseManagerImpl<Q extends P, D extends P, P extends BaseEntity, PM 
     }
 
     /**
+     * 根据Id集合查询数据对象列表 | 组装子数据映射关联
+     *
+     * @param idList Id集合
+     * @return 数据对象集合
+     */
+    @Override
+    public final List<D> selectListByIdsMerge(Collection<? extends Serializable> idList) {
+        return subMerge(selectListByIds(idList), OperateConstants.DataRow.SINGLE);
+    }
+
+    /**
      * 根据Id查询单条数据对象
      *
      * @param id Id
@@ -59,7 +81,18 @@ public class BaseManagerImpl<Q extends P, D extends P, P extends BaseEntity, PM 
     @Override
     public D selectById(Serializable id) {
         P po = baseMapper.selectById(id);
-        return subMerge(mapperDto(po));
+        return mapperDto(po);
+    }
+
+    /**
+     * 根据Id查询单条数据对象 | 组装子数据映射关联
+     *
+     * @param id Id
+     * @return 数据对象
+     */
+    @Override
+    public final D selectByIdMerge(Serializable id){
+        return subMerge(selectById(id));
     }
 
     /**
@@ -80,7 +113,7 @@ public class BaseManagerImpl<Q extends P, D extends P, P extends BaseEntity, PM 
      * @return 结果
      */
     @Override
-    public int insertMerge(D dto) {
+    public final int insertMerge(D dto) {
         return addMerge(dto);
     }
 
@@ -104,7 +137,7 @@ public class BaseManagerImpl<Q extends P, D extends P, P extends BaseEntity, PM 
      * @return 结果
      */
     @Override
-    public int insertMerge(Collection<D> dtoList) {
+    public final int insertMerge(Collection<D> dtoList) {
         return addMerge(dtoList);
     }
 
@@ -127,7 +160,7 @@ public class BaseManagerImpl<Q extends P, D extends P, P extends BaseEntity, PM 
      * @return 结果
      */
     @Override
-    public int updateMerge(D originDto, D newDto) {
+    public final int updateMerge(D originDto, D newDto) {
         return editMerge(originDto, newDto);
     }
 
@@ -152,7 +185,7 @@ public class BaseManagerImpl<Q extends P, D extends P, P extends BaseEntity, PM 
      * @return 结果
      */
     @Override
-    public int updateMerge(Collection<D> originList, Collection<D> newList) {
+    public final int updateMerge(Collection<D> originList, Collection<D> newList) {
         return editMerge(originList, newList);
     }
 
@@ -188,7 +221,7 @@ public class BaseManagerImpl<Q extends P, D extends P, P extends BaseEntity, PM 
      * @return 结果
      */
     @Override
-    public int deleteMerge(D dto) {
+    public final int deleteMerge(D dto) {
         return delMerge(dto);
     }
 
@@ -210,7 +243,7 @@ public class BaseManagerImpl<Q extends P, D extends P, P extends BaseEntity, PM 
      * @return 结果
      */
     @Override
-    public int deleteMerge(Collection<D> dtoList) {
+    public final int deleteMerge(Collection<D> dtoList) {
         return delMerge(dtoList);
     }
 
@@ -221,7 +254,7 @@ public class BaseManagerImpl<Q extends P, D extends P, P extends BaseEntity, PM 
      * @return 数据对象集合
      */
     @Override
-    public List<D> selectListByField(SqlField... field) {
+    public final List<D> selectListByField(SqlField... field) {
         return mapperDto(baseMapper.selectListByField(field));
     }
 
@@ -232,7 +265,7 @@ public class BaseManagerImpl<Q extends P, D extends P, P extends BaseEntity, PM 
      * @return 数据对象
      */
     @Override
-    public D selectByField(SqlField... field) {
+    public final D selectByField(SqlField... field) {
         return mapperDto(baseMapper.selectByField(field));
     }
 
@@ -243,7 +276,7 @@ public class BaseManagerImpl<Q extends P, D extends P, P extends BaseEntity, PM 
      * @return 结果
      */
     @Override
-    public int insertByField(Collection<?> fieldColl) {
+    public final int insertByField(Collection<?> fieldColl) {
         return baseMapper.insertByField(fieldColl);
     }
 
@@ -254,7 +287,7 @@ public class BaseManagerImpl<Q extends P, D extends P, P extends BaseEntity, PM 
      * @return 结果
      */
     @Override
-    public int updateByField(Collection<?> fieldColl) {
+    public final int updateByField(Collection<?> fieldColl) {
         return baseMapper.updateByField(fieldColl);
     }
 
@@ -265,7 +298,7 @@ public class BaseManagerImpl<Q extends P, D extends P, P extends BaseEntity, PM 
      * @return 结果
      */
     @Override
-    public int updateByField(SqlField... field) {
+    public final int updateByField(SqlField... field) {
         return baseMapper.updateByField(field);
     }
 
@@ -276,7 +309,7 @@ public class BaseManagerImpl<Q extends P, D extends P, P extends BaseEntity, PM 
      * @return 结果
      */
     @Override
-    public int deleteByField(SqlField... field) {
+    public final int deleteByField(SqlField... field) {
         return baseMapper.deleteByField(field);
     }
 

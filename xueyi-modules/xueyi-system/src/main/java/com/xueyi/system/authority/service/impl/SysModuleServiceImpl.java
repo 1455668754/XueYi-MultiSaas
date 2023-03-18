@@ -41,7 +41,7 @@ public class SysModuleServiceImpl extends BaseServiceImpl<SysModuleQuery, SysMod
     @Override
     @DataScope(userAlias = CREATE_BY, mapperScope = {"SysModuleMapper"})
     public List<SysModuleDto> selectListScope(SysModuleQuery module) {
-        return baseManager.selectList(module);
+        return super.selectListScope(module);
     }
 
 }

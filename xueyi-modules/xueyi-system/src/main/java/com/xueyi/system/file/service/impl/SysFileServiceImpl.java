@@ -29,7 +29,7 @@ public class SysFileServiceImpl extends BaseServiceImpl<SysFileQuery, SysFileDto
     @Override
     //@DataScope(userAlias = "createBy", mapperScope = {"SysFileMapper"})
     public List<SysFileDto> selectListScope(SysFileQuery file) {
-        return baseManager.selectList(file);
+        return super.selectListScope(file);
     }
 
     /**

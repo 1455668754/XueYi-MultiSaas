@@ -28,6 +28,17 @@ import java.util.stream.Collectors;
 public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG extends IBaseManager<Q, D>> extends BaseHandleServiceImpl<Q, D, IDG> implements IBaseService<Q, D> {
 
     /**
+     * 查询数据对象列表 | 数据权限 | 附加数据
+     *
+     * @param query 数据查询对象
+     * @return 数据对象集合
+     */
+    @Override
+    public List<D> selectListScope(Q query) {
+        return selectListMerge(query);
+    }
+
+    /**
      * 查询数据对象列表
      *
      * @param query 数据查询对象
@@ -39,14 +50,14 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG ext
     }
 
     /**
-     * 查询数据对象列表 | 数据权限 | 附加数据
+     * 查询数据对象列表 | 组装子数据映射关联
      *
      * @param query 数据查询对象
      * @return 数据对象集合
      */
     @Override
-    public List<D> selectListScope(Q query) {
-        return baseManager.selectList(query);
+    public List<D> selectListMerge(Q query) {
+        return baseManager.selectListMerge(query);
     }
 
     /**
@@ -61,6 +72,17 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG ext
     }
 
     /**
+     * 根据Id集合查询数据对象列表 | 组装子数据映射关联
+     *
+     * @param idList Id集合
+     * @return 数据对象集合
+     */
+    @Override
+    public List<D> selectListByIdsMerge(Collection<? extends Serializable> idList) {
+        return baseManager.selectListByIdsMerge(idList);
+    }
+
+    /**
      * 根据Id查询单条数据对象
      *
      * @param id Id
@@ -69,6 +91,17 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG ext
     @Override
     public D selectById(Serializable id) {
         return baseManager.selectById(id);
+    }
+
+    /**
+     * 根据Id查询单条数据对象 | 组装子数据映射关联
+     *
+     * @param id Id
+     * @return 数据对象
+     */
+    @Override
+    public D selectByIdMerge(Serializable id) {
+        return baseManager.selectByIdMerge(id);
     }
 
     /**
