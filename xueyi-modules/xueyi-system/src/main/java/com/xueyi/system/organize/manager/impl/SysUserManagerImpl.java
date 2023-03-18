@@ -28,6 +28,7 @@ import com.xueyi.system.organize.mapper.SysPostMapper;
 import com.xueyi.system.organize.mapper.SysUserMapper;
 import com.xueyi.system.organize.mapper.merge.SysOrganizeRoleMergeMapper;
 import com.xueyi.system.organize.mapper.merge.SysUserPostMergeMapper;
+import com.xueyi.system.organize.service.ISysPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -79,7 +80,7 @@ public class SysUserManagerImpl extends BaseManagerImpl<SysUserQuery, SysUserDto
     protected List<SlaveRelation> subRelationInit() {
         return new ArrayList<>() {{
             add(new SlaveRelation(USER_OrganizeRoleMerge_GROUP, SysOrganizeRoleMergeMapper.class, SysOrganizeRoleMerge.class, OperateConstants.SubOperateLimit.ONLY_DEL));
-            add(new SlaveRelation(USER_SysUserPostMerge_GROUP, ISysPostManager.class, SysUserPostMergeMapper.class, SysUserPostMerge.class));
+            add(new SlaveRelation(USER_SysUserPostMerge_GROUP, ISysPostService.class, ISysPostManager.class, SysUserPostMergeMapper.class, SysUserPostMerge.class, new SlaveRelation.LinkageOperate()));
         }};
     }
 
