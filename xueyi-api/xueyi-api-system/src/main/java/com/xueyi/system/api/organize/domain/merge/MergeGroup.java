@@ -7,8 +7,11 @@ package com.xueyi.system.api.organize.domain.merge;
  */
 public interface MergeGroup {
 
-    /** 部门岗位关联 -》 部门 */
+    /** 岗位 -》 部门 */
     String DEPT_SysPost_GROUP = "DEPT_SysPost_GROUP";
+
+    /** 部门 -》 岗位 */
+    String POST_SysDept_GROUP = "POST_SysDept_GROUP";
 
     /** 组织-角色关联（角色绑定） -》 部门 */
     String DEPT_OrganizeRoleMerge_GROUP = "DEPT_OrganizeRoleMerge_GROUP";
