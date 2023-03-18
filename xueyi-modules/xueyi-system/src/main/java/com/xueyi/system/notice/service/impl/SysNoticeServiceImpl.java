@@ -29,6 +29,6 @@ public class SysNoticeServiceImpl extends BaseServiceImpl<SysNoticeQuery, SysNot
     @Override
     @DataScope(userAlias = CREATE_BY, mapperScope = {"SysNoticeMapper"})
     public List<SysNoticeDto> selectListScope(SysNoticeQuery notice) {
-        return baseManager.selectList(notice);
+        return super.selectListScope(notice);
     }
 }

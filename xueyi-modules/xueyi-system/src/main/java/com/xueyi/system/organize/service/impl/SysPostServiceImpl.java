@@ -57,7 +57,7 @@ public class SysPostServiceImpl extends BaseServiceImpl<SysPostQuery, SysPostDto
     @Override
     @DataScope(postAlias = "id", mapperScope = {"SysPostMapper"})
     public List<SysPostDto> selectListScope(SysPostQuery post) {
-        return baseManager.selectList(post);
+        return super.selectListScope(post);
     }
 
     /**

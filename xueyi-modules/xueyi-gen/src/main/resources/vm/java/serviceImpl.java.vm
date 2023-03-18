@@ -31,7 +31,7 @@ public class ${ClassName}ServiceImpl extends ${Entity}ServiceImpl<${ClassName}Qu
     @Override
     //@DataScope(userAlias = "createBy", mapperScope = {"${ClassName}Mapper"})
     public List<${ClassName}Dto> selectListScope(${ClassName}Query ${classNameNoPrefix}) {
-        return baseManager.selectList(${classNameNoPrefix});
+        return super.selectListScope(${classNameNoPrefix});
     }
 
 }

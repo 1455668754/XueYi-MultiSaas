@@ -45,7 +45,7 @@ public class SysDeptServiceImpl extends TreeServiceImpl<SysDeptQuery, SysDeptDto
     @Override
     @DataScope(deptAlias = "id", mapperScope = {"SysDeptMapper"})
     public List<SysDeptDto> selectListScope(SysDeptQuery dept) {
-        return baseManager.selectList(dept);
+        return super.selectListScope(dept);
     }
 
     /**

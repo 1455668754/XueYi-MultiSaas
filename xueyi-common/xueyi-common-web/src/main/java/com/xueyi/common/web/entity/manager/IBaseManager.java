@@ -25,6 +25,14 @@ public interface IBaseManager<Q extends BaseEntity, D extends BaseEntity> {
     List<D> selectList(Q query);
 
     /**
+     * 查询数据对象列表 | 组装子数据映射关联
+     *
+     * @param query 数据查询对象
+     * @return 数据对象集合
+     */
+    List<D> selectListMerge(Q query);
+
+    /**
      * 根据Id集合查询数据对象列表
      *
      * @param idList Id集合
@@ -33,12 +41,28 @@ public interface IBaseManager<Q extends BaseEntity, D extends BaseEntity> {
     List<D> selectListByIds(Collection<? extends Serializable> idList);
 
     /**
+     * 根据Id集合查询数据对象列表 | 组装子数据映射关联
+     *
+     * @param idList Id集合
+     * @return 数据对象集合
+     */
+    List<D> selectListByIdsMerge(Collection<? extends Serializable> idList);
+
+    /**
      * 根据Id查询单条数据对象
      *
      * @param id Id
      * @return 数据对象
      */
     D selectById(Serializable id);
+
+    /**
+     * 根据Id查询单条数据对象 | 组装子数据映射关联
+     *
+     * @param id Id
+     * @return 数据对象
+     */
+    D selectByIdMerge(Serializable id);
 
     /**
      * 新增数据对象

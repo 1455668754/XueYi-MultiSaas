@@ -180,5 +180,4 @@ public class BaseHandleServiceImpl<Q extends BaseEntity, D extends BaseEntity, I
             }
         }
     }
-
 }
