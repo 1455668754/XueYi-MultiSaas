@@ -141,7 +141,7 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG ext
     @Override
     @DSTransactional
     public int update(D dto) {
-        D originDto = baseManager.selectById(dto.getId());
+        D originDto = baseManager.selectByIdMerge(dto.getId());
         startHandle(OperateConstants.ServiceType.EDIT, originDto, dto);
         int row = baseManager.update(dto);
         endHandle(OperateConstants.ServiceType.EDIT, row, originDto, dto);
@@ -155,7 +155,7 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG ext
      */
     @Override
     public int updateBatch(Collection<D> dtoList) {
-        List<D> originList = baseManager.selectListByIds(dtoList.stream().map(D::getId).collect(Collectors.toList()));
+        List<D> originList = baseManager.selectListByIdsMerge(dtoList.stream().map(D::getId).collect(Collectors.toList()));
         startBatchHandle(OperateConstants.ServiceType.BATCH_EDIT, originList, dtoList);
         int rows = baseManager.updateBatch(dtoList);
         endBatchHandle(OperateConstants.ServiceType.BATCH_EDIT, rows, originList, dtoList);
@@ -171,7 +171,7 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG ext
     @Override
     @DSTransactional
     public int updateStatus(D dto) {
-        D originDto = baseManager.selectById(dto.getId());
+        D originDto = baseManager.selectByIdMerge(dto.getId());
         startHandle(OperateConstants.ServiceType.EDIT_STATUS, originDto, dto);
         int row = baseManager.updateStatus(dto);
         endHandle(OperateConstants.ServiceType.EDIT_STATUS, row, originDto, dto);
@@ -187,7 +187,7 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG ext
     @Override
     @DSTransactional
     public int deleteById(Serializable id) {
-        D originDto = baseManager.selectById(id);
+        D originDto = baseManager.selectByIdMerge(id);
         startHandle(OperateConstants.ServiceType.DELETE, originDto, null);
         int row = baseManager.deleteById(id);
         endHandle(OperateConstants.ServiceType.DELETE, row, originDto, null);
@@ -203,7 +203,7 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG ext
     @Override
     @DSTransactional
     public int deleteByIds(Collection<? extends Serializable> idList) {
-        List<D> originList = baseManager.selectListByIds(idList);
+        List<D> originList = baseManager.selectListByIdsMerge(idList);
         startBatchHandle(OperateConstants.ServiceType.BATCH_DELETE, originList, null);
         int rows = baseManager.deleteByIds(idList);
         endBatchHandle(OperateConstants.ServiceType.BATCH_DELETE, rows, originList, null);

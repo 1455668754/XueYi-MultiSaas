@@ -291,28 +291,6 @@ public class BaseManagerImpl<Q extends P, D extends P, P extends BaseEntity, PM 
     }
 
     /**
-     * 批量插入数据
-     *
-     * @param fieldColl 数据对象集合
-     * @return 结果
-     */
-    @Override
-    public int insertByField(Collection<?> fieldColl) {
-        return baseMapper.insertByField(fieldColl);
-    }
-
-    /**
-     * 批量更新数据
-     *
-     * @param fieldColl 数据对象集合
-     * @return 结果
-     */
-    @Override
-    public int updateByField(Collection<?> fieldColl) {
-        return baseMapper.updateByField(fieldColl);
-    }
-
-    /**
      * 根据动态SQL控制对象更新数据对象
      *
      * @param field 动态SQL控制对象
