@@ -32,6 +32,10 @@ public class BasisEntity implements Serializable {
     @NotNull(message = "id不能为空", groups = {V_E.class})
     protected Long id;
 
+    /** 显示顺序 */
+    @TableField(exist = false)
+    protected Integer sort;
+
     /** 数据源名称 */
     @JsonIgnore
     @TableField(exist = false)
