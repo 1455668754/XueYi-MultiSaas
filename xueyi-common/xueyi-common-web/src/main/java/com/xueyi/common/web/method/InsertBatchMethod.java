@@ -79,10 +79,15 @@ public class InsertBatchMethod extends AbstractMethod {
         final StringBuilder valueSql = new StringBuilder();
         valueSql.append("<foreach collection=\"collection\" item=\"item\" index=\"index\" open=\"(\" separator=\"),(\" close=\")\">");
         if (StrUtil.isNotEmpty(tableInfo.getKeyColumn()))
-            valueSql.append("#{item.").append(tableInfo.getKeyProperty()).append(StrUtil.DELIM_END).append(StrUtil.COMMA);
+            valueSql.append("#{item.").append(tableInfo.getKeyProperty()).append("}").append(StrUtil.COMMA);
         tableInfo.getFieldList().stream()
                 .filter(x -> !(ObjectUtil.equals(FieldStrategy.NEVER, x.getInsertStrategy()) || x.isLogicDelete()))
-                .forEach(x -> valueSql.append("#{item.").append(x.getProperty()).append(StrUtil.DELIM_END).append(StrUtil.COMMA));
+                .forEach(x -> {
+                    valueSql.append("#{item.").append(x.getProperty());
+                    if (ObjectUtil.isNotNull(x.getTypeHandler()))
+                        valueSql.append(StrUtil.COMMA).append("typeHandler").append(StrUtil.EQUAL).append(x.getTypeHandler().getName());
+                    valueSql.append("}").append(StrUtil.COMMA);
+                });
         valueSql.delete(valueSql.length() - NumberUtil.One, valueSql.length());
         valueSql.append("</foreach>");
         return valueSql.toString();
