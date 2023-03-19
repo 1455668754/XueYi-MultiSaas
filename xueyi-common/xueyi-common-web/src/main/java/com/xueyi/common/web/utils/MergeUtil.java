@@ -20,6 +20,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -661,21 +662,24 @@ public class MergeUtil {
         List<MP> mergeList = new ArrayList<>();
         Optional.ofNullable(mergeObj).ifPresent((obj) -> {
             Class<?> fieldType = slaveRelation.getReceiveArrField().getType();
+            AtomicInteger index = new AtomicInteger(NumberUtil.Zero);
             if (ClassUtil.isCollection(fieldType)) {
                 Collection<Object> objColl = (Collection<Object>) obj;
                 mergeList.addAll(objColl.stream().distinct().map(item -> {
-                    Object mergePo = createObj(slaveRelation.getMergePoClass());
+                    MP mergePo = (MP) createObj(slaveRelation.getMergePoClass());
                     setField(mergePo, slaveRelation.getMergeMainField(), mainKey);
                     setField(mergePo, slaveRelation.getMergeSlaveField(), item);
-                    return (MP) mergePo;
+                    mergePo.setSort(index.getAndIncrement());
+                    return mergePo;
                 }).toList());
             } else if (ClassUtil.isArray(fieldType)) {
                 Object[] objArr = (Object[]) obj;
                 mergeList.addAll(Arrays.stream(objArr).distinct().map(item -> {
-                    Object mergePo = createObj(slaveRelation.getMergePoClass());
+                    MP mergePo = (MP) createObj(slaveRelation.getMergePoClass());
                     setField(mergePo, slaveRelation.getMergeMainField(), mainKey);
                     setField(mergePo, slaveRelation.getMergeSlaveField(), item);
-                    return (MP) mergePo;
+                    mergePo.setSort(index.getAndIncrement());
+                    return mergePo;
                 }).toList());
             }
         });
