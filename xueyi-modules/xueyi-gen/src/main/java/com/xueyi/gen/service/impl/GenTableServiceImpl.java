@@ -400,7 +400,7 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
      * @return 业务表对象
      */
     private GenTableDto initTable(Long id) {
-        GenTableDto table = baseManager.selectById(id);
+        GenTableDto table = baseManager.selectByIdMerge(id);
         JSONObject optionsObj = JSON.parseObject(table.getOptions());
         // 设置列信息
         switch (TemplateType.getByCode(table.getTplCategory())) {
