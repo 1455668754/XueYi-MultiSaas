@@ -37,10 +37,10 @@ public class SlaveRelation {
     private Class<? extends BaseEntity> mainDtoClass;
 
     /** 从数据 - Service接口class */
-    private Class<? extends IBaseService<? extends BaseEntity, ? extends BaseEntity>> slaveServiceClass;
+    private Class<? extends IBaseService> slaveServiceClass;
 
     /** 从数据 - Manager接口class */
-    private Class<? extends IBaseManager<? extends BaseEntity, ? extends BaseEntity>> slaveManagerClass;
+    private Class<? extends IBaseManager> slaveManagerClass;
 
     /** 主数据对象 - 主键字段 */
     private Field mainIdField;
@@ -64,7 +64,7 @@ public class SlaveRelation {
     private Field receiveField;
 
     /** 间接关联 - 关联Mapper接口class */
-    private Class<? extends BasicMapper<? extends BasisEntity>> mergeClass;
+    private Class<? extends BasicMapper> mergeClass;
 
     /** 中间数据对象 - 间接关联 - 关联数据对象class */
     private Class<? extends BasisEntity> mergePoClass;

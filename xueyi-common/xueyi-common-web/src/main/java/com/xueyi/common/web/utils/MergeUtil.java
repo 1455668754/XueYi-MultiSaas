@@ -336,7 +336,9 @@ public class MergeUtil {
         Collection<SD> subList = insertDirectBuild(dto, slaveRelation);
         if (CollUtil.isEmpty(subList))
             return NumberUtil.Zero;
-        return SpringUtil.getBean(slaveRelation.getSlaveManagerClass()).insertByField(subList);
+        return slaveRelation.getLinkageOperate().getIsAdd()
+                ? SpringUtil.getBean(slaveRelation.getSlaveServiceClass()).insertBatch(subList)
+                : SpringUtil.getBean(slaveRelation.getSlaveManagerClass()).insertBatch(subList);
     }
 
     /**
@@ -355,7 +357,9 @@ public class MergeUtil {
         }
         if (CollUtil.isEmpty(list))
             return NumberUtil.Zero;
-        return SpringUtil.getBean(slaveRelation.getSlaveManagerClass()).insertByField(list);
+        return slaveRelation.getLinkageOperate().getIsAdd()
+                ? SpringUtil.getBean(slaveRelation.getSlaveServiceClass()).insertBatch(list)
+                : SpringUtil.getBean(slaveRelation.getSlaveManagerClass()).insertBatch(list);
     }
 
     /**
@@ -368,7 +372,7 @@ public class MergeUtil {
         Collection<MP> mergeList = insertIndirectBuild(dto, slaveRelation);
         if (CollUtil.isEmpty(mergeList))
             return NumberUtil.Zero;
-        return SpringUtil.getBean(slaveRelation.getMergeClass()).insertByField(mergeList);
+        return SpringUtil.getBean(slaveRelation.getMergeClass()).insertBatch(mergeList);
     }
 
     /**
@@ -387,7 +391,7 @@ public class MergeUtil {
         }
         if (CollUtil.isEmpty(list))
             return NumberUtil.Zero;
-        return SpringUtil.getBean(slaveRelation.getMergeClass()).insertByField(list);
+        return SpringUtil.getBean(slaveRelation.getMergeClass()).insertBatch(list);
     }
 
     /**
@@ -406,16 +410,24 @@ public class MergeUtil {
         int rows = NumberUtil.Zero;
         // 2.判断是否执行新增
         if (CollUtil.isNotEmpty(insertList))
-            rows += SpringUtil.getBean(slaveRelation.getSlaveManagerClass()).insertByField(insertList);
+            rows += slaveRelation.getLinkageOperate().getIsAdd()
+                    ? SpringUtil.getBean(slaveRelation.getSlaveServiceClass()).insertBatch(insertList)
+                    : SpringUtil.getBean(slaveRelation.getSlaveManagerClass()).insertBatch(insertList);
         // 3.判断是否执行修改
         if (CollUtil.isNotEmpty(updateList))
-            rows += SpringUtil.getBean(slaveRelation.getSlaveManagerClass()).updateByField(updateList);
+            rows += slaveRelation.getLinkageOperate().getIsEdit()
+                    ? SpringUtil.getBean(slaveRelation.getSlaveServiceClass()).updateBatch(updateList)
+                    : SpringUtil.getBean(slaveRelation.getSlaveManagerClass()).updateBatch(updateList);
         // 4.判断是否执行删除
         if (CollUtil.isNotEmpty(delKeys)) {
-            Object delMainKey = getFieldObj(newDto, slaveRelation.getMainField());
-            SqlField sqlMainField = new SqlField(SqlConstants.OperateType.EQ, slaveRelation.getSlaveFieldSqlName(), delMainKey, slaveRelation.getLinkageOperate());
-            SqlField sqlArrField = new SqlField(SqlConstants.OperateType.IN, slaveRelation.getSlaveIdFieldSqlName(), delKeys, slaveRelation.getLinkageOperate());
-            rows += SpringUtil.getBean(slaveRelation.getSlaveManagerClass()).deleteByField(sqlMainField, sqlArrField);
+            if (slaveRelation.getLinkageOperate().getIsDelete()) {
+                rows += SpringUtil.getBean(slaveRelation.getSlaveServiceClass()).deleteByIds(delKeys);
+            } else {
+                Object delMainKey = getFieldObj(newDto, slaveRelation.getMainField());
+                SqlField sqlMainField = new SqlField(SqlConstants.OperateType.EQ, slaveRelation.getSlaveFieldSqlName(), delMainKey, slaveRelation.getLinkageOperate());
+                SqlField sqlArrField = new SqlField(SqlConstants.OperateType.IN, slaveRelation.getSlaveIdFieldSqlName(), delKeys, slaveRelation.getLinkageOperate());
+                rows += SpringUtil.getBean(slaveRelation.getSlaveManagerClass()).deleteByField(sqlMainField, sqlArrField);
+            }
         }
         // 5.返回操作结果
         return rows;
@@ -448,16 +460,24 @@ public class MergeUtil {
 
         // 2.判断是否执行新增
         if (CollUtil.isNotEmpty(insertList))
-            rows += SpringUtil.getBean(slaveRelation.getSlaveManagerClass()).insertByField(insertList);
+            rows += slaveRelation.getLinkageOperate().getIsAdd()
+                    ? SpringUtil.getBean(slaveRelation.getSlaveServiceClass()).insertBatch(insertList)
+                    : SpringUtil.getBean(slaveRelation.getSlaveManagerClass()).insertBatch(insertList);
         // 3.判断是否执行修改
         if (CollUtil.isNotEmpty(updateList))
-            rows += SpringUtil.getBean(slaveRelation.getSlaveManagerClass()).updateByField(updateList);
+            rows += slaveRelation.getLinkageOperate().getIsEdit()
+                    ? SpringUtil.getBean(slaveRelation.getSlaveServiceClass()).updateBatch(updateList)
+                    : SpringUtil.getBean(slaveRelation.getSlaveManagerClass()).updateBatch(updateList);
         // 4.判断是否执行删除
         if (CollUtil.isNotEmpty(delKeys)) {
-            Set<Object> delMainKeys = CollUtil.isNotEmpty(newList) ? newList.stream().map(item -> getFieldObj(item, slaveRelation.getMainField())).collect(Collectors.toSet()) : new HashSet<>();
-            SqlField sqlMainField = new SqlField(SqlConstants.OperateType.IN, slaveRelation.getSlaveFieldSqlName(), delMainKeys, slaveRelation.getLinkageOperate());
-            SqlField sqlArrField = new SqlField(SqlConstants.OperateType.IN, slaveRelation.getSlaveIdFieldSqlName(), delKeys, slaveRelation.getLinkageOperate());
-            rows += SpringUtil.getBean(slaveRelation.getSlaveManagerClass()).deleteByField(sqlMainField, sqlArrField);
+            if (slaveRelation.getLinkageOperate().getIsDelete()) {
+                rows += SpringUtil.getBean(slaveRelation.getSlaveServiceClass()).deleteByIds(delKeys);
+            } else {
+                Set<Object> delMainKeys = CollUtil.isNotEmpty(newList) ? newList.stream().map(item -> getFieldObj(item, slaveRelation.getMainField())).collect(Collectors.toSet()) : new HashSet<>();
+                SqlField sqlMainField = new SqlField(SqlConstants.OperateType.IN, slaveRelation.getSlaveFieldSqlName(), delMainKeys, slaveRelation.getLinkageOperate());
+                SqlField sqlArrField = new SqlField(SqlConstants.OperateType.IN, slaveRelation.getSlaveIdFieldSqlName(), delKeys, slaveRelation.getLinkageOperate());
+                rows += SpringUtil.getBean(slaveRelation.getSlaveManagerClass()).deleteByField(sqlMainField, sqlArrField);
+            }
         }
         // 5.返回操作结果
         return rows;
@@ -478,7 +498,7 @@ public class MergeUtil {
         int rows = NumberUtil.Zero;
         // 2.判断是否执行新增
         if (CollUtil.isNotEmpty(insertList))
-            rows += SpringUtil.getBean(slaveRelation.getMergeClass()).insertByField(insertList);
+            rows += SpringUtil.getBean(slaveRelation.getMergeClass()).insertBatch(insertList);
         // 3.判断是否执行删除
         if (CollUtil.isNotEmpty(delKeys)) {
             Object delMainKey = getFieldObj(newDto, slaveRelation.getMainField());
@@ -514,7 +534,7 @@ public class MergeUtil {
         int rows = NumberUtil.Zero;
         // 2.判断是否执行新增
         if (CollUtil.isNotEmpty(insertList))
-            rows += SpringUtil.getBean(slaveRelation.getMergeClass()).insertByField(insertList);
+            rows += SpringUtil.getBean(slaveRelation.getMergeClass()).insertBatch(insertList);
         // 3.判断是否执行删除
         if (CollUtil.isNotEmpty(delKeys)) {
             Set<Object> delMainKeys = CollUtil.isNotEmpty(newList) ? newList.stream().map(item -> getFieldObj(item, slaveRelation.getMainField())).collect(Collectors.toSet()) : new HashSet<>();
@@ -533,9 +553,20 @@ public class MergeUtil {
      * @param slaveRelation 从属关联关系定义对象
      */
     private static <D> int deleteDirectObj(D dto, SlaveRelation slaveRelation) {
-        Object delKey = getFieldObj(dto, slaveRelation.getMainField());
-        SqlField sqlField = new SqlField(SqlConstants.OperateType.EQ, slaveRelation.getSlaveFieldSqlName(), delKey, slaveRelation.getLinkageOperate());
-        return SpringUtil.getBean(slaveRelation.getSlaveManagerClass()).deleteByField(sqlField);
+        if (slaveRelation.getLinkageOperate().getIsDelete()) {
+            Set<Object> delKeys = new HashSet<>();
+            deleteDirectBuild(dto, slaveRelation, delKeys);
+            if (CollUtil.isNotEmpty(delKeys)) {
+                return SpringUtil.getBean(slaveRelation.getSlaveServiceClass()).deleteByIds(delKeys);
+            }
+        } else {
+            Object delKey = getFieldObj(dto, slaveRelation.getMainField());
+            if (ObjectUtil.isNotEmpty(delKey)) {
+                SqlField sqlField = new SqlField(SqlConstants.OperateType.EQ, slaveRelation.getSlaveFieldSqlName(), delKey, slaveRelation.getLinkageOperate());
+                return SpringUtil.getBean(slaveRelation.getSlaveManagerClass()).deleteByField(sqlField);
+            }
+        }
+        return NumberUtil.Zero;
     }
 
     /**
@@ -545,9 +576,22 @@ public class MergeUtil {
      * @param slaveRelation 从属关联关系定义对象
      */
     private static <D> int deleteDirectList(Collection<D> dtoList, SlaveRelation slaveRelation) {
-        Set<Object> delKeys = dtoList.stream().map(item -> getFieldObj(item, slaveRelation.getMainField())).collect(Collectors.toSet());
-        SqlField sqlField = new SqlField(SqlConstants.OperateType.IN, slaveRelation.getSlaveFieldSqlName(), delKeys, slaveRelation.getLinkageOperate());
-        return SpringUtil.getBean(slaveRelation.getSlaveManagerClass()).deleteByField(sqlField);
+        if (slaveRelation.getLinkageOperate().getIsDelete()) {
+            Set<Object> delKeys = new HashSet<>();
+            if (CollUtil.isNotEmpty(dtoList)) {
+                dtoList.forEach(dto -> deleteDirectBuild(dto, slaveRelation, delKeys));
+            }
+            if (CollUtil.isNotEmpty(delKeys)) {
+                return SpringUtil.getBean(slaveRelation.getSlaveServiceClass()).deleteByIds(delKeys);
+            }
+        } else {
+            Set<Object> delKeys = dtoList.stream().map(item -> getFieldObj(item, slaveRelation.getMainField())).collect(Collectors.toSet());
+            if (CollUtil.isNotEmpty(delKeys)) {
+                SqlField sqlField = new SqlField(SqlConstants.OperateType.IN, slaveRelation.getSlaveFieldSqlName(), delKeys, slaveRelation.getLinkageOperate());
+                return SpringUtil.getBean(slaveRelation.getSlaveManagerClass()).deleteByField(sqlField);
+            }
+        }
+        return NumberUtil.Zero;
     }
 
     /**
@@ -611,7 +655,7 @@ public class MergeUtil {
         Object mergeObj = getFieldObj(dto, slaveRelation.getReceiveArrField());
         Class<?> fieldType = slaveRelation.getReceiveArrField().getType();
         List<MP> mergeList = new ArrayList<>();
-        if(ObjectUtil.isNull(mergeObj))
+        if (ObjectUtil.isNull(mergeObj))
             return mergeList;
         if (ClassUtil.isCollection(fieldType)) {
             Collection<Object> objColl = (Collection<Object>) mergeObj;
@@ -745,6 +789,29 @@ public class MergeUtil {
             }).toList();
             if (CollUtil.isNotEmpty(mergeList))
                 insertList.addAll(mergeList);
+        }
+    }
+
+    /**
+     * 删除关联数据 | 数据组装 | 直接关联
+     *
+     * @param originDto     源数据对象
+     * @param slaveRelation 从属关联关系定义对象
+     * @param delKeys       待删除键值集合
+     */
+    private static <D> void deleteDirectBuild(D originDto, SlaveRelation slaveRelation, Set<Object> delKeys) {
+        Object subObj = getFieldObj(originDto, slaveRelation.getReceiveField());
+        Class<?> fieldType = slaveRelation.getReceiveField().getType();
+        if (ClassUtil.isNormalClass(fieldType)) {
+            if (ObjectUtil.isNotNull(subObj)) {
+                Object originSlaveId = getFieldObj(originDto, slaveRelation.getSlaveIdField());
+                delKeys.add(originSlaveId);
+            }
+        } else if (ClassUtil.isCollection(fieldType)) {
+            Collection<Object> subColl = (Collection<Object>) subObj;
+            if (CollUtil.isNotEmpty(subColl)) {
+                subColl.stream().filter(ObjectUtil::isNotNull).forEach(item -> delKeys.add(getFieldObj(item, slaveRelation.getSlaveIdField())));
+            }
         }
     }
 
