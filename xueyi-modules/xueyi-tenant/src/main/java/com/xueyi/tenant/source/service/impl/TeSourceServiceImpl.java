@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * 数据源管理 服务层处理
@@ -73,7 +74,7 @@ public class TeSourceServiceImpl extends BaseServiceImpl<TeSourceQuery, TeSource
             case REFRESH_ALL -> {
                 List<TeSourceDto> allList = baseManager.selectList(null);
                 redisService.deleteObject(getCacheKey());
-                redisService.refreshMapCache(getCacheKey(), allList, TeSourceDto::getSlave, TeSourceDto -> TeSourceDto);
+                redisService.refreshMapCache(getCacheKey(), allList, TeSourceDto::getSlave, Function.identity());
             }
             case REFRESH -> {
                 if (operate.isSingle())
