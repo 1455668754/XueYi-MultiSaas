@@ -350,7 +350,7 @@ public class MergeUtil {
     private static <D, SD extends BaseEntity> int insertDirectList(Collection<D> dtoList, SlaveRelation slaveRelation) {
         List<SD> list = new ArrayList<>();
         for (D dto : dtoList) {
-            List<SD> subList = insertIndirectBuild(dto, slaveRelation);
+            List<SD> subList = insertDirectBuild(dto, slaveRelation);
             if (CollUtil.isNotEmpty(subList)) {
                 list.addAll(subList);
             }
@@ -628,18 +628,22 @@ public class MergeUtil {
     private static <D, SD extends BaseEntity> List<SD> insertDirectBuild(D dto, SlaveRelation slaveRelation) {
         Object mainKey = getFieldObj(dto, slaveRelation.getMainField());
         Object subObj = getFieldObj(dto, slaveRelation.getReceiveField());
-        Class<?> fieldType = slaveRelation.getReceiveField().getType();
         List<SD> subList = new ArrayList<>();
-        if (ClassUtil.isNormalClass(fieldType)) {
-            setField(subObj, slaveRelation.getSlaveField(), mainKey);
-            subList.add((SD) subObj);
-        } else if (ClassUtil.isCollection(fieldType)) {
-            Collection<Object> objColl = (Collection<Object>) subObj;
-            subList = objColl.stream().map(item -> {
-                setField(item, slaveRelation.getSlaveField(), mainKey);
-                return (SD) item;
-            }).collect(Collectors.toList());
-        }
+        Optional.ofNullable(subObj).ifPresent((obj) -> {
+            Class<?> fieldType = slaveRelation.getReceiveField().getType();
+            if (ClassUtil.isNormalClass(fieldType)) {
+                setField(obj, slaveRelation.getSlaveField(), mainKey);
+                subList.add((SD) obj);
+            } else if (ClassUtil.isCollection(fieldType)) {
+                Collection<Object> objColl = (Collection<Object>) obj;
+                if (CollUtil.isNotEmpty(objColl)) {
+                    subList.addAll(objColl.stream().map(item -> {
+                        setField(item, slaveRelation.getSlaveField(), mainKey);
+                        return (SD) item;
+                    }).toList());
+                }
+            }
+        });
         return subList;
     }
 
@@ -653,27 +657,29 @@ public class MergeUtil {
     private static <D, MP extends BasisEntity> List<MP> insertIndirectBuild(D dto, SlaveRelation slaveRelation) {
         Object mainKey = getFieldObj(dto, slaveRelation.getMainField());
         Object mergeObj = getFieldObj(dto, slaveRelation.getReceiveArrField());
-        Class<?> fieldType = slaveRelation.getReceiveArrField().getType();
+
         List<MP> mergeList = new ArrayList<>();
-        if (ObjectUtil.isNull(mergeObj))
-            return mergeList;
-        if (ClassUtil.isCollection(fieldType)) {
-            Collection<Object> objColl = (Collection<Object>) mergeObj;
-            mergeList = objColl.stream().distinct().map(item -> {
-                Object mergePo = createObj(slaveRelation.getMergePoClass());
-                setField(mergePo, slaveRelation.getMergeMainField(), mainKey);
-                setField(mergePo, slaveRelation.getMergeSlaveField(), item);
-                return (MP) mergePo;
-            }).collect(Collectors.toList());
-        } else if (ClassUtil.isArray(fieldType)) {
-            Object[] objArr = (Object[]) mergeObj;
-            mergeList = Arrays.stream(objArr).distinct().map(item -> {
-                Object mergePo = createObj(slaveRelation.getMergePoClass());
-                setField(mergePo, slaveRelation.getMergeMainField(), mainKey);
-                setField(mergePo, slaveRelation.getMergeSlaveField(), item);
-                return (MP) mergePo;
-            }).collect(Collectors.toList());
-        }
+        Optional.ofNullable(mergeObj).ifPresent((obj) -> {
+            Class<?> fieldType = slaveRelation.getReceiveArrField().getType();
+            if (ClassUtil.isCollection(fieldType)) {
+                Collection<Object> objColl = (Collection<Object>) obj;
+                mergeList.addAll(objColl.stream().distinct().map(item -> {
+                    Object mergePo = createObj(slaveRelation.getMergePoClass());
+                    setField(mergePo, slaveRelation.getMergeMainField(), mainKey);
+                    setField(mergePo, slaveRelation.getMergeSlaveField(), item);
+                    return (MP) mergePo;
+                }).toList());
+            } else if (ClassUtil.isArray(fieldType)) {
+                Object[] objArr = (Object[]) obj;
+                mergeList.addAll(Arrays.stream(objArr).distinct().map(item -> {
+                    Object mergePo = createObj(slaveRelation.getMergePoClass());
+                    setField(mergePo, slaveRelation.getMergeMainField(), mainKey);
+                    setField(mergePo, slaveRelation.getMergeSlaveField(), item);
+                    return (MP) mergePo;
+                }).toList());
+            }
+        });
+
         return mergeList;
     }
 
