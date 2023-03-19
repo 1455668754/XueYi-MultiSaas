@@ -38,7 +38,7 @@ public class BaseManagerImpl<Q extends P, D extends P, P extends BaseEntity, PM 
     @Override
     public List<D> selectList(Q query) {
         List<P> poList = baseMapper.selectList(selectListQuery(query));
-        return subMerge(mapperDto(poList));
+        return mapperDto(poList);
     }
 
     /**
@@ -61,7 +61,7 @@ public class BaseManagerImpl<Q extends P, D extends P, P extends BaseEntity, PM 
     @Override
     public List<D> selectListByIds(Collection<? extends Serializable> idList) {
         List<P> poList = baseMapper.selectBatchIds(idList);
-        return subMerge(mapperDto(poList), OperateConstants.DataRow.SINGLE);
+        return mapperDto(poList);
     }
 
     /**
