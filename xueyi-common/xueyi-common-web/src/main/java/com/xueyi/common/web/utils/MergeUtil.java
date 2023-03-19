@@ -691,6 +691,8 @@ public class MergeUtil {
         Object originSubObj = getFieldObj(originDto, slaveRelation.getReceiveField());
         Object newSubObj = getFieldObj(newDto, slaveRelation.getReceiveField());
 
+        Object mainKey = getFieldObj(newDto, slaveRelation.getMainField());
+
         Class<?> fieldType = slaveRelation.getReceiveField().getType();
         if (ClassUtil.isNormalClass(fieldType)) {
             if (ObjectUtil.isNotNull(newSubObj)) {
@@ -701,9 +703,11 @@ public class MergeUtil {
                         updateList.add((SD) newDto);
                     } else {
                         delKeys.add(originSlaveId);
+                        setField(newDto, slaveRelation.getSlaveField(), mainKey);
                         insertList.add((SD) newDto);
                     }
                 } else {
+                    setField(newDto, slaveRelation.getSlaveField(), mainKey);
                     insertList.add((SD) newDto);
                 }
             } else if (ObjectUtil.isNotNull(originSubObj)) {
@@ -724,10 +728,12 @@ public class MergeUtil {
                     : newSubColl.stream().filter(ObjectUtil::isNotNull)
                     .map(item -> {
                         Object slaveId = getFieldObj(item, slaveRelation.getSlaveIdField());
-                        if (originSubMap.containsKey(slaveId))
+                        if (originSubMap.containsKey(slaveId)) {
                             updateList.add((SD) item);
-                        else
+                        } else {
+                            setField(item, slaveRelation.getSlaveField(), mainKey);
                             insertList.add((SD) item);
+                        }
                         return slaveId;
                     }).filter(ObjectUtil::isNotNull)
                     .collect(Collectors.toMap(Function.identity(), Function.identity(), (v1, v2) -> v1));
