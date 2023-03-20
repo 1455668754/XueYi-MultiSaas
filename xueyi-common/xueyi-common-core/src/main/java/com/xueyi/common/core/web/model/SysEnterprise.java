@@ -1,5 +1,7 @@
 package com.xueyi.common.core.web.model;
 
+import com.xueyi.common.core.constant.system.AuthorityConstants;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -42,4 +44,11 @@ public class SysEnterprise extends BaseEntity {
     /** 默认企业（Y是 N否） */
     protected String isDefault;
 
+    public boolean isAdmin() {
+        return isAdmin(getIsLessor());
+    }
+
+    public static boolean isAdmin(String isLessor) {
+        return StrUtil.equals(AuthorityConstants.TenantType.ADMIN.getCode(), isLessor);
+    }
 }

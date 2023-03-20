@@ -3,19 +3,15 @@ package com.xueyi.common.security.service;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.basic.TokenConstants;
 import com.xueyi.common.core.exception.ServiceException;
-import com.xueyi.common.core.utils.JwtUtil;
-import com.xueyi.common.core.utils.core.CollUtil;
-import com.xueyi.common.core.utils.core.MapUtil;
-import com.xueyi.common.core.utils.core.NumberUtil;
-import com.xueyi.common.core.utils.core.ObjectUtil;
-import com.xueyi.common.core.utils.core.StrUtil;
+import com.xueyi.common.core.utils.core.*;
 import com.xueyi.common.core.utils.ip.IpUtil;
+import com.xueyi.common.core.utils.jwt.JwtUtil;
 import com.xueyi.common.core.utils.servlet.ServletUtil;
 import com.xueyi.common.core.web.model.BaseLoginUser;
+import com.xueyi.common.core.web.model.SysEnterprise;
 import com.xueyi.common.core.web.model.SysSource;
 import com.xueyi.common.redis.service.RedisService;
 import com.xueyi.common.security.utils.SecurityUtils;
-import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.Ordered;
 import org.springframework.data.redis.serializer.RedisSerializer;
@@ -23,12 +19,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static com.xueyi.common.core.constant.basic.CacheConstants.EXPIRATION;
@@ -222,7 +213,7 @@ public interface ITokenService<User, LoginUser extends BaseLoginUser<User>> exte
      *
      * @return 企业信息
      */
-    default SysEnterpriseDto getEnterprise() {
+    default SysEnterprise getEnterprise() {
         return getEnterprise(ServletUtil.getRequest());
     }
 
@@ -231,7 +222,7 @@ public interface ITokenService<User, LoginUser extends BaseLoginUser<User>> exte
      *
      * @return 企业信息
      */
-    default SysEnterpriseDto getEnterprise(HttpServletRequest request) {
+    default SysEnterprise getEnterprise(HttpServletRequest request) {
         // 获取请求携带的令牌
         String token = SecurityUtils.getToken(request);
         return getEnterprise(token);
@@ -242,10 +233,12 @@ public interface ITokenService<User, LoginUser extends BaseLoginUser<User>> exte
      *
      * @return 企业信息
      */
-    default SysEnterpriseDto getEnterprise(String token) {
+    default SysEnterprise getEnterprise(String token) {
         try {
-            if (StrUtil.isNotBlank(token))
-                return getRedisService().getCacheMapValue(JwtUtil.getUserKey(token), SecurityConstants.BaseSecurity.ENTERPRISE.getCode());
+            if (StrUtil.isNotBlank(token)) {
+                String key = JwtUtil.getUserKey(token);
+                return getRedisService().getCacheMapValue(key, SecurityConstants.BaseSecurity.ENTERPRISE.getCode());
+            }
         } catch (Exception ignored) {
         }
         return null;
