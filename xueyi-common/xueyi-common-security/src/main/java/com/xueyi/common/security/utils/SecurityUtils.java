@@ -9,9 +9,9 @@ import com.xueyi.common.core.utils.core.SpringUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.utils.servlet.ServletUtil;
 import com.xueyi.common.core.web.model.BaseLoginUser;
+import com.xueyi.common.core.web.model.SysEnterprise;
 import com.xueyi.common.core.web.model.SysSource;
 import com.xueyi.common.security.service.ITokenService;
-import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.Ordered;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -113,7 +113,7 @@ public class SecurityUtils {
     /**
      * 获取企业信息
      */
-    public static SysEnterpriseDto getEnterprise() {
+    public static SysEnterprise getEnterprise() {
         return getTokenService().getEnterprise();
     }
 

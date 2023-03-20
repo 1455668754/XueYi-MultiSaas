@@ -1,7 +1,5 @@
 package com.xueyi.system.api.organize.domain.dto;
 
-import com.xueyi.common.core.constant.system.AuthorityConstants;
-import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.system.api.organize.domain.po.SysEnterprisePo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,13 +17,5 @@ public class SysEnterpriseDto extends SysEnterprisePo {
 
     @Serial
     private static final long serialVersionUID = 1L;
-
-    public boolean isAdmin() {
-        return isAdmin(getIsLessor());
-    }
-
-    public static boolean isAdmin(String isLessor) {
-        return StrUtil.equals(AuthorityConstants.TenantType.ADMIN.getCode(), isLessor);
-    }
 
 }
