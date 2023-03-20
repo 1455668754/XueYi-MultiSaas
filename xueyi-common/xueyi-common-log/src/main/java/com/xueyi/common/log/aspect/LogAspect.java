@@ -9,13 +9,13 @@ import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.utils.ip.IpUtil;
 import com.xueyi.common.core.utils.servlet.ServletUtil;
+import com.xueyi.common.core.web.model.BaseLoginUser;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessStatus;
 import com.xueyi.common.log.filter.PropertyPreExcludeFilter;
 import com.xueyi.common.log.service.AsyncLogService;
 import com.xueyi.common.security.service.TokenUserService;
 import com.xueyi.system.api.log.domain.dto.SysOperateLogDto;
-import com.xueyi.system.api.model.LoginUser;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -97,14 +97,12 @@ public class LogAspect {
             operateLog.setIp(ip);
 
             operateLog.setUrl(StrUtil.sub(ServletUtil.getRequest().getRequestURI(), 0, 255));
-            LoginUser loginUser = tokenService.getLoginUser();
+            BaseLoginUser<?> loginUser = tokenService.getLoginUser();
             String sourceName = ObjectUtil.isNotNull(loginUser) ? loginUser.getSourceName() : null;
             Long userId = ObjectUtil.isNotNull(loginUser) ? loginUser.getUserId() : null;
             Long enterpriseId = ObjectUtil.isNotNull(loginUser) ? loginUser.getEnterpriseId() : null;
-            String userName = ObjectUtil.isNotNull(loginUser) && ObjectUtil.isNotNull(loginUser.getUser())
-                    ? loginUser.getUser().getUserName() : StrUtil.EMPTY;
-            String userNick = ObjectUtil.isNotNull(loginUser) && ObjectUtil.isNotNull(loginUser.getUser())
-                    ? loginUser.getUser().getNickName() : StrUtil.EMPTY;
+            String userName = ObjectUtil.isNotNull(loginUser) ? loginUser.getUserName() : StrUtil.EMPTY;
+            String userNick = ObjectUtil.isNotNull(loginUser) ? loginUser.getNickName() : StrUtil.EMPTY;
             operateLog.setSourceName(StrUtil.isNotEmpty(sourceName) ? sourceName : TenantConstants.Source.SLAVE.getCode());
             operateLog.setUserId(ObjectUtil.isNotNull(userId) ? userId : SecurityConstants.EMPTY_USER_ID);
             operateLog.setUserName(userName);
