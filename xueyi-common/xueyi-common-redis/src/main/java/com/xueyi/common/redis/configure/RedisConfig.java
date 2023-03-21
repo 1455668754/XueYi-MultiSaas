@@ -1,11 +1,15 @@
 package com.xueyi.common.redis.configure;
 
+import com.xueyi.common.core.utils.core.StrUtil;
+import lombok.Data;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
@@ -15,14 +19,28 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
  *
  * @author xueyi
  */
+@Data
 @Configuration
 @EnableCaching
 @AutoConfigureBefore(RedisAutoConfiguration.class)
+@ConfigurationProperties(prefix = "spring.data.redis")
 public class RedisConfig {
+
+    /** 地址 */
+    private String host;
+
+    /** 端口 */
+    private Integer port;
+
+    /** 密码 */
+    private String password;
 
     @Bean
     public LettuceConnectionFactory redisConnectionFactory() {
-        return new LettuceConnectionFactory();
+        RedisStandaloneConfiguration conf = new RedisStandaloneConfiguration(host, port);
+        if (StrUtil.isNotBlank(password))
+            conf.setPassword(password);
+        return new LettuceConnectionFactory(conf);
     }
 
     @Bean
