@@ -81,7 +81,7 @@ public class BaseHandleServiceImpl<Q extends BaseEntity, D extends BaseEntity, I
             return;
         switch (operateCache) {
             case REFRESH_ALL -> {
-                List<D> allList = baseManager.selectList(null);
+                List<D> allList = baseManager.selectListMerge(null);
                 redisService.deleteObject(getCacheKey());
                 redisService.refreshMapCache(getCacheKey(), allList, D::getIdStr, D -> D);
             }
