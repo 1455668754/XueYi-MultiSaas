@@ -3,7 +3,7 @@ server:
   port: 9500
 
 # Spring
-spring: 
+spring:
   application:
     # 应用名称
     name: xueyi-job
@@ -16,10 +16,16 @@ spring:
     nacos:
       discovery:
         # 服务注册地址
-        server-addr: localhost:8848
+        server-addr: ${NACOS_HOST:localhost}:${NACOS_PORT:8848}
+        namespace: ${NACOS_NAMESPACE:}
+        username: ${NACOS_USERNAME:}
+        password: ${NACOS_PASSWORD:}
       config:
         # 配置中心地址
-        server-addr: localhost:8848
+        server-addr: ${spring.cloud.nacos.discovery.server-addr}
+        namespace: ${spring.cloud.nacos.discovery.namespace}
+        username: ${spring.cloud.nacos.discovery.username}
+        password: ${spring.cloud.nacos.discovery.password}
         # 配置文件格式
         file-extension: yml
         # 共享配置
