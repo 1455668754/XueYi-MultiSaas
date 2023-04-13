@@ -9,17 +9,35 @@ import com.xueyi.common.core.constant.basic.OperateConstants.SubOperate;
 import com.xueyi.common.core.constant.basic.SqlConstants;
 import com.xueyi.common.core.constant.error.UtilErrorConstants;
 import com.xueyi.common.core.exception.UtilException;
-import com.xueyi.common.core.utils.core.*;
+import com.xueyi.common.core.utils.core.ArrayUtil;
+import com.xueyi.common.core.utils.core.ClassUtil;
+import com.xueyi.common.core.utils.core.CollUtil;
+import com.xueyi.common.core.utils.core.ConvertUtil;
+import com.xueyi.common.core.utils.core.NumberUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
+import com.xueyi.common.core.utils.core.ReflectUtil;
+import com.xueyi.common.core.utils.core.SpringUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
+import com.xueyi.common.core.utils.core.TypeUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.core.web.entity.base.BasisEntity;
 import com.xueyi.common.web.entity.domain.SlaveRelation;
 import com.xueyi.common.web.entity.domain.SqlField;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -30,6 +48,7 @@ import java.util.stream.Collectors;
  * @author xueyi
  */
 @SuppressWarnings("unchecked")
+@Slf4j
 public class MergeUtil {
 
     /**
@@ -177,8 +196,14 @@ public class MergeUtil {
     private static <D> void assembleDirectObj(D dto, SlaveRelation slaveRelation) {
         try {
             Object value = slaveRelation.getMainField().get(dto);
-            SqlField singleSqlField = new SqlField(SqlConstants.OperateType.EQ, slaveRelation.getSlaveFieldSqlName(),
-                    value instanceof String ? StrUtil.SINGLE_QUOTES + value + StrUtil.SINGLE_QUOTES : value, slaveRelation.getLinkageOperate());
+            SqlField singleSqlField;
+            if (value instanceof Collection<?> collection) {
+                singleSqlField = new SqlField(SqlConstants.OperateType.IN, slaveRelation.getSlaveFieldSqlName(), collection, slaveRelation.getLinkageOperate());
+            } else if (value instanceof String str) {
+                singleSqlField = new SqlField(SqlConstants.OperateType.EQ, slaveRelation.getSlaveFieldSqlName(), StrUtil.SINGLE_QUOTES + str + StrUtil.SINGLE_QUOTES, slaveRelation.getLinkageOperate());
+            } else {
+                singleSqlField = new SqlField(SqlConstants.OperateType.EQ, slaveRelation.getSlaveFieldSqlName(), value, slaveRelation.getLinkageOperate());
+            }
             // assemble dto receive key relation
             Class<?> fieldType = slaveRelation.getReceiveField().getType();
             if (ClassUtil.isNormalClass(fieldType)) {
@@ -198,7 +223,15 @@ public class MergeUtil {
      * @param slaveRelation 从属关联关系定义对象
      */
     private static <D> void assembleDirectList(List<D> dtoList, SlaveRelation slaveRelation) {
-        Set<Object> findInSet = dtoList.stream().map(item -> getFieldSql(item, slaveRelation.getMainField())).collect(Collectors.toSet());
+        Set<Object> findInSet = new HashSet<>();
+        dtoList.forEach(item -> {
+            Object obj = getFieldSql(item, slaveRelation.getMainField());
+            if (obj instanceof Collection<?> coll) {
+                findInSet.addAll(coll);
+            } else {
+                findInSet.add(obj);
+            }
+        });
         if (CollUtil.isEmpty(findInSet))
             return;
         SqlField collSqlField = new SqlField(SqlConstants.OperateType.IN, slaveRelation.getSlaveFieldSqlName(), findInSet, slaveRelation.getLinkageOperate());
@@ -218,8 +251,25 @@ public class MergeUtil {
         } else if (ClassUtil.isCollection(fieldType)) {
             Map<Object, List<Object>> subMap = subList.stream().collect(
                     Collectors.groupingBy(item -> getFieldObj(item, slaveRelation.getSlaveField())));
+
             dtoList.forEach(item -> {
-                List<Object> subObjList = subMap.get(getFieldObj(item, slaveRelation.getMainField()));
+                Object mainObj = getFieldObj(item, slaveRelation.getMainField());
+                List<Object> subObjList = new ArrayList<>();
+                if (ObjectUtil.isNull(mainObj)) {
+                    return;
+                } else if (mainObj instanceof Collection<?> coll) {
+                    coll.forEach(collItem -> {
+                        List<Object> mapList = subMap.get(collItem);
+                        if (CollUtil.isNotEmpty(mapList)) {
+                            subObjList.addAll(mapList);
+                        }
+                    });
+                } else {
+                    List<Object> mapList = subMap.get(mainObj);
+                    if (CollUtil.isNotEmpty(mapList)) {
+                        subObjList.addAll(mapList);
+                    }
+                }
                 setField(item, slaveRelation.getReceiveField(), subObjList);
             });
         }
