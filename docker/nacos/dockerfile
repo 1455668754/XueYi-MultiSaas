@@ -3,5 +3,9 @@ FROM nacos/nacos-server
 # author
 MAINTAINER xueyi
 
+# 设定时区
+ENV TZ=Asia/Shanghai
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 # 复制conf文件到路径
 COPY ./conf/application.properties /home/nacos/conf/application.properties

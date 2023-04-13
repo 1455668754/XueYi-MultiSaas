@@ -4,6 +4,10 @@ FROM mysql:8.0.26
 # author
 MAINTAINER xueyi
 
+# 设定时区
+ENV TZ=Asia/Shanghai
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 # 设置docker默认编码db初始化数据乱码
 ENV LANG C.UTF-8
 

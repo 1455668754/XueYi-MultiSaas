@@ -3,6 +3,10 @@ FROM openjdk:17-oracle
 # author
 MAINTAINER xueyi
 
+# 设定时区
+ENV TZ=Asia/Shanghai
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 # 挂载目录
 VOLUME /home/xueyi
 # 创建目录
