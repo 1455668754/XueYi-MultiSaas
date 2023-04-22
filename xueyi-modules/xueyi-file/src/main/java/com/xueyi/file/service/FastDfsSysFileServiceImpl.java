@@ -1,5 +1,6 @@
 package com.xueyi.file.service;
 
+import com.alibaba.nacos.common.utils.IoUtils;
 import com.github.tobato.fastdfs.domain.fdfs.StorePath;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import com.xueyi.common.core.utils.core.StrUtil;
@@ -40,7 +41,7 @@ public class FastDfsSysFileServiceImpl implements ISysFileService {
         InputStream inputStream = file.getInputStream();
         StorePath storePath = storageClient.uploadFile(inputStream, file.getSize(),
                 FileTypeUtil.getExtension(file), null);
-        inputStream.close();
+        IoUtils.closeQuietly(inputStream);
         return domain + StrUtil.SLASH + storePath.getFullPath();
     }
 
