@@ -22,7 +22,7 @@ public class AsyncLogService {
      * 保存系统日志记录
      */
     @Async
-    public void saveOperateLog(SysOperateLogDto operateLog) {
+    public void saveOperateLog(SysOperateLogDto operateLog) throws Exception {
         remoteLogService.saveOperateLog(operateLog, operateLog.getEnterpriseId(), operateLog.getSourceName(), SecurityConstants.INNER);
     }
 }

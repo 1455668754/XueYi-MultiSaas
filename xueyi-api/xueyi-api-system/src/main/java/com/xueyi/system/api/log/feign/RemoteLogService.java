@@ -29,7 +29,7 @@ public interface RemoteLogService {
      * @return 结果
      */
     @PostMapping("/operateLog")
-    R<Boolean> saveOperateLog(@RequestBody SysOperateLogDto operateLog, @RequestHeader(SecurityConstants.ENTERPRISE_ID) Long enterpriseId, @RequestHeader(SecurityConstants.SOURCE_NAME) String sourceName, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+    R<Boolean> saveOperateLog(@RequestBody SysOperateLogDto operateLog, @RequestHeader(SecurityConstants.ENTERPRISE_ID) Long enterpriseId, @RequestHeader(SecurityConstants.SOURCE_NAME) String sourceName, @RequestHeader(SecurityConstants.FROM_SOURCE) String source) throws Exception;
 
     /**
      * 保存访问记录
