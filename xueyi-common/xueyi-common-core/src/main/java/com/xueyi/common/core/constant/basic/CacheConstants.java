@@ -31,6 +31,7 @@ public class CacheConstants {
         SYS_CONFIG_KEY("system:config", "参数"),
         TE_STRATEGY_KEY("system:strategy", "源策略组"),
         TE_SOURCE_KEY("system:source", "数据源"),
+        TE_TENANT_KEY("system:tenant", "租户"),
         SERVICE_WX_MP_KEY("service:wxMp", "服务：微信公众号"),
         SERVICE_WX_MA_KEY("service:wxMa", "服务：微信小程序"),
         SERVICE_WX_PAY_KEY("service:wxPay", "服务：微信支付");

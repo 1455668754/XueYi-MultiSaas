@@ -1,5 +1,6 @@
 package com.xueyi.tenant.tenant.service.impl;
 
+import com.xueyi.common.core.constant.basic.CacheConstants;
 import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
@@ -61,6 +62,14 @@ public class TeTenantServiceImpl extends BaseServiceImpl<TeTenantQuery, TeTenant
 
     @Autowired
     private RemoteAuthService authService;
+
+    /**
+     * 缓存主键命名定义
+     */
+    @Override
+    protected String getCacheKey() {
+        return CacheConstants.CacheType.TE_TENANT_KEY.getCode();
+    }
 
     /**
      * 获取租户权限

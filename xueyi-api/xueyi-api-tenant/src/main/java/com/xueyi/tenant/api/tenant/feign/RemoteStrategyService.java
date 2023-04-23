@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
  *
  * @author xueyi
  */
-@FeignClient(contextId = "remoteStrategyService", value = ServiceConstants.TENANT_SERVICE, fallbackFactory = RemoteStrategyFallbackFactory.class)
+@FeignClient(contextId = "remoteStrategyService", path = "/inner/strategy", value = ServiceConstants.TENANT_SERVICE, fallbackFactory = RemoteStrategyFallbackFactory.class)
 public interface RemoteStrategyService {
 
     /**
@@ -20,6 +20,6 @@ public interface RemoteStrategyService {
      *
      * @return 结果
      */
-    @GetMapping(value = "/strategy/inner/refresh", headers = SecurityConstants.FROM_SOURCE_INNER)
-    R<Boolean> refreshCache();
+    @GetMapping(value = "/refresh", headers = SecurityConstants.FROM_SOURCE_INNER)
+    R<Boolean> refreshCacheInner();
 }
