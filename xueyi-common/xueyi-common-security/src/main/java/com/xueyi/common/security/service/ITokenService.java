@@ -3,7 +3,6 @@ package com.xueyi.common.security.service;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.basic.TokenConstants;
 import com.xueyi.common.core.exception.ServiceException;
-import com.xueyi.common.core.utils.JwtUtil;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.MapUtil;
 import com.xueyi.common.core.utils.core.NumberUtil;
@@ -18,7 +17,6 @@ import com.xueyi.common.redis.service.RedisService;
 import com.xueyi.common.security.utils.SecurityUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.Ordered;
-import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
 
@@ -31,8 +29,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
-import static com.xueyi.common.core.constant.basic.CacheConstants.EXPIRATION;
-import static com.xueyi.common.core.constant.basic.CacheConstants.REFRESH_TIME;
+import static com.xueyi.common.cache.constant.CacheConstants.EXPIRATION;
+import static com.xueyi.common.cache.constant.CacheConstants.REFRESH_TIME;
 
 /**
  * token控制器
@@ -67,6 +65,7 @@ public interface ITokenService<User, LoginUser extends BaseLoginUser<User>> exte
      *
      * @return 排序值
      */
+    @Override
     default int getOrder() {
         return NumberUtil.Zero;
     }
@@ -116,14 +115,18 @@ public interface ITokenService<User, LoginUser extends BaseLoginUser<User>> exte
      * @param loginMap      缓存存储信息
      */
     default void createTokenCache(OAuth2Authorization authorization, LoginUser loginUser, Map<String, Object> loginMap) {
-        if (ObjectUtil.isNotNull(loginUser.getAccessToken()))
-            getRedisService().setCacheObject(loginUser.getAccessToken(), authorization, getAccessExpireTime(), TimeUnit.MINUTES, RedisSerializer.java());
-        if (ObjectUtil.isNotNull(loginUser.getRefreshToken()))
+        if (ObjectUtil.isNotNull(loginUser.getAccessToken())) {
+            getRedisService().setJavaCacheObject(loginUser.getAccessToken(), authorization, getAccessExpireTime(), TimeUnit.MINUTES);
+        }
+        if (ObjectUtil.isNotNull(loginUser.getRefreshToken())) {
             getRedisService().setCacheMap(loginUser.getRefreshToken(), loginMap, getRefreshExpireTime(), TimeUnit.MINUTES);
-        if (ObjectUtil.isNotNull(loginUser.getStateToken()))
-            getRedisService().setCacheObject(loginUser.getStateToken(), authorization, getAccessExpireTime(), TimeUnit.MINUTES, RedisSerializer.java());
-        if (ObjectUtil.isNotNull(loginUser.getCodeToken()))
-            getRedisService().setCacheObject(loginUser.getCodeToken(), authorization, getAccessExpireTime(), TimeUnit.MINUTES, RedisSerializer.java());
+        }
+        if (ObjectUtil.isNotNull(loginUser.getStateToken())) {
+            getRedisService().setJavaCacheObject(loginUser.getStateToken(), authorization, getAccessExpireTime(), TimeUnit.MINUTES);
+        }
+        if (ObjectUtil.isNotNull(loginUser.getCodeToken())) {
+            getRedisService().setJavaCacheObject(loginUser.getCodeToken(), authorization, getAccessExpireTime(), TimeUnit.MINUTES);
+        }
     }
 
     /**
@@ -133,16 +136,21 @@ public interface ITokenService<User, LoginUser extends BaseLoginUser<User>> exte
      */
     default void removeTokenCache(LoginUser loginUser) {
         List<String> keys = new ArrayList<>();
-        if (ObjectUtil.isNotNull(loginUser.getAccessToken()))
+        if (ObjectUtil.isNotNull(loginUser.getAccessToken())) {
             keys.add(loginUser.getAccessToken());
-        if (ObjectUtil.isNotNull(loginUser.getRefreshToken()))
+        }
+        if (ObjectUtil.isNotNull(loginUser.getRefreshToken())) {
             keys.add(loginUser.getRefreshToken());
-        if (ObjectUtil.isNotNull(loginUser.getStateToken()))
+        }
+        if (ObjectUtil.isNotNull(loginUser.getStateToken())) {
             keys.add(loginUser.getStateToken());
-        if (ObjectUtil.isNotNull(loginUser.getCodeToken()))
+        }
+        if (ObjectUtil.isNotNull(loginUser.getCodeToken())) {
             keys.add(loginUser.getCodeToken());
-        if (CollUtil.isNotEmpty(keys))
+        }
+        if (CollUtil.isNotEmpty(keys)) {
             getRedisService().deleteObject(keys);
+        }
     }
 
     /**
@@ -153,8 +161,9 @@ public interface ITokenService<User, LoginUser extends BaseLoginUser<User>> exte
      * @return JWT令牌
      */
     default Map<String, Object> buildToken(LoginUser loginUser, Map<String, Object> claimsMap) {
-        if (MapUtil.isNull(claimsMap))
+        if (MapUtil.isNull(claimsMap)) {
             claimsMap = new HashMap<>();
+        }
 
         claimsMap.put(SecurityConstants.BaseSecurity.ACCESS_TOKEN.getCode(), TokenConstants.PREFIX + loginUser.getAccessToken());
         claimsMap.put(SecurityConstants.BaseSecurity.REFRESH_TOKEN.getCode(), TokenConstants.PREFIX + loginUser.getRefreshToken());
@@ -184,8 +193,9 @@ public interface ITokenService<User, LoginUser extends BaseLoginUser<User>> exte
                 .map(item -> (LoginUser) item.getPrincipal())
                 .orElseThrow(() -> new NullPointerException("authorization principal cannot be null"));
 
-        if (MapUtil.isNull(loginMap))
+        if (MapUtil.isNull(loginMap)) {
             loginMap = new HashMap<>();
+        }
 
         loginUser.setIpaddr(IpUtil.getIpAddr(ServletUtil.getRequest()));
         loginUser.setLoginTime(System.currentTimeMillis());
@@ -280,8 +290,9 @@ public interface ITokenService<User, LoginUser extends BaseLoginUser<User>> exte
      */
     default User getUser(String token) {
         try {
-            if (StrUtil.isNotBlank(token))
+            if (StrUtil.isNotBlank(token)) {
                 return getRedisService().getCacheMapValue(JwtUtil.getUserKey(token), SecurityConstants.BaseSecurity.USER.getCode());
+            }
         } catch (Exception ignored) {
         }
         return null;
@@ -314,8 +325,9 @@ public interface ITokenService<User, LoginUser extends BaseLoginUser<User>> exte
      */
     default LoginUser getLoginUser(String token) {
         try {
-            if (StrUtil.isNotBlank(token))
+            if (StrUtil.isNotBlank(token)) {
                 return getRedisService().getCacheMapValue(JwtUtil.getUserKey(token), SecurityConstants.BaseSecurity.USER_INFO.getCode());
+            }
         } catch (Exception ignored) {
         }
         return null;
@@ -330,8 +342,9 @@ public interface ITokenService<User, LoginUser extends BaseLoginUser<User>> exte
             loginMap.put(SecurityConstants.BaseSecurity.ENTERPRISE.getCode(), loginUser.getEnterprise());
             loginMap.put(SecurityConstants.BaseSecurity.USER.getCode(), loginUser.getUser());
             loginMap.put(SecurityConstants.BaseSecurity.USER_INFO.getCode(), loginUser);
-            if (StrUtil.isNotBlank(loginUser.getRefreshToken()))
+            if (StrUtil.isNotBlank(loginUser.getRefreshToken())) {
                 getRedisService().setCacheMap(loginUser.getRefreshToken(), loginMap);
+            }
         }
     }
 
@@ -362,8 +375,9 @@ public interface ITokenService<User, LoginUser extends BaseLoginUser<User>> exte
      */
     default SysSource getSource(String token) {
         try {
-            if (StrUtil.isNotBlank(token))
+            if (StrUtil.isNotBlank(token)) {
                 return getRedisService().getCacheMapValue(JwtUtil.getUserKey(token), SecurityConstants.BaseSecurity.SOURCE.getCode());
+            }
         } catch (Exception ignored) {
         }
         return null;
@@ -395,8 +409,9 @@ public interface ITokenService<User, LoginUser extends BaseLoginUser<User>> exte
      */
     default Long getExpireTime(String token) {
         try {
-            if (StrUtil.isNotBlank(token))
+            if (StrUtil.isNotBlank(token)) {
                 return getRedisService().getCacheMapValue(JwtUtil.getUserKey(token), SecurityConstants.BaseSecurity.EXPIRE_TIME.getCode());
+            }
         } catch (Exception ignored) {
         }
         return null;
@@ -406,8 +421,9 @@ public interface ITokenService<User, LoginUser extends BaseLoginUser<User>> exte
      * 删除用户缓存信息
      */
     default void delLogin(String token) {
-        if (StrUtil.isNotBlank(token))
+        if (StrUtil.isNotBlank(token)) {
             getRedisService().deleteObject(JwtUtil.getUserKey(token));
+        }
     }
 
     /**
@@ -417,8 +433,9 @@ public interface ITokenService<User, LoginUser extends BaseLoginUser<User>> exte
      */
     default void verifyToken(String token) {
         long expireTime = getExpireTime(token);
-        if (ObjectUtil.isNull(expireTime))
+        if (ObjectUtil.isNull(expireTime)) {
             throw new ServiceException("令牌已失效！");
+        }
         long currentTime = System.currentTimeMillis();
         if (expireTime - currentTime <= getMillisMinuteTen()) {
             refreshToken(token);

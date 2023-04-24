@@ -1,18 +1,26 @@
 package com.xueyi.common.redis.service;
 
 import com.xueyi.common.core.exception.UtilException;
-import com.xueyi.common.core.utils.core.*;
-import com.xueyi.common.redis.configure.FastJson2JsonRedisSerializer;
+import com.xueyi.common.core.utils.core.ArrayUtil;
+import com.xueyi.common.core.utils.core.CollUtil;
+import com.xueyi.common.core.utils.core.MapUtil;
+import com.xueyi.common.core.utils.core.NumberUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.BoundSetOperations;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -30,7 +38,32 @@ public class RedisService {
     @Autowired
     public RedisTemplate redisTemplate;
 
-    private final FastJson2JsonRedisSerializer serializer = new FastJson2JsonRedisSerializer(Object.class);
+    @Autowired
+    @Qualifier("redisJavaTemplate")
+    public RedisTemplate redisJavaTemplate;
+
+    /**
+     * 缓存基本的对象，Integer、String、实体类等 | Java序列化
+     *
+     * @param key      Redis键
+     * @param value    缓存的值
+     * @param timeout  时间
+     * @param timeUnit 时间颗粒度
+     */
+    public <T> void setJavaCacheObject(final String key, final T value, final Long timeout, final TimeUnit timeUnit) {
+        redisJavaTemplate.opsForValue().set(key, value, timeout, timeUnit);
+    }
+
+    /**
+     * 获得缓存的基本对象 | Java序列化
+     *
+     * @param key Redis键
+     * @return 缓存键值对应的数据
+     */
+    public <T> T getJavaCacheObject(final String key) {
+        ValueOperations<String, T> operation = redisJavaTemplate.opsForValue();
+        return operation.get(key);
+    }
 
     /**
      * 缓存基本的对象，Integer、String、实体类等
@@ -52,34 +85,6 @@ public class RedisService {
      */
     public <T> void setCacheObject(final String key, final T value, final Long timeout, final TimeUnit timeUnit) {
         redisTemplate.opsForValue().set(key, value, timeout, timeUnit);
-    }
-
-    /**
-     * 缓存基本的对象，Integer、String、实体类等 | 指定序列化
-     *
-     * @param key        Redis键
-     * @param value      缓存的值
-     * @param serializer 序列化类型
-     */
-    public <T> void setCacheObject(final String key, final T value, RedisSerializer<?> serializer) {
-        redisTemplate.setValueSerializer(serializer);
-        setCacheObject(key, value);
-        redisTemplate.setValueSerializer(this.serializer);
-    }
-
-    /**
-     * 缓存基本的对象，Integer、String、实体类等 | 指定序列化
-     *
-     * @param key        Redis键
-     * @param value      缓存的值
-     * @param timeout    时间
-     * @param timeUnit   时间颗粒度
-     * @param serializer 序列化类型
-     */
-    public <T> void setCacheObject(final String key, final T value, final Long timeout, final TimeUnit timeUnit, RedisSerializer<?> serializer) {
-        redisTemplate.setValueSerializer(serializer);
-        setCacheObject(key, value, timeout, timeUnit);
-        redisTemplate.setValueSerializer(this.serializer);
     }
 
     /**
@@ -137,20 +142,6 @@ public class RedisService {
     }
 
     /**
-     * 获得缓存的基本对象 | 指定序列化
-     *
-     * @param key        Redis键
-     * @param serializer 序列化类型
-     * @return 缓存键值对应的数据
-     */
-    public <T> T getCacheObject(final String key, RedisSerializer<?> serializer) {
-        redisTemplate.setValueSerializer(serializer);
-        T obj = getCacheObject(key);
-        redisTemplate.setValueSerializer(this.serializer);
-        return obj;
-    }
-
-    /**
      * 删除单个对象
      *
      * @param key Redis键
@@ -191,8 +182,9 @@ public class RedisService {
      */
     public <T> long setCacheList(final String key, final List<T> dataList, final long timeout, final TimeUnit unit) {
         Long count = redisTemplate.opsForList().rightPushAll(key, dataList);
-        if (ObjectUtil.isNotNull(count))
+        if (ObjectUtil.isNotNull(count)) {
             expire(key, timeout, unit);
+        }
         return count == null ? 0 : count;
     }
 
@@ -257,7 +249,6 @@ public class RedisService {
             expire(key, timeout, unit);
         }
     }
-
 
     /**
      * 获得缓存的Map
@@ -355,13 +346,15 @@ public class RedisService {
      */
     public <T, K> void refreshMapCache(String mapKey, List<T> cacheList, Function<? super T, String> keyGet, Function<? super T, K> valueGet) {
         Map<String, K> resultMap = new HashMap<>();
-        if (CollUtil.isNotEmpty(cacheList))
+        if (CollUtil.isNotEmpty(cacheList)) {
             resultMap = cacheList.stream()
                     .filter(item -> {
-                        if (StrUtil.isEmpty(keyGet.apply(item)))
+                        if (StrUtil.isEmpty(keyGet.apply(item))) {
                             throw new UtilException("cache key cannot be empty");
+                        }
                         return ObjectUtil.isNotNull(valueGet.apply(item));
                     }).collect(Collectors.toMap(keyGet, valueGet));
+        }
         if (MapUtil.isNotEmpty(resultMap)) {
             setCacheMap(mapKey, resultMap, NumberUtil.Nine, TimeUnit.HOURS);
         } else {
@@ -377,12 +370,14 @@ public class RedisService {
      * @param valueGet 值名
      */
     public <T> void refreshMapValueCache(String mapKey, Supplier<Serializable> keyGet, Supplier<T> valueGet) {
-        if (ObjectUtil.isNotNull(valueGet.get()))
+        if (ObjectUtil.isNotNull(valueGet.get())) {
             setCacheMapValue(mapKey, keyGet.get().toString(), valueGet.get());
-        else
+        } else {
             deleteCacheMapValue(mapKey, keyGet.get().toString());
-        if (hasKey(mapKey))
+        }
+        if (hasKey(mapKey)) {
             expire(mapKey, NumberUtil.Nine, TimeUnit.HOURS);
+        }
     }
 
     /**
@@ -392,7 +387,8 @@ public class RedisService {
      * @param keys   键名
      */
     public void removeMapValueCache(String mapKey, Serializable... keys) {
-        if (ArrayUtil.isNotEmpty(keys))
+        if (ArrayUtil.isNotEmpty(keys)) {
             deleteCacheMapValue(mapKey, keys);
+        }
     }
 }
