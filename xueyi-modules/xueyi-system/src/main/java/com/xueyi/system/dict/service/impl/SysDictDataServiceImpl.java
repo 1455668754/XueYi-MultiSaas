@@ -1,9 +1,11 @@
 package com.xueyi.system.dict.service.impl;
 
-import com.xueyi.common.core.constant.basic.CacheConstants;
+import com.xueyi.common.cache.constants.CacheConstants;
 import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.utils.core.CollUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.redis.constant.RedisConstants;
+import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
 import com.xueyi.system.api.dict.domain.po.SysDictDataPo;
@@ -30,8 +32,8 @@ public class SysDictDataServiceImpl extends BaseServiceImpl<SysDictDataQuery, Sy
      * 缓存主键命名定义
      */
     @Override
-    protected String getCacheKey() {
-        return CacheConstants.CacheType.SYS_DICT_KEY.getCode();
+    protected CacheConstants.CacheType getCacheKey() {
+        return CacheConstants.CacheType.SYS_DICT_KEY;
     }
 
     /**
@@ -55,16 +57,18 @@ public class SysDictDataServiceImpl extends BaseServiceImpl<SysDictDataQuery, Sy
      */
     @Override
     protected void refreshCache(OperateConstants.ServiceType operate, RedisConstants.OperateType operateCache, SysDictDataDto dto, Collection<SysDictDataDto> dtoList) {
+        String cacheKey = StrUtil.format(getCacheKey().getCode(), SecurityUtils.getEnterpriseId());
         if (operate.isSingle()) {
             List<SysDictDataDto> dictList = baseManager.selectListByCode(dto.getCode());
-            redisService.refreshMapValueCache(getCacheKey(), dto::getCode, () -> dictList);
+            redisService.refreshMapValueCache(cacheKey, dto::getCode, () -> dictList);
         } else if (operate.isBatch()) {
             Set<String> codes = dtoList.stream().map(SysDictDataPo::getCode).collect(Collectors.toSet());
-            if (CollUtil.isEmpty(codes))
+            if (CollUtil.isEmpty(codes)) {
                 return;
+            }
             List<SysDictDataDto> dictList = baseManager.selectListByCodes(codes);
             Map<String, List<SysDictDataDto>> dictMap = dictList.stream().collect(Collectors.groupingBy(SysDictDataDto::getCode));
-            codes.forEach(item -> redisService.refreshMapValueCache(getCacheKey(), () -> item, () -> dictMap.get(item)));
+            codes.forEach(item -> redisService.refreshMapValueCache(cacheKey, () -> item, () -> dictMap.get(item)));
         }
     }
 }

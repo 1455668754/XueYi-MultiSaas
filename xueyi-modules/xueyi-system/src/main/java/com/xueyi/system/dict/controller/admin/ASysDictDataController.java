@@ -1,25 +1,26 @@
-package com.xueyi.system.dict.controller;
+package com.xueyi.system.dict.controller.admin;
 
-import com.xueyi.common.cache.utils.DictUtil;
-import com.xueyi.common.core.utils.core.CollUtil;
-import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
-import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
 import com.xueyi.system.api.dict.domain.query.SysDictDataQuery;
-import com.xueyi.system.dict.service.ISysDictDataService;
+import com.xueyi.system.dict.controller.base.BSysDictDataController;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -29,34 +30,24 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/dict/data")
-public class SysDictDataController extends BaseController<SysDictDataQuery, SysDictDataDto, ISysDictDataService> {
-
-    /** 定义节点名称 */
-    @Override
-    protected String getNodeName() {
-        return "字典数据";
-    }
+public class ASysDictDataController extends BSysDictDataController {
 
     /**
      * 根据字典类型查询字典数据信息
      */
+    @Override
     @GetMapping(value = "/type/{code}")
     public AjaxResult listByCode(@PathVariable String code) {
-        List<SysDictDataDto> data = baseService.selectListByCode(code);
-        return success(ObjectUtil.isNotNull(data) ? data : new ArrayList<SysDictDataDto>());
+        return super.listByCode(code);
     }
 
     /**
      * 根据字典类型查询字典数据信息
      */
+    @Override
     @GetMapping(value = "/types/{codeList}")
     public AjaxResult listByCodeList(@PathVariable List<String> codeList) {
-        if (CollUtil.isEmpty(codeList))
-            error("请传入编码后再查询字典");
-        HashMap<String, List<SysDictDataDto>> map = new HashMap<>();
-        for (String code : codeList)
-            map.put(code, DictUtil.getDictCache(code));
-        return success(map);
+        return super.listByCodeList(codeList);
     }
 
     /**

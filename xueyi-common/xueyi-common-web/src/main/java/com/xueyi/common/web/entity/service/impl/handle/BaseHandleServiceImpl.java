@@ -1,8 +1,9 @@
 package com.xueyi.common.web.entity.service.impl.handle;
 
+import com.xueyi.common.cache.constants.CacheConstants;
 import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.utils.core.NumberUtil;
-import com.xueyi.common.core.utils.core.StrUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.TypeUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.redis.constant.RedisConstants;
@@ -41,7 +42,7 @@ public class BaseHandleServiceImpl<Q extends BaseEntity, D extends BaseEntity, I
     /**
      * 缓存主键命名定义
      */
-    protected String getCacheKey() {
+    protected CacheConstants.CacheType getCacheKey() {
         return null;
     }
 
@@ -77,25 +78,28 @@ public class BaseHandleServiceImpl<Q extends BaseEntity, D extends BaseEntity, I
      */
     protected void refreshCache(OperateConstants.ServiceType operate, RedisConstants.OperateType operateCache, D dto, Collection<D> dtoList) {
         // 校验是否启动缓存管理
-        if (StrUtil.isEmpty(getCacheKey()))
+        if (ObjectUtil.isNull(getCacheKey())) {
             return;
+        }
         switch (operateCache) {
             case REFRESH_ALL -> {
                 List<D> allList = baseManager.selectListMerge(null);
-                redisService.deleteObject(getCacheKey());
-                redisService.refreshMapCache(getCacheKey(), allList, D::getIdStr, D -> D);
+                redisService.deleteObject(getCacheKey().getCode());
+                redisService.refreshMapCache(getCacheKey().getCode(), allList, D::getIdStr, D -> D);
             }
             case REFRESH -> {
-                if (operate.isSingle())
-                    redisService.refreshMapValueCache(getCacheKey(), dto::getIdStr, () -> dto);
-                else if (operate.isBatch())
-                    dtoList.forEach(item -> redisService.refreshMapValueCache(getCacheKey(), item::getIdStr, () -> item));
+                if (operate.isSingle()) {
+                    redisService.refreshMapValueCache(getCacheKey().getCode(), dto::getIdStr, () -> dto);
+                } else if (operate.isBatch()) {
+                    dtoList.forEach(item -> redisService.refreshMapValueCache(getCacheKey().getCode(), item::getIdStr, () -> item));
+                }
             }
             case REMOVE -> {
-                if (operate.isSingle())
-                    redisService.removeMapValueCache(getCacheKey(), dto.getId());
-                else if (operate.isBatch())
-                    redisService.removeMapValueCache(getCacheKey(), dtoList.stream().map(D::getIdStr).toArray(String[]::new));
+                if (operate.isSingle()) {
+                    redisService.removeMapValueCache(getCacheKey().getCode(), dto.getId());
+                } else if (operate.isBatch()) {
+                    redisService.removeMapValueCache(getCacheKey().getCode(), dtoList.stream().map(D::getIdStr).toArray(String[]::new));
+                }
             }
         }
     }
@@ -119,8 +123,9 @@ public class BaseHandleServiceImpl<Q extends BaseEntity, D extends BaseEntity, I
      * @param newDto    新数据对象（删除时不存在）
      */
     protected void endHandle(OperateConstants.ServiceType operate, int row, D originDto, D newDto) {
-        if (row <= 0)
+        if (row <= 0) {
             return;
+        }
         switch (operate) {
             case ADD -> {
                 // insert merge data
@@ -163,8 +168,9 @@ public class BaseHandleServiceImpl<Q extends BaseEntity, D extends BaseEntity, I
      * @param newList    新数据对象集合（删除时不存在）
      */
     protected void endBatchHandle(OperateConstants.ServiceType operate, int rows, Collection<D> originList, Collection<D> newList) {
-        if (rows <= 0)
+        if (rows <= 0) {
             return;
+        }
         switch (operate) {
             case BATCH_ADD -> {
                 baseManager.insertMerge(newList);

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
  *
  * @author xueyi
  */
-@FeignClient(contextId = "remoteSourceService", value = ServiceConstants.TENANT_SERVICE, fallbackFactory = RemoteSourceFallbackFactory.class)
+@FeignClient(contextId = "remoteSourceService", path = "/inner/source", value = ServiceConstants.TENANT_SERVICE, fallbackFactory = RemoteSourceFallbackFactory.class)
 public interface RemoteSourceService {
 
     /**
@@ -20,6 +20,6 @@ public interface RemoteSourceService {
      *
      * @return 结果
      */
-    @GetMapping(value = "/source/inner/refresh", headers = SecurityConstants.FROM_SOURCE_INNER)
-    R<Boolean> refreshCache();
+    @GetMapping(value = "/refresh", headers = SecurityConstants.FROM_SOURCE_INNER)
+    R<Boolean> refreshCacheInner();
 }

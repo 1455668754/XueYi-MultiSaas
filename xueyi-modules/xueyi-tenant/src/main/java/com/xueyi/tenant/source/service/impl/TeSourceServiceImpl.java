@@ -1,6 +1,6 @@
 package com.xueyi.tenant.source.service.impl;
 
-import com.xueyi.common.core.constant.basic.CacheConstants;
+import com.xueyi.common.cache.constants.CacheConstants;
 import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.utils.core.CollUtil;
@@ -31,8 +31,8 @@ public class TeSourceServiceImpl extends BaseServiceImpl<TeSourceQuery, TeSource
      * 缓存主键命名定义
      */
     @Override
-    protected String getCacheKey() {
-        return CacheConstants.CacheType.TE_SOURCE_KEY.getCode();
+    protected CacheConstants.CacheType getCacheKey() {
+        return CacheConstants.CacheType.TE_SOURCE_KEY;
     }
 
     /**
@@ -55,8 +55,9 @@ public class TeSourceServiceImpl extends BaseServiceImpl<TeSourceQuery, TeSource
      */
     @Override
     public int insertBatch(Collection<TeSourceDto> sourceList) {
-        if (CollUtil.isNotEmpty(sourceList))
+        if (CollUtil.isNotEmpty(sourceList)) {
             sourceList.forEach(source -> source.setSlave(IdUtil.simpleUUID()));
+        }
         return super.insertBatch(sourceList);
     }
 
@@ -73,20 +74,22 @@ public class TeSourceServiceImpl extends BaseServiceImpl<TeSourceQuery, TeSource
         switch (operateCache) {
             case REFRESH_ALL -> {
                 List<TeSourceDto> allList = baseManager.selectList(null);
-                redisService.deleteObject(getCacheKey());
-                redisService.refreshMapCache(getCacheKey(), allList, TeSourceDto::getSlave, Function.identity());
+                redisService.deleteObject(getCacheKey().getCode());
+                redisService.refreshMapCache(getCacheKey().getCode(), allList, TeSourceDto::getSlave, Function.identity());
             }
             case REFRESH -> {
-                if (operate.isSingle())
-                    redisService.refreshMapValueCache(getCacheKey(), dto::getSlave, () -> dto);
-                else if (operate.isBatch())
-                    dtoList.forEach(item -> redisService.refreshMapValueCache(getCacheKey(), item::getSlave, () -> item));
+                if (operate.isSingle()) {
+                    redisService.refreshMapValueCache(getCacheKey().getCode(), dto::getSlave, () -> dto);
+                } else if (operate.isBatch()) {
+                    dtoList.forEach(item -> redisService.refreshMapValueCache(getCacheKey().getCode(), item::getSlave, () -> item));
+                }
             }
             case REMOVE -> {
-                if (operate.isSingle())
-                    redisService.removeMapValueCache(getCacheKey(), dto.getSlave());
-                else if (operate.isBatch())
-                    redisService.removeMapValueCache(getCacheKey(), dtoList.stream().map(TeSourceDto::getSlave).toArray(String[]::new));
+                if (operate.isSingle()) {
+                    redisService.removeMapValueCache(getCacheKey().getCode(), dto.getSlave());
+                } else if (operate.isBatch()) {
+                    redisService.removeMapValueCache(getCacheKey().getCode(), dtoList.stream().map(TeSourceDto::getSlave).toArray(String[]::new));
+                }
             }
         }
     }

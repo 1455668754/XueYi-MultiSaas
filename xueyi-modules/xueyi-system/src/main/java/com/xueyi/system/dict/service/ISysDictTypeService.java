@@ -12,6 +12,11 @@ import com.xueyi.system.api.dict.domain.query.SysDictTypeQuery;
 public interface ISysDictTypeService extends IBaseService<SysDictTypeQuery, SysDictTypeDto> {
 
     /**
+     * 更新缓存数据
+     */
+    Boolean syncCache();
+
+    /**
      * 校验字典编码是否唯一
      *
      * @param Id       字典类型Id

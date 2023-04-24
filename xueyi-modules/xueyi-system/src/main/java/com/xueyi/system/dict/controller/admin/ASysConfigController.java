@@ -1,24 +1,24 @@
-package com.xueyi.system.dict.controller;
+package com.xueyi.system.dict.controller.admin;
 
-import com.xueyi.common.cache.utils.DictUtil;
-import com.xueyi.common.core.constant.basic.BaseConstants;
-import com.xueyi.common.core.utils.core.CollUtil;
-import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
-import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
-import com.xueyi.common.security.annotation.InnerAuth;
-import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.system.api.dict.domain.dto.SysConfigDto;
 import com.xueyi.system.api.dict.domain.query.SysConfigQuery;
-import com.xueyi.system.dict.service.ISysConfigService;
+import com.xueyi.system.dict.controller.base.BSysConfigController;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.Serializable;
 import java.util.List;
@@ -30,47 +30,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/config")
-public class SysConfigController extends BaseController<SysConfigQuery, SysConfigDto, ISysConfigService> {
-
-    /** 定义节点名称 */
-    protected String getNodeName() {
-        return "参数";
-    }
-
-    /**
-     * 刷新参数缓存 | 内部调用
-     */
-    @Override
-    @InnerAuth(isAnonymous = true)
-    @GetMapping("/inner/refresh")
-    @Log(title = "参数管理", businessType = BusinessType.REFRESH)
-    public R<Boolean> refreshCacheInner() {
-        return super.refreshCacheInner();
-    }
-
-    /**
-     * 查询参数对象
-     *
-     * @param code 参数编码
-     * @return 参数对象
-     */
-    @InnerAuth
-    @GetMapping("/inner/code/{code}")
-    public R<SysConfigDto> getConfigByCodeInner(@PathVariable("code") String code) {
-        return R.ok(baseService.selectConfigByCode(code));
-    }
-
-    /**
-     * 查询参数
-     *
-     * @param code 参数编码
-     * @return 参数
-     */
-    @InnerAuth
-    @GetMapping("/inner/value/{code}")
-    public R<String> getValueByCodeInner(@PathVariable("code") String code) {
-        return R.ok(DictUtil.getConfigCache(code));
-    }
+public class ASysConfigController extends BSysConfigController {
 
     /**
      * 查询参数对象
@@ -89,10 +49,10 @@ public class SysConfigController extends BaseController<SysConfigQuery, SysConfi
      * @param code 参数编码
      * @return 参数
      */
+    @Override
     @GetMapping("/value/{code}")
     public AjaxResult getValueByCode(@PathVariable("code") String code) {
-        Object obj = DictUtil.getConfigCache(code);
-        return success(obj);
+        return super.getValueByCode(code);
     }
 
     /**
@@ -192,35 +152,4 @@ public class SysConfigController extends BaseController<SysConfigQuery, SysConfi
         return super.refreshCache();
     }
 
-    /**
-     * 前置校验 （强制）增加/修改
-     */
-    @Override
-    protected void AEHandle(BaseConstants.Operate operate, SysConfigDto config) {
-        if (baseService.checkConfigCodeUnique(config.getId(), config.getCode()))
-            warn(StrUtil.format("{}{}{}失败，参数编码已存在", operate.getInfo(), getNodeName(), config.getName()));
-    }
-
-    /**
-     * 前置校验 （强制）删除
-     *
-     * @param idList Id集合
-     */
-    @Override
-    protected void RHandle(BaseConstants.Operate operate, List<Long> idList) {
-        if (operate.isDelete()) {
-            int size = idList.size();
-            // remove oneself or admin
-            for (int i = idList.size() - 1; i >= 0; i--) {
-                if (baseService.checkIsBuiltIn(idList.get(i)))
-                    idList.remove(i);
-            }
-            if (CollUtil.isEmpty(idList)) {
-                warn(StrUtil.format("{}失败，不能删除内置参数！", operate.getInfo()));
-            } else if (idList.size() != size) {
-                baseService.deleteByIds(idList);
-                warn(StrUtil.format("成功{}除内置参数外的所有参数！", operate.getInfo()));
-            }
-        }
-    }
 }

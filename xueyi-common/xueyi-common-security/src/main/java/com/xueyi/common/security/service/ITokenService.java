@@ -3,6 +3,7 @@ package com.xueyi.common.security.service;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.basic.TokenConstants;
 import com.xueyi.common.core.exception.ServiceException;
+import com.xueyi.common.core.utils.JwtUtil;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.MapUtil;
 import com.xueyi.common.core.utils.core.NumberUtil;
@@ -29,8 +30,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
-import static com.xueyi.common.cache.constant.CacheConstants.EXPIRATION;
-import static com.xueyi.common.cache.constant.CacheConstants.REFRESH_TIME;
+import static com.xueyi.common.cache.constants.CacheConstants.EXPIRATION;
+import static com.xueyi.common.cache.constants.CacheConstants.REFRESH_TIME;
 
 /**
  * token控制器

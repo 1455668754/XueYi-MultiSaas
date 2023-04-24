@@ -1,6 +1,6 @@
 package com.xueyi.tenant.tenant.service.impl;
 
-import com.xueyi.common.core.constant.basic.CacheConstants;
+import com.xueyi.common.cache.constants.CacheConstants;
 import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
@@ -23,8 +23,8 @@ public class TeStrategyServiceImpl extends BaseServiceImpl<TeStrategyQuery, TeSt
      * 缓存主键命名定义
      */
     @Override
-    protected String getCacheKey() {
-        return CacheConstants.CacheType.TE_STRATEGY_KEY.getCode();
+    protected CacheConstants.CacheType getCacheKey() {
+        return CacheConstants.CacheType.TE_STRATEGY_KEY;
     }
 
     /**

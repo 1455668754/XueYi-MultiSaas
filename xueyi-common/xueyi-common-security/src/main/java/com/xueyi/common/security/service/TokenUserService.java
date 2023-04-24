@@ -1,6 +1,6 @@
 package com.xueyi.common.security.service;
 
-import com.xueyi.common.core.constant.basic.CacheConstants;
+import com.xueyi.common.cache.constants.CacheConstants;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.utils.JwtUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
@@ -51,8 +51,9 @@ public class TokenUserService implements ITokenService<SysUserDto, LoginUser> {
      */
     @Override
     public String getTokenAddress(String type, Long enterpriseId, String tokenValue) {
-        if (ObjectUtil.isNull(enterpriseId) || StrUtil.isBlank(tokenValue))
+        if (ObjectUtil.isNull(enterpriseId) || StrUtil.isBlank(tokenValue)) {
             throw new NullPointerException("enterpriseId or tokenValue has empty");
+        }
         return StrUtil.format("{}:{}:{}:{}:{}", CacheConstants.AUTHORIZATION, CacheConstants.LoginTokenType.ADMIN.getCode(), enterpriseId, type, tokenValue);
     }
 
@@ -98,8 +99,9 @@ public class TokenUserService implements ITokenService<SysUserDto, LoginUser> {
      */
     public DataScope getDataScope(String token) {
         try {
-            if (StrUtil.isNotBlank(token))
+            if (StrUtil.isNotBlank(token)) {
                 return redisService.getCacheMapValue(JwtUtil.getUserKey(token), SecurityConstants.AdminSecurity.DATA_SCOPE.getCode());
+            }
         } catch (Exception ignored) {
         }
         return null;

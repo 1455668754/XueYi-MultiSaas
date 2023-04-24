@@ -243,8 +243,9 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG ext
      */
     @Override
     public void refreshCache() {
-        if (StrUtil.isEmpty(getCacheKey()))
+        if (ObjectUtil.isNull(getCacheKey())) {
             throw new UtilException("未正常配置缓存，无法使用!");
+        }
         refreshCache(null, RedisConstants.OperateType.REFRESH_ALL, null, null);
     }
 }
