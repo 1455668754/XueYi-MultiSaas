@@ -1,5 +1,10 @@
 package com.xueyi.common.core.constant.basic;
 
+/**
+ * 基类通用常量
+ *
+ * @author xueyi
+ */
 public class EntityConstants {
 
     /** 名称 */
