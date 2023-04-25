@@ -18,7 +18,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.Serializable;
 import java.util.List;
@@ -63,6 +70,7 @@ public class SysDeptController extends TreeController<SysDeptQuery, SysDeptDto, 
     /**
      * 查询部门列表（排除节点）
      */
+    @Override
     @GetMapping("/list/exclude")
     @PreAuthorize("@ss.hasAuthority(@Auth.SYS_DEPT_LIST)")
     public AjaxResult listExNodes(SysDeptQuery dept) {
@@ -167,9 +175,10 @@ public class SysDeptController extends TreeController<SysDeptQuery, SysDeptDto, 
      */
     @Override
     protected void AEHandle(BaseConstants.Operate operate, SysDeptDto dept) {
-        if (baseService.checkDeptCodeUnique(dept.getId(), dept.getCode()))
+        if (baseService.checkDeptCodeUnique(dept.getId(), dept.getCode())) {
             warn(StrUtil.format("{}{}{}失败，部门编码已存在", operate.getInfo(), getNodeName(), dept.getName()));
-        else if (baseService.checkNameUnique(dept.getId(), dept.getParentId(), dept.getName()))
+        } else if (baseService.checkNameUnique(dept.getId(), dept.getParentId(), dept.getName())) {
             warn(StrUtil.format("{}{}{}失败，部门名称已存在", operate.getInfo(), getNodeName(), dept.getName()));
+        }
     }
 }
