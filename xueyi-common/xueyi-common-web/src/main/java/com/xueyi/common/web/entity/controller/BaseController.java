@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -29,6 +30,20 @@ import java.util.List;
  * @author xueyi
  */
 public abstract class BaseController<Q extends BaseEntity, D extends BaseEntity, IDS extends IBaseService<Q, D>> extends BaseHandleController<Q, D, IDS> {
+
+    /**
+     * 根据Id查询信息 | 内部调用
+     */
+    public R<D> selectByIdInner(Serializable id) {
+        return R.ok(baseService.selectById(id));
+    }
+
+    /**
+     * 根据Ids查询信息集合 | 内部调用
+     */
+    public R<List<D>> selectListByIdsInner(Collection<? extends Serializable> ids) {
+        return R.ok(baseService.selectListByIds(ids));
+    }
 
     /**
      * 查询列表
