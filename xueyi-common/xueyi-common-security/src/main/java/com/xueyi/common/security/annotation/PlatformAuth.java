@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
  * @author xueyi
  */
 @Documented
-@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.TYPE, ElementType.METHOD})
 public @interface PlatformAuth {
 }
