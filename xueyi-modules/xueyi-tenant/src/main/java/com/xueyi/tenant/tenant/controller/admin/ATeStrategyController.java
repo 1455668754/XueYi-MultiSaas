@@ -29,7 +29,7 @@ import java.util.List;
  * @author xueyi
  */
 @RestController
-@RequestMapping("/strategy")
+@RequestMapping("/admin/strategy")
 public class ATeStrategyController extends BTeStrategyController {
 
     /**

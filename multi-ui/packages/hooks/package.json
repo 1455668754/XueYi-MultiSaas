@@ -1,0 +1,28 @@
+{
+  "name": "@xueyi/hooks",
+  "version": "2.5.0",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    }
+  },
+  "main": "./src/index.ts",
+  "module": "./src/index.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "//build": "pnpm unbuild",
+    "//stub": "pnpm unbuild --stub",
+    "clean": "pnpm rimraf .turbo node_modules dist",
+    "lint": "pnpm eslint ."
+  },
+  "dependencies": {
+    "@vueuse/core": "^9.13.0",
+    "vue": "^3.2.47"
+  },
+  "devDependencies": {
+    "@xueyi/types": "workspace:*"
+  }
+}

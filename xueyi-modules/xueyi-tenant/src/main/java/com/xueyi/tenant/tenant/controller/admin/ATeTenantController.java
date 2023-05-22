@@ -30,7 +30,7 @@ import java.util.List;
  * @author xueyi
  */
 @RestController
-@RequestMapping("/tenant")
+@RequestMapping("/admin/tenant")
 public class ATeTenantController extends BTeTenantController {
 
     /**

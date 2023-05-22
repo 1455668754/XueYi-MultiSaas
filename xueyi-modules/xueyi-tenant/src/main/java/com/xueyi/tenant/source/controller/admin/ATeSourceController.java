@@ -30,7 +30,7 @@ import java.util.List;
  * @author xueyi
  */
 @RestController
-@RequestMapping("/source")
+@RequestMapping("/admin/source")
 public class ATeSourceController extends BTeSourceController {
 
     /**
