@@ -19,7 +19,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static com.xueyi.common.core.constant.basic.SqlConstants.*;
+import static com.xueyi.common.core.constant.basic.SqlConstants.ANCESTORS_FIND;
+import static com.xueyi.common.core.constant.basic.SqlConstants.ANCESTORS_PART_UPDATE;
+import static com.xueyi.common.core.constant.basic.SqlConstants.NONE_FIND;
+import static com.xueyi.common.core.constant.basic.SqlConstants.TREE_LEVEL_UPDATE;
 
 /**
  * 数据封装层处理 树型通用数据处理
@@ -41,8 +44,9 @@ public class TreeManagerImpl<Q extends P, D extends P, P extends TreeEntity<D>, 
     @Override
     public List<D> selectAncestorsListById(Serializable id) {
         P po = baseMapper.selectById(id);
-        if (ObjectUtil.isNull(po) || StrUtil.isBlank(po.getAncestors()))
+        if (ObjectUtil.isNull(po) || StrUtil.isBlank(po.getAncestors())) {
             return null;
+        }
         List<P> poList = baseMapper.selectList(
                 Wrappers.<P>query().lambda()
                         .eq(P::getId, id)
@@ -59,8 +63,9 @@ public class TreeManagerImpl<Q extends P, D extends P, P extends TreeEntity<D>, 
     @Override
     public List<D> selectChildListById(Serializable id) {
         P po = baseMapper.selectById(id);
-        if (ObjectUtil.isNull(po))
+        if (ObjectUtil.isNull(po)) {
             return new ArrayList<>();
+        }
         List<P> childList = baseMapper.selectList(
                 Wrappers.<P>query().lambda()
                         .eq(P::getId, id)
@@ -76,12 +81,14 @@ public class TreeManagerImpl<Q extends P, D extends P, P extends TreeEntity<D>, 
      */
     @Override
     public List<D> selectChildListByIds(Collection<? extends Serializable> idList) {
-        if (CollUtil.isEmpty(idList))
+        if (CollUtil.isEmpty(idList)) {
             return new ArrayList<>();
+        }
         List<P> poList = baseMapper.selectList(Wrappers.<P>query().lambda()
                 .in(P::getId, idList));
-        if (CollUtil.isEmpty(poList))
+        if (CollUtil.isEmpty(poList)) {
             return new ArrayList<>();
+        }
         List<P> childList = baseMapper.selectList(
                 Wrappers.<P>query().lambda()
                         .in(P::getId, idList)
@@ -166,15 +173,16 @@ public class TreeManagerImpl<Q extends P, D extends P, P extends TreeEntity<D>, 
      */
     @Override
     public int deleteChildByAncestors(String... ancestors) {
-        if (ArrayUtil.isEmpty(ancestors))
-            return NumberUtil.Zero;
-        return baseMapper.delete(
+        return ArrayUtil.isNotEmpty(ancestors)
+                ? baseMapper.delete(
                 Wrappers.<P>update().lambda()
                         .apply(NONE_FIND)
                         .func(i -> {
-                            for (String ancestor : ancestors)
+                            for (String ancestor : ancestors) {
                                 i.or().likeRight(P::getAncestors, ancestor);
-                        }));
+                            }
+                        }))
+                : NumberUtil.Zero;
     }
 
     /**

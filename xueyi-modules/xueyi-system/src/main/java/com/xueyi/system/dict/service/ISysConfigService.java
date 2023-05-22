@@ -20,6 +20,11 @@ public interface ISysConfigService extends IBaseService<SysConfigQuery, SysConfi
     SysConfigDto selectConfigByCode(String code);
 
     /**
+     * 更新缓存数据
+     */
+    Boolean syncCache();
+
+    /**
      * 校验参数编码是否唯一
      *
      * @param Id         参数Id

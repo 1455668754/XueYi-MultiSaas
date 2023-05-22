@@ -1,22 +1,24 @@
-package com.xueyi.system.dict.controller;
+package com.xueyi.system.dict.controller.admin;
 
-import com.xueyi.common.core.constant.basic.BaseConstants;
-import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
-import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
-import com.xueyi.common.security.annotation.InnerAuth;
-import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.system.api.dict.domain.dto.SysDictTypeDto;
 import com.xueyi.system.api.dict.domain.query.SysDictTypeQuery;
-import com.xueyi.system.dict.service.ISysDictTypeService;
+import com.xueyi.system.dict.controller.base.BSysDictTypeController;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.Serializable;
 import java.util.List;
@@ -28,24 +30,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/dict/type")
-public class SysDictTypeController extends BaseController<SysDictTypeQuery, SysDictTypeDto, ISysDictTypeService> {
-
-    /** 定义节点名称 */
-    @Override
-    protected String getNodeName() {
-        return "字典类型";
-    }
-
-    /**
-     * 刷新字典缓存 | 内部调用
-     */
-    @Override
-    @InnerAuth(isAnonymous = true)
-    @GetMapping("/inner/refresh")
-    @Log(title = "字典类型", businessType = BusinessType.REFRESH)
-    public R<Boolean> refreshCacheInner() {
-        return super.refreshCacheInner();
-    }
+public class ASysDictTypeController extends BSysDictTypeController {
 
     /**
      * 查询字典类型列表
@@ -151,15 +136,6 @@ public class SysDictTypeController extends BaseController<SysDictTypeQuery, SysD
     @GetMapping("/option")
     public AjaxResult option() {
         return super.option();
-    }
-
-    /**
-     * 前置校验 （强制）增加/修改
-     */
-    @Override
-    protected void AEHandle(BaseConstants.Operate operate, SysDictTypeDto dictType) {
-        if (baseService.checkDictCodeUnique(dictType.getId(), dictType.getCode()))
-            warn(StrUtil.format("{}{}{}失败，字典编码已存在", operate.getInfo(), getNodeName(), dictType.getName()));
     }
 
 }

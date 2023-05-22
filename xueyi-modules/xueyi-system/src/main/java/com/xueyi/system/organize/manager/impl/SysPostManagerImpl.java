@@ -25,7 +25,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static com.xueyi.system.api.organize.domain.merge.MergeGroup.*;
+import static com.xueyi.system.api.organize.domain.merge.MergeGroup.POST_OrganizeRoleMerge_GROUP;
+import static com.xueyi.system.api.organize.domain.merge.MergeGroup.POST_SysDept_GROUP;
+import static com.xueyi.system.api.organize.domain.merge.MergeGroup.POST_SysRolePostMerge_GROUP;
+import static com.xueyi.system.api.organize.domain.merge.MergeGroup.POST_SysUserPostMerge_GROUP;
 
 /**
  * 岗位管理 数据封装层处理
@@ -57,8 +60,9 @@ public class SysPostManagerImpl extends BaseManagerImpl<SysPostQuery, SysPostDto
      */
     @Override
     public List<SysPostDto> selectListByDeptIds(Collection<Long> deptIds) {
-        if (CollUtil.isEmpty(deptIds))
+        if (CollUtil.isEmpty(deptIds)) {
             return new ArrayList<>();
+        }
         List<SysPostPo> postList = baseMapper.selectList(
                 Wrappers.<SysPostPo>query().lambda()
                         .in(SysPostPo::getDeptId, deptIds));

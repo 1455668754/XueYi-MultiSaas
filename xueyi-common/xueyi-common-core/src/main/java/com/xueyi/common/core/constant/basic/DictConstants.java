@@ -77,4 +77,32 @@ public class DictConstants {
         private final String info;
 
     }
+
+    /** 字典：字典数据类型列表（0默认 1只增 2只减 3只读） */
+    @Getter
+    @AllArgsConstructor
+    public enum DicDataType {
+
+        DEFAULT("0", "默认"),
+        INCREASE("1", "只增"),
+        SUBTRACT("2", "只减"),
+        READ("3", "只读");
+
+        private final String code;
+        private final String info;
+
+    }
+
+    /** 字典：缓存类型列表（0租户 1全局） */
+    @Getter
+    @AllArgsConstructor
+    public enum DicCacheType {
+
+        TENANT("0", "租户"),
+        OVERALL("1", "全局");
+
+        private final String code;
+        private final String info;
+
+    }
 }

@@ -6,7 +6,6 @@ import com.xueyi.common.redis.service.RedisService;
 import com.xueyi.common.security.service.ITokenService;
 import com.xueyi.common.security.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.lang.Nullable;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2RefreshToken;
@@ -96,7 +95,7 @@ public class RedisOAuth2AuthorizationHandler implements OAuth2AuthorizationServi
     public OAuth2Authorization findByToken(String token, @Nullable OAuth2TokenType tokenType) {
         Assert.hasText(token, "token cannot be empty");
         Assert.notNull(tokenType, "tokenType cannot be empty");
-        return redisService.getCacheObject(token, RedisSerializer.java());
+        return redisService.getJavaCacheObject(token);
     }
 
     private static boolean isState(OAuth2Authorization authorization) {

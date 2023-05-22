@@ -5,7 +5,9 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.constant.basic.SqlConstants;
 import com.xueyi.common.core.utils.core.CollUtil;
+import com.xueyi.common.core.utils.core.ConvertUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.security.utils.SecurityUserUtils;
 import com.xueyi.common.web.entity.domain.SlaveRelation;
 import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
@@ -34,7 +36,11 @@ import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.xueyi.system.api.organize.domain.merge.MergeGroup.USER_OrganizeRoleMerge_GROUP;
@@ -97,8 +103,9 @@ public class SysUserManagerImpl extends BaseManagerImpl<SysUserQuery, SysUserDto
                 Wrappers.<SysUserPo>query().lambda()
                         .eq(SysUserPo::getUserName, userName)));
         // check password is true
-        if (ObjectUtil.isNull(userDto) || !SecurityUserUtils.matchesPassword(password, userDto.getPassword()))
+        if (ObjectUtil.isNull(userDto) || !SecurityUserUtils.matchesPassword(password, userDto.getPassword())) {
             return null;
+        }
 
         // select posts in user && select depts in post
         List<SysUserPostMerge> userPostMerges = userPostMergeMapper.selectList(
@@ -106,21 +113,22 @@ public class SysUserManagerImpl extends BaseManagerImpl<SysUserQuery, SysUserDto
                         .eq(SysUserPostMerge::getUserId, userDto.getId()));
 
         List<Long> postIds = userPostMerges.stream().map(SysUserPostMerge::getPostId).collect(Collectors.toList());
-        List<Long> deptIds = null;
+        Set<Long> roleDeptIds = new HashSet<>();
         // if exist posts, must exist depts
         if (CollUtil.isNotEmpty(userPostMerges)) {
             userDto.setPosts(postConverter.mapperDto(postMapper.selectBatchIds(postIds)));
             if (CollUtil.isNotEmpty(userDto.getPosts())) {
-                deptIds = userDto.getPosts().stream().map(SysPostDto::getDeptId).collect(Collectors.toList());
+                Set<Long> deptIds = userDto.getPosts().stream().map(SysPostDto::getDeptId).collect(Collectors.toSet());
                 List<SysDeptDto> depts = deptConverter.mapperDto(deptMapper.selectBatchIds(deptIds));
-                for (SysDeptDto deptDto : depts) {
-                    for (int i = 0; i < userDto.getPosts().size(); i++) {
-                        if (ObjectUtil.equal(userDto.getPosts().get(i).getDeptId(), deptDto.getId())) {
-                            userDto.getPosts().get(i).setDept(deptDto);
-                            break;
-                        }
+                depts.forEach(item -> {
+                    if(StrUtil.isNotBlank(item.getAncestors())) {
+                        roleDeptIds.add(item.getId());
+                        List<String> deptIdStrList = StrUtil.splitTrim(item.getAncestors(), StrUtil.COMMA);
+                        roleDeptIds.addAll(deptIdStrList.stream().map(ConvertUtil::toLong).collect(Collectors.toSet()));
                     }
-                }
+                });
+                Map<Long, SysDeptDto> deptMap = depts.stream().collect(Collectors.toMap(SysDeptDto::getId, Function.identity()));
+                userDto.getPosts().forEach(post -> post.setDept(deptMap.get(post.getDeptId())));
             }
         }
         // 是否为超管用户 ? 无角色集合 : 获取角色集合
@@ -128,17 +136,18 @@ public class SysUserManagerImpl extends BaseManagerImpl<SysUserQuery, SysUserDto
             userDto.setRoles(new ArrayList<>());
         } else {
             // select roles in user
-            List<Long> finalDeptIds = deptIds;
             List<SysOrganizeRoleMerge> organizeRoleMerges = organizeRoleMergeMapper.selectList(
                     Wrappers.<SysOrganizeRoleMerge>query().lambda()
                             .eq(SysOrganizeRoleMerge::getUserId, userDto.getId())
                             .func(i -> {
-                                if (CollUtil.isNotEmpty(postIds))
+                                if (CollUtil.isNotEmpty(postIds)) {
                                     i.or().in(SysOrganizeRoleMerge::getPostId, postIds);
+                                }
                             })
                             .func(i -> {
-                                if (CollUtil.isNotEmpty(finalDeptIds))
-                                    i.or().in(SysOrganizeRoleMerge::getDeptId, finalDeptIds);
+                                if (CollUtil.isNotEmpty(roleDeptIds)) {
+                                    i.or().in(SysOrganizeRoleMerge::getDeptId, roleDeptIds);
+                                }
                             }));
             userDto.setRoles(CollUtil.isNotEmpty(organizeRoleMerges)
                     ? roleConverter.mapperDto(roleMapper.selectBatchIds(organizeRoleMerges.stream().map(SysOrganizeRoleMerge::getRoleId).collect(Collectors.toList())))

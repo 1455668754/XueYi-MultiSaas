@@ -1,6 +1,6 @@
 package com.xueyi.system.monitor.controller;
 
-import com.xueyi.common.core.constant.basic.CacheConstants;
+import com.xueyi.common.cache.constants.CacheConstants;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.utils.core.ArrayUtil;
 import com.xueyi.common.core.utils.core.StrUtil;

@@ -28,15 +28,17 @@ public class FastJson2JsonRedisSerializer<T> implements RedisSerializer<T> {
 
     @Override
     public byte[] serialize(T t) throws SerializationException {
-        if (t == null)
+        if (t == null) {
             return new byte[0];
+        }
         return JSON.toJSONString(t, JSONWriter.Feature.WriteClassName).getBytes(DEFAULT_CHARSET);
     }
 
     @Override
     public T deserialize(byte[] bytes) throws SerializationException {
-        if (ArrayUtil.isEmpty(bytes))
+        if (ArrayUtil.isEmpty(bytes)) {
             return null;
+        }
         String str = new String(bytes, DEFAULT_CHARSET);
         return JSON.parseObject(str, clazz, JSONReader.Feature.SupportAutoType);
     }

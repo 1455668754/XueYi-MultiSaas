@@ -1,6 +1,6 @@
 com.xueyi.common.security.config.WebMvcConfig
 com.xueyi.common.security.service.TokenUserService
-com.xueyi.common.security.aspect.InnerAuthAspect
+com.xueyi.common.security.aspect.AuthAspect
 com.xueyi.common.security.handler.GlobalExceptionHandler
 com.xueyi.common.security.handler.ClientRegisteredRepositoryHandler
 com.xueyi.common.security.handler.RedisOAuth2AuthorizationHandler
