@@ -47,7 +47,7 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG ext
     @Override
     public List<D> selectList(Q query) {
         List<D> dtoList = baseManager.selectList(query);
-         return subCorrelates(dtoList);
+        return subCorrelates(dtoList);
     }
 
     /**

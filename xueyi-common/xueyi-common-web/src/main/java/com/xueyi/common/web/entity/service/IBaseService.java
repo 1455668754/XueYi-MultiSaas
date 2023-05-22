@@ -15,6 +15,7 @@ import java.util.List;
  * @param <D> Dto
  * @author xueyi
  */
+//public interface IBaseService<Q extends BaseEntity, D extends BaseEntity, T extends Enum<?> & CorrelateService> {
 public interface IBaseService<Q extends BaseEntity, D extends BaseEntity> {
 
     /**
