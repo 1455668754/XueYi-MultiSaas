@@ -1,4 +1,3 @@
-
 package com.xueyi.tenant.source.controller.base;
 
 import com.xueyi.common.core.constant.basic.BaseConstants;
@@ -9,13 +8,13 @@ import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.tenant.api.source.domain.dto.TeSourceDto;
 import com.xueyi.tenant.api.source.domain.query.TeSourceQuery;
 import com.xueyi.tenant.source.service.ITeSourceService;
-import com.xueyi.tenant.tenant.service.ITeStrategyService;
+import com.xueyi.tenant.source.service.ITeStrategyService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 /**
- * 数据源管理 业务处理
+ * 数据源管理 通用业务处理
  *
  * @author xueyi
  */

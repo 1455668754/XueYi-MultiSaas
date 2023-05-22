@@ -1,17 +1,17 @@
-import { TenantIM, TenantPPM, TenantLRM } from '/@/model/tenant';
+import { TenantIM, TenantLRM, TenantPPM } from '/@/model/tenant';
 import { defHttp } from '/@/utils/http/axios';
 import { AuthLM } from '/@/model/system';
 
 enum Api {
-  LIST_TENANT = '/tenant/tenant/list',
-  GET_TENANT = '/tenant/tenant/',
+  LIST_TENANT = '/tenant/admin/tenant/list',
+  GET_TENANT = '/tenant/admin/tenant/',
   AUTH_SCOPE_TENANT = '/system/auth/tenant/authScope',
-  GET_AUTH_TENANT = '/tenant/tenant/auth/',
-  EDIT_AUTH_TENANT = '/tenant/tenant/auth',
-  ADD_TENANT = '/tenant/tenant',
-  EDIT_TENANT = '/tenant/tenant',
-  EDIT_STATUS_TENANT = '/tenant/tenant/status',
-  DEL_BATCH_TENANT = '/tenant/tenant/batch/',
+  GET_AUTH_TENANT = '/tenant/admin/tenant/auth/',
+  EDIT_AUTH_TENANT = '/tenant/admin/tenant/auth',
+  ADD_TENANT = '/tenant/admin/tenant',
+  EDIT_TENANT = '/tenant/admin/tenant',
+  EDIT_STATUS_TENANT = '/tenant/admin/tenant/status',
+  DEL_BATCH_TENANT = '/tenant/admin/tenant/batch/',
 }
 
 /** 查询租户列表 */

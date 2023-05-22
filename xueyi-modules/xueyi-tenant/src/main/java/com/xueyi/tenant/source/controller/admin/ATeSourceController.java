@@ -25,7 +25,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 数据源管理 业务处理
+ * 数据源管理 管理端业务处理
  *
  * @author xueyi
  */

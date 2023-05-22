@@ -1,13 +1,13 @@
-package com.xueyi.tenant.tenant.controller.admin;
+package com.xueyi.tenant.source.controller.admin;
 
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
-import com.xueyi.tenant.api.tenant.domain.dto.TeStrategyDto;
-import com.xueyi.tenant.api.tenant.domain.query.TeStrategyQuery;
-import com.xueyi.tenant.tenant.controller.base.BTeStrategyController;
+import com.xueyi.tenant.api.source.domain.dto.TeStrategyDto;
+import com.xueyi.tenant.api.source.domain.query.TeStrategyQuery;
+import com.xueyi.tenant.source.controller.base.BTeStrategyController;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -24,7 +24,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 源策略管理 业务处理
+ * 源策略管理 管理端业务处理
  *
  * @author xueyi
  */

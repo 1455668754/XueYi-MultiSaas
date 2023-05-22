@@ -1,6 +1,6 @@
 {
   "name": "@xueyi/types",
-  "version": "2.5.0",
+  "version": "3.0.0-Alpha2",
   "sideEffects": false,
   "exports": {
     ".": {

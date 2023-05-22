@@ -6,7 +6,7 @@ import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.system.api.dict.feign.RemoteConfigService;
 import com.xueyi.system.api.dict.feign.RemoteDictService;
 import com.xueyi.tenant.api.source.feign.RemoteSourceService;
-import com.xueyi.tenant.api.tenant.feign.RemoteStrategyService;
+import com.xueyi.tenant.api.source.feign.RemoteStrategyService;
 import com.xueyi.tenant.api.tenant.feign.RemoteTenantService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

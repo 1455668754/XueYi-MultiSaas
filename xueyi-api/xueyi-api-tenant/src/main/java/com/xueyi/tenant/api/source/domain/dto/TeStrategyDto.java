@@ -1,7 +1,6 @@
-package com.xueyi.tenant.api.tenant.domain.dto;
+package com.xueyi.tenant.api.source.domain.dto;
 
-import com.xueyi.tenant.api.source.domain.dto.TeSourceDto;
-import com.xueyi.tenant.api.tenant.domain.po.TeStrategyPo;
+import com.xueyi.tenant.api.source.domain.po.TeStrategyPo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

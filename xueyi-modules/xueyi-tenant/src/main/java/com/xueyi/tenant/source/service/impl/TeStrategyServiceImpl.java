@@ -1,14 +1,14 @@
-package com.xueyi.tenant.tenant.service.impl;
+package com.xueyi.tenant.source.service.impl;
 
 import com.xueyi.common.cache.constants.CacheConstants;
 import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
-import com.xueyi.tenant.api.tenant.domain.dto.TeStrategyDto;
-import com.xueyi.tenant.api.tenant.domain.query.TeStrategyQuery;
-import com.xueyi.tenant.tenant.manager.ITeStrategyManager;
-import com.xueyi.tenant.tenant.service.ITeStrategyService;
+import com.xueyi.tenant.api.source.domain.dto.TeStrategyDto;
+import com.xueyi.tenant.api.source.domain.query.TeStrategyQuery;
+import com.xueyi.tenant.source.manager.ITeStrategyManager;
+import com.xueyi.tenant.source.service.ITeStrategyService;
 import org.springframework.stereotype.Service;
 
 /**

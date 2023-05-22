@@ -1,14 +1,14 @@
-package com.xueyi.tenant.tenant.manager.impl;
+package com.xueyi.tenant.source.manager.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.basic.SqlConstants;
 import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
-import com.xueyi.tenant.api.tenant.domain.dto.TeStrategyDto;
-import com.xueyi.tenant.api.tenant.domain.model.TeStrategyConverter;
-import com.xueyi.tenant.api.tenant.domain.po.TeStrategyPo;
-import com.xueyi.tenant.api.tenant.domain.query.TeStrategyQuery;
-import com.xueyi.tenant.tenant.manager.ITeStrategyManager;
-import com.xueyi.tenant.tenant.mapper.TeStrategyMapper;
+import com.xueyi.tenant.api.source.domain.dto.TeStrategyDto;
+import com.xueyi.tenant.api.source.domain.model.TeStrategyConverter;
+import com.xueyi.tenant.api.source.domain.po.TeStrategyPo;
+import com.xueyi.tenant.api.source.domain.query.TeStrategyQuery;
+import com.xueyi.tenant.source.manager.ITeStrategyManager;
+import com.xueyi.tenant.source.mapper.TeStrategyMapper;
 import org.springframework.stereotype.Component;
 
 

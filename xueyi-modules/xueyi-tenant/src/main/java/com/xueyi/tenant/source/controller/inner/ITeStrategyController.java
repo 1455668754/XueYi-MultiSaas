@@ -1,16 +1,16 @@
-package com.xueyi.tenant.tenant.controller.inner;
+package com.xueyi.tenant.source.controller.inner;
 
 import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.InnerAuth;
-import com.xueyi.tenant.tenant.controller.base.BTeStrategyController;
+import com.xueyi.tenant.source.controller.base.BTeStrategyController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 源策略管理 业务处理
+ * 源策略管理 远程业务处理
  *
  * @author xueyi
  */

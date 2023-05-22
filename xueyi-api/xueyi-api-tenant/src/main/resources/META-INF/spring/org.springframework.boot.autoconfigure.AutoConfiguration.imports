@@ -1,3 +1,3 @@
 com.xueyi.tenant.api.source.feign.factory.RemoteSourceFallbackFactory
-com.xueyi.tenant.api.tenant.feign.factory.RemoteStrategyFallbackFactory
+com.xueyi.tenant.api.source.feign.factory.RemoteStrategyFallbackFactory
 com.xueyi.tenant.api.tenant.feign.factory.RemoteTenantFallbackFactory

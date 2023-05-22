@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 租户管理 业务处理
+ * 租户管理 远程业务处理
  *
  * @author xueyi
  */

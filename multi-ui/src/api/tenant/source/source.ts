@@ -1,15 +1,15 @@
-import { SourceIM, SourcePPM, SourceLRM } from '/@/model/tenant';
+import { SourceIM, SourceLRM, SourcePPM } from '/@/model/tenant';
 import { defHttp } from '/@/utils/http/axios';
 
 enum Api {
-  LIST_SOURCE = '/tenant/source/list',
-  OPTION_SOURCE = '/tenant/source/option',
-  GET_SOURCE = '/tenant/source/',
-  CONNECTION = '/tenant/source/connection',
-  ADD_SOURCE = '/tenant/source',
-  EDIT_SOURCE = '/tenant/source',
-  EDIT_STATUS_SOURCE = '/tenant/source/status',
-  DEL_BATCH_SOURCE = '/tenant/source/batch/',
+  LIST_SOURCE = '/tenant/admin/source/list',
+  OPTION_SOURCE = '/tenant/admin/source/option',
+  GET_SOURCE = '/tenant/admin/source/',
+  CONNECTION = '/tenant/admin/source/connection',
+  ADD_SOURCE = '/tenant/admin/source',
+  EDIT_SOURCE = '/tenant/admin/source',
+  EDIT_STATUS_SOURCE = '/tenant/admin/source/status',
+  DEL_BATCH_SOURCE = '/tenant/admin/source/batch/',
 }
 
 /** 查询数据源列表 */

@@ -52,7 +52,7 @@
 
 <script lang="ts">
   import { defineComponent, reactive } from 'vue';
-  import { listStrategyApi, delStrategyApi } from '/@/api/tenant/tenant/strategy';
+  import { delStrategyApi, listStrategyApi } from '/@/api/tenant/source/strategy';
   import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { IconEnum } from '/@/enums/appEnum';

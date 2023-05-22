@@ -1,9 +1,9 @@
-package com.xueyi.tenant.api.tenant.feign;
+package com.xueyi.tenant.api.source.feign;
 
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.basic.ServiceConstants;
 import com.xueyi.common.core.web.result.R;
-import com.xueyi.tenant.api.tenant.feign.factory.RemoteStrategyFallbackFactory;
+import com.xueyi.tenant.api.source.feign.factory.RemoteStrategyFallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 

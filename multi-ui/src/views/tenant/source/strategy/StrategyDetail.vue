@@ -6,7 +6,7 @@
 
 <script lang="ts">
   import { defineComponent, onMounted, ref } from 'vue';
-  import { getStrategyApi } from '/@/api/tenant/tenant/strategy';
+  import { getStrategyApi } from '/@/api/tenant/source/strategy';
   import { Description, useDescription } from '/@/components/Description';
   import { detailSchema } from './strategy.data';
   import { useRoute } from 'vue-router';

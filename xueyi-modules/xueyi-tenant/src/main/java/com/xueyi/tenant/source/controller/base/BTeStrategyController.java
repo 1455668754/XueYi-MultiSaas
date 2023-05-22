@@ -1,4 +1,4 @@
-package com.xueyi.tenant.tenant.controller.base;
+package com.xueyi.tenant.source.controller.base;
 
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.utils.core.CollUtil;
@@ -6,17 +6,17 @@ import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.tenant.api.source.domain.dto.TeSourceDto;
-import com.xueyi.tenant.api.tenant.domain.dto.TeStrategyDto;
-import com.xueyi.tenant.api.tenant.domain.query.TeStrategyQuery;
+import com.xueyi.tenant.api.source.domain.dto.TeStrategyDto;
+import com.xueyi.tenant.api.source.domain.query.TeStrategyQuery;
 import com.xueyi.tenant.source.service.ITeSourceService;
-import com.xueyi.tenant.tenant.service.ITeStrategyService;
+import com.xueyi.tenant.source.service.ITeStrategyService;
 import com.xueyi.tenant.tenant.service.ITeTenantService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 /**
- * 源策略管理 业务处理
+ * 源策略管理 通用业务处理
  *
  * @author xueyi
  */

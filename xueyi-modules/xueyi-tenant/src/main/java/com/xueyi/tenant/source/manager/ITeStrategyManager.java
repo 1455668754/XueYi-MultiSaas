@@ -1,8 +1,8 @@
-package com.xueyi.tenant.tenant.manager;
+package com.xueyi.tenant.source.manager;
 
 import com.xueyi.common.web.entity.manager.IBaseManager;
-import com.xueyi.tenant.api.tenant.domain.dto.TeStrategyDto;
-import com.xueyi.tenant.api.tenant.domain.query.TeStrategyQuery;
+import com.xueyi.tenant.api.source.domain.dto.TeStrategyDto;
+import com.xueyi.tenant.api.source.domain.query.TeStrategyQuery;
 
 
 /**

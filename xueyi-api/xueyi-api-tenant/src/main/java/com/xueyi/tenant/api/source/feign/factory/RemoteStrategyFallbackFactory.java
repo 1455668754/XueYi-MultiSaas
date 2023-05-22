@@ -1,7 +1,7 @@
-package com.xueyi.tenant.api.tenant.feign.factory;
+package com.xueyi.tenant.api.source.feign.factory;
 
 import com.xueyi.common.core.web.result.R;
-import com.xueyi.tenant.api.tenant.feign.RemoteStrategyService;
+import com.xueyi.tenant.api.source.feign.RemoteStrategyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;

@@ -1,14 +1,14 @@
-import { StrategyIM, StrategyPPM, StrategyLRM } from '/@/model/tenant';
+import { StrategyIM, StrategyLRM, StrategyPPM } from '/@/model/tenant';
 import { defHttp } from '/@/utils/http/axios';
 
 enum Api {
-  LIST_STRATEGY = '/tenant/strategy/list',
-  OPTION_STRATEGY = '/tenant/strategy/option',
-  GET_STRATEGY = '/tenant/strategy/',
-  ADD_STRATEGY = '/tenant/strategy',
-  EDIT_STRATEGY = '/tenant/strategy',
-  EDIT_STATUS_STRATEGY = '/tenant/strategy/status',
-  DEL_BATCH_STRATEGY = '/tenant/strategy/batch/',
+  LIST_STRATEGY = '/tenant/admin/strategy/list',
+  OPTION_STRATEGY = '/tenant/admin/strategy/option',
+  GET_STRATEGY = '/tenant/admin/strategy/',
+  ADD_STRATEGY = '/tenant/admin/strategy',
+  EDIT_STRATEGY = '/tenant/admin/strategy',
+  EDIT_STATUS_STRATEGY = '/tenant/admin/strategy/status',
+  DEL_BATCH_STRATEGY = '/tenant/admin/strategy/batch/',
 }
 
 /** 查询数据源策略列表 */

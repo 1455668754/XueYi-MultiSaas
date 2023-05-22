@@ -1,8 +1,8 @@
-package com.xueyi.tenant.tenant.service;
+package com.xueyi.tenant.source.service;
 
 import com.xueyi.common.web.entity.service.IBaseService;
-import com.xueyi.tenant.api.tenant.domain.dto.TeStrategyDto;
-import com.xueyi.tenant.api.tenant.domain.query.TeStrategyQuery;
+import com.xueyi.tenant.api.source.domain.dto.TeStrategyDto;
+import com.xueyi.tenant.api.source.domain.query.TeStrategyQuery;
 
 /**
  * 数据源策略管理 服务层

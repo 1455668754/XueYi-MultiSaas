@@ -6,7 +6,7 @@ import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.SpringUtil;
 import com.xueyi.common.core.web.model.SysSource;
 import com.xueyi.tenant.api.source.domain.dto.TeSourceDto;
-import com.xueyi.tenant.api.tenant.domain.dto.TeStrategyDto;
+import com.xueyi.tenant.api.source.domain.dto.TeStrategyDto;
 
 /**
  * 源策略组缓存管理工具类

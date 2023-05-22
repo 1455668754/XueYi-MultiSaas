@@ -5,7 +5,7 @@ import { dicDictList } from '/@/api/sys/dict';
 import { dictConversion } from '/@/utils/xueyi';
 import { DicSortEnum, DicStatusEnum, DicYesNoEnum } from '/@/enums/basic';
 import { TenantIM } from '/@/model/tenant';
-import { optionStrategyApi } from '/@/api/tenant/tenant/strategy';
+import { optionStrategyApi } from '/src/api/tenant/source/strategy';
 import { h } from 'vue';
 import { Tag } from 'ant-design-vue';
 import { ColorEnum } from '/@/enums/appEnum';

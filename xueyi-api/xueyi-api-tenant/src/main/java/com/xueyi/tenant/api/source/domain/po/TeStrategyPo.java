@@ -1,4 +1,4 @@
-package com.xueyi.tenant.api.tenant.domain.po;
+package com.xueyi.tenant.api.source.domain.po;
 
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
