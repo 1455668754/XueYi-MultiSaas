@@ -179,6 +179,14 @@ public interface IBaseManager<Q extends BaseEntity, D extends BaseEntity> {
      * @param field 动态SQL控制对象
      * @return 数据对象集合
      */
+    List<D> selectListByField(com.xueyi.common.web.correlate.domain.SqlField... field);
+
+    /**
+     * 根据动态SQL控制对象查询数据对象集合
+     *
+     * @param field 动态SQL控制对象
+     * @return 数据对象集合
+     */
     List<D> selectListByField(SqlField... field);
 
     /**

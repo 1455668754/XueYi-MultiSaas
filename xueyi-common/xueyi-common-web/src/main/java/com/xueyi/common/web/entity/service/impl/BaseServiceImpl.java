@@ -83,6 +83,17 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG ext
     }
 
     /**
+     * 根据动态SQL控制对象查询数据对象集合
+     *
+     * @param field 动态SQL控制对象
+     * @return 数据对象集合
+     */
+    @Override
+    public List<D> selectListByField(com.xueyi.common.web.correlate.domain.SqlField... field) {
+        return baseManager.selectListByField(field);
+    }
+
+    /**
      * 根据Id查询单条数据对象
      *
      * @param id Id

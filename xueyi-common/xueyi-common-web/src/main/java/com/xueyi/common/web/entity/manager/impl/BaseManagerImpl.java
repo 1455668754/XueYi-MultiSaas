@@ -257,6 +257,17 @@ public class BaseManagerImpl<Q extends P, D extends P, P extends BaseEntity, PM 
      * @return 数据对象集合
      */
     @Override
+    public List<D> selectListByField(com.xueyi.common.web.correlate.domain.SqlField... field) {
+        return mapperDto(baseMapper.selectListByField(field));
+    }
+
+    /**
+     * 根据动态SQL控制对象查询数据对象集合
+     *
+     * @param field 动态SQL控制对象
+     * @return 数据对象集合
+     */
+    @Override
     public List<D> selectListByField(SqlField... field) {
         List<D> list = mapperDto(baseMapper.selectListByField(field));
         Optional.of(field).map(item -> Arrays.stream(item).filter(operate -> ObjectUtil.isNotNull(operate.getLinkageOperate()))

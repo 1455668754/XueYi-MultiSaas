@@ -2,6 +2,7 @@ package com.xueyi.common.web.entity.service;
 
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
+import com.xueyi.common.web.correlate.domain.SqlField;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -55,6 +56,14 @@ public interface IBaseService<Q extends BaseEntity, D extends BaseEntity> {
      * @return 数据对象集合
      */
     List<D> selectListByIdsMerge(Collection<? extends Serializable> idList);
+
+    /**
+     * 根据动态SQL控制对象查询数据对象集合
+     *
+     * @param field 动态SQL控制对象
+     * @return 数据对象集合
+     */
+    List<D> selectListByField(SqlField... field);
 
     /**
      * 根据Id查询单条数据对象
