@@ -5,29 +5,29 @@
     <parent>
         <groupId>com.xueyi</groupId>
         <artifactId>xueyi-common</artifactId>
-        <version>3.0.0-Alpha1</version>
+        <version>3.0.0-Alpha2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    
+
     <artifactId>xueyi-common-redis</artifactId>
-	
+
     <description>
         xueyi-common-redis缓存服务
     </description>
 
     <dependencies>
-		
+
         <!-- SpringBoot Boot Redis -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
-        
+
         <!-- XueYi Common Core-->
         <dependency>
             <groupId>com.xueyi</groupId>
             <artifactId>xueyi-common-core</artifactId>
         </dependency>
-        
+
     </dependencies>
 </project>

@@ -4,10 +4,10 @@
     <parent>
         <groupId>com.xueyi</groupId>
         <artifactId>xueyi-visual</artifactId>
-        <version>3.0.0-Alpha1</version>
+        <version>3.0.0-Alpha2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-	
+
     <artifactId>xueyi-visual-monitor</artifactId>
 
     <description>
@@ -15,20 +15,20 @@
     </description>
 
     <dependencies>
-        
+
         <!-- SpringBoot Admin -->
         <dependency>
             <groupId>de.codecentric</groupId>
             <artifactId>spring-boot-admin-starter-server</artifactId>
             <version>${spring-boot-admin.version}</version>
         </dependency>
-		
+
         <!-- SpringCloud Alibaba Nacos -->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
-		
+
         <!-- SpringCloud Alibaba Nacos Config -->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
@@ -40,19 +40,19 @@
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
         </dependency>
-		
+
         <!-- SpringBoot Web -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-		
+
         <!-- Spring Security -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-		
+
     </dependencies>
 
     <build>
@@ -71,5 +71,5 @@
             </plugin>
         </plugins>
     </build>
-   
+
 </project>

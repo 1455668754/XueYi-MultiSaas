@@ -4,20 +4,20 @@
     <parent>
         <groupId>com.xueyi</groupId>
         <artifactId>xueyi-common</artifactId>
-        <version>3.0.0-Alpha1</version>
+        <version>3.0.0-Alpha2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <modules>
-		<module>xueyi-common-dependency-data</module>
-		<module>xueyi-common-dependency-nacos</module>
+        <module>xueyi-common-dependency-data</module>
+        <module>xueyi-common-dependency-nacos</module>
     </modules>
 
     <artifactId>xueyi-common-dependency</artifactId>
     <packaging>pom</packaging>
 
     <description>
-	    xueyi-common-dependency通用依赖模块
+        xueyi-common-dependency通用依赖模块
     </description>
 
 </project>
