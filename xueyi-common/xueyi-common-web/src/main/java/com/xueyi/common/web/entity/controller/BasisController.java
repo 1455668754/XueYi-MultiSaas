@@ -7,8 +7,7 @@ import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.utils.page.PageUtil;
 import com.xueyi.common.core.web.page.TableDataInfo;
 import com.xueyi.common.core.web.result.AjaxResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.xueyi.common.web.correlate.utils.CorrelateUtil;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 
@@ -22,8 +21,6 @@ import java.util.List;
  * @author xueyi
  */
 public class BasisController {
-
-    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
      * 将前台传递过来的日期格式的字符串，自动转化为Date类型
@@ -51,6 +48,20 @@ public class BasisController {
      */
     protected void clearPage() {
         PageUtil.clearPage();
+    }
+
+    /**
+     * 设置请求关联映射
+     */
+    protected void startCorrelates(Enum<? extends Enum<?>> correlateEnum) {
+        CorrelateUtil.startCorrelates(correlateEnum);
+    }
+
+    /**
+     * 清理关联映射的线程变量
+     */
+    protected void clearCorrelates() {
+        CorrelateUtil.clearCorrelates();
     }
 
     /**

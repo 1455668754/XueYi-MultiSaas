@@ -65,9 +65,9 @@ public final class CorrelateUtil {
      * @param dto 数据对象
      * @return 数据对象
      */
-    public static <D extends BaseEntity> D subMerge(D dto) {
-        getMerges().stream().filter(relation -> ObjectUtil.equals(CorrelateConstants.SubOperate.SELECT, relation.getOperateType()))
-                .forEach(relation -> subMerge(dto, relation));
+    public static <D extends BaseEntity> D subCorrelates(D dto) {
+        getCorrelates().stream().filter(relation -> ObjectUtil.equals(CorrelateConstants.SubOperate.SELECT, relation.getOperateType()))
+                .forEach(relation -> subCorrelates(dto, relation));
         return dto;
     }
 
@@ -77,9 +77,9 @@ public final class CorrelateUtil {
      * @param dtoList 数据对象集合
      * @return 数据对象集合
      */
-    public static <D extends BaseEntity> List<D> subMerge(List<D> dtoList) {
-        getMerges().stream().filter(relation -> ObjectUtil.equals(CorrelateConstants.SubOperate.SELECT, relation.getOperateType()))
-                .forEach(relation -> subMerge(dtoList, relation));
+    public static <D extends BaseEntity> List<D> subCorrelates(List<D> dtoList) {
+        getCorrelates().stream().filter(relation -> ObjectUtil.equals(CorrelateConstants.SubOperate.SELECT, relation.getOperateType()))
+                .forEach(relation -> subCorrelates(dtoList, relation));
         return dtoList;
     }
 
@@ -89,9 +89,9 @@ public final class CorrelateUtil {
      * @param dto 数据对象
      * @return 结果
      */
-    public static <D extends BaseEntity> int addMerge(D dto) {
-        return getMerges().stream().filter(relation -> ObjectUtil.equals(CorrelateConstants.SubOperate.ADD, relation.getOperateType()))
-                .map(relation -> addMerge(dto, relation)).reduce(Integer::sum).orElse(NumberUtil.Zero);
+    public static <D extends BaseEntity> int addCorrelates(D dto) {
+        return getCorrelates().stream().filter(relation -> ObjectUtil.equals(CorrelateConstants.SubOperate.ADD, relation.getOperateType()))
+                .map(relation -> addCorrelates(dto, relation)).reduce(Integer::sum).orElse(NumberUtil.Zero);
     }
 
     /**
@@ -100,9 +100,9 @@ public final class CorrelateUtil {
      * @param dtoList 数据对象集合
      * @return 结果
      */
-    public static <D extends BaseEntity> int addMerge(Collection<D> dtoList) {
-        return getMerges().stream().filter(relation -> ObjectUtil.equals(CorrelateConstants.SubOperate.ADD, relation.getOperateType()))
-                .map(relation -> addMerge(dtoList, relation)).reduce(Integer::sum).orElse(NumberUtil.Zero);
+    public static <D extends BaseEntity> int addCorrelates(Collection<D> dtoList) {
+        return getCorrelates().stream().filter(relation -> ObjectUtil.equals(CorrelateConstants.SubOperate.ADD, relation.getOperateType()))
+                .map(relation -> addCorrelates(dtoList, relation)).reduce(Integer::sum).orElse(NumberUtil.Zero);
     }
 
     /**
@@ -111,9 +111,9 @@ public final class CorrelateUtil {
      * @param originDto 源数据对象
      * @param newDto    新数据对象
      */
-    public static <D extends BaseEntity> int editMerge(D originDto, D newDto) {
-        return getMerges().stream().filter(relation -> ObjectUtil.equals(CorrelateConstants.SubOperate.EDIT, relation.getOperateType()))
-                .map(relation -> editMerge(originDto, newDto, relation)).reduce(Integer::sum).orElse(NumberUtil.Zero);
+    public static <D extends BaseEntity> int editCorrelates(D originDto, D newDto) {
+        return getCorrelates().stream().filter(relation -> ObjectUtil.equals(CorrelateConstants.SubOperate.EDIT, relation.getOperateType()))
+                .map(relation -> editCorrelates(originDto, newDto, relation)).reduce(Integer::sum).orElse(NumberUtil.Zero);
     }
 
     /**
@@ -122,9 +122,9 @@ public final class CorrelateUtil {
      * @param originList 源数据对象集合
      * @param newList    新数据对象集合
      */
-    public static <D extends BaseEntity> int editMerge(Collection<D> originList, Collection<D> newList) {
-        return getMerges().stream().filter(relation -> ObjectUtil.equals(CorrelateConstants.SubOperate.EDIT, relation.getOperateType()))
-                .map(relation -> editMerge(originList, newList, relation)).reduce(Integer::sum).orElse(NumberUtil.Zero);
+    public static <D extends BaseEntity> int editCorrelates(Collection<D> originList, Collection<D> newList) {
+        return getCorrelates().stream().filter(relation -> ObjectUtil.equals(CorrelateConstants.SubOperate.EDIT, relation.getOperateType()))
+                .map(relation -> editCorrelates(originList, newList, relation)).reduce(Integer::sum).orElse(NumberUtil.Zero);
     }
 
     /**
@@ -132,9 +132,9 @@ public final class CorrelateUtil {
      *
      * @param dto 数据对象
      */
-    public static <D extends BaseEntity> int delMerge(D dto) {
-        return getMerges().stream().filter(relation -> ObjectUtil.equals(CorrelateConstants.SubOperate.DELETE, relation.getOperateType()))
-                .map(relation -> delMerge(dto, relation)).reduce(Integer::sum).orElse(NumberUtil.Zero);
+    public static <D extends BaseEntity> int delCorrelates(D dto) {
+        return getCorrelates().stream().filter(relation -> ObjectUtil.equals(CorrelateConstants.SubOperate.DELETE, relation.getOperateType()))
+                .map(relation -> delCorrelates(dto, relation)).reduce(Integer::sum).orElse(NumberUtil.Zero);
     }
 
     /**
@@ -142,9 +142,9 @@ public final class CorrelateUtil {
      *
      * @param dtoList 数据对象集合
      */
-    public static <D extends BaseEntity> int delMerge(Collection<D> dtoList) {
-        return getMerges().stream().filter(relation -> ObjectUtil.equals(CorrelateConstants.SubOperate.DELETE, relation.getOperateType()))
-                .map(relation -> delMerge(dtoList, relation)).reduce(Integer::sum).orElse(NumberUtil.Zero);
+    public static <D extends BaseEntity> int delCorrelates(Collection<D> dtoList) {
+        return getCorrelates().stream().filter(relation -> ObjectUtil.equals(CorrelateConstants.SubOperate.DELETE, relation.getOperateType()))
+                .map(relation -> delCorrelates(dtoList, relation)).reduce(Integer::sum).orElse(NumberUtil.Zero);
     }
 
     /**
@@ -154,7 +154,7 @@ public final class CorrelateUtil {
      * @param relation 从属关联关系定义对象
      * @return 数据对象
      */
-    private static <D extends BaseEntity, Correlate extends BaseCorrelate> D subMerge(D dto, Correlate relation) {
+    private static <D extends BaseEntity, Correlate extends BaseCorrelate> D subCorrelates(D dto, Correlate relation) {
         if (proofCorrelation(dto, relation, CorrelateConstants.SubOperate.SELECT)) {
             if (relation instanceof Direct direct) {
                 CorrelateDirectHandle.assembleDirectObj(dto, direct);
@@ -176,7 +176,7 @@ public final class CorrelateUtil {
      * @param relation 从属关联关系定义对象
      * @return 数据对象集合
      */
-    private static <D extends BaseEntity, Correlate extends BaseCorrelate> List<D> subMerge(List<D> dtoList, Correlate relation) {
+    private static <D extends BaseEntity, Correlate extends BaseCorrelate> List<D> subCorrelates(List<D> dtoList, Correlate relation) {
         if (proofCorrelation(dtoList, relation, CorrelateConstants.SubOperate.SELECT)) {
             if (relation instanceof Direct direct) {
                 CorrelateDirectHandle.assembleDirectList(dtoList, direct);
@@ -198,7 +198,7 @@ public final class CorrelateUtil {
      * @param relation 从属关联关系定义对象
      * @return 结果
      */
-    private static <D extends BaseEntity, Correlate extends BaseCorrelate> int addMerge(D dto, Correlate relation) {
+    private static <D extends BaseEntity, Correlate extends BaseCorrelate> int addCorrelates(D dto, Correlate relation) {
         if (proofCorrelation(dto, relation, CorrelateConstants.SubOperate.ADD)) {
             if (relation instanceof Direct direct) {
                 return CorrelateDirectHandle.insertDirectObj(dto, direct);
@@ -218,7 +218,7 @@ public final class CorrelateUtil {
      * @param relation 从属关联关系定义对象
      * @return 结果
      */
-    private static <D extends BaseEntity, Correlate extends BaseCorrelate> int addMerge(Collection<D> dtoList, Correlate relation) {
+    private static <D extends BaseEntity, Correlate extends BaseCorrelate> int addCorrelates(Collection<D> dtoList, Correlate relation) {
         if (proofCorrelation(dtoList, relation, CorrelateConstants.SubOperate.ADD)) {
             if (relation instanceof Direct direct) {
                 return CorrelateDirectHandle.insertDirectList(dtoList, direct);
@@ -238,7 +238,7 @@ public final class CorrelateUtil {
      * @param newDto    新数据对象
      * @param relation  从属关联关系定义对象
      */
-    private static <D extends BaseEntity, Correlate extends BaseCorrelate> int editMerge(D originDto, D newDto, Correlate relation) {
+    private static <D extends BaseEntity, Correlate extends BaseCorrelate> int editCorrelates(D originDto, D newDto, Correlate relation) {
         if (proofCorrelation(originDto, newDto, null, null, relation, CorrelateConstants.SubOperate.EDIT)) {
             if (relation instanceof Direct direct) {
                 return CorrelateDirectHandle.updateDirectObj(originDto, newDto, direct);
@@ -258,7 +258,7 @@ public final class CorrelateUtil {
      * @param newList    新数据对象集合
      * @param relation   从属关联关系定义对象
      */
-    private static <D extends BaseEntity, Correlate extends BaseCorrelate> int editMerge(Collection<D> originList, Collection<D> newList, Correlate relation) {
+    private static <D extends BaseEntity, Correlate extends BaseCorrelate> int editCorrelates(Collection<D> originList, Collection<D> newList, Correlate relation) {
         if (proofCorrelation(null, null, originList, newList, relation, CorrelateConstants.SubOperate.EDIT)) {
             if (relation instanceof Direct direct) {
                 return CorrelateDirectHandle.updateDirectList(originList, newList, direct);
@@ -277,7 +277,7 @@ public final class CorrelateUtil {
      * @param dto      数据对象
      * @param relation 从属关联关系定义对象
      */
-    private static <D extends BaseEntity, Correlate extends BaseCorrelate> int delMerge(D dto, Correlate relation) {
+    private static <D extends BaseEntity, Correlate extends BaseCorrelate> int delCorrelates(D dto, Correlate relation) {
         if (proofCorrelation(dto, relation, CorrelateConstants.SubOperate.DELETE)) {
             if (relation instanceof Direct direct) {
                 return CorrelateDirectHandle.deleteDirectObj(dto, direct);
@@ -296,7 +296,7 @@ public final class CorrelateUtil {
      * @param dtoList  数据对象集合
      * @param relation 从属关联关系定义对象
      */
-    private static <D extends BaseEntity, Correlate extends BaseCorrelate> int delMerge(Collection<D> dtoList, Correlate relation) {
+    private static <D extends BaseEntity, Correlate extends BaseCorrelate> int delCorrelates(Collection<D> dtoList, Correlate relation) {
         if (proofCorrelation(dtoList, relation, CorrelateConstants.SubOperate.DELETE)) {
             if (relation instanceof Direct direct) {
                 return CorrelateDirectHandle.deleteDirectList(dtoList, direct);
@@ -505,6 +505,22 @@ public final class CorrelateUtil {
     }
 
     /**
+     * 校验数据字段是否合规 | 自循环
+     *
+     * @param correlate 从属关联关系定义对象
+     * @param index     序列行
+     */
+    private static <Correlate extends BaseCorrelate> void checkOperateLegal(Correlate correlate, String groupName, AtomicInteger index) {
+        correlate.setGroupName(StrUtil.format("{}-{}", groupName, index.getAndIncrement()));
+        // 校验数据字段是否合规 - 如果未通过，则代表人为配置出错，检查代码
+        checkOperateLegal(correlate, correlate.getOperateType());
+        if (CollUtil.isNotEmpty(correlate.getRelations())) {
+            correlate.getRelations().forEach(item -> checkOperateLegal(correlate, groupName, index));
+        }
+        correlate.setIsPassed(Boolean.TRUE);
+    }
+
+    /**
      * 输出错误日志
      *
      * @param msg 日志信息
@@ -513,7 +529,12 @@ public final class CorrelateUtil {
         throw new UtilException(msg);
     }
 
-    public static <Correlate extends BaseCorrelate> void startMerges(Enum<? extends Enum> correlateEnum) {
+    /**
+     * 记录从属关联关系
+     *
+     * @param correlateEnum 关联枚举
+     */
+    public static <Correlate extends BaseCorrelate> void startCorrelates(Enum<? extends Enum<?>> correlateEnum) {
         String cacheName = RedisConstants.CacheKey.SYS_CORRELATE_KEY.getCacheName(correlateEnum.getClass().getName(), correlateEnum.name());
         List<Correlate> correlates = getRedisService().getCacheObject(cacheName);
         if (ObjectUtil.isNull(correlates)) {
@@ -535,23 +556,7 @@ public final class CorrelateUtil {
             AtomicInteger index = new AtomicInteger(NumberUtil.Zero);
             correlates.forEach(item -> checkOperateLegal(item, correlateEnum.name(), index));
         }
-        startMerges(correlates);
-    }
-
-    /**
-     * 校验数据字段是否合规 | 自循环
-     *
-     * @param correlate 从属关联关系定义对象
-     * @param index     序列行
-     */
-    private static <Correlate extends BaseCorrelate> void checkOperateLegal(Correlate correlate, String groupName, AtomicInteger index) {
-        correlate.setGroupName(StrUtil.format("{}-{}", groupName, index.getAndIncrement()));
-        // 校验数据字段是否合规 - 如果未通过，则代表人为配置出错，检查代码
-        checkOperateLegal(correlate, correlate.getOperateType());
-        if (CollUtil.isNotEmpty(correlate.getRelations())) {
-            correlate.getRelations().forEach(item -> checkOperateLegal(correlate, groupName, index));
-        }
-        correlate.setIsPassed(Boolean.TRUE);
+        startCorrelates(correlates);
     }
 
     /**
@@ -559,7 +564,7 @@ public final class CorrelateUtil {
      *
      * @param relations 从属关联关系定义对象集合
      */
-    public static <Correlate extends BaseCorrelate> void startMerges(List<Correlate> relations) {
+    public static <Correlate extends BaseCorrelate> void startCorrelates(List<Correlate> relations) {
         if (CollUtil.isEmpty(relations)) {
             return;
         }
@@ -576,7 +581,7 @@ public final class CorrelateUtil {
      *
      * @return 从属关联关系定义对象集合
      */
-    public static <Correlate extends BaseCorrelate> List<Correlate> getMerges() {
+    public static <Correlate extends BaseCorrelate> List<Correlate> getCorrelates() {
         List<Correlate> relations = (List<Correlate>) THREAD_LOCAL.get().poll();
         return CollUtil.isNotEmpty(relations) ? relations : new ArrayList<>();
     }
@@ -584,7 +589,7 @@ public final class CorrelateUtil {
     /**
      * 清除从属关联关系
      */
-    public static void clearMerges() {
+    public static void clearCorrelates() {
         THREAD_LOCAL.remove();
     }
 

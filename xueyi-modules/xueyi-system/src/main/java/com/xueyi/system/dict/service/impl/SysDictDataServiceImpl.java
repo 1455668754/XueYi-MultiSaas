@@ -1,6 +1,6 @@
 package com.xueyi.system.dict.service.impl;
 
-import com.xueyi.common.cache.constants.CacheConstants;
+import com.xueyi.common.cache.constant.CacheConstants;
 import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.StrUtil;

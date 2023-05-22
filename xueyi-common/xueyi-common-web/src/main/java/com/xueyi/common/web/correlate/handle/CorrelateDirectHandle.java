@@ -65,7 +65,7 @@ public final class CorrelateDirectHandle extends CorrelateBaseHandle {
         if (CollUtil.isEmpty(subList))
             return NumberUtil.Zero;
         // 子查询进行数据关联操作
-        CorrelateUtil.startMerges(direct.getRelations());
+        CorrelateUtil.startCorrelates(direct.getRelations());
         return SpringUtil.getBean(ormDirect.getSlaveService()).insertBatch(subList);
     }
 
@@ -82,7 +82,7 @@ public final class CorrelateDirectHandle extends CorrelateBaseHandle {
         if (CollUtil.isEmpty(subList))
             return NumberUtil.Zero;
         // 子查询进行数据关联操作
-        CorrelateUtil.startMerges(direct.getRelations());
+        CorrelateUtil.startCorrelates(direct.getRelations());
         return SpringUtil.getBean(ormDirect.getSlaveService()).insertBatch(subList);
     }
 
@@ -105,19 +105,19 @@ public final class CorrelateDirectHandle extends CorrelateBaseHandle {
         // 2.判断是否执行新增
         if (CollUtil.isNotEmpty(insertList)) {
             // 子查询进行数据关联操作
-            CorrelateUtil.startMerges(direct.getRelations());
+            CorrelateUtil.startCorrelates(direct.getRelations());
             rows += SpringUtil.getBean(ormDirect.getSlaveService()).insertBatch(insertList);
         }
         // 3.判断是否执行修改
         if (CollUtil.isNotEmpty(updateList)) {
             // 子查询进行数据关联操作
-            CorrelateUtil.startMerges(direct.getRelations());
+            CorrelateUtil.startCorrelates(direct.getRelations());
             rows += SpringUtil.getBean(ormDirect.getSlaveService()).updateBatch(updateList);
         }
         // 4.判断是否执行删除
         if (CollUtil.isNotEmpty(delKeys)) {
             // 子查询进行数据关联操作
-            CorrelateUtil.startMerges(direct.getRelations());
+            CorrelateUtil.startCorrelates(direct.getRelations());
             rows += SpringUtil.getBean(ormDirect.getSlaveService()).deleteByIds(delKeys);
         }
         // 5.返回操作结果
@@ -154,19 +154,19 @@ public final class CorrelateDirectHandle extends CorrelateBaseHandle {
         // 2.判断是否执行新增
         if (CollUtil.isNotEmpty(insertList)) {
             // 子查询进行数据关联操作
-            CorrelateUtil.startMerges(direct.getRelations());
+            CorrelateUtil.startCorrelates(direct.getRelations());
             rows += SpringUtil.getBean(ormDirect.getSlaveService()).insertBatch(insertList);
         }
         // 3.判断是否执行修改
         if (CollUtil.isNotEmpty(updateList)) {
             // 子查询进行数据关联操作
-            CorrelateUtil.startMerges(direct.getRelations());
+            CorrelateUtil.startCorrelates(direct.getRelations());
             rows += SpringUtil.getBean(ormDirect.getSlaveService()).updateBatch(updateList);
         }
         // 4.判断是否执行删除
         if (CollUtil.isNotEmpty(delKeys)) {
             // 子查询进行数据关联操作
-            CorrelateUtil.startMerges(direct.getRelations());
+            CorrelateUtil.startCorrelates(direct.getRelations());
             rows += SpringUtil.getBean(ormDirect.getSlaveService()).deleteByIds(delKeys);
         }
         // 5.返回操作结果
@@ -189,7 +189,7 @@ public final class CorrelateDirectHandle extends CorrelateBaseHandle {
             if (CollUtil.isNotEmpty(subList)) {
                 Set<Object> delKeys = subList.stream().map(S::getId).collect(Collectors.toSet());
                 // 子查询进行数据关联操作
-                CorrelateUtil.startMerges(direct.getRelations());
+                CorrelateUtil.startCorrelates(direct.getRelations());
                 return SpringUtil.getBean(ormDirect.getSlaveService()).deleteByIds(delKeys);
             }
         }
@@ -212,7 +212,7 @@ public final class CorrelateDirectHandle extends CorrelateBaseHandle {
             if (CollUtil.isNotEmpty(subList)) {
                 Set<Object> delKeys = subList.stream().map(S::getId).collect(Collectors.toSet());
                 // 子查询进行数据关联操作
-                CorrelateUtil.startMerges(direct.getRelations());
+                CorrelateUtil.startCorrelates(direct.getRelations());
                 return SpringUtil.getBean(ormDirect.getSlaveService()).deleteByIds(delKeys);
             }
         }
@@ -235,7 +235,7 @@ public final class CorrelateDirectHandle extends CorrelateBaseHandle {
             return;
         SqlField sqlField = new SqlField(SqlConstants.OperateType.IN, ormDirect.getSlaveKeySqlName(), findInSet);
         // 子查询进行数据关联操作
-        CorrelateUtil.startMerges(direct.getRelations());
+        CorrelateUtil.startCorrelates(direct.getRelations());
         List<S> subList = (List<S>) SpringUtil.getBean(ormDirect.getSlaveService()).selectListByField(sqlField);
         if (ObjectUtil.isNotNull(dto)) {
             setSubField(dto, subList, ormDirect.getSubDataRow(), ormDirect.getMergeType(), ormDirect.getMainKeyField(), ormDirect.getSlaveKeyField(), ormDirect.getSubInfoField());

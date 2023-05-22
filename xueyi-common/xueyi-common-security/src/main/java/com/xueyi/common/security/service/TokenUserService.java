@@ -1,6 +1,6 @@
 package com.xueyi.common.security.service;
 
-import com.xueyi.common.cache.constants.CacheConstants;
+import com.xueyi.common.cache.constant.CacheConstants;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.utils.JwtUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;

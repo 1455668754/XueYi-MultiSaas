@@ -1,6 +1,6 @@
 package com.xueyi.common.cache.utils;
 
-import com.xueyi.common.cache.constants.CacheConstants;
+import com.xueyi.common.cache.constant.CacheConstants;
 import com.xueyi.common.cache.service.CacheService;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.SpringUtil;

@@ -30,8 +30,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
-import static com.xueyi.common.cache.constants.CacheConstants.EXPIRATION;
-import static com.xueyi.common.cache.constants.CacheConstants.REFRESH_TIME;
+import static com.xueyi.common.cache.constant.CacheConstants.EXPIRATION;
+import static com.xueyi.common.cache.constant.CacheConstants.REFRESH_TIME;
 
 /**
  * token控制器

@@ -1,6 +1,6 @@
 package com.xueyi.common.security.handler;
 
-import com.xueyi.common.cache.constants.CacheConstants;
+import com.xueyi.common.cache.constant.CacheConstants;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.utils.core.BooleanUtil;
 import com.xueyi.common.core.utils.core.StrUtil;

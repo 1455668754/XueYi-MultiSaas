@@ -1,4 +1,4 @@
-package com.xueyi.common.cache.constants;
+package com.xueyi.common.cache.constant;
 
 import com.xueyi.common.core.utils.core.EnumUtil;
 import com.xueyi.common.core.utils.core.SpringUtil;

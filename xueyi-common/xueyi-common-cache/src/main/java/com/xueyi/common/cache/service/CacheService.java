@@ -1,7 +1,7 @@
 package com.xueyi.common.cache.service;
 
 import cn.hutool.core.map.MapUtil;
-import com.xueyi.common.cache.constants.CacheConstants;
+import com.xueyi.common.cache.constant.CacheConstants;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.redis.service.RedisService;

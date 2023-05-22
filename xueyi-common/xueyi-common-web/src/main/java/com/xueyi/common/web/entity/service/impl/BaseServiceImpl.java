@@ -46,7 +46,8 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG ext
      */
     @Override
     public List<D> selectList(Q query) {
-        return baseManager.selectList(query);
+        List<D> dtoList = baseManager.selectList(query);
+         return subCorrelates(dtoList);
     }
 
     /**
@@ -57,29 +58,8 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG ext
      */
     @Override
     public List<D> selectListMerge(Q query) {
-        return baseManager.selectListMerge(query);
-    }
-
-    /**
-     * 根据Id集合查询数据对象列表
-     *
-     * @param idList Id集合
-     * @return 数据对象集合
-     */
-    @Override
-    public List<D> selectListByIds(Collection<? extends Serializable> idList) {
-        return baseManager.selectListByIds(idList);
-    }
-
-    /**
-     * 根据Id集合查询数据对象列表 | 组装子数据映射关联
-     *
-     * @param idList Id集合
-     * @return 数据对象集合
-     */
-    @Override
-    public List<D> selectListByIdsMerge(Collection<? extends Serializable> idList) {
-        return baseManager.selectListByIdsMerge(idList);
+        List<D> dtoList = baseManager.selectListMerge(query);
+        return subCorrelates(dtoList);
     }
 
     /**
@@ -90,7 +70,32 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG ext
      */
     @Override
     public List<D> selectListByField(com.xueyi.common.web.correlate.domain.SqlField... field) {
-        return baseManager.selectListByField(field);
+        List<D> dtoList = baseManager.selectListByField(field);
+        return subCorrelates(dtoList);
+    }
+
+    /**
+     * 根据Id集合查询数据对象列表
+     *
+     * @param idList Id集合
+     * @return 数据对象集合
+     */
+    @Override
+    public List<D> selectListByIds(Collection<? extends Serializable> idList) {
+        List<D> dtoList = baseManager.selectListByIds(idList);
+        return subCorrelates(dtoList);
+    }
+
+    /**
+     * 根据Id集合查询数据对象列表 | 组装子数据映射关联
+     *
+     * @param idList Id集合
+     * @return 数据对象集合
+     */
+    @Override
+    public List<D> selectListByIdsMerge(Collection<? extends Serializable> idList) {
+        List<D> dtoList = baseManager.selectListByIdsMerge(idList);
+        return subCorrelates(dtoList);
     }
 
     /**
@@ -101,7 +106,8 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG ext
      */
     @Override
     public D selectById(Serializable id) {
-        return baseManager.selectById(id);
+        D dto = baseManager.selectById(id);
+        return subCorrelates(dto);
     }
 
     /**
@@ -112,7 +118,8 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG ext
      */
     @Override
     public D selectByIdMerge(Serializable id) {
-        return baseManager.selectByIdMerge(id);
+        D dto = baseManager.selectByIdMerge(id);
+        return subCorrelates(dto);
     }
 
     /**
@@ -152,7 +159,7 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG ext
     @Override
     @DSTransactional
     public int update(D dto) {
-        D originDto = baseManager.selectByIdMerge(dto.getId());
+        D originDto = selectByIdMerge(dto.getId());
         startHandle(OperateConstants.ServiceType.EDIT, originDto, dto);
         int row = baseManager.update(dto);
         endHandle(OperateConstants.ServiceType.EDIT, row, originDto, dto);
@@ -166,7 +173,7 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG ext
      */
     @Override
     public int updateBatch(Collection<D> dtoList) {
-        List<D> originList = baseManager.selectListByIdsMerge(dtoList.stream().map(D::getId).collect(Collectors.toList()));
+        List<D> originList = selectListByIdsMerge(dtoList.stream().map(D::getId).collect(Collectors.toList()));
         startBatchHandle(OperateConstants.ServiceType.BATCH_EDIT, originList, dtoList);
         int rows = baseManager.updateBatch(dtoList);
         endBatchHandle(OperateConstants.ServiceType.BATCH_EDIT, rows, originList, dtoList);
@@ -182,7 +189,7 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG ext
     @Override
     @DSTransactional
     public int updateStatus(D dto) {
-        D originDto = baseManager.selectByIdMerge(dto.getId());
+        D originDto = selectByIdMerge(dto.getId());
         startHandle(OperateConstants.ServiceType.EDIT_STATUS, originDto, dto);
         int row = baseManager.updateStatus(dto);
         endHandle(OperateConstants.ServiceType.EDIT_STATUS, row, originDto, dto);
@@ -198,7 +205,7 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG ext
     @Override
     @DSTransactional
     public int deleteById(Serializable id) {
-        D originDto = baseManager.selectByIdMerge(id);
+        D originDto = selectByIdMerge(id);
         startHandle(OperateConstants.ServiceType.DELETE, originDto, null);
         int row = baseManager.deleteById(id);
         endHandle(OperateConstants.ServiceType.DELETE, row, originDto, null);
@@ -214,7 +221,7 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG ext
     @Override
     @DSTransactional
     public int deleteByIds(Collection<? extends Serializable> idList) {
-        List<D> originList = baseManager.selectListByIdsMerge(idList);
+        List<D> originList = selectListByIdsMerge(idList);
         startBatchHandle(OperateConstants.ServiceType.BATCH_DELETE, originList, null);
         int rows = baseManager.deleteByIds(idList);
         endBatchHandle(OperateConstants.ServiceType.BATCH_DELETE, rows, originList, null);
