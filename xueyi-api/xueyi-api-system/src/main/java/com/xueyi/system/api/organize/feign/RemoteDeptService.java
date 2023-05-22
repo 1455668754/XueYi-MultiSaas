@@ -2,6 +2,7 @@ package com.xueyi.system.api.organize.feign;
 
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.basic.ServiceConstants;
+import com.xueyi.common.core.web.feign.RemoteSelectService;
 import com.xueyi.common.core.web.result.R;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
 import com.xueyi.system.api.organize.feign.factory.RemoteDeptFallbackFactory;
@@ -15,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
  *
  * @author xueyi
  */
-@FeignClient(contextId = "remoteDeptService", value = ServiceConstants.SYSTEM_SERVICE, fallbackFactory = RemoteDeptFallbackFactory.class)
-public interface RemoteDeptService {
+@FeignClient(contextId = "remoteDeptService", path = "/inner/dept", value = ServiceConstants.SYSTEM_SERVICE, fallbackFactory = RemoteDeptFallbackFactory.class)
+public interface RemoteDeptService extends RemoteSelectService<SysDeptDto> {
 
     /**
      * 新增部门
@@ -24,9 +25,9 @@ public interface RemoteDeptService {
      * @param dept         部门对象
      * @param enterpriseId 企业Id
      * @param sourceName   策略源
-     * @param source       请求来源
      * @return 结果
      */
-    @PostMapping("/dept/inner/add")
-    R<SysDeptDto> addInner(@RequestBody SysDeptDto dept, @RequestHeader(SecurityConstants.ENTERPRISE_ID) Long enterpriseId, @RequestHeader(SecurityConstants.SOURCE_NAME) String sourceName, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+    @PostMapping(headers = SecurityConstants.FROM_SOURCE_INNER)
+    R<SysDeptDto> addInner(@RequestBody SysDeptDto dept, @RequestHeader(SecurityConstants.ENTERPRISE_ID) Long enterpriseId, @RequestHeader(SecurityConstants.SOURCE_NAME) String sourceName);
+
 }

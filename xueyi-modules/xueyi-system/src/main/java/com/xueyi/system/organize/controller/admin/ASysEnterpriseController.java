@@ -1,40 +1,20 @@
-package com.xueyi.system.organize.controller;
+package com.xueyi.system.organize.controller.admin;
 
 import com.xueyi.common.core.web.result.AjaxResult;
-import com.xueyi.common.core.web.result.R;
-import com.xueyi.common.security.annotation.InnerAuth;
 import com.xueyi.common.security.utils.SecurityUserUtils;
-import com.xueyi.common.web.entity.controller.BaseController;
-import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
-import com.xueyi.system.api.organize.domain.query.SysEnterpriseQuery;
-import com.xueyi.system.organize.service.ISysEnterpriseService;
+import com.xueyi.system.organize.controller.base.BSysEnterpriseController;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 企业管理 业务处理
+ * 企业管理 | 管理端 业务处理
  *
  * @author xueyi
  */
 @RestController
-@RequestMapping("/enterprise")
-public class SysEnterpriseController extends BaseController<SysEnterpriseQuery, SysEnterpriseDto, ISysEnterpriseService> {
-
-    /** 定义节点名称 */
-    protected String getNodeName() {
-        return "企业";
-    }
-
-    /**
-     * 获取企业信息 | 内部调用
-     */
-    @InnerAuth
-    @GetMapping("/infoById/{enterpriseId}")
-    public R<SysEnterpriseDto> getInfoInner(@PathVariable Long enterpriseId) {
-        return R.ok(baseService.selectById(enterpriseId));
-    }
+@RequestMapping("/admin/enterprise")
+public class ASysEnterpriseController extends BSysEnterpriseController {
 
     /**
      * 获取当前企业信息

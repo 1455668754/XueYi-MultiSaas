@@ -162,19 +162,19 @@ public class TeTenantServiceImpl extends BaseServiceImpl<TeTenantQuery, TeTenant
         Long enterpriseId = tenantRegister.getTenant().getId();
         String sourceName = tenantRegister.getSourceName();
         tenantRegister.getDept().setParentId(TOP_ID);
-        R<SysDeptDto> deptR = deptService.addInner(tenantRegister.getDept(), enterpriseId, sourceName, SecurityConstants.INNER);
+        R<SysDeptDto> deptR = deptService.addInner(tenantRegister.getDept(), enterpriseId, sourceName);
         if (deptR.isFail()) {
             AjaxResult.warn("新增失败，请检查！");
         }
         tenantRegister.getPost().setDeptId(deptR.getData().getId());
-        R<SysPostDto> postR = postService.addInner(tenantRegister.getPost(), enterpriseId, sourceName, SecurityConstants.INNER);
+        R<SysPostDto> postR = postService.addInner(tenantRegister.getPost(), enterpriseId, sourceName);
         if (postR.isFail()) {
             AjaxResult.warn("新增失败，请检查！");
         }
         tenantRegister.getUser().setPostIds(new Long[]{postR.getData().getId()});
         tenantRegister.getUser().setUserType(AuthorityConstants.UserType.ADMIN.getCode());
         tenantRegister.getUser().setPassword(SecurityUserUtils.encryptPassword(tenantRegister.getUser().getPassword()));
-        R<SysUserDto> userR = userService.addInner(tenantRegister.getUser(), enterpriseId, sourceName, SecurityConstants.INNER);
+        R<SysUserDto> userR = userService.addInner(tenantRegister.getUser(), enterpriseId, sourceName);
         if (userR.isFail()) {
             AjaxResult.warn("新增失败，请检查！");
         }

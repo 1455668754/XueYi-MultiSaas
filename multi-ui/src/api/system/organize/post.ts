@@ -1,16 +1,16 @@
-import { PostIM, PostPPM, PostLRM } from '/@/model/system';
+import { PostIM, PostLRM, PostPPM } from '/@/model/system';
 import { defHttp } from '/@/utils/http/axios';
 
 enum Api {
-  LIST_POST = '/system/post/list',
-  OPTION_POST = '/system/post/option',
-  GET_POST = '/system/post/',
-  GET_AUTH_POST = '/system/post/auth/',
-  ADD_POST = '/system/post',
-  EDIT_POST = '/system/post',
-  EDIT_AUTH_POST = '/system/post/auth',
-  EDIT_STATUS_POST = '/system/post/status',
-  DEL_BATCH_POST = '/system/post/batch/',
+  LIST_POST = '/system/admin/post/list',
+  OPTION_POST = '/system/admin/post/option',
+  GET_POST = '/system/admin/post/',
+  GET_AUTH_POST = '/system/admin/post/auth/',
+  ADD_POST = '/system/admin/post',
+  EDIT_POST = '/system/admin/post',
+  EDIT_AUTH_POST = '/system/admin/post/auth',
+  EDIT_STATUS_POST = '/system/admin/post/status',
+  DEL_BATCH_POST = '/system/admin/post/batch/',
 }
 
 /** 查询岗位列表 */

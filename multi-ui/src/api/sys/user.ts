@@ -7,13 +7,13 @@ import { useGlobSetting } from '/@/hooks/setting';
 const { uploadUrl = '' } = useGlobSetting();
 
 enum Api {
-  GET_USER_PROFILE = '/system/user/profile',
-  UPDATE_USER_PROFILE = '/system/user/profile',
-  RESET_USER_NAME = '/system/user/profile/userName',
-  RESET_USER_PWD = '/system/user/profile/password',
-  RESET_USER_PHONE = '/system/user/profile/phone',
-  RESET_USER_EMAIL = '/system/user/profile/email',
-  RESET_USER_AVATAR = '/system/user/profile/avatar',
+  GET_USER_PROFILE = '/system/admin/user/profile',
+  UPDATE_USER_PROFILE = '/system/admin/user/profile',
+  RESET_USER_NAME = '/system/admin/user/profile/userName',
+  RESET_USER_PWD = '/system/admin/user/profile/password',
+  RESET_USER_PHONE = '/system/admin/user/profile/phone',
+  RESET_USER_EMAIL = '/system/admin/user/profile/email',
+  RESET_USER_AVATAR = '/system/admin/user/profile/avatar',
 }
 
 /** 查询用户个人信息 */

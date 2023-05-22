@@ -2,12 +2,12 @@ import { defHttp } from '/@/utils/http/axios';
 import { DictDataIM, DictDataLRM, DictDataPPM } from '/@/model/tenant';
 
 enum Api {
-  LIST_DICT_DATA = '/system/dict/data/list',
-  GET_DICT_DATA = '/system/dict/data/',
-  ADD_DICT_DATA = '/system/dict/data',
-  EDIT_DICT_DATA = '/system/dict/data',
-  EDIT_STATUS_DICT_DATA = '/system/dict/data/status',
-  DEL_BATCH_DICT_DATA = '/system/dict/data/batch/',
+  LIST_DICT_DATA = '/system/admin/dict/data/list',
+  GET_DICT_DATA = '/system/admin/dict/data/',
+  ADD_DICT_DATA = '/system/admin/dict/data',
+  EDIT_DICT_DATA = '/system/admin/dict/data',
+  EDIT_STATUS_DICT_DATA = '/system/admin/dict/data/status',
+  DEL_BATCH_DICT_DATA = '/system/admin/dict/data/batch/',
 }
 
 /** 查询字典数据列表 */

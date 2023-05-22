@@ -1,4 +1,4 @@
-package com.xueyi.system.organize.controller;
+package com.xueyi.system.organize.controller.admin;
 
 import com.xueyi.common.core.utils.TreeUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 组织管理 业务处理
+ * 组织管理 | 管理端 业务处理
  *
  * @author xueyi
  */
 @RestController
-@RequestMapping("/organize")
-public class SysOrganizeController extends BasisController {
+@RequestMapping("/admin/organize")
+public class ASysOrganizeController extends BasisController {
 
     @Autowired
     private ISysOrganizeService organizeService;

@@ -8,8 +8,8 @@ enum Api {
   Login = '/auth/login',
   OauthLogin = '/auth/oauth2/token',
   Logout = '/auth/logout',
-  GetUserInfo = '/system/user/getInfo',
-  GetEnterpriseInfo = '/system/enterprise/getInfo',
+  GetUserInfo = '/system/admin/user/getInfo',
+  GetEnterpriseInfo = '/system/admin/enterprise/getInfo',
 }
 
 /**

@@ -2,14 +2,14 @@ import { defHttp } from '/@/utils/http/axios';
 import { DictTypeIM, DictTypeLRM, DictTypePPM } from '/@/model/tenant';
 
 enum Api {
-  LIST_DICT_TYPE = '/system/dict/type/list',
-  OPTION_DICT_TYPE = '/system/dict/type/option',
-  GET_DICT_TYPE = '/system/dict/type/',
-  ADD_DICT_TYPE = '/system/dict/type',
-  EDIT_DICT_TYPE = '/system/dict/type',
-  EDIT_STATUS_DICT_TYPE = '/system/dict/type/status',
-  DEL_BATCH_DICT_TYPE = '/system/dict/type/batch/',
-  REFRESH_DICT = '/system/dict/type/refresh',
+  LIST_DICT_TYPE = '/system/admin/dict/type/list',
+  OPTION_DICT_TYPE = '/system/admin/dict/type/option',
+  GET_DICT_TYPE = '/system/admin/dict/type/',
+  ADD_DICT_TYPE = '/system/admin/dict/type',
+  EDIT_DICT_TYPE = '/system/admin/dict/type',
+  EDIT_STATUS_DICT_TYPE = '/system/admin/dict/type/status',
+  DEL_BATCH_DICT_TYPE = '/system/admin/dict/type/batch/',
+  REFRESH_DICT = '/system/admin/dict/type/refresh',
 }
 
 /** 查询字典类型列表 */

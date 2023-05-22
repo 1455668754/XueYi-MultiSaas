@@ -13,7 +13,7 @@ import com.xueyi.system.dict.service.ISysDictTypeService;
 import java.util.List;
 
 /**
- * 字典类型管理 通用业务处理
+ * 字典类型管理 | 通用 业务处理
  *
  * @author xueyi
  */

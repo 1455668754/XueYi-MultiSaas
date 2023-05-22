@@ -24,13 +24,31 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 字典类型管理 管理端业务处理
+ * 字典类型管理 | 管理端 业务处理
  *
  * @author xueyi
  */
 @RestController
 @RequestMapping("/admin/dict/type")
 public class ASysDictTypeController extends BSysDictTypeController {
+
+    /**
+     * 根据字典类型查询字典数据信息
+     */
+    @Override
+    @GetMapping(value = "/type/{code}")
+    public AjaxResult listByCode(@PathVariable String code) {
+        return super.listByCode(code);
+    }
+
+    /**
+     * 根据字典类型查询字典数据信息
+     */
+    @Override
+    @GetMapping(value = "/types/{codeList}")
+    public AjaxResult listByCodeList(@PathVariable List<String> codeList) {
+        return super.listByCodeList(codeList);
+    }
 
     /**
      * 查询字典类型列表

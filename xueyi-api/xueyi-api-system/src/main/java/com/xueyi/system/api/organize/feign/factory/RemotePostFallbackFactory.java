@@ -21,7 +21,7 @@ public class RemotePostFallbackFactory implements FallbackFactory<RemotePostServ
         log.error("岗位服务调用失败:{}", throwable.getMessage());
         return new RemotePostService() {
             @Override
-            public R<SysPostDto> addInner(SysPostDto post, Long enterpriseId, String sourceName, String source) {
+            public R<SysPostDto> addInner(SysPostDto post, Long enterpriseId, String sourceName) {
                 return R.fail("新增岗位失败:" + throwable.getMessage());
             }
         };

@@ -13,7 +13,7 @@ import com.xueyi.tenant.tenant.service.ITeTenantService;
 import java.util.List;
 
 /**
- * 租户管理 通用业务处理
+ * 租户管理 | 通用 业务处理
  *
  * @author xueyi
  */

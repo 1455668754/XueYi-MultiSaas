@@ -2,8 +2,8 @@ import { OrganizeLM } from '/@/model/system';
 import { defHttp } from '/@/utils/http/axios';
 
 enum Api {
-  ORGANIZE_SCOPE = '/system/organize/organizeScope',
-  ORGANIZE_OPTION = '/system/organize/option',
+  ORGANIZE_SCOPE = '/system/admin/organize/organizeScope',
+  ORGANIZE_OPTION = '/system/admin/organize/option',
 }
 
 /** 获取企业部门|岗位树 */

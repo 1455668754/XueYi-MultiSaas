@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
  *
  * @author xueyi
  */
-@FeignClient(contextId = "remotePostService", value = ServiceConstants.SYSTEM_SERVICE, fallbackFactory = RemotePostFallbackFactory.class)
+@FeignClient(contextId = "remotePostService", path = "/inner/post", value = ServiceConstants.SYSTEM_SERVICE, fallbackFactory = RemotePostFallbackFactory.class)
 public interface RemotePostService {
 
     /**
@@ -24,9 +24,8 @@ public interface RemotePostService {
      * @param post         岗位对象
      * @param enterpriseId 企业Id
      * @param sourceName   策略源
-     * @param source       请求来源
      * @return 结果
      */
-    @PostMapping("/post/inner/add")
-    R<SysPostDto> addInner(@RequestBody SysPostDto post, @RequestHeader(SecurityConstants.ENTERPRISE_ID) Long enterpriseId, @RequestHeader(SecurityConstants.SOURCE_NAME) String sourceName, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+    @PostMapping(value = "/add", headers = SecurityConstants.FROM_SOURCE_INNER)
+    R<SysPostDto> addInner(@RequestBody SysPostDto post, @RequestHeader(SecurityConstants.ENTERPRISE_ID) Long enterpriseId, @RequestHeader(SecurityConstants.SOURCE_NAME) String sourceName);
 }

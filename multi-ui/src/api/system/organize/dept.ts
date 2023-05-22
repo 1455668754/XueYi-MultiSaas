@@ -2,16 +2,16 @@ import { DeptIM, DeptPM, DeptLM } from '/@/model/system';
 import { defHttp } from '/@/utils/http/axios';
 
 enum Api {
-  LIST_DEPT = '/system/dept/list',
-  LIST_DEPT_EXCLUDE_NODES = '/system/dept/list/exclude',
-  OPTION_DEPT = '/system/dept/option',
-  GET_DEPT = '/system/dept/',
-  GET_AUTH_DEPT = '/system/dept/auth/',
-  ADD_DEPT = '/system/dept',
-  EDIT_DEPT = '/system/dept',
-  EDIT_AUTH_DEPT = '/system/dept/auth',
-  EDIT_STATUS_DEPT = '/system/dept/status',
-  DEL_BATCH_DEPT = '/system/dept/batch/',
+  LIST_DEPT = '/system/admin/dept/list',
+  LIST_DEPT_EXCLUDE_NODES = '/system/admin/dept/list/exclude',
+  OPTION_DEPT = '/system/admin/dept/option',
+  GET_DEPT = '/system/admin/dept/',
+  GET_AUTH_DEPT = '/system/admin/dept/auth/',
+  ADD_DEPT = '/system/admin/dept',
+  EDIT_DEPT = '/system/admin/dept',
+  EDIT_AUTH_DEPT = '/system/admin/dept/auth',
+  EDIT_STATUS_DEPT = '/system/admin/dept/status',
+  DEL_BATCH_DEPT = '/system/admin/dept/batch/',
 }
 
 /** 查询部门列表 */

@@ -2,14 +2,14 @@ import { ConfigIM, ConfigLRM, ConfigPPM } from '/@/model/tenant';
 import { defHttp } from '/@/utils/http/axios';
 
 enum Api {
-  LIST_CONFIG = '/system/config/list',
-  OPTION_CONFIG = '/system/config/option',
-  GET_CONFIG = '/system/config/',
-  ADD_CONFIG = '/system/config',
-  EDIT_CONFIG = '/system/config',
-  DEL_BATCH_CONFIG = '/system/config/batch/',
-  DEL_BATCH_FORCE_CONFIG = '/system/config/batch/force/',
-  REFRESH_CONFIG = '/system/config/refresh',
+  LIST_CONFIG = '/system/admin/config/list',
+  OPTION_CONFIG = '/system/admin/config/option',
+  GET_CONFIG = '/system/admin/config/',
+  ADD_CONFIG = '/system/admin/config',
+  EDIT_CONFIG = '/system/admin/config',
+  DEL_BATCH_CONFIG = '/system/admin/config/batch/',
+  DEL_BATCH_FORCE_CONFIG = '/system/admin/config/batch/force/',
+  REFRESH_CONFIG = '/system/admin/config/refresh',
 }
 
 /** 查询参数列表 */

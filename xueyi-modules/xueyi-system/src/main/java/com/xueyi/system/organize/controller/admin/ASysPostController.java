@@ -1,63 +1,36 @@
-package com.xueyi.system.organize.controller;
+package com.xueyi.system.organize.controller.admin;
 
-import com.xueyi.common.core.constant.basic.BaseConstants;
-import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
-import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
-import com.xueyi.common.security.annotation.InnerAuth;
-import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 import com.xueyi.system.api.organize.domain.query.SysPostQuery;
-import com.xueyi.system.organize.service.ISysDeptService;
-import com.xueyi.system.organize.service.ISysOrganizeService;
-import com.xueyi.system.organize.service.ISysPostService;
+import com.xueyi.system.organize.controller.base.BSysPostController;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.Serializable;
 import java.util.List;
 
 /**
- * 岗位管理 业务处理
+ * 岗位管理 | 管理端 业务处理
  *
  * @author xueyi
  */
 @RestController
-@RequestMapping("/post")
-public class SysPostController extends BaseController<SysPostQuery, SysPostDto, ISysPostService> {
-
-    @Autowired
-    private ISysOrganizeService organizeService;
-
-    @Autowired
-    private ISysDeptService deptService;
-
-    /** 定义节点名称 */
-    @Override
-    protected String getNodeName() {
-        return "岗位";
-    }
-
-    /** 定义父数据名称 */
-    protected String getParentName() {
-        return "部门";
-    }
-
-    /**
-     * 新增岗位 | 内部调用
-     */
-    @InnerAuth
-    @PostMapping("/inner/add")
-    public R<SysPostDto> addInner(@RequestBody SysPostDto post) {
-        return baseService.addInner(post) > 0 ? R.ok(post) : R.fail();
-    }
+@RequestMapping("/admin/post")
+public class ASysPostController extends BSysPostController {
 
     /**
      * 查询岗位列表
@@ -160,30 +133,6 @@ public class SysPostController extends BaseController<SysPostQuery, SysPostDto, 
     @GetMapping("/option")
     public AjaxResult option() {
         return super.option();
-    }
-
-    /**
-     * 前置校验 （强制）增加/修改
-     */
-    @Override
-    protected void AEHandle(BaseConstants.Operate operate, SysPostDto post) {
-        switch (operate) {
-            case EDIT_STATUS -> {
-                if (StrUtil.equals(BaseConstants.Status.NORMAL.getCode(), post.getStatus())) {
-                    SysPostDto original = baseService.selectById(post.getId());
-                    if (BaseConstants.Status.DISABLE == deptService.checkStatus(original.getDeptId()))
-                        warn(StrUtil.format("启用失败，该{}归属的{}已被禁用！", getNodeName(), getParentName()));
-                }
-            }
-            case ADD, EDIT -> {
-                if (baseService.checkPostCodeUnique(post.getId(), post.getCode()))
-                    warn(StrUtil.format("{}{}{}失败，岗位编码已存在", operate.getInfo(), getNodeName(), post.getName()));
-                else if (baseService.checkNameUnique(post.getId(), post.getName()))
-                    warn(StrUtil.format("{}{}{}失败，岗位名称已存在", operate.getInfo(), getNodeName(), post.getName()));
-                if (BaseConstants.Status.DISABLE == deptService.checkStatus(post.getId()))
-                    post.setStatus(BaseConstants.Status.DISABLE.getCode());
-            }
-        }
     }
 
 }

@@ -4,17 +4,17 @@ import { formatToDateTime } from '/@/utils/dateUtil';
 import dayjs from 'dayjs';
 
 enum Api {
-  LIST_USER = '/system/user/list',
-  OPTION_USER = '/system/user/option',
-  GET_USER = '/system/user/',
-  GET_AUTH_USER = '/system/user/auth/',
-  ADD_USER = '/system/user',
-  EDIT_USER = '/system/user',
-  EDIT_AUTH_USER = '/system/user/auth',
-  EDIT_STATUS_USER = '/system/user/status',
-  DEL_BATCH_USER = '/system/user/batch/',
-  EXPORT_USER = '/system/user/export',
-  RESET_USER_PWD = '/system/user/resetPwd',
+  LIST_USER = '/system/admin/user/list',
+  OPTION_USER = '/system/admin/user/option',
+  GET_USER = '/system/admin/user/',
+  GET_AUTH_USER = '/system/admin/user/auth/',
+  ADD_USER = '/system/admin/user',
+  EDIT_USER = '/system/admin/user',
+  EDIT_AUTH_USER = '/system/admin/user/auth',
+  EDIT_STATUS_USER = '/system/admin/user/status',
+  DEL_BATCH_USER = '/system/admin/user/batch/',
+  EXPORT_USER = '/system/admin/user/export',
+  RESET_USER_PWD = '/system/admin/user/resetPwd',
 }
 
 /** 查询用户列表 */

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 字典类型管理 远程业务处理
+ * 字典类型管理 | 内部调用 业务处理
  *
  * @author xueyi
  */

@@ -1,4 +1,4 @@
-package com.xueyi.system.organize.controller;
+package com.xueyi.system.organize.controller.admin;
 
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
@@ -31,13 +31,13 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Arrays;
 
 /**
- * 个人信息管理 业务处理
+ * 个人信息管理 | 管理端 业务处理
  *
  * @author xueyi
  */
 @RestController
-@RequestMapping("/user/profile")
-public class SysProfileController extends BasisController {
+@RequestMapping("/admin/user/profile")
+public class ASysProfileController extends BasisController {
 
     @Autowired
     private TokenUserService tokenService;

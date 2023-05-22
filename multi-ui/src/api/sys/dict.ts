@@ -2,9 +2,9 @@ import { defHttp } from '/@/utils/http/axios';
 import { DictLM } from '/@/model/sys';
 
 enum Api {
-  DIC_CONFIG = '/system/config/code/',
-  DICT = '/system/dict/data/type/',
-  DICT_LIST = '/system/dict/data/types/',
+  DIC_CONFIG = '/system/admin/config/code/',
+  DICT = '/system/admin/dict/type/type/',
+  DICT_LIST = '/system/admin/dict/type/types/',
 }
 
 /** 参数查询 */
