@@ -24,12 +24,12 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 字典类型管理 业务处理
+ * 字典类型管理 管理端业务处理
  *
  * @author xueyi
  */
 @RestController
-@RequestMapping("/dict/type")
+@RequestMapping("/admin/dict/type")
 public class ASysDictTypeController extends BSysDictTypeController {
 
     /**

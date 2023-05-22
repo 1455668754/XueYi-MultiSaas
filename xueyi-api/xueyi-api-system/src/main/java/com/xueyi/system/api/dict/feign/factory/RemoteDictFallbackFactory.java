@@ -32,7 +32,7 @@ public class RemoteDictFallbackFactory implements FallbackFactory<RemoteDictServ
             }
 
             @Override
-            public R<Boolean> refreshTeCacheInner() {
+            public R<Boolean> refreshCommonCacheInner() {
                 return R.fail("刷新字典缓存失败:" + throwable.getMessage());
             }
         };

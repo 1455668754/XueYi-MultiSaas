@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
  *
  * @author xueyi
  */
-@FeignClient(contextId = "remoteDictService", path = "/inner/dict", value = ServiceConstants.SYSTEM_SERVICE, fallbackFactory = RemoteDictFallbackFactory.class)
+@FeignClient(contextId = "remoteDictService", path = "/inner/dict/type", value = ServiceConstants.SYSTEM_SERVICE, fallbackFactory = RemoteDictFallbackFactory.class)
 public interface RemoteDictService {
 
     /**
@@ -37,6 +37,6 @@ public interface RemoteDictService {
      * @return 结果
      */
     @GetMapping(value = "/common/refresh", headers = SecurityConstants.FROM_SOURCE_INNER)
-    R<Boolean> refreshTeCacheInner();
+    R<Boolean> refreshCommonCacheInner();
 
 }

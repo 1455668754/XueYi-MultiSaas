@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 参数配置管理 业务处理
+ * 参数配置管理 远程业务处理
  *
  * @author xueyi
  */

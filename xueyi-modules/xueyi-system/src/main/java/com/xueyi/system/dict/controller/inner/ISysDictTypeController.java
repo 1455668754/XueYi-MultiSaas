@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 字典类型管理 业务处理
+ * 字典类型管理 远程业务处理
  *
  * @author xueyi
  */
 @RestController
-@RequestMapping("/inner/dict")
+@RequestMapping("/inner/dict/type")
 public class ISysDictTypeController extends BSysDictTypeController {
 
     /**
