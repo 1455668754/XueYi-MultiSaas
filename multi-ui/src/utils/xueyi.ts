@@ -2,8 +2,8 @@ import { DictLM } from '/@/model/sys';
 import { h } from 'vue';
 import { Tag } from 'ant-design-vue';
 import { isArray } from './is';
-import { deepMerge } from '/@/utils/index';
-import { cloneDeep, isNil } from 'lodash-es';
+import { deepMerge } from '@/utils/index';
+import { cloneDeep, includes, isNil } from 'lodash-es';
 
 /** 字典转换 */
 export function dictConvert(dictOptions: DictLM, val: string): string {
@@ -17,6 +17,32 @@ export function dictConvert(dictOptions: DictLM, val: string): string {
     return val;
   }
   return dict.label;
+}
+
+/** 字典选择式过滤 */
+export function dictPick(dictOptions: DictLM, ...val: string[]): DictLM {
+  if (!dictOptions) {
+    console.error('字典不存在');
+    return dictOptions;
+  }
+  if (!val) {
+    console.error('无过滤值');
+    return dictOptions;
+  }
+  return dictOptions.filter((dict) => includes(val, dict.value));
+}
+
+/** 字典排除式过滤 */
+export function dictFilter(dictOptions: DictLM, ...val: string[]): DictLM {
+  if (!dictOptions) {
+    console.error('字典不存在');
+    return dictOptions;
+  }
+  if (!val) {
+    console.error('无过滤值');
+    return dictOptions;
+  }
+  return dictOptions.filter((dict) => !includes(val, dict.value));
 }
 
 /** 字典转换 */
