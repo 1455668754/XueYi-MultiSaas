@@ -4,6 +4,7 @@ import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.core.web.result.R;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -24,7 +25,7 @@ public interface RemoteSelectService<D extends BaseEntity> {
      * @return 数据信息
      */
     @GetMapping(value = "/id", headers = SecurityConstants.FROM_SOURCE_INNER)
-    R<D> selectByIdInner(Serializable id);
+    R<D> selectByIdInner(@RequestParam("id") Serializable id);
 
     /**
      * 根据Ids查询数据信息集合
@@ -32,6 +33,6 @@ public interface RemoteSelectService<D extends BaseEntity> {
      * @param ids Ids
      * @return 数据信息集合
      */
-    @GetMapping(value = "/ids", headers = SecurityConstants.FROM_SOURCE_INNER)
-    R<List<D>> selectListByIdsInner(Collection<? extends Serializable> ids);
+    @GetMapping(value = "/list/ids", headers = SecurityConstants.FROM_SOURCE_INNER)
+    R<List<D>> selectListByIdsInner(@RequestParam("ids") Collection<? extends Serializable> ids);
 }
