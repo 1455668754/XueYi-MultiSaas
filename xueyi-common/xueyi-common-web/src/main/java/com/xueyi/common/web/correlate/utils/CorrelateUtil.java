@@ -37,6 +37,7 @@ import java.util.Collection;
 import java.util.Deque;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -582,7 +583,7 @@ public final class CorrelateUtil {
      * @return 从属关联关系定义对象集合
      */
     public static <Correlate extends BaseCorrelate> List<Correlate> getCorrelates() {
-        List<Correlate> relations = (List<Correlate>) THREAD_LOCAL.get().poll();
+        List<Correlate> relations = (List<Correlate>) Optional.ofNullable(THREAD_LOCAL.get()).map(Deque::poll).orElse(new ArrayList<>());
         return CollUtil.isNotEmpty(relations) ? relations : new ArrayList<>();
     }
 
