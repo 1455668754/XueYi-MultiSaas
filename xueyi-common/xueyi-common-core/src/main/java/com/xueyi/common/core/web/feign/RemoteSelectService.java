@@ -3,7 +3,7 @@ package com.xueyi.common.core.web.feign;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.core.web.result.R;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -23,7 +23,7 @@ public interface RemoteSelectService<D extends BaseEntity> {
      * @param id Id
      * @return 数据信息
      */
-    @PostMapping(value = "/id", headers = SecurityConstants.FROM_SOURCE_INNER)
+    @GetMapping(value = "/id", headers = SecurityConstants.FROM_SOURCE_INNER)
     R<D> selectByIdInner(Serializable id);
 
     /**
@@ -32,6 +32,6 @@ public interface RemoteSelectService<D extends BaseEntity> {
      * @param ids Ids
      * @return 数据信息集合
      */
-    @PostMapping(value = "/ids", headers = SecurityConstants.FROM_SOURCE_INNER)
+    @GetMapping(value = "/ids", headers = SecurityConstants.FROM_SOURCE_INNER)
     R<List<D>> selectListByIdsInner(Collection<? extends Serializable> ids);
 }
