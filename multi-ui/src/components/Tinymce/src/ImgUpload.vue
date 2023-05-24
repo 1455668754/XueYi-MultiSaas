@@ -4,7 +4,7 @@
       name="file"
       multiple
       @change="handleChange"
-      :action="uploadUrl"
+      :customRequest="customRequest"
       :showUploadList="false"
       accept=".jpg,.jpeg,.gif,.png,.webp"
     >
@@ -19,8 +19,8 @@
 
   import { Upload } from 'ant-design-vue';
   import { useDesign } from '/@/hooks/web/useDesign';
-  import { useGlobSetting } from '/@/hooks/setting';
   import { useI18n } from '/@/hooks/web/useI18n';
+  import { fileUploadApi } from '@/api/sys/upload';
 
   export default defineComponent({
     name: 'TinymceImageUpload',
@@ -38,7 +38,6 @@
     setup(props, { emit }) {
       let uploading = false;
 
-      const { uploadUrl } = useGlobSetting();
       const { t } = useI18n();
       const { prefixCls } = useDesign('tinymce-img-upload');
 
@@ -69,10 +68,27 @@
         }
       }
 
+      async function customRequest({ file, onSuccess, onError }) {
+        try {
+          await fileUploadApi(
+            {
+              file: file,
+            },
+            function onUploadProgress(progressEvent: ProgressEvent) {
+              file.percent = ((progressEvent.loaded / progressEvent.total) * 100) | 0;
+            },
+          ).then((res) => {
+            onSuccess(res?.data);
+          });
+        } catch (e) {
+          onError();
+        }
+      }
+
       return {
         prefixCls,
         handleChange,
-        uploadUrl,
+        customRequest,
         t,
         getButtonProps,
       };
