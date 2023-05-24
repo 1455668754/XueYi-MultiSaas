@@ -2,6 +2,7 @@ import { defHttp } from '/@/utils/http/axios';
 import { UploadIM } from '/@/model/sys';
 import { UploadFileParams } from '/#/axios';
 import { useGlobSetting } from '/@/hooks/setting';
+import { AxiosProgressEvent } from 'axios';
 
 const { uploadUrl = '' } = useGlobSetting();
 
@@ -12,7 +13,7 @@ enum Api {
 /** 文件上传 */
 export const fileUploadApi = (
   params: UploadFileParams,
-  onUploadProgress: (progressEvent: ProgressEvent) => void,
+  onUploadProgress: (progressEvent: AxiosProgressEvent) => void,
 ) =>
   defHttp.uploadFile<UploadIM>(
     {

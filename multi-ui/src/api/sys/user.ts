@@ -3,6 +3,7 @@ import { defHttp } from '/@/utils/http/axios';
 import { UploadIM } from '/@/model/sys';
 import { UploadFileParams } from '/#/axios';
 import { useGlobSetting } from '/@/hooks/setting';
+import { AxiosProgressEvent } from 'axios';
 
 const { uploadUrl = '' } = useGlobSetting();
 
@@ -66,7 +67,7 @@ export const resetUserPwdApi = (oldPassword: string, newPassword: string) =>
 /** 用户头像上传 */
 export const editAvatarApi = (
   params: UploadFileParams,
-  onUploadProgress: (progressEvent: ProgressEvent) => void,
+  onUploadProgress: (progressEvent: AxiosProgressEvent) => void,
 ) =>
   defHttp.uploadFile<UploadIM>(
     {

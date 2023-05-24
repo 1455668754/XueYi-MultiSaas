@@ -21,6 +21,7 @@
   import { useDesign } from '/@/hooks/web/useDesign';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { fileUploadApi } from '@/api/sys/upload';
+  import { AxiosProgressEvent } from 'axios';
 
   export default defineComponent({
     name: 'TinymceImageUpload',
@@ -74,7 +75,7 @@
             {
               file: file,
             },
-            function onUploadProgress(progressEvent: ProgressEvent) {
+            function onUploadProgress(progressEvent: AxiosProgressEvent) {
               file.percent = ((progressEvent.loaded / progressEvent.total) * 100) | 0;
             },
           ).then((res) => {

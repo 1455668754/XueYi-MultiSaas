@@ -90,7 +90,7 @@
       return {
         avatar,
         register,
-        editAvatarApi: editAvatarApi as any,
+        editAvatarApi,
         updateAvatar,
         handleSubmit,
       };
