@@ -1,4 +1,4 @@
-import {defineApplicationConfig} from '@xueyi/vite-config';
+import { defineApplicationConfig } from '@xueyi/vite-config';
 
 export default defineApplicationConfig({
   overrides: {
@@ -23,12 +23,6 @@ export default defineApplicationConfig({
           rewrite: (path) => path.replace(new RegExp(`^/dev-api`), ''),
           // only https
           // secure: false
-        },
-        '/upload': {
-          target: 'http://localhost:3300/upload',
-          changeOrigin: true,
-          ws: true,
-          rewrite: (path) => path.replace(new RegExp(`^/upload`), ''),
         },
       },
     },
