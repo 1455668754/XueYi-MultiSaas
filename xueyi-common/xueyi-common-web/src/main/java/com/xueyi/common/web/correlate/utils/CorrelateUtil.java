@@ -516,7 +516,7 @@ public final class CorrelateUtil {
         // 校验数据字段是否合规 - 如果未通过，则代表人为配置出错，检查代码
         checkOperateLegal(correlate, correlate.getOperateType());
         if (CollUtil.isNotEmpty(correlate.getRelations())) {
-            correlate.getRelations().forEach(item -> checkOperateLegal(correlate, groupName, index));
+            correlate.getRelations().forEach(item -> checkOperateLegal((Correlate) item, groupName, index));
         }
         correlate.setIsPassed(Boolean.TRUE);
     }
