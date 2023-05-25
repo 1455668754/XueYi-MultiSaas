@@ -209,8 +209,9 @@ public final class CorrelateIndirectHandle extends CorrelateBaseHandle {
         Set<Object> findInSet = ObjectUtil.isNotNull(dto)
                 ? getFieldKeys(dto, ormIndirect, ormIndirect.getMainKeyField())
                 : getFieldKeys(dtoList, ormIndirect, ormIndirect.getMainKeyField());
-        if (CollUtil.isEmpty(findInSet))
+        if (CollUtil.isEmpty(findInSet)) {
             return;
+        }
         SqlField mergeSqlField = new SqlField(SqlConstants.OperateType.IN, ormIndirect.getMergeMainSqlName(), findInSet);
         List<M> mergeList = (List<M>) SpringUtil.getBean(ormIndirect.getMergeMapper()).selectListByField(mergeSqlField);
         CorrelateConstants.MergeType mergeType = CorrelateConstants.MergeType.DIRECT;
@@ -222,6 +223,9 @@ public final class CorrelateIndirectHandle extends CorrelateBaseHandle {
 
         // select sub relation list
         Set<Object> subFindInSet = getFieldKeys(mergeList, ormIndirect, ormIndirect.getMergeSlaveField());
+        if (CollUtil.isEmpty(subFindInSet)) {
+            return;
+        }
         SqlField subSqlField = new SqlField(SqlConstants.OperateType.IN, ormIndirect.getSlaveKeySqlName(), subFindInSet);
         // 子查询进行数据关联操作
         CorrelateUtil.startCorrelates(indirect.getRelations());

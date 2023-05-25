@@ -111,6 +111,7 @@ public final class CorrelateUtil {
      *
      * @param originDto 源数据对象
      * @param newDto    新数据对象
+     * @return 结果
      */
     public static <D extends BaseEntity> int editCorrelates(D originDto, D newDto) {
         return getCorrelates().stream().filter(relation -> ObjectUtil.equals(CorrelateConstants.SubOperate.EDIT, relation.getOperateType()))
@@ -122,6 +123,7 @@ public final class CorrelateUtil {
      *
      * @param originList 源数据对象集合
      * @param newList    新数据对象集合
+     * @return 结果
      */
     public static <D extends BaseEntity> int editCorrelates(Collection<D> originList, Collection<D> newList) {
         return getCorrelates().stream().filter(relation -> ObjectUtil.equals(CorrelateConstants.SubOperate.EDIT, relation.getOperateType()))
@@ -132,6 +134,7 @@ public final class CorrelateUtil {
      * 子数据映射关联 | 删除
      *
      * @param dto 数据对象
+     * @return 结果
      */
     public static <D extends BaseEntity> int delCorrelates(D dto) {
         return getCorrelates().stream().filter(relation -> ObjectUtil.equals(CorrelateConstants.SubOperate.DELETE, relation.getOperateType()))
@@ -142,6 +145,7 @@ public final class CorrelateUtil {
      * 子数据映射关联 | 删除（批量）
      *
      * @param dtoList 数据对象集合
+     * @return 结果
      */
     public static <D extends BaseEntity> int delCorrelates(Collection<D> dtoList) {
         return getCorrelates().stream().filter(relation -> ObjectUtil.equals(CorrelateConstants.SubOperate.DELETE, relation.getOperateType()))

@@ -53,8 +53,9 @@ public final class CorrelateRemoteHandle extends CorrelateBaseHandle {
         Set<Object> findInSet = ObjectUtil.isNotNull(dto)
                 ? getFieldKeys(dto, ormRemote, ormRemote.getMainKeyField())
                 : getFieldKeys(dtoList, ormRemote, ormRemote.getMainKeyField());
-        if (CollUtil.isEmpty(findInSet))
+        if (CollUtil.isEmpty(findInSet)) {
             return;
+        }
         // 子查询进行数据关联操作
         R<List<S>> subListR = SpringUtil.getBean(ormRemote.getRemoteService()).selectListByIdsInner(findInSet);
         resultFail(subListR);

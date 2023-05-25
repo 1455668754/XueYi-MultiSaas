@@ -218,7 +218,7 @@ public sealed class CorrelateBaseHandle permits CorrelateDirectHandle, Correlate
                                     List<Object> subKeyList = subInfoList.stream().map(subItem -> getFieldObj(subItem, subKeyField)).filter(ObjectUtil::isNotNull).toList();
                                     setField(item, subField, subKeyList);
                                 } else {
-                                    setField(item, subField, subList);
+                                    setField(item, subField, subInfoList);
                                 }
                             }
                         });
