@@ -1,7 +1,7 @@
 package com.xueyi.common.security.auth.pool;
 
 /**
- * 定时任务模块 权限标识常量
+ * 定时任务服务 权限标识常量
  *
  * @author xueyi
  */
