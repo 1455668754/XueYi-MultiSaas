@@ -5,7 +5,7 @@ import com.xueyi.common.core.utils.TreeUtil;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.system.organize.domain.vo.SysOrganizeTree;
-import com.xueyi.system.organize.manager.impl.SysOrganizeManager;
+import com.xueyi.system.organize.manager.impl.SysOrganizeManagerImpl;
 import com.xueyi.system.organize.service.ISysOrganizeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * 组织管理 服务层处理
+ * 系统服务 | 组织模块 | 组织管理 服务层处理
  *
  * @author xueyi
  */
@@ -23,7 +23,7 @@ import java.util.Set;
 public class SysOrganizeServiceImpl implements ISysOrganizeService {
 
     @Autowired
-    private SysOrganizeManager organizeManager;
+    private SysOrganizeManagerImpl organizeManager;
 
     /**
      * 登录校验 | 根据角色Ids获取关联部门

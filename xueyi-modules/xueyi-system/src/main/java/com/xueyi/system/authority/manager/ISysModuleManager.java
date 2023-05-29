@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * 模块管理 数据封装层
+ * 系统服务 | 权限模块 | 模块管理 数据封装层
  *
  * @author xueyi
  */

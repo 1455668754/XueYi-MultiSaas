@@ -5,7 +5,7 @@ import com.xueyi.system.api.dict.domain.dto.SysConfigDto;
 import com.xueyi.system.api.dict.domain.query.SysConfigQuery;
 
 /**
- * 参数配置管理 服务层
+ * 系统服务 | 字典模块 | 参数管理 服务层
  *
  * @author xueyi
  */

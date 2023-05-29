@@ -12,7 +12,7 @@ import java.io.Serial;
 import java.time.LocalDateTime;
 
 /**
- * 操作日志 持久化对象
+ * 系统服务 | 监控模块 | 操作日志 持久化对象
  *
  * @author xueyi
  */

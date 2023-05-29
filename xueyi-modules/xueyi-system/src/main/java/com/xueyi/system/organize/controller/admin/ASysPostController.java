@@ -24,7 +24,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 岗位管理 | 管理端 业务处理
+ * 系统服务 | 组织模块 | 岗位管理 | 管理端 业务处理
  *
  * @author xueyi
  */

@@ -18,7 +18,7 @@ import static com.xueyi.system.api.authority.domain.merge.MergeGroup.MENU_SysMod
 import static com.xueyi.system.api.authority.domain.merge.MergeGroup.MODULE_SysMenu_GROUP;
 
 /**
- * 菜单 持久化对象
+ * 系统服务 | 权限模块 | 菜单 持久化对象
  *
  * @author xueyi
  */

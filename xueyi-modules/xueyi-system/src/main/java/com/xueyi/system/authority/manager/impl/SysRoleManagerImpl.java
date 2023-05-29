@@ -29,7 +29,7 @@ import java.util.List;
 import static com.xueyi.system.api.authority.domain.merge.MergeGroup.*;
 
 /**
- * 角色管理 数据封装层处理
+ * 系统服务 | 权限模块 | 角色管理 数据封装层处理
  *
  * @author xueyi
  */

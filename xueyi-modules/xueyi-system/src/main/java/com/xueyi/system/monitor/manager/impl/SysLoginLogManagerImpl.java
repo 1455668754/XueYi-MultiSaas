@@ -13,7 +13,7 @@ import com.xueyi.system.monitor.mapper.SysLoginLogMapper;
 import org.springframework.stereotype.Component;
 
 /**
- * 访问日志管理 数据封装层处理
+ * 系统服务 | 监控模块 | 访问日志管理 数据封装层处理
  *
  * @author xueyi
  */

@@ -12,7 +12,7 @@ import com.xueyi.system.organize.mapper.SysEnterpriseMapper;
 import org.springframework.stereotype.Component;
 
 /**
- * 企业管理 数据封装层处理
+ * 系统服务 | 组织模块 | 企业管理 数据封装层处理
  *
  * @author xueyi
  */

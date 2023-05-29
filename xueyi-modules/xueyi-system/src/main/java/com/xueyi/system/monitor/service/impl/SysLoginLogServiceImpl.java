@@ -9,7 +9,7 @@ import com.xueyi.system.monitor.service.ISysLoginLogService;
 import org.springframework.stereotype.Service;
 
 /**
- * 访问日志管理 服务层处理
+ * 系统服务 | 监控模块 | 访问日志管理 服务层处理
  *
  * @author xueyi
  */

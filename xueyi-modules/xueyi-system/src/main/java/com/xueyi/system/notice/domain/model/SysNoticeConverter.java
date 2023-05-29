@@ -8,7 +8,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 
 /**
- * 通知公告 对象映射器
+ * 系统服务 | 消息模块 | 通知公告 对象映射器
  *
  * @author xueyi
  */

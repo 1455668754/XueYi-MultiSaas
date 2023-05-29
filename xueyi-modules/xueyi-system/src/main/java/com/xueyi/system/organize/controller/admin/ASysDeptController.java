@@ -26,7 +26,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 部门管理 | 管理端 业务处理
+ * 系统服务 | 组织模块 | 部门管理 | 管理端 业务处理
  *
  * @author xueyi
  */
@@ -149,5 +149,4 @@ public class ASysDeptController extends BSysDeptController {
     public AjaxResult option() {
         return super.option();
     }
-
 }

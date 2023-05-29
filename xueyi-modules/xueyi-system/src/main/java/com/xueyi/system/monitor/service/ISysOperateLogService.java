@@ -5,7 +5,7 @@ import com.xueyi.system.api.log.domain.dto.SysOperateLogDto;
 import com.xueyi.system.api.log.domain.query.SysOperateLogQuery;
 
 /**
- * 操作日志管理 服务层
+ * 系统服务 | 监控模块 | 操作日志管理 服务层
  *
  * @author xueyi
  */

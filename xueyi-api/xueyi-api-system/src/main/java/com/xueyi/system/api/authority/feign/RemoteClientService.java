@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.List;
 
 /**
- * 客户端认证服务
+ * 系统服务 | 权限模块 | 客户端认证服务
  *
  * @author xueyi
  */

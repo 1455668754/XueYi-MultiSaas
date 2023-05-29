@@ -14,13 +14,18 @@ import com.xueyi.system.authority.manager.ISysMenuManager;
 import com.xueyi.system.authority.service.ISysMenuService;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.xueyi.common.core.constant.basic.SecurityConstants.CREATE_BY;
 
 /**
- * 菜单管理 服务层处理
+ * 系统服务 | 权限模块 | 菜单管理 服务层处理
  *
  * @author xueyi
  */

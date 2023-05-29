@@ -36,7 +36,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * 模块管理 业务处理
+ * 系统服务 | 权限模块 | 模块管理 业务处理
  *
  * @author xueyi
  */

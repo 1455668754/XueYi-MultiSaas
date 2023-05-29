@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 import java.io.Serial;
 
 /**
- * 岗位 数据查询对象
+ * 系统服务 | 组织模块 | 岗位 数据查询对象
  *
  * @author xueyi
  */

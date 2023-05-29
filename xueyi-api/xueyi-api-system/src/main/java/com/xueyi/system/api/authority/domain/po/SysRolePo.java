@@ -15,7 +15,7 @@ import java.io.Serial;
 import static com.baomidou.mybatisplus.annotation.SqlCondition.LIKE;
 
 /**
- * 角色 持久化对象
+ * 系统服务 | 权限模块 | 角色 持久化对象
  *
  * @author xueyi
  */
@@ -39,7 +39,6 @@ public class SysRolePo extends TBaseEntity {
 
     /** 角色权限字符串 */
     @Excel(name = "角色权限字符串")
-    @NotBlank(message = "权限字符不能为空")
     @Size(max = 100, message = "权限字符长度不能超过100个字符")
     protected String roleKey;
 

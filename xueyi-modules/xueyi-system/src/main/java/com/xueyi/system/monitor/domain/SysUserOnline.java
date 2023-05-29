@@ -3,7 +3,7 @@ package com.xueyi.system.monitor.domain;
 import lombok.Data;
 
 /**
- * 当前在线会话
+ * 系统服务 | 监控模块 | 在线用户监控
  *
  * @author xueyi
  */

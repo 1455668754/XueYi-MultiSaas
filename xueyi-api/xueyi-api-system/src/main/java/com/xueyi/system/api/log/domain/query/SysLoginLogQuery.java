@@ -8,7 +8,7 @@ import java.io.Serial;
 import java.time.LocalDateTime;
 
 /**
- * 访问日志 数据查询对象
+ * 系统服务 | 监控模块 | 访问日志 数据查询对象
  *
  * @author xueyi
  */

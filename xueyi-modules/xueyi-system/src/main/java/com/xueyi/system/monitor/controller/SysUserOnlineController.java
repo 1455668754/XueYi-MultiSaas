@@ -27,7 +27,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * 在线用户监控
+ * 系统服务 | 监控模块 | 在线用户监控
  *
  * @author xueyi
  */
@@ -76,8 +76,9 @@ public class SysUserOnlineController extends BasisController {
     @PreAuthorize("@ss.hasAuthority(@Auth.SYS_ONLINE_FORCE_LOGOUT)")
     @Log(title = "在线用户", businessType = BusinessType.FORCE)
     public AjaxResult forceLogout(@PathVariable List<String> idList) {
-        if (ArrayUtil.isNotEmpty(idList))
+        if (ArrayUtil.isNotEmpty(idList)) {
             idList.forEach(id -> redisService.deleteObject(CacheConstants.LoginTokenType.ADMIN.getCode() + id));
+        }
         return success();
     }
 }

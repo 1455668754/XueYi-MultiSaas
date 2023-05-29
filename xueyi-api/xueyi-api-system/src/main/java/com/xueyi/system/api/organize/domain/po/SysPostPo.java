@@ -21,7 +21,7 @@ import static com.xueyi.system.api.organize.domain.merge.MergeGroup.DEPT_SysPost
 import static com.xueyi.system.api.organize.domain.merge.MergeGroup.POST_SysDept_GROUP;
 
 /**
- * 岗位 持久化对象
+ * 系统服务 | 组织模块 | 岗位 持久化对象
  *
  * @author xueyi
  */
@@ -44,7 +44,6 @@ public class SysPostPo extends TBaseEntity {
     /** 岗位编码 */
     @Excel(name = "岗位编码(*)")
     @Xss(message = "岗位编码不能包含脚本字符")
-    @NotBlank(message = "岗位编码不能为空")
     @Size(max = 64, message = "岗位编码长度不能超过64个字符")
     protected String code;
 

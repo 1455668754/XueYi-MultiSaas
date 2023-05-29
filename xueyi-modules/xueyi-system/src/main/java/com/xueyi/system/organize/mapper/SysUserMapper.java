@@ -7,7 +7,7 @@ import com.xueyi.system.api.organize.domain.po.SysUserPo;
 import com.xueyi.system.api.organize.domain.query.SysUserQuery;
 
 /**
- * 用户管理 数据层
+ * 系统服务 | 组织模块 | 用户管理 数据层
  *
  * @author xueyi
  */

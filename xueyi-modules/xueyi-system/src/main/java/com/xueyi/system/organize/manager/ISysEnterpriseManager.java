@@ -5,7 +5,7 @@ import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
 import com.xueyi.system.api.organize.domain.query.SysEnterpriseQuery;
 
 /**
- * 企业管理 数据封装层
+ * 系统服务 | 组织模块 | 企业管理 数据封装层
  *
  * @author xueyi
  */

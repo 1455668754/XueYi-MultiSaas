@@ -7,7 +7,7 @@ import com.xueyi.system.api.authority.domain.po.SysModulePo;
 import com.xueyi.system.api.authority.domain.query.SysModuleQuery;
 
 /**
- * 角色管理 数据层
+ * 系统服务 | 权限模块 | 角色管理 数据层
  *
  * @author xueyi
  */

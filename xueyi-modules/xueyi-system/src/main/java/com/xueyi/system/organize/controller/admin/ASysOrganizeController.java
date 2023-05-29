@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 组织管理 | 管理端 业务处理
+ * 系统服务 | 组织模块 | 组织管理 | 管理端 业务处理
  *
  * @author xueyi
  */

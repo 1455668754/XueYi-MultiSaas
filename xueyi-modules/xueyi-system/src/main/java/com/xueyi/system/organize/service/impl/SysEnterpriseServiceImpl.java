@@ -8,7 +8,7 @@ import com.xueyi.system.organize.service.ISysEnterpriseService;
 import org.springframework.stereotype.Service;
 
 /**
- * 企业管理 服务层处理
+ * 系统服务 | 组织模块 | 企业管理 服务层处理
  *
  * @author xueyi
  */

@@ -7,7 +7,7 @@ import com.xueyi.system.api.organize.domain.po.SysPostPo;
 import com.xueyi.system.api.organize.domain.query.SysPostQuery;
 
 /**
- * 岗位管理 数据层
+ * 系统服务 | 组织模块 | 岗位管理 数据层
  *
  * @author xueyi
  */

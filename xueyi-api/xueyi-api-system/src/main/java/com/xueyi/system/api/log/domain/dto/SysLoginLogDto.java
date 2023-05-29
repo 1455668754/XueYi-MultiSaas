@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 import java.io.Serial;
 
 /**
- * 访问日志 数据传输对象
+ * 系统服务 | 监控模块 | 访问日志 数据传输对象
  *
  * @author xueyi
  */

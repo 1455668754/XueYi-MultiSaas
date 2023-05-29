@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 岗位管理 | 内部调用 业务处理
+ * 系统服务 | 组织模块 | 岗位管理 | 内部调用 业务处理
  *
  * @author xueyi
  */

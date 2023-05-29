@@ -14,7 +14,7 @@ import java.util.Set;
 import static com.xueyi.common.core.constant.basic.SecurityConstants.CREATE_BY;
 
 /**
- * 模块管理 服务层处理
+ * 系统服务 | 权限模块 | 模块管理 服务层处理
  *
  * @author xueyi
  */

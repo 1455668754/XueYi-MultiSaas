@@ -7,7 +7,7 @@ import com.xueyi.system.notice.domain.po.SysNoticePo;
 import com.xueyi.system.notice.domain.query.SysNoticeQuery;
 
 /**
- * 通知公告管理 数据层
+ * 系统服务 | 消息模块 | 通知公告管理 数据层
  *
  * @author xueyi
  */

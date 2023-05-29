@@ -18,7 +18,7 @@ import static com.baomidou.mybatisplus.annotation.SqlCondition.LIKE;
 import static com.xueyi.system.api.dict.domain.merge.MergeGroup.DICT_DATA_GROUP;
 
 /**
- * 字典类型 持久化对象
+ * 系统服务 | 字典模块 | 字典类型 持久化对象
  *
  * @author xueyi
  */

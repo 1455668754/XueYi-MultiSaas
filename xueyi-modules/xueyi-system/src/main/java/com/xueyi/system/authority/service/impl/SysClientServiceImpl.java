@@ -8,7 +8,7 @@ import com.xueyi.system.authority.service.ISysClientService;
 import org.springframework.stereotype.Service;
 
 /**
- * 客户端管理 服务层处理
+ * 系统服务 | 权限模块 | 客户端管理 服务层处理
  *
  * @author xueyi
  */

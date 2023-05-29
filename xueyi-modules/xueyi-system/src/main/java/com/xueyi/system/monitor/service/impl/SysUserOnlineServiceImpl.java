@@ -8,7 +8,7 @@ import com.xueyi.system.monitor.service.ISysUserOnlineService;
 import org.springframework.stereotype.Service;
 
 /**
- * 在线用户 服务层处理
+ * 系统服务 | 监控模块 | 在线用户监控 服务层处理
  *
  * @author xueyi
  */

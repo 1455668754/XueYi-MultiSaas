@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 import java.io.Serial;
 
 /**
- * 通知公告 持久化对象
+ * 系统服务 | 消息模块 | 通知公告 持久化对象
  *
  * @author xueyi
  */

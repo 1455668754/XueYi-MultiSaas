@@ -17,7 +17,7 @@ import java.util.List;
 import static com.xueyi.system.api.organize.domain.merge.MergeGroup.USER_SysUserPostMerge_GROUP;
 
 /**
- * 用户 数据传输对象
+ * 系统服务 | 组织模块 | 用户 数据传输对象
  *
  * @author xueyi
  */

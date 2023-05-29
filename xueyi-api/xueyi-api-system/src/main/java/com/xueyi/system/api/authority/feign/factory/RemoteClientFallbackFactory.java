@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * 客户端认证服务 降级处理
+ * 系统服务 | 权限模块 | 客户端认证服务 降级处理
  *
  * @author xueyi
  */

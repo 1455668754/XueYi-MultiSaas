@@ -9,7 +9,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /**
- * 字典服务
+ * 系统服务 | 字典模块 | 字典服务
  *
  * @author xueyi
  */

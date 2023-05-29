@@ -8,7 +8,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 
 /**
- * 岗位 对象映射器
+ * 系统服务 | 组织模块 | 岗位 对象映射器
  *
  * @author xueyi
  */

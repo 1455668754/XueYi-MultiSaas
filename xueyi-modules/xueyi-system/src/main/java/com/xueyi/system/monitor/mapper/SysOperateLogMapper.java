@@ -7,7 +7,7 @@ import com.xueyi.system.api.log.domain.po.SysOperateLogPo;
 import com.xueyi.system.api.log.domain.query.SysOperateLogQuery;
 
 /**
- * 操作日志管理 数据层
+ * 系统服务 | 监控模块 | 操作日志管理 数据层
  *
  * @author xueyi
  */

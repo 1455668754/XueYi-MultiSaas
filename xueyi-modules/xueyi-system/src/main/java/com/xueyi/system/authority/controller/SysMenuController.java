@@ -45,7 +45,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * 菜单管理 业务处理
+ * 系统服务 | 权限模块 | 菜单管理 业务处理
  *
  * @author xueyi
  */

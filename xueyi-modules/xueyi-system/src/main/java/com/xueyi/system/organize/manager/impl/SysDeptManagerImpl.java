@@ -24,7 +24,7 @@ import java.util.List;
 import static com.xueyi.system.api.organize.domain.merge.MergeGroup.*;
 
 /**
- * 部门管理 数据封装层处理
+ * 系统服务 | 组织模块 | 部门管理 数据封装层处理
  *
  * @author xueyi
  */

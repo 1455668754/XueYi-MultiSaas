@@ -11,7 +11,7 @@ import com.xueyi.system.authority.mapper.SysClientMapper;
 import org.springframework.stereotype.Component;
 
 /**
- * 客户端管理 数据封装层处理
+ * 系统服务 | 权限模块 | 客户端管理 数据封装层处理
  *
  * @author xueyi
  */

@@ -7,7 +7,7 @@ import com.xueyi.system.api.organize.domain.query.SysUserQuery;
 import java.io.Serializable;
 
 /**
- * 用户管理 数据封装层
+ * 系统服务 | 组织模块 | 用户管理 数据封装层
  *
  * @author xueyi
  */

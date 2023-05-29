@@ -13,7 +13,7 @@ import com.xueyi.system.monitor.mapper.SysOperateLogMapper;
 import org.springframework.stereotype.Component;
 
 /**
- * 操作日志管理 数据封装层处理
+ * 系统服务 | 监控模块 | 操作日志管理 数据封装层处理
  *
  * @author xueyi
  */

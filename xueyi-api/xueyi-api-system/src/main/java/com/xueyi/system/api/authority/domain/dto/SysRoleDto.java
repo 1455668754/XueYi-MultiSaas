@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 import java.io.Serial;
 
 /**
- * 角色 数据传输对象
+ * 系统服务 | 权限模块 | 角色 数据传输对象
  *
  * @author xueyi
  */

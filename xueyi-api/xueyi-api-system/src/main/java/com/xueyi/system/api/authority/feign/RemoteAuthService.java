@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 /**
- * 权限服务
+ * 系统服务 | 权限模块 | 权限服务
  *
  * @author xueyi
  */

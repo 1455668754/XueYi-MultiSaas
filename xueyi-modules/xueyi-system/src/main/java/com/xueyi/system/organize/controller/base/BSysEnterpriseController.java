@@ -6,7 +6,7 @@ import com.xueyi.system.api.organize.domain.query.SysEnterpriseQuery;
 import com.xueyi.system.organize.service.ISysEnterpriseService;
 
 /**
- * 企业管理 | 通用 业务处理
+ * 系统服务 | 组织模块 | 企业管理 | 通用 业务处理
  *
  * @author xueyi
  */

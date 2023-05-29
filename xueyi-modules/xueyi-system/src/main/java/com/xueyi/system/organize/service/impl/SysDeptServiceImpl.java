@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * 部门管理 服务层处理
+ * 系统服务 | 组织模块 | 部门管理 服务层处理
  *
  * @author xueyi
  */

@@ -14,7 +14,7 @@ import java.io.Serial;
 import static com.baomidou.mybatisplus.annotation.SqlCondition.LIKE;
 
 /**
- * 企业 持久化对象
+ * 系统服务 | 组织模块 | 企业 持久化对象
  *
  * @author xueyi
  */

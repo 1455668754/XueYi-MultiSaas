@@ -12,7 +12,7 @@ import java.util.List;
 import static com.xueyi.system.api.dict.domain.merge.MergeGroup.DICT_DATA_GROUP;
 
 /**
- * 字典类型 数据传输对象
+ * 系统服务 | 字典模块 | 字典类型 数据传输对象
  *
  * @author xueyi
  */

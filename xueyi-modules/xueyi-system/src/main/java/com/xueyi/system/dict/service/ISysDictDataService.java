@@ -7,7 +7,7 @@ import com.xueyi.system.api.dict.domain.query.SysDictDataQuery;
 import java.util.List;
 
 /**
- * 字典数据管理 服务层
+ * 系统服务 | 字典模块 | 字典数据管理 服务层
  *
  * @author xueyi
  */

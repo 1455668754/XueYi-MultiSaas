@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * 组织管理 服务层
+ * 系统服务 | 组织模块 | 组织管理 服务层
  *
  * @author xueyi
  */

@@ -5,7 +5,7 @@ import com.xueyi.system.notice.domain.dto.SysNoticeDto;
 import com.xueyi.system.notice.domain.query.SysNoticeQuery;
 
 /**
- * 通知公告管理 服务层
+ * 系统服务 | 消息模块 | 通知公告管理 服务层
  *
  * @author xueyi
  */

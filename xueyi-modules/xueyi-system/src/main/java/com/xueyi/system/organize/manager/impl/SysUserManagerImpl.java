@@ -47,7 +47,7 @@ import static com.xueyi.system.api.organize.domain.merge.MergeGroup.USER_Organiz
 import static com.xueyi.system.api.organize.domain.merge.MergeGroup.USER_SysUserPostMerge_GROUP;
 
 /**
- * 用户管理 数据封装层处理
+ * 系统服务 | 组织模块 | 用户管理 数据封装层处理
  *
  * @author xueyi
  */
@@ -83,6 +83,7 @@ public class SysUserManagerImpl extends BaseManagerImpl<SysUserQuery, SysUserDto
      *
      * @return 关系对象集合
      */
+    @Override
     protected List<SlaveRelation> subRelationInit() {
         return new ArrayList<>() {{
             add(new SlaveRelation(USER_OrganizeRoleMerge_GROUP, SysOrganizeRoleMergeMapper.class, SysOrganizeRoleMerge.class, OperateConstants.SubOperateLimit.ONLY_DEL));

@@ -13,7 +13,7 @@ import java.util.List;
 import static com.xueyi.system.api.organize.domain.merge.MergeGroup.DEPT_SysPost_GROUP;
 
 /**
- * 部门 数据传输对象
+ * 系统服务 | 组织模块 | 部门 数据传输对象
  *
  * @author xueyi
  */

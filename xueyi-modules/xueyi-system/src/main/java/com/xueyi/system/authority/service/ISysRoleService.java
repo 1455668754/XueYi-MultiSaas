@@ -5,7 +5,7 @@ import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
 import com.xueyi.system.api.authority.domain.query.SysRoleQuery;
 
 /**
- * 角色管理 服务层
+ * 系统服务 | 权限模块 | 角色管理 服务层
  *
  * @author xueyi
  */

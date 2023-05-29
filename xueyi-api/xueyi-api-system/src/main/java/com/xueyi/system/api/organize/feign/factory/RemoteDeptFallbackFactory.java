@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * 部门服务 降级处理
+ * 系统服务 | 组织模块 | 部门服务 降级处理
  *
  * @author xueyi
  */

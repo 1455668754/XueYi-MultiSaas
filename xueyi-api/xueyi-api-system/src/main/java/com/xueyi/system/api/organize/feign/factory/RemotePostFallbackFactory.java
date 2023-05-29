@@ -8,7 +8,7 @@ import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
 
 /**
- * 岗位服务 降级处理
+ * 系统服务 | 组织模块 | 岗位服务 降级处理
  *
  * @author xueyi
  */

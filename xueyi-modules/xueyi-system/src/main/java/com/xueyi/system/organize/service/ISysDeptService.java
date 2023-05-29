@@ -5,7 +5,7 @@ import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
 import com.xueyi.system.api.organize.domain.query.SysDeptQuery;
 
 /**
- * 部门管理 服务层
+ * 系统服务 | 组织模块 | 部门管理 服务层
  *
  * @author xueyi
  */

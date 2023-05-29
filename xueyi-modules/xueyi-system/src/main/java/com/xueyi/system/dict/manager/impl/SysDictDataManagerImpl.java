@@ -14,7 +14,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * 字典数据管理 数据封装层处理
+ * 系统服务 | 字典模块 | 字典数据管理 数据封装层处理
  *
  * @author xueyi
  */

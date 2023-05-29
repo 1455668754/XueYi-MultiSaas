@@ -14,7 +14,7 @@ import com.xueyi.system.dict.service.ISysConfigService;
 import java.util.List;
 
 /**
- * 参数配置管理 | 通用 业务处理
+ * 系统服务 | 字典模块 | 参数管理 | 通用 业务处理
  *
  * @author xueyi
  */

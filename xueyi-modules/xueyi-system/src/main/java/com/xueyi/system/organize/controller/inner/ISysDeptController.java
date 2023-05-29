@@ -16,7 +16,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * 部门管理 | 内部调用 业务处理
+ * 系统服务 | 组织模块 | 部门管理 | 内部调用 业务处理
  *
  * @author xueyi
  */

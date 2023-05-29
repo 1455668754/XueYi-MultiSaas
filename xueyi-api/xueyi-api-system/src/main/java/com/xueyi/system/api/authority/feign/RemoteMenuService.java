@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 /**
- * 菜单服务
+ * 系统服务 | 权限模块 | 菜单服务
  *
  * @author xueyi
  */

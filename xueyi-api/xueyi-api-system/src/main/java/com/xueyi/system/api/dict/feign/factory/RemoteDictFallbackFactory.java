@@ -6,9 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
 
-
 /**
- * 字典服务 降级处理
+ * 系统服务 | 字典模块 | 字典服务 降级处理
  *
  * @author xueyi
  */

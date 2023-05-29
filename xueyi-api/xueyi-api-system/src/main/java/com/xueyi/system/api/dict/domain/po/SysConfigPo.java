@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 import java.io.Serial;
 
 /**
- * 参数配置 持久化对象
+ * 系统服务 | 字典模块 | 参数 持久化对象
  *
  * @author xueyi
  */
@@ -18,6 +18,7 @@ import java.io.Serial;
 @EqualsAndHashCode(callSuper = true)
 @TableName(value = "sys_config", excludeProperty = {"status"})
 public class SysConfigPo extends TBaseEntity {
+
     @Serial
     private static final long serialVersionUID = 1L;
 

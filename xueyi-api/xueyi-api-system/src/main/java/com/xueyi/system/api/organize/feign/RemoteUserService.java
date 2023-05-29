@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 /**
- * 用户服务
+ * 系统服务 | 组织模块 | 用户服务
  *
  * @author xueyi
  */

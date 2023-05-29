@@ -9,7 +9,7 @@ import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
 
 /**
- * 日志服务 降级处理
+ * 系统服务 | 监控模块 | 日志服务 降级处理
  *
  * @author xueyi
  */

@@ -16,7 +16,7 @@ import static com.xueyi.system.api.authority.domain.merge.MergeGroup.ROLE_SysRol
 import static com.xueyi.system.api.organize.domain.merge.MergeGroup.DEPT_SysRoleDeptMerge_GROUP;
 
 /**
- * 角色-部门关联（权限范围） 持久化对象
+ * 系统服务 | 组织模块 | 角色-部门关联（权限范围） 持久化对象
  *
  * @author xueyi
  */

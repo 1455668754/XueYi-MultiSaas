@@ -3,6 +3,7 @@ package com.xueyi.system.api.organize.domain.po;
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.xueyi.common.core.annotation.Excel;
 import com.xueyi.common.core.annotation.Excel.Type;
 import com.xueyi.common.core.web.tenant.base.TBaseEntity;
@@ -21,7 +22,7 @@ import java.time.LocalDateTime;
 import static com.baomidou.mybatisplus.annotation.SqlCondition.LIKE;
 
 /**
- * 用户 持久化对象
+ * 系统服务 | 组织模块 | 用户 持久化对象
  *
  * @author xueyi
  */
@@ -36,7 +37,6 @@ public class SysUserPo extends TBaseEntity {
     /** 用户编码 */
     @Excel(name = "用户编码(*)")
     @Xss(message = "用户编码不能包含脚本字符")
-    @NotBlank(message = "用户编码不能为空", groups = {V_A_E.class})
     @Size(max = 64, message = "用户编码长度不能超过64个字符")
     @TableField(updateStrategy = FieldStrategy.NEVER)
     protected String code;
@@ -91,6 +91,7 @@ public class SysUserPo extends TBaseEntity {
     protected String loginIp;
 
     /** 最后登录时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @Excel(name = "最后登录时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss", type = Type.EXPORT)
     protected LocalDateTime loginDate;
 

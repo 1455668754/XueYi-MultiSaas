@@ -6,7 +6,7 @@ import com.xueyi.system.api.authority.domain.query.SysRoleQuery;
 import org.springframework.stereotype.Component;
 
 /**
- * 角色管理 数据封装层
+ * 系统服务 | 权限模块 | 角色管理 数据封装层
  *
  * @author xueyi
  */

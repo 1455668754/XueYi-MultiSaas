@@ -7,3 +7,5 @@ com.xueyi.system.api.authority.feign.factory.RemoteAuthFallbackFactory
 com.xueyi.system.api.authority.feign.factory.RemoteClientFallbackFactory
 com.xueyi.system.api.dict.feign.factory.RemoteConfigFallbackFactory
 com.xueyi.system.api.log.feign.factory.RemoteLogFallbackFactory
+com.xueyi.system.api.application.feign.factory.RemoteSysApplicationFallbackFactory
+com.xueyi.system.api.application.feign.factory.RemotePlatformLoginFallbackFactory

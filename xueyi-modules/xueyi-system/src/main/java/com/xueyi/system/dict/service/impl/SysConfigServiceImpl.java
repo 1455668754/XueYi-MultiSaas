@@ -26,7 +26,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * 参数配置管理 服务层实现
+ * 系统服务 | 字典模块 | 参数管理 服务层实现
  *
  * @author xueyi
  */

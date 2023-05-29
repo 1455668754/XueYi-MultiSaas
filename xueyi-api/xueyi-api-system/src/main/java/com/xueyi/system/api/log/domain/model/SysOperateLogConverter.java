@@ -8,7 +8,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 
 /**
- * 操作日志 对象映射器
+ * 系统服务 | 监控模块 | 操作日志 对象映射器
  *
  * @author xueyi
  */

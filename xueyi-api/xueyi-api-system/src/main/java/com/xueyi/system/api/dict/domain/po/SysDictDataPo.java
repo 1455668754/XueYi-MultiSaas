@@ -14,7 +14,7 @@ import java.io.Serial;
 import static com.xueyi.system.api.dict.domain.merge.MergeGroup.DICT_DATA_GROUP;
 
 /**
- * 字典数据 持久化对象
+ * 系统服务 | 字典模块 | 字典数据 持久化对象
  *
  * @author xueyi
  */
@@ -36,6 +36,15 @@ public class SysDictDataPo extends TBaseEntity {
 
     /** 数据标签 */
     protected String label;
+
+    /** 附加数据1 */
+    protected String additionalA;
+
+    /** 附加数据2 */
+    protected String additionalB;
+
+    /** 附加数据3 */
+    protected String additionalC;
 
     /** 样式属性（其他样式扩展） */
     protected String cssClass;

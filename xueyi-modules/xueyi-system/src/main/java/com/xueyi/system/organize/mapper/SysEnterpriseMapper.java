@@ -7,7 +7,7 @@ import com.xueyi.system.api.organize.domain.po.SysEnterprisePo;
 import com.xueyi.system.api.organize.domain.query.SysEnterpriseQuery;
 
 /**
- * 企业管理 数据层
+ * 系统服务 | 组织模块 | 企业管理 数据层
  *
  * @author xueyi
  */

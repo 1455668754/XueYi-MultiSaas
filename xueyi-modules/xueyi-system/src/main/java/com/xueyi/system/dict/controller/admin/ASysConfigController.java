@@ -24,7 +24,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 参数配置管理 | 管理端 业务处理
+ * 系统服务 | 字典模块 | 参数管理 | 管理端 业务处理
  *
  * @author xueyi
  */

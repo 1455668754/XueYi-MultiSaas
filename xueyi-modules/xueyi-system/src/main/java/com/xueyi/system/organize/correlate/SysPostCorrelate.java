@@ -15,7 +15,7 @@ import java.util.List;
 import static com.xueyi.common.web.correlate.contant.CorrelateConstants.SubOperate.SELECT;
 
 /**
- * 岗位 关联映射枚举
+ * 系统服务 | 组织模块 | 岗位 关联映射
  */
 @Getter
 @AllArgsConstructor

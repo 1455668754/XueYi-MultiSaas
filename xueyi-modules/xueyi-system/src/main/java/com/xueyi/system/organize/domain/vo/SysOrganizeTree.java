@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 /**
- * 组织对象 合成通用结构
+ * 系统服务 | 组织模块 | 组织 合成通用结构对象
  *
  * @author xueyi
  */

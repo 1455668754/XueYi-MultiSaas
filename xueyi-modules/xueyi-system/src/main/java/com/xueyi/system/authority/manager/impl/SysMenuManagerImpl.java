@@ -39,7 +39,7 @@ import static com.xueyi.system.api.authority.domain.merge.MergeGroup.MENU_SysMod
 import static com.xueyi.system.api.authority.domain.merge.MergeGroup.MENU_SysRoleMenuMerge_GROUP;
 
 /**
- * 菜单管理 数据封装层处理
+ * 系统服务 | 权限模块 | 菜单管理 数据封装层处理
  *
  * @author xueyi
  */

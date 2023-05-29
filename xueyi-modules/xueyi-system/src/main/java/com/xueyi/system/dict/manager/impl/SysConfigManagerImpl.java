@@ -13,7 +13,7 @@ import com.xueyi.system.dict.mapper.SysConfigMapper;
 import org.springframework.stereotype.Component;
 
 /**
- * 参数配置管理 数据封装层处理
+ * 系统服务 | 字典模块 | 参数管理 数据封装层处理
  *
  * @author xueyi
  */

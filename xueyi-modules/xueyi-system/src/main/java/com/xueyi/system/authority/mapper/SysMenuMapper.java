@@ -7,7 +7,7 @@ import com.xueyi.system.api.authority.domain.po.SysMenuPo;
 import com.xueyi.system.api.authority.domain.query.SysMenuQuery;
 
 /**
- * 菜单管理 数据层
+ * 系统服务 | 权限模块 | 菜单管理 数据层
  *
  * @author xueyi
  */

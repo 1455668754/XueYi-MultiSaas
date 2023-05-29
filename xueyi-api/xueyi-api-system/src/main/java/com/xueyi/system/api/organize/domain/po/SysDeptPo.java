@@ -16,7 +16,7 @@ import java.io.Serial;
 import static com.baomidou.mybatisplus.annotation.SqlCondition.LIKE;
 
 /**
- * 部门 持久化对象
+ * 系统服务 | 组织模块 | 部门 持久化对象
  *
  * @author xueyi
  */
@@ -30,7 +30,6 @@ public class SysDeptPo extends TTreeEntity<SysDeptDto> {
 
     /** 部门编码 */
     @Xss(message = "用户账号不能包含脚本字符")
-    @NotBlank(message = "部门编码不能为空")
     @Size(max = 30, message = "部门编码长度不能超过20个字符")
     protected String code;
 

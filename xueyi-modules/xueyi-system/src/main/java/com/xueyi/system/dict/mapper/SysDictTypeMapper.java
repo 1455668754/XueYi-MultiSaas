@@ -7,7 +7,7 @@ import com.xueyi.system.api.dict.domain.po.SysDictTypePo;
 import com.xueyi.system.api.dict.domain.query.SysDictTypeQuery;
 
 /**
- * 字典类型管理 数据层
+ * 系统服务 | 字典模块 | 字典类型管理 数据层
  *
  * @author xueyi
  */

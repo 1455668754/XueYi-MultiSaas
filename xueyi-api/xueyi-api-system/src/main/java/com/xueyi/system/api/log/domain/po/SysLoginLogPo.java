@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 import static com.baomidou.mybatisplus.annotation.SqlCondition.LIKE;
 
 /**
- * 访问日志 持久化对象
+ * 系统服务 | 监控模块 | 访问日志 持久化对象
  *
  * @author xueyi
  */

@@ -10,7 +10,7 @@ import com.xueyi.system.notice.mapper.SysNoticeMapper;
 import org.springframework.stereotype.Component;
 
 /**
- * 通知公告管理 数据封装层处理
+ * 系统服务 | 消息模块 | 通知公告管理 数据封装层处理
  *
  * @author xueyi
  */

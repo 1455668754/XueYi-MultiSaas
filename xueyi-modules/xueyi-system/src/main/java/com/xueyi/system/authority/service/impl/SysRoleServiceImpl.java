@@ -21,7 +21,7 @@ import java.util.List;
 import static com.xueyi.common.core.constant.basic.SecurityConstants.CREATE_BY;
 
 /**
- * 角色管理 服务层处理
+ * 系统服务 | 权限模块 | 角色管理 服务层处理
  *
  * @author xueyi
  */

@@ -8,7 +8,7 @@ import com.xueyi.system.monitor.service.ISysOperateLogService;
 import org.springframework.stereotype.Service;
 
 /**
- * 操作日志管理 服务层处理
+ * 系统服务 | 监控模块 | 操作日志管理 服务层处理
  *
  * @author xueyi
  */

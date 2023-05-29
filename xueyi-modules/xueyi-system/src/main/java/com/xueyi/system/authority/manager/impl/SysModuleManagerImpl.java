@@ -31,7 +31,7 @@ import static com.xueyi.system.api.authority.domain.merge.MergeGroup.MODULE_SysM
 import static com.xueyi.system.api.authority.domain.merge.MergeGroup.MODULE_SysRoleModuleMerge_GROUP;
 
 /**
- * 模块管理 数据封装层处理
+ * 系统服务 | 权限模块 | 模块管理 数据封装层处理
  *
  * @author xueyi
  */

@@ -7,7 +7,7 @@ import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
 
 /**
- * 权限服务 降级处理
+ * 系统服务 | 权限模块 | 权限服务 降级处理
  *
  * @author xueyi
  */

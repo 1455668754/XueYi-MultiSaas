@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * 岗位管理 数据封装层
+ * 系统服务 | 组织模块 | 岗位管理 数据封装层
  *
  * @author xueyi
  */

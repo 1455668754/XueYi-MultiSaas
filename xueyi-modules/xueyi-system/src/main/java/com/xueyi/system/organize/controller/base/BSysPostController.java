@@ -11,7 +11,7 @@ import com.xueyi.system.organize.service.ISysPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * 岗位管理 | 通用 业务处理
+ * 系统服务 | 组织模块 | 岗位管理 | 通用 业务处理
  *
  * @author xueyi
  */
