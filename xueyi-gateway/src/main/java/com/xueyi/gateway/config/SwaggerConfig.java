@@ -1,11 +1,13 @@
 package com.xueyi.gateway.config;
 
 import org.springdoc.core.properties.AbstractSwaggerUiConfigProperties;
+import org.springdoc.core.properties.SwaggerUiConfigParameters;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.config.GatewayProperties;
 import org.springframework.cloud.gateway.support.NameUtils;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
 
@@ -30,7 +32,8 @@ public class SwaggerConfig implements WebFluxConfigurer {
      * 聚合其他服务接口
      */
     @Bean
-    public SwaggerUiConfigProperties swaggerUiConfig(SwaggerUiConfigProperties config) {
+    @Lazy(false)
+    public SwaggerUiConfigParameters swaggerUiConfigParameters(SwaggerUiConfigProperties config) {
         Set<AbstractSwaggerUiConfigProperties.SwaggerUrl> swaggerUrls = new HashSet<>();
         gatewayProperties.getRoutes()
                 .forEach(routeDefinition -> routeDefinition.getPredicates().stream()
@@ -41,6 +44,6 @@ public class SwaggerConfig implements WebFluxConfigurer {
                             swaggerUrls.add(new AbstractSwaggerUiConfigProperties.SwaggerUrl(routeDefinition.getId(), url, routeDefinition.getId()));
                         }));
         config.setUrls(swaggerUrls);
-        return config;
+        return new SwaggerUiConfigParameters(config);
     }
 }
