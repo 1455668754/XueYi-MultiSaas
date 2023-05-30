@@ -1,4 +1,4 @@
-package com.xueyi.system.monitor.controller;
+package com.xueyi.system.monitor.controller.admin;
 
 import com.xueyi.common.cache.constant.CacheConstants;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
@@ -27,13 +27,13 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * 系统服务 | 监控模块 | 在线用户监控
+ * 系统服务 | 监控模块 | 在线用户监控 | 管理端 业务处理
  *
  * @author xueyi
  */
 @RestController
-@RequestMapping("/online")
-public class SysUserOnlineController extends BasisController {
+@RequestMapping("/admin/online")
+public class ASysUserOnlineController extends BasisController {
 
     @Autowired
     private ISysUserOnlineService userOnlineService;

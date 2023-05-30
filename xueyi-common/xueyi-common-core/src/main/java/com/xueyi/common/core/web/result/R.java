@@ -1,6 +1,7 @@
 package com.xueyi.common.core.web.result;
 
 import com.xueyi.common.core.constant.basic.Constants;
+import com.xueyi.common.core.utils.core.NumberUtil;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -26,6 +27,10 @@ public class R<T> implements Serializable {
     private String msg;
 
     private T data;
+
+    public static R<Boolean> ok(Integer rows) {
+        return restResult(rows > NumberUtil.Zero, SUCCESS, null);
+    }
 
     public static <T> R<T> ok() {
         return restResult(null, SUCCESS, null);

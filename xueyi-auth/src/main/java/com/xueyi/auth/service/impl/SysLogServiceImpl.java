@@ -92,6 +92,6 @@ public class SysLogServiceImpl implements ISysLogService {
         } else if (Constants.LOGIN_FAIL.equals(status)) {
             loginInfo.setStatus(DictConstants.DicStatus.FAIL.getCode());
         }
-        remoteLogService.saveLoginInfo(loginInfo, enterpriseId, sourceName, SecurityConstants.INNER);
+        remoteLogService.saveLoginInfo(loginInfo, enterpriseId, sourceName);
     }
 }

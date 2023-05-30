@@ -1,50 +1,29 @@
-package com.xueyi.system.monitor.controller;
+package com.xueyi.system.monitor.controller.admin;
 
 import com.xueyi.common.core.web.result.AjaxResult;
-import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
-import com.xueyi.common.security.annotation.InnerAuth;
-import com.xueyi.common.web.entity.controller.BaseController;
-import com.xueyi.system.api.log.domain.dto.SysLoginLogDto;
 import com.xueyi.system.api.log.domain.query.SysLoginLogQuery;
-import com.xueyi.system.monitor.service.ISysLoginLogService;
+import com.xueyi.system.monitor.controller.base.BSysLoginLogController;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 /**
- * 系统服务 | 监控模块 | 访问日志管理 业务处理
+ * 系统服务 | 监控模块 | 访问日志管理 | 管理端 业务处理
  *
  * @author xueyi
  */
 @RestController
-@RequestMapping("/loginLog")
-public class SysLoginLogController extends BaseController<SysLoginLogQuery, SysLoginLogDto, ISysLoginLogService> {
-
-    /** 定义节点名称 */
-    @Override
-    protected String getNodeName() {
-        return "访问日志";
-    }
-
-    /**
-     * 新增访问日志 | 内部调用
-     */
-    @PostMapping
-    @InnerAuth(isAnonymous = true)
-    public R<Boolean> addInner(@RequestBody SysLoginLogDto loginInfo) {
-        baseService.insert(loginInfo);
-        return R.ok();
-    }
+@RequestMapping("/admin/loginLog")
+public class ASysLoginLogController extends BSysLoginLogController {
 
     /**
      * 查询系统访问记录列表
@@ -88,5 +67,4 @@ public class SysLoginLogController extends BaseController<SysLoginLogQuery, SysL
         baseService.cleanLoginLog();
         return success();
     }
-
 }

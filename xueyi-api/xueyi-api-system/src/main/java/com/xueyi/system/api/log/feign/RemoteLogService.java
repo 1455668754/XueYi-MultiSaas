@@ -25,11 +25,10 @@ public interface RemoteLogService {
      * @param operateLog   日志实体
      * @param enterpriseId 企业Id
      * @param sourceName   数据源
-     * @param source       请求来源
      * @return 结果
      */
-    @PostMapping("/operateLog")
-    R<Boolean> saveOperateLog(@RequestBody SysOperateLogDto operateLog, @RequestHeader(SecurityConstants.ENTERPRISE_ID) Long enterpriseId, @RequestHeader(SecurityConstants.SOURCE_NAME) String sourceName, @RequestHeader(SecurityConstants.FROM_SOURCE) String source) throws Exception;
+    @PostMapping(value = "/inner/operateLog", headers = SecurityConstants.FROM_SOURCE_INNER)
+    R<Boolean> saveOperateLog(@RequestBody SysOperateLogDto operateLog, @RequestHeader(SecurityConstants.ENTERPRISE_ID) Long enterpriseId, @RequestHeader(SecurityConstants.SOURCE_NAME) String sourceName) throws Exception;
 
     /**
      * 保存访问记录
@@ -37,9 +36,8 @@ public interface RemoteLogService {
      * @param loginInfo    访问实体
      * @param enterpriseId 企业Id
      * @param sourceName   数据源
-     * @param source       请求来源
      * @return 结果
      */
-    @PostMapping("/loginLog")
-    R<Boolean> saveLoginInfo(@RequestBody SysLoginLogDto loginInfo, @RequestHeader(SecurityConstants.ENTERPRISE_ID) Long enterpriseId, @RequestHeader(SecurityConstants.SOURCE_NAME) String sourceName, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+    @PostMapping(value = "/inner/loginLog", headers = SecurityConstants.FROM_SOURCE_INNER)
+    R<Boolean> saveLoginInfo(@RequestBody SysLoginLogDto loginInfo, @RequestHeader(SecurityConstants.ENTERPRISE_ID) Long enterpriseId, @RequestHeader(SecurityConstants.SOURCE_NAME) String sourceName);
 }

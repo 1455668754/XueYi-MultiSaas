@@ -1,6 +1,5 @@
 package com.xueyi.common.log.service;
 
-import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.system.api.log.domain.dto.SysOperateLogDto;
 import com.xueyi.system.api.log.feign.RemoteLogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +22,6 @@ public class AsyncLogService {
      */
     @Async
     public void saveOperateLog(SysOperateLogDto operateLog) throws Exception {
-        remoteLogService.saveOperateLog(operateLog, operateLog.getEnterpriseId(), operateLog.getSourceName(), SecurityConstants.INNER);
+        remoteLogService.saveOperateLog(operateLog, operateLog.getEnterpriseId(), operateLog.getSourceName());
     }
 }
