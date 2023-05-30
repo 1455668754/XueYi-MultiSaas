@@ -2,7 +2,6 @@ package com.xueyi.tenant.tenant.service.impl;
 
 import com.xueyi.common.cache.constant.CacheConstants;
 import com.xueyi.common.core.constant.basic.DictConstants;
-import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
@@ -81,7 +80,7 @@ public class TeTenantServiceImpl extends BaseServiceImpl<TeTenantQuery, TeTenant
     public Long[] selectAuth(Long id) {
         TeTenantDto tenant = baseManager.selectById(id);
         TeStrategyDto strategy = strategyService.selectById(tenant.getStrategyId());
-        R<Long[]> authR = remoteAuthService.getTenantAuthInner(tenant.getId(), strategy.getSourceSlave(), SecurityConstants.INNER);
+        R<Long[]> authR = remoteAuthService.getTenantAuthInner(tenant.getId(), strategy.getSourceSlave());
         if (authR.isFail()) {
             AjaxResult.warn(authR.getMsg());
         }
@@ -99,7 +98,7 @@ public class TeTenantServiceImpl extends BaseServiceImpl<TeTenantQuery, TeTenant
         TeTenantDto tenant = baseManager.selectById(id);
         if (tenant.isNotAdmin()) {
             TeStrategyDto strategy = strategyService.selectById(tenant.getStrategyId());
-            R<Boolean> authR = remoteAuthService.editTenantAuthInner(authIds, tenant.getId(), strategy.getSourceSlave(), SecurityConstants.INNER);
+            R<Boolean> authR = remoteAuthService.editTenantAuthInner(authIds, tenant.getId(), strategy.getSourceSlave());
             if (authR.isFail()) {
                 AjaxResult.warn(authR.getMsg());
             }
@@ -188,7 +187,7 @@ public class TeTenantServiceImpl extends BaseServiceImpl<TeTenantQuery, TeTenant
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void authorityInit(TeTenantRegister tenantRegister) {
-        R<Boolean> authR = authService.addTenantAuthInner(tenantRegister.getAuthIds(), tenantRegister.getTenant().getId(), tenantRegister.getSourceName(), SecurityConstants.INNER);
+        R<Boolean> authR = authService.addTenantAuthInner(tenantRegister.getAuthIds(), tenantRegister.getTenant().getId(), tenantRegister.getSourceName());
         if (authR.isFail()) {
             AjaxResult.warn("新增失败，请检查！");
         }

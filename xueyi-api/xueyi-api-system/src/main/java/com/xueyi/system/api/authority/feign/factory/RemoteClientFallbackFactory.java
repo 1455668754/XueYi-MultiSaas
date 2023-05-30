@@ -7,8 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 /**
  * 系统服务 | 权限模块 | 客户端认证服务 降级处理
  *
@@ -26,12 +24,6 @@ public class RemoteClientFallbackFactory implements FallbackFactory<RemoteClient
             public R<SysClientDto> getInfoByClientIdInner(String clientId) {
                 return R.fail("获取客户端信息失败:" + throwable.getMessage());
             }
-
-            @Override
-            public R<List<SysClientDto>> getListInner() {
-                return R.fail("新增客户端信息失败:" + throwable.getMessage());
-            }
-
         };
     }
 }

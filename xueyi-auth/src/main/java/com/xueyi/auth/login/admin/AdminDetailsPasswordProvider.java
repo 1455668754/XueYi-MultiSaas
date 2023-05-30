@@ -13,7 +13,7 @@ import com.xueyi.common.core.utils.core.SpringUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.utils.servlet.ServletUtil;
 import com.xueyi.common.core.web.result.R;
-import com.xueyi.system.api.authority.feign.RemoteLoginService;
+import com.xueyi.system.api.authority.feign.RemoteAdminLoginService;
 import com.xueyi.system.api.model.LoginUser;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
 import jakarta.servlet.http.HttpServletRequest;
@@ -40,7 +40,7 @@ public class AdminDetailsPasswordProvider implements IUserDetailsService {
     private ISysLogService logService;
 
     @Autowired
-    private RemoteLoginService remoteLoginService;
+    private RemoteAdminLoginService remoteLoginService;
 
     /**
      * 校验授权类型与账户类型

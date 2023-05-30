@@ -1,11 +1,11 @@
 com.xueyi.system.api.organize.feign.factory.RemoteDeptFallbackFactory
 com.xueyi.system.api.organize.feign.factory.RemotePostFallbackFactory
 com.xueyi.system.api.organize.feign.factory.RemoteUserFallbackFactory
-com.xueyi.system.api.authority.feign.factory.RemoteLoginFallbackFactory
+com.xueyi.system.api.authority.feign.factory.RemoteAdminLoginFallbackFactory
 com.xueyi.system.api.authority.feign.factory.RemoteMenuFallbackFactory
 com.xueyi.system.api.authority.feign.factory.RemoteAuthFallbackFactory
 com.xueyi.system.api.authority.feign.factory.RemoteClientFallbackFactory
 com.xueyi.system.api.dict.feign.factory.RemoteConfigFallbackFactory
 com.xueyi.system.api.log.feign.factory.RemoteLogFallbackFactory
 com.xueyi.system.api.application.feign.factory.RemoteSysApplicationFallbackFactory
-com.xueyi.system.api.application.feign.factory.RemotePlatformLoginFallbackFactory
+com.xueyi.system.api.authority.feign.factory.RemotePlatformLoginFallbackFactory

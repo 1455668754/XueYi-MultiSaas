@@ -1,14 +1,14 @@
-package com.xueyi.system.api.application.feign.factory;
+package com.xueyi.system.api.authority.feign.factory;
 
 import com.xueyi.common.core.web.result.R;
-import com.xueyi.system.api.application.feign.RemotePlatformLoginService;
+import com.xueyi.system.api.authority.feign.RemotePlatformLoginService;
 import com.xueyi.system.api.model.LoginPlatform;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
 
 /**
- * 登录服务 降级处理
+ * 登录服务 | 平台端 降级处理
  *
  * @author xueyi
  */

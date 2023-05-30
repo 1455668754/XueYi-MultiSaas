@@ -8,14 +8,14 @@ import com.xueyi.system.api.application.domain.dto.SysApplicationDto;
 import com.xueyi.system.api.application.feign.factory.RemoteSysApplicationFallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * 系统服务 | 应用模块 | 应用服务
  *
  * @author xueyi
  */
-@FeignClient(contextId = "remoteSysApplicationService", value = ServiceConstants.SYSTEM_SERVICE, fallbackFactory = RemoteSysApplicationFallbackFactory.class)
+@FeignClient(contextId = "remoteSysApplicationService", path = "/inner/platform", value = ServiceConstants.SYSTEM_SERVICE, fallbackFactory = RemoteSysApplicationFallbackFactory.class)
 public interface RemoteSysApplicationService {
 
     /**
@@ -24,8 +24,8 @@ public interface RemoteSysApplicationService {
      * @param id 应用Id
      * @return 结果
      */
-    @GetMapping(value = "/application/inner/{id}/{appType}", headers = SecurityConstants.FROM_SOURCE_INNER)
-    R<SysApplicationDto> getInfoByIdInner(@PathVariable("id") Long id, @PathVariable("appType") AppConstants.AppType appType);
+    @GetMapping(value = "/id", headers = SecurityConstants.FROM_SOURCE_INNER)
+    R<SysApplicationDto> getInfoByIdInner(@RequestParam("id") Long id, @RequestParam("appType") AppConstants.AppType appType);
 
     /**
      * 查询应用详细 | By应用AppId
@@ -33,6 +33,6 @@ public interface RemoteSysApplicationService {
      * @param appId 应用AppId
      * @return 结果
      */
-    @GetMapping(value = "/application/inner/app/{appId}/{appType}", headers = SecurityConstants.FROM_SOURCE_INNER)
-    R<SysApplicationDto> getInfoByAppIdInner(@PathVariable("appId") String appId, @PathVariable("appType") AppConstants.AppType appType);
+    @GetMapping(value = "/app", headers = SecurityConstants.FROM_SOURCE_INNER)
+    R<SysApplicationDto> getInfoByAppIdInner(@RequestParam("appId") String appId, @RequestParam("appType") AppConstants.AppType appType);
 }

@@ -1,21 +1,16 @@
-package com.xueyi.system.authority.controller;
+package com.xueyi.system.authority.controller.admin;
 
-import com.xueyi.common.core.constant.basic.BaseConstants;
-import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
-import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.service.TokenUserService;
-import com.xueyi.common.security.utils.SecurityUserUtils;
-import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
 import com.xueyi.system.api.authority.domain.query.SysModuleQuery;
 import com.xueyi.system.api.model.DataScope;
-import com.xueyi.system.authority.service.ISysModuleService;
+import com.xueyi.system.authority.controller.base.BSysModuleController;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,27 +26,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
- * 系统服务 | 权限模块 | 模块管理 业务处理
+ * 系统服务 | 权限模块 | 模块管理 | 管理端 业务处理
  *
  * @author xueyi
  */
 @RestController
-@RequestMapping("/module")
-public class SysModuleController extends BaseController<SysModuleQuery, SysModuleDto, ISysModuleService> {
+@RequestMapping("/admin/module")
+public class SysModuleController extends BSysModuleController {
 
     @Autowired
     private TokenUserService tokenService;
-
-    /** 定义节点名称 */
-    @Override
-    protected String getNodeName() {
-        return "模块";
-    }
 
     /**
      * 查询首页可展示模块信息列表
@@ -151,42 +137,4 @@ public class SysModuleController extends BaseController<SysModuleQuery, SysModul
         return super.option();
     }
 
-    /**
-     * 前置校验 新增/修改
-     */
-    @Override
-    protected void AEHandle(BaseConstants.Operate operate, SysModuleDto module) {
-        if (baseService.checkNameUnique(module.getId(), module.getName()))
-            warn(StrUtil.format("{}{}{}失败，{}名称已存在！", operate.getInfo(), getNodeName(), module.getName(), getNodeName()));
-
-        switch (operate) {
-            case ADD, ADD_FORCE -> {
-            }
-            case EDIT, EDIT_FORCE -> {
-                SysModuleDto original = baseService.selectById(module.getId());
-                module.setIsCommon(original.getIsCommon());
-                if (ObjectUtil.isNull(original))
-                    warn("数据不存在！");
-            }
-        }
-
-        if (module.isCommon() && SecurityUserUtils.isNotAdminTenant()) {
-            warn(StrUtil.format("{}{}{}失败，无操作权限！", operate.getInfo(), getNodeName(), module.getName()));
-        }
-    }
-
-    /**
-     * 前置校验 删除
-     */
-    protected void RHandle(BaseConstants.Operate operate, List<Long> idList) {
-        List<SysModuleDto> moduleList = baseService.selectListByIds(idList);
-        boolean isTenant = SecurityUserUtils.isAdminTenant();
-        Map<Long, SysModuleDto> moduleMap = moduleList.stream().filter(item -> isTenant || item.isNotCommon())
-                .collect(Collectors.toMap(SysModuleDto::getId, Function.identity()));
-        for (int i = idList.size() - 1; i >= 0; i--)
-            if (!moduleMap.containsKey(idList.get(i)))
-                idList.remove(i);
-        if (CollUtil.isEmpty(idList))
-            warn(StrUtil.format("无待删除{}！", getNodeName()));
-    }
 }

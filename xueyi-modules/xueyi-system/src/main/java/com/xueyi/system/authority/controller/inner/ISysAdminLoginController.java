@@ -1,4 +1,4 @@
-package com.xueyi.system.authority.controller;
+package com.xueyi.system.authority.controller.inner;
 
 import com.xueyi.common.cache.utils.SourceUtil;
 import com.xueyi.common.core.context.SecurityContextHolder;
@@ -16,8 +16,8 @@ import com.xueyi.system.api.organize.domain.dto.SysUserDto;
 import com.xueyi.system.authority.service.ISysLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashSet;
@@ -26,23 +26,23 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * 权限管理 业务处理
+ * 管理端登录 | 内部调用 业务处理
  *
  * @author xueyi
  */
 @RestController
-@RequestMapping("/login")
-public class SysLoginController extends BasisController {
+@RequestMapping("/inner/login/admin")
+public class ISysAdminLoginController extends BasisController {
 
     @Autowired
     private ISysLoginService loginService;
 
     /**
-     * 获取登录信息 | 内部调用
+     * 获取登录信息
      */
     @InnerAuth(isAnonymous = true)
-    @GetMapping("/inner/loginInfo/{enterpriseName}/{userName}/{password}")
-    public R<LoginUser> getLoginInfo(@PathVariable("enterpriseName") String enterpriseName, @PathVariable("userName") String userName, @PathVariable("password") String password) {
+    @GetMapping
+    public R<LoginUser> getLoginInfoInner(@RequestParam String enterpriseName, @RequestParam String userName, @RequestParam String password) {
         SysEnterpriseDto enterprise = loginService.loginByEnterpriseName(enterpriseName);
         // 不存在直接返回空数据 | 与网络调用错误区分
         if (ObjectUtil.isNull(enterprise))

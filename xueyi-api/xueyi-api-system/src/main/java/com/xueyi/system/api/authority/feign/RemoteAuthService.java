@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
  *
  * @author xueyi
  */
-@FeignClient(contextId = "remoteAuthService", value = ServiceConstants.SYSTEM_SERVICE, fallbackFactory = RemoteAuthFallbackFactory.class)
+@FeignClient(contextId = "remoteAuthService", path = "/inner/auth", value = ServiceConstants.SYSTEM_SERVICE, fallbackFactory = RemoteAuthFallbackFactory.class)
 public interface RemoteAuthService {
 
     /**
@@ -23,11 +23,10 @@ public interface RemoteAuthService {
      *
      * @param enterpriseId 企业Id
      * @param sourceName   策略源
-     * @param source       请求来源
      * @return 结果
      */
-    @GetMapping("/auth/inner/getTenantAuth")
-    R<Long[]> getTenantAuthInner(@RequestHeader(SecurityConstants.ENTERPRISE_ID) Long enterpriseId, @RequestHeader(SecurityConstants.SOURCE_NAME) String sourceName, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+    @GetMapping(value = "/getTenantAuth", headers = SecurityConstants.FROM_SOURCE_INNER)
+    R<Long[]> getTenantAuthInner(@RequestHeader(SecurityConstants.ENTERPRISE_ID) Long enterpriseId, @RequestHeader(SecurityConstants.SOURCE_NAME) String sourceName);
 
     /**
      * 新增租户权限
@@ -35,11 +34,10 @@ public interface RemoteAuthService {
      * @param authIds      权限Ids
      * @param enterpriseId 企业Id
      * @param sourceName   策略源
-     * @param source       请求来源
      * @return 结果
      */
-    @PostMapping("/auth/inner/addTenantAuth")
-    R<Boolean> addTenantAuthInner(@RequestBody Long[] authIds, @RequestHeader(SecurityConstants.ENTERPRISE_ID) Long enterpriseId, @RequestHeader(SecurityConstants.SOURCE_NAME) String sourceName, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+    @PostMapping(value = "/addTenantAuth", headers = SecurityConstants.FROM_SOURCE_INNER)
+    R<Boolean> addTenantAuthInner(@RequestBody Long[] authIds, @RequestHeader(SecurityConstants.ENTERPRISE_ID) Long enterpriseId, @RequestHeader(SecurityConstants.SOURCE_NAME) String sourceName);
 
     /**
      * 修改租户权限
@@ -47,9 +45,8 @@ public interface RemoteAuthService {
      * @param authIds      权限Ids
      * @param enterpriseId 企业Id
      * @param sourceName   策略源
-     * @param source       请求来源
      * @return 结果
      */
-    @PostMapping("/auth/inner/editTenantAuth")
-    R<Boolean> editTenantAuthInner(@RequestBody Long[] authIds, @RequestHeader(SecurityConstants.ENTERPRISE_ID) Long enterpriseId, @RequestHeader(SecurityConstants.SOURCE_NAME) String sourceName, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+    @PostMapping("/editTenantAuth")
+    R<Boolean> editTenantAuthInner(@RequestBody Long[] authIds, @RequestHeader(SecurityConstants.ENTERPRISE_ID) Long enterpriseId, @RequestHeader(SecurityConstants.SOURCE_NAME) String sourceName);
 }

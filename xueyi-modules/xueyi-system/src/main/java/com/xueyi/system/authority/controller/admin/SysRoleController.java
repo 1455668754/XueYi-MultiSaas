@@ -1,19 +1,16 @@
-package com.xueyi.system.authority.controller;
+package com.xueyi.system.authority.controller.admin;
 
-import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.utils.TreeUtil;
-import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
-import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
 import com.xueyi.system.api.authority.domain.query.SysRoleQuery;
+import com.xueyi.system.authority.controller.base.BSysRoleController;
 import com.xueyi.system.authority.domain.vo.SysAuthTree;
 import com.xueyi.system.authority.service.ISysAuthService;
-import com.xueyi.system.authority.service.ISysRoleService;
 import com.xueyi.system.organize.service.ISysOrganizeService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,25 +29,19 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 系统服务 | 权限模块 | 角色管理 业务处理
+ * 系统服务 | 权限模块 | 角色管理 | 管理端 业务处理
  *
  * @author xueyi
  */
 @RestController
-@RequestMapping("/role")
-public class SysRoleController extends BaseController<SysRoleQuery, SysRoleDto, ISysRoleService> {
+@RequestMapping("/admin/role")
+public class SysRoleController extends BSysRoleController {
 
     @Autowired
     private ISysAuthService authService;
 
     @Autowired
     private ISysOrganizeService organizeService;
-
-    /** 定义节点名称 */
-    @Override
-    protected String getNodeName() {
-        return "角色";
-    }
 
     /**
      * 查询角色列表
@@ -176,15 +167,4 @@ public class SysRoleController extends BaseController<SysRoleQuery, SysRoleDto, 
         return super.option();
     }
 
-    /**
-     * 前置校验 （强制）增加/修改
-     */
-    @Override
-    protected void AEHandle(BaseConstants.Operate operate, SysRoleDto role) {
-        if (baseService.checkNameUnique(role.getId(), role.getName()))
-            warn(StrUtil.format("{}{}{}失败，角色名称已存在", operate.getInfo(), getNodeName(), role.getName()));
-        // 修改禁止操作权限范围
-        if (operate.isEdit())
-            role.setDataScope(null);
-    }
 }
