@@ -31,7 +31,7 @@
         <dynamic-ds.version>3.6.1</dynamic-ds.version>
         <commons.io.version>2.11.0</commons.io.version>
         <velocity.version>2.3</velocity.version>
-        <fastjson2.version>2.0.25</fastjson2.version>
+        <fastjson2.version>2.0.32</fastjson2.version>
         <minio.version>8.5.1</minio.version>
         <poi.version>5.2.3</poi.version>
         <hutool.version>5.8.11</hutool.version>
@@ -318,7 +318,7 @@
                 <version>${xueyi.version}</version>
             </dependency>
 
-            <!-- 文件管理接口 -->
+            <!-- 文件接口 -->
             <dependency>
                 <groupId>com.xueyi</groupId>
                 <artifactId>xueyi-api-file</artifactId>
