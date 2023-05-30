@@ -1,10 +1,10 @@
-import { LoginLogPPM, LoginLogLRM } from '/@/model/system';
+import { LoginLogLRM, LoginLogPPM } from '/@/model/system';
 import { defHttp } from '/@/utils/http/axios';
 
 enum Api {
-  LIST_LOGIN_LOG = '/system/loginLog/list',
-  DEL_BATCH_LOGIN_LOG = '/system/loginLog/batch/',
-  CLEAN_LOGIN_LOG = '/system/loginLog/clean',
+  LIST_LOGIN_LOG = '/system/admin/loginLog/list',
+  DEL_BATCH_LOGIN_LOG = '/system/admin/loginLog/batch/',
+  CLEAN_LOGIN_LOG = '/system/admin/loginLog/clean',
 }
 
 /** 查询系统访问记录列表 */

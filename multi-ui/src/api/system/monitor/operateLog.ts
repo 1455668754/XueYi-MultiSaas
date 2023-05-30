@@ -1,11 +1,11 @@
-import { OperateLogIM, OperateLogPPM, OperateLogLRM } from '/@/model/system';
+import { OperateLogIM, OperateLogLRM, OperateLogPPM } from '/@/model/system';
 import { defHttp } from '/@/utils/http/axios';
 
 enum Api {
-  LIST_OPERATE_LOG = '/system/operateLog/list',
-  GET_OPERATE_LOG = '/system/operateLog/',
-  DEL_BATCH_OPERATE_LOG = '/system/operateLog/batch/',
-  CLEAN_OPERATE_LOG = '/system/operateLog/clean',
+  LIST_OPERATE_LOG = '/system/admin/operateLog/list',
+  GET_OPERATE_LOG = '/system/admin/operateLog/',
+  DEL_BATCH_OPERATE_LOG = '/system/admin/operateLog/batch/',
+  CLEAN_OPERATE_LOG = '/system/admin/operateLog/clean',
 }
 
 /** 查询操作日志列表 */

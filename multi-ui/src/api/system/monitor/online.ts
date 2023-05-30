@@ -1,9 +1,9 @@
-import { OnlinePPM, OnlineLRM } from '/@/model/system';
+import { OnlineLRM, OnlinePPM } from '/@/model/system';
 import { defHttp } from '/@/utils/http/axios';
 
 enum Api {
-  LIST_ONLINE = '/system/online/list',
-  DEL_BATCH_ONLINE = '/system/online/batch/',
+  LIST_ONLINE = '/system/admin/online/list',
+  DEL_BATCH_ONLINE = '/system/admin/online/batch/',
 }
 
 /** 查询在线用户列表 */
