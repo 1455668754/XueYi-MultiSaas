@@ -34,7 +34,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/admin/module")
-public class SysModuleController extends BSysModuleController {
+public class ASysModuleController extends BSysModuleController {
 
     @Autowired
     private TokenUserService tokenService;

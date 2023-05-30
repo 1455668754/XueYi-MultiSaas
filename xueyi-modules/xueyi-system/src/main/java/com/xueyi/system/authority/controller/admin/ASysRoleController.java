@@ -35,7 +35,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/admin/role")
-public class SysRoleController extends BSysRoleController {
+public class ASysRoleController extends BSysRoleController {
 
     @Autowired
     private ISysAuthService authService;

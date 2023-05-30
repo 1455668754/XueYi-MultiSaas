@@ -40,7 +40,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/admin/menu")
-public class SysMenuController extends BSysMenuController {
+public class ASysMenuController extends BSysMenuController {
 
     @Autowired
     private TokenUserService tokenService;

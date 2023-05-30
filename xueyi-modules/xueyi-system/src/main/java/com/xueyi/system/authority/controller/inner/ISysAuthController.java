@@ -23,7 +23,7 @@ import java.util.List;
 @InnerAuth
 @RestController
 @RequestMapping("/inner/auth")
-public class ASysAuthController extends BasisController {
+public class ISysAuthController extends BasisController {
 
     @Autowired
     private ISysAuthService authService;
