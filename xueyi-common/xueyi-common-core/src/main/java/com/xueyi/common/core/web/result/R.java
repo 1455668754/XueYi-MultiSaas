@@ -28,7 +28,7 @@ public class R<T> implements Serializable {
 
     private T data;
 
-    public static R<Boolean> ok(Integer rows) {
+    public static R<Boolean> success(Integer rows) {
         return restResult(rows > NumberUtil.Zero, SUCCESS, null);
     }
 

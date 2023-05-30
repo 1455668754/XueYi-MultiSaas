@@ -24,6 +24,6 @@ public class ISysLoginLogController extends BSysLoginLogController {
     @PostMapping
     @InnerAuth(isAnonymous = true)
     public R<Boolean> addInner(@RequestBody SysLoginLogDto loginInfo) {
-        return R.ok(baseService.insert(loginInfo));
+        return R.success(baseService.insert(loginInfo));
     }
 }
