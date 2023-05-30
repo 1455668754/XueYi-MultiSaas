@@ -3,15 +3,15 @@ import { MenuIM, MenuLM, MenuPM } from '/@/model/system';
 import { MenuTypeEnum } from '/@/enums/system';
 
 enum Api {
-  LIST_MENU = '/system/menu/list',
-  LIST_MENU_EXCLUDE_NODES = '/system/menu/list/exclude',
-  LIST_MENU_BY_TYPE = '/system/menu/routeList',
-  LIST_MENU_BY_TYPE_EXCLUDE_NODES = '/system/menu/routeList/exclude',
-  GET_MENU = '/system/menu/',
-  ADD_MENU = '/system/menu',
-  EDIT_MENU = '/system/menu',
-  EDIT_STATUS_MENU = '/system/menu/status',
-  DEL_BATCH_MENU = '/system/menu/batch/',
+  LIST_MENU = '/system/admin/menu/list',
+  LIST_MENU_EXCLUDE_NODES = '/system/admin/menu/list/exclude',
+  LIST_MENU_BY_TYPE = '/system/admin/menu/routeList',
+  LIST_MENU_BY_TYPE_EXCLUDE_NODES = '/system/admin/menu/routeList/exclude',
+  GET_MENU = '/system/admin/menu/',
+  ADD_MENU = '/system/admin/menu',
+  EDIT_MENU = '/system/admin/menu',
+  EDIT_STATUS_MENU = '/system/admin/menu/status',
+  DEL_BATCH_MENU = '/system/admin/menu/batch/',
 }
 
 /** 查询菜单列表 */

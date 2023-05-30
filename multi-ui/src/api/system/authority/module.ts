@@ -1,14 +1,14 @@
-import { ModuleIM, ModulePPM, ModuleLRM } from '/@/model/system';
+import { ModuleIM, ModuleLRM, ModulePPM } from '/@/model/system';
 import { defHttp } from '/@/utils/http/axios';
 
 enum Api {
-  LIST_MODULE = '/system/module/list',
-  OPTION_MODULE = '/system/module/option',
-  GET_MODULE = '/system/module/',
-  ADD_MODULE = '/system/module',
-  EDIT_MODULE = '/system/module',
-  EDIT_STATUS_MODULE = '/system/module/status',
-  DEL_BATCH_MODULE = '/system/module/batch/',
+  LIST_MODULE = '/system/admin/module/list',
+  OPTION_MODULE = '/system/admin/module/option',
+  GET_MODULE = '/system/admin/module/',
+  ADD_MODULE = '/system/admin/module',
+  EDIT_MODULE = '/system/admin/module',
+  EDIT_STATUS_MODULE = '/system/admin/module/status',
+  DEL_BATCH_MODULE = '/system/admin/module/batch/',
 }
 
 /** 查询模块列表 */

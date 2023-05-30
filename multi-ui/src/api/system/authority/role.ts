@@ -1,18 +1,18 @@
-import { RoleIM, RolePPM, RoleLRM } from '/@/model/system';
+import { RoleIM, RoleLRM, RolePPM } from '/@/model/system';
 import { defHttp } from '/@/utils/http/axios';
 
 enum Api {
-  LIST_ROLE = '/system/role/list',
-  OPTION_ROLE = '/system/role/option',
-  GET_ROLE = '/system/role/',
-  GET_AUTH_ROLE = '/system/role/auth/',
-  GET_ORGANIZE_ROLE = '/system/role/organize/',
-  ADD_ROLE = '/system/role',
-  EDIT_ROLE = '/system/role',
-  EDIT_AUTH_ROLE = '/system/role/auth',
-  EDIT_ORGANIZE_ROLE = '/system/role/organize',
-  EDIT_STATUS_ROLE = '/system/role/status',
-  DEL_BATCH_ROLE = '/system/role/batch/',
+  LIST_ROLE = '/system/admin/role/list',
+  OPTION_ROLE = '/system/admin/role/option',
+  GET_ROLE = '/system/admin/role/',
+  GET_AUTH_ROLE = '/system/admin/role/auth/',
+  GET_ORGANIZE_ROLE = '/system/admin/role/organize/',
+  ADD_ROLE = '/system/admin/role',
+  EDIT_ROLE = '/system/admin/role',
+  EDIT_AUTH_ROLE = '/system/admin/role/auth',
+  EDIT_ORGANIZE_ROLE = '/system/admin/role/organize',
+  EDIT_STATUS_ROLE = '/system/admin/role/status',
+  DEL_BATCH_ROLE = '/system/admin/role/batch/',
 }
 
 /** 查询角色列表 */

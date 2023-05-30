@@ -5,7 +5,7 @@ import { AuthLM } from '/@/model/system';
 enum Api {
   LIST_TENANT = '/tenant/admin/tenant/list',
   GET_TENANT = '/tenant/admin/tenant/',
-  AUTH_SCOPE_TENANT = '/system/auth/tenant/authScope',
+  AUTH_SCOPE_TENANT = '/system/admin/auth/tenant/authScope',
   GET_AUTH_TENANT = '/tenant/admin/tenant/auth/',
   EDIT_AUTH_TENANT = '/tenant/admin/tenant/auth',
   ADD_TENANT = '/tenant/admin/tenant',
