@@ -45,14 +45,17 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
 
     /** Dto泛型的类型 */
     @Getter
+    @Deprecated
     private final Class<D> DClass = TypeUtil.getClazz(getClass().getGenericSuperclass(), NumberUtil.One);
 
     /** Po泛型的类型 */
     @Getter
+    @Deprecated
     private final Class<P> PClass = TypeUtil.getClazz(getClass().getGenericSuperclass(), NumberUtil.Two);
 
     /** 子类操作泛型的类型 */
     @Setter
+    @Deprecated
     private Map<String, SlaveRelation> subRelationMap;
 
     /**

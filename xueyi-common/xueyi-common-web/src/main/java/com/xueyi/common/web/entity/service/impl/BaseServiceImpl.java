@@ -269,6 +269,7 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, C exten
         if (ObjectUtil.isNull(getCacheKey())) {
             throw new UtilException("未正常配置缓存，无法使用!");
         }
-        refreshCache(null, RedisConstants.OperateType.REFRESH_ALL, null, null);
+        List<D> allList = selectList(null);
+        refreshCache(null, RedisConstants.OperateType.REFRESH_ALL, null, allList);
     }
 }

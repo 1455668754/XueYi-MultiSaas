@@ -10,7 +10,6 @@ import com.xueyi.common.web.entity.manager.IBaseManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -46,9 +45,8 @@ public class BaseServiceHandle<Q extends BaseEntity, D extends BaseEntity, C ext
         }
         switch (operateCache) {
             case REFRESH_ALL -> {
-                List<D> allList = baseManager.selectListMerge(null);
                 redisService.deleteObject(getCacheKey().getCode());
-                redisService.refreshMapCache(getCacheKey().getCode(), allList, D::getIdStr, Function.identity());
+                redisService.refreshMapCache(getCacheKey().getCode(), dtoList, D::getIdStr, Function.identity());
             }
             case REFRESH -> {
                 if (operate.isSingle()) {
