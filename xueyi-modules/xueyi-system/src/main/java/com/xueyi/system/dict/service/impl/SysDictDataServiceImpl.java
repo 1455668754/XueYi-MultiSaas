@@ -33,7 +33,7 @@ public class SysDictDataServiceImpl extends BaseServiceImpl<SysDictDataQuery, Sy
      * 缓存主键命名定义
      */
     @Override
-    protected CacheConstants.CacheType getCacheKey() {
+    public CacheConstants.CacheType getCacheKey() {
         return CacheConstants.CacheType.SYS_DICT_KEY;
     }
 
@@ -57,7 +57,7 @@ public class SysDictDataServiceImpl extends BaseServiceImpl<SysDictDataQuery, Sy
      * @param dtoList      数据对象集合
      */
     @Override
-    protected void refreshCache(OperateConstants.ServiceType operate, RedisConstants.OperateType operateCache, SysDictDataDto dto, Collection<SysDictDataDto> dtoList) {
+    public void refreshCache(OperateConstants.ServiceType operate, RedisConstants.OperateType operateCache, SysDictDataDto dto, Collection<SysDictDataDto> dtoList) {
         String cacheKey = StrUtil.format(getCacheKey().getCode(), SecurityUtils.getEnterpriseId());
         if (operate.isSingle()) {
             List<SysDictDataDto> dictList = baseManager.selectListByCode(dto.getCode());

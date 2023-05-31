@@ -11,7 +11,7 @@ import com.xueyi.common.redis.constant.RedisConstants;
 import com.xueyi.common.web.correlate.service.CorrelateService;
 import com.xueyi.common.web.entity.manager.IBaseManager;
 import com.xueyi.common.web.entity.service.IBaseService;
-import com.xueyi.common.web.entity.service.impl.handle.BaseHandleServiceImpl;
+import com.xueyi.common.web.entity.service.impl.handle.BaseServiceHandle;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  * @param <IDG> DtoIManager
  * @author xueyi
  */
-public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, C extends Enum<? extends Enum<?>> & CorrelateService, IDG extends IBaseManager<Q, D>> extends BaseHandleServiceImpl<Q, D, C, IDG> implements IBaseService<Q, D> {
+public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, C extends Enum<? extends Enum<?>> & CorrelateService, IDG extends IBaseManager<Q, D>> extends BaseServiceHandle<Q, D, C, IDG> implements IBaseService<Q, D> {
 
     /**
      * 查询数据对象列表 | 数据权限 | 附加数据

@@ -47,7 +47,7 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeQuery, Sy
      * 缓存主键命名定义
      */
     @Override
-    protected CacheConstants.CacheType getCacheKey() {
+    public CacheConstants.CacheType getCacheKey() {
         return CacheConstants.CacheType.SYS_DICT_KEY;
     }
 
@@ -132,7 +132,7 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeQuery, Sy
      * @param dtoList      数据对象集合
      */
     @Override
-    protected void refreshCache(OperateConstants.ServiceType operate, RedisConstants.OperateType operateCache, SysDictTypeDto dto, Collection<SysDictTypeDto> dtoList) {
+    public void refreshCache(OperateConstants.ServiceType operate, RedisConstants.OperateType operateCache, SysDictTypeDto dto, Collection<SysDictTypeDto> dtoList) {
         Long enterpriseId = SecurityUtils.getEnterpriseId();
         String cacheKey = StrUtil.format(getCacheKey().getCode(), enterpriseId);
         switch (operateCache) {

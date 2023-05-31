@@ -32,7 +32,7 @@ public class TeSourceServiceImpl extends BaseServiceImpl<TeSourceQuery, TeSource
      * 缓存主键命名定义
      */
     @Override
-    protected CacheConstants.CacheType getCacheKey() {
+    public CacheConstants.CacheType getCacheKey() {
         return CacheConstants.CacheType.TE_SOURCE_KEY;
     }
 
@@ -71,7 +71,7 @@ public class TeSourceServiceImpl extends BaseServiceImpl<TeSourceQuery, TeSource
      * @param dtoList      数据对象集合
      */
     @Override
-    protected void refreshCache(OperateConstants.ServiceType operate, RedisConstants.OperateType operateCache, TeSourceDto dto, Collection<TeSourceDto> dtoList) {
+    public void refreshCache(OperateConstants.ServiceType operate, RedisConstants.OperateType operateCache, TeSourceDto dto, Collection<TeSourceDto> dtoList) {
         switch (operateCache) {
             case REFRESH_ALL -> {
                 List<TeSourceDto> allList = baseManager.selectList(null);

@@ -7,8 +7,6 @@ import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.xueyi.common.core.exception.UtilException;
 import com.xueyi.common.core.utils.core.ClassUtil;
 import com.xueyi.common.core.utils.core.CollUtil;
-import com.xueyi.common.core.utils.core.EnumUtil;
-import com.xueyi.common.core.utils.core.MapUtil;
 import com.xueyi.common.core.utils.core.NumberUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.SpringUtil;
@@ -36,7 +34,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -539,25 +536,26 @@ public final class CorrelateUtil {
      *
      * @param correlateEnum 关联枚举
      */
-    public static <Correlate extends BaseCorrelate> void startCorrelates(Enum<? extends Enum<?>> correlateEnum) {
+    public static <Correlate extends BaseCorrelate, C extends Enum<? extends Enum<?>> & CorrelateService> void startCorrelates(C correlateEnum) {
         String cacheName = RedisConstants.CacheKey.SYS_CORRELATE_KEY.getCacheName(correlateEnum.getClass().getName(), correlateEnum.name());
         List<Correlate> correlates = getRedisService().getCacheObject(cacheName);
         if (ObjectUtil.isNull(correlates)) {
-            if (ClassUtil.isNotAssignable(CorrelateService.class, correlateEnum.getDeclaringClass())) {
-                throw new UtilException("枚举必须为CorrelateService子类");
-            }
-            Map<String, Object> correlatesMap = EnumUtil.getNameFieldMap(correlateEnum.getDeclaringClass(), "correlates");
-            if (MapUtil.isEmpty(correlatesMap)) {
-                throw new UtilException("枚举必须存在correlates属性!");
-            }
-            Object obj = correlatesMap.get(correlateEnum.name());
-            if (ObjectUtil.isNull(obj)) {
-                throw new UtilException("枚举correlate属性不能为null!");
-            } else if (obj instanceof List<?> correlateList) {
-                correlates = (List<Correlate>) correlateList;
-            } else {
-                throw new UtilException("未匹配到指定枚举值!");
-            }
+            correlates = (List<Correlate>) correlateEnum.getCorrelates();
+//            if (ClassUtil.isNotAssignable(CorrelateService.class, correlateEnum.getDeclaringClass())) {
+//                throw new UtilException("枚举必须为CorrelateService子类");
+//            }
+//            Map<String, Object> correlatesMap = EnumUtil.getNameFieldMap(correlateEnum.getDeclaringClass(), "correlates");
+//            if (MapUtil.isEmpty(correlatesMap)) {
+//                throw new UtilException("枚举必须存在correlates属性!");
+//            }
+//            Object obj = correlatesMap.get(correlateEnum.name());
+//            if (ObjectUtil.isNull(obj)) {
+//                throw new UtilException("枚举correlate属性不能为null!");
+//            } else if (obj instanceof List<?> correlateList) {
+//                correlates = (List<Correlate>) correlateList;
+//            } else {
+//                throw new UtilException("未匹配到指定枚举值!");
+//            }
             AtomicInteger index = new AtomicInteger(NumberUtil.Zero);
             correlates.forEach(item -> checkOperateLegal(item, correlateEnum.name(), index));
         }

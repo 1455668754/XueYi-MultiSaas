@@ -344,7 +344,7 @@ public class RedisService {
      * @param keyGet    键名
      * @param valueGet  值名
      */
-    public <T, K> void refreshMapCache(String mapKey, List<T> cacheList, Function<? super T, String> keyGet, Function<? super T, K> valueGet) {
+    public <T, K> void refreshMapCache(String mapKey, Collection<T> cacheList, Function<? super T, String> keyGet, Function<? super T, K> valueGet) {
         Map<String, K> resultMap = new HashMap<>();
         if (CollUtil.isNotEmpty(cacheList)) {
             resultMap = cacheList.stream()

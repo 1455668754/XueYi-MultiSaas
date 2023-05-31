@@ -8,7 +8,7 @@ import com.xueyi.common.core.web.vo.TreeSelect;
 import com.xueyi.common.web.correlate.service.CorrelateService;
 import com.xueyi.common.web.entity.manager.ITreeManager;
 import com.xueyi.common.web.entity.service.ITreeService;
-import com.xueyi.common.web.entity.service.impl.handle.TreeHandleServiceImpl;
+import com.xueyi.common.web.entity.service.impl.handle.TreeServiceHandle;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
  * @param <IDG> DtoIManager
  * @author xueyi
  */
-public class TreeServiceImpl<Q extends TreeEntity<D>, D extends TreeEntity<D>, C extends Enum<? extends Enum<?>> & CorrelateService, IDG extends ITreeManager<Q, D>> extends TreeHandleServiceImpl<Q, D, C, IDG> implements ITreeService<Q, D> {
+public class TreeServiceImpl<Q extends TreeEntity<D>, D extends TreeEntity<D>, C extends Enum<? extends Enum<?>> & CorrelateService, IDG extends ITreeManager<Q, D>> extends TreeServiceHandle<Q, D, C, IDG> implements ITreeService<Q, D> {
 
     /**
      * 根据Id查询本节点及其所有祖籍节点

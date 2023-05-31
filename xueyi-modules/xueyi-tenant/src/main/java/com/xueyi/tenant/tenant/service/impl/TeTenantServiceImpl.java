@@ -67,7 +67,7 @@ public class TeTenantServiceImpl extends BaseServiceImpl<TeTenantQuery, TeTenant
      * 缓存主键命名定义
      */
     @Override
-    protected CacheConstants.CacheType getCacheKey() {
+    public CacheConstants.CacheType getCacheKey() {
         return CacheConstants.CacheType.TE_TENANT_KEY;
     }
 

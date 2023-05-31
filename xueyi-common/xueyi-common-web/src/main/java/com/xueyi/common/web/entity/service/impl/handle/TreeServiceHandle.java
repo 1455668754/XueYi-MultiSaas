@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
  * @param <IDG> DtoIManager
  * @author xueyi
  */
-public class TreeHandleServiceImpl<Q extends TreeEntity<D>, D extends TreeEntity<D>, C extends Enum<? extends Enum<?>> & CorrelateService, IDG extends ITreeManager<Q, D>> extends BaseServiceImpl<Q, D, C, IDG> {
+public class TreeServiceHandle<Q extends TreeEntity<D>, D extends TreeEntity<D>, C extends Enum<? extends Enum<?>> & CorrelateService, IDG extends ITreeManager<Q, D>> extends BaseServiceImpl<Q, D, C, IDG> {
 
     /**
      * 单条操作 - 开始处理

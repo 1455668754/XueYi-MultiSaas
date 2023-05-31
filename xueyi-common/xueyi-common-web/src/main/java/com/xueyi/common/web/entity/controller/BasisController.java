@@ -7,6 +7,7 @@ import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.utils.page.PageUtil;
 import com.xueyi.common.core.web.page.TableDataInfo;
 import com.xueyi.common.core.web.result.AjaxResult;
+import com.xueyi.common.web.correlate.service.CorrelateService;
 import com.xueyi.common.web.correlate.utils.CorrelateUtil;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -53,7 +54,7 @@ public class BasisController {
     /**
      * 设置请求关联映射
      */
-    protected void startCorrelates(Enum<? extends Enum<?>> correlateEnum) {
+    protected <C extends Enum<? extends Enum<?>> & CorrelateService> void startCorrelates(C correlateEnum) {
         CorrelateUtil.startCorrelates(correlateEnum);
     }
 

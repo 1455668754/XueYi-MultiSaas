@@ -24,7 +24,7 @@ public class TeStrategyServiceImpl extends BaseServiceImpl<TeStrategyQuery, TeSt
      * 缓存主键命名定义
      */
     @Override
-    protected CacheConstants.CacheType getCacheKey() {
+    public CacheConstants.CacheType getCacheKey() {
         return CacheConstants.CacheType.TE_STRATEGY_KEY;
     }
 

@@ -38,7 +38,7 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigQuery, SysCon
      * 缓存主键命名定义
      */
     @Override
-    protected CacheConstants.CacheType getCacheKey() {
+    public CacheConstants.CacheType getCacheKey() {
         return CacheConstants.CacheType.SYS_CONFIG_KEY;
     }
 
@@ -125,7 +125,7 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigQuery, SysCon
      * @param dtoList      数据对象集合
      */
     @Override
-    protected void refreshCache(OperateConstants.ServiceType operate, RedisConstants.OperateType operateCache, SysConfigDto dto, Collection<SysConfigDto> dtoList) {
+    public void refreshCache(OperateConstants.ServiceType operate, RedisConstants.OperateType operateCache, SysConfigDto dto, Collection<SysConfigDto> dtoList) {
         Long enterpriseId = SecurityUtils.getEnterpriseId();
         String cacheKey = StrUtil.format(getCacheKey().getCode(), enterpriseId);
         switch (operateCache) {
