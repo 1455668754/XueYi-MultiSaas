@@ -43,7 +43,6 @@ public class ClientRegisteredRepositoryHandler implements RegisteredClientReposi
 
     @Override
     public void save(RegisteredClient registeredClient) {
-        throw new UnsupportedOperationException();
     }
 
     @Override
