@@ -40,6 +40,7 @@ public interface IBaseService<Q extends BaseEntity, D extends BaseEntity> {
      * @param query 数据查询对象
      * @return 数据对象集合
      */
+    @Deprecated
     List<D> selectListMerge(Q query);
 
     /**
@@ -56,6 +57,7 @@ public interface IBaseService<Q extends BaseEntity, D extends BaseEntity> {
      * @param idList Id集合
      * @return 数据对象集合
      */
+    @Deprecated
     List<D> selectListByIdsMerge(Collection<? extends Serializable> idList);
 
     /**
@@ -80,6 +82,7 @@ public interface IBaseService<Q extends BaseEntity, D extends BaseEntity> {
      * @param id Id
      * @return 数据对象
      */
+    @Deprecated
     D selectByIdMerge(Serializable id);
 
     /**

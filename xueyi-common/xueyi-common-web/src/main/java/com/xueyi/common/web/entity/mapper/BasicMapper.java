@@ -54,6 +54,7 @@ public interface BasicMapper<P extends BasisEntity> extends com.baomidou.mybatis
      * @param field 动态SQL控制对象
      * @return 数据对象集合
      */
+    @Deprecated
     default List<P> selectListByField(SqlField... field) {
         if (ArrayUtil.isNotEmpty(field))
             return selectList(
@@ -68,6 +69,7 @@ public interface BasicMapper<P extends BasisEntity> extends com.baomidou.mybatis
      * @param field 动态SQL控制对象
      * @return 数据对象
      */
+    @Deprecated
     default P selectByField(SqlField... field) {
         if (ArrayUtil.isNotEmpty(field))
             return selectOne(
@@ -83,6 +85,7 @@ public interface BasicMapper<P extends BasisEntity> extends com.baomidou.mybatis
      * @param field 动态SQL控制对象
      * @return 结果
      */
+    @Deprecated
     default int updateByField(SqlField... field) {
         if (ArrayUtil.isNotEmpty(field))
             return update(null,
@@ -97,6 +100,7 @@ public interface BasicMapper<P extends BasisEntity> extends com.baomidou.mybatis
      * @param field 动态SQL控制对象
      * @return 结果
      */
+    @Deprecated
     default int deleteByField(SqlField... field) {
         if (ArrayUtil.isNotEmpty(field))
             return delete(Wrappers.<P>update().lambda()

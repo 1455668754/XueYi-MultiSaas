@@ -3,7 +3,11 @@ package com.xueyi.common.web.entity.manager.impl.handle;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.github.pagehelper.Page;
 import com.xueyi.common.core.constant.basic.OperateConstants;
-import com.xueyi.common.core.utils.core.*;
+import com.xueyi.common.core.utils.core.ArrayUtil;
+import com.xueyi.common.core.utils.core.CollUtil;
+import com.xueyi.common.core.utils.core.MapUtil;
+import com.xueyi.common.core.utils.core.NumberUtil;
+import com.xueyi.common.core.utils.core.TypeUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.core.web.entity.model.BaseConverter;
 import com.xueyi.common.web.entity.domain.SlaveRelation;
@@ -13,7 +17,12 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -51,6 +60,7 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
      *
      * @return 关系对象集合
      */
+    @Deprecated
     protected List<SlaveRelation> subRelationInit() {
         return new ArrayList<>();
     }
@@ -144,6 +154,7 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
      * @param groupNames 分组名称
      * @return 数据传输对象
      */
+    @Deprecated
     protected D subMerge(D dto, String... groupNames) {
         if (ArrayUtil.isNotEmpty(groupNames))
             Arrays.stream(groupNames).forEach(item -> MergeUtil.subMerge(dto, getSubRelationMap().get(item)));
@@ -159,6 +170,7 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
      * @param groupNames 分组名称
      * @return 数据传输对象集合
      */
+    @Deprecated
     protected List<D> subMerge(List<D> dtoList, String... groupNames) {
         return subMerge(dtoList, OperateConstants.DataRow.LIST, groupNames);
     }
@@ -171,6 +183,7 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
      * @param groupNames 分组名称
      * @return 数据传输对象集合
      */
+    @Deprecated
     protected List<D> subMerge(List<D> dtoList, OperateConstants.DataRow dataRow, String... groupNames) {
         if (ArrayUtil.isNotEmpty(groupNames))
             Arrays.stream(groupNames).forEach(item -> MergeUtil.subMerge(dtoList, getSubRelationMap().get(item)));
@@ -191,6 +204,7 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
      * @param groupNames 分组名称
      * @return 结果
      */
+    @Deprecated
     protected int addMerge(D dto, String... groupNames) {
         return ArrayUtil.isNotEmpty(groupNames)
                 ? Arrays.stream(groupNames).mapToInt(item -> MergeUtil.addMerge(dto, getSubRelationMap().get(item))).sum()
@@ -204,6 +218,7 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
      * @param groupNames 分组名称
      * @return 结果
      */
+    @Deprecated
     protected int addMerge(Collection<D> dtoList, String... groupNames) {
         return ArrayUtil.isNotEmpty(groupNames)
                 ? Arrays.stream(groupNames).mapToInt(item -> MergeUtil.addMerge(dtoList, getSubRelationMap().get(item))).sum()
@@ -218,6 +233,7 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
      * @param groupNames 分组名称
      * @return 结果
      */
+    @Deprecated
     protected int editMerge(D originDto, D newDto, String... groupNames) {
         return ArrayUtil.isNotEmpty(groupNames)
                 ? Arrays.stream(groupNames).mapToInt(item -> MergeUtil.editMerge(originDto, newDto, getSubRelationMap().get(item))).sum()
@@ -232,6 +248,7 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
      * @param groupNames 分组名称
      * @return 结果
      */
+    @Deprecated
     protected int editMerge(Collection<D> originList, Collection<D> newList, String... groupNames) {
         return ArrayUtil.isNotEmpty(groupNames)
                 ? Arrays.stream(groupNames).mapToInt(item -> MergeUtil.editMerge(originList, newList, getSubRelationMap().get(item))).sum()
@@ -245,6 +262,7 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
      * @param groupNames 分组名称
      * @return 结果
      */
+    @Deprecated
     protected int delMerge(D dto, String... groupNames) {
         return ArrayUtil.isNotEmpty(groupNames)
                 ? Arrays.stream(groupNames).mapToInt(item -> MergeUtil.delMerge(dto, getSubRelationMap().get(item))).sum()
@@ -258,6 +276,7 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
      * @param groupNames 分组名称
      * @return 结果
      */
+    @Deprecated
     protected int delMerge(Collection<D> dtoList, String... groupNames) {
         return ArrayUtil.isNotEmpty(groupNames)
                 ? Arrays.stream(groupNames).mapToInt(item -> MergeUtil.delMerge(dtoList, getSubRelationMap().get(item))).sum()
@@ -265,6 +284,7 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
     }
 
     /** 子类操作泛型的类型Getter */
+    @Deprecated
     protected Map<String, SlaveRelation> getSubRelationMap() {
         if (MapUtil.isNull(this.subRelationMap)) {
             List<SlaveRelation> subList = subRelationInit();

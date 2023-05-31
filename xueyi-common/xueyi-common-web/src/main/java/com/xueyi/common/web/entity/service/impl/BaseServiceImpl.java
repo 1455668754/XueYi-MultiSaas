@@ -59,6 +59,7 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, C exten
      * @return 数据对象集合
      */
     @Override
+    @Deprecated
     public List<D> selectListMerge(Q query) {
         List<D> dtoList = baseManager.selectListMerge(query);
         return subCorrelates(dtoList);
@@ -95,6 +96,7 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, C exten
      * @return 数据对象集合
      */
     @Override
+    @Deprecated
     public List<D> selectListByIdsMerge(Collection<? extends Serializable> idList) {
         List<D> dtoList = baseManager.selectListByIdsMerge(idList);
         return subCorrelates(dtoList);
@@ -119,6 +121,7 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, C exten
      * @return 数据对象
      */
     @Override
+    @Deprecated
     public D selectByIdMerge(Serializable id) {
         D dto = baseManager.selectByIdMerge(id);
         return subCorrelates(dto);

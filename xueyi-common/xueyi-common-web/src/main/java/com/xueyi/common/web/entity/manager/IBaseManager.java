@@ -17,6 +17,7 @@ import java.util.List;
 public interface IBaseManager<Q extends BaseEntity, D extends BaseEntity> {
 
     /** 获取Po泛型的类型 */
+    @Deprecated
     Class<? extends BaseEntity> getPClass();
 
     /**
@@ -33,6 +34,7 @@ public interface IBaseManager<Q extends BaseEntity, D extends BaseEntity> {
      * @param query 数据查询对象
      * @return 数据对象集合
      */
+    @Deprecated
     List<D> selectListMerge(Q query);
 
     /**
@@ -49,6 +51,7 @@ public interface IBaseManager<Q extends BaseEntity, D extends BaseEntity> {
      * @param idList Id集合
      * @return 数据对象集合
      */
+    @Deprecated
     List<D> selectListByIdsMerge(Collection<? extends Serializable> idList);
 
     /**
@@ -65,6 +68,7 @@ public interface IBaseManager<Q extends BaseEntity, D extends BaseEntity> {
      * @param id Id
      * @return 数据对象
      */
+    @Deprecated
     D selectByIdMerge(Serializable id);
 
     /**
@@ -81,6 +85,7 @@ public interface IBaseManager<Q extends BaseEntity, D extends BaseEntity> {
      * @param dto 数据对象
      * @return 结果
      */
+    @Deprecated
     int insertMerge(D dto);
 
     /**
@@ -97,6 +102,7 @@ public interface IBaseManager<Q extends BaseEntity, D extends BaseEntity> {
      * @param dtoList 数据对象集合
      * @return 结果
      */
+    @Deprecated
     int insertMerge(Collection<D> dtoList);
 
     /**
@@ -114,6 +120,7 @@ public interface IBaseManager<Q extends BaseEntity, D extends BaseEntity> {
      * @param newDto    新数据对象
      * @return 结果
      */
+    @Deprecated
     int updateMerge(D originDto, D newDto);
 
     /**
@@ -131,6 +138,7 @@ public interface IBaseManager<Q extends BaseEntity, D extends BaseEntity> {
      * @param newList    新数据对象集合
      * @return 结果
      */
+    @Deprecated
     int updateMerge(Collection<D> originList, Collection<D> newList);
 
     /**
@@ -155,6 +163,7 @@ public interface IBaseManager<Q extends BaseEntity, D extends BaseEntity> {
      * @param dto 数据对象
      * @return 结果
      */
+    @Deprecated
     int deleteMerge(D dto);
 
     /**
@@ -171,6 +180,7 @@ public interface IBaseManager<Q extends BaseEntity, D extends BaseEntity> {
      * @param dtoList 数据对象集合
      * @return 结果
      */
+    @Deprecated
     int deleteMerge(Collection<D> dtoList);
 
     /**
@@ -187,6 +197,7 @@ public interface IBaseManager<Q extends BaseEntity, D extends BaseEntity> {
      * @param field 动态SQL控制对象
      * @return 数据对象集合
      */
+    @Deprecated
     List<D> selectListByField(SqlField... field);
 
     /**
@@ -195,6 +206,7 @@ public interface IBaseManager<Q extends BaseEntity, D extends BaseEntity> {
      * @param field 动态SQL控制对象
      * @return 数据对象
      */
+    @Deprecated
     D selectByField(SqlField... field);
 
     /**
@@ -203,6 +215,7 @@ public interface IBaseManager<Q extends BaseEntity, D extends BaseEntity> {
      * @param field 动态SQL控制对象
      * @return 结果
      */
+    @Deprecated
     int updateByField(SqlField... field);
 
     /**
@@ -211,6 +224,7 @@ public interface IBaseManager<Q extends BaseEntity, D extends BaseEntity> {
      * @param field 动态SQL控制对象
      * @return 结果
      */
+    @Deprecated
     int deleteByField(SqlField... field);
 
     /**
