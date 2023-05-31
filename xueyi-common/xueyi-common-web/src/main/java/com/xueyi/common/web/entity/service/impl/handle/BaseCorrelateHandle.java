@@ -1,10 +1,13 @@
 package com.xueyi.common.web.entity.service.impl.handle;
 
 import com.xueyi.common.core.constant.basic.OperateConstants;
+import com.xueyi.common.core.utils.core.ArrayUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.web.correlate.service.CorrelateService;
 import com.xueyi.common.web.correlate.utils.CorrelateUtil;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -17,26 +20,29 @@ import java.util.Map;
  * @param <C> Correlate
  * @author xueyi
  */
-public interface BaseCorrelateHandle<D extends BaseEntity, C extends Enum<? extends Enum<?>> & CorrelateService> {
+public abstract class BaseCorrelateHandle<D extends BaseEntity, C extends Enum<? extends Enum<?>> & CorrelateService> {
 
     /**
      * 默认方法关联配置定义
      */
-    default Map<OperateConstants.ServiceType, C> getBasicCorrelate() {
+    protected Map<OperateConstants.ServiceType, C> initBasicCorrelate() {
         return new HashMap<>();
     }
 
     /**
      * 设置请求关联映射
      */
-    default void startCorrelates(C correlateEnum) {
-        CorrelateUtil.startCorrelates(correlateEnum);
+    @SafeVarargs
+    protected final void startCorrelates(C... correlates) {
+        if (ArrayUtil.isNotEmpty(correlates)) {
+            Arrays.stream(correlates).filter(ObjectUtil::isNotNull).forEach(CorrelateUtil::startCorrelates);
+        }
     }
 
     /**
      * 清理关联映射的线程变量
      */
-    default void clearCorrelates() {
+    protected final void clearCorrelates() {
         CorrelateUtil.clearCorrelates();
     }
 
@@ -46,7 +52,9 @@ public interface BaseCorrelateHandle<D extends BaseEntity, C extends Enum<? exte
      * @param dto 数据对象
      * @return 数据对象
      */
-    default D subCorrelates(D dto) {
+    @SafeVarargs
+    protected final D subCorrelates(D dto, C... correlates) {
+        startCorrelates(correlates);
         return CorrelateUtil.subCorrelates(dto);
     }
 
@@ -56,7 +64,9 @@ public interface BaseCorrelateHandle<D extends BaseEntity, C extends Enum<? exte
      * @param dtoList 数据对象集合
      * @return 数据对象集合
      */
-    default List<D> subCorrelates(List<D> dtoList) {
+    @SafeVarargs
+    protected final List<D> subCorrelates(List<D> dtoList, C... correlates) {
+        startCorrelates(correlates);
         return CorrelateUtil.subCorrelates(dtoList);
     }
 
@@ -66,7 +76,9 @@ public interface BaseCorrelateHandle<D extends BaseEntity, C extends Enum<? exte
      * @param dto 数据对象
      * @return 结果
      */
-    default int addCorrelates(D dto) {
+    @SafeVarargs
+    protected final int addCorrelates(D dto, C... correlates) {
+        startCorrelates(correlates);
         return CorrelateUtil.addCorrelates(dto);
     }
 
@@ -76,7 +88,9 @@ public interface BaseCorrelateHandle<D extends BaseEntity, C extends Enum<? exte
      * @param dtoList 数据对象集合
      * @return 结果
      */
-    default int addCorrelates(Collection<D> dtoList) {
+    @SafeVarargs
+    protected final int addCorrelates(Collection<D> dtoList, C... correlates) {
+        startCorrelates(correlates);
         return CorrelateUtil.addCorrelates(dtoList);
     }
 
@@ -87,7 +101,9 @@ public interface BaseCorrelateHandle<D extends BaseEntity, C extends Enum<? exte
      * @param newDto    新数据对象
      * @return 结果
      */
-    default int editCorrelates(D originDto, D newDto) {
+    @SafeVarargs
+    protected final int editCorrelates(D originDto, D newDto, C... correlates) {
+        startCorrelates(correlates);
         return CorrelateUtil.editCorrelates(originDto, newDto);
     }
 
@@ -98,7 +114,9 @@ public interface BaseCorrelateHandle<D extends BaseEntity, C extends Enum<? exte
      * @param newList    新数据对象集合
      * @return 结果
      */
-    default int editCorrelates(Collection<D> originList, Collection<D> newList) {
+    @SafeVarargs
+    protected final int editCorrelates(Collection<D> originList, Collection<D> newList, C... correlates) {
+        startCorrelates(correlates);
         return CorrelateUtil.editCorrelates(originList, newList);
     }
 
@@ -108,7 +126,9 @@ public interface BaseCorrelateHandle<D extends BaseEntity, C extends Enum<? exte
      * @param dto 数据对象
      * @return 结果
      */
-    default int delCorrelates(D dto) {
+    @SafeVarargs
+    protected final int delCorrelates(D dto, C... correlates) {
+        startCorrelates(correlates);
         return CorrelateUtil.delCorrelates(dto);
     }
 
@@ -118,7 +138,17 @@ public interface BaseCorrelateHandle<D extends BaseEntity, C extends Enum<? exte
      * @param dtoList 数据对象集合
      * @return 结果
      */
-    default int delCorrelates(Collection<D> dtoList) {
+    @SafeVarargs
+    protected final int delCorrelates(Collection<D> dtoList, C... correlates) {
+        startCorrelates(correlates);
         return CorrelateUtil.delCorrelates(dtoList);
     }
+
+    /**
+     * 获取操作类型默认关联控制
+     *
+     * @param serviceType 操作类型
+     * @return 默认关联控制
+     */
+    abstract C getBasicCorrelate(OperateConstants.ServiceType serviceType);
 }

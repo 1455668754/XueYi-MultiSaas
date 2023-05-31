@@ -21,7 +21,7 @@ import java.util.function.Function;
  * @param <IDG> DtoIManager
  * @author xueyi
  */
-public class BaseServiceHandle<Q extends BaseEntity, D extends BaseEntity, C extends Enum<? extends Enum<?>> & CorrelateService, IDG extends IBaseManager<Q, D>> implements BaseCacheHandle<D>, BaseCorrelateHandle<D, C> {
+public class BaseServiceHandle<Q extends BaseEntity, D extends BaseEntity, C extends Enum<? extends Enum<?>> & CorrelateService, IDG extends IBaseManager<Q, D>> extends BaseCorrelateHandle<D, C> implements BaseCacheHandle<D> {
 
     @Autowired
     protected IDG baseManager;
@@ -91,12 +91,14 @@ public class BaseServiceHandle<Q extends BaseEntity, D extends BaseEntity, C ext
             case ADD -> {
                 // insert merge data
                 baseManager.insertMerge(newDto);
+                addCorrelates(newDto, getBasicCorrelate(OperateConstants.ServiceType.ADD));
                 // refresh cache
                 refreshCache(operate, RedisConstants.OperateType.REFRESH, newDto);
             }
             case EDIT -> {
                 // update merge data
                 baseManager.updateMerge(originDto, newDto);
+                editCorrelates(originDto, newDto, getBasicCorrelate(OperateConstants.ServiceType.EDIT));
                 // refresh cache
                 refreshCache(operate, RedisConstants.OperateType.REFRESH, newDto);
             }
@@ -104,6 +106,7 @@ public class BaseServiceHandle<Q extends BaseEntity, D extends BaseEntity, C ext
             case DELETE -> {
                 // delete merge data
                 baseManager.deleteMerge(originDto);
+                delCorrelates(originDto, getBasicCorrelate(OperateConstants.ServiceType.DELETE));
                 // refresh cache
                 refreshCache(operate, RedisConstants.OperateType.REMOVE, originDto);
             }
@@ -135,16 +138,31 @@ public class BaseServiceHandle<Q extends BaseEntity, D extends BaseEntity, C ext
         switch (operate) {
             case BATCH_ADD -> {
                 baseManager.insertMerge(newList);
+                addCorrelates(newList, getBasicCorrelate(OperateConstants.ServiceType.BATCH_ADD));
                 refreshCache(operate, RedisConstants.OperateType.REFRESH, newList);
             }
             case BATCH_EDIT -> {
                 baseManager.updateMerge(originList, newList);
+                editCorrelates(originList, newList, getBasicCorrelate(OperateConstants.ServiceType.BATCH_EDIT));
                 refreshCache(operate, RedisConstants.OperateType.REFRESH, newList);
             }
             case BATCH_DELETE -> {
                 baseManager.deleteMerge(originList);
+                delCorrelates(originList, getBasicCorrelate(OperateConstants.ServiceType.BATCH_DELETE));
                 refreshCache(operate, RedisConstants.OperateType.REMOVE, originList);
             }
         }
+    }
+
+    /**
+     * 获取操作类型默认关联控制
+     *
+     * @param serviceType 操作类型
+     * @return 默认关联控制
+     */
+    protected C getBasicCorrelate(OperateConstants.ServiceType serviceType) {
+       Class<?> clazz  =  getClass();
+        System.out.println(clazz);
+        return null;
     }
 }
