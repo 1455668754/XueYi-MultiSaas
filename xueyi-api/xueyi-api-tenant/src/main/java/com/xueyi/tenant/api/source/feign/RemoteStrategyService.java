@@ -6,7 +6,7 @@ import com.xueyi.tenant.api.source.feign.factory.RemoteStrategyFallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;
 
 /**
- * 源策略服务
+ * 租户服务 | 策略模块 | 源策略服务
  *
  * @author xueyi
  */

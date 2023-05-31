@@ -15,7 +15,7 @@ import java.io.Serial;
 import static com.baomidou.mybatisplus.annotation.SqlCondition.LIKE;
 
 /**
- * 租户 持久化对象
+ * 租户服务 | 租户模块 | 租户 持久化对象
  *
  * @author xueyi
  */

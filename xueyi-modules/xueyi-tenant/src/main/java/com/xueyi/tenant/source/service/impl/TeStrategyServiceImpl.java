@@ -13,7 +13,7 @@ import com.xueyi.tenant.source.service.ITeStrategyService;
 import org.springframework.stereotype.Service;
 
 /**
- * 数据源策略管理 服务层处理
+ * 租户服务 | 策略模块 | 源策略管理 服务层处理
  *
  * @author xueyi
  */

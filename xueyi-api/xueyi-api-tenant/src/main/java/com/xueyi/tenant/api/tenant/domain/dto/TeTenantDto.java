@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 import java.io.Serial;
 
 /**
- * 租户 数据传输对象
+ * 租户服务 | 租户模块 | 租户 数据传输对象
  *
  * @author xueyi
  */

@@ -6,7 +6,7 @@ import com.xueyi.tenant.api.tenant.domain.query.TeTenantQuery;
 import com.xueyi.tenant.tenant.domain.model.TeTenantRegister;
 
 /**
- * 租户管理 服务层
+ * 租户服务 | 租户模块 | 租户管理 服务层
  *
  * @author xueyi
  */

@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 import java.io.Serial;
 
 /**
- * 数据源策略 数据查询对象
+ * 租户服务 | 策略模块 | 源策略 数据查询对象
  *
  * @author xueyi
  */

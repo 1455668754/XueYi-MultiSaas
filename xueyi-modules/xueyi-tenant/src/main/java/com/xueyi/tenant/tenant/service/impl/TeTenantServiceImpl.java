@@ -34,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static com.xueyi.common.core.constant.basic.BaseConstants.TOP_ID;
 
 /**
- * 租户管理 服务层处理
+ * 租户服务 | 租户模块 | 租户管理 服务层处理
  *
  * @author xueyi
  */

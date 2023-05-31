@@ -12,7 +12,7 @@ import com.xueyi.tenant.tenant.mapper.TeTenantMapper;
 import org.springframework.stereotype.Component;
 
 /**
- * 租户管理 数据封装层处理
+ * 租户服务 | 租户模块 | 租户管理 数据封装层处理
  *
  * @author xueyi
  */

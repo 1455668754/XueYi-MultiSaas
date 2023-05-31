@@ -8,7 +8,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 
 /**
- * 数据源策略 对象映射器
+ * 租户服务 | 策略模块 | 源策略 对象映射器
  *
  * @author xueyi
  */

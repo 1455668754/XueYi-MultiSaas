@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 源策略管理 | 内部调用 业务处理
+ * 租户服务 | 策略模块 | 源策略管理 | 内部调用 业务处理
  *
  * @author xueyi
  */
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ITeStrategyController extends BTeStrategyController {
 
     /**
-     * 刷新源策略管理缓存 | 内部调用
+     * 刷新源策略缓存
      */
     @Override
     @InnerAuth(isAnonymous = true)

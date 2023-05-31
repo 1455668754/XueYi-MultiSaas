@@ -24,7 +24,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 源策略管理 | 管理端 业务处理
+ * 租户服务 | 策略模块 | 源策略管理 | 管理端 业务处理
  *
  * @author xueyi
  */
@@ -33,7 +33,7 @@ import java.util.List;
 public class ATeStrategyController extends BTeStrategyController {
 
     /**
-     * 刷新源策略管理缓存
+     * 刷新源策略缓存
      */
     @Override
     @PreAuthorize("@ss.hasAuthority(@Auth.TE_STRATEGY_EDIT)")

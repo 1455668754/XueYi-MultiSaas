@@ -11,7 +11,7 @@ import com.xueyi.tenant.source.mapper.TeSourceMapper;
 import org.springframework.stereotype.Component;
 
 /**
- * 数据源管理 数据封装层处理
+ * 租户服务 | 策略模块 | 数据源管理 数据封装层处理
  *
  * @author xueyi
  */

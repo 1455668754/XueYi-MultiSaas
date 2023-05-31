@@ -5,7 +5,7 @@ import com.xueyi.tenant.api.source.domain.dto.TeStrategyDto;
 import com.xueyi.tenant.api.source.domain.query.TeStrategyQuery;
 
 /**
- * 数据源策略管理 服务层
+ * 租户服务 | 策略模块 | 源策略管理 服务层
  *
  * @author xueyi
  */

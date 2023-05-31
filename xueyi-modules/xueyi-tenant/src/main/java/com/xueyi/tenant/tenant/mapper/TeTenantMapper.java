@@ -7,7 +7,7 @@ import com.xueyi.tenant.api.tenant.domain.po.TeTenantPo;
 import com.xueyi.tenant.api.tenant.domain.query.TeTenantQuery;
 
 /**
- * 租户管理 数据层
+ * 租户服务 | 租户模块 | 租户管理 数据层
  *
  * @author xueyi
  */

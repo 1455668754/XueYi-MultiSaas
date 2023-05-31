@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 
 /**
- * 租户服务降级处理
+ * 租户服务 | 租户模块 | 租户服务 降级处理
  *
  * @author xueyi
  */

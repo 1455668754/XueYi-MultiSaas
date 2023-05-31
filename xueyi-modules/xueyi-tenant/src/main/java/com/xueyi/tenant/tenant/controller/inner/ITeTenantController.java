@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 租户管理 | 内部调用 业务处理
+ * 租户服务 | 租户模块 | 租户管理 | 内部调用 业务处理
  *
  * @author xueyi
  */
@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ITeTenantController extends BTeTenantController {
 
     /**
-     * 刷新源策略管理缓存
+     * 刷新源策略缓存
      */
     @Override
     @GetMapping("/refresh")

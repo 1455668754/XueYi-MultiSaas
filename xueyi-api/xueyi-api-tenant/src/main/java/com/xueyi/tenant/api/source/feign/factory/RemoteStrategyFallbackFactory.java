@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 
 /**
- * 源策略服务降级处理
+ * 租户服务 | 策略模块 | 源策略服务 降级处理
  *
  * @author xueyi
  */
