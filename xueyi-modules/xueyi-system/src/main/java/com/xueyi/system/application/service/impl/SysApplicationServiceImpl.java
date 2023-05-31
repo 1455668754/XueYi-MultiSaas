@@ -6,6 +6,7 @@ import com.xueyi.common.core.utils.core.NumberUtil;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.application.domain.dto.SysApplicationDto;
 import com.xueyi.system.api.application.domain.query.SysApplicationQuery;
+import com.xueyi.system.application.correlate.SysApplicationCorrelate;
 import com.xueyi.system.application.manager.ISysApplicationManager;
 import com.xueyi.system.application.service.ISysApplicationService;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ import java.util.List;
  * @author xueyi
  */
 @Service
-public class SysApplicationServiceImpl extends BaseServiceImpl<SysApplicationQuery, SysApplicationDto, ISysApplicationManager> implements ISysApplicationService {
+public class SysApplicationServiceImpl extends BaseServiceImpl<SysApplicationQuery, SysApplicationDto, SysApplicationCorrelate, ISysApplicationManager> implements ISysApplicationService {
 
     /**
      * 查询登录信息

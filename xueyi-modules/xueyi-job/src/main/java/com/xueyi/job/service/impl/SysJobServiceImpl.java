@@ -10,6 +10,7 @@ import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.job.api.domain.dto.SysJobDto;
 import com.xueyi.job.api.domain.query.SysJobQuery;
+import com.xueyi.job.correlate.SysJobCorrelate;
 import com.xueyi.job.manager.impl.SysJobManagerImpl;
 import com.xueyi.job.service.ISysJobService;
 import com.xueyi.job.util.ScheduleUtils;
@@ -33,7 +34,7 @@ import static com.xueyi.common.core.constant.basic.SecurityConstants.CREATE_BY;
  * @author xueyi
  */
 @Service
-public class SysJobServiceImpl extends BaseServiceImpl<SysJobQuery, SysJobDto, SysJobManagerImpl> implements ISysJobService {
+public class SysJobServiceImpl extends BaseServiceImpl<SysJobQuery, SysJobDto, SysJobCorrelate, SysJobManagerImpl> implements ISysJobService {
 
     @Autowired
     private Scheduler scheduler;

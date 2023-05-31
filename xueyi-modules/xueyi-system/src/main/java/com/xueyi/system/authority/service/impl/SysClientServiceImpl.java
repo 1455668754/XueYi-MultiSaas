@@ -3,6 +3,7 @@ package com.xueyi.system.authority.service.impl;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.authority.domain.dto.SysClientDto;
 import com.xueyi.system.api.authority.domain.query.SysClientQuery;
+import com.xueyi.system.authority.correlate.SysClientCorrelate;
 import com.xueyi.system.authority.manager.ISysClientManager;
 import com.xueyi.system.authority.service.ISysClientService;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Service;
  * @author xueyi
  */
 @Service
-public class SysClientServiceImpl extends BaseServiceImpl<SysClientQuery, SysClientDto, ISysClientManager> implements ISysClientService {
+public class SysClientServiceImpl extends BaseServiceImpl<SysClientQuery, SysClientDto, SysClientCorrelate, ISysClientManager> implements ISysClientService {
 
     /**
      * 根据客户端Id查询客户端信息

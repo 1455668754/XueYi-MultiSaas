@@ -9,10 +9,15 @@ import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.entity.base.BasisEntity;
 import com.xueyi.common.core.web.entity.base.TreeEntity;
 import com.xueyi.common.redis.constant.RedisConstants;
+import com.xueyi.common.web.correlate.service.CorrelateService;
 import com.xueyi.common.web.entity.manager.ITreeManager;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -21,10 +26,11 @@ import java.util.stream.Collectors;
  *
  * @param <Q>   Query
  * @param <D>   Dto
+ * @param <C>   Correlate
  * @param <IDG> DtoIManager
  * @author xueyi
  */
-public class TreeHandleServiceImpl<Q extends TreeEntity<D>, D extends TreeEntity<D>, IDG extends ITreeManager<Q, D>> extends BaseServiceImpl<Q, D, IDG> {
+public class TreeHandleServiceImpl<Q extends TreeEntity<D>, D extends TreeEntity<D>, C extends Enum<? extends Enum<?>> & CorrelateService, IDG extends ITreeManager<Q, D>> extends BaseServiceImpl<Q, D, C, IDG> {
 
     /**
      * 单条操作 - 开始处理

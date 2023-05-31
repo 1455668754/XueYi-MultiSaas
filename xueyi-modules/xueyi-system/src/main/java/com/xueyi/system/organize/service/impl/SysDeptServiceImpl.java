@@ -7,6 +7,7 @@ import com.xueyi.common.datasource.annotation.Isolate;
 import com.xueyi.common.web.entity.service.impl.TreeServiceImpl;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
 import com.xueyi.system.api.organize.domain.query.SysDeptQuery;
+import com.xueyi.system.organize.correlate.SysDeptCorrelate;
 import com.xueyi.system.organize.manager.ISysDeptManager;
 import com.xueyi.system.organize.service.ISysDeptService;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ import java.util.List;
  */
 @Service
 @Isolate
-public class SysDeptServiceImpl extends TreeServiceImpl<SysDeptQuery, SysDeptDto, ISysDeptManager> implements ISysDeptService {
+public class SysDeptServiceImpl extends TreeServiceImpl<SysDeptQuery, SysDeptDto, SysDeptCorrelate, ISysDeptManager> implements ISysDeptService {
 
     /**
      * 新增部门 | 内部调用

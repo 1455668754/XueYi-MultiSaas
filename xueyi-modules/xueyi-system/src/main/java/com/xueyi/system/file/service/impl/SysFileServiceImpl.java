@@ -3,6 +3,7 @@ package com.xueyi.system.file.service.impl;
 import com.xueyi.common.datasource.annotation.Isolate;
 import com.xueyi.common.datasource.annotation.Master;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
+import com.xueyi.system.file.correlate.SysFileCorrelate;
 import com.xueyi.system.file.domain.dto.SysFileDto;
 import com.xueyi.system.file.domain.query.SysFileQuery;
 import com.xueyi.system.file.manager.ISysFileManager;
@@ -18,7 +19,7 @@ import java.util.List;
  */
 @Isolate
 @Service
-public class SysFileServiceImpl extends BaseServiceImpl<SysFileQuery, SysFileDto, ISysFileManager> implements ISysFileService {
+public class SysFileServiceImpl extends BaseServiceImpl<SysFileQuery, SysFileDto, SysFileCorrelate, ISysFileManager> implements ISysFileService {
 
     /**
      * 查询文件对象列表 | 数据权限

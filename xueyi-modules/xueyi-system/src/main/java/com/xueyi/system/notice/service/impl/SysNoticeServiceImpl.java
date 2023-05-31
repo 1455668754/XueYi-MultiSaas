@@ -2,6 +2,7 @@ package com.xueyi.system.notice.service.impl;
 
 import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
+import com.xueyi.system.notice.correlate.SysNoticeCorrelate;
 import com.xueyi.system.notice.domain.dto.SysNoticeDto;
 import com.xueyi.system.notice.domain.query.SysNoticeQuery;
 import com.xueyi.system.notice.manager.ISysNoticeManager;
@@ -18,7 +19,7 @@ import static com.xueyi.common.core.constant.basic.SecurityConstants.CREATE_BY;
  * @author xueyi
  */
 @Service
-public class SysNoticeServiceImpl extends BaseServiceImpl<SysNoticeQuery, SysNoticeDto, ISysNoticeManager> implements ISysNoticeService {
+public class SysNoticeServiceImpl extends BaseServiceImpl<SysNoticeQuery, SysNoticeDto, SysNoticeCorrelate, ISysNoticeManager> implements ISysNoticeService {
 
     /**
      * 查询通知公告对象列表 | 数据权限

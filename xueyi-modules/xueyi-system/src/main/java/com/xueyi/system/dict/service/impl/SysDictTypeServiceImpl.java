@@ -16,6 +16,7 @@ import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
 import com.xueyi.system.api.dict.domain.dto.SysDictTypeDto;
 import com.xueyi.system.api.dict.domain.po.SysDictTypePo;
 import com.xueyi.system.api.dict.domain.query.SysDictTypeQuery;
+import com.xueyi.system.dict.correlate.SysDictTypeCorrelate;
 import com.xueyi.system.dict.manager.ISysDictTypeManager;
 import com.xueyi.system.dict.service.ISysDictDataService;
 import com.xueyi.system.dict.service.ISysDictTypeService;
@@ -37,7 +38,7 @@ import java.util.stream.Collectors;
  * @author xueyi
  */
 @Service
-public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeQuery, SysDictTypeDto, ISysDictTypeManager> implements ISysDictTypeService {
+public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeQuery, SysDictTypeDto, SysDictTypeCorrelate, ISysDictTypeManager> implements ISysDictTypeService {
 
     @Autowired
     private ISysDictDataService dictDataService;

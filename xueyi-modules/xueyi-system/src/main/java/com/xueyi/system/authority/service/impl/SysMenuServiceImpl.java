@@ -10,6 +10,7 @@ import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.web.entity.service.impl.TreeServiceImpl;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.authority.domain.query.SysMenuQuery;
+import com.xueyi.system.authority.correlate.SysMenuCorrelate;
 import com.xueyi.system.authority.manager.ISysMenuManager;
 import com.xueyi.system.authority.service.ISysMenuService;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ import static com.xueyi.common.core.constant.basic.SecurityConstants.CREATE_BY;
  * @author xueyi
  */
 @Service
-public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuQuery, SysMenuDto, ISysMenuManager> implements ISysMenuService {
+public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuQuery, SysMenuDto, SysMenuCorrelate, ISysMenuManager> implements ISysMenuService {
 
     /**
      * 登录校验 | 获取当前租户全部菜单权限标识集合

@@ -7,6 +7,7 @@ import com.xueyi.common.datasource.annotation.Isolate;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 import com.xueyi.system.api.organize.domain.query.SysPostQuery;
+import com.xueyi.system.organize.correlate.SysPostCorrelate;
 import com.xueyi.system.organize.manager.impl.SysPostManagerImpl;
 import com.xueyi.system.organize.service.ISysPostService;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ import java.util.List;
  */
 @Service
 @Isolate
-public class SysPostServiceImpl extends BaseServiceImpl<SysPostQuery, SysPostDto, SysPostManagerImpl> implements ISysPostService {
+public class SysPostServiceImpl extends BaseServiceImpl<SysPostQuery, SysPostDto, SysPostCorrelate, SysPostManagerImpl> implements ISysPostService {
 
     /**
      * 用户登录校验 | 根据部门Ids获取归属岗位对象集合

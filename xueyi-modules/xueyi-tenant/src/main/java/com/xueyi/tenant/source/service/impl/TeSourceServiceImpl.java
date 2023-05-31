@@ -11,6 +11,7 @@ import com.xueyi.common.redis.constant.RedisConstants;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.tenant.api.source.domain.dto.TeSourceDto;
 import com.xueyi.tenant.api.source.domain.query.TeSourceQuery;
+import com.xueyi.tenant.source.correlate.TeSourceCorrelate;
 import com.xueyi.tenant.source.manager.impl.TeSourceManagerImpl;
 import com.xueyi.tenant.source.service.ITeSourceService;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,7 @@ import java.util.function.Function;
  * @author xueyi
  */
 @Service
-public class TeSourceServiceImpl extends BaseServiceImpl<TeSourceQuery, TeSourceDto, TeSourceManagerImpl> implements ITeSourceService {
+public class TeSourceServiceImpl extends BaseServiceImpl<TeSourceQuery, TeSourceDto, TeSourceCorrelate, TeSourceManagerImpl> implements ITeSourceService {
 
     /**
      * 缓存主键命名定义

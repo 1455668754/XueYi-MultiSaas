@@ -9,6 +9,7 @@ import com.xueyi.common.datasource.annotation.Isolate;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
 import com.xueyi.system.api.organize.domain.query.SysUserQuery;
+import com.xueyi.system.organize.correlate.SysUserCorrelate;
 import com.xueyi.system.organize.manager.ISysUserManager;
 import com.xueyi.system.organize.service.ISysUserService;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,7 @@ import java.util.List;
  */
 @Service
 @Isolate
-public class SysUserServiceImpl extends BaseServiceImpl<SysUserQuery, SysUserDto, ISysUserManager> implements ISysUserService {
+public class SysUserServiceImpl extends BaseServiceImpl<SysUserQuery, SysUserDto, SysUserCorrelate, ISysUserManager> implements ISysUserService {
 
     /**
      * 用户登录校验 | 查询用户信息

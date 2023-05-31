@@ -20,6 +20,7 @@ import com.xueyi.tenant.api.source.domain.dto.TeStrategyDto;
 import com.xueyi.tenant.api.tenant.domain.dto.TeTenantDto;
 import com.xueyi.tenant.api.tenant.domain.query.TeTenantQuery;
 import com.xueyi.tenant.source.service.ITeStrategyService;
+import com.xueyi.tenant.tenant.correlate.TeTenantCorrelate;
 import com.xueyi.tenant.tenant.domain.model.TeTenantRegister;
 import com.xueyi.tenant.tenant.manager.impl.TeTenantManagerImpl;
 import com.xueyi.tenant.tenant.service.ITeTenantService;
@@ -38,7 +39,7 @@ import static com.xueyi.common.core.constant.basic.BaseConstants.TOP_ID;
  * @author xueyi
  */
 @Service
-public class TeTenantServiceImpl extends BaseServiceImpl<TeTenantQuery, TeTenantDto, TeTenantManagerImpl> implements ITeTenantService {
+public class TeTenantServiceImpl extends BaseServiceImpl<TeTenantQuery, TeTenantDto, TeTenantCorrelate, TeTenantManagerImpl> implements ITeTenantService {
 
     @Lazy
     @Autowired

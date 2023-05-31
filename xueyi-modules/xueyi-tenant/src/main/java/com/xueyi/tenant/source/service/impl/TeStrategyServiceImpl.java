@@ -7,6 +7,7 @@ import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.tenant.api.source.domain.dto.TeStrategyDto;
 import com.xueyi.tenant.api.source.domain.query.TeStrategyQuery;
+import com.xueyi.tenant.source.correlate.TeStrategyCorrelate;
 import com.xueyi.tenant.source.manager.ITeStrategyManager;
 import com.xueyi.tenant.source.service.ITeStrategyService;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Service;
  * @author xueyi
  */
 @Service
-public class TeStrategyServiceImpl extends BaseServiceImpl<TeStrategyQuery, TeStrategyDto, ITeStrategyManager> implements ITeStrategyService {
+public class TeStrategyServiceImpl extends BaseServiceImpl<TeStrategyQuery, TeStrategyDto, TeStrategyCorrelate, ITeStrategyManager> implements ITeStrategyService {
 
     /**
      * 缓存主键命名定义

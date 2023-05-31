@@ -8,6 +8,7 @@ import com.xueyi.common.core.utils.core.TypeUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.redis.constant.RedisConstants;
 import com.xueyi.common.redis.service.RedisService;
+import com.xueyi.common.web.correlate.service.CorrelateService;
 import com.xueyi.common.web.correlate.utils.CorrelateUtil;
 import com.xueyi.common.web.entity.manager.IBaseManager;
 import lombok.Getter;
@@ -21,10 +22,11 @@ import java.util.List;
  *
  * @param <Q>   Query
  * @param <D>   Dto
+ * @param <C>   Correlate
  * @param <IDG> DtoIManager
  * @author xueyi
  */
-public class BaseHandleServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG extends IBaseManager<Q, D>> {
+public class BaseHandleServiceImpl<Q extends BaseEntity, D extends BaseEntity, C extends Enum<? extends Enum<?>> & CorrelateService, IDG extends IBaseManager<Q, D>> {
 
     @Autowired
     protected IDG baseManager;
@@ -50,7 +52,7 @@ public class BaseHandleServiceImpl<Q extends BaseEntity, D extends BaseEntity, I
     /**
      * 设置请求关联映射
      */
-    protected void startCorrelates(Enum<? extends Enum<?>> correlateEnum) {
+    protected void startCorrelates(C correlateEnum) {
         CorrelateUtil.startCorrelates(correlateEnum);
     }
 

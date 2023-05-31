@@ -16,6 +16,7 @@ import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.gen.config.GenConfig;
+import com.xueyi.gen.correlate.GenTableCorrelate;
 import com.xueyi.gen.domain.dto.GenTableColumnDto;
 import com.xueyi.gen.domain.dto.GenTableDto;
 import com.xueyi.gen.domain.query.GenTableQuery;
@@ -52,7 +53,7 @@ import java.util.zip.ZipOutputStream;
  */
 @Slf4j
 @Service
-public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTableDto, IGenTableManager> implements IGenTableService {
+public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTableDto, GenTableCorrelate, IGenTableManager> implements IGenTableService {
 
     @Autowired
     private RemoteMenuService remoteMenuService;

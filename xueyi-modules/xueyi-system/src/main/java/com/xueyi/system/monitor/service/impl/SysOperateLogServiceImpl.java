@@ -3,6 +3,7 @@ package com.xueyi.system.monitor.service.impl;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.log.domain.dto.SysOperateLogDto;
 import com.xueyi.system.api.log.domain.query.SysOperateLogQuery;
+import com.xueyi.system.monitor.correlate.SysOperateLogCorrelate;
 import com.xueyi.system.monitor.manager.ISysOperateLogManager;
 import com.xueyi.system.monitor.service.ISysOperateLogService;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Service;
  * @author xueyi
  */
 @Service
-public class SysOperateLogServiceImpl extends BaseServiceImpl<SysOperateLogQuery, SysOperateLogDto, ISysOperateLogManager> implements ISysOperateLogService {
+public class SysOperateLogServiceImpl extends BaseServiceImpl<SysOperateLogQuery, SysOperateLogDto, SysOperateLogCorrelate, ISysOperateLogManager> implements ISysOperateLogService {
 
     /**
      * 清空操作日志

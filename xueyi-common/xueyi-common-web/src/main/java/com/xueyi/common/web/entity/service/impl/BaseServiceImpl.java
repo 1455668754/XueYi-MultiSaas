@@ -8,6 +8,7 @@ import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.redis.constant.RedisConstants;
+import com.xueyi.common.web.correlate.service.CorrelateService;
 import com.xueyi.common.web.entity.manager.IBaseManager;
 import com.xueyi.common.web.entity.service.IBaseService;
 import com.xueyi.common.web.entity.service.impl.handle.BaseHandleServiceImpl;
@@ -22,10 +23,11 @@ import java.util.stream.Collectors;
  *
  * @param <Q>   Query
  * @param <D>   Dto
+ * @param <C>   Correlate
  * @param <IDG> DtoIManager
  * @author xueyi
  */
-public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, IDG extends IBaseManager<Q, D>> extends BaseHandleServiceImpl<Q, D, IDG> implements IBaseService<Q, D> {
+public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, C extends Enum<? extends Enum<?>> & CorrelateService, IDG extends IBaseManager<Q, D>> extends BaseHandleServiceImpl<Q, D, C, IDG> implements IBaseService<Q, D> {
 
     /**
      * 查询数据对象列表 | 数据权限 | 附加数据
