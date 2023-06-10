@@ -6,6 +6,7 @@ import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.datascope.annotation.DataScope;
+import com.xueyi.common.web.correlate.contant.CorrelateConstants;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
 import com.xueyi.system.api.authority.domain.query.SysRoleQuery;
@@ -17,7 +18,9 @@ import com.xueyi.system.organize.service.ISysOrganizeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.xueyi.common.core.constant.basic.SecurityConstants.CREATE_BY;
 
@@ -34,6 +37,16 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleQuery, SysRoleDto
 
     @Autowired
     private ISysOrganizeService organizeService;
+
+    /**
+     * 默认方法关联配置定义
+     */
+    @Override
+    protected Map<CorrelateConstants.ServiceType, SysRoleCorrelate> defaultCorrelate() {
+        return new HashMap<>(){{
+            put(CorrelateConstants.ServiceType.DELETE, SysRoleCorrelate.BASE_DEL);
+        }};
+    }
 
     /**
      * 查询角色对象列表 | 数据权限 | 附加数据
