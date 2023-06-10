@@ -1,6 +1,8 @@
 package com.xueyi.common.web.correlate.domain;
 
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
+import com.xueyi.common.core.exception.UtilException;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.core.web.entity.base.BasisEntity;
 import com.xueyi.common.web.correlate.contant.CorrelateConstants;
@@ -29,6 +31,20 @@ public final class Indirect<D extends BaseEntity, M extends BasisEntity, S exten
 
     /** 关联类型 */
     private final CorrelateConstants.SubTableType relationType = CorrelateConstants.SubTableType.INDIRECT;
+
+    /**
+     * 构建间接关联映射
+     *
+     * @param mergeMapper  中间关联Mapper接口
+     * @param mergeMainFun 中间关联主键
+     * @param mainIdFun    关联主键
+     */
+    public Indirect(CorrelateConstants.SubOperate operateType, Class<? extends BasicMapper<M>> mergeMapper, SFunction<M, ?> mergeMainFun, SFunction<D, ?> mainIdFun) {
+        if (ObjectUtil.notEqual(CorrelateConstants.SubOperate.DELETE, operateType)) {
+            throw new UtilException("仅允许删除方法使用！");
+        }
+        initIndirect(operateType, mergeMapper, mergeMainFun, mainIdFun);
+    }
 
     /**
      * 构建间接关联映射
@@ -109,15 +125,26 @@ public final class Indirect<D extends BaseEntity, M extends BasisEntity, S exten
      * @param slaveIdFun    关联从键
      */
     private void initIndirect(CorrelateConstants.SubOperate operateType, Class<? extends IBaseService> slaveService, Class<? extends BasicMapper<M>> mergeMapper, SFunction<M, ?> mergeMainFun, SFunction<M, ?> mergeSlaveFun, SFunction<D, ?> mainIdFun, SFunction<S, ?> slaveIdFun) {
+        initIndirect(operateType, mergeMapper, mergeMainFun, mainIdFun);
+        this.orm.setSlaveService(slaveService);
+        this.orm.setSlaveKeyField(CorrelateUtil.getField(slaveIdFun));
+        this.orm.setMergeSlaveField(CorrelateUtil.getField(mergeSlaveFun));
+    }
+
+    /**
+     * 构建间接关联映射
+     *
+     * @param mergeMapper  中间关联Mapper接口
+     * @param mergeMainFun 中间关联主键
+     * @param mainIdFun    关联主键
+     */
+    private void initIndirect(CorrelateConstants.SubOperate operateType, Class<? extends BasicMapper<M>> mergeMapper, SFunction<M, ?> mergeMainFun, SFunction<D, ?> mainIdFun) {
         this.orm = new ORM();
         this.operateType = operateType;
         this.orm.setMergeMapper(mergeMapper);
-        this.orm.setSlaveService(slaveService);
         this.orm.setMainKeyField(CorrelateUtil.getField(mainIdFun));
-        this.orm.setSlaveKeyField(CorrelateUtil.getField(slaveIdFun));
         this.orm.setMergeMainField(CorrelateUtil.getField(mergeMainFun));
         this.orm.setMergeInfoClazz(CorrelateUtil.getClass(mergeMainFun));
-        this.orm.setMergeSlaveField(CorrelateUtil.getField(mergeSlaveFun));
     }
 
     /**
