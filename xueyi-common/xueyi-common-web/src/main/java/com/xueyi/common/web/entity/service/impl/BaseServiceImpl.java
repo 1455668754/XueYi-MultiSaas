@@ -75,7 +75,7 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, C exten
     @Override
     public List<D> selectListByField(com.xueyi.common.web.correlate.domain.SqlField... field) {
         List<D> dtoList = baseManager.selectListByField(field);
-        return subCorrelates(dtoList, getBasicCorrelate(CorrelateConstants.ServiceType.SELECT_LIST));
+        return subCorrelates(dtoList);
     }
 
     /**
