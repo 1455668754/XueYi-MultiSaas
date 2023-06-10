@@ -46,6 +46,11 @@ public class BaseServiceHandle<Q extends BaseEntity, D extends BaseEntity, C ext
         if (ObjectUtil.isNull(getCacheKey())) {
             return;
         }
+        if (operate.isSingle()) {
+            subCorrelates(dto, getBasicCorrelate(CorrelateConstants.ServiceType.CACHE_REFRESH));
+        } else if (operate.isBatch()) {
+            subCorrelates(dtoList, getBasicCorrelate(CorrelateConstants.ServiceType.CACHE_REFRESH));
+        }
         switch (operateCache) {
             case REFRESH_ALL -> {
                 redisService.deleteObject(getCacheKey().getCode());
