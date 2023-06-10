@@ -51,7 +51,7 @@ public final class CorrelateIndirectHandle extends CorrelateBaseHandle {
      * @param dtoList  数据对象集合
      * @param indirect 间接关联映射对象
      */
-    public static <D extends BaseEntity, M extends BasisEntity, S extends BaseEntity> void assembleIndirectList(List<D> dtoList, Indirect<D, M, S> indirect) {
+    public static <D extends BaseEntity, M extends BasisEntity, S extends BaseEntity, Coll extends Collection<D>> void assembleIndirectList(Coll dtoList, Indirect<D, M, S> indirect) {
         assembleIndirectBuild(null, dtoList, indirect);
     }
 
@@ -76,7 +76,7 @@ public final class CorrelateIndirectHandle extends CorrelateBaseHandle {
      * @param dtoList 数据对象集合
      * @return 结果
      */
-    public static <D extends BaseEntity, M extends BasisEntity, S extends BaseEntity> int insertIndirectList(Collection<D> dtoList, Indirect<D, M, S> indirect) {
+    public static <D extends BaseEntity, M extends BasisEntity, S extends BaseEntity, Coll extends Collection<D>> int insertIndirectList(Coll dtoList, Indirect<D, M, S> indirect) {
         Indirect.ORM ormIndirect = indirect.getOrm();
         List<M> subList = dtoList.stream().map(dto -> (List<M>) insertIndirectBuild(dto, ormIndirect)).filter(CollUtil::isNotEmpty).flatMap(Collection::stream).toList();
         if (CollUtil.isEmpty(subList))
@@ -126,7 +126,7 @@ public final class CorrelateIndirectHandle extends CorrelateBaseHandle {
      * @param indirect   间接关联映射对象
      * @return 结果
      */
-    public static <D extends BaseEntity, M extends BasisEntity, S extends BaseEntity> int updateIndirectList(Collection<D> originList, Collection<D> newList, Indirect<D, M, S> indirect) {
+    public static <D extends BaseEntity, M extends BasisEntity, S extends BaseEntity, Coll extends Collection<D>> int updateIndirectList(Coll originList, Coll newList, Indirect<D, M, S> indirect) {
         Indirect.ORM ormIndirect = indirect.getOrm();
         List<M> insertList = new ArrayList<>();
         Set<Object> delKeys = new HashSet<>();
@@ -187,7 +187,7 @@ public final class CorrelateIndirectHandle extends CorrelateBaseHandle {
      * @param indirect 间接关联映射对象
      * @return 结果
      */
-    public static <D extends BaseEntity, M extends BasisEntity, S extends BaseEntity> int deleteIndirectList(Collection<D> dtoList, Indirect<D, M, S> indirect) {
+    public static <D extends BaseEntity, M extends BasisEntity, S extends BaseEntity, Coll extends Collection<D>> int deleteIndirectList(Coll dtoList, Indirect<D, M, S> indirect) {
         Indirect.ORM ormIndirect = indirect.getOrm();
         Set<Object> delKeys = dtoList.stream().map(item -> getFieldObj(item, ormIndirect.getMainKeyField())).collect(Collectors.toSet());
         SqlField sqlField = new SqlField(SqlConstants.OperateType.IN, ormIndirect.getMergeMainSqlName(), delKeys);
@@ -206,7 +206,7 @@ public final class CorrelateIndirectHandle extends CorrelateBaseHandle {
      * @param dtoList  数据对象集合
      * @param indirect 间接关联映射对象
      */
-    private static <D extends BaseEntity, M extends BasisEntity, S extends BaseEntity> void assembleIndirectBuild(D dto, Collection<D> dtoList, Indirect<D, M, S> indirect) {
+    private static <D extends BaseEntity, M extends BasisEntity, S extends BaseEntity, Coll extends Collection<D>> void assembleIndirectBuild(D dto, Coll dtoList, Indirect<D, M, S> indirect) {
         Indirect.ORM ormIndirect = indirect.getOrm();
         Set<Object> findInSet = ObjectUtil.isNotNull(dto)
                 ? getFieldKeys(dto, ormIndirect, ormIndirect.getMainKeyField())

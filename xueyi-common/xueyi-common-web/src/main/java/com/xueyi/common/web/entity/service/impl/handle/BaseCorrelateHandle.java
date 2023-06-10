@@ -10,7 +10,6 @@ import com.xueyi.common.web.correlate.utils.CorrelateUtil;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -58,7 +57,7 @@ public abstract class BaseCorrelateHandle<D extends BaseEntity, C extends Enum<?
      * @return 数据对象集合
      */
     @SafeVarargs
-    protected final List<D> subCorrelates(List<D> dtoList, C... correlates) {
+    protected final <Coll extends Collection<D>> Coll subCorrelates(Coll dtoList, C... correlates) {
         startCorrelates(correlates);
         return CorrelateUtil.subCorrelates(dtoList);
     }
@@ -82,7 +81,7 @@ public abstract class BaseCorrelateHandle<D extends BaseEntity, C extends Enum<?
      * @return 结果
      */
     @SafeVarargs
-    protected final int addCorrelates(Collection<D> dtoList, C... correlates) {
+    protected final <Coll extends Collection<D>> int addCorrelates(Coll dtoList, C... correlates) {
         startCorrelates(correlates);
         return CorrelateUtil.addCorrelates(dtoList);
     }
@@ -108,7 +107,7 @@ public abstract class BaseCorrelateHandle<D extends BaseEntity, C extends Enum<?
      * @return 结果
      */
     @SafeVarargs
-    protected final int editCorrelates(Collection<D> originList, Collection<D> newList, C... correlates) {
+    protected final <Coll extends Collection<D>> int editCorrelates(Coll originList, Coll newList, C... correlates) {
         startCorrelates(correlates);
         return CorrelateUtil.editCorrelates(originList, newList);
     }
@@ -132,7 +131,7 @@ public abstract class BaseCorrelateHandle<D extends BaseEntity, C extends Enum<?
      * @return 结果
      */
     @SafeVarargs
-    protected final int delCorrelates(Collection<D> dtoList, C... correlates) {
+    protected final <Coll extends Collection<D>> int delCorrelates(Coll dtoList, C... correlates) {
         startCorrelates(correlates);
         return CorrelateUtil.delCorrelates(dtoList);
     }

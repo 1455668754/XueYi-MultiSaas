@@ -12,6 +12,7 @@ import com.xueyi.common.web.correlate.contant.CorrelateConstants;
 import com.xueyi.common.web.correlate.domain.Remote;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -40,7 +41,7 @@ public final class CorrelateRemoteHandle extends CorrelateBaseHandle {
      * @param dtoList 数据对象集合
      * @param remote  远程关联映射对象
      */
-    public static <D extends BaseEntity, S extends BaseEntity> void assembleRemoteList(List<D> dtoList, Remote<D, S> remote) {
+    public static <D extends BaseEntity, S extends BaseEntity, Coll extends Collection<D>> void assembleRemoteList(Coll dtoList, Remote<D, S> remote) {
         assembleRemoteBuild(null, dtoList, remote);
     }
 
@@ -51,7 +52,7 @@ public final class CorrelateRemoteHandle extends CorrelateBaseHandle {
      * @param dtoList 数据对象集合
      * @param remote  远程关联映射对象
      */
-    private static <D extends BaseEntity, S extends BaseEntity> void assembleRemoteBuild(D dto, List<D> dtoList, Remote<D, S> remote) {
+    private static <D extends BaseEntity, S extends BaseEntity, Coll extends Collection<D>> void assembleRemoteBuild(D dto, Coll dtoList, Remote<D, S> remote) {
         Remote.ORM ormRemote = remote.getOrm();
         Set<Object> findInSet = ObjectUtil.isNotNull(dto)
                 ? getFieldKeys(dto, ormRemote, ormRemote.getMainKeyField())

@@ -50,7 +50,7 @@ public final class CorrelateDirectHandle extends CorrelateBaseHandle {
      * @param dtoList 数据对象集合
      * @param direct  直接关联映射对象
      */
-    public static <D extends BaseEntity, S extends BaseEntity> void assembleDirectList(List<D> dtoList, Direct<D, S> direct) {
+    public static <D extends BaseEntity, S extends BaseEntity, Coll extends Collection<D>> void assembleDirectList(Coll dtoList, Direct<D, S> direct) {
         assembleDirectBuild(null, dtoList, direct);
     }
 
@@ -79,7 +79,7 @@ public final class CorrelateDirectHandle extends CorrelateBaseHandle {
      * @param direct  直接关联映射对象
      * @return 结果
      */
-    public static <D extends BaseEntity, S extends BaseEntity> int insertDirectList(Collection<D> dtoList, Direct<D, S> direct) {
+    public static <D extends BaseEntity, S extends BaseEntity, Coll extends Collection<D>> int insertDirectList(Coll dtoList, Direct<D, S> direct) {
         Direct.ORM ormDirect = direct.getOrm();
         List<S> subList = dtoList.stream().map(dto -> (List<S>) insertDirectBuild(dto, ormDirect)).filter(CollUtil::isNotEmpty).flatMap(Collection::stream).toList();
         if (CollUtil.isEmpty(subList)) {
@@ -136,7 +136,7 @@ public final class CorrelateDirectHandle extends CorrelateBaseHandle {
      * @param direct     直接关联映射对象
      * @return 结果
      */
-    public static <D extends BaseEntity, S extends BaseEntity> int updateDirectList(Collection<D> originList, Collection<D> newList, Direct<D, S> direct) {
+    public static <D extends BaseEntity, S extends BaseEntity, Coll extends Collection<D>> int updateDirectList(Coll originList, Coll newList, Direct<D, S> direct) {
         Direct.ORM ormDirect = direct.getOrm();
         List<S> insertList = new ArrayList<>();
         List<S> updateList = new ArrayList<>();
@@ -207,7 +207,7 @@ public final class CorrelateDirectHandle extends CorrelateBaseHandle {
      * @param direct  直接关联映射对象
      * @return 结果
      */
-    public static <D extends BaseEntity, S extends BaseEntity> int deleteDirectList(Collection<D> dtoList, Direct<D, S> direct) {
+    public static <D extends BaseEntity, S extends BaseEntity, Coll extends Collection<D>> int deleteDirectList(Coll dtoList, Direct<D, S> direct) {
         Direct.ORM ormDirect = direct.getOrm();
         Set<Object> mainKeys = dtoList.stream().map(item -> getFieldObj(item, ormDirect.getMainKeyField())).collect(Collectors.toSet());
         if (Objects.requireNonNull(ormDirect.getSubDataRow()) == CorrelateConstants.DataRow.SINGLE) {
@@ -230,7 +230,7 @@ public final class CorrelateDirectHandle extends CorrelateBaseHandle {
      * @param dtoList 数据对象集合
      * @param direct  直接关联映射对象
      */
-    private static <D extends BaseEntity, S extends BaseEntity> void assembleDirectBuild(D dto, Collection<D> dtoList, Direct<D, S> direct) {
+    private static <D extends BaseEntity, S extends BaseEntity, Coll extends Collection<D>> void assembleDirectBuild(D dto, Coll dtoList, Direct<D, S> direct) {
         Direct.ORM ormDirect = direct.getOrm();
         Set<Object> findInSet = ObjectUtil.isNotNull(dto)
                 ? getFieldKeys(dto, ormDirect, ormDirect.getMainKeyField())

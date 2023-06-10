@@ -76,7 +76,7 @@ public final class CorrelateUtil {
      * @param dtoList 数据对象集合
      * @return 数据对象集合
      */
-    public static <D extends BaseEntity> List<D> subCorrelates(List<D> dtoList) {
+    public static <D extends BaseEntity, Coll extends Collection<D>> Coll subCorrelates(Coll dtoList) {
         getCorrelates().stream().filter(relation -> ObjectUtil.equals(CorrelateConstants.SubOperate.SELECT, relation.getOperateType()))
                 .forEach(relation -> subCorrelates(dtoList, relation));
         return dtoList;
@@ -99,7 +99,7 @@ public final class CorrelateUtil {
      * @param dtoList 数据对象集合
      * @return 结果
      */
-    public static <D extends BaseEntity> int addCorrelates(Collection<D> dtoList) {
+    public static <D extends BaseEntity, Coll extends Collection<D>> int addCorrelates(Coll dtoList) {
         return getCorrelates().stream().filter(relation -> ObjectUtil.equals(CorrelateConstants.SubOperate.ADD, relation.getOperateType()))
                 .map(relation -> addCorrelates(dtoList, relation)).reduce(Integer::sum).orElse(NumberUtil.Zero);
     }
@@ -123,7 +123,7 @@ public final class CorrelateUtil {
      * @param newList    新数据对象集合
      * @return 结果
      */
-    public static <D extends BaseEntity> int editCorrelates(Collection<D> originList, Collection<D> newList) {
+    public static <D extends BaseEntity, Coll extends Collection<D>> int editCorrelates(Coll originList, Coll newList) {
         return getCorrelates().stream().filter(relation -> ObjectUtil.equals(CorrelateConstants.SubOperate.EDIT, relation.getOperateType()))
                 .map(relation -> editCorrelates(originList, newList, relation)).reduce(Integer::sum).orElse(NumberUtil.Zero);
     }
@@ -145,7 +145,7 @@ public final class CorrelateUtil {
      * @param dtoList 数据对象集合
      * @return 结果
      */
-    public static <D extends BaseEntity> int delCorrelates(Collection<D> dtoList) {
+    public static <D extends BaseEntity, Coll extends Collection<D>> int delCorrelates(Coll dtoList) {
         return getCorrelates().stream().filter(relation -> ObjectUtil.equals(CorrelateConstants.SubOperate.DELETE, relation.getOperateType()))
                 .map(relation -> delCorrelates(dtoList, relation)).reduce(Integer::sum).orElse(NumberUtil.Zero);
     }
@@ -179,7 +179,7 @@ public final class CorrelateUtil {
      * @param relation 从属关联关系定义对象
      * @return 数据对象集合
      */
-    private static <D extends BaseEntity, Correlate extends BaseCorrelate> List<D> subCorrelates(List<D> dtoList, Correlate relation) {
+    private static <D extends BaseEntity, Correlate extends BaseCorrelate, Coll extends Collection<D>> Coll subCorrelates(Coll dtoList, Correlate relation) {
         if (proofCorrelation(dtoList, relation, CorrelateConstants.SubOperate.SELECT)) {
             if (relation instanceof Direct direct) {
                 CorrelateDirectHandle.assembleDirectList(dtoList, direct);
@@ -221,7 +221,7 @@ public final class CorrelateUtil {
      * @param relation 从属关联关系定义对象
      * @return 结果
      */
-    private static <D extends BaseEntity, Correlate extends BaseCorrelate> int addCorrelates(Collection<D> dtoList, Correlate relation) {
+    private static <D extends BaseEntity, Correlate extends BaseCorrelate, Coll extends Collection<D>> int addCorrelates(Coll dtoList, Correlate relation) {
         if (proofCorrelation(dtoList, relation, CorrelateConstants.SubOperate.ADD)) {
             if (relation instanceof Direct direct) {
                 return CorrelateDirectHandle.insertDirectList(dtoList, direct);
@@ -261,7 +261,7 @@ public final class CorrelateUtil {
      * @param newList    新数据对象集合
      * @param relation   从属关联关系定义对象
      */
-    private static <D extends BaseEntity, Correlate extends BaseCorrelate> int editCorrelates(Collection<D> originList, Collection<D> newList, Correlate relation) {
+    private static <D extends BaseEntity, Correlate extends BaseCorrelate, Coll extends Collection<D>> int editCorrelates(Coll originList, Coll newList, Correlate relation) {
         if (proofCorrelation(null, null, originList, newList, relation, CorrelateConstants.SubOperate.EDIT)) {
             if (relation instanceof Direct direct) {
                 return CorrelateDirectHandle.updateDirectList(originList, newList, direct);
@@ -299,7 +299,7 @@ public final class CorrelateUtil {
      * @param dtoList  数据对象集合
      * @param relation 从属关联关系定义对象
      */
-    private static <D extends BaseEntity, Correlate extends BaseCorrelate> int delCorrelates(Collection<D> dtoList, Correlate relation) {
+    private static <D extends BaseEntity, Correlate extends BaseCorrelate, Coll extends Collection<D>> int delCorrelates(Coll dtoList, Correlate relation) {
         if (proofCorrelation(dtoList, relation, CorrelateConstants.SubOperate.DELETE)) {
             if (relation instanceof Direct direct) {
                 return CorrelateDirectHandle.deleteDirectList(dtoList, direct);
@@ -330,7 +330,7 @@ public final class CorrelateUtil {
      *
      * @param relation 从属关联关系定义对象
      */
-    private static <D extends BaseEntity, Correlate extends BaseCorrelate> Boolean proofCorrelation(Collection<D> dtoList, Correlate relation, CorrelateConstants.SubOperate operate) {
+    private static <D extends BaseEntity, Correlate extends BaseCorrelate, Coll extends Collection<D>> Boolean proofCorrelation(Coll dtoList, Correlate relation, CorrelateConstants.SubOperate operate) {
         return switch (operate) {
             case SELECT, DELETE -> proofCorrelation(null, null, dtoList, null, relation, operate);
             case ADD -> proofCorrelation(null, null, null, dtoList, relation, operate);
@@ -343,7 +343,7 @@ public final class CorrelateUtil {
      *
      * @param relation 从属关联关系定义对象
      */
-    private static <D extends BaseEntity, Correlate extends BaseCorrelate> Boolean proofCorrelation(D originDto, D newDto, Collection<D> originList, Collection<D> newList, Correlate relation, CorrelateConstants.SubOperate operate) {
+    private static <D extends BaseEntity, Correlate extends BaseCorrelate, Coll extends Collection<D>> Boolean proofCorrelation(D originDto, D newDto, Coll originList, Coll newList, Correlate relation, CorrelateConstants.SubOperate operate) {
         if (ObjectUtil.isNull(relation)) {
             return Boolean.FALSE;
         }
