@@ -45,12 +45,22 @@ public class RedisService {
     /**
      * 缓存基本的对象，Integer、String、实体类等 | Java序列化
      *
+     * @param key   Redis键
+     * @param value 缓存的值
+     */
+    public <T> void setJavaCacheObject(final String key, final T value) {
+        setJavaCacheObject(key, value, NumberUtil.Nine, TimeUnit.HOURS);
+    }
+
+    /**
+     * 缓存基本的对象，Integer、String、实体类等 | Java序列化
+     *
      * @param key      Redis键
      * @param value    缓存的值
      * @param timeout  时间
      * @param timeUnit 时间颗粒度
      */
-    public <T> void setJavaCacheObject(final String key, final T value, final Long timeout, final TimeUnit timeUnit) {
+    public <T> void setJavaCacheObject(final String key, final T value, final long timeout, final TimeUnit timeUnit) {
         redisJavaTemplate.opsForValue().set(key, value, timeout, timeUnit);
     }
 
@@ -63,6 +73,86 @@ public class RedisService {
     public <T> T getJavaCacheObject(final String key) {
         ValueOperations<String, T> operation = redisJavaTemplate.opsForValue();
         return operation.get(key);
+    }
+
+    /**
+     * 缓存Map | Java序列化
+     *
+     * @param key     Redis键
+     * @param dataMap map
+     */
+    public <T> void setJavaCacheMap(final String key, final Map<String, T> dataMap) {
+        setJavaCacheMap(key, dataMap, NumberUtil.Nine, TimeUnit.HOURS);
+    }
+
+    /**
+     * 缓存Map | Java序列化
+     *
+     * @param key     Redis键
+     * @param dataMap map
+     * @param timeout 超时时间
+     * @param unit    时间单位
+     */
+    public <T> void setJavaCacheMap(final String key, final Map<String, T> dataMap, final long timeout, final TimeUnit unit) {
+        if (dataMap != null) {
+            redisJavaTemplate.opsForHash().putAll(key, dataMap);
+            expireJava(key, timeout, unit);
+        }
+    }
+
+    /**
+     * 获得缓存的Map | Java序列化
+     *
+     * @param key Redis键
+     * @return 哈希
+     */
+    public <T> Map<String, T> getJavaCacheMap(final String key) {
+        return redisJavaTemplate.opsForHash().entries(key);
+    }
+
+    /**
+     * 往Hash中存入数据 | Java序列化
+     *
+     * @param key   Redis键
+     * @param hKey  Hash键
+     * @param value 值
+     */
+    public <T> void setJavaCacheMapValue(final String key, final String hKey, final T value) {
+        redisJavaTemplate.opsForHash().put(key, hKey, value);
+    }
+
+    /**
+     * 获取Hash中的数据 | Java序列化
+     *
+     * @param key  Redis键
+     * @param hKey Hash键
+     * @return Hash中的对象
+     */
+    public <T> T getJavaCacheMapValue(final String key, final String hKey) {
+        HashOperations<String, String, T> opsForHash = redisJavaTemplate.opsForHash();
+        return opsForHash.get(key, hKey);
+    }
+
+    /**
+     * 判断 key是否存在 | Java序列化
+     *
+     * @param key Redis键
+     * @return true 存在 false不存在
+     */
+    public Boolean hasJavaKey(String key) {
+        return redisJavaTemplate.hasKey(key);
+    }
+
+    /**
+     * 设置有效时间 | Java序列化
+     *
+     * @param key     Redis键
+     * @param timeout 超时时间
+     * @param unit    时间单位
+     * @return true=设置成功；false=设置失败
+     */
+    public Boolean expireJava(final String key, final long timeout, final TimeUnit unit) {
+        return redisJavaTemplate.expire(key, timeout, unit);
     }
 
     /**
