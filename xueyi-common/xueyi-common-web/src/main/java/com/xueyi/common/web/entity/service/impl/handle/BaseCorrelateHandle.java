@@ -1,9 +1,9 @@
 package com.xueyi.common.web.entity.service.impl.handle;
 
-import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.utils.core.ArrayUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
+import com.xueyi.common.web.correlate.contant.CorrelateConstants;
 import com.xueyi.common.web.correlate.service.CorrelateService;
 import com.xueyi.common.web.correlate.utils.CorrelateUtil;
 
@@ -21,13 +21,6 @@ import java.util.Map;
  * @author xueyi
  */
 public abstract class BaseCorrelateHandle<D extends BaseEntity, C extends Enum<? extends Enum<?>> & CorrelateService> {
-
-    /**
-     * 默认方法关联配置定义
-     */
-    protected Map<OperateConstants.ServiceType, C> initBasicCorrelate() {
-        return new HashMap<>();
-    }
 
     /**
      * 设置请求关联映射
@@ -145,10 +138,17 @@ public abstract class BaseCorrelateHandle<D extends BaseEntity, C extends Enum<?
     }
 
     /**
+     * 默认方法关联配置定义
+     */
+    protected Map<CorrelateConstants.ServiceType, C> defaultCorrelate() {
+        return new HashMap<>();
+    }
+
+    /**
      * 获取操作类型默认关联控制
      *
      * @param serviceType 操作类型
      * @return 默认关联控制
      */
-    abstract C getBasicCorrelate(OperateConstants.ServiceType serviceType);
+    abstract C getBasicCorrelate(CorrelateConstants.ServiceType serviceType);
 }

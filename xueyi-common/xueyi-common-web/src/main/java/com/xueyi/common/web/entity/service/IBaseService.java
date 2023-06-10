@@ -15,7 +15,6 @@ import java.util.List;
  * @param <D> Dto
  * @author xueyi
  */
-//public interface IBaseService<Q extends BaseEntity, D extends BaseEntity, T extends Enum<?> & CorrelateService> {
 public interface IBaseService<Q extends BaseEntity, D extends BaseEntity> {
 
     /**
@@ -44,6 +43,14 @@ public interface IBaseService<Q extends BaseEntity, D extends BaseEntity> {
     List<D> selectListMerge(Q query);
 
     /**
+     * 根据动态SQL控制对象查询数据对象集合
+     *
+     * @param field 动态SQL控制对象
+     * @return 数据对象集合
+     */
+    List<D> selectListByField(SqlField... field);
+
+    /**
      * 根据Id集合查询数据对象列表
      *
      * @param idList Id集合
@@ -59,14 +66,6 @@ public interface IBaseService<Q extends BaseEntity, D extends BaseEntity> {
      */
     @Deprecated
     List<D> selectListByIdsMerge(Collection<? extends Serializable> idList);
-
-    /**
-     * 根据动态SQL控制对象查询数据对象集合
-     *
-     * @param field 动态SQL控制对象
-     * @return 数据对象集合
-     */
-    List<D> selectListByField(SqlField... field);
 
     /**
      * 根据Id查询单条数据对象
