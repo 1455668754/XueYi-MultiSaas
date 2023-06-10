@@ -29,10 +29,10 @@ import static com.xueyi.common.web.correlate.contant.CorrelateConstants.SubOpera
 @AllArgsConstructor
 public enum SysPostCorrelate implements CorrelateService {
 
-    BASE_LIST("默认列表|关联（部门）", new ArrayList<>() {{
+    BASE_LIST("默认列表|关联（岗位）", new ArrayList<>() {{
         add(new Direct<>(SELECT, ISysDeptService.class, SysPostDto::getDeptId, SysDeptDto::getId, SysPostDto::getDept));
     }}),
-    BASE_DEL("默认删除|关联（部门）", new ArrayList<>() {{
+    BASE_DEL("默认删除|关联（岗位）", new ArrayList<>() {{
         add(new Indirect<>(DELETE, SysOrganizeRoleMergeMapper.class, SysOrganizeRoleMerge::getPostId, SysPostDto::getId));
         add(new Indirect<>(DELETE, SysRolePostMergeMapper.class, SysRolePostMerge::getPostId, SysPostDto::getId));
         add(new Indirect<>(DELETE, SysUserPostMergeMapper.class, SysUserPostMerge::getPostId, SysPostDto::getId));
