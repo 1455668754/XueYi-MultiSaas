@@ -7,14 +7,9 @@ import com.xueyi.common.core.utils.poi.ExcelUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.result.R;
-import com.xueyi.common.core.web.validate.V_A;
-import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.web.entity.controller.handle.BaseHandleController;
 import com.xueyi.common.web.entity.service.IBaseService;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
@@ -84,14 +79,14 @@ public abstract class BaseController<Q extends BaseEntity, D extends BaseEntity,
     /**
      * 查询详细
      */
-    public AjaxResult getInfo(@PathVariable Serializable id) {
+    public AjaxResult getInfo(Serializable id) {
         return success(baseService.selectByIdMerge(id));
     }
 
     /**
      * 新增
      */
-    public AjaxResult add(@Validated({V_A.class}) @RequestBody D dto) {
+    public AjaxResult add(D dto) {
         dto.initOperate(BaseConstants.Operate.ADD);
         AEHandle(dto.getOperate(), dto);
         return toAjax(baseService.insert(dto));
@@ -100,7 +95,7 @@ public abstract class BaseController<Q extends BaseEntity, D extends BaseEntity,
     /**
      * 修改
      */
-    public AjaxResult edit(@Validated({V_E.class}) @RequestBody D dto) {
+    public AjaxResult edit(D dto) {
         dto.initOperate(BaseConstants.Operate.EDIT);
         AEHandle(dto.getOperate(), dto);
         return toAjax(baseService.update(dto));
@@ -109,7 +104,7 @@ public abstract class BaseController<Q extends BaseEntity, D extends BaseEntity,
     /**
      * 修改状态
      */
-    public AjaxResult editStatus(@RequestBody D dto) {
+    public AjaxResult editStatus(D dto) {
         dto.initOperate(BaseConstants.Operate.EDIT_STATUS);
         AEHandle(dto.getOperate(), dto);
         return toAjax(baseService.updateStatus(dto));
@@ -120,7 +115,7 @@ public abstract class BaseController<Q extends BaseEntity, D extends BaseEntity,
      *
      * @see #RHandleEmpty (List)  基类 空校验
      */
-    public AjaxResult batchRemove(@PathVariable List<Long> idList) {
+    public AjaxResult batchRemove(List<Long> idList) {
         RHandleEmpty(idList);
         RHandle(BaseConstants.Operate.DELETE, idList);
         return toAjax(baseService.deleteByIds(idList));
@@ -131,7 +126,7 @@ public abstract class BaseController<Q extends BaseEntity, D extends BaseEntity,
      *
      * @see #RHandleEmpty (List)  基类 空校验
      */
-    public AjaxResult batchRemoveForce(@PathVariable List<Long> idList) {
+    public AjaxResult batchRemoveForce(List<Long> idList) {
         RHandleEmpty(idList);
         RHandle(BaseConstants.Operate.DELETE_FORCE, idList);
         return toAjax(baseService.deleteByIds(idList));
@@ -152,8 +147,9 @@ public abstract class BaseController<Q extends BaseEntity, D extends BaseEntity,
     public AjaxResult option(DictConstants.DicYesNo operateType) {
         try {
             Q query = getQClass().getDeclaredConstructor().newInstance();
-            if (operateType == DictConstants.DicYesNo.YES)
+            if (operateType == DictConstants.DicYesNo.YES) {
                 query.setStatus(BaseConstants.Status.NORMAL.getCode());
+            }
             return list(query);
         } catch (Exception ignored) {
         }
