@@ -1,10 +1,12 @@
 package com.xueyi.common.web.correlate.handle;
 
 import com.xueyi.common.core.constant.basic.SqlConstants;
+import com.xueyi.common.core.utils.core.ClassUtil;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.NumberUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.SpringUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.web.correlate.contant.CorrelateConstants;
 import com.xueyi.common.web.correlate.domain.Direct;
@@ -62,8 +64,9 @@ public final class CorrelateDirectHandle extends CorrelateBaseHandle {
     public static <D extends BaseEntity, S extends BaseEntity> int insertDirectObj(D dto, Direct<D, S> direct) {
         Direct.ORM ormDirect = direct.getOrm();
         Collection<S> subList = insertDirectBuild(dto, ormDirect);
-        if (CollUtil.isEmpty(subList))
+        if (CollUtil.isEmpty(subList)) {
             return NumberUtil.Zero;
+        }
         // 子查询进行数据关联操作
         CorrelateUtil.startCorrelates(direct.getRelations());
         return SpringUtil.getBean(ormDirect.getSlaveService()).insertBatch(subList);
@@ -79,8 +82,9 @@ public final class CorrelateDirectHandle extends CorrelateBaseHandle {
     public static <D extends BaseEntity, S extends BaseEntity> int insertDirectList(Collection<D> dtoList, Direct<D, S> direct) {
         Direct.ORM ormDirect = direct.getOrm();
         List<S> subList = dtoList.stream().map(dto -> (List<S>) insertDirectBuild(dto, ormDirect)).filter(CollUtil::isNotEmpty).flatMap(Collection::stream).toList();
-        if (CollUtil.isEmpty(subList))
+        if (CollUtil.isEmpty(subList)) {
             return NumberUtil.Zero;
+        }
         // 子查询进行数据关联操作
         CorrelateUtil.startCorrelates(direct.getRelations());
         return SpringUtil.getBean(ormDirect.getSlaveService()).insertBatch(subList);
@@ -337,6 +341,24 @@ public final class CorrelateDirectHandle extends CorrelateBaseHandle {
                     delKeys.addAll(keys);
                 }
             }
+        }
+    }
+
+    /**
+     * 校验关联映射是否合规
+     *
+     * @param direct 直接关联映射对象
+     */
+    public static <D extends BaseEntity, S extends BaseEntity> void checkORMLegal(Direct<D, S> direct) {
+        Direct.ORM ormDirect = direct.getOrm();
+        if (ObjectUtil.isNull(ormDirect.getSlaveService())) {
+            logReturn(StrUtil.format("groupName: {}, slaveService can not be null", direct.getGroupName()));
+        }
+        ormDirect.setMergeType(ClassUtil.isBasicType(ormDirect.getMainKeyField().getType()) ? CorrelateConstants.MergeType.DIRECT : CorrelateConstants.MergeType.INDIRECT);
+        if (ObjectUtil.isNotNull(ormDirect.getSubDataRow()) && ObjectUtil.equals(CorrelateConstants.DataRow.SINGLE, ormDirect.getSubDataRow()) && ormDirect.getMergeType().isIndirect()) {
+            logReturn(StrUtil.format("groupName: {}, subInfoField is single, but mainKeyField is Collection", direct.getGroupName()));
+        } else if (ObjectUtil.isNull(ormDirect.getSlaveKeyField()) || ClassUtil.isNotSimpleType(ormDirect.getSlaveKeyField().getType())) {
+            logReturn(StrUtil.format("groupName: {}, slaveKeyField can not be null or not BasicType", direct.getGroupName()));
         }
     }
 }

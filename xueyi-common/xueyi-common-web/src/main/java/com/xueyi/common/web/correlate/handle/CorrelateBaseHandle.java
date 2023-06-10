@@ -41,7 +41,6 @@ public sealed class CorrelateBaseHandle permits CorrelateDirectHandle, Correlate
         return getFieldKeys(info, null, orm, field);
     }
 
-
     /**
      * 获取数据键集合
      *
@@ -351,5 +350,14 @@ public sealed class CorrelateBaseHandle permits CorrelateDirectHandle, Correlate
                  NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * 输出错误日志
+     *
+     * @param msg 日志信息
+     */
+    public static void logReturn(String msg) {
+        throw new UtilException(msg);
     }
 }

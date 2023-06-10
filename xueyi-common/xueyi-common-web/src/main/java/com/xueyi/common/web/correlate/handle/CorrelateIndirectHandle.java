@@ -1,10 +1,12 @@
 package com.xueyi.common.web.correlate.handle;
 
 import com.xueyi.common.core.constant.basic.SqlConstants;
+import com.xueyi.common.core.utils.core.ClassUtil;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.NumberUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.SpringUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.core.web.entity.base.BasisEntity;
 import com.xueyi.common.web.correlate.contant.CorrelateConstants;
@@ -330,6 +332,68 @@ public final class CorrelateIndirectHandle extends CorrelateBaseHandle {
             }).toList();
             if (CollUtil.isNotEmpty(addList))
                 insertList.addAll(addList);
+        }
+    }
+
+    /**
+     * 校验关联映射是否合规
+     *
+     * @param indirect 间接关联映射对象
+     */
+    public static <D extends BaseEntity, M extends BasisEntity, S extends BaseEntity> void checkORMLegal(Indirect<D, M, S> indirect) {
+        Indirect.ORM ormIndirect = indirect.getOrm();
+
+        if (ObjectUtil.isNull(ormIndirect.getSlaveService())) {
+            switch (indirect.getOperateType()) {
+                case SELECT, ADD, EDIT ->
+                        logReturn(StrUtil.format("groupName: {}, slaveService can not be null", indirect.getGroupName()));
+                case DELETE -> {
+                }
+            }
+        } else {
+            if (ObjectUtil.isNull(ormIndirect.getMergeSlaveField()) || ClassUtil.isNotSimpleType(ormIndirect.getMergeSlaveField().getType())) {
+                logReturn(StrUtil.format("groupName: {}, mergeSlaveField can not be null or not BasicType", indirect.getGroupName()));
+            } else if (ObjectUtil.isNull(ormIndirect.getSubKeyField())) {
+                logReturn(StrUtil.format("groupName: {}, subKeyField can not be null", indirect.getGroupName()));
+            } else if (ObjectUtil.isNull(ormIndirect.getSubInfoField())) {
+                logReturn(StrUtil.format("groupName: {}, subInfoField can not be null", indirect.getGroupName()));
+            }
+        }
+
+        if (ObjectUtil.isNull(ormIndirect.getMergeMapper())) {
+            logReturn(StrUtil.format("groupName: {}, mergeMapper can not be null", indirect.getGroupName()));
+        } else if (ObjectUtil.isNull(ormIndirect.getMergeMainField()) || ClassUtil.isNotSimpleType(ormIndirect.getMergeMainField().getType())) {
+            logReturn(StrUtil.format("groupName: {}, mergeMainField can not be null or not BasicType", indirect.getGroupName()));
+        } else if (ClassUtil.isNotSimpleType(ormIndirect.getMainKeyField().getType())) {
+            logReturn(StrUtil.format("groupName: {}, mainKeyField must be basicType", indirect.getGroupName()));
+        }
+
+        // 数据初始化
+        if (ObjectUtil.isNotNull(ormIndirect.getMergeMainField())) {
+            ormIndirect.setMergeMainSqlName(CorrelateUtil.getFieldSqlName(ormIndirect.getMergeMainField()));
+        }
+        if (ObjectUtil.isNotNull(ormIndirect.getMergeSlaveField())) {
+            ormIndirect.setMergeSlaveSqlName(CorrelateUtil.getFieldSqlName(ormIndirect.getMergeSlaveField()));
+        }
+
+        // 从数据关联校验
+        if (ObjectUtil.isNotNull(ormIndirect.getSubKeyField())) {
+            Class<?> subKeyClazz = ormIndirect.getSubKeyField().getType();
+            CorrelateConstants.DataRow subKey = null;
+            if (ClassUtil.isBasicType(subKeyClazz)) {
+                subKey = CorrelateConstants.DataRow.SINGLE;
+            } else if (ClassUtil.isCollection(subKeyClazz)) {
+                subKey = CorrelateConstants.DataRow.LIST;
+            } else {
+                logReturn(StrUtil.format("groupName: {}, subKeyField class not in compliance with regulations, must be Collection or Primitive", indirect.getGroupName()));
+            }
+            if (ObjectUtil.isNotNull(ormIndirect.getSubDataRow())) {
+                if (ObjectUtil.notEqual(ormIndirect.getSubDataRow(), subKey)) {
+                    logReturn(StrUtil.format("groupName: {}, subKeyField and subInfoField dataRow not equal", indirect.getGroupName()));
+                }
+            } else {
+                ormIndirect.setSubDataRow(subKey);
+            }
         }
     }
 }
