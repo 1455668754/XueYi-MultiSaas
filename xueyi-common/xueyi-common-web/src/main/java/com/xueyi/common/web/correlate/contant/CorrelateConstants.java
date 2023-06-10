@@ -16,13 +16,18 @@ public class CorrelateConstants {
     @AllArgsConstructor
     public enum ServiceType {
 
+        SELECT("SELECT", "默认查询"),
+        SELECT_LIST("SELECT_LIST", "列表查询"),
+        SELECT_ID_LIST("SELECT_ID_LIST", "Id单条查询"),
+        SELECT_ID_SINGLE("SELECT_ID_SINGLE", "Id批量查询"),
         ADD("ADD", "新增"),
         BATCH_ADD("BATCH_ADD", "批量新增"),
         EDIT("EDIT", "修改"),
         BATCH_EDIT("BATCH_EDIT", "批量修改"),
         EDIT_STATUS("EDIT_STATUS", "修改状态"),
         DELETE("DELETE", "删除"),
-        BATCH_DELETE("BATCH_DELETE", "批量删除");
+        BATCH_DELETE("BATCH_DELETE", "批量删除"),
+        CACHE_REFRESH("CACHE_REFRESH", "缓存更新");
 
         private final String code;
         private final String info;
