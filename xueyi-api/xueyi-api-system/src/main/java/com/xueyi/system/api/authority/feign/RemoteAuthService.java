@@ -47,6 +47,6 @@ public interface RemoteAuthService {
      * @param sourceName   策略源
      * @return 结果
      */
-    @PostMapping("/editTenantAuth")
+    @PostMapping(value = "/editTenantAuth", headers = SecurityConstants.FROM_SOURCE_INNER)
     R<Boolean> editTenantAuthInner(@RequestBody Long[] authIds, @RequestHeader(SecurityConstants.ENTERPRISE_ID) Long enterpriseId, @RequestHeader(SecurityConstants.SOURCE_NAME) String sourceName);
 }
