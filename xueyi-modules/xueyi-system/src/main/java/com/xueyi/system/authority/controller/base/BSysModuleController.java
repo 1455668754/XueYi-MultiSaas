@@ -33,17 +33,19 @@ public class BSysModuleController extends BaseController<SysModuleQuery, SysModu
      */
     @Override
     protected void AEHandle(BaseConstants.Operate operate, SysModuleDto module) {
-        if (baseService.checkNameUnique(module.getId(), module.getName()))
+        if (baseService.checkNameUnique(module.getId(), module.getName())) {
             warn(StrUtil.format("{}{}{}失败，{}名称已存在！", operate.getInfo(), getNodeName(), module.getName(), getNodeName()));
+        }
 
         switch (operate) {
             case ADD, ADD_FORCE -> {
             }
             case EDIT, EDIT_FORCE -> {
                 SysModuleDto original = baseService.selectById(module.getId());
-                module.setIsCommon(original.getIsCommon());
-                if (ObjectUtil.isNull(original))
+                if (ObjectUtil.isNull(original)) {
                     warn("数据不存在！");
+                }
+                module.setIsCommon(original.getIsCommon());
             }
         }
 
@@ -60,10 +62,13 @@ public class BSysModuleController extends BaseController<SysModuleQuery, SysModu
         boolean isTenant = SecurityUserUtils.isAdminTenant();
         Map<Long, SysModuleDto> moduleMap = moduleList.stream().filter(item -> isTenant || item.isNotCommon())
                 .collect(Collectors.toMap(SysModuleDto::getId, Function.identity()));
-        for (int i = idList.size() - 1; i >= 0; i--)
-            if (!moduleMap.containsKey(idList.get(i)))
+        for (int i = idList.size() - 1; i >= 0; i--) {
+            if (!moduleMap.containsKey(idList.get(i))) {
                 idList.remove(i);
-        if (CollUtil.isEmpty(idList))
+            }
+        }
+        if (CollUtil.isEmpty(idList)) {
             warn(StrUtil.format("无待删除{}！", getNodeName()));
+        }
     }
 }

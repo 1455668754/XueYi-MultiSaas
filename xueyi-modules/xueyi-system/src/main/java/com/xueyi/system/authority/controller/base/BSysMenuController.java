@@ -45,51 +45,63 @@ public class BSysMenuController extends TreeController<SysMenuQuery, SysMenuDto,
      */
     @Override
     protected void AEHandle(BaseConstants.Operate operate, SysMenuDto menu) {
-        if (ObjectUtil.equals(menu.getId(), AuthorityConstants.MENU_TOP_NODE))
+        if (ObjectUtil.equals(menu.getId(), AuthorityConstants.MENU_TOP_NODE)) {
             warn(StrUtil.format("默认{}不允许修改！", getNodeName()));
-        if (baseService.checkNameUnique(menu.getId(), menu.getParentId(), menu.getName()))
+        }
+        if (baseService.checkNameUnique(menu.getId(), menu.getParentId(), menu.getName())) {
             warn(StrUtil.format("{}{}{}失败，{}名称已存在！", operate.getInfo(), getNodeName(), menu.getTitle(), getNodeName()));
+        }
 
         switch (operate) {
             case ADD, ADD_FORCE -> {
             }
             case EDIT, EDIT_FORCE -> {
                 SysMenuDto original = baseService.selectById(menu.getId());
-                menu.setIsCommon(original.getIsCommon());
-                if (ObjectUtil.isNull(original))
+                if (ObjectUtil.isNull(original)) {
                     warn("数据不存在！");
+                }
+                menu.setIsCommon(original.getIsCommon());
             }
         }
 
         if (menu.isCommon()) {
-            if (SecurityUserUtils.isNotAdminTenant())
+            if (SecurityUserUtils.isNotAdminTenant()) {
                 warn(StrUtil.format("{}{}{}失败，无操作权限！", operate.getInfo(), getNodeName(), menu.getTitle()));
+            }
             SysModuleDto module = moduleService.selectById(menu.getModuleId());
-            if (ObjectUtil.isNull(module))
+            if (ObjectUtil.isNull(module)) {
                 warn("数据不存在！");
-            if (module.isNotCommon())
+            }
+            if (module.isNotCommon()) {
                 warn(StrUtil.format("{}{}{}失败，公共{}必须挂载在公共{}下！", operate.getInfo(), getNodeName(), menu.getTitle(), getNodeName(), getParentName()));
+            }
 
             SysMenuDto parentMenu = baseService.selectById(menu.getParentId());
-            if (ObjectUtil.isNull(parentMenu))
+            if (ObjectUtil.isNull(parentMenu)) {
                 warn("数据不存在！");
-            if (parentMenu.isNotCommon())
+            }
+            if (parentMenu.isNotCommon()) {
                 warn(StrUtil.format("{}{}{}失败，公共{}必须挂载在公共{}下！", operate.getInfo(), getNodeName(), menu.getTitle(), getNodeName(), getNodeName()));
+            }
         }
     }
 
     /**
      * 前置校验 删除
      */
+    @Override
     protected void RHandle(BaseConstants.Operate operate, List<Long> idList) {
         List<SysMenuDto> moduleList = baseService.selectListByIds(idList);
         boolean isTenant = SecurityUserUtils.isAdminTenant();
         Map<Long, SysMenuDto> moduleMap = moduleList.stream().filter(item -> isTenant || item.isNotCommon())
                 .collect(Collectors.toMap(SysMenuDto::getId, Function.identity()));
-        for (int i = idList.size() - 1; i >= 0; i--)
-            if (!moduleMap.containsKey(idList.get(i)) || ObjectUtil.equals(idList.get(i), AuthorityConstants.MENU_TOP_NODE))
+        for (int i = idList.size() - 1; i >= 0; i--) {
+            if (!moduleMap.containsKey(idList.get(i)) || ObjectUtil.equals(idList.get(i), AuthorityConstants.MENU_TOP_NODE)) {
                 idList.remove(i);
-        if (CollUtil.isEmpty(idList))
+            }
+        }
+        if (CollUtil.isEmpty(idList)) {
             warn(StrUtil.format("无待删除{}！", getNodeName()));
+        }
     }
 }
