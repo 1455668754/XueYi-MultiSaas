@@ -56,10 +56,11 @@ public interface ITokenService<User, LoginUser extends BaseLoginUser<User>> exte
      *
      * @param type         密钥类型
      * @param enterpriseId 企业Id
+     * @param userId       用户名Id
      * @param tokenValue   token值
      * @return 令牌缓存路径
      */
-    String getTokenAddress(String type, Long enterpriseId, String tokenValue);
+    String getTokenAddress(String type, Long enterpriseId, Long userId, String tokenValue);
 
     /**
      * 排序值 | 默认取最大的
