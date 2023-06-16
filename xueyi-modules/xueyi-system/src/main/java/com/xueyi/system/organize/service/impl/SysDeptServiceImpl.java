@@ -4,6 +4,7 @@ import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.datasource.annotation.Isolate;
+import com.xueyi.common.web.correlate.contant.CorrelateConstants;
 import com.xueyi.common.web.entity.service.impl.TreeServiceImpl;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
 import com.xueyi.system.api.organize.domain.query.SysDeptQuery;
@@ -14,7 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 系统服务 | 组织模块 | 部门管理 服务层处理
@@ -24,6 +27,16 @@ import java.util.List;
 @Service
 @Isolate
 public class SysDeptServiceImpl extends TreeServiceImpl<SysDeptQuery, SysDeptDto, SysDeptCorrelate, ISysDeptManager> implements ISysDeptService {
+
+    /**
+     * 默认方法关联配置定义
+     */
+    @Override
+    protected Map<CorrelateConstants.ServiceType, SysDeptCorrelate> defaultCorrelate() {
+        return new HashMap<>(){{
+            put(CorrelateConstants.ServiceType.DELETE, SysDeptCorrelate.BASE_DEL);
+        }};
+    }
 
     /**
      * 新增部门 | 内部调用

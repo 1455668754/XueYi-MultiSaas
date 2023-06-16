@@ -1,31 +1,20 @@
 package com.xueyi.system.organize.manager.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.constant.basic.SqlConstants;
 import com.xueyi.common.core.utils.core.CollUtil;
-import com.xueyi.common.web.entity.domain.SlaveRelation;
 import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 import com.xueyi.system.api.organize.domain.model.SysPostConverter;
 import com.xueyi.system.api.organize.domain.po.SysPostPo;
 import com.xueyi.system.api.organize.domain.query.SysPostQuery;
-import com.xueyi.system.organize.domain.merge.SysOrganizeRoleMerge;
-import com.xueyi.system.organize.domain.merge.SysRolePostMerge;
-import com.xueyi.system.organize.domain.merge.SysUserPostMerge;
-import com.xueyi.system.organize.manager.ISysDeptManager;
 import com.xueyi.system.organize.manager.ISysPostManager;
 import com.xueyi.system.organize.mapper.SysPostMapper;
-import com.xueyi.system.organize.mapper.merge.SysOrganizeRoleMergeMapper;
-import com.xueyi.system.organize.mapper.merge.SysRolePostMergeMapper;
-import com.xueyi.system.organize.mapper.merge.SysUserPostMergeMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import static com.xueyi.system.api.organize.domain.merge.MergeGroup.*;
 
 /**
  * 系统服务 | 组织模块 | 岗位管理 数据封装层处理
@@ -34,20 +23,6 @@ import static com.xueyi.system.api.organize.domain.merge.MergeGroup.*;
  */
 @Component
 public class SysPostManagerImpl extends BaseManagerImpl<SysPostQuery, SysPostDto, SysPostPo, SysPostMapper, SysPostConverter> implements ISysPostManager {
-
-    /**
-     * 初始化从属关联关系
-     *
-     * @return 关系对象集合
-     */
-    protected List<SlaveRelation> subRelationInit() {
-        return new ArrayList<>(){{
-            add(new SlaveRelation(POST_SysDept_GROUP, ISysDeptManager.class, OperateConstants.SubOperateLimit.ONLY_SEL));
-            add(new SlaveRelation(POST_OrganizeRoleMerge_GROUP, SysOrganizeRoleMergeMapper.class, SysOrganizeRoleMerge.class, OperateConstants.SubOperateLimit.ONLY_DEL));
-            add(new SlaveRelation(POST_SysRolePostMerge_GROUP, SysRolePostMergeMapper.class, SysRolePostMerge.class, OperateConstants.SubOperateLimit.ONLY_DEL));
-            add(new SlaveRelation(POST_SysUserPostMerge_GROUP, SysUserPostMergeMapper.class, SysUserPostMerge.class, OperateConstants.SubOperateLimit.ONLY_DEL));
-        }};
-    }
 
     /**
      * 用户登录校验 | 根据部门Ids获取归属岗位对象集合
