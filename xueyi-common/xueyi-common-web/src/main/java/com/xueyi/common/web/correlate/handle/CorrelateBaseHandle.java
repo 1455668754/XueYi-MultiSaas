@@ -1,6 +1,7 @@
 package com.xueyi.common.web.correlate.handle;
 
 import com.xueyi.common.core.exception.UtilException;
+import com.xueyi.common.core.utils.core.ClassUtil;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.ConvertUtil;
 import com.xueyi.common.core.utils.core.NumberUtil;
@@ -41,7 +42,6 @@ public sealed class CorrelateBaseHandle permits CorrelateDirectHandle, Correlate
         return getFieldKeys(info, null, orm, field);
     }
 
-
     /**
      * 获取数据键集合
      *
@@ -50,7 +50,7 @@ public sealed class CorrelateBaseHandle permits CorrelateDirectHandle, Correlate
      * @param field    待提取字段
      * @return 数据主键集合
      */
-    protected static <D extends BasisEntity, ORM extends BaseCorrelate.ORM> Set<Object> getFieldKeys(Collection<D> infoList, ORM orm, Field field) {
+    protected static <D extends BasisEntity, ORM extends BaseCorrelate.ORM, Coll extends Collection<D>> Set<Object> getFieldKeys(Coll infoList, ORM orm, Field field) {
         return getFieldKeys(null, infoList, orm, field);
     }
 
@@ -63,7 +63,7 @@ public sealed class CorrelateBaseHandle permits CorrelateDirectHandle, Correlate
      * @param field    待提取字段
      * @return 数据主键集合
      */
-    private static <D extends BasisEntity, ORM extends BaseCorrelate.ORM> Set<Object> getFieldKeys(D info, Collection<D> infoList, ORM orm, Field field) {
+    private static <D extends BasisEntity, ORM extends BaseCorrelate.ORM, Coll extends Collection<D>> Set<Object> getFieldKeys(D info, Coll infoList, ORM orm, Field field) {
         Set<Object> keys = new HashSet<>();
         switch (orm.getMergeType()) {
             case DIRECT -> {
@@ -111,7 +111,7 @@ public sealed class CorrelateBaseHandle permits CorrelateDirectHandle, Correlate
      * @param slaveField 从数据待提取字段
      * @param subField   主数据待设值字段
      */
-    protected static <D extends BaseEntity, S extends BasisEntity> void setSubField(D dto, Collection<S> subList, CorrelateConstants.DataRow subDataRow, CorrelateConstants.MergeType mergeType, Field mainField, Field slaveField, Field subField) {
+    protected static <D extends BaseEntity, S extends BasisEntity, CollS extends Collection<S>> void setSubField(D dto, CollS subList, CorrelateConstants.DataRow subDataRow, CorrelateConstants.MergeType mergeType, Field mainField, Field slaveField, Field subField) {
         setSubField(dto, null, subList, subDataRow, mergeType, mainField, slaveField, subField, null);
     }
 
@@ -127,7 +127,7 @@ public sealed class CorrelateBaseHandle permits CorrelateDirectHandle, Correlate
      * @param subField    主数据待设值字段
      * @param subKeyField 主数据设值提取字段
      */
-    protected static <D extends BaseEntity, S extends BasisEntity> void setSubField(D dto, Collection<S> subList, CorrelateConstants.DataRow subDataRow, CorrelateConstants.MergeType mergeType, Field mainField, Field slaveField, Field subField, Field subKeyField) {
+    protected static <D extends BaseEntity, S extends BasisEntity, CollS extends Collection<S>> void setSubField(D dto, CollS subList, CorrelateConstants.DataRow subDataRow, CorrelateConstants.MergeType mergeType, Field mainField, Field slaveField, Field subField, Field subKeyField) {
         setSubField(dto, null, subList, subDataRow, mergeType, mainField, slaveField, subField, subKeyField);
     }
 
@@ -142,7 +142,7 @@ public sealed class CorrelateBaseHandle permits CorrelateDirectHandle, Correlate
      * @param slaveField 从数据待提取字段
      * @param subField   主数据待设值字段
      */
-    protected static <D extends BaseEntity, S extends BasisEntity> void setSubField(Collection<D> dtoList, Collection<S> subList, CorrelateConstants.DataRow subDataRow, CorrelateConstants.MergeType mergeType, Field mainField, Field slaveField, Field subField) {
+    protected static <D extends BaseEntity, S extends BasisEntity, Coll extends Collection<D>, CollS extends Collection<S>> void setSubField(Coll dtoList, CollS subList, CorrelateConstants.DataRow subDataRow, CorrelateConstants.MergeType mergeType, Field mainField, Field slaveField, Field subField) {
         setSubField(null, dtoList, subList, subDataRow, mergeType, mainField, slaveField, subField, null);
     }
 
@@ -158,7 +158,7 @@ public sealed class CorrelateBaseHandle permits CorrelateDirectHandle, Correlate
      * @param subField    主数据待设值字段
      * @param subKeyField 主数据设值提取字段
      */
-    protected static <D extends BaseEntity, S extends BasisEntity> void setSubField(Collection<D> dtoList, Collection<S> subList, CorrelateConstants.DataRow subDataRow, CorrelateConstants.MergeType mergeType, Field mainField, Field slaveField, Field subField, Field subKeyField) {
+    protected static <D extends BaseEntity, S extends BasisEntity, Coll extends Collection<D>, CollS extends Collection<S>> void setSubField(Coll dtoList, CollS subList, CorrelateConstants.DataRow subDataRow, CorrelateConstants.MergeType mergeType, Field mainField, Field slaveField, Field subField, Field subKeyField) {
         setSubField(null, dtoList, subList, subDataRow, mergeType, mainField, slaveField, subField, subKeyField);
     }
 
@@ -175,7 +175,7 @@ public sealed class CorrelateBaseHandle permits CorrelateDirectHandle, Correlate
      * @param subField    主数据待设值字段
      * @param subKeyField 主数据设值提取字段
      */
-    private static <D extends BaseEntity, S extends BasisEntity> void setSubField(D dto, Collection<D> dtoList, Collection<S> subList, CorrelateConstants.DataRow subDataRow, CorrelateConstants.MergeType mergeType, Field mainField, Field slaveField, Field subField, Field subKeyField) {
+    private static <D extends BaseEntity, S extends BasisEntity, Coll extends Collection<D>, CollS extends Collection<S>> void setSubField(D dto, Coll dtoList, CollS subList, CorrelateConstants.DataRow subDataRow, CorrelateConstants.MergeType mergeType, Field mainField, Field slaveField, Field subField, Field subKeyField) {
         // 从数据集合为空 -> 无需组装
         if (CollUtil.isEmpty(subList)) {
             return;
@@ -200,12 +200,13 @@ public sealed class CorrelateBaseHandle permits CorrelateDirectHandle, Correlate
                 }
             }
             case LIST -> {
+                boolean isArray = ClassUtil.isArray(subField.getType());
                 if (ObjectUtil.isNotNull(dto)) {
                     if (ObjectUtil.isNotNull(subKeyField)) {
                         List<Object> subKeyList = subList.stream().map(item -> getFieldObj(item, subKeyField)).filter(ObjectUtil::isNotNull).toList();
-                        setField(dto, subField, subKeyList);
+                        setField(dto, subField, isArray ? subKeyList.toArray() : subKeyList);
                     } else {
-                        setField(dto, subField, subList);
+                        setField(dto, subField, isArray ? subList.toArray() : subList);
                     }
                 }
                 if (CollUtil.isNotEmpty(dtoList)) {
@@ -216,9 +217,9 @@ public sealed class CorrelateBaseHandle permits CorrelateDirectHandle, Correlate
                             if (CollUtil.isNotEmpty(subInfoList)) {
                                 if (ObjectUtil.isNotNull(subKeyField)) {
                                     List<Object> subKeyList = subInfoList.stream().map(subItem -> getFieldObj(subItem, subKeyField)).filter(ObjectUtil::isNotNull).toList();
-                                    setField(item, subField, subKeyList);
+                                    setField(item, subField, isArray ? subKeyList.toArray() : subKeyList);
                                 } else {
-                                    setField(item, subField, subInfoList);
+                                    setField(item, subField, isArray ? subInfoList.toArray() : subInfoList);
                                 }
                             }
                         });
@@ -233,37 +234,12 @@ public sealed class CorrelateBaseHandle permits CorrelateDirectHandle, Correlate
                                         return subInfoList;
                                     }
                                 }).filter(ObjectUtil::isNotNull).flatMap(Collection::stream).filter(ObjectUtil::isNotNull).toList();
-                                setField(item, subField, subObjList);
+                                setField(item, subField, isArray ? subObjList.toArray() : subObjList);
                             }
                         });
                     }
                 }
             }
-        }
-    }
-
-    /**
-     * 数据对象指定字段赋值 | 数据类型指定
-     *
-     * @param subDataRow 数据类型
-     * @param dto        数据对象
-     * @param field      字段
-     * @param subList    从数据集合
-     */
-    protected static <D extends BaseEntity, L> void setField(CorrelateConstants.DataRow subDataRow, D dto, Field field, Collection<L> subList) {
-        if (CollUtil.isEmpty(subList)) {
-            return;
-        }
-        switch (subDataRow) {
-            case SINGLE -> {
-                if (subList.size() == NumberUtil.One) {
-                    subList.forEach(sub -> setField(dto, field, sub));
-                } else {
-                    log.error("data error, Expected one result (or null) to be returned by selectOne(), but found: {}", subList.size());
-                    throw new UtilException("数据错误，应查关联为单条，实际结果存在多条");
-                }
-            }
-            case LIST -> setField(dto, field, subList);
         }
     }
 
@@ -351,5 +327,14 @@ public sealed class CorrelateBaseHandle permits CorrelateDirectHandle, Correlate
                  NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * 输出错误日志
+     *
+     * @param msg 日志信息
+     */
+    public static void logReturn(String msg) {
+        throw new UtilException(msg);
     }
 }

@@ -174,5 +174,7 @@ public final class Indirect<D extends BaseEntity, M extends BasisEntity, S exten
         /** 从数据关联从键 - Field */
         private Field subKeyField;
 
+        /** 从数据关联数据类型为数组（true是 false否） */
+        private Boolean isArray;
     }
 }
