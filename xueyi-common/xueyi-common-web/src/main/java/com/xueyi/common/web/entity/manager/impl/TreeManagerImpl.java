@@ -19,10 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static com.xueyi.common.core.constant.basic.SqlConstants.ANCESTORS_FIND;
-import static com.xueyi.common.core.constant.basic.SqlConstants.ANCESTORS_PART_UPDATE;
-import static com.xueyi.common.core.constant.basic.SqlConstants.NONE_FIND;
-import static com.xueyi.common.core.constant.basic.SqlConstants.TREE_LEVEL_UPDATE;
+import static com.xueyi.common.core.constant.basic.SqlConstants.*;
 
 /**
  * 数据封装层处理 树型通用数据处理
@@ -123,8 +120,8 @@ public class TreeManagerImpl<Q extends P, D extends P, P extends TreeEntity<D>, 
         return StrUtil.notEquals(newAncestors, oldAncestors)
                 ? baseMapper.update(
                 null, Wrappers.<P>update().lambda()
-                        .setSql(StrUtil.format(ANCESTORS_PART_UPDATE, SqlConstants.Entity.ANCESTORS.getCode(), SqlConstants.Entity.ANCESTORS.getCode(), NumberUtil.One, oldAncestors.length(), newAncestors))
-                        .setSql(StrUtil.format(TREE_LEVEL_UPDATE, SqlConstants.Entity.LEVEL.getCode(), SqlConstants.Entity.LEVEL.getCode(), dto.getLevelChange()))
+                        .setSql(StrUtil.format(ANCESTORS_PART_UPDATE, Entity.ANCESTORS.getCode(), Entity.ANCESTORS.getCode(), NumberUtil.One, oldAncestors.length(), newAncestors))
+                        .setSql(StrUtil.format(TREE_LEVEL_UPDATE, Entity.LEVEL.getCode(), Entity.LEVEL.getCode(), dto.getLevelChange()))
                         .likeRight(P::getAncestors, oldAncestors))
                 : NumberUtil.Zero;
     }
@@ -144,8 +141,8 @@ public class TreeManagerImpl<Q extends P, D extends P, P extends TreeEntity<D>, 
                         .set(P::getStatus, dto.getStatus())
                         .func(i -> {
                             if (StrUtil.notEquals(newAncestors, oldAncestors)) {
-                                i.setSql(StrUtil.format(ANCESTORS_PART_UPDATE, SqlConstants.Entity.ANCESTORS.getCode(), SqlConstants.Entity.ANCESTORS.getCode(), NumberUtil.One, oldAncestors.length(), newAncestors))
-                                        .setSql(StrUtil.format(TREE_LEVEL_UPDATE, SqlConstants.Entity.LEVEL.getCode(), SqlConstants.Entity.LEVEL.getCode(), dto.getLevelChange()));
+                                i.setSql(StrUtil.format(ANCESTORS_PART_UPDATE, Entity.ANCESTORS.getCode(), Entity.ANCESTORS.getCode(), NumberUtil.One, oldAncestors.length(), newAncestors))
+                                        .setSql(StrUtil.format(TREE_LEVEL_UPDATE, Entity.LEVEL.getCode(), Entity.LEVEL.getCode(), dto.getLevelChange()));
                             }
                         })
                         .likeRight(P::getAncestors, oldAncestors));
@@ -173,16 +170,17 @@ public class TreeManagerImpl<Q extends P, D extends P, P extends TreeEntity<D>, 
      */
     @Override
     public int deleteChildByAncestors(String... ancestors) {
-        return ArrayUtil.isNotEmpty(ancestors)
-                ? baseMapper.delete(
+        if (ArrayUtil.isEmpty(ancestors)) {
+            return NumberUtil.Zero;
+        }
+        return baseMapper.delete(
                 Wrappers.<P>update().lambda()
                         .apply(NONE_FIND)
                         .func(i -> {
                             for (String ancestor : ancestors) {
                                 i.or().likeRight(P::getAncestors, ancestor);
                             }
-                        }))
-                : NumberUtil.Zero;
+                        }));
     }
 
     /**

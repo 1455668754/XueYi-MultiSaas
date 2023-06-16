@@ -19,6 +19,7 @@ import com.xueyi.common.web.correlate.domain.BaseCorrelate;
 import com.xueyi.common.web.correlate.domain.Direct;
 import com.xueyi.common.web.correlate.domain.Indirect;
 import com.xueyi.common.web.correlate.domain.Remote;
+import com.xueyi.common.web.correlate.handle.CorrelateBaseHandle;
 import com.xueyi.common.web.correlate.handle.CorrelateDirectHandle;
 import com.xueyi.common.web.correlate.handle.CorrelateIndirectHandle;
 import com.xueyi.common.web.correlate.handle.CorrelateRemoteHandle;
@@ -75,7 +76,7 @@ public final class CorrelateUtil {
      * @param dtoList 数据对象集合
      * @return 数据对象集合
      */
-    public static <D extends BaseEntity> List<D> subCorrelates(List<D> dtoList) {
+    public static <D extends BaseEntity, Coll extends Collection<D>> Coll subCorrelates(Coll dtoList) {
         getCorrelates().stream().filter(relation -> ObjectUtil.equals(CorrelateConstants.SubOperate.SELECT, relation.getOperateType()))
                 .forEach(relation -> subCorrelates(dtoList, relation));
         return dtoList;
@@ -98,7 +99,7 @@ public final class CorrelateUtil {
      * @param dtoList 数据对象集合
      * @return 结果
      */
-    public static <D extends BaseEntity> int addCorrelates(Collection<D> dtoList) {
+    public static <D extends BaseEntity, Coll extends Collection<D>> int addCorrelates(Coll dtoList) {
         return getCorrelates().stream().filter(relation -> ObjectUtil.equals(CorrelateConstants.SubOperate.ADD, relation.getOperateType()))
                 .map(relation -> addCorrelates(dtoList, relation)).reduce(Integer::sum).orElse(NumberUtil.Zero);
     }
@@ -122,7 +123,7 @@ public final class CorrelateUtil {
      * @param newList    新数据对象集合
      * @return 结果
      */
-    public static <D extends BaseEntity> int editCorrelates(Collection<D> originList, Collection<D> newList) {
+    public static <D extends BaseEntity, Coll extends Collection<D>> int editCorrelates(Coll originList, Coll newList) {
         return getCorrelates().stream().filter(relation -> ObjectUtil.equals(CorrelateConstants.SubOperate.EDIT, relation.getOperateType()))
                 .map(relation -> editCorrelates(originList, newList, relation)).reduce(Integer::sum).orElse(NumberUtil.Zero);
     }
@@ -144,7 +145,7 @@ public final class CorrelateUtil {
      * @param dtoList 数据对象集合
      * @return 结果
      */
-    public static <D extends BaseEntity> int delCorrelates(Collection<D> dtoList) {
+    public static <D extends BaseEntity, Coll extends Collection<D>> int delCorrelates(Coll dtoList) {
         return getCorrelates().stream().filter(relation -> ObjectUtil.equals(CorrelateConstants.SubOperate.DELETE, relation.getOperateType()))
                 .map(relation -> delCorrelates(dtoList, relation)).reduce(Integer::sum).orElse(NumberUtil.Zero);
     }
@@ -178,7 +179,7 @@ public final class CorrelateUtil {
      * @param relation 从属关联关系定义对象
      * @return 数据对象集合
      */
-    private static <D extends BaseEntity, Correlate extends BaseCorrelate> List<D> subCorrelates(List<D> dtoList, Correlate relation) {
+    private static <D extends BaseEntity, Correlate extends BaseCorrelate, Coll extends Collection<D>> Coll subCorrelates(Coll dtoList, Correlate relation) {
         if (proofCorrelation(dtoList, relation, CorrelateConstants.SubOperate.SELECT)) {
             if (relation instanceof Direct direct) {
                 CorrelateDirectHandle.assembleDirectList(dtoList, direct);
@@ -220,7 +221,7 @@ public final class CorrelateUtil {
      * @param relation 从属关联关系定义对象
      * @return 结果
      */
-    private static <D extends BaseEntity, Correlate extends BaseCorrelate> int addCorrelates(Collection<D> dtoList, Correlate relation) {
+    private static <D extends BaseEntity, Correlate extends BaseCorrelate, Coll extends Collection<D>> int addCorrelates(Coll dtoList, Correlate relation) {
         if (proofCorrelation(dtoList, relation, CorrelateConstants.SubOperate.ADD)) {
             if (relation instanceof Direct direct) {
                 return CorrelateDirectHandle.insertDirectList(dtoList, direct);
@@ -260,7 +261,7 @@ public final class CorrelateUtil {
      * @param newList    新数据对象集合
      * @param relation   从属关联关系定义对象
      */
-    private static <D extends BaseEntity, Correlate extends BaseCorrelate> int editCorrelates(Collection<D> originList, Collection<D> newList, Correlate relation) {
+    private static <D extends BaseEntity, Correlate extends BaseCorrelate, Coll extends Collection<D>> int editCorrelates(Coll originList, Coll newList, Correlate relation) {
         if (proofCorrelation(null, null, originList, newList, relation, CorrelateConstants.SubOperate.EDIT)) {
             if (relation instanceof Direct direct) {
                 return CorrelateDirectHandle.updateDirectList(originList, newList, direct);
@@ -298,7 +299,7 @@ public final class CorrelateUtil {
      * @param dtoList  数据对象集合
      * @param relation 从属关联关系定义对象
      */
-    private static <D extends BaseEntity, Correlate extends BaseCorrelate> int delCorrelates(Collection<D> dtoList, Correlate relation) {
+    private static <D extends BaseEntity, Correlate extends BaseCorrelate, Coll extends Collection<D>> int delCorrelates(Coll dtoList, Correlate relation) {
         if (proofCorrelation(dtoList, relation, CorrelateConstants.SubOperate.DELETE)) {
             if (relation instanceof Direct direct) {
                 return CorrelateDirectHandle.deleteDirectList(dtoList, direct);
@@ -329,7 +330,7 @@ public final class CorrelateUtil {
      *
      * @param relation 从属关联关系定义对象
      */
-    private static <D extends BaseEntity, Correlate extends BaseCorrelate> Boolean proofCorrelation(Collection<D> dtoList, Correlate relation, CorrelateConstants.SubOperate operate) {
+    private static <D extends BaseEntity, Correlate extends BaseCorrelate, Coll extends Collection<D>> Boolean proofCorrelation(Coll dtoList, Correlate relation, CorrelateConstants.SubOperate operate) {
         return switch (operate) {
             case SELECT, DELETE -> proofCorrelation(null, null, dtoList, null, relation, operate);
             case ADD -> proofCorrelation(null, null, null, dtoList, relation, operate);
@@ -342,7 +343,7 @@ public final class CorrelateUtil {
      *
      * @param relation 从属关联关系定义对象
      */
-    private static <D extends BaseEntity, Correlate extends BaseCorrelate> Boolean proofCorrelation(D originDto, D newDto, Collection<D> originList, Collection<D> newList, Correlate relation, CorrelateConstants.SubOperate operate) {
+    private static <D extends BaseEntity, Correlate extends BaseCorrelate, Coll extends Collection<D>> Boolean proofCorrelation(D originDto, D newDto, Coll originList, Coll newList, Correlate relation, CorrelateConstants.SubOperate operate) {
         if (ObjectUtil.isNull(relation)) {
             return Boolean.FALSE;
         }
@@ -390,7 +391,7 @@ public final class CorrelateUtil {
      */
     private static <Correlate extends BaseCorrelate> void checkOperateLegal(Correlate correlate, CorrelateConstants.SubOperate operate) {
         if (ObjectUtil.notEqual(operate, correlate.getOperateType())) {
-            logReturn(StrUtil.format("groupName: {}, operateType must be equal", correlate.getGroupName()));
+            CorrelateBaseHandle.logReturn(StrUtil.format("groupName: {}, operateType must be equal", correlate.getGroupName()));
         }
         checkORMLegal(correlate, correlate.getOrm());
     }
@@ -404,11 +405,9 @@ public final class CorrelateUtil {
     private static <Correlate extends BaseCorrelate, ORM extends BaseCorrelate.ORM> void checkORMLegal(Correlate correlate, ORM orm) {
         // 核心数据空校验
         if (ObjectUtil.isNull(orm)) {
-            logReturn(StrUtil.format("groupName: {}, orm can not be null", correlate.getGroupName()));
+            CorrelateBaseHandle.logReturn(StrUtil.format("groupName: {}, orm can not be null", correlate.getGroupName()));
         } else if (ObjectUtil.isNull(orm.getMainKeyField()) || (ClassUtil.isNotSimpleType(orm.getMainKeyField().getType()) && ClassUtil.isNotCollection(orm.getMainKeyField().getType()))) {
-            logReturn(StrUtil.format("groupName: {}, mainKeyField can not be null or not be (basicType | collection)", correlate.getGroupName()));
-        } else if (ObjectUtil.isNull(orm.getSlaveKeyField()) || ClassUtil.isNotSimpleType(orm.getSlaveKeyField().getType())) {
-            logReturn(StrUtil.format("groupName: {}, slaveKeyField can not be null or not BasicType", correlate.getGroupName()));
+            CorrelateBaseHandle.logReturn(StrUtil.format("groupName: {}, mainKeyField can not be null or not be (basicType | collection)", correlate.getGroupName()));
         }
 
         if (ObjectUtil.isNotNull(orm.getSubInfoField())) {
@@ -418,92 +417,26 @@ public final class CorrelateUtil {
             } else if (ClassUtil.isCollection(subInfoClazz)) {
                 orm.setSubDataRow(CorrelateConstants.DataRow.LIST);
             } else {
-                logReturn(StrUtil.format("groupName: {}, subInfoField class not in compliance with regulations, must be NormalClass or Collection", correlate.getGroupName()));
+                CorrelateBaseHandle.logReturn(StrUtil.format("groupName: {}, subInfoField class not in compliance with regulations, must be NormalClass or Collection", correlate.getGroupName()));
             }
         }
 
         // 关联数据差异化校验
-        if (orm instanceof Direct.ORM ormDirect) {
-            if (ObjectUtil.isNull(ormDirect.getSlaveService())) {
-                logReturn(StrUtil.format("groupName: {}, slaveService can not be null", correlate.getGroupName()));
-            }
-            ormDirect.setMergeType(ClassUtil.isBasicType(orm.getMainKeyField().getType()) ? CorrelateConstants.MergeType.DIRECT : CorrelateConstants.MergeType.INDIRECT);
-            if (ObjectUtil.isNotNull(ormDirect.getSubDataRow()) && ObjectUtil.equals(CorrelateConstants.DataRow.SINGLE, ormDirect.getSubDataRow()) && ormDirect.getMergeType().isIndirect()) {
-                logReturn(StrUtil.format("groupName: {}, subInfoField is single, but mainKeyField is Collection", correlate.getGroupName()));
-            }
-        } else if (orm instanceof Indirect.ORM ormIndirect) {
-            if (ObjectUtil.isNull(ormIndirect.getSlaveService())) {
-                logReturn(StrUtil.format("groupName: {}, slaveService can not be null", correlate.getGroupName()));
-            } else if (ObjectUtil.isNull(ormIndirect.getMergeMapper())) {
-                logReturn(StrUtil.format("groupName: {}, mergeMapper can not be null", correlate.getGroupName()));
-            } else if (ObjectUtil.isNull(ormIndirect.getMergeMainField()) || ClassUtil.isNotSimpleType(ormIndirect.getMergeMainField().getType())) {
-                logReturn(StrUtil.format("groupName: {}, mergeMainField can not be null or not BasicType", correlate.getGroupName()));
-            } else if (ObjectUtil.isNull(ormIndirect.getMergeSlaveField()) || ClassUtil.isNotSimpleType(ormIndirect.getMergeSlaveField().getType())) {
-                logReturn(StrUtil.format("groupName: {}, mergeSlaveField can not be null or not BasicType", correlate.getGroupName()));
-            } else if (ObjectUtil.isNull(ormIndirect.getSubKeyField())) {
-                logReturn(StrUtil.format("groupName: {}, subKeyField can not be null", correlate.getGroupName()));
-            } else if (ObjectUtil.isNull(ormIndirect.getSubInfoField())) {
-                logReturn(StrUtil.format("groupName: {}, subInfoField can not be null", correlate.getGroupName()));
-            } else if (ClassUtil.isNotSimpleType(ormIndirect.getMainKeyField().getType())) {
-                logReturn(StrUtil.format("groupName: {}, mainKeyField must be basicType", correlate.getGroupName()));
-            }
-            ormIndirect.setMergeMainSqlName(CorrelateUtil.getFieldSqlName(ormIndirect.getMergeMainField()));
-            ormIndirect.setMergeSlaveSqlName(CorrelateUtil.getFieldSqlName(ormIndirect.getMergeSlaveField()));
-
-            // 从数据关联校验
-            if (ObjectUtil.isNotNull(ormIndirect.getSubKeyField())) {
-                Class<?> subKeyClazz = ormIndirect.getSubKeyField().getType();
-                CorrelateConstants.DataRow subKey = null;
-                if (ClassUtil.isBasicType(subKeyClazz)) {
-                    subKey = CorrelateConstants.DataRow.SINGLE;
-                } else if (ClassUtil.isCollection(subKeyClazz)) {
-                    subKey = CorrelateConstants.DataRow.LIST;
-                } else {
-                    logReturn(StrUtil.format("groupName: {}, subKeyField class not in compliance with regulations, must be Collection or Primitive", correlate.getGroupName()));
-                }
-                if (ObjectUtil.isNotNull(ormIndirect.getSubDataRow())) {
-                    if (ObjectUtil.notEqual(ormIndirect.getSubDataRow(), subKey)) {
-                        logReturn(StrUtil.format("groupName: {}, subKeyField and subInfoField dataRow not equal", correlate.getGroupName()));
-                    }
-                } else {
-                    ormIndirect.setSubDataRow(subKey);
-                }
-            }
-        } else if (orm instanceof Remote.ORM ormRemote) {
-            if (ObjectUtil.isNull(ormRemote.getRemoteService())) {
-                logReturn(StrUtil.format("groupName: {}, remoteService can not be null", correlate.getGroupName()));
-            }
-            ormRemote.setMergeType(ClassUtil.isBasicType(orm.getMainKeyField().getType()) ? CorrelateConstants.MergeType.DIRECT : CorrelateConstants.MergeType.INDIRECT);
-            if (ObjectUtil.isNotNull(ormRemote.getSubDataRow()) && ObjectUtil.equals(CorrelateConstants.DataRow.SINGLE, ormRemote.getSubDataRow()) && ormRemote.getMergeType().isIndirect()) {
-                logReturn(StrUtil.format("groupName: {}, subInfoField is single, but mainKeyField is Collection", correlate.getGroupName()));
-            }
+        if (correlate instanceof Direct<?, ?> direct) {
+            CorrelateDirectHandle.checkORMLegal(direct);
+        } else if (correlate instanceof Indirect<?, ?, ?> indirect) {
+            CorrelateIndirectHandle.checkORMLegal(indirect);
+        } else if (correlate instanceof Remote remote) {
+            CorrelateRemoteHandle.checkORMLegal(remote);
         }
 
         // 数据初始化
-        orm.setMainKeySqlName(CorrelateUtil.getFieldSqlName(orm.getMainKeyField()));
-        orm.setSlaveKeySqlName(CorrelateUtil.getFieldSqlName(orm.getSlaveKeyField()));
-
-//        // 操作类型校验
-//        switch (correlate.getOperateType()) {
-//            case SELECT -> {
-//                if (orm instanceof Direct.ORM ormDirect) {
-//                    if (ObjectUtil.isNull(orm.getSubInfoField())) {
-//                        logReturn(StrUtil.format("groupName: {}, subInfoField can not be null", correlate.getGroupName()));
-//                    }
-//                }else if(orm instanceof Indirect.ORM ormIndirect){
-//
-//                }
-//            }
-//            case ADD -> {
-//
-//            }
-//            case EDIT -> {
-//
-//            }
-//            case DELETE -> {
-//
-//            }
-//        }
+        if (ObjectUtil.isNotNull(orm.getMainKeyField())) {
+            orm.setMainKeySqlName(CorrelateUtil.getFieldSqlName(orm.getMainKeyField()));
+        }
+        if (ObjectUtil.isNotNull(orm.getSlaveKeyField())) {
+            orm.setSlaveKeySqlName(CorrelateUtil.getFieldSqlName(orm.getSlaveKeyField()));
+        }
     }
 
     /**
@@ -523,15 +456,6 @@ public final class CorrelateUtil {
     }
 
     /**
-     * 输出错误日志
-     *
-     * @param msg 日志信息
-     */
-    private static void logReturn(String msg) {
-        throw new UtilException(msg);
-    }
-
-    /**
      * 记录从属关联关系
      *
      * @param correlateEnum 关联枚举
@@ -541,21 +465,6 @@ public final class CorrelateUtil {
         List<Correlate> correlates = getRedisService().getCacheObject(cacheName);
         if (ObjectUtil.isNull(correlates)) {
             correlates = (List<Correlate>) correlateEnum.getCorrelates();
-//            if (ClassUtil.isNotAssignable(CorrelateService.class, correlateEnum.getDeclaringClass())) {
-//                throw new UtilException("枚举必须为CorrelateService子类");
-//            }
-//            Map<String, Object> correlatesMap = EnumUtil.getNameFieldMap(correlateEnum.getDeclaringClass(), "correlates");
-//            if (MapUtil.isEmpty(correlatesMap)) {
-//                throw new UtilException("枚举必须存在correlates属性!");
-//            }
-//            Object obj = correlatesMap.get(correlateEnum.name());
-//            if (ObjectUtil.isNull(obj)) {
-//                throw new UtilException("枚举correlate属性不能为null!");
-//            } else if (obj instanceof List<?> correlateList) {
-//                correlates = (List<Correlate>) correlateList;
-//            } else {
-//                throw new UtilException("未匹配到指定枚举值!");
-//            }
             AtomicInteger index = new AtomicInteger(NumberUtil.Zero);
             correlates.forEach(item -> checkOperateLegal(item, correlateEnum.name(), index));
         }

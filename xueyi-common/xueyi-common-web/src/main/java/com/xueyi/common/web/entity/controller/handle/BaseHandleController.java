@@ -65,7 +65,8 @@ public abstract class BaseHandleController<Q extends BaseEntity, D extends BaseE
      * @see com.xueyi.common.web.entity.controller.BaseController#batchRemoveForce(List)
      */
     protected void RHandleEmpty(List<Long> idList) {
-        if (CollUtil.isEmpty(idList))
+        if (CollUtil.isEmpty(idList)) {
             warn(StrUtil.format("无待删除{}！", getNodeName()));
+        }
     }
 }

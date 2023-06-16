@@ -4,6 +4,8 @@ import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.constant.basic.SqlConstants;
+import com.xueyi.common.core.utils.core.CollUtil;
+import com.xueyi.common.core.utils.core.NumberUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.core.web.entity.model.BaseConverter;
@@ -134,7 +136,9 @@ public class BaseManagerImpl<Q extends P, D extends P, P extends BaseEntity, PM 
     @DSTransactional
     @SuppressWarnings("unchecked")
     public int insertBatch(Collection<D> dtoList) {
-        return baseMapper.insertBatch((Collection<P>) dtoList);
+        return CollUtil.isNotEmpty(dtoList)
+                ? baseMapper.insertBatch((Collection<P>) dtoList)
+                : NumberUtil.Zero;
     }
 
     /**
@@ -183,7 +187,9 @@ public class BaseManagerImpl<Q extends P, D extends P, P extends BaseEntity, PM 
     @DSTransactional
     @SuppressWarnings("unchecked")
     public int updateBatch(Collection<D> dtoList) {
-        return baseMapper.updateBatch((Collection<P>) dtoList);
+        return CollUtil.isNotEmpty(dtoList)
+                ? baseMapper.updateBatch((Collection<P>) dtoList)
+                : NumberUtil.Zero;
     }
 
     /**
@@ -244,7 +250,9 @@ public class BaseManagerImpl<Q extends P, D extends P, P extends BaseEntity, PM 
      */
     @Override
     public int deleteByIds(Collection<? extends Serializable> idList) {
-        return baseMapper.deleteBatchIds(idList);
+        return CollUtil.isNotEmpty(idList)
+                ? baseMapper.deleteBatchIds(idList)
+                : NumberUtil.Zero;
     }
 
     /**

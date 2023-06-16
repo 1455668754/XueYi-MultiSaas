@@ -6,7 +6,7 @@ import com.xueyi.common.core.exception.UtilException;
 import com.xueyi.common.core.utils.core.ArrayUtil;
 import com.xueyi.common.core.utils.core.NumberUtil;
 import com.xueyi.common.core.web.entity.base.BasisEntity;
-import com.xueyi.common.web.utils.SqlHandleUtil;
+import com.xueyi.common.web.correlate.utils.CorrelateUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -45,16 +45,16 @@ public class SqlField implements Serializable {
         initOperate(linkageOperate);
     }
 
-    public SqlField(SqlConstants.OperateType operateType, SFunction<? extends BasisEntity, Object> fieldFun, Object object, SlaveRelation.LinkageOperate... linkageOperate) {
+    public <T extends BasisEntity> SqlField(SqlConstants.OperateType operateType, SFunction<T, Object> fieldFun, Object object, SlaveRelation.LinkageOperate... linkageOperate) {
         this.operateType = operateType;
-        this.fieldStr = SqlHandleUtil.getFieldName(fieldFun);
+        this.fieldStr = CorrelateUtil.getFieldSqlName(fieldFun);
         this.object = object;
         initOperate(linkageOperate);
     }
 
-    public SqlField(SqlConstants.OperateType operateType, SFunction<? extends BasisEntity, Object> fieldFun, Serializable serial, SlaveRelation.LinkageOperate... linkageOperate) {
+    public <T extends BasisEntity> SqlField(SqlConstants.OperateType operateType, SFunction<T, Object> fieldFun, Serializable serial, SlaveRelation.LinkageOperate... linkageOperate) {
         this.operateType = operateType;
-        this.fieldStr = SqlHandleUtil.getFieldName(fieldFun);
+        this.fieldStr = CorrelateUtil.getFieldSqlName(fieldFun);
         this.object = serial;
         initOperate(linkageOperate);
     }
@@ -66,9 +66,9 @@ public class SqlField implements Serializable {
         initOperate(linkageOperate);
     }
 
-    public SqlField(SqlConstants.OperateType operateType, SFunction<? extends BasisEntity, Object> fieldFun, Collection<Object> coll, SlaveRelation.LinkageOperate... linkageOperate) {
+    public <T extends BasisEntity> SqlField(SqlConstants.OperateType operateType, SFunction<T, Object> fieldFun, Collection<Object> coll, SlaveRelation.LinkageOperate... linkageOperate) {
         this.operateType = operateType;
-        this.fieldStr = SqlHandleUtil.getFieldName(fieldFun);
+        this.fieldStr = CorrelateUtil.getFieldSqlName(fieldFun);
         this.coll = coll;
         initOperate(linkageOperate);
     }
@@ -80,8 +80,8 @@ public class SqlField implements Serializable {
         initOperate(linkageOperate);
     }
 
-    public void setField(SFunction<? extends BasisEntity, Object> fieldFun) {
-        this.fieldStr = SqlHandleUtil.getFieldName(fieldFun);
+    public <T extends BasisEntity> void setField(SFunction<T, Object> fieldFun) {
+        this.fieldStr = CorrelateUtil.getFieldSqlName(fieldFun);
     }
 
     /**
@@ -90,11 +90,12 @@ public class SqlField implements Serializable {
      * @param linkageOperate 联动操作控制
      */
     private void initOperate(SlaveRelation.LinkageOperate... linkageOperate) {
-        if (ArrayUtil.isEmpty(linkageOperate))
+        if (ArrayUtil.isEmpty(linkageOperate)) {
             this.linkageOperate = new SlaveRelation.LinkageOperate(Boolean.FALSE);
-        else if (linkageOperate.length > NumberUtil.One)
+        } else if (linkageOperate.length > NumberUtil.One) {
             throw new UtilException("linkageOperate at most one is allowed!");
-        else
+        } else {
             this.linkageOperate = linkageOperate[NumberUtil.Zero];
+        }
     }
 }

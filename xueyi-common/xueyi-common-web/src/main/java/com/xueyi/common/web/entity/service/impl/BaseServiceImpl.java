@@ -8,6 +8,7 @@ import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.redis.constant.RedisConstants;
+import com.xueyi.common.web.correlate.contant.CorrelateConstants;
 import com.xueyi.common.web.correlate.service.CorrelateService;
 import com.xueyi.common.web.entity.manager.IBaseManager;
 import com.xueyi.common.web.entity.service.IBaseService;
@@ -49,7 +50,7 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, C exten
     @Override
     public List<D> selectList(Q query) {
         List<D> dtoList = baseManager.selectList(query);
-        return subCorrelates(dtoList);
+        return subCorrelates(dtoList, getBasicCorrelate(CorrelateConstants.ServiceType.SELECT_LIST));
     }
 
     /**
@@ -62,7 +63,7 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, C exten
     @Deprecated
     public List<D> selectListMerge(Q query) {
         List<D> dtoList = baseManager.selectListMerge(query);
-        return subCorrelates(dtoList);
+        return subCorrelates(dtoList, getBasicCorrelate(CorrelateConstants.ServiceType.SELECT_LIST));
     }
 
     /**
@@ -86,7 +87,7 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, C exten
     @Override
     public List<D> selectListByIds(Collection<? extends Serializable> idList) {
         List<D> dtoList = baseManager.selectListByIds(idList);
-        return subCorrelates(dtoList);
+        return subCorrelates(dtoList, getBasicCorrelate(CorrelateConstants.ServiceType.SELECT_ID_LIST));
     }
 
     /**
@@ -99,7 +100,7 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, C exten
     @Deprecated
     public List<D> selectListByIdsMerge(Collection<? extends Serializable> idList) {
         List<D> dtoList = baseManager.selectListByIdsMerge(idList);
-        return subCorrelates(dtoList);
+        return subCorrelates(dtoList, getBasicCorrelate(CorrelateConstants.ServiceType.SELECT_ID_LIST));
     }
 
     /**
@@ -111,7 +112,7 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, C exten
     @Override
     public D selectById(Serializable id) {
         D dto = baseManager.selectById(id);
-        return subCorrelates(dto);
+        return subCorrelates(dto, getBasicCorrelate(CorrelateConstants.ServiceType.SELECT_ID_SINGLE));
     }
 
     /**
@@ -124,7 +125,7 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, C exten
     @Deprecated
     public D selectByIdMerge(Serializable id) {
         D dto = baseManager.selectByIdMerge(id);
-        return subCorrelates(dto);
+        return subCorrelates(dto, getBasicCorrelate(CorrelateConstants.ServiceType.SELECT_ID_SINGLE));
     }
 
     /**
@@ -269,7 +270,7 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, C exten
         if (ObjectUtil.isNull(getCacheKey())) {
             throw new UtilException("未正常配置缓存，无法使用!");
         }
-        List<D> allList = selectList(null);
-        refreshCache(null, RedisConstants.OperateType.REFRESH_ALL, null, allList);
+        List<D> allList = selectListMerge(null);
+        refreshCache(OperateConstants.ServiceType.BATCH_ADD, RedisConstants.OperateType.REFRESH_ALL, null, allList);
     }
 }
