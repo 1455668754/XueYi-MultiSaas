@@ -2,14 +2,12 @@ package com.xueyi.system.organize.manager.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.constant.basic.SqlConstants;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.ConvertUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.security.utils.SecurityUserUtils;
-import com.xueyi.common.web.entity.domain.SlaveRelation;
 import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.system.api.authority.domain.model.SysRoleConverter;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
@@ -23,14 +21,12 @@ import com.xueyi.system.api.organize.domain.query.SysUserQuery;
 import com.xueyi.system.authority.mapper.SysRoleMapper;
 import com.xueyi.system.organize.domain.merge.SysOrganizeRoleMerge;
 import com.xueyi.system.organize.domain.merge.SysUserPostMerge;
-import com.xueyi.system.organize.manager.ISysPostManager;
 import com.xueyi.system.organize.manager.ISysUserManager;
 import com.xueyi.system.organize.mapper.SysDeptMapper;
 import com.xueyi.system.organize.mapper.SysPostMapper;
 import com.xueyi.system.organize.mapper.SysUserMapper;
 import com.xueyi.system.organize.mapper.merge.SysOrganizeRoleMergeMapper;
 import com.xueyi.system.organize.mapper.merge.SysUserPostMergeMapper;
-import com.xueyi.system.organize.service.ISysPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -42,9 +38,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import static com.xueyi.system.api.organize.domain.merge.MergeGroup.USER_OrganizeRoleMerge_GROUP;
-import static com.xueyi.system.api.organize.domain.merge.MergeGroup.USER_SysUserPostMerge_GROUP;
 
 /**
  * 系统服务 | 组织模块 | 用户管理 数据封装层处理
@@ -77,19 +70,6 @@ public class SysUserManagerImpl extends BaseManagerImpl<SysUserQuery, SysUserDto
 
     @Autowired
     SysRoleConverter roleConverter;
-
-    /**
-     * 初始化从属关联关系
-     *
-     * @return 关系对象集合
-     */
-    @Override
-    protected List<SlaveRelation> subRelationInit() {
-        return new ArrayList<>() {{
-            add(new SlaveRelation(USER_OrganizeRoleMerge_GROUP, SysOrganizeRoleMergeMapper.class, SysOrganizeRoleMerge.class, OperateConstants.SubOperateLimit.ONLY_DEL));
-            add(new SlaveRelation(USER_SysUserPostMerge_GROUP, ISysPostService.class, ISysPostManager.class, SysUserPostMergeMapper.class, SysUserPostMerge.class, new SlaveRelation.LinkageOperate()));
-        }};
-    }
 
     /**
      * 用户登录校验 | 查询用户信息

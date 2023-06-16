@@ -6,6 +6,7 @@ import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.datasource.annotation.Isolate;
+import com.xueyi.common.web.correlate.contant.CorrelateConstants;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
 import com.xueyi.system.api.organize.domain.query.SysUserQuery;
@@ -17,7 +18,9 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 系统服务 | 组织模块 | 用户管理 服务层处理
@@ -27,6 +30,19 @@ import java.util.List;
 @Service
 @Isolate
 public class SysUserServiceImpl extends BaseServiceImpl<SysUserQuery, SysUserDto, SysUserCorrelate, ISysUserManager> implements ISysUserService {
+
+    /**
+     * 默认方法关联配置定义
+     */
+    @Override
+    protected Map<CorrelateConstants.ServiceType, SysUserCorrelate> defaultCorrelate() {
+        return new HashMap<>() {{
+            put(CorrelateConstants.ServiceType.SELECT_ID_SINGLE, SysUserCorrelate.INFO_LIST);
+            put(CorrelateConstants.ServiceType.ADD, SysUserCorrelate.BASE_ADD);
+            put(CorrelateConstants.ServiceType.EDIT, SysUserCorrelate.BASE_EDIT);
+            put(CorrelateConstants.ServiceType.DELETE, SysUserCorrelate.BASE_DEL);
+        }};
+    }
 
     /**
      * 用户登录校验 | 查询用户信息
@@ -61,7 +77,8 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserQuery, SysUserDto
     @Override
     @DataScope(userAlias = "id", mapperScope = {"SysUserMapper"})
     public List<SysUserDto> selectListScope(SysUserQuery user) {
-        return super.selectListScope(user);
+        List<SysUserDto> list = super.selectListScope(user);
+        return subCorrelates(list, SysUserCorrelate.INFO_LIST);
     }
 
     /**
