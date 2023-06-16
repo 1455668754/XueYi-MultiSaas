@@ -5,12 +5,15 @@ import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.redis.constant.RedisConstants;
 import com.xueyi.common.redis.service.RedisService;
+import com.xueyi.common.web.correlate.contant.CorrelateConstants;
 import com.xueyi.common.web.correlate.service.CorrelateService;
 import com.xueyi.common.web.entity.manager.IBaseManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * 服务层 操作方法 基类实现通用数据处理
@@ -42,6 +45,11 @@ public class BaseServiceHandle<Q extends BaseEntity, D extends BaseEntity, C ext
         // 校验是否启动缓存管理
         if (ObjectUtil.isNull(getCacheKey())) {
             return;
+        }
+        if (operate.isSingle()) {
+            subCorrelates(dto, getBasicCorrelate(CorrelateConstants.ServiceType.CACHE_REFRESH));
+        } else if (operate.isBatch()) {
+            subCorrelates(dtoList, getBasicCorrelate(CorrelateConstants.ServiceType.CACHE_REFRESH));
         }
         switch (operateCache) {
             case REFRESH_ALL -> {
@@ -91,14 +99,14 @@ public class BaseServiceHandle<Q extends BaseEntity, D extends BaseEntity, C ext
             case ADD -> {
                 // insert merge data
                 baseManager.insertMerge(newDto);
-                addCorrelates(newDto, getBasicCorrelate(OperateConstants.ServiceType.ADD));
+                addCorrelates(newDto, getBasicCorrelate(CorrelateConstants.ServiceType.ADD));
                 // refresh cache
                 refreshCache(operate, RedisConstants.OperateType.REFRESH, newDto);
             }
             case EDIT -> {
                 // update merge data
                 baseManager.updateMerge(originDto, newDto);
-                editCorrelates(originDto, newDto, getBasicCorrelate(OperateConstants.ServiceType.EDIT));
+                editCorrelates(originDto, newDto, getBasicCorrelate(CorrelateConstants.ServiceType.EDIT));
                 // refresh cache
                 refreshCache(operate, RedisConstants.OperateType.REFRESH, newDto);
             }
@@ -106,7 +114,7 @@ public class BaseServiceHandle<Q extends BaseEntity, D extends BaseEntity, C ext
             case DELETE -> {
                 // delete merge data
                 baseManager.deleteMerge(originDto);
-                delCorrelates(originDto, getBasicCorrelate(OperateConstants.ServiceType.DELETE));
+                delCorrelates(originDto, getBasicCorrelate(CorrelateConstants.ServiceType.DELETE));
                 // refresh cache
                 refreshCache(operate, RedisConstants.OperateType.REMOVE, originDto);
             }
@@ -138,17 +146,17 @@ public class BaseServiceHandle<Q extends BaseEntity, D extends BaseEntity, C ext
         switch (operate) {
             case BATCH_ADD -> {
                 baseManager.insertMerge(newList);
-                addCorrelates(newList, getBasicCorrelate(OperateConstants.ServiceType.BATCH_ADD));
+                addCorrelates(newList, getBasicCorrelate(CorrelateConstants.ServiceType.BATCH_ADD));
                 refreshCache(operate, RedisConstants.OperateType.REFRESH, newList);
             }
             case BATCH_EDIT -> {
                 baseManager.updateMerge(originList, newList);
-                editCorrelates(originList, newList, getBasicCorrelate(OperateConstants.ServiceType.BATCH_EDIT));
+                editCorrelates(originList, newList, getBasicCorrelate(CorrelateConstants.ServiceType.BATCH_EDIT));
                 refreshCache(operate, RedisConstants.OperateType.REFRESH, newList);
             }
             case BATCH_DELETE -> {
                 baseManager.deleteMerge(originList);
-                delCorrelates(originList, getBasicCorrelate(OperateConstants.ServiceType.BATCH_DELETE));
+                delCorrelates(originList, getBasicCorrelate(CorrelateConstants.ServiceType.BATCH_DELETE));
                 refreshCache(operate, RedisConstants.OperateType.REMOVE, originList);
             }
         }
@@ -160,9 +168,25 @@ public class BaseServiceHandle<Q extends BaseEntity, D extends BaseEntity, C ext
      * @param serviceType 操作类型
      * @return 默认关联控制
      */
-    protected C getBasicCorrelate(OperateConstants.ServiceType serviceType) {
-       Class<?> clazz  =  getClass();
-        System.out.println(clazz);
-        return null;
+    @Override
+    protected C getBasicCorrelate(CorrelateConstants.ServiceType serviceType) {
+        String cacheKey = RedisConstants.CacheKey.SYS_CORRELATE_IMPL_KEY.getCacheName(getClass().getName());
+        if (!redisService.hasJavaKey(cacheKey)) {
+            Map<CorrelateConstants.ServiceType, C> correlateMap = defaultCorrelate();
+            Map<String, C> cacheMap = correlateMap.keySet().stream().collect(Collectors.toMap(CorrelateConstants.ServiceType::getCode, correlateMap::get, (v1, v2) -> v1));
+            redisService.setJavaCacheMap(cacheKey, cacheMap);
+        }
+        C correlate = redisService.getJavaCacheMapValue(cacheKey, serviceType.getCode());
+        return switch (serviceType) {
+            case SELECT, ADD, EDIT, DELETE, CACHE_REFRESH, EDIT_STATUS -> correlate;
+            case SELECT_LIST, SELECT_ID_LIST, SELECT_ID_SINGLE ->
+                    ObjectUtil.isNotNull(correlate) ? correlate : redisService.getJavaCacheMapValue(cacheKey, CorrelateConstants.ServiceType.SELECT.getCode());
+            case BATCH_ADD ->
+                    ObjectUtil.isNotNull(correlate) ? correlate : redisService.getJavaCacheMapValue(cacheKey, CorrelateConstants.ServiceType.ADD.getCode());
+            case BATCH_EDIT ->
+                    ObjectUtil.isNotNull(correlate) ? correlate : redisService.getJavaCacheMapValue(cacheKey, CorrelateConstants.ServiceType.EDIT.getCode());
+            case BATCH_DELETE ->
+                    ObjectUtil.isNotNull(correlate) ? correlate : redisService.getJavaCacheMapValue(cacheKey, CorrelateConstants.ServiceType.DELETE.getCode());
+        };
     }
 }
