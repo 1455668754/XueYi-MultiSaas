@@ -1,6 +1,7 @@
 package com.xueyi.common.web.correlate.handle;
 
 import com.xueyi.common.core.exception.UtilException;
+import com.xueyi.common.core.utils.core.ArrayUtil;
 import com.xueyi.common.core.utils.core.ClassUtil;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.ConvertUtil;
@@ -14,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -225,7 +227,13 @@ public sealed class CorrelateBaseHandle permits CorrelateDirectHandle, Correlate
                         });
                         case INDIRECT -> dtoList.forEach(item -> {
                             Object obj = getFieldSql(item, mainField);
-                            if (obj instanceof Collection<?> coll && CollUtil.isNotEmpty(coll)) {
+                            Collection<?> coll = null;
+                            if (obj instanceof Collection<?> list && CollUtil.isNotEmpty(list)) {
+                                coll = list;
+                            } else if (obj instanceof Object[] arr && ArrayUtil.isNotEmpty(arr)) {
+                                coll = Arrays.stream(arr).toList();
+                            }
+                            if (CollUtil.isNotEmpty(coll)) {
                                 List<?> subObjList = coll.stream().map(collItem -> {
                                     List<S> subInfoList = getMapObj(subMap, collItem);
                                     if (ObjectUtil.isNotNull(subKeyField) && CollUtil.isNotEmpty(subInfoList)) {
