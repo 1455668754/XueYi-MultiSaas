@@ -1,8 +1,8 @@
 package com.xueyi.common.datasource.config;
 
-import com.baomidou.dynamic.datasource.processor.DsHeaderProcessor;
+import com.baomidou.dynamic.datasource.processor.DsJakartaHeaderProcessor;
+import com.baomidou.dynamic.datasource.processor.DsJakartaSessionProcessor;
 import com.baomidou.dynamic.datasource.processor.DsProcessor;
-import com.baomidou.dynamic.datasource.processor.DsSessionProcessor;
 import com.baomidou.dynamic.datasource.processor.DsSpelExpressionProcessor;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceAutoConfiguration;
 import com.xueyi.common.datasource.processor.DsIsolateExpressionProcessor;
@@ -23,8 +23,8 @@ public class MyDynamicDataSourceConfig {
 
     @Bean
     public DsProcessor dsProcessor() {
-        DsHeaderProcessor headerProcessor = new DsHeaderProcessor();
-        DsSessionProcessor sessionProcessor = new DsSessionProcessor();
+        DsJakartaHeaderProcessor headerProcessor = new DsJakartaHeaderProcessor();
+        DsJakartaSessionProcessor sessionProcessor = new DsJakartaSessionProcessor();
         DsSpelExpressionProcessor spelExpressionProcessor = new DsSpelExpressionProcessor();
         DsIsolateExpressionProcessor isolateExpressionProcessor = new DsIsolateExpressionProcessor();
         DsMasterExpressionProcessor masterExpressionProcessor = new DsMasterExpressionProcessor();

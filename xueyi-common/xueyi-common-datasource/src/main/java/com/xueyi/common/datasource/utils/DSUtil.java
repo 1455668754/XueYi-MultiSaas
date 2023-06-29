@@ -1,8 +1,8 @@
 package com.xueyi.common.datasource.utils;
 
 import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
+import com.baomidou.dynamic.datasource.creator.DataSourceProperty;
 import com.baomidou.dynamic.datasource.creator.DefaultDataSourceCreator;
-import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DataSourceProperty;
 import com.baomidou.dynamic.datasource.toolkit.DynamicDataSourceContextHolder;
 import com.xueyi.common.cache.utils.SourceUtil;
 import com.xueyi.common.core.constant.basic.TenantConstants;
