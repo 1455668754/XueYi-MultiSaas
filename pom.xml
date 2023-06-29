@@ -34,7 +34,7 @@
         <fastjson2.version>2.0.32</fastjson2.version>
         <minio.version>8.5.1</minio.version>
         <poi.version>5.2.3</poi.version>
-        <hutool.version>5.8.11</hutool.version>
+        <hutool.version>5.8.20</hutool.version>
         <jjwt.version>0.11.5</jjwt.version>
         <lombok.version>1.18.28</lombok.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
