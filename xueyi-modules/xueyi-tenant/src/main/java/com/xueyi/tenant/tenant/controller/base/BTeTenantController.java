@@ -7,7 +7,7 @@ import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.tenant.api.tenant.domain.dto.TeTenantDto;
 import com.xueyi.tenant.api.tenant.domain.query.TeTenantQuery;
-import com.xueyi.tenant.tenant.domain.model.TeTenantRegister;
+import com.xueyi.tenant.tenant.domain.dto.TeTenantRegister;
 import com.xueyi.tenant.tenant.service.ITeTenantService;
 
 import java.util.List;

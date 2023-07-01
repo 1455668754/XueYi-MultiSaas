@@ -1,7 +1,7 @@
 package com.xueyi.system.monitor.service;
 
 import com.xueyi.system.api.model.LoginUser;
-import com.xueyi.system.monitor.domain.SysUserOnline;
+import com.xueyi.system.monitor.domain.dto.SysUserOnline;
 
 /**
  * 系统服务 | 监控模块 | 在线用户监控 服务层

@@ -3,7 +3,7 @@ package com.xueyi.tenant.tenant.service;
 import com.xueyi.common.web.entity.service.IBaseService;
 import com.xueyi.tenant.api.tenant.domain.dto.TeTenantDto;
 import com.xueyi.tenant.api.tenant.domain.query.TeTenantQuery;
-import com.xueyi.tenant.tenant.domain.model.TeTenantRegister;
+import com.xueyi.tenant.tenant.domain.dto.TeTenantRegister;
 
 /**
  * 租户服务 | 租户模块 | 租户管理 服务层

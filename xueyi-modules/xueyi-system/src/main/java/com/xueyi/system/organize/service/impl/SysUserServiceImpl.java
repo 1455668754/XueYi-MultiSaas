@@ -10,7 +10,7 @@ import com.xueyi.common.web.correlate.contant.CorrelateConstants;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
 import com.xueyi.system.api.organize.domain.query.SysUserQuery;
-import com.xueyi.system.organize.correlate.SysUserCorrelate;
+import com.xueyi.system.organize.domain.correlate.SysUserCorrelate;
 import com.xueyi.system.organize.manager.ISysUserManager;
 import com.xueyi.system.organize.service.ISysUserService;
 import org.springframework.stereotype.Service;

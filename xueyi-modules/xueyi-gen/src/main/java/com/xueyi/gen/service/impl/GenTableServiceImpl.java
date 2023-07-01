@@ -16,7 +16,7 @@ import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.gen.config.GenConfig;
-import com.xueyi.gen.correlate.GenTableCorrelate;
+import com.xueyi.gen.domain.correlate.GenTableCorrelate;
 import com.xueyi.gen.domain.dto.GenTableColumnDto;
 import com.xueyi.gen.domain.dto.GenTableDto;
 import com.xueyi.gen.domain.query.GenTableQuery;

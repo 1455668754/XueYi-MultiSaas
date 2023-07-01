@@ -7,7 +7,7 @@ import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.InnerAuth;
 import com.xueyi.tenant.tenant.controller.base.BTeTenantController;
-import com.xueyi.tenant.tenant.domain.model.TeTenantRegister;
+import com.xueyi.tenant.tenant.domain.dto.TeTenantRegister;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;

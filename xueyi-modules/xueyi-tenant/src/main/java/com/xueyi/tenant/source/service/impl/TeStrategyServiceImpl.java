@@ -7,7 +7,7 @@ import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.tenant.api.source.domain.dto.TeStrategyDto;
 import com.xueyi.tenant.api.source.domain.query.TeStrategyQuery;
-import com.xueyi.tenant.source.correlate.TeStrategyCorrelate;
+import com.xueyi.tenant.source.domain.correlate.TeStrategyCorrelate;
 import com.xueyi.tenant.source.manager.ITeStrategyManager;
 import com.xueyi.tenant.source.service.ITeStrategyService;
 import org.springframework.stereotype.Service;

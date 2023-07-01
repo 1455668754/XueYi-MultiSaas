@@ -14,7 +14,7 @@ import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.dict.domain.dto.SysConfigDto;
 import com.xueyi.system.api.dict.domain.query.SysConfigQuery;
-import com.xueyi.system.dict.correlate.SysConfigCorrelate;
+import com.xueyi.system.dict.domain.correlate.SysConfigCorrelate;
 import com.xueyi.system.dict.manager.ISysConfigManager;
 import com.xueyi.system.dict.service.ISysConfigService;
 import org.springframework.stereotype.Service;

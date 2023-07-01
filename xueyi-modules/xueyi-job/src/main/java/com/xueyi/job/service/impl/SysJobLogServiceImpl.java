@@ -3,7 +3,7 @@ package com.xueyi.job.service.impl;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.job.api.domain.dto.SysJobLogDto;
 import com.xueyi.job.api.domain.query.SysJobLogQuery;
-import com.xueyi.job.correlate.SysJobLogCorrelate;
+import com.xueyi.job.domain.correlate.SysJobLogCorrelate;
 import com.xueyi.job.manager.impl.SysJobLogManagerImpl;
 import com.xueyi.job.service.ISysJobLogService;
 import org.springframework.stereotype.Service;

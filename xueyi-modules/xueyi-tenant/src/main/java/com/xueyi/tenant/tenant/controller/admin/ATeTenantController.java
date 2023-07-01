@@ -8,7 +8,7 @@ import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.tenant.api.tenant.domain.dto.TeTenantDto;
 import com.xueyi.tenant.api.tenant.domain.query.TeTenantQuery;
 import com.xueyi.tenant.tenant.controller.base.BTeTenantController;
-import com.xueyi.tenant.tenant.domain.model.TeTenantRegister;
+import com.xueyi.tenant.tenant.domain.dto.TeTenantRegister;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;

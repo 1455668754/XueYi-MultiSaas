@@ -3,7 +3,7 @@ package com.xueyi.system.organize.service.impl;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
 import com.xueyi.system.api.organize.domain.query.SysEnterpriseQuery;
-import com.xueyi.system.organize.correlate.SysEnterpriseCorrelate;
+import com.xueyi.system.organize.domain.correlate.SysEnterpriseCorrelate;
 import com.xueyi.system.organize.manager.ISysEnterpriseManager;
 import com.xueyi.system.organize.service.ISysEnterpriseService;
 import org.springframework.stereotype.Service;

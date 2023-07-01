@@ -3,7 +3,7 @@ package com.xueyi.system.dict.manager.impl;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
-import com.xueyi.system.api.dict.domain.model.SysDictDataConverter;
+import com.xueyi.system.dict.domain.model.SysDictDataConverter;
 import com.xueyi.system.api.dict.domain.po.SysDictDataPo;
 import com.xueyi.system.api.dict.domain.query.SysDictDataQuery;
 import com.xueyi.system.dict.manager.ISysDictDataManager;

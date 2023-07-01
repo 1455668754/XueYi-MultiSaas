@@ -3,7 +3,7 @@ package com.xueyi.system.authority.manager.impl;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.system.api.authority.domain.dto.SysClientDto;
-import com.xueyi.system.api.authority.domain.model.SysClientConverter;
+import com.xueyi.system.authority.domain.model.SysClientConverter;
 import com.xueyi.system.api.authority.domain.po.SysClientPo;
 import com.xueyi.system.api.authority.domain.query.SysClientQuery;
 import com.xueyi.system.authority.manager.ISysClientManager;

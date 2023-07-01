@@ -10,7 +10,7 @@ import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.web.entity.service.impl.TreeServiceImpl;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.authority.domain.query.SysMenuQuery;
-import com.xueyi.system.authority.correlate.SysMenuCorrelate;
+import com.xueyi.system.authority.domain.correlate.SysMenuCorrelate;
 import com.xueyi.system.authority.manager.ISysMenuManager;
 import com.xueyi.system.authority.service.ISysMenuService;
 import org.springframework.stereotype.Service;

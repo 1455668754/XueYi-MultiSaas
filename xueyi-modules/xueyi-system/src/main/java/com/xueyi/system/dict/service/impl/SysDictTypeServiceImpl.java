@@ -16,7 +16,7 @@ import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
 import com.xueyi.system.api.dict.domain.dto.SysDictTypeDto;
 import com.xueyi.system.api.dict.domain.po.SysDictTypePo;
 import com.xueyi.system.api.dict.domain.query.SysDictTypeQuery;
-import com.xueyi.system.dict.correlate.SysDictTypeCorrelate;
+import com.xueyi.system.dict.domain.correlate.SysDictTypeCorrelate;
 import com.xueyi.system.dict.manager.ISysDictTypeManager;
 import com.xueyi.system.dict.service.ISysDictDataService;
 import com.xueyi.system.dict.service.ISysDictTypeService;

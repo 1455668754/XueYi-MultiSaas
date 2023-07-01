@@ -3,7 +3,7 @@ package com.xueyi.system.monitor.service.impl;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.system.api.model.LoginUser;
-import com.xueyi.system.monitor.domain.SysUserOnline;
+import com.xueyi.system.monitor.domain.dto.SysUserOnline;
 import com.xueyi.system.monitor.service.ISysUserOnlineService;
 import org.springframework.stereotype.Service;
 

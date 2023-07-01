@@ -5,7 +5,7 @@ import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.web.annotation.TenantIgnore;
 import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.system.api.application.domain.dto.SysApplicationDto;
-import com.xueyi.system.api.application.domain.model.SysApplicationConverter;
+import com.xueyi.system.application.model.SysApplicationConverter;
 import com.xueyi.system.api.application.domain.po.SysApplicationPo;
 import com.xueyi.system.api.application.domain.query.SysApplicationQuery;
 import com.xueyi.system.application.manager.ISysApplicationManager;

@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.basic.SqlConstants;
 import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.tenant.api.tenant.domain.dto.TeTenantDto;
-import com.xueyi.tenant.api.tenant.domain.model.TeTenantConverter;
+import com.xueyi.tenant.tenant.domain.model.TeTenantConverter;
 import com.xueyi.tenant.api.tenant.domain.po.TeTenantPo;
 import com.xueyi.tenant.api.tenant.domain.query.TeTenantQuery;
 import com.xueyi.tenant.tenant.manager.ITeTenantManager;

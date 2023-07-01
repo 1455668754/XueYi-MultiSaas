@@ -5,7 +5,7 @@ import com.xueyi.common.core.constant.basic.SqlConstants;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
-import com.xueyi.system.api.organize.domain.model.SysPostConverter;
+import com.xueyi.system.organize.domain.model.SysPostConverter;
 import com.xueyi.system.api.organize.domain.po.SysPostPo;
 import com.xueyi.system.api.organize.domain.query.SysPostQuery;
 import com.xueyi.system.organize.manager.ISysPostManager;

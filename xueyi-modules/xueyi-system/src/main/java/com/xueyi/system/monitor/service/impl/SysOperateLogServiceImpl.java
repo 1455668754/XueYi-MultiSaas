@@ -3,7 +3,7 @@ package com.xueyi.system.monitor.service.impl;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.log.domain.dto.SysOperateLogDto;
 import com.xueyi.system.api.log.domain.query.SysOperateLogQuery;
-import com.xueyi.system.monitor.correlate.SysOperateLogCorrelate;
+import com.xueyi.system.monitor.domain.correlate.SysOperateLogCorrelate;
 import com.xueyi.system.monitor.manager.ISysOperateLogManager;
 import com.xueyi.system.monitor.service.ISysOperateLogService;
 import org.springframework.stereotype.Service;

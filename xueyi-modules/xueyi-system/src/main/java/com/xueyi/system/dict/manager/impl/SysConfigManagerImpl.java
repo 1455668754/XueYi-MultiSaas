@@ -5,7 +5,7 @@ import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.SqlConstants;
 import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.system.api.dict.domain.dto.SysConfigDto;
-import com.xueyi.system.api.dict.domain.model.SysConfigConverter;
+import com.xueyi.system.dict.domain.model.SysConfigConverter;
 import com.xueyi.system.api.dict.domain.po.SysConfigPo;
 import com.xueyi.system.api.dict.domain.query.SysConfigQuery;
 import com.xueyi.system.dict.manager.ISysConfigManager;

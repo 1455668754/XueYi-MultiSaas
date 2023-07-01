@@ -8,7 +8,7 @@ import com.xueyi.common.web.correlate.contant.CorrelateConstants;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 import com.xueyi.system.api.organize.domain.query.SysPostQuery;
-import com.xueyi.system.organize.correlate.SysPostCorrelate;
+import com.xueyi.system.organize.domain.correlate.SysPostCorrelate;
 import com.xueyi.system.organize.manager.impl.SysPostManagerImpl;
 import com.xueyi.system.organize.service.ISysPostService;
 import org.springframework.stereotype.Service;
