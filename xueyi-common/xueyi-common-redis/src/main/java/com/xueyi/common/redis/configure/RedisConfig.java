@@ -1,5 +1,6 @@
 package com.xueyi.common.redis.configure;
 
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import lombok.Data;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
@@ -36,11 +37,18 @@ public class RedisConfig {
     /** 密码 */
     private String password;
 
+    /** 库 */
+    private int database;
+
     @Bean
     public LettuceConnectionFactory redisConnectionFactory() {
         RedisStandaloneConfiguration conf = new RedisStandaloneConfiguration(host, port);
-        if (StrUtil.isNotBlank(password))
+        if (StrUtil.isNotBlank(password)) {
             conf.setPassword(password);
+        }
+        if (ObjectUtil.isNotNull(database)) {
+            conf.setDatabase(database);
+        }
         return new LettuceConnectionFactory(conf);
     }
 
