@@ -6,7 +6,6 @@ import cn.hutool.core.io.file.FileWriter;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.xueyi.common.core.constant.basic.DictConstants;
-import com.xueyi.common.core.constant.basic.ServiceConstants;
 import com.xueyi.common.core.constant.gen.GenConstants;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.core.exception.ServiceException;
@@ -38,13 +37,13 @@ import java.util.stream.Collectors;
 public class VelocityUtils {
 
     /** 主目录 */
-    private static final String PROJECT_PATH = "main/java" ;
+    private static final String PROJECT_PATH = "main/java";
 
     /** 隐藏字段数组 */
-    private static final String HIDE = "hide" ;
+    private static final String HIDE = "hide";
 
     /** 覆写字段数组 */
-    private static final String COVER = "cover" ;
+    private static final String COVER = "cover";
 
     /**
      * 设置模板变量信息
@@ -52,7 +51,7 @@ public class VelocityUtils {
      * @return 模板列表
      */
     public static VelocityContext prepareContext(GenTableDto genTable) {
-        if(StrUtil.hasEmpty(genTable.getPackageName(), genTable.getModuleName(), genTable.getBusinessName(), genTable.getAuthorityName()))
+        if (StrUtil.hasEmpty(genTable.getPackageName(), genTable.getModuleName(), genTable.getBusinessName(), genTable.getAuthorityName()))
             throw new ServiceException("请先编辑完善信息！");
         String businessName = genTable.getBusinessName();
         String packageName = genTable.getPackageName();
@@ -215,10 +214,9 @@ public class VelocityUtils {
      * 获取模板信息
      *
      * @param tplCategory 表模板类型
-     * @param fromSource  访问来源
      * @return 模板列表
      */
-    public static List<String> getTemplateList(String tplCategory, ServiceConstants.FromSource fromSource) {
+    public static List<String> getTemplateList(String tplCategory) {
         List<String> templates = new ArrayList<>();
 
         if (StrUtil.equals(tplCategory, GenConstants.TemplateType.MERGE.getCode())) {
@@ -236,26 +234,14 @@ public class VelocityUtils {
             templates.add("vm/java/managerImpl.java.vm");
             templates.add("vm/java/mapper.java.vm");
             templates.add("vm/sql/sql.sql.vm");
-            switch (fromSource) {
-                case CLOUD -> {
-                    templates.add("vm/cloud/js/api.js.vm");
-                    templates.add("vm/cloud/js/auth.js.vm");
-                    templates.add("vm/cloud/js/enum.js.vm");
-                    templates.add("vm/cloud/vue/index.vue.vm");
-                }
-                case MULTI -> {
-                    templates.add("vm/multi/ts/api.ts.vm");
-                    templates.add("vm/multi/ts/data.ts.vm");
-                    templates.add("vm/multi/ts/auth.ts.vm");
-                    templates.add("vm/multi/ts/enum.ts.vm");
-                    templates.add("vm/multi/ts/infoModel.ts.vm");
-                    templates.add("vm/multi/vue/detail.vue.vm");
-                    templates.add("vm/multi/vue/index.vue.vm");
-                    templates.add("vm/multi/vue/modal.vue.vm");
-                }
-                default -> {
-                }
-            }
+            templates.add("vm/multi/ts/api.ts.vm");
+            templates.add("vm/multi/ts/data.ts.vm");
+            templates.add("vm/multi/ts/auth.ts.vm");
+            templates.add("vm/multi/ts/enum.ts.vm");
+            templates.add("vm/multi/ts/infoModel.ts.vm");
+            templates.add("vm/multi/vue/detail.vue.vm");
+            templates.add("vm/multi/vue/index.vue.vm");
+            templates.add("vm/multi/vue/modal.vue.vm");
         }
         return templates;
     }
@@ -263,12 +249,11 @@ public class VelocityUtils {
     /**
      * 获取文件名
      *
-     * @param realPath   物理路径
-     * @param template   文件名
-     * @param genTable   业务表数据传输对象
-     * @param fromSource 访问来源
+     * @param realPath 物理路径
+     * @param template 文件名
+     * @param genTable 业务表数据传输对象
      */
-    public static String getFileName(String realPath, String template, GenTableDto genTable, ServiceConstants.FromSource fromSource) {
+    public static String getFileName(String realPath, String template, GenTableDto genTable) {
         // 包路径
         String packageName = genTable.getPackageName();
         // 模块名
@@ -310,50 +295,32 @@ public class VelocityUtils {
 
         else if (template.contains("sql.sql.vm")) return StrUtil.format("sql/{}.sql", businessName);
 
-        switch (fromSource) {
-            case CLOUD -> {
-                if (template.contains("api.js.vm"))
-                    return StrUtil.format("xueyi-ui/src/api/{}/{}/{}.js", moduleName, authorityName, businessName);
-                else if (template.contains("auth.js.vm"))
-                    return StrUtil.format("xueyi-ui/src/constants/auth/{}/{}/{}.auth.js", moduleName, authorityName, businessName);
-                else if (template.contains("enum.js.vm"))
-                    return StrUtil.format("xueyi-ui/src/constants/enums/{}/{}/{}.enum.js", moduleName, authorityName, businessName);
-
-                else if (template.contains("index.vue.vm"))
-                    return StrUtil.format("xueyi-ui/src/views/{}/{}/{}/index.vue", moduleName, authorityName, businessName);
-            }
-            case MULTI -> {
-                if (template.contains("api.ts.vm"))
-                    return StrUtil.format("multi-ui/src/api/{}/{}/{}.ts", moduleName, authorityName, businessName);
-                else if (template.contains("infoModel.ts.vm")) {
-                    String prefixPath = "multi-ui/src/model" ;
-                    String suffixFile = "" ;
-                    initIndexFile(realPath, prefixPath, suffixFile, moduleName, authorityName, businessName);
-                    return StrUtil.format("{}/{}/{}/{}.ts", prefixPath, moduleName, authorityName, businessName);
-                } else if (template.contains("auth.ts.vm")) {
-                    String prefixPath = "multi-ui/src/auth" ;
-                    String suffixFile = ".auth" ;
-                    initIndexFile(realPath, prefixPath, suffixFile, moduleName, authorityName, businessName);
-                    return StrUtil.format("{}/{}/{}/{}{}.ts", prefixPath, moduleName, authorityName, businessName, suffixFile);
-                } else if (template.contains("enum.ts.vm")) {
-                    String prefixPath = "multi-ui/src/enums" ;
-                    String suffixFile = ".enum" ;
-                    initIndexFile(realPath, prefixPath, suffixFile, moduleName, authorityName, businessName);
-                    return StrUtil.format("{}/{}/{}/{}{}.ts", prefixPath, moduleName, authorityName, businessName, suffixFile);
-                } else if (template.contains("data.ts.vm"))
-                    return StrUtil.format("multi-ui/src/views/{}/{}/{}/{}.data.ts", moduleName, authorityName, businessName, businessName);
-                else if (template.contains("index.vue.vm"))
-                    return StrUtil.format("multi-ui/src/views/{}/{}/{}/index.vue", moduleName, authorityName, businessName);
-                else if (template.contains("detail.vue.vm"))
-                    return StrUtil.format("multi-ui/src/views/{}/{}/{}/{}Detail.vue", moduleName, authorityName, businessName, BusinessName);
-                else if (template.contains("modal.vue.vm"))
-                    return StrUtil.format("multi-ui/src/views/{}/{}/{}/{}Modal.vue", moduleName, authorityName, businessName, BusinessName);
-            }
-            default -> {
-            }
-        }
-
-        return "" ;
+        if (template.contains("api.ts.vm"))
+            return StrUtil.format("multi-ui/src/api/{}/{}/{}.ts", moduleName, authorityName, businessName);
+        else if (template.contains("infoModel.ts.vm")) {
+            String prefixPath = "multi-ui/src/model";
+            String suffixFile = "";
+            initIndexFile(realPath, prefixPath, suffixFile, moduleName, authorityName, businessName);
+            return StrUtil.format("{}/{}/{}/{}.ts", prefixPath, moduleName, authorityName, businessName);
+        } else if (template.contains("auth.ts.vm")) {
+            String prefixPath = "multi-ui/src/auth";
+            String suffixFile = ".auth";
+            initIndexFile(realPath, prefixPath, suffixFile, moduleName, authorityName, businessName);
+            return StrUtil.format("{}/{}/{}/{}{}.ts", prefixPath, moduleName, authorityName, businessName, suffixFile);
+        } else if (template.contains("enum.ts.vm")) {
+            String prefixPath = "multi-ui/src/enums";
+            String suffixFile = ".enum";
+            initIndexFile(realPath, prefixPath, suffixFile, moduleName, authorityName, businessName);
+            return StrUtil.format("{}/{}/{}/{}{}.ts", prefixPath, moduleName, authorityName, businessName, suffixFile);
+        } else if (template.contains("data.ts.vm"))
+            return StrUtil.format("multi-ui/src/views/{}/{}/{}/{}.data.ts", moduleName, authorityName, businessName, businessName);
+        else if (template.contains("index.vue.vm"))
+            return StrUtil.format("multi-ui/src/views/{}/{}/{}/index.vue", moduleName, authorityName, businessName);
+        else if (template.contains("detail.vue.vm"))
+            return StrUtil.format("multi-ui/src/views/{}/{}/{}/{}Detail.vue", moduleName, authorityName, businessName, BusinessName);
+        else if (template.contains("modal.vue.vm"))
+            return StrUtil.format("multi-ui/src/views/{}/{}/{}/{}Modal.vue", moduleName, authorityName, businessName, BusinessName);
+        return "";
     }
 
     /**
@@ -635,8 +602,8 @@ public class VelocityUtils {
      */
     public static void initIndexFile(String realPath, String prefixPath, String suffixFile, String moduleName, String authorityName, String businessName) {
         if (StrUtil.isEmpty(realPath)) return;
-        String indexName = "index.ts" ;
-        String importSentence = "export * from './{}'" ;
+        String indexName = "index.ts";
+        String importSentence = "export * from './{}'";
         StringBuilder sb = new StringBuilder(realPath + prefixPath + File.separator + moduleName + File.separator);
         outIndexFile(sb + indexName, StrUtil.format(importSentence, authorityName));
         sb.append(authorityName).append(File.separator);

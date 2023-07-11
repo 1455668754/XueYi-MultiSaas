@@ -1,4 +1,4 @@
-package com.xueyi.system.utils.multi;
+package com.xueyi.system.utils;
 
 import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
@@ -6,9 +6,9 @@ import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
-import com.xueyi.system.utils.multi.route.MMetaVo;
-import com.xueyi.system.utils.multi.route.MRouterVo;
-import com.xueyi.system.utils.multi.route.MTagVo;
+import com.xueyi.system.utils.route.MMetaVo;
+import com.xueyi.system.utils.route.MRouterVo;
+import com.xueyi.system.utils.route.MTagVo;
 
 import java.util.ArrayList;
 import java.util.List;

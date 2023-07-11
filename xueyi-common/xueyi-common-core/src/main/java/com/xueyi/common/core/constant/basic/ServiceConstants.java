@@ -1,8 +1,5 @@
 package com.xueyi.common.core.constant.basic;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 /**
  * 服务名称通用常量
  *
@@ -24,16 +21,4 @@ public class ServiceConstants {
 
     /** 定时任务模块的serviceId */
     public static final String JOB_SERVICE = "xueyi-job";
-
-    /** 访问来源 */
-    @Getter
-    @AllArgsConstructor
-    public enum FromSource {
-        CLOUD("cloud", "vue2后台前端"),
-        MULTI("multi", "vue3后台前端");
-
-        private final String code;
-        private final String info;
-
-    }
 }

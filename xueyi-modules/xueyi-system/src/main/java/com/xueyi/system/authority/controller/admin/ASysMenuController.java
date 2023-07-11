@@ -1,6 +1,5 @@
 package com.xueyi.system.authority.controller.admin;
 
-import com.xueyi.common.core.constant.basic.ServiceConstants;
 import com.xueyi.common.core.utils.TreeUtil;
 import com.xueyi.common.core.utils.core.ArrayUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
@@ -14,8 +13,7 @@ import com.xueyi.common.security.service.TokenUserService;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.authority.domain.query.SysMenuQuery;
 import com.xueyi.system.authority.controller.base.BSysMenuController;
-import com.xueyi.system.utils.cloud.CRouteUtils;
-import com.xueyi.system.utils.multi.MRouteUtils;
+import com.xueyi.system.utils.MRouteUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -48,26 +46,10 @@ public class ASysMenuController extends BSysMenuController {
     /**
      * 获取路由信息
      */
-    @GetMapping("/getCloudRouters/{moduleId}")
-    public AjaxResult getCloudRouters(@PathVariable Long moduleId) {
-        Map<String, Object> menuMap = tokenService.getMenuRoute();
-        String moduleKey = ServiceConstants.FromSource.CLOUD.getCode() + moduleId;
-        if (ObjectUtil.isNull(menuMap) || ObjectUtil.isNull(menuMap.get(moduleKey))) {
-            List<SysMenuDto> menus = baseService.getRoutes(moduleId);
-            if (ObjectUtil.isNull(menuMap)) menuMap = new HashMap<>();
-            menuMap.put(moduleKey, CRouteUtils.buildMenus(TreeUtil.buildTree(menus)));
-            tokenService.setMenuRoute(menuMap);
-        }
-        return success(menuMap.get(moduleKey));
-    }
-
-    /**
-     * 获取路由信息
-     */
     @GetMapping("/getMultiRouters/{moduleId}")
     public AjaxResult getMultiRouters(@PathVariable Long moduleId) {
         Map<String, Object> menuMap = tokenService.getMenuRoute();
-        String moduleKey = ServiceConstants.FromSource.MULTI.getCode() + moduleId;
+        String moduleKey = moduleId.toString();
         if (ObjectUtil.isNull(menuMap) || ObjectUtil.isNull(menuMap.get(moduleKey))) {
             List<SysMenuDto> menus = baseService.getRoutes(moduleId);
             if (ObjectUtil.isNull(menuMap))

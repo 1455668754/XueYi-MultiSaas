@@ -5,7 +5,6 @@ import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.constant.basic.HttpConstants;
-import com.xueyi.common.core.constant.basic.ServiceConstants;
 import com.xueyi.common.core.constant.gen.GenConstants.OptionField;
 import com.xueyi.common.core.constant.gen.GenConstants.TemplateType;
 import com.xueyi.common.core.utils.core.ArrayUtil;
@@ -78,37 +77,35 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
     /**
      * 获取后端代码生成地址
      *
-     * @param table      业务表信息
-     * @param template   模板文件路径
-     * @param fromSource 访问来源
+     * @param table    业务表信息
+     * @param template 模板文件路径
      * @return 生成地址
      */
-    public static String getGenPath(GenTableDto table, String template, ServiceConstants.FromSource fromSource) {
+    public static String getGenPath(GenTableDto table, String template) {
         String genPath = table.getGenPath();
         if (StrUtil.equals(genPath, StrUtil.SLASH)) {
             String prefixPath = System.getProperty("user.dir") + File.separator + "src" + File.separator;
-            return prefixPath + VelocityUtils.getFileName(prefixPath, template, table, fromSource);
+            return prefixPath + VelocityUtils.getFileName(prefixPath, template, table);
         }
         String prefixPath = genPath + File.separator;
-        return prefixPath + VelocityUtils.getFileName(prefixPath, template, table, fromSource);
+        return prefixPath + VelocityUtils.getFileName(prefixPath, template, table);
     }
 
     /**
      * 获取前端代码生成地址
      *
-     * @param table      业务表信息
-     * @param template   模板文件路径
-     * @param fromSource 访问来源
+     * @param table    业务表信息
+     * @param template 模板文件路径
      * @return 生成地址
      */
-    public static String getUiPath(GenTableDto table, String template, ServiceConstants.FromSource fromSource) {
+    public static String getUiPath(GenTableDto table, String template) {
         String uiPath = table.getUiPath();
         if (StrUtil.equals(uiPath, StrUtil.SLASH)) {
             String prefixPath = System.getProperty("user.dir") + File.separator;
-            return prefixPath + VelocityUtils.getFileName(prefixPath, template, table, fromSource);
+            return prefixPath + VelocityUtils.getFileName(prefixPath, template, table);
         }
         String prefixPath = uiPath + File.separator;
-        return prefixPath + VelocityUtils.getFileName(prefixPath, template, table, fromSource);
+        return prefixPath + VelocityUtils.getFileName(prefixPath, template, table);
     }
 
     /**
@@ -175,12 +172,11 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
     /**
      * 预览代码
      *
-     * @param id         Id
-     * @param fromSource 访问来源
+     * @param id Id
      * @return 预览数据列表
      */
     @Override
-    public List<JSONObject> previewCode(Long id, ServiceConstants.FromSource fromSource) {
+    public List<JSONObject> previewCode(Long id) {
         List<JSONObject> dataMap = new ArrayList<>();
         // 查询表信息
         GenTableDto table = initTable(id);
@@ -191,7 +187,7 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
 
         // 获取模板列表
         JSONObject data;
-        List<String> templates = VelocityUtils.getTemplateList(table.getTplCategory(), fromSource);
+        List<String> templates = VelocityUtils.getTemplateList(table.getTplCategory());
         for (String template : templates) {
             // 渲染模板
             StringWriter sw = new StringWriter();
@@ -211,15 +207,14 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
     /**
      * 生成代码（下载方式）
      *
-     * @param id         Id
-     * @param fromSource 访问来源
+     * @param id Id
      * @return 数据
      */
     @Override
-    public byte[] downloadCode(Long id, ServiceConstants.FromSource fromSource) {
+    public byte[] downloadCode(Long id) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ZipOutputStream zip = new ZipOutputStream(outputStream);
-        generatorCode(id, zip, fromSource);
+        generatorCode(id, zip);
         IOUtils.closeQuietly(zip);
         return outputStream.toByteArray();
     }
@@ -227,11 +222,10 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
     /**
      * 生成代码（自定义路径）
      *
-     * @param id         Id
-     * @param fromSource 访问来源
+     * @param id Id
      */
     @Override
-    public void generatorCode(Long id, ServiceConstants.FromSource fromSource) {
+    public void generatorCode(Long id) {
         // 查询表信息
         GenTableDto table = initTable(id);
 
@@ -239,7 +233,7 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
         VelocityContext context = VelocityUtils.prepareContext(table);
 
         // 获取模板列表
-        List<String> templates = VelocityUtils.getTemplateList(table.getTplCategory(), fromSource);
+        List<String> templates = VelocityUtils.getTemplateList(table.getTplCategory());
         String[] genFiles = {"merge.java.vm", "mergeMapper.java.vm", "query.java.vm", "dto.java.vm", "po.java.vm", "converter.java.vm", "controller.java.vm", "service.java.vm", "serviceImpl.java.vm", "manager.java.vm", "managerImpl.java.vm", "manager.java.vm", "mapper.java.vm", "sql.sql.vm"};
         for (String template : templates) {
             // 渲染模板
@@ -247,7 +241,7 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
             Template tpl = Velocity.getTemplate(template, HttpConstants.Character.UTF8.getCode());
             tpl.merge(context, sw);
             try {
-                String path = StrUtil.containsAny(template, genFiles) ? getGenPath(table, template, fromSource) : getUiPath(table, template, fromSource);
+                String path = StrUtil.containsAny(template, genFiles) ? getGenPath(table, template) : getUiPath(table, template);
                 FileUtils.writeStringToFile(new File(path), sw.toString(), CharsetUtil.UTF_8);
             } catch (IOException e) {
                 AjaxResult.warn(StrUtil.format("渲染模板失败，表名：{}", table.getName()));
@@ -258,16 +252,15 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
     /**
      * 批量生成代码（下载方式）
      *
-     * @param ids        Ids数组
-     * @param fromSource 访问来源
+     * @param ids Ids数组
      * @return 数据
      */
     @Override
-    public byte[] downloadCode(Long[] ids, ServiceConstants.FromSource fromSource) {
+    public byte[] downloadCode(Long[] ids) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ZipOutputStream zip = new ZipOutputStream(outputStream);
         for (Long id : ids) {
-            generatorCode(id, zip, fromSource);
+            generatorCode(id, zip);
         }
         IOUtils.closeQuietly(zip);
         return outputStream.toByteArray();
@@ -276,11 +269,10 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
     /**
      * 查询表信息并生成代码
      *
-     * @param id         Id
-     * @param zip        压缩包流
-     * @param fromSource 访问来源
+     * @param id  Id
+     * @param zip 压缩包流
      */
-    private void generatorCode(Long id, ZipOutputStream zip, ServiceConstants.FromSource fromSource) {
+    private void generatorCode(Long id, ZipOutputStream zip) {
 
         // 查询表信息
         GenTableDto table = initTable(id);
@@ -289,14 +281,14 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
         VelocityContext context = VelocityUtils.prepareContext(table);
 
         // 获取模板列表
-        List<String> templates = VelocityUtils.getTemplateList(table.getTplCategory(), fromSource);
+        List<String> templates = VelocityUtils.getTemplateList(table.getTplCategory());
         for (String template : templates) {
             // 渲染模板
             StringWriter sw = new StringWriter();
             Template tpl = Velocity.getTemplate(template, HttpConstants.Character.UTF8.getCode());
             tpl.merge(context, sw);
             try {
-                String fileUrl = VelocityUtils.getFileName(StrUtil.EMPTY, template, table, fromSource);
+                String fileUrl = VelocityUtils.getFileName(StrUtil.EMPTY, template, table);
                 // 添加到zip
                 zip.putNextEntry(new ZipEntry(fileUrl));
                 IOUtils.write(sw.toString(), zip, HttpConstants.Character.UTF8.getCode());

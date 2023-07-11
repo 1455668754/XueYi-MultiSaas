@@ -1,4 +1,4 @@
-package com.xueyi.system.utils.multi.route;
+package com.xueyi.system.utils.route;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;

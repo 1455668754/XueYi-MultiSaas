@@ -1,7 +1,6 @@
 package com.xueyi.gen.service;
 
 import com.alibaba.fastjson2.JSONObject;
-import com.xueyi.common.core.constant.basic.ServiceConstants;
 import com.xueyi.common.web.entity.service.IBaseService;
 import com.xueyi.gen.domain.dto.GenTableDto;
 import com.xueyi.gen.domain.query.GenTableQuery;
@@ -41,37 +40,33 @@ public interface IGenTableService extends IBaseService<GenTableQuery, GenTableDt
     /**
      * 预览代码
      *
-     * @param id         Id
-     * @param fromSource 访问来源
+     * @param id Id
      * @return 预览数据列表
      */
-    List<JSONObject> previewCode(Long id, ServiceConstants.FromSource fromSource);
+    List<JSONObject> previewCode(Long id);
 
     /**
      * 生成代码（下载方式）
      *
-     * @param id         Id
-     * @param fromSource 访问来源
+     * @param id Id
      * @return 数据
      */
-    byte[] downloadCode(Long id, ServiceConstants.FromSource fromSource);
+    byte[] downloadCode(Long id);
 
     /**
      * 生成代码（自定义路径）
      *
-     * @param id         Id
-     * @param fromSource 访问来源
+     * @param id Id
      */
-    void generatorCode(Long id, ServiceConstants.FromSource fromSource);
+    void generatorCode(Long id);
 
     /**
      * 批量生成代码（下载方式）
      *
-     * @param ids        Ids数组
-     * @param fromSource 访问来源
+     * @param ids Ids数组
      * @return 数据
      */
-    byte[] downloadCode(Long[] ids, ServiceConstants.FromSource fromSource);
+    byte[] downloadCode(Long[] ids);
 
     /**
      * 修改保存参数校验
