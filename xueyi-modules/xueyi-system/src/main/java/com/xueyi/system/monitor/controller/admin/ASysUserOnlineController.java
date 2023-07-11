@@ -11,7 +11,7 @@ import com.xueyi.common.redis.service.RedisService;
 import com.xueyi.common.security.utils.SecurityUserUtils;
 import com.xueyi.common.web.entity.controller.BasisController;
 import com.xueyi.system.api.model.LoginUser;
-import com.xueyi.system.monitor.domain.SysUserOnline;
+import com.xueyi.system.monitor.domain.dto.SysUserOnline;
 import com.xueyi.system.monitor.service.ISysUserOnlineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;

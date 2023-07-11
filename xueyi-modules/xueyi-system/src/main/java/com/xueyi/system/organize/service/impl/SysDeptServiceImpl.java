@@ -8,7 +8,7 @@ import com.xueyi.common.web.correlate.contant.CorrelateConstants;
 import com.xueyi.common.web.entity.service.impl.TreeServiceImpl;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
 import com.xueyi.system.api.organize.domain.query.SysDeptQuery;
-import com.xueyi.system.organize.correlate.SysDeptCorrelate;
+import com.xueyi.system.organize.domain.correlate.SysDeptCorrelate;
 import com.xueyi.system.organize.manager.ISysDeptManager;
 import com.xueyi.system.organize.service.ISysDeptService;
 import org.springframework.stereotype.Service;

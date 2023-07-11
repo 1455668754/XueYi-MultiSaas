@@ -9,7 +9,7 @@ import com.xueyi.common.security.utils.SecurityUserUtils;
 import com.xueyi.common.web.entity.domain.SlaveRelation;
 import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
-import com.xueyi.system.api.authority.domain.model.SysModuleConverter;
+import com.xueyi.system.authority.domain.model.SysModuleConverter;
 import com.xueyi.system.api.authority.domain.po.SysModulePo;
 import com.xueyi.system.api.authority.domain.query.SysModuleQuery;
 import com.xueyi.system.authority.domain.merge.SysRoleModuleMerge;

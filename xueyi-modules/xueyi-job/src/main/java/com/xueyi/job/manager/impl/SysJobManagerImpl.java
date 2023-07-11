@@ -6,7 +6,7 @@ import com.xueyi.common.web.annotation.TenantIgnore;
 import com.xueyi.common.web.entity.domain.SlaveRelation;
 import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.job.api.domain.dto.SysJobDto;
-import com.xueyi.job.api.domain.model.SysJobConverter;
+import com.xueyi.job.domain.model.SysJobConverter;
 import com.xueyi.job.api.domain.po.SysJobPo;
 import com.xueyi.job.api.domain.query.SysJobQuery;
 import com.xueyi.job.manager.ISysJobLogManager;

@@ -10,7 +10,7 @@ import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
 import com.xueyi.system.api.dict.domain.po.SysDictDataPo;
 import com.xueyi.system.api.dict.domain.query.SysDictDataQuery;
-import com.xueyi.system.dict.correlate.SysDictDataCorrelate;
+import com.xueyi.system.dict.domain.correlate.SysDictDataCorrelate;
 import com.xueyi.system.dict.manager.ISysDictDataManager;
 import com.xueyi.system.dict.service.ISysDictDataService;
 import org.springframework.stereotype.Service;

@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.basic.SqlConstants;
 import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.tenant.api.source.domain.dto.TeStrategyDto;
-import com.xueyi.tenant.api.source.domain.model.TeStrategyConverter;
+import com.xueyi.tenant.source.domain.model.TeStrategyConverter;
 import com.xueyi.tenant.api.source.domain.po.TeStrategyPo;
 import com.xueyi.tenant.api.source.domain.query.TeStrategyQuery;
 import com.xueyi.tenant.source.manager.ITeStrategyManager;

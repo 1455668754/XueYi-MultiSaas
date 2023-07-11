@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
-import com.xueyi.system.api.organize.domain.model.SysEnterpriseConverter;
+import com.xueyi.system.organize.domain.model.SysEnterpriseConverter;
 import com.xueyi.system.api.organize.domain.po.SysEnterprisePo;
 import com.xueyi.system.api.organize.domain.query.SysEnterpriseQuery;
 import com.xueyi.system.organize.manager.ISysEnterpriseManager;

@@ -10,7 +10,7 @@ import com.xueyi.common.web.correlate.contant.CorrelateConstants;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
 import com.xueyi.system.api.authority.domain.query.SysRoleQuery;
-import com.xueyi.system.authority.correlate.SysRoleCorrelate;
+import com.xueyi.system.authority.domain.correlate.SysRoleCorrelate;
 import com.xueyi.system.authority.manager.ISysRoleManager;
 import com.xueyi.system.authority.service.ISysAuthService;
 import com.xueyi.system.authority.service.ISysRoleService;

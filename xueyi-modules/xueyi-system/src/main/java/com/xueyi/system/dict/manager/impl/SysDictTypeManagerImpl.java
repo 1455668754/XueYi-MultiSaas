@@ -6,7 +6,7 @@ import com.xueyi.common.core.constant.basic.SqlConstants;
 import com.xueyi.common.web.entity.domain.SlaveRelation;
 import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.system.api.dict.domain.dto.SysDictTypeDto;
-import com.xueyi.system.api.dict.domain.model.SysDictTypeConverter;
+import com.xueyi.system.dict.domain.model.SysDictTypeConverter;
 import com.xueyi.system.api.dict.domain.po.SysDictTypePo;
 import com.xueyi.system.api.dict.domain.query.SysDictTypeQuery;
 import com.xueyi.system.dict.manager.ISysDictDataManager;

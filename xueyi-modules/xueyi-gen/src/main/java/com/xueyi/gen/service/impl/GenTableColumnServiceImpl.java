@@ -1,7 +1,7 @@
 package com.xueyi.gen.service.impl;
 
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
-import com.xueyi.gen.correlate.GenTableColumnCorrelate;
+import com.xueyi.gen.domain.correlate.GenTableColumnCorrelate;
 import com.xueyi.gen.domain.dto.GenTableColumnDto;
 import com.xueyi.gen.domain.query.GenTableColumnQuery;
 import com.xueyi.gen.manager.impl.GenTableColumnManagerImpl;

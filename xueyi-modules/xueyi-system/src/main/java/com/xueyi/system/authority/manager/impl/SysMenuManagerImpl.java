@@ -14,7 +14,7 @@ import com.xueyi.common.security.utils.SecurityUserUtils;
 import com.xueyi.common.web.entity.domain.SlaveRelation;
 import com.xueyi.common.web.entity.manager.impl.TreeManagerImpl;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
-import com.xueyi.system.api.authority.domain.model.SysMenuConverter;
+import com.xueyi.system.authority.domain.model.SysMenuConverter;
 import com.xueyi.system.api.authority.domain.po.SysMenuPo;
 import com.xueyi.system.api.authority.domain.query.SysMenuQuery;
 import com.xueyi.system.api.model.DataScope;

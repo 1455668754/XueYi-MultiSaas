@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.system.api.log.domain.dto.SysLoginLogDto;
-import com.xueyi.system.api.log.domain.model.SysLoginLogConverter;
+import com.xueyi.system.monitor.domain.model.SysLoginLogConverter;
 import com.xueyi.system.api.log.domain.po.SysLoginLogPo;
 import com.xueyi.system.api.log.domain.query.SysLoginLogQuery;
 import com.xueyi.system.monitor.manager.ISysLoginLogManager;

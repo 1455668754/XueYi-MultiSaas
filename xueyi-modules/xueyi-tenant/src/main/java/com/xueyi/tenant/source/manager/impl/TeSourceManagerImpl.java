@@ -3,7 +3,7 @@ package com.xueyi.tenant.source.manager.impl;
 import com.xueyi.common.core.utils.core.IdUtil;
 import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.tenant.api.source.domain.dto.TeSourceDto;
-import com.xueyi.tenant.api.source.domain.model.TeSourceConverter;
+import com.xueyi.tenant.source.domain.model.TeSourceConverter;
 import com.xueyi.tenant.api.source.domain.po.TeSourcePo;
 import com.xueyi.tenant.api.source.domain.query.TeSourceQuery;
 import com.xueyi.tenant.source.manager.ITeSourceManager;

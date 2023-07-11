@@ -4,7 +4,7 @@ package com.xueyi.system.monitor.service.impl;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.log.domain.dto.SysLoginLogDto;
 import com.xueyi.system.api.log.domain.query.SysLoginLogQuery;
-import com.xueyi.system.monitor.correlate.SysLoginLogCorrelate;
+import com.xueyi.system.monitor.domain.correlate.SysLoginLogCorrelate;
 import com.xueyi.system.monitor.manager.ISysLoginLogManager;
 import com.xueyi.system.monitor.service.ISysLoginLogService;
 import org.springframework.stereotype.Service;

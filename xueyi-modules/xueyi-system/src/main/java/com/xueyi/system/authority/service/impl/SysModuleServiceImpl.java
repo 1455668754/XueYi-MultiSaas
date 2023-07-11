@@ -4,7 +4,7 @@ import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
 import com.xueyi.system.api.authority.domain.query.SysModuleQuery;
-import com.xueyi.system.authority.correlate.SysModuleCorrelate;
+import com.xueyi.system.authority.domain.correlate.SysModuleCorrelate;
 import com.xueyi.system.authority.manager.ISysModuleManager;
 import com.xueyi.system.authority.service.ISysModuleService;
 import org.springframework.stereotype.Service;
