@@ -1,9 +1,9 @@
 import type { AppRouteRecordRaw } from '/@/router/types';
 import {
-  REDIRECT_NAME,
-  LAYOUT,
   EXCEPTION_COMPONENT,
+  LAYOUT,
   PAGE_NOT_FOUND_NAME,
+  REDIRECT_NAME,
 } from '/@/router/constant';
 
 // 404 on a page
@@ -41,7 +41,7 @@ export const REDIRECT_ROUTE: AppRouteRecordRaw = {
   },
   children: [
     {
-      path: '/redirect/:path(.*)/:_redirect_type(.*)/:_origin_params(.*)',
+      path: '/redirect/:path(.*)/:_redirect_type(.*)/:_origin_params(.*)?',
       name: REDIRECT_NAME,
       component: () => import('/@/views/sys/redirect/index.vue'),
       meta: {
