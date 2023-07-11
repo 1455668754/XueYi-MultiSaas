@@ -99,6 +99,7 @@
           disabled: unref(getDisable),
         } as any;
       });
+
       function upEditDynamicDisabled(record, column, value) {
         if (!record) return false;
         const { key, dataIndex } = column;
@@ -106,6 +107,7 @@
         const dataKey = (dataIndex || key) as string;
         set(record, dataKey, value);
       }
+
       const getDisable = computed(() => {
         const { editDynamicDisabled } = props.column;
         let disabled = false;
@@ -481,8 +483,10 @@
       color: @error-color;
     }
   }
+
   .@{prefix-cls} {
     position: relative;
+    min-height: 24px; //设置高度让其始终可被hover
 
     &__wrapper {
       display: flex;
