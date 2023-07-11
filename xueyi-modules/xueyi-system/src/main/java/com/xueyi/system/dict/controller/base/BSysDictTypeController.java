@@ -30,7 +30,7 @@ public class BSysDictTypeController extends BaseController<SysDictTypeQuery, Sys
      */
     public AjaxResult listByCode(String code) {
         if (StrUtil.isEmpty(code)) {
-            AjaxResult.error("请传入编码后再查询字典");
+            warn("请传入编码后再查询字典");
         }
         return AjaxResult.success(DictUtil.getDictCache(code));
     }
@@ -40,7 +40,7 @@ public class BSysDictTypeController extends BaseController<SysDictTypeQuery, Sys
      */
     public AjaxResult listByCodeList(List<String> codeList) {
         if (CollUtil.isEmpty(codeList)) {
-            AjaxResult.error("请传入编码后再查询字典");
+            warn("请传入编码后再查询字典");
         }
         return AjaxResult.success(DictUtil.getDictCache(codeList));
     }
