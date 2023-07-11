@@ -6,8 +6,6 @@ import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.utils.servlet.ServletUtil;
 import com.xueyi.common.security.annotation.AdminAuth;
 import com.xueyi.common.security.annotation.InnerAuth;
-import com.xueyi.common.security.annotation.MemberAuth;
-import com.xueyi.common.security.annotation.PlatformAuth;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -69,38 +67,6 @@ public class AuthAspect implements Ordered {
         if (StrUtil.notEquals(SecurityConstants.AccountType.ADMIN.getCode(), accountType)) {
             log.warn("请求地址'{}'，没有管理端访问权限", request.getRequestURI());
             throw new InnerAuthException("没有管理端访问权限，不允许访问");
-        }
-        return point.proceed();
-    }
-
-    /**
-     * 会员端认证校验
-     */
-    @SneakyThrows
-    @Around("@within(memberAuth) || @annotation(memberAuth)")
-    public Object innerAround(ProceedingJoinPoint point, MemberAuth memberAuth) {
-        HttpServletRequest request = ServletUtil.getRequest();
-        Assert.notNull(request, "request cannot be null");
-        String accountType = request.getHeader(SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode());
-        if (StrUtil.notEquals(SecurityConstants.AccountType.MEMBER.getCode(), accountType)) {
-            log.warn("请求地址'{}'，没有会员端访问权限", request.getRequestURI());
-            throw new InnerAuthException("没有会员端访问权限，不允许访问");
-        }
-        return point.proceed();
-    }
-
-    /**
-     * 平台端认证校验
-     */
-    @SneakyThrows
-    @Around("@within(platformAuth) || @annotation(platformAuth)")
-    public Object innerAround(ProceedingJoinPoint point, PlatformAuth platformAuth) {
-        HttpServletRequest request = ServletUtil.getRequest();
-        Assert.notNull(request, "request cannot be null");
-        String accountType = request.getHeader(SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode());
-        if (StrUtil.notEquals(SecurityConstants.AccountType.PLATFORM.getCode(), accountType)) {
-            log.warn("请求地址'{}'，没有平台端访问权限", request.getRequestURI());
-            throw new InnerAuthException("没有平台端访问权限，不允许访问");
         }
         return point.proceed();
     }
