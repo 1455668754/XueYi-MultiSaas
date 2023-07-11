@@ -1,9 +1,9 @@
 import type {
-  ProjectConfig,
   HeaderSetting,
   MenuSetting,
-  TransitionSetting,
   MultiTabsSetting,
+  ProjectConfig,
+  TransitionSetting,
 } from '/#/config';
 import type { BeforeMiniState } from '/#/store';
 
@@ -26,6 +26,7 @@ interface AppState {
   // When the window shrinks, remember some states, and restore these states when the window is restored
   beforeMiniInfo: BeforeMiniState;
 }
+
 let timeId: TimeoutHandle;
 export const useAppStore = defineStore({
   id: 'app',
@@ -80,6 +81,11 @@ export const useAppStore = defineStore({
 
     setProjectConfig(config: DeepPartial<ProjectConfig>): void {
       this.projectConfig = deepMerge(this.projectConfig || {}, config);
+      Persistent.setLocal(PROJ_CFG_KEY, this.projectConfig);
+    },
+
+    setMenuSetting(setting: Partial<MenuSetting>): void {
+      this.projectConfig.menuSetting = deepMerge(this.projectConfig.menuSetting, setting);
       Persistent.setLocal(PROJ_CFG_KEY, this.projectConfig);
     },
 

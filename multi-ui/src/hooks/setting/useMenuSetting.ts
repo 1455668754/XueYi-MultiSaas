@@ -1,6 +1,6 @@
 import type { MenuSetting } from '/#/config';
 
-import { computed, unref, ref } from 'vue';
+import { computed, ref, unref } from 'vue';
 
 import { useAppStore } from '/@/store/modules/app';
 
@@ -123,7 +123,7 @@ export function useMenuSetting() {
 
   // Set menu configuration
   function setMenuSetting(menuSetting: Partial<MenuSetting>): void {
-    appStore.setProjectConfig({ menuSetting });
+    appStore.setMenuSetting(menuSetting);
   }
 
   function toggleCollapsed() {
@@ -131,11 +131,10 @@ export function useMenuSetting() {
       collapsed: !unref(getCollapsed),
     });
   }
+
   return {
     setMenuSetting,
-
     toggleCollapsed,
-
     getMenuFixed,
     getRealWidth,
     getMenuType,
