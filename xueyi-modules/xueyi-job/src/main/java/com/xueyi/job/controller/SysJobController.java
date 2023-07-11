@@ -16,7 +16,7 @@ import com.xueyi.job.api.domain.dto.SysJobDto;
 import com.xueyi.job.api.domain.query.SysJobQuery;
 import com.xueyi.job.api.utils.CronUtils;
 import com.xueyi.job.service.ISysJobService;
-import com.xueyi.job.util.ScheduleUtils;
+import com.xueyi.job.util.ScheduleUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import org.quartz.SchedulerException;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -155,7 +155,7 @@ public class SysJobController extends BaseController<SysJobQuery, SysJobDto, ISy
             warn(StrUtil.format("{}{}{}失败，目标字符串不允许'http(s)'调用", operate.getInfo(), getNodeName(), job.getName()));
         else if (StrUtil.containsAnyIgnoreCase(job.getInvokeTarget(), ScheduleConstants.JOB_ERROR_STR))
             warn(StrUtil.format("{}{}{}失败，目标字符串存在违规", operate.getInfo(), getNodeName(), job.getName()));
-        else if (!ScheduleUtils.whiteList(job.getInvokeTarget()))
+        else if (!ScheduleUtil.whiteList(job.getInvokeTarget()))
             warn(StrUtil.format("{}{}{}失败，目标字符串不在白名单内", operate.getInfo(), getNodeName(), job.getName()));
     }
 }

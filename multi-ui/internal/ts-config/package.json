@@ -1,6 +1,6 @@
 {
   "name": "@xueyi/ts-config",
-  "version": "3.0.0-Alpha3",
+  "version": "3.0.0-Alpha4",
   "private": true,
   "files": [
     "base.json",

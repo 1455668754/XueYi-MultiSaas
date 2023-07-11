@@ -6,14 +6,14 @@
 
     <groupId>com.xueyi</groupId>
     <artifactId>xueyi</artifactId>
-    <version>3.0.0-Alpha3</version>
+    <version>3.0.0-Alpha4</version>
 
     <name>xueyi</name>
     <url>https://xueyitt.cn</url>
     <description>雪忆管理系统</description>
 
     <properties>
-        <xueyi.version>3.0.0-Alpha3</xueyi.version>
+        <xueyi.version>3.0.0-Alpha4</xueyi.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>

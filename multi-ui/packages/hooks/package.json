@@ -1,6 +1,6 @@
 {
   "name": "@xueyi/hooks",
-  "version": "3.0.0-Alpha3",
+  "version": "3.0.0-Alpha4",
   "sideEffects": false,
   "exports": {
     ".": {

@@ -14,7 +14,7 @@ import com.xueyi.job.api.domain.query.SysJobQuery;
 import com.xueyi.job.domain.correlate.SysJobCorrelate;
 import com.xueyi.job.manager.impl.SysJobManagerImpl;
 import com.xueyi.job.service.ISysJobService;
-import com.xueyi.job.util.ScheduleUtils;
+import com.xueyi.job.util.ScheduleUtil;
 import jakarta.annotation.PostConstruct;
 import org.quartz.JobDataMap;
 import org.quartz.JobKey;
@@ -60,7 +60,7 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobQuery, SysJobDto, S
         scheduler.clear();
         List<SysJobDto> jobList = baseManager.initScheduler();
         for (SysJobDto job : jobList)
-            ScheduleUtils.createScheduleJob(scheduler, job);
+            ScheduleUtil.createScheduleJob(scheduler, job);
     }
 
     /**
@@ -86,7 +86,7 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobQuery, SysJobDto, S
     public int pauseJob(SysJobDto job) throws SchedulerException {
         job.setStatus(ScheduleConstants.Status.PAUSE.getCode());
         int row = baseManager.updateStatus(job);
-        if (row > 0) scheduler.pauseJob(ScheduleUtils.getJobKey(job.getId(), job.getJobGroup()));
+        if (row > 0) scheduler.pauseJob(ScheduleUtil.getJobKey(job.getId(), job.getJobGroup()));
         return row;
     }
 
@@ -101,7 +101,7 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobQuery, SysJobDto, S
     public int resumeJob(SysJobDto job) throws SchedulerException {
         job.setStatus(ScheduleConstants.Status.NORMAL.getCode());
         int row = baseManager.updateStatus(job);
-        if (row > 0) scheduler.resumeJob(ScheduleUtils.getJobKey(job.getId(), job.getJobGroup()));
+        if (row > 0) scheduler.resumeJob(ScheduleUtil.getJobKey(job.getId(), job.getJobGroup()));
         return row;
     }
 
@@ -116,7 +116,7 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobQuery, SysJobDto, S
         SysJobDto job = baseManager.selectById(id);
         JobDataMap dataMap = new JobDataMap();
         dataMap.put(ScheduleConstants.TASK_PROPERTIES, job);
-        JobKey jobKey = ScheduleUtils.getJobKey(job.getId(), job.getJobGroup());
+        JobKey jobKey = ScheduleUtil.getJobKey(job.getId(), job.getJobGroup());
         if (scheduler.checkExists(jobKey)) {
             scheduler.triggerJob(jobKey, dataMap);
             return true;
@@ -133,10 +133,10 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobQuery, SysJobDto, S
      */
     private void updateSchedulerJob(SysJobDto job, String jobGroup) throws SchedulerException, TaskException {
         // 判断是否存在
-        JobKey jobKey = ScheduleUtils.getJobKey(job.getId(), jobGroup);
+        JobKey jobKey = ScheduleUtil.getJobKey(job.getId(), jobGroup);
         // 防止创建时存在数据问题 先移除，然后在执行创建操作
         if (scheduler.checkExists(jobKey)) scheduler.deleteJob(jobKey);
-        ScheduleUtils.createScheduleJob(scheduler, job);
+        ScheduleUtil.createScheduleJob(scheduler, job);
     }
 
     /**
@@ -178,7 +178,7 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobQuery, SysJobDto, S
         switch (operate) {
             case ADD -> {
                 try {
-                    ScheduleUtils.createScheduleJob(scheduler, newDto);
+                    ScheduleUtil.createScheduleJob(scheduler, newDto);
                 } catch (SchedulerException | TaskException e) {
                     throw new RuntimeException(e);
                 }
@@ -206,7 +206,7 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobQuery, SysJobDto, S
             }
             case DELETE -> {
                 try {
-                    scheduler.deleteJob(ScheduleUtils.getJobKey(originDto.getId(), originDto.getJobGroup()));
+                    scheduler.deleteJob(ScheduleUtil.getJobKey(originDto.getId(), originDto.getJobGroup()));
                 } catch (SchedulerException e) {
                     throw new RuntimeException(e);
                 }
@@ -230,7 +230,7 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobQuery, SysJobDto, S
         if (Objects.requireNonNull(operate) == OperateConstants.ServiceType.BATCH_DELETE) {
             for (SysJobDto job : originList) {
                 try {
-                    scheduler.deleteJob(ScheduleUtils.getJobKey(job.getId(), job.getJobGroup()));
+                    scheduler.deleteJob(ScheduleUtil.getJobKey(job.getId(), job.getJobGroup()));
                 } catch (SchedulerException e) {
                     throw new RuntimeException(e);
                 }

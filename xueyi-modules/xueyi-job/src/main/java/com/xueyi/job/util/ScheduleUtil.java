@@ -25,7 +25,7 @@ import org.quartz.TriggerKey;
  *
  * @author xueyi
  */
-public class ScheduleUtils {
+public class ScheduleUtil {
 
     /**
      * 得到quartz任务类
@@ -86,7 +86,7 @@ public class ScheduleUtils {
 
         // 暂停任务
         if (job.getStatus().equals(ScheduleConstants.Status.PAUSE.getCode())) {
-            scheduler.pauseJob(ScheduleUtils.getJobKey(jobId, jobGroup));
+            scheduler.pauseJob(ScheduleUtil.getJobKey(jobId, jobGroup));
         }
     }
 
