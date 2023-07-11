@@ -1,15 +1,14 @@
-import type {Menu, MenuModule} from '/@/router/types';
+import type { Menu, MenuModule } from '/@/router/types';
 
-import {usePermissionStore} from '/@/store/modules/permission';
-import {getAllParentPath, transformMenuModule} from '/@/router/helper/menuHelper';
+import { usePermissionStore } from '/@/store/modules/permission';
+import { getAllParentPath, transformMenuModule } from '/@/router/helper/menuHelper';
 
-const modules = import.meta.globEager('./modules/**/*.ts');
+const modules = import.meta.glob('./modules/**/*.ts', { eager: true });
 
 const menuModules: MenuModule[] = [];
 
 Object.keys(modules).forEach((key) => {
-  // @ts-ignore
-  const mod = modules[key].default || {};
+  const mod = (modules as Recordable)[key].default || {};
   const modList = Array.isArray(mod) ? [...mod] : [mod];
   menuModules.push(...modList);
 });
@@ -57,7 +56,7 @@ export async function getCurrentParentPath(currentPath: string) {
 // Get the level 1 menu, delete children
 export async function getShallowMenus(): Promise<Menu[]> {
   const menus = await getAsyncMenus();
-  return menus.map((item) => ({...item, children: undefined}));
+  return menus.map((item) => ({ ...item, children: undefined }));
 }
 
 // Get the children of the menu

@@ -18,6 +18,7 @@
     </template>
   </div>
 </template>
+
 <script lang="ts">
   import { defineComponent, PropType } from 'vue';
 
@@ -25,6 +26,7 @@
   import { useDesign } from '/@/hooks/web/useDesign';
 
   import { menuTypeList } from '../enum';
+
   export default defineComponent({
     name: 'MenuTypePicker',
     components: { Tooltip },
@@ -51,6 +53,7 @@
     },
   });
 </script>
+
 <style lang="less" scoped>
   @prefix-cls: ~'@{namespace}-setting-menu-type-picker';
 

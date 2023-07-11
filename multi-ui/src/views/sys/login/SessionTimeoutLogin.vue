@@ -12,6 +12,7 @@
   import { useDesign } from '/@/hooks/web/useDesign';
   import { useUserStore } from '/@/store/modules/user';
   import { usePermissionStore } from '/@/store/modules/permission';
+  import { type Nullable } from '@xueyi/types';
 
   const { prefixCls } = useDesign('st-login');
   const userStore = useUserStore();

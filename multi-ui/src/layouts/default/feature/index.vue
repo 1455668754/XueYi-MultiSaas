@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { defineComponent, computed, unref } from 'vue';
+  import { computed, defineComponent, unref } from 'vue';
   import { BackTop } from 'ant-design-vue';
 
   import { useRootSetting } from '/@/hooks/setting/useRootSetting';
@@ -11,6 +11,7 @@
   import { createAsyncComponent } from '/@/utils/factory/createAsyncComponent';
 
   import SessionTimeoutLogin from '/@/views/sys/login/SessionTimeoutLogin.vue';
+
   export default defineComponent({
     name: 'LayoutFeatures',
     components: {

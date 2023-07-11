@@ -4,8 +4,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "types": [
-      "vite/client",
-      "unplugin-vue-define-options/macros-global"
+      "vite/client"
     ],
     "paths": {
       "/@/*": [
