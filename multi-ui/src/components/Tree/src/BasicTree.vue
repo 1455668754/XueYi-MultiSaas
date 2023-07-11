@@ -128,7 +128,7 @@
         getSelectedNode,
       } = useTree(treeDataRef, getFieldNames);
 
-      function getIcon(params: Recordable, icon?: string) {
+      function getIcon(params: TreeItem, icon?: string) {
         if (!icon) {
           if (props.renderIcon && isFunction(props.renderIcon)) {
             return props.renderIcon(params);
@@ -163,6 +163,7 @@
       function getExpandedKeys() {
         return state.expandedKeys;
       }
+
       function setSelectedKeys(keys: KeyType[]) {
         state.selectedKeys = keys;
       }
