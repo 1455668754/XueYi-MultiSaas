@@ -11,6 +11,7 @@ import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.redis.constant.RedisConstants;
 import com.xueyi.common.security.utils.SecurityUtils;
+import com.xueyi.common.web.correlate.contant.CorrelateConstants;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
 import com.xueyi.system.api.dict.domain.dto.SysDictTypeDto;
@@ -25,6 +26,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +44,18 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeQuery, Sy
 
     @Autowired
     private ISysDictDataService dictDataService;
+
+    /**
+     * 默认方法关联配置定义
+     */
+    @Override
+    protected Map<CorrelateConstants.ServiceType, SysDictTypeCorrelate> defaultCorrelate() {
+        return new HashMap<>() {{
+            put(CorrelateConstants.ServiceType.SELECT, SysDictTypeCorrelate.INFO_LIST);
+            put(CorrelateConstants.ServiceType.CACHE_REFRESH, SysDictTypeCorrelate.INFO_LIST);
+            put(CorrelateConstants.ServiceType.DELETE, SysDictTypeCorrelate.BASE_DEL);
+        }};
+    }
 
     /**
      * 缓存主键命名定义
@@ -64,9 +78,11 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeQuery, Sy
     @Override
     public Boolean syncCache() {
         Long enterpriseId = SecurityUtils.getEnterpriseId();
-        List<SysDictTypeDto> enterpriseTypeList = baseManager.selectListMerge(null);
+        List<SysDictTypeDto> enterpriseTypeList = baseManager.selectList(null);
+        subCorrelates(enterpriseTypeList, getBasicCorrelate(CorrelateConstants.ServiceType.CACHE_REFRESH));
         SecurityContextHolder.setEnterpriseId(SecurityConstants.COMMON_TENANT_ID.toString());
-        List<SysDictTypeDto> commonTypeList = baseManager.selectListMerge(null);
+        List<SysDictTypeDto> commonTypeList = baseManager.selectList(null);
+        subCorrelates(commonTypeList, getBasicCorrelate(CorrelateConstants.ServiceType.CACHE_REFRESH));
         SecurityContextHolder.setEnterpriseId(enterpriseId.toString());
         Map<String, SysDictTypeDto> enterpriseTypeMap = enterpriseTypeList.stream().collect(Collectors.toMap(SysDictTypePo::getCode, Function.identity()));
         List<SysDictTypeDto> addTypeList = new ArrayList<>();
@@ -135,15 +151,19 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeQuery, Sy
     public void refreshCache(OperateConstants.ServiceType operate, RedisConstants.OperateType operateCache, SysDictTypeDto dto, Collection<SysDictTypeDto> dtoList) {
         Long enterpriseId = SecurityUtils.getEnterpriseId();
         String cacheKey = StrUtil.format(getCacheKey().getCode(), enterpriseId);
+        if (operate.isSingle()) {
+            subCorrelates(dto, getBasicCorrelate(CorrelateConstants.ServiceType.CACHE_REFRESH));
+        } else if (operate.isBatch()) {
+            subCorrelates(dtoList, getBasicCorrelate(CorrelateConstants.ServiceType.CACHE_REFRESH));
+        }
         switch (operateCache) {
             case REFRESH_ALL -> {
-                List<SysDictTypeDto> allList = baseManager.selectListMerge(null);
                 redisService.deleteObject(cacheKey);
-                redisService.refreshMapCache(cacheKey, allList, SysDictTypeDto::getCode, SysDictTypeDto::getSubList);
+                redisService.refreshMapCache(cacheKey, dtoList, SysDictTypeDto::getCode, SysDictTypeDto::getSubList);
                 // 索引标识
                 if (ObjectUtil.equals(SecurityConstants.COMMON_TENANT_ID, enterpriseId)) {
                     redisService.deleteObject(getCacheRouteKey().getCode());
-                    List<SysDictTypeDto> dictList = allList.stream().peek(item -> item.setSubList(null)).toList();
+                    List<SysDictTypeDto> dictList = dtoList.stream().peek(item -> item.setSubList(null)).toList();
                     redisService.refreshMapCache(getCacheRouteKey().getCode(), dictList, SysDictTypeDto::getCode, Function.identity());
                 }
             }

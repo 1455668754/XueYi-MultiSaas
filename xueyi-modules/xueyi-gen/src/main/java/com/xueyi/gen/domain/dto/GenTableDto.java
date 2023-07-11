@@ -1,7 +1,5 @@
 package com.xueyi.gen.domain.dto;
 
-import com.xueyi.common.core.annotation.Correlation;
-import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.constant.gen.GenConstants;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.gen.domain.po.GenTablePo;
@@ -10,8 +8,6 @@ import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
 import java.util.List;
-
-import static com.xueyi.gen.domain.merge.MergeGroup.GEN_TABLE_GROUP;
 
 /**
  * 业务 数据传输对象
@@ -32,7 +28,6 @@ public class GenTableDto extends GenTablePo {
     private GenTableDto subTable;
 
     /** 业务字段数据集合 */
-    @Correlation(groupName = GEN_TABLE_GROUP, keyType = OperateConstants.SubKeyType.RECEIVE)
     private List<GenTableColumnDto> subList;
 
     public static boolean isBase(String tplCategory) {

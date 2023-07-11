@@ -3,15 +3,11 @@ package com.xueyi.system.api.dict.domain.po;
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.xueyi.common.core.annotation.Correlation;
-import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.web.tenant.base.TBaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
-
-import static com.xueyi.system.api.dict.domain.merge.MergeGroup.DICT_DATA_GROUP;
 
 /**
  * 系统服务 | 字典模块 | 字典数据 持久化对象
@@ -27,7 +23,6 @@ public class SysDictDataPo extends TBaseEntity {
     private static final long serialVersionUID = 1L;
 
     /** 字典编码 */
-    @Correlation(groupName = DICT_DATA_GROUP, keyType = OperateConstants.SubKeyType.SLAVE)
     @TableField(updateStrategy = FieldStrategy.NEVER)
     protected String code;
 

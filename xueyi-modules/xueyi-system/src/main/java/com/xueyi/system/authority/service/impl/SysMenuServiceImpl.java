@@ -7,6 +7,7 @@ import com.xueyi.common.core.utils.core.IdUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.datascope.annotation.DataScope;
+import com.xueyi.common.web.correlate.contant.CorrelateConstants;
 import com.xueyi.common.web.entity.service.impl.TreeServiceImpl;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.authority.domain.query.SysMenuQuery;
@@ -32,6 +33,18 @@ import static com.xueyi.common.core.constant.basic.SecurityConstants.CREATE_BY;
  */
 @Service
 public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuQuery, SysMenuDto, SysMenuCorrelate, ISysMenuManager> implements ISysMenuService {
+
+
+    /**
+     * 默认方法关联配置定义
+     */
+    @Override
+    protected Map<CorrelateConstants.ServiceType, SysMenuCorrelate> defaultCorrelate() {
+        return new HashMap<>() {{
+            put(CorrelateConstants.ServiceType.SELECT, SysMenuCorrelate.INFO_LIST);
+            put(CorrelateConstants.ServiceType.DELETE, SysMenuCorrelate.BASE_DEL);
+        }};
+    }
 
     /**
      * 登录校验 | 获取当前租户全部菜单权限标识集合

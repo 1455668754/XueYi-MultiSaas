@@ -38,7 +38,7 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, C exten
      */
     @Override
     public List<D> selectListScope(Q query) {
-        return selectListMerge(query);
+        return selectList(query);
     }
 
     /**
@@ -50,19 +50,6 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, C exten
     @Override
     public List<D> selectList(Q query) {
         List<D> dtoList = baseManager.selectList(query);
-        return subCorrelates(dtoList, getBasicCorrelate(CorrelateConstants.ServiceType.SELECT_LIST));
-    }
-
-    /**
-     * 查询数据对象列表 | 组装子数据映射关联
-     *
-     * @param query 数据查询对象
-     * @return 数据对象集合
-     */
-    @Override
-    @Deprecated
-    public List<D> selectListMerge(Q query) {
-        List<D> dtoList = baseManager.selectListMerge(query);
         return subCorrelates(dtoList, getBasicCorrelate(CorrelateConstants.ServiceType.SELECT_LIST));
     }
 
@@ -91,19 +78,6 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, C exten
     }
 
     /**
-     * 根据Id集合查询数据对象列表 | 组装子数据映射关联
-     *
-     * @param idList Id集合
-     * @return 数据对象集合
-     */
-    @Override
-    @Deprecated
-    public List<D> selectListByIdsMerge(Collection<? extends Serializable> idList) {
-        List<D> dtoList = baseManager.selectListByIdsMerge(idList);
-        return subCorrelates(dtoList, getBasicCorrelate(CorrelateConstants.ServiceType.SELECT_ID_LIST));
-    }
-
-    /**
      * 根据Id查询单条数据对象
      *
      * @param id Id
@@ -112,19 +86,6 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, C exten
     @Override
     public D selectById(Serializable id) {
         D dto = baseManager.selectById(id);
-        return subCorrelates(dto, getBasicCorrelate(CorrelateConstants.ServiceType.SELECT_ID_SINGLE));
-    }
-
-    /**
-     * 根据Id查询单条数据对象 | 组装子数据映射关联
-     *
-     * @param id Id
-     * @return 数据对象
-     */
-    @Override
-    @Deprecated
-    public D selectByIdMerge(Serializable id) {
-        D dto = baseManager.selectByIdMerge(id);
         return subCorrelates(dto, getBasicCorrelate(CorrelateConstants.ServiceType.SELECT_ID_SINGLE));
     }
 
@@ -149,6 +110,7 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, C exten
      * @param dtoList 数据对象集合
      */
     @Override
+    @DSTransactional
     public int insertBatch(Collection<D> dtoList) {
         startBatchHandle(OperateConstants.ServiceType.BATCH_ADD, null, dtoList);
         int rows = baseManager.insertBatch(dtoList);
@@ -165,7 +127,7 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, C exten
     @Override
     @DSTransactional
     public int update(D dto) {
-        D originDto = selectByIdMerge(dto.getId());
+        D originDto = selectById(dto.getId());
         startHandle(OperateConstants.ServiceType.EDIT, originDto, dto);
         int row = baseManager.update(dto);
         endHandle(OperateConstants.ServiceType.EDIT, row, originDto, dto);
@@ -178,8 +140,9 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, C exten
      * @param dtoList 数据对象集合
      */
     @Override
+    @DSTransactional
     public int updateBatch(Collection<D> dtoList) {
-        List<D> originList = selectListByIdsMerge(dtoList.stream().map(D::getId).collect(Collectors.toList()));
+        List<D> originList = selectListByIds(dtoList.stream().map(D::getId).collect(Collectors.toList()));
         startBatchHandle(OperateConstants.ServiceType.BATCH_EDIT, originList, dtoList);
         int rows = baseManager.updateBatch(dtoList);
         endBatchHandle(OperateConstants.ServiceType.BATCH_EDIT, rows, originList, dtoList);
@@ -195,7 +158,7 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, C exten
     @Override
     @DSTransactional
     public int updateStatus(D dto) {
-        D originDto = selectByIdMerge(dto.getId());
+        D originDto = selectById(dto.getId());
         startHandle(OperateConstants.ServiceType.EDIT_STATUS, originDto, dto);
         int row = baseManager.updateStatus(dto);
         endHandle(OperateConstants.ServiceType.EDIT_STATUS, row, originDto, dto);
@@ -211,7 +174,7 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, C exten
     @Override
     @DSTransactional
     public int deleteById(Serializable id) {
-        D originDto = selectByIdMerge(id);
+        D originDto = selectById(id);
         startHandle(OperateConstants.ServiceType.DELETE, originDto, null);
         int row = baseManager.deleteById(id);
         endHandle(OperateConstants.ServiceType.DELETE, row, originDto, null);
@@ -227,7 +190,7 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, C exten
     @Override
     @DSTransactional
     public int deleteByIds(Collection<? extends Serializable> idList) {
-        List<D> originList = selectListByIdsMerge(idList);
+        List<D> originList = selectListByIds(idList);
         startBatchHandle(OperateConstants.ServiceType.BATCH_DELETE, originList, null);
         int rows = baseManager.deleteByIds(idList);
         endBatchHandle(OperateConstants.ServiceType.BATCH_DELETE, rows, originList, null);
@@ -270,7 +233,7 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, C exten
         if (ObjectUtil.isNull(getCacheKey())) {
             throw new UtilException("未正常配置缓存，无法使用!");
         }
-        List<D> allList = selectListMerge(null);
+        List<D> allList = baseManager.selectList(null);
         refreshCache(OperateConstants.ServiceType.BATCH_ADD, RedisConstants.OperateType.REFRESH_ALL, null, allList);
     }
 }

@@ -3,18 +3,15 @@ package com.xueyi.system.authority.manager.impl;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.DictConstants;
-import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.security.utils.SecurityUserUtils;
-import com.xueyi.common.web.entity.domain.SlaveRelation;
 import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
-import com.xueyi.system.authority.domain.model.SysModuleConverter;
 import com.xueyi.system.api.authority.domain.po.SysModulePo;
 import com.xueyi.system.api.authority.domain.query.SysModuleQuery;
 import com.xueyi.system.authority.domain.merge.SysRoleModuleMerge;
 import com.xueyi.system.authority.domain.merge.SysTenantModuleMerge;
-import com.xueyi.system.authority.manager.ISysMenuManager;
+import com.xueyi.system.authority.domain.model.SysModuleConverter;
 import com.xueyi.system.authority.manager.ISysModuleManager;
 import com.xueyi.system.authority.mapper.SysModuleMapper;
 import com.xueyi.system.authority.mapper.merge.SysRoleModuleMergeMapper;
@@ -26,9 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static com.xueyi.system.api.authority.domain.merge.MergeGroup.MODULE_SysMenu_GROUP;
-import static com.xueyi.system.api.authority.domain.merge.MergeGroup.MODULE_SysRoleModuleMerge_GROUP;
 
 /**
  * 系统服务 | 权限模块 | 模块管理 数据封装层处理
@@ -43,18 +37,6 @@ public class SysModuleManagerImpl extends BaseManagerImpl<SysModuleQuery, SysMod
 
     @Autowired
     private SysRoleModuleMergeMapper roleModuleMergeMapper;
-
-    /**
-     * 初始化从属关联关系
-     *
-     * @return 关系对象集合
-     */
-    protected List<SlaveRelation> subRelationInit() {
-        return new ArrayList<>(){{
-            add(new SlaveRelation(MODULE_SysMenu_GROUP, ISysMenuManager.class, OperateConstants.SubOperateLimit.EX_ADD_OR_EDIT));
-            add(new SlaveRelation(MODULE_SysRoleModuleMerge_GROUP, SysRoleModuleMergeMapper.class, SysRoleModuleMerge.class, OperateConstants.SubOperateLimit.ONLY_DEL));
-        }};
-    }
 
     /**
      * 当前用户首页可展示的模块路由

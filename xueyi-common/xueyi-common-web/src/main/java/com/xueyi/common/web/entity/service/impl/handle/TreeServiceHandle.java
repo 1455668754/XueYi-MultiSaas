@@ -9,6 +9,7 @@ import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.entity.base.BasisEntity;
 import com.xueyi.common.core.web.entity.base.TreeEntity;
 import com.xueyi.common.redis.constant.RedisConstants;
+import com.xueyi.common.web.correlate.contant.CorrelateConstants;
 import com.xueyi.common.web.correlate.service.CorrelateService;
 import com.xueyi.common.web.entity.manager.ITreeManager;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
@@ -72,8 +73,8 @@ public class TreeServiceHandle<Q extends TreeEntity<D>, D extends TreeEntity<D>,
             return;
         switch (operate) {
             case ADD -> {
-                // insert merge data
-                baseManager.insertMerge(newDto);
+                // insert correlate data
+                addCorrelates(newDto, getBasicCorrelate(CorrelateConstants.ServiceType.ADD));
                 // refresh cache
                 refreshCache(operate, RedisConstants.OperateType.REFRESH, newDto);
             }
@@ -84,8 +85,8 @@ public class TreeServiceHandle<Q extends TreeEntity<D>, D extends TreeEntity<D>,
                 } else if (StrUtil.notEquals(newDto.getAncestors(), newDto.getOldAncestors())) {
                     baseManager.updateChildrenAncestors(newDto);
                 }
-                // update merge data
-                baseManager.updateMerge(originDto, newDto);
+                // update correlate data
+                editCorrelates(originDto, newDto, getBasicCorrelate(CorrelateConstants.ServiceType.EDIT));
                 // refresh cache
                 refreshCache(operate, RedisConstants.OperateType.REFRESH, newDto);
             }
@@ -104,8 +105,8 @@ public class TreeServiceHandle<Q extends TreeEntity<D>, D extends TreeEntity<D>,
                 baseManager.deleteChildByAncestors(originDto.getChildAncestors());
                 // 将当前节点加入变更列表
                 childList.add(originDto);
-                // delete merge data
-                baseManager.deleteMerge(childList);
+                // delete correlate data
+                delCorrelates(childList, getBasicCorrelate(CorrelateConstants.ServiceType.DELETE));
                 // refresh cache
                 refreshCache(operate, RedisConstants.OperateType.REMOVE, childList);
             }
@@ -169,8 +170,8 @@ public class TreeServiceHandle<Q extends TreeEntity<D>, D extends TreeEntity<D>,
             return;
         switch (operate) {
             case BATCH_ADD -> {
-                // insert merge data
-                baseManager.insertMerge(newList);
+                // insert correlate data
+                addCorrelates(newList, getBasicCorrelate(CorrelateConstants.ServiceType.BATCH_ADD));
                 // refresh cache
                 refreshCache(operate, RedisConstants.OperateType.REFRESH, newList);
             }
@@ -183,8 +184,8 @@ public class TreeServiceHandle<Q extends TreeEntity<D>, D extends TreeEntity<D>,
                         baseManager.updateChildrenAncestors(item);
                     }
                 });
-                // update merge data
-                baseManager.updateMerge(originList, newList);
+                // update correlate data
+                editCorrelates(originList, newList, getBasicCorrelate(CorrelateConstants.ServiceType.BATCH_EDIT));
                 // refresh cache
                 refreshCache(operate, RedisConstants.OperateType.REFRESH, newList);
             }
@@ -197,8 +198,8 @@ public class TreeServiceHandle<Q extends TreeEntity<D>, D extends TreeEntity<D>,
                 baseManager.deleteChildByAncestors(childAncestors);
                 // 将当前节点加入变更列表
                 childList.addAll(originList);
-                // delete merge data
-                baseManager.deleteMerge(childList);
+                // delete correlate data
+                delCorrelates(childList, getBasicCorrelate(CorrelateConstants.ServiceType.BATCH_DELETE));
                 // refresh cache
                 refreshCache(operate, RedisConstants.OperateType.REMOVE, originList);
             }

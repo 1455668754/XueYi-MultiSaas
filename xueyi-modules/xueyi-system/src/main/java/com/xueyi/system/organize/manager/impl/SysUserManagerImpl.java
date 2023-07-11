@@ -9,18 +9,18 @@ import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.security.utils.SecurityUserUtils;
 import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
-import com.xueyi.system.authority.domain.model.SysRoleConverter;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
-import com.xueyi.system.organize.domain.model.SysDeptConverter;
-import com.xueyi.system.organize.domain.model.SysPostConverter;
-import com.xueyi.system.organize.domain.model.SysUserConverter;
 import com.xueyi.system.api.organize.domain.po.SysUserPo;
 import com.xueyi.system.api.organize.domain.query.SysUserQuery;
+import com.xueyi.system.authority.domain.model.SysRoleConverter;
 import com.xueyi.system.authority.mapper.SysRoleMapper;
 import com.xueyi.system.organize.domain.merge.SysOrganizeRoleMerge;
 import com.xueyi.system.organize.domain.merge.SysUserPostMerge;
+import com.xueyi.system.organize.domain.model.SysDeptConverter;
+import com.xueyi.system.organize.domain.model.SysPostConverter;
+import com.xueyi.system.organize.domain.model.SysUserConverter;
 import com.xueyi.system.organize.manager.ISysUserManager;
 import com.xueyi.system.organize.mapper.SysDeptMapper;
 import com.xueyi.system.organize.mapper.SysPostMapper;
@@ -102,7 +102,7 @@ public class SysUserManagerImpl extends BaseManagerImpl<SysUserQuery, SysUserDto
                 Set<Long> deptIds = userDto.getPosts().stream().map(SysPostDto::getDeptId).collect(Collectors.toSet());
                 List<SysDeptDto> depts = deptConverter.mapperDto(deptMapper.selectBatchIds(deptIds));
                 depts.forEach(item -> {
-                    if(StrUtil.isNotBlank(item.getAncestors())) {
+                    if (StrUtil.isNotBlank(item.getAncestors())) {
                         roleDeptIds.add(item.getId());
                         List<String> deptIdStrList = StrUtil.splitTrim(item.getAncestors(), StrUtil.COMMA);
                         roleDeptIds.addAll(deptIdStrList.stream().map(ConvertUtil::toLong).collect(Collectors.toSet()));

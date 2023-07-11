@@ -3,9 +3,6 @@ package com.xueyi.system.api.authority.domain.po;
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.xueyi.common.core.annotation.Correlation;
-import com.xueyi.common.core.annotation.Correlations;
-import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.web.tenant.common.TCTreeEntity;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import jakarta.validation.constraints.NotNull;
@@ -13,9 +10,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
-
-import static com.xueyi.system.api.authority.domain.merge.MergeGroup.MENU_SysModule_GROUP;
-import static com.xueyi.system.api.authority.domain.merge.MergeGroup.MODULE_SysMenu_GROUP;
 
 /**
  * 系统服务 | 权限模块 | 菜单 持久化对象
@@ -36,10 +30,6 @@ public class SysMenuPo extends TCTreeEntity<SysMenuDto> {
 
     /** 模块Id */
     @NotNull(message = "模块Id不能为空")
-    @Correlations({
-            @Correlation(groupName = MENU_SysModule_GROUP, keyType = OperateConstants.SubKeyType.MAIN),
-            @Correlation(groupName = MODULE_SysMenu_GROUP, keyType = OperateConstants.SubKeyType.SLAVE)
-    })
     protected Long moduleId;
 
     /** 菜单标题 | 多语言 */

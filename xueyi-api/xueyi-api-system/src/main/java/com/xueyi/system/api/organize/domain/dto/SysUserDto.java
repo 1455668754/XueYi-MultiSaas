@@ -1,7 +1,5 @@
 package com.xueyi.system.api.organize.domain.dto;
 
-import com.xueyi.common.core.annotation.Correlation;
-import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.validate.V_A_E;
@@ -13,8 +11,6 @@ import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
 import java.util.List;
-
-import static com.xueyi.system.api.organize.domain.merge.MergeGroup.USER_SysUserPostMerge_GROUP;
 
 /**
  * 系统服务 | 组织模块 | 用户 数据传输对象
@@ -29,7 +25,6 @@ public class SysUserDto extends SysUserPo {
     private static final long serialVersionUID = 1L;
 
     /** 岗位对象 */
-    @Correlation(groupName = USER_SysUserPostMerge_GROUP, keyType = OperateConstants.SubKeyType.RECEIVE)
     private List<SysPostDto> posts;
 
     /** 角色对象 */
@@ -37,7 +32,6 @@ public class SysUserDto extends SysUserPo {
 
     /** 岗位组 */
     @NotEmpty(message = "归属岗位不能为空", groups = {V_A_E.class})
-    @Correlation(groupName = USER_SysUserPostMerge_GROUP, keyType = OperateConstants.SubKeyType.RECEIVE_ARR)
     private Long[] postIds;
 
     /** 角色组 */

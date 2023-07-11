@@ -34,15 +34,6 @@ public interface IBaseService<Q extends BaseEntity, D extends BaseEntity> {
     List<D> selectList(Q query);
 
     /**
-     * 查询数据对象列表 | 组装子数据映射关联
-     *
-     * @param query 数据查询对象
-     * @return 数据对象集合
-     */
-    @Deprecated
-    List<D> selectListMerge(Q query);
-
-    /**
      * 根据动态SQL控制对象查询数据对象集合
      *
      * @param field 动态SQL控制对象
@@ -59,30 +50,12 @@ public interface IBaseService<Q extends BaseEntity, D extends BaseEntity> {
     List<D> selectListByIds(Collection<? extends Serializable> idList);
 
     /**
-     * 根据Id集合查询数据对象列表 | 组装子数据映射关联
-     *
-     * @param idList Id集合
-     * @return 数据对象集合
-     */
-    @Deprecated
-    List<D> selectListByIdsMerge(Collection<? extends Serializable> idList);
-
-    /**
      * 根据Id查询单条数据对象
      *
      * @param id Id
      * @return 数据对象
      */
     D selectById(Serializable id);
-
-    /**
-     * 根据Id查询单条数据对象 | 组装子数据映射关联
-     *
-     * @param id Id
-     * @return 数据对象
-     */
-    @Deprecated
-    D selectByIdMerge(Serializable id);
 
     /**
      * 新增数据对象

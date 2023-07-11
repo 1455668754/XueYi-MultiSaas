@@ -1,15 +1,11 @@
 package com.xueyi.system.api.authority.domain.dto;
 
-import com.xueyi.common.core.annotation.Correlation;
-import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.system.api.authority.domain.po.SysModulePo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
 import java.util.List;
-
-import static com.xueyi.system.api.authority.domain.merge.MergeGroup.MODULE_SysMenu_GROUP;
 
 /**
  * 系统服务 | 权限模块 | 模块 数据传输对象
@@ -24,6 +20,5 @@ public class SysModuleDto extends SysModulePo {
     private static final long serialVersionUID = 1L;
 
     /** 菜单数据 */
-    @Correlation(groupName = MODULE_SysMenu_GROUP, keyType = OperateConstants.SubKeyType.RECEIVE)
     private List<SysMenuDto> subList;
 }

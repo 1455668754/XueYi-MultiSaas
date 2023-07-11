@@ -80,7 +80,7 @@ public abstract class BaseController<Q extends BaseEntity, D extends BaseEntity,
      * 查询详细
      */
     public AjaxResult getInfo(Serializable id) {
-        return success(baseService.selectByIdMerge(id));
+        return success(baseService.selectById(id));
     }
 
     /**

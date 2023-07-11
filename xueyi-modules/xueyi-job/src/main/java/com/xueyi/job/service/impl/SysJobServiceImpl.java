@@ -7,6 +7,7 @@ import com.xueyi.common.core.exception.job.TaskException;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.security.utils.SecurityUtils;
+import com.xueyi.common.web.correlate.contant.CorrelateConstants;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.job.api.domain.dto.SysJobDto;
 import com.xueyi.job.api.domain.query.SysJobQuery;
@@ -23,7 +24,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.xueyi.common.core.constant.basic.SecurityConstants.CREATE_BY;
@@ -38,6 +41,16 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobQuery, SysJobDto, S
 
     @Autowired
     private Scheduler scheduler;
+
+    /**
+     * 默认方法关联配置定义
+     */
+    @Override
+    protected Map<CorrelateConstants.ServiceType, SysJobCorrelate> defaultCorrelate() {
+        return new HashMap<>() {{
+            put(CorrelateConstants.ServiceType.DELETE, SysJobCorrelate.BASE_DEL);
+        }};
+    }
 
     /**
      * 项目启动时，初始化定时器 主要是防止手动修改数据库导致未同步到定时任务处理（注：不能手动修改数据库Id和任务组名，否则会导致脏数据）

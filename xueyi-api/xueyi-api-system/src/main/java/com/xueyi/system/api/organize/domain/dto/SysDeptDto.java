@@ -1,7 +1,5 @@
 package com.xueyi.system.api.organize.domain.dto;
 
-import com.xueyi.common.core.annotation.Correlation;
-import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
 import com.xueyi.system.api.organize.domain.po.SysDeptPo;
 import lombok.Data;
@@ -9,8 +7,6 @@ import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
 import java.util.List;
-
-import static com.xueyi.system.api.organize.domain.merge.MergeGroup.DEPT_SysPost_GROUP;
 
 /**
  * 系统服务 | 组织模块 | 部门 数据传输对象
@@ -31,7 +27,6 @@ public class SysDeptDto extends SysDeptPo {
     private Long[] roleIds;
 
     /** 部门数据 */
-    @Correlation(groupName = DEPT_SysPost_GROUP, keyType = OperateConstants.SubKeyType.RECEIVE)
     private List<SysPostDto> subList;
 
 }

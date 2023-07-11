@@ -1,6 +1,7 @@
 package com.xueyi.system.authority.service.impl;
 
 import com.xueyi.common.datascope.annotation.DataScope;
+import com.xueyi.common.web.correlate.contant.CorrelateConstants;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
 import com.xueyi.system.api.authority.domain.query.SysModuleQuery;
@@ -9,7 +10,9 @@ import com.xueyi.system.authority.manager.ISysModuleManager;
 import com.xueyi.system.authority.service.ISysModuleService;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static com.xueyi.common.core.constant.basic.SecurityConstants.CREATE_BY;
@@ -21,6 +24,16 @@ import static com.xueyi.common.core.constant.basic.SecurityConstants.CREATE_BY;
  */
 @Service
 public class SysModuleServiceImpl extends BaseServiceImpl<SysModuleQuery, SysModuleDto, SysModuleCorrelate, ISysModuleManager> implements ISysModuleService {
+
+    /**
+     * 默认方法关联配置定义
+     */
+    @Override
+    protected Map<CorrelateConstants.ServiceType, SysModuleCorrelate> defaultCorrelate() {
+        return new HashMap<>() {{
+            put(CorrelateConstants.ServiceType.DELETE, SysModuleCorrelate.BASE_DEL);
+        }};
+    }
 
     /**
      * 当前用户首页可展示的模块路由

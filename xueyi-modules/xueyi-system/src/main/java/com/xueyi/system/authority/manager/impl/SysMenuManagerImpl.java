@@ -4,24 +4,21 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.DictConstants;
-import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.constant.basic.SqlConstants;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.NumberUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.security.utils.SecurityUserUtils;
-import com.xueyi.common.web.entity.domain.SlaveRelation;
 import com.xueyi.common.web.entity.manager.impl.TreeManagerImpl;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
-import com.xueyi.system.authority.domain.model.SysMenuConverter;
 import com.xueyi.system.api.authority.domain.po.SysMenuPo;
 import com.xueyi.system.api.authority.domain.query.SysMenuQuery;
 import com.xueyi.system.api.model.DataScope;
 import com.xueyi.system.authority.domain.merge.SysRoleMenuMerge;
 import com.xueyi.system.authority.domain.merge.SysTenantMenuMerge;
+import com.xueyi.system.authority.domain.model.SysMenuConverter;
 import com.xueyi.system.authority.manager.ISysMenuManager;
-import com.xueyi.system.authority.manager.ISysModuleManager;
 import com.xueyi.system.authority.mapper.SysMenuMapper;
 import com.xueyi.system.authority.mapper.merge.SysRoleMenuMergeMapper;
 import com.xueyi.system.authority.mapper.merge.SysTenantMenuMergeMapper;
@@ -35,8 +32,6 @@ import java.util.stream.Collectors;
 
 import static com.xueyi.common.core.constant.basic.SqlConstants.ANCESTORS_PART_UPDATE;
 import static com.xueyi.common.core.constant.basic.SqlConstants.TREE_LEVEL_UPDATE;
-import static com.xueyi.system.api.authority.domain.merge.MergeGroup.MENU_SysModule_GROUP;
-import static com.xueyi.system.api.authority.domain.merge.MergeGroup.MENU_SysRoleMenuMerge_GROUP;
 
 /**
  * 系统服务 | 权限模块 | 菜单管理 数据封装层处理
@@ -51,18 +46,6 @@ public class SysMenuManagerImpl extends TreeManagerImpl<SysMenuQuery, SysMenuDto
 
     @Autowired
     SysRoleMenuMergeMapper roleMenuMergeMapper;
-
-    /**
-     * 初始化从属关联关系
-     *
-     * @return 关系对象集合
-     */
-    protected List<SlaveRelation> subRelationInit() {
-        return new ArrayList<>() {{
-            add(new SlaveRelation(MENU_SysModule_GROUP, ISysModuleManager.class, OperateConstants.SubOperateLimit.ONLY_SEL));
-            add(new SlaveRelation(MENU_SysRoleMenuMerge_GROUP, SysRoleMenuMergeMapper.class, SysRoleMenuMerge.class, OperateConstants.SubOperateLimit.ONLY_DEL));
-        }};
-    }
 
     /**
      * 登录校验 | 获取超管租户超管用户菜单集合

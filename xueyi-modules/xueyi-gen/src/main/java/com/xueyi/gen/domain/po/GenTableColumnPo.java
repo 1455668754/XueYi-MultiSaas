@@ -1,16 +1,12 @@
 package com.xueyi.gen.domain.po;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.xueyi.common.core.annotation.Correlation;
-import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
-
-import static com.xueyi.gen.domain.merge.MergeGroup.GEN_TABLE_GROUP;
 
 /**
  * 业务字段 持久化对象
@@ -26,7 +22,6 @@ public class GenTableColumnPo extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /** 归属表Id */
-    @Correlation(groupName = GEN_TABLE_GROUP, keyType = OperateConstants.SubKeyType.SLAVE)
     protected Long tableId;
 
     /** 列描述 */

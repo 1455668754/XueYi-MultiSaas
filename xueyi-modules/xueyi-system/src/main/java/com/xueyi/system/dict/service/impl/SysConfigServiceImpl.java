@@ -71,9 +71,9 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigQuery, SysCon
     @Override
     public Boolean syncCache() {
         Long enterpriseId = SecurityUtils.getEnterpriseId();
-        List<SysConfigDto> enterpriseTypeList = baseManager.selectListMerge(null);
+        List<SysConfigDto> enterpriseTypeList = baseManager.selectList(null);
         SecurityContextHolder.setEnterpriseId(SecurityConstants.COMMON_TENANT_ID.toString());
-        List<SysConfigDto> commonTypeList = baseManager.selectListMerge(null);
+        List<SysConfigDto> commonTypeList = baseManager.selectList(null);
         SecurityContextHolder.setEnterpriseId(enterpriseId.toString());
         Map<String, SysConfigDto> enterpriseConfigMap = enterpriseTypeList.stream().collect(Collectors.toMap(SysConfigDto::getCode, Function.identity()));
         List<SysConfigDto> addConfigList = new ArrayList<>();
@@ -130,14 +130,13 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigQuery, SysCon
         String cacheKey = StrUtil.format(getCacheKey().getCode(), enterpriseId);
         switch (operateCache) {
             case REFRESH_ALL -> {
-                List<SysConfigDto> allList = baseManager.selectList(null);
                 // 索引标识
                 if (ObjectUtil.equals(SecurityConstants.COMMON_TENANT_ID, enterpriseId)) {
                     redisService.deleteObject(getCacheRouteKey().getCode());
-                    redisService.refreshMapCache(getCacheRouteKey().getCode(), allList, SysConfigDto::getCode, Function.identity());
+                    redisService.refreshMapCache(getCacheRouteKey().getCode(), dtoList, SysConfigDto::getCode, Function.identity());
                 }
                 redisService.deleteObject(cacheKey);
-                redisService.refreshMapCache(cacheKey, allList, SysConfigDto::getCode, SysConfigDto::getValue);
+                redisService.refreshMapCache(cacheKey, dtoList, SysConfigDto::getCode, SysConfigDto::getValue);
             }
             case REFRESH -> {
                 if (operate.isSingle()) {

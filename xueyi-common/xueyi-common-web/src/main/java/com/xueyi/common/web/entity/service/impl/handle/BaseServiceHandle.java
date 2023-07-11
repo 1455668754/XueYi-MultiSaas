@@ -97,23 +97,20 @@ public class BaseServiceHandle<Q extends BaseEntity, D extends BaseEntity, C ext
         }
         switch (operate) {
             case ADD -> {
-                // insert merge data
-                baseManager.insertMerge(newDto);
+                // insert correlate data
                 addCorrelates(newDto, getBasicCorrelate(CorrelateConstants.ServiceType.ADD));
                 // refresh cache
                 refreshCache(operate, RedisConstants.OperateType.REFRESH, newDto);
             }
             case EDIT -> {
-                // update merge data
-                baseManager.updateMerge(originDto, newDto);
+                // update correlate data
                 editCorrelates(originDto, newDto, getBasicCorrelate(CorrelateConstants.ServiceType.EDIT));
                 // refresh cache
                 refreshCache(operate, RedisConstants.OperateType.REFRESH, newDto);
             }
             case EDIT_STATUS -> refreshCache(operate, RedisConstants.OperateType.REFRESH, newDto);
             case DELETE -> {
-                // delete merge data
-                baseManager.deleteMerge(originDto);
+                // delete correlate data
                 delCorrelates(originDto, getBasicCorrelate(CorrelateConstants.ServiceType.DELETE));
                 // refresh cache
                 refreshCache(operate, RedisConstants.OperateType.REMOVE, originDto);
@@ -145,17 +142,17 @@ public class BaseServiceHandle<Q extends BaseEntity, D extends BaseEntity, C ext
         }
         switch (operate) {
             case BATCH_ADD -> {
-                baseManager.insertMerge(newList);
+                // insert correlate data
                 addCorrelates(newList, getBasicCorrelate(CorrelateConstants.ServiceType.BATCH_ADD));
                 refreshCache(operate, RedisConstants.OperateType.REFRESH, newList);
             }
             case BATCH_EDIT -> {
-                baseManager.updateMerge(originList, newList);
+                // update correlate data
                 editCorrelates(originList, newList, getBasicCorrelate(CorrelateConstants.ServiceType.BATCH_EDIT));
                 refreshCache(operate, RedisConstants.OperateType.REFRESH, newList);
             }
             case BATCH_DELETE -> {
-                baseManager.deleteMerge(originList);
+                // delete correlate data
                 delCorrelates(originList, getBasicCorrelate(CorrelateConstants.ServiceType.BATCH_DELETE));
                 refreshCache(operate, RedisConstants.OperateType.REMOVE, originList);
             }

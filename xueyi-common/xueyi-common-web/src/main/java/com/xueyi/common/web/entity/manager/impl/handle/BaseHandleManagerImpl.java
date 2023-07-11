@@ -2,29 +2,13 @@ package com.xueyi.common.web.entity.manager.impl.handle;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.github.pagehelper.Page;
-import com.xueyi.common.core.constant.basic.OperateConstants;
-import com.xueyi.common.core.utils.core.ArrayUtil;
-import com.xueyi.common.core.utils.core.CollUtil;
-import com.xueyi.common.core.utils.core.MapUtil;
-import com.xueyi.common.core.utils.core.NumberUtil;
-import com.xueyi.common.core.utils.core.TypeUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.core.web.entity.model.BaseConverter;
-import com.xueyi.common.web.entity.domain.SlaveRelation;
 import com.xueyi.common.web.entity.mapper.BaseMapper;
-import com.xueyi.common.web.utils.MergeUtil;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * 数据封装层处理 操作方法 基类通用数据处理
@@ -42,31 +26,6 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
 
     @Autowired
     protected CT baseConverter;
-
-    /** Dto泛型的类型 */
-    @Getter
-    @Deprecated
-    private final Class<D> DClass = TypeUtil.getClazz(getClass().getGenericSuperclass(), NumberUtil.One);
-
-    /** Po泛型的类型 */
-    @Getter
-    @Deprecated
-    private final Class<P> PClass = TypeUtil.getClazz(getClass().getGenericSuperclass(), NumberUtil.Two);
-
-    /** 子类操作泛型的类型 */
-    @Setter
-    @Deprecated
-    private Map<String, SlaveRelation> subRelationMap;
-
-    /**
-     * 初始化从属关联关系
-     *
-     * @return 关系对象集合
-     */
-    @Deprecated
-    protected List<SlaveRelation> subRelationInit() {
-        return new ArrayList<>();
-    }
 
     /**
      * 查询条件构造 | 列表查询
@@ -148,153 +107,5 @@ public class BaseHandleManagerImpl<Q extends P, D extends P, P extends BaseEntit
         pastePage.setCountColumn(copyPage.getCountColumn());
         pastePage.setOrderBy(copyPage.getOrderBy());
         pastePage.setOrderByOnly(copyPage.isOrderByOnly());
-    }
-
-    /**
-     * 子数据组装 | 查询
-     *
-     * @param dto        数据传输对象
-     * @param groupNames 分组名称
-     * @return 数据传输对象
-     */
-    @Deprecated
-    protected D subMerge(D dto, String... groupNames) {
-        if (ArrayUtil.isNotEmpty(groupNames))
-            Arrays.stream(groupNames).forEach(item -> MergeUtil.subMerge(dto, getSubRelationMap().get(item)));
-        else
-            getSubRelationMap().values().stream().filter(item -> item.getIsSelect() && item.getIsSingle()).forEach(item -> MergeUtil.subMerge(dto, item));
-        return dto;
-    }
-
-    /**
-     * 子数据组装 | 查询
-     *
-     * @param dtoList    数据传输对象集合
-     * @param groupNames 分组名称
-     * @return 数据传输对象集合
-     */
-    @Deprecated
-    protected List<D> subMerge(List<D> dtoList, String... groupNames) {
-        return subMerge(dtoList, OperateConstants.DataRow.LIST, groupNames);
-    }
-
-    /**
-     * 子数据组装 | 查询
-     *
-     * @param dtoList    数据传输对象集合
-     * @param dataRow    数据类型
-     * @param groupNames 分组名称
-     * @return 数据传输对象集合
-     */
-    @Deprecated
-    protected List<D> subMerge(List<D> dtoList, OperateConstants.DataRow dataRow, String... groupNames) {
-        if (ArrayUtil.isNotEmpty(groupNames))
-            Arrays.stream(groupNames).forEach(item -> MergeUtil.subMerge(dtoList, getSubRelationMap().get(item)));
-        else
-            switch (dataRow) {
-                case SINGLE ->
-                        getSubRelationMap().values().stream().filter(item -> item.getIsSelect() && item.getIsSingle()).forEach(item -> MergeUtil.subMerge(dtoList, item));
-                case LIST ->
-                        getSubRelationMap().values().stream().filter(item -> item.getIsSelect() && item.getIsList()).forEach(item -> MergeUtil.subMerge(dtoList, item));
-            }
-        return dtoList;
-    }
-
-    /**
-     * 子数据映射关联 | 新增
-     *
-     * @param dto        数据对象
-     * @param groupNames 分组名称
-     * @return 结果
-     */
-    @Deprecated
-    protected int addMerge(D dto, String... groupNames) {
-        return ArrayUtil.isNotEmpty(groupNames)
-                ? Arrays.stream(groupNames).mapToInt(item -> MergeUtil.addMerge(dto, getSubRelationMap().get(item))).sum()
-                : getSubRelationMap().values().stream().filter(SlaveRelation::getIsAdd).mapToInt(item -> MergeUtil.addMerge(dto, item)).sum();
-    }
-
-    /**
-     * 集合子数据映射关联 | 新增
-     *
-     * @param dtoList    数据对象集合
-     * @param groupNames 分组名称
-     * @return 结果
-     */
-    @Deprecated
-    protected int addMerge(Collection<D> dtoList, String... groupNames) {
-        return ArrayUtil.isNotEmpty(groupNames)
-                ? Arrays.stream(groupNames).mapToInt(item -> MergeUtil.addMerge(dtoList, getSubRelationMap().get(item))).sum()
-                : getSubRelationMap().values().stream().filter(SlaveRelation::getIsAdd).mapToInt(item -> MergeUtil.addMerge(dtoList, item)).sum();
-    }
-
-    /**
-     * 子数据映射关联 | 修改
-     *
-     * @param originDto  源数据对象
-     * @param newDto     新数据对象
-     * @param groupNames 分组名称
-     * @return 结果
-     */
-    @Deprecated
-    protected int editMerge(D originDto, D newDto, String... groupNames) {
-        return ArrayUtil.isNotEmpty(groupNames)
-                ? Arrays.stream(groupNames).mapToInt(item -> MergeUtil.editMerge(originDto, newDto, getSubRelationMap().get(item))).sum()
-                : getSubRelationMap().values().stream().filter(SlaveRelation::getIsEdit).mapToInt(item -> MergeUtil.editMerge(originDto, newDto, item)).sum();
-    }
-
-    /**
-     * 集合子数据映射关联 | 修改
-     *
-     * @param originList 源数据对象集合
-     * @param newList    新数据对象集合
-     * @param groupNames 分组名称
-     * @return 结果
-     */
-    @Deprecated
-    protected int editMerge(Collection<D> originList, Collection<D> newList, String... groupNames) {
-        return ArrayUtil.isNotEmpty(groupNames)
-                ? Arrays.stream(groupNames).mapToInt(item -> MergeUtil.editMerge(originList, newList, getSubRelationMap().get(item))).sum()
-                : getSubRelationMap().values().stream().filter(SlaveRelation::getIsEdit).mapToInt(item -> MergeUtil.editMerge(originList, newList, item)).sum();
-    }
-
-    /**
-     * 子数据映射关联 | 删除
-     *
-     * @param dto        数据对象
-     * @param groupNames 分组名称
-     * @return 结果
-     */
-    @Deprecated
-    protected int delMerge(D dto, String... groupNames) {
-        return ArrayUtil.isNotEmpty(groupNames)
-                ? Arrays.stream(groupNames).mapToInt(item -> MergeUtil.delMerge(dto, getSubRelationMap().get(item))).sum()
-                : getSubRelationMap().values().stream().filter(SlaveRelation::getIsDelete).mapToInt(item -> MergeUtil.delMerge(dto, item)).sum();
-    }
-
-    /**
-     * 集合子数据映射关联 | 删除
-     *
-     * @param dtoList    数据对象集合
-     * @param groupNames 分组名称
-     * @return 结果
-     */
-    @Deprecated
-    protected int delMerge(Collection<D> dtoList, String... groupNames) {
-        return ArrayUtil.isNotEmpty(groupNames)
-                ? Arrays.stream(groupNames).mapToInt(item -> MergeUtil.delMerge(dtoList, getSubRelationMap().get(item))).sum()
-                : getSubRelationMap().values().stream().filter(SlaveRelation::getIsDelete).mapToInt(item -> MergeUtil.delMerge(dtoList, item)).sum();
-    }
-
-    /** 子类操作泛型的类型Getter */
-    @Deprecated
-    protected Map<String, SlaveRelation> getSubRelationMap() {
-        if (MapUtil.isNull(this.subRelationMap)) {
-            List<SlaveRelation> subList = subRelationInit();
-            this.subRelationMap = CollUtil.isNotEmpty(subList)
-                    ? subList.stream().peek(item -> item.setMainDtoClass(getDClass())).collect(Collectors.toMap(SlaveRelation::getGroupName, Function.identity()))
-                    : new HashMap<>();
-        }
-        return this.subRelationMap;
     }
 }

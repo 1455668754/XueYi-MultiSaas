@@ -1,10 +1,8 @@
 package com.xueyi.system.api.organize.domain.dto;
 
-import com.xueyi.common.core.annotation.Correlation;
 import com.xueyi.common.core.annotation.Excel;
 import com.xueyi.common.core.annotation.Excel.Type;
 import com.xueyi.common.core.annotation.Excels;
-import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
 import com.xueyi.system.api.organize.domain.po.SysPostPo;
 import lombok.Data;
@@ -12,8 +10,6 @@ import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
 import java.util.List;
-
-import static com.xueyi.system.api.organize.domain.merge.MergeGroup.POST_SysDept_GROUP;
 
 /**
  * 系统服务 | 组织模块 | 岗位 数据传输对象
@@ -33,7 +29,6 @@ public class SysPostDto extends SysPostPo {
             @Excel(name = "部门负责人", targetAttr = "leader", type = Type.EXPORT),
             @Excel(name = "部门编码(*)", targetAttr = "deptCode", type = Type.IMPORT)
     })
-    @Correlation(groupName = POST_SysDept_GROUP, keyType = OperateConstants.SubKeyType.RECEIVE)
     private SysDeptDto dept;
 
     /** 角色对象 */

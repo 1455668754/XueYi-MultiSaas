@@ -1,16 +1,12 @@
 package com.xueyi.job.api.domain.po;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.xueyi.common.core.annotation.Correlation;
 import com.xueyi.common.core.annotation.Excel;
-import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.web.tenant.base.TBaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
-
-import static com.xueyi.job.api.constant.MergeConstants.JOB_LOG_GROUP;
 
 /**
  * 调度日志 持久化对象
@@ -19,14 +15,13 @@ import static com.xueyi.job.api.constant.MergeConstants.JOB_LOG_GROUP;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName(value = "sys_job_log", excludeProperty = {"createBy","updateBy","remark","updateTime","sort"})
+@TableName(value = "sys_job_log", excludeProperty = {"createBy", "updateBy", "remark", "updateTime", "sort"})
 public class SysJobLogPo extends TBaseEntity {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     /** 任务Id */
-    @Correlation(groupName = JOB_LOG_GROUP, keyType = OperateConstants.SubKeyType.SLAVE)
     protected Long jobId;
 
     /** 任务组名 */

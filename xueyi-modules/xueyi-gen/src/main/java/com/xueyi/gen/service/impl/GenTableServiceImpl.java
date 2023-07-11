@@ -14,6 +14,7 @@ import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.result.R;
+import com.xueyi.common.web.correlate.contant.CorrelateConstants;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.gen.config.GenConfig;
 import com.xueyi.gen.domain.correlate.GenTableCorrelate;
@@ -42,7 +43,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -60,6 +63,17 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
 
     @Autowired
     private IGenTableColumnService subService;
+
+    /**
+     * 默认方法关联配置定义
+     */
+    @Override
+    protected Map<CorrelateConstants.ServiceType, GenTableCorrelate> defaultCorrelate() {
+        return new HashMap<>() {{
+            put(CorrelateConstants.ServiceType.SELECT, GenTableCorrelate.INFO_LIST);
+            put(CorrelateConstants.ServiceType.DELETE, GenTableCorrelate.BASE_DEL);
+        }};
+    }
 
     /**
      * 获取后端代码生成地址
@@ -401,7 +415,7 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
      * @return 业务表对象
      */
     private GenTableDto initTable(Long id) {
-        GenTableDto table = baseManager.selectByIdMerge(id);
+        GenTableDto table = selectById(id);
         JSONObject optionsObj = JSON.parseObject(table.getOptions());
         // 设置列信息
         switch (TemplateType.getByCode(table.getTplCategory())) {

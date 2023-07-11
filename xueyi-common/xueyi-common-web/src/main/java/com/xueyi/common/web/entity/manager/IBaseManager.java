@@ -1,7 +1,7 @@
 package com.xueyi.common.web.entity.manager;
 
 import com.xueyi.common.core.web.entity.base.BaseEntity;
-import com.xueyi.common.web.entity.domain.SqlField;
+import com.xueyi.common.web.correlate.domain.SqlField;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -16,10 +16,6 @@ import java.util.List;
  */
 public interface IBaseManager<Q extends BaseEntity, D extends BaseEntity> {
 
-    /** 获取Po泛型的类型 */
-    @Deprecated
-    Class<? extends BaseEntity> getPClass();
-
     /**
      * 查询数据对象列表
      *
@@ -27,15 +23,6 @@ public interface IBaseManager<Q extends BaseEntity, D extends BaseEntity> {
      * @return 数据对象集合
      */
     List<D> selectList(Q query);
-
-    /**
-     * 查询数据对象列表 | 组装子数据映射关联
-     *
-     * @param query 数据查询对象
-     * @return 数据对象集合
-     */
-    @Deprecated
-    List<D> selectListMerge(Q query);
 
     /**
      * 根据Id集合查询数据对象列表
@@ -46,30 +33,12 @@ public interface IBaseManager<Q extends BaseEntity, D extends BaseEntity> {
     List<D> selectListByIds(Collection<? extends Serializable> idList);
 
     /**
-     * 根据Id集合查询数据对象列表 | 组装子数据映射关联
-     *
-     * @param idList Id集合
-     * @return 数据对象集合
-     */
-    @Deprecated
-    List<D> selectListByIdsMerge(Collection<? extends Serializable> idList);
-
-    /**
      * 根据Id查询单条数据对象
      *
      * @param id Id
      * @return 数据对象
      */
     D selectById(Serializable id);
-
-    /**
-     * 根据Id查询单条数据对象 | 组装子数据映射关联
-     *
-     * @param id Id
-     * @return 数据对象
-     */
-    @Deprecated
-    D selectByIdMerge(Serializable id);
 
     /**
      * 新增数据对象
@@ -80,30 +49,12 @@ public interface IBaseManager<Q extends BaseEntity, D extends BaseEntity> {
     int insert(D dto);
 
     /**
-     * 新增子数据映射关联
-     *
-     * @param dto 数据对象
-     * @return 结果
-     */
-    @Deprecated
-    int insertMerge(D dto);
-
-    /**
      * 新增数据对象（批量）
      *
      * @param dtoList 数据对象集合
      * @return 结果
      */
     int insertBatch(Collection<D> dtoList);
-
-    /**
-     * 新增子数据映射关联（批量）
-     *
-     * @param dtoList 数据对象集合
-     * @return 结果
-     */
-    @Deprecated
-    int insertMerge(Collection<D> dtoList);
 
     /**
      * 修改数据对象
@@ -114,32 +65,12 @@ public interface IBaseManager<Q extends BaseEntity, D extends BaseEntity> {
     int update(D dto);
 
     /**
-     * 修改子数据映射关联
-     *
-     * @param originDto 源数据对象
-     * @param newDto    新数据对象
-     * @return 结果
-     */
-    @Deprecated
-    int updateMerge(D originDto, D newDto);
-
-    /**
      * 修改数据对象（批量）
      *
      * @param dtoList 数据对象集合
      * @return 结果
      */
     int updateBatch(Collection<D> dtoList);
-
-    /**
-     * 修改子数据映射关联（批量）
-     *
-     * @param originList 源数据对象集合
-     * @param newList    新数据对象集合
-     * @return 结果
-     */
-    @Deprecated
-    int updateMerge(Collection<D> originList, Collection<D> newList);
 
     /**
      * 修改状态
@@ -158,15 +89,6 @@ public interface IBaseManager<Q extends BaseEntity, D extends BaseEntity> {
     int deleteById(Serializable id);
 
     /**
-     * 删除子数据映射关联
-     *
-     * @param dto 数据对象
-     * @return 结果
-     */
-    @Deprecated
-    int deleteMerge(D dto);
-
-    /**
      * 根据Id集合删除数据对象（批量）
      *
      * @param idList Id集合
@@ -175,57 +97,12 @@ public interface IBaseManager<Q extends BaseEntity, D extends BaseEntity> {
     int deleteByIds(Collection<? extends Serializable> idList);
 
     /**
-     * 删除子数据映射关联（批量）
-     *
-     * @param dtoList 数据对象集合
-     * @return 结果
-     */
-    @Deprecated
-    int deleteMerge(Collection<D> dtoList);
-
-    /**
      * 根据动态SQL控制对象查询数据对象集合
      *
      * @param field 动态SQL控制对象
      * @return 数据对象集合
      */
-    List<D> selectListByField(com.xueyi.common.web.correlate.domain.SqlField... field);
-
-    /**
-     * 根据动态SQL控制对象查询数据对象集合
-     *
-     * @param field 动态SQL控制对象
-     * @return 数据对象集合
-     */
-    @Deprecated
     List<D> selectListByField(SqlField... field);
-
-    /**
-     * 根据动态SQL控制对象查询数据对象
-     *
-     * @param field 动态SQL控制对象
-     * @return 数据对象
-     */
-    @Deprecated
-    D selectByField(SqlField... field);
-
-    /**
-     * 根据动态SQL控制对象更新数据对象
-     *
-     * @param field 动态SQL控制对象
-     * @return 结果
-     */
-    @Deprecated
-    int updateByField(SqlField... field);
-
-    /**
-     * 根据动态SQL控制对象删除数据对象
-     *
-     * @param field 动态SQL控制对象
-     * @return 结果
-     */
-    @Deprecated
-    int deleteByField(SqlField... field);
 
     /**
      * 校验名称是否唯一
