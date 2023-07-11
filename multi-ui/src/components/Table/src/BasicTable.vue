@@ -50,7 +50,7 @@
   import { computed, defineComponent, inject, ref, toRaw, unref, watchEffect } from 'vue';
   import { Table } from 'ant-design-vue';
   import { BasicForm, useForm } from '/@/components/Form/index';
-  import { PageWrapperFixedHeightKey } from '/@/components/Page';
+  import { PageWrapperFixedHeightKey } from '/@/enums/pageEnum';
   import HeaderCell from './components/HeaderCell.vue';
 
   import { usePagination } from './hooks/usePagination';

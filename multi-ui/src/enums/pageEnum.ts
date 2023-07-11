@@ -12,3 +12,5 @@ export enum PageEnum {
   // error log page path
   ERROR_LOG_PAGE = '/error-log/list',
 }
+
+export const PageWrapperFixedHeightKey = 'PageWrapperFixedHeight';
