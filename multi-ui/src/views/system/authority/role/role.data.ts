@@ -107,7 +107,6 @@ export const roleFormSchema: FormSchema[] = [
     label: '角色编码',
     field: 'code',
     component: 'Input',
-    required: true,
     colProps: { span: 12 },
   },
   {
@@ -121,7 +120,6 @@ export const roleFormSchema: FormSchema[] = [
     label: '权限字符串',
     field: 'roleKey',
     component: 'Input',
-    required: true,
     colProps: { span: 12 },
   },
   {

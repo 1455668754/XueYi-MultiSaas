@@ -22,7 +22,7 @@
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicTree, TreeItem } from '/@/components/Tree';
   import { BasicForm, useForm } from '/@/components/Form';
-  import { getAuthRoleApi, editAuthScopeApi } from '/@/api/system/authority/role';
+  import { editAuthScopeApi, getAuthRoleApi } from '/@/api/system/authority/role';
   import { authScopeEnterpriseApi } from '/@/api/system/authority/auth';
   import { RoleIM } from '/@/model/system';
   import { authFormSchema } from './role.data';
@@ -65,17 +65,10 @@
         try {
           const values = await validate();
           setModalProps({ confirmLoading: true });
-          if (authKeys.value.length === 0 && values.authIds.length !== 0) {
+          await editAuthScopeApi(values.id, authKeys.value.concat(authHalfKeys.value)).then(() => {
             closeModal();
             createMessage.success('角色功能权限修改成功！');
-          } else {
-            await editAuthScopeApi(values.id, authKeys.value.concat(authHalfKeys.value)).then(
-              () => {
-                closeModal();
-                createMessage.success('角色功能权限修改成功！');
-              },
-            );
-          }
+          });
           emit('success');
         } finally {
           setModalProps({ confirmLoading: false });
