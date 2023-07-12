@@ -14,8 +14,9 @@ public class ClassUtil extends cn.hutool.core.util.ClassUtil {
     }
 
     public static boolean equals(Class<?> clazz1, Class<?> clazz2) {
-        if (ObjectUtil.hasNull(clazz1, clazz2) && !ObjectUtil.isAllEmpty(clazz1, clazz2))
+        if (ObjectUtil.hasNull(clazz1, clazz2) && !ObjectUtil.isAllEmpty(clazz1, clazz2)) {
             return Boolean.FALSE;
+        }
         ClassLoader loader1 = clazz1.getClassLoader();
         ClassLoader loader2 = clazz2.getClassLoader();
         return ObjectUtil.equals(loader1, loader2) && ObjectUtil.equals(clazz1.getName(), clazz2.getName()) && ObjectUtil.equals(clazz1.getPackageName(), clazz2.getPackageName());
@@ -67,8 +68,18 @@ public class ClassUtil extends cn.hutool.core.util.ClassUtil {
      * @param clazz 类型
      * @return 是否非基本类型或String
      */
+    public static boolean isSimpleType(Class<?> clazz) {
+        return isBasicType(clazz) || isSimpleValueType(clazz);
+    }
+
+    /**
+     * 判断是否非基本类型（包括包装类和原始类）或String
+     *
+     * @param clazz 类型
+     * @return 是否非基本类型或String
+     */
     public static boolean isNotSimpleType(Class<?> clazz) {
-        return !(isBasicType(clazz) || isSimpleValueType(clazz));
+        return !isSimpleType(clazz);
     }
 
     /**
@@ -99,7 +110,7 @@ public class ClassUtil extends cn.hutool.core.util.ClassUtil {
      * @param sourceType 原类型
      * @return 是否不可转化
      */
-    public static boolean isNotAssignable(Class<?> targetType, Class<?> sourceType){
-       return  !isAssignable(targetType, sourceType);
+    public static boolean isNotAssignable(Class<?> targetType, Class<?> sourceType) {
+        return !isAssignable(targetType, sourceType);
     }
 }

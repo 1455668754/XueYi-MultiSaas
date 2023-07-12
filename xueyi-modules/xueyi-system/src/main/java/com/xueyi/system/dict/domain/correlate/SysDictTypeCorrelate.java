@@ -30,7 +30,7 @@ public enum SysDictTypeCorrelate implements CorrelateService {
     }}),
     BASE_DEL("默认删除|（字典数据）", new ArrayList<>() {{
         // 字典类型 | 字典数据
-        add(new Direct<>(DELETE, ISysDictDataService.class, SysDictTypeDto::getCode, SysDictTypeDto::getCode));
+        add(new Direct<>(DELETE, ISysDictDataService.class, SysDictTypeDto::getCode, SysDictDataDto::getCode));
     }});
 
     private final String info;
