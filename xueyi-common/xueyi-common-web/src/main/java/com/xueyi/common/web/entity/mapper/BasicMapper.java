@@ -38,10 +38,11 @@ public interface BasicMapper<P extends BasisEntity> extends com.baomidou.mybatis
      * @return 数据对象集合
      */
     default List<P> selectListByField(SqlField... field) {
-        if (ArrayUtil.isNotEmpty(field))
+        if (ArrayUtil.isNotEmpty(field)) {
             return selectList(
                     Wrappers.<P>query().lambda()
                             .func(i -> com.xueyi.common.web.correlate.utils.SqlHandleUtil.fieldCondition(i, field)));
+        }
         return new ArrayList<>();
     }
 

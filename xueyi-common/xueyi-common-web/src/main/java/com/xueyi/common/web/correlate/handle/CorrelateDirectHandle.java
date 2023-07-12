@@ -354,7 +354,7 @@ public final class CorrelateDirectHandle extends CorrelateBaseHandle {
         if (ObjectUtil.isNull(ormDirect.getSlaveService())) {
             logReturn(StrUtil.format("groupName: {}, slaveService can not be null", direct.getGroupName()));
         }
-        ormDirect.setMergeType(ClassUtil.isBasicType(ormDirect.getMainKeyField().getType()) ? CorrelateConstants.MergeType.DIRECT : CorrelateConstants.MergeType.INDIRECT);
+        ormDirect.setMergeType(ClassUtil.isSimpleType(ormDirect.getMainKeyField().getType()) ? CorrelateConstants.MergeType.DIRECT : CorrelateConstants.MergeType.INDIRECT);
         if (ObjectUtil.isNotNull(ormDirect.getSubDataRow()) && ObjectUtil.equals(CorrelateConstants.DataRow.SINGLE, ormDirect.getSubDataRow()) && ormDirect.getMergeType().isIndirect()) {
             logReturn(StrUtil.format("groupName: {}, subInfoField is single, but mainKeyField is Collection", direct.getGroupName()));
         } else if (ObjectUtil.isNull(ormDirect.getSlaveKeyField()) || ClassUtil.isNotSimpleType(ormDirect.getSlaveKeyField().getType())) {

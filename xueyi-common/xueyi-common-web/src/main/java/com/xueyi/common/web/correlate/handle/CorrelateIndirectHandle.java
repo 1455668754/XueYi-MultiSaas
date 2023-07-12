@@ -397,7 +397,7 @@ public final class CorrelateIndirectHandle extends CorrelateBaseHandle {
         if (ObjectUtil.isNotNull(ormIndirect.getSubKeyField())) {
             Class<?> subKeyClazz = ormIndirect.getSubKeyField().getType();
             CorrelateConstants.DataRow subKey = null;
-            if (ClassUtil.isBasicType(subKeyClazz)) {
+            if (ClassUtil.isSimpleType(subKeyClazz)) {
                 subKey = CorrelateConstants.DataRow.SINGLE;
                 ormIndirect.setIsArray(Boolean.FALSE);
             } else if (ClassUtil.isCollection(subKeyClazz) || ClassUtil.isArray(subKeyClazz)) {

@@ -80,7 +80,7 @@ public final class CorrelateRemoteHandle extends CorrelateBaseHandle {
         if (ObjectUtil.isNull(ormRemote.getRemoteService())) {
             logReturn(StrUtil.format("groupName: {}, remoteService can not be null", remote.getGroupName()));
         }
-        ormRemote.setMergeType(ClassUtil.isBasicType(ormRemote.getMainKeyField().getType()) ? CorrelateConstants.MergeType.DIRECT : CorrelateConstants.MergeType.INDIRECT);
+        ormRemote.setMergeType(ClassUtil.isSimpleType(ormRemote.getMainKeyField().getType()) ? CorrelateConstants.MergeType.DIRECT : CorrelateConstants.MergeType.INDIRECT);
         if (ObjectUtil.isNull(ormRemote.getSlaveKeyField()) || ClassUtil.isNotSimpleType(ormRemote.getSlaveKeyField().getType())) {
             logReturn(StrUtil.format("groupName: {}, slaveKeyField can not be null or not BasicType", remote.getGroupName()));
         } else if (ObjectUtil.isNotNull(ormRemote.getSubDataRow()) && ObjectUtil.equals(CorrelateConstants.DataRow.SINGLE, ormRemote.getSubDataRow()) && ormRemote.getMergeType().isIndirect()) {
