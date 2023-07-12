@@ -359,6 +359,12 @@ public final class CorrelateDirectHandle extends CorrelateBaseHandle {
             logReturn(StrUtil.format("groupName: {}, subInfoField is single, but mainKeyField is Collection", direct.getGroupName()));
         } else if (ObjectUtil.isNull(ormDirect.getSlaveKeyField()) || ClassUtil.isNotSimpleType(ormDirect.getSlaveKeyField().getType())) {
             logReturn(StrUtil.format("groupName: {}, slaveKeyField can not be null or not BasicType", direct.getGroupName()));
+        } else if (ObjectUtil.isNull(ormDirect.getSubDataRow())) {
+            if (ormDirect.getMergeType().isDirect()) {
+                ormDirect.setSubDataRow(CorrelateConstants.DataRow.SINGLE);
+            } else {
+                ormDirect.setSubDataRow(CorrelateConstants.DataRow.LIST);
+            }
         }
     }
 }

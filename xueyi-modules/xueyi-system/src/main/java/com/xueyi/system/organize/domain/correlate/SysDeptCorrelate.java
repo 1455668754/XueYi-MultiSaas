@@ -33,7 +33,7 @@ public enum SysDeptCorrelate implements CorrelateService {
     }}),
     BASE_DEL("默认删除|（岗位|组织-角色|角色-部门）", new ArrayList<>() {{
         // 部门 | 岗位
-        add(new Direct<>(DELETE, ISysPostService.class, SysPostDto::getDeptId, SysDeptDto::getId));
+        add(new Direct<>(DELETE, ISysPostService.class,  SysDeptDto::getId, SysPostDto::getDeptId));
         // 部门 | 组织-角色
         add(new Indirect<>(DELETE, SysOrganizeRoleMergeMapper.class, SysOrganizeRoleMerge::getDeptId, SysDeptDto::getId));
         // 部门 | 角色-部门
