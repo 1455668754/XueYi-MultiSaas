@@ -30,6 +30,8 @@ public abstract class TreeHandleController<Q extends TreeEntity<D>, D extends Tr
      * @see com.xueyi.common.web.entity.controller.TreeController#listExNodes(TreeEntity)
      */
     protected void SHandleExNodes(Collection<D> list, Serializable id) {
+        if (ObjectUtil.isNull(id))
+            return;
         list.removeIf(next -> ObjectUtil.equals(next.getId(), id) ||
                 ArrayUtil.contains(StrUtil.splitToArray(next.getAncestors(), StrUtil.COMMA), id + StrUtil.EMPTY));
     }

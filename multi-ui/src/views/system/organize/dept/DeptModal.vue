@@ -8,12 +8,7 @@
   import { computed, defineComponent, ref, unref } from 'vue';
   import { formSchema } from './dept.data';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import {
-    getDeptApi,
-    addDeptApi,
-    editDeptApi,
-    listDeptExNodesApi,
-  } from '/@/api/system/organize/dept';
+  import { addDeptApi, editDeptApi, getDeptApi, listDeptApi } from '/@/api/system/organize/dept';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
 
@@ -40,7 +35,11 @@
           const dept = await getDeptApi(data.record.id);
           setFieldsValue({ ...dept });
         }
-        const treeData = await listDeptExNodesApi(unref(isUpdate) ? data.record.id : undefined);
+        const treeData = await listDeptApi({
+          id: unref(isUpdate) ? data.record.id : undefined,
+          defaultNode: true,
+          exNodes: unref(isUpdate),
+        });
         updateSchema({ field: 'parentId', componentProps: { treeData } });
       });
 

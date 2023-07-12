@@ -3,7 +3,7 @@ import { RoleLM } from '../authority';
 
 /** dept item model */
 export interface DeptIM extends TreeEntity<DeptIM> {
-  id: string | number;
+  id: string;
   code: string;
   name: string;
   leader: string;
@@ -11,7 +11,7 @@ export interface DeptIM extends TreeEntity<DeptIM> {
   email: string;
   sort: number;
   status: string;
-  roleIds: (string | number)[];
+  roleIds: string[];
   roles: RoleLM;
 }
 
@@ -19,7 +19,16 @@ export interface DeptIM extends TreeEntity<DeptIM> {
 export type DeptLM = DeptIM[];
 
 /** dept param model */
-export type DeptPM = DeptIM;
+export interface DeptPM extends TreeEntity<DeptIM> {
+  id?: string;
+  code?: string;
+  name?: string;
+  leader?: string;
+  phone?: string;
+  email?: string;
+  status?: string;
+  roleIds?: string[];
+}
 
 /** dept page param model */
 export type DeptPPM = BasicPageParams & DeptPM;

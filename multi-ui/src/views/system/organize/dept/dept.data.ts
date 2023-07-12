@@ -102,7 +102,6 @@ export const formSchema: FormSchema[] = [
     label: '部门编码',
     field: 'code',
     component: 'Input',
-    required: true,
     colProps: { span: 12 },
   },
   {

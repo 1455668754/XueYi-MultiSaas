@@ -28,7 +28,7 @@ public enum SysModuleCorrelate implements CorrelateService {
 
     BASE_DEL("默认删除|（菜单|角色-模块关联）", new ArrayList<>() {{
         // 模块 | 菜单
-        add(new Direct<>(DELETE, ISysMenuService.class, SysMenuDto::getModuleId, SysModuleDto::getId));
+        add(new Direct<>(DELETE, ISysMenuService.class, SysModuleDto::getId, SysMenuDto::getModuleId));
         // 模块 | 角色-模块关联
         add(new Indirect<>(DELETE, SysRoleModuleMergeMapper.class, SysRoleModuleMerge::getModuleId, SysModuleDto::getId));
     }});

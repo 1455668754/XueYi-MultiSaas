@@ -157,7 +157,6 @@ export const formSchema: FormSchema[] = [
     label: '用户编码',
     field: 'code',
     component: 'Input',
-    required: true,
     colProps: { span: 12 },
   },
   {

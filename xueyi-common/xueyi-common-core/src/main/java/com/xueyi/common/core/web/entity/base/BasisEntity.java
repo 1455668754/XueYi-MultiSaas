@@ -56,6 +56,12 @@ public class BasisEntity implements Serializable {
         return ObjectUtil.isNotNull(id) ? id.toString() : null;
     }
 
+    @JsonIgnore
+    @SuppressWarnings("all")
+    public void initId() {
+        id = null;
+    }
+
     /**
      * 初始化操作类型
      *

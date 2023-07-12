@@ -1,9 +1,8 @@
-import { DeptIM, DeptPM, DeptLM } from '/@/model/system';
+import { DeptIM, DeptLM, DeptPM } from '/@/model/system';
 import { defHttp } from '/@/utils/http/axios';
 
 enum Api {
   LIST_DEPT = '/system/admin/dept/list',
-  LIST_DEPT_EXCLUDE_NODES = '/system/admin/dept/list/exclude',
   OPTION_DEPT = '/system/admin/dept/option',
   GET_DEPT = '/system/admin/dept/',
   GET_AUTH_DEPT = '/system/admin/dept/auth/',
@@ -16,13 +15,6 @@ enum Api {
 
 /** 查询部门列表 */
 export const listDeptApi = (params?: DeptPM) => defHttp.get<DeptLM>({ url: Api.LIST_DEPT, params });
-
-/** 查询部门列表（排除节点） */
-export const listDeptExNodesApi = (id: string | number | undefined) =>
-  defHttp.get<DeptLM>({
-    url: Api.LIST_DEPT_EXCLUDE_NODES,
-    params: { id: id },
-  });
 
 /** 查询部门选择框列表 */
 export const optionDeptApi = () => defHttp.get<DeptLM>({ url: Api.OPTION_DEPT });

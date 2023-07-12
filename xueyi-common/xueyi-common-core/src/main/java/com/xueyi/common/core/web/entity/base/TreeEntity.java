@@ -41,7 +41,17 @@ public class TreeEntity<D> extends BaseEntity {
     /** 是否存在默认顶级（true存在 false不存在） */
     @JsonIgnore
     @TableField(exist = false)
-    protected Boolean defaultNode;
+    protected Boolean defaultNode = Boolean.FALSE;
+
+    /** 自定义顶级节点名称 */
+    @JsonIgnore
+    @TableField(exist = false)
+    protected String topNodeName;
+
+    /** 移除当前及子节点（true是 false否） */
+    @JsonIgnore
+    @TableField(exist = false)
+    protected Boolean exNodes = Boolean.FALSE;
 
     /** 子节点集合 */
     @TableField(exist = false)
@@ -59,19 +69,19 @@ public class TreeEntity<D> extends BaseEntity {
 
     /** 获取当前节点的子节点对应的祖籍 */
     @JsonIgnore
-    public String getChildAncestors(){
+    public String getChildAncestors() {
         return this.ancestors + StrUtil.COMMA + this.id;
     }
 
     /** 获取当前节点的子节点对应的原始祖籍 */
     @JsonIgnore
-    public String getOldChildAncestors(){
+    public String getOldChildAncestors() {
         return this.oldAncestors + StrUtil.COMMA + this.id;
     }
 
     /** 计算节点变化的层级数 */
     @JsonIgnore
-    public int getLevelChange(){
+    public int getLevelChange() {
         return ConvertUtil.toInt(this.level, NumberUtil.Zero) - ConvertUtil.toInt(this.oldLevel, NumberUtil.Zero);
     }
 }

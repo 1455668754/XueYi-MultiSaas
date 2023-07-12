@@ -29,7 +29,7 @@ public enum SysMenuCorrelate implements CorrelateService {
 
     INFO_LIST("默认列表|（模块）", new ArrayList<>() {{
         // 菜单 | 模块
-        add(new Direct<>(SELECT, ISysModuleService.class, SysModuleDto::getId, SysMenuDto::getModuleId));
+        add(new Direct<>(SELECT, ISysModuleService.class, SysMenuDto::getModuleId, SysModuleDto::getId, SysMenuDto::getModule));
     }}),
     BASE_DEL("默认删除|（角色-菜单关联）", new ArrayList<>() {{
         // 菜单 | 角色-菜单关联

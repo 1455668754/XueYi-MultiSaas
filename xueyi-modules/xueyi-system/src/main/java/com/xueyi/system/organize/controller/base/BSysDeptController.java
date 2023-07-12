@@ -6,9 +6,6 @@ import com.xueyi.common.web.entity.controller.TreeController;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
 import com.xueyi.system.api.organize.domain.query.SysDeptQuery;
 import com.xueyi.system.organize.service.ISysDeptService;
-import jakarta.servlet.http.HttpServletResponse;
-import lombok.SneakyThrows;
-import org.apache.commons.io.IOUtils;
 
 /**
  * 系统服务 | 组织模块 | 部门管理 | 通用 业务处理
@@ -21,18 +18,6 @@ public class BSysDeptController extends TreeController<SysDeptQuery, SysDeptDto,
     @Override
     protected String getNodeName() {
         return "部门";
-    }
-
-    /**
-     * 生成zip文件
-     */
-    @SneakyThrows
-    protected void genCode(HttpServletResponse response, byte[] data) {
-        response.reset();
-        response.setHeader("Content-Disposition", "attachment; filename=\"xueyi.zip\"");
-        response.addHeader("Content-Length", "" + data.length);
-        response.setContentType("application/octet-stream; charset=UTF-8");
-        IOUtils.write(data, response.getOutputStream());
     }
 
     /**

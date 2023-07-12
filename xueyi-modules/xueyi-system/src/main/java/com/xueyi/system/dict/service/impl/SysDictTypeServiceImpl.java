@@ -9,6 +9,7 @@ import com.xueyi.common.core.context.SecurityContextHolder;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
+import com.xueyi.common.core.web.entity.base.BasisEntity;
 import com.xueyi.common.redis.constant.RedisConstants;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.correlate.contant.CorrelateConstants;
@@ -114,11 +115,11 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeQuery, Sy
             }
         });
         if (CollUtil.isNotEmpty(addTypeList)) {
-            addTypeList.forEach(item -> item.setId(null));
+            addTypeList.forEach(BasisEntity::initId);
             baseManager.insertBatch(addTypeList);
         }
         if (CollUtil.isNotEmpty(addDataList)) {
-            addDataList.forEach(item -> item.setId(null));
+            addDataList.forEach(BasisEntity::initId);
             dictDataService.insertBatch(addDataList);
         }
         if (CollUtil.isNotEmpty(delIdList)) {

@@ -48,16 +48,6 @@ public class ASysDeptController extends BSysDeptController {
     }
 
     /**
-     * 查询部门列表（排除节点）
-     */
-    @Override
-    @GetMapping("/list/exclude")
-    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_DEPT_LIST)")
-    public AjaxResult listExNodes(SysDeptQuery dept) {
-        return super.listExNodes(dept);
-    }
-
-    /**
      * 查询部门详细
      */
     @Override
