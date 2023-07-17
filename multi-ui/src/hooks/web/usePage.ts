@@ -1,7 +1,7 @@
 import type { RouteLocationRaw, Router } from 'vue-router';
 import { useRouter } from 'vue-router';
 
-import { PageEnum } from '@/enums/pageEnum';
+import { PageEnum } from '@/enums';
 import { unref } from 'vue';
 import { REDIRECT_NAME } from '/@/router/constant';
 

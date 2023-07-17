@@ -4,7 +4,7 @@
   import { createBreakpointListen } from '/@/hooks/event/useBreakpoint';
   import { prefixCls } from '/@/settings/designSetting';
   import { useAppStore } from '/@/store/modules/app';
-  import { MenuModeEnum, MenuTypeEnum } from '@/enums/menuEnum';
+  import { MenuModeEnum, MenuTypeEnum } from '@/enums';
 
   const props = {
     /**

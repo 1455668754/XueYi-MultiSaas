@@ -1,7 +1,7 @@
 import type { Ref } from 'vue';
 import { computed, nextTick, onMounted, unref } from 'vue';
 
-import { TriggerEnum } from '@/enums/menuEnum';
+import { TriggerEnum } from '@/enums';
 
 import { useMenuSetting } from '/@/hooks/setting/useMenuSetting';
 import { useDebounceFn } from '@vueuse/core';

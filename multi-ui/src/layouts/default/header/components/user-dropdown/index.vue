@@ -67,7 +67,7 @@
 
   import { createAsyncComponent } from '/@/utils/factory/createAsyncComponent';
   import { useGo } from '/@/hooks/web/usePage';
-  import { PageEnum } from '@/enums/pageEnum';
+  import { PageEnum } from '@/enums';
 
   type MenuEvent = 'userCenter' | 'enterpriseCenter' | 'logout' | 'doc' | 'lock';
 

@@ -1,8 +1,14 @@
 import type { ErrorMessageMode } from '/#/axios';
 import { defineStore } from 'pinia';
 import { store } from '/@/store';
-import { PageEnum } from '@/enums/pageEnum';
-import { ROLES_KEY, TOKEN_KEY, USER_INFO_KEY } from '@/enums/cacheEnum';
+import {
+  PageEnum,
+  ROLES_KEY,
+  TenantTypeEnum,
+  TOKEN_KEY,
+  USER_INFO_KEY,
+  UserTypeEnum,
+} from '@/enums';
 import { getAuthCache, setAuthCache } from '/@/utils/auth';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { useMessage } from '/@/hooks/web/useMessage';
@@ -14,7 +20,6 @@ import { isArray } from '/@/utils/is';
 import { h } from 'vue';
 import { doLogout, getCodeImg, getUserInfo, oauthLoginApi } from '@/api/sys/login.api';
 import { EnterpriseIM, UserIM } from '@/model/system';
-import { TenantTypeEnum, UserTypeEnum } from '@/enums';
 import { DicCommonPrivateEnum } from '/@/enums';
 import { GetUserIM, LoginPM } from '@/model/sys';
 import { isMap } from '@vue/shared';

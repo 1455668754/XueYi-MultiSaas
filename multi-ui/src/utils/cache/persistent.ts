@@ -13,7 +13,7 @@ import {
   ROLES_KEY,
   TOKEN_KEY,
   USER_INFO_KEY,
-} from '@/enums/cacheEnum';
+} from '@/enums';
 import { DEFAULT_CACHE_TIME } from '/@/settings/encryptionSetting';
 import { toRaw } from 'vue';
 import { omit, pick } from 'lodash-es';

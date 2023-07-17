@@ -127,7 +127,7 @@
     PASSWORD_SESSION_CACHE_KEY,
     REMEMBER_ME_SESSION_CACHE_KEY,
     USER_NAME_SESSION_CACHE_KEY,
-  } from '@/enums/cacheEnum';
+  } from '@/enums';
 
   const ACol = Col;
   const ARow = Row;

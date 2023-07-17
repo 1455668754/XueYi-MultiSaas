@@ -1,5 +1,4 @@
-import { ErrorTypeEnum } from '@/enums/exceptionEnum';
-import { MenuModeEnum, MenuTypeEnum } from '@/enums/menuEnum';
+import { ErrorTypeEnum, MenuModeEnum, MenuTypeEnum } from '@/enums';
 
 // Lock screen information
 export interface LockInfo {

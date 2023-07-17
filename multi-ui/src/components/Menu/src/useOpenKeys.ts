@@ -1,4 +1,4 @@
-import { MenuModeEnum } from '@/enums/menuEnum';
+import { MenuModeEnum } from '@/enums';
 import type { Menu as MenuType } from '/@/router/types';
 import type { MenuState } from './types';
 import { computed, Ref, toRaw, unref } from 'vue';

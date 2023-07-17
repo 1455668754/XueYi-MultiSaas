@@ -2,7 +2,7 @@ import type { Router, RouteRecordRaw } from 'vue-router';
 
 import { usePermissionStoreWithOut } from '/@/store/modules/permission';
 
-import { PageEnum } from '@/enums/pageEnum';
+import { PageEnum } from '@/enums';
 import { useUserStoreWithOut } from '/@/store/modules/user';
 
 import { PAGE_NOT_FOUND_ROUTE } from '/@/router/routes/basic';

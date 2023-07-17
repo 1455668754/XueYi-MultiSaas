@@ -4,8 +4,13 @@ import { computed, ref, unref } from 'vue';
 
 import { useAppStore } from '/@/store/modules/app';
 
-import { SIDE_BAR_MINI_WIDTH, SIDE_BAR_SHOW_TIT_MINI_WIDTH } from '@/enums';
-import { MenuModeEnum, MenuTypeEnum, TriggerEnum } from '@/enums/menuEnum';
+import {
+  MenuModeEnum,
+  MenuTypeEnum,
+  SIDE_BAR_MINI_WIDTH,
+  SIDE_BAR_SHOW_TIT_MINI_WIDTH,
+  TriggerEnum,
+} from '@/enums';
 import { useFullContent } from '/@/hooks/web/useFullContent';
 
 const mixSideHasChildren = ref(false);

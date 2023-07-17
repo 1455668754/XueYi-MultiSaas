@@ -10,8 +10,7 @@ import type { BeforeMiniState } from '/#/store';
 import { defineStore } from 'pinia';
 import { store } from '/@/store';
 
-import { ThemeEnum } from '@/enums';
-import { APP_DARK_MODE_KEY_, PROJ_CFG_KEY } from '@/enums/cacheEnum';
+import { APP_DARK_MODE_KEY_, PROJ_CFG_KEY, ThemeEnum } from '@/enums';
 import { Persistent } from '/@/utils/cache/persistent';
 import { darkMode } from '/@/settings/designSetting';
 import { resetRouter } from '/@/router';

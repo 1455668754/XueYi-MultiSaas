@@ -3,7 +3,7 @@ import type { LocaleSetting, LocaleType } from '/#/config';
 import { defineStore } from 'pinia';
 import { store } from '/@/store';
 
-import { LOCALE_KEY } from '@/enums/cacheEnum';
+import { LOCALE_KEY } from '@/enums';
 import { createLocalStorage } from '/@/utils/cache';
 import { localeSetting } from '/@/settings/localeSetting';
 

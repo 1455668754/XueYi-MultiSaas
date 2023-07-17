@@ -2,7 +2,7 @@ import type { Menu } from '/@/router/types';
 import type { Ref } from 'vue';
 import { computed, ref, unref, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import { MenuSplitTyeEnum } from '@/enums/menuEnum';
+import { MenuSplitTyeEnum } from '@/enums';
 import { useThrottleFn } from '@vueuse/core';
 import { useMenuSetting } from '/@/hooks/setting/useMenuSetting';
 import { getChildrenMenus, getCurrentParentPath, getMenus, getShallowMenus } from '/@/router/menus';

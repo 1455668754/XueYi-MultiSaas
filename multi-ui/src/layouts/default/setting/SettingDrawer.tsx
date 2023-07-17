@@ -4,7 +4,7 @@ import { Divider } from 'ant-design-vue';
 import { InputNumberItem, SelectItem, SettingFooter, SwitchItem, TypePicker } from './components';
 
 // import { AppDarkModeToggle } from '/@/components/Application';
-import { MenuTypeEnum, TriggerEnum } from '@/enums/menuEnum';
+import { MenuTypeEnum, TriggerEnum } from '@/enums';
 
 import { useRootSetting } from '/@/hooks/setting/useRootSetting';
 import { useMenuSetting } from '/@/hooks/setting/useMenuSetting';
