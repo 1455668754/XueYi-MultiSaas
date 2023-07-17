@@ -63,14 +63,6 @@ export enum ComponentSizeValueEnum {
   LARGE = 64,
 }
 
-export enum ErrorTypeEnum {
-  VUE = 'vue',
-  SCRIPT = 'script',
-  RESOURCE = 'resource',
-  AJAX = 'ajax',
-  PROMISE = 'promise',
-}
-
 // icon enum
 export enum IconEnum {
   VIEW = 'ant-design:file-search-outlined',
