@@ -1,8 +1,10 @@
 package com.xueyi.common.web.entity.controller.handle;
 
 import com.xueyi.common.core.constant.basic.BaseConstants;
+import com.xueyi.common.core.exception.UtilException;
 import com.xueyi.common.core.utils.core.ArrayUtil;
 import com.xueyi.common.core.utils.core.CollUtil;
+import com.xueyi.common.core.utils.core.NumberUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.entity.base.TreeEntity;
@@ -27,7 +29,6 @@ public abstract class TreeHandleController<Q extends TreeEntity<D>, D extends Tr
      * 树型 根据祖籍字段排除自己及子节点
      *
      * @param list 待排除数据对象集合
-     * @see com.xueyi.common.web.entity.controller.TreeController#listExNodes(TreeEntity)
      */
     protected void SHandleExNodes(Collection<D> list, Serializable id) {
         if (ObjectUtil.isNull(id))
@@ -83,6 +84,25 @@ public abstract class TreeHandleController<Q extends TreeEntity<D>, D extends Tr
         } else if (idList.size() != size) {
             baseService.deleteByIds(idList);
             warn(StrUtil.format("成功删除所有无子{}的{}！", getNodeName(), getNodeName()));
+        }
+    }
+
+    /**
+     * 构造树型Top节点
+     *
+     * @param query 数据查询对象
+     * @return Top节点对象
+     */
+    protected D TopNodeBuilder(Q query) {
+        try {
+            D dto = getDClass().getDeclaredConstructor().newInstance();
+            dto.setName(StrUtil.isNotEmpty(query.getTopNodeName()) ? query.getTopNodeName() : "顶级" + getNodeName());
+            dto.setLevel(NumberUtil.Zero);
+            dto.setId((long) NumberUtil.Zero);
+            dto.setParentId((long) NumberUtil.Zero);
+            return dto;
+        } catch (Exception e) {
+            throw new UtilException(e);
         }
     }
 }

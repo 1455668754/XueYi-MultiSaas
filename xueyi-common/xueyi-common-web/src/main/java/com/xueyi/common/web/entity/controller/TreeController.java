@@ -2,9 +2,7 @@ package com.xueyi.common.web.entity.controller;
 
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.utils.TreeUtil;
-import com.xueyi.common.core.utils.core.NumberUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
-import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.entity.base.TreeEntity;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.validate.V_A;
@@ -43,28 +41,8 @@ public abstract class TreeController<Q extends TreeEntity<D>, D extends TreeEnti
             list = baseService.selectListScope(query);
         }
         if (ObjectUtil.equals(Boolean.TRUE, query.getDefaultNode())) {
-            try {
-                D dto = getDClass().getDeclaredConstructor().newInstance();
-                dto.setName(StrUtil.isNotEmpty(query.getTopNodeName()) ? query.getTopNodeName() : "顶级" + getNodeName());
-                dto.setLevel(NumberUtil.Zero);
-                dto.setId((long) NumberUtil.Zero);
-                dto.setParentId((long) NumberUtil.Zero);
-                list.add(dto);
-            } catch (Exception ignored) {
-            }
+            list.add(TopNodeBuilder(query));
         }
-        return success(TreeUtil.buildTree(list));
-    }
-
-    /**
-     * 查询树列表（排除节点）
-     */
-    @Deprecated
-    public AjaxResult listExNodes(Q query) {
-        Serializable id = query.getId();
-        query.setId(null);
-        List<D> list = baseService.selectListScope(query);
-        SHandleExNodes(list, id);
         return success(TreeUtil.buildTree(list));
     }
 
