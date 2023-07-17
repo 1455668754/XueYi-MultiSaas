@@ -1,4 +1,4 @@
-import { BaseEntity, BasicFetchResult, BasicPageParams } from '/@/model/src';
+import { BaseEntity, BasicFetchResult, BasicPageParams } from '/@/model/basic';
 
 /** dictData info model */
 export interface DictDataIM extends BaseEntity {

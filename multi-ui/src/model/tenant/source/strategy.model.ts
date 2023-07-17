@@ -1,4 +1,4 @@
-import { BaseEntity, BasicFetchResult, BasicPageParams } from '/@/model/src';
+import { BaseEntity, BasicFetchResult, BasicPageParams } from '/@/model/basic';
 
 /** strategy info model */
 export interface StrategyIM extends BaseEntity {

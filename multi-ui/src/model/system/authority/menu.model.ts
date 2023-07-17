@@ -1,4 +1,4 @@
-import { BasicFetchResult, BasicPageParams, TreeEntity } from '/@/model/src';
+import { BasicFetchResult, BasicPageParams, TreeEntity } from '/@/model/basic';
 
 /** menu info model */
 export interface MenuIM extends TreeEntity<MenuIM> {

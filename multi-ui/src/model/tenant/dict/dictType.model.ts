@@ -1,5 +1,5 @@
-import { BasicFetchResult, BasicPageParams, SubBaseEntity } from '/@/model/src';
-import { DictDataIM } from './dictData';
+import { BasicFetchResult, BasicPageParams, SubBaseEntity } from '/@/model/basic';
+import { DictDataIM } from './dictData.model';
 
 /** dictType info model */
 export interface DictTypeIM extends SubBaseEntity<DictDataIM> {

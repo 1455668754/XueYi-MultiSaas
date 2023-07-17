@@ -1,3 +1,3 @@
-export * from './config';
-export * from './dictType';
-export * from './dictData';
+export * from './config.model';
+export * from './dictType.model';
+export * from './dictData.model';

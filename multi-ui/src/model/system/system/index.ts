@@ -1,2 +1,2 @@
-export * from './job';
-export * from './jobLog';
+export * from './job.model';
+export * from './jobLog.model';

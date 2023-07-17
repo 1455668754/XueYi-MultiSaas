@@ -1,4 +1,4 @@
-import { BasicFetchResult, BasicPageParams, TreeEntity } from '/@/model/src';
+import { BasicFetchResult, BasicPageParams, TreeEntity } from '/@/model/basic';
 
 /** auth info model */
 export interface AuthIM extends TreeEntity<AuthIM> {

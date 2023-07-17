@@ -1,6 +1,6 @@
-import { BaseEntity, BasicFetchResult, BasicPageParams } from '/@/model/src';
+import { BaseEntity, BasicFetchResult, BasicPageParams } from '/@/model/basic';
 import { RoleLM } from '../authority';
-import { PostIM } from './post';
+import { PostIM } from './post.model';
 
 /** user item model */
 export interface UserIM extends BaseEntity {
