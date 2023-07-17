@@ -1,18 +1,18 @@
-import type { RouteLocationNormalized, RouteLocationRaw, Router } from 'vue-router';
+import type {RouteLocationNormalized, RouteLocationRaw, Router} from 'vue-router';
 
-import { toRaw, unref } from 'vue';
-import { defineStore } from 'pinia';
-import { store } from '/@/store';
+import {toRaw, unref} from 'vue';
+import {defineStore} from 'pinia';
+import {store} from '/@/store';
 
-import { useGo, useRedo } from '/@/hooks/web/usePage';
-import { Persistent } from '/@/utils/cache/persistent';
+import {useGo, useRedo} from '/@/hooks/web/usePage';
+import {Persistent} from '/@/utils/cache/persistent';
 
-import { MULTIPLE_TABS_KEY, PageEnum } from '@/enums';
-import { PAGE_NOT_FOUND_ROUTE, REDIRECT_ROUTE } from '/@/router/routes/basic';
-import { getRawRoute } from '/@/utils';
+import {MULTIPLE_TABS_KEY, PageEnum} from '@/enums/basic';
+import {PAGE_NOT_FOUND_ROUTE, REDIRECT_ROUTE} from '/@/router/routes/basic';
+import {getRawRoute} from '/@/utils';
 
 import projectSetting from '/@/settings/projectSetting';
-import { useUserStore } from '/@/store/modules/user';
+import {useUserStore} from '/@/store/modules/user';
 
 export interface MultipleTabState {
   cacheTabList: Set<string>;
@@ -26,7 +26,7 @@ function handleGotoPage(router: Router) {
 }
 
 const getToTarget = (tabItem: RouteLocationNormalized) => {
-  const { params, path, query } = tabItem;
+  const {params, path, query} = tabItem;
   return {
     params: params || {},
     path,
@@ -81,7 +81,7 @@ export const useMultipleTabStore = defineStore({
      * Refresh tabs
      */
     async refreshPage(router: Router) {
-      const { currentRoute } = router;
+      const {currentRoute} = router;
       const route = unref(currentRoute);
       const name = route.name;
 
@@ -102,7 +102,7 @@ export const useMultipleTabStore = defineStore({
     goToPage(router: Router) {
       const go = useGo(router);
       const len = this.tabList.length;
-      const { path } = unref(router.currentRoute);
+      const {path} = unref(router.currentRoute);
 
       let toPath: PageEnum | string = PageEnum.BASE_HOME;
 
@@ -118,7 +118,7 @@ export const useMultipleTabStore = defineStore({
     },
 
     async addTab(route: RouteLocationNormalized) {
-      const { path, name, fullPath, params, query, meta } = getRawRoute(route);
+      const {path, name, fullPath, params, query, meta} = getRawRoute(route);
       // 404  The page does not need to add a tab
       if (
         path === PageEnum.ERROR_PAGE ||
@@ -172,7 +172,7 @@ export const useMultipleTabStore = defineStore({
 
     async closeTab(tab: RouteLocationNormalized, router: Router) {
       const close = (route: RouteLocationNormalized) => {
-        const { fullPath, meta: { affix } = {} } = route;
+        const {fullPath, meta: {affix} = {}} = route;
         if (affix) {
           return;
         }
@@ -180,9 +180,9 @@ export const useMultipleTabStore = defineStore({
         index !== -1 && this.tabList.splice(index, 1);
       };
 
-      const { currentRoute, replace } = router;
+      const {currentRoute, replace} = router;
 
-      const { path } = unref(currentRoute);
+      const {path} = unref(currentRoute);
       if (path !== tab.path) {
         // Closed is not the activation tab
         close(tab);
@@ -220,7 +220,7 @@ export const useMultipleTabStore = defineStore({
       const index = this.tabList.findIndex((item) => (item.fullPath || item.path) === key);
       if (index !== -1) {
         await this.closeTab(this.tabList[index], router);
-        const { currentRoute, replace } = router;
+        const {currentRoute, replace} = router;
         // 检查当前路由是否存在于tabList中
         const isActivated = this.tabList.findIndex((item) => {
           return item.fullPath === currentRoute.value.fullPath;

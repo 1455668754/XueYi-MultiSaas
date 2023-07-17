@@ -1,7 +1,7 @@
-import { CodeImgIM, GetEnterpriseIM, GetUserIM, LoginIM, LoginPM } from '@/model/sys';
-import { defHttp } from '/@/utils/http/axios';
-import { ErrorMessageMode } from '/#/axios';
-import { ContentTypeEnum } from '@/enums';
+import {CodeImgIM, GetEnterpriseIM, GetUserIM, LoginIM, LoginPM} from '@/model/sys';
+import {defHttp} from '/@/utils/http/axios';
+import {ErrorMessageMode} from '/#/axios';
+import {ContentTypeEnum} from '@/enums/basic';
 
 enum Api {
   GetCodeImg = '/code',
@@ -17,8 +17,8 @@ enum Api {
  */
 export function getCodeImg() {
   return defHttp.get<CodeImgIM>(
-    { url: Api.GetCodeImg, timeout: 20000 },
-    { errorMessageMode: 'none', withToken: false },
+    {url: Api.GetCodeImg, timeout: 20000},
+    {errorMessageMode: 'none', withToken: false},
   );
 }
 
@@ -66,19 +66,19 @@ export function oauthLoginApi(params: LoginPM, mode: ErrorMessageMode = 'modal')
  * @description: get user info
  */
 export function getUserInfo() {
-  return defHttp.get<GetUserIM>({ url: Api.GetUserInfo }, { errorMessageMode: 'none' });
+  return defHttp.get<GetUserIM>({url: Api.GetUserInfo}, {errorMessageMode: 'none'});
 }
 
 /**
  * @description: get enterprise info
  */
 export function getEnterpriseInfo() {
-  return defHttp.get<GetEnterpriseIM>({ url: Api.GetEnterpriseInfo }, { errorMessageMode: 'none' });
+  return defHttp.get<GetEnterpriseIM>({url: Api.GetEnterpriseInfo}, {errorMessageMode: 'none'});
 }
 
 /**
  * @description: login out
  */
 export function doLogout() {
-  return defHttp.delete({ url: Api.Logout });
+  return defHttp.delete({url: Api.Logout});
 }

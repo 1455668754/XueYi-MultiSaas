@@ -9,7 +9,7 @@ import {
   SettingButtonPositionEnum,
   ThemeEnum,
   TriggerEnum,
-} from '@/enums';
+} from '@/enums/basic';
 
 export type LocaleType = 'zh_CN' | 'en' | 'ru' | 'ja' | 'ko';
 

@@ -1,16 +1,16 @@
-import type { HeaderSetting } from '/#/config';
+import type {HeaderSetting} from '/#/config';
 
-import { computed, unref } from 'vue';
+import {computed, unref} from 'vue';
 
-import { useAppStore } from '/@/store/modules/app';
+import {useAppStore} from '/@/store/modules/app';
 
-import { useMenuSetting } from '/@/hooks/setting/useMenuSetting';
-import { useRootSetting } from '/@/hooks/setting/useRootSetting';
-import { useFullContent } from '/@/hooks/web/useFullContent';
-import { MenuModeEnum } from '@/enums';
+import {useMenuSetting} from '/@/hooks/setting/useMenuSetting';
+import {useRootSetting} from '/@/hooks/setting/useRootSetting';
+import {useFullContent} from '/@/hooks/web/useFullContent';
+import {MenuModeEnum} from '@/enums/basic';
 
 export function useHeaderSetting() {
-  const { getFullContent } = useFullContent();
+  const {getFullContent} = useFullContent();
   const appStore = useAppStore();
 
   const getShowFullHeaderRef = computed(() => {
@@ -42,7 +42,7 @@ export function useHeaderSetting() {
     getIsMixSidebar,
     getIsTopMenu,
   } = useMenuSetting();
-  const { getShowBreadCrumb, getShowLogo } = useRootSetting();
+  const {getShowBreadCrumb, getShowLogo} = useRootSetting();
 
   const getShowMixHeaderRef = computed(() => !unref(getIsSidebarType) && unref(getShowHeader));
 
@@ -84,7 +84,7 @@ export function useHeaderSetting() {
 
   // Set header configuration
   function setHeaderSetting(headerSetting: Partial<HeaderSetting>) {
-    appStore.setProjectConfig({ headerSetting });
+    appStore.setProjectConfig({headerSetting});
   }
 
   return {

@@ -7,38 +7,38 @@
     :showCancelBtn="false"
     :showOkBtn="false"
   >
-    <Description @register="register" class="mt-4" />
+    <Description @register="register" class="mt-4"/>
   </BasicModal>
 </template>
 
 <script lang="ts">
-  import { computed, defineComponent } from 'vue';
-  import { Description, useDescription } from '/@/components/Description';
-  import { BasicModal, useModalInner } from '/@/components/Modal';
-  import { DescItemSizeEnum } from '@/enums';
-  import { getJobLogApi } from '@/api/system/system/jobLog.api';
-  import { detailSchema } from './jobLog.data';
+import {computed, defineComponent} from 'vue';
+import {Description, useDescription} from '/@/components/Description';
+import {BasicModal, useModalInner} from '/@/components/Modal';
+import {DescItemSizeEnum} from '@/enums/basic';
+import {getJobLogApi} from '@/api/system/system/jobLog.api';
+import {detailSchema} from './jobLog.data';
 
-  export default defineComponent({
-    name: 'JobLogModal',
-    components: { BasicModal, Description },
-    emits: ['register'],
-    setup(_, {}) {
-      const [register, { setDescProps }] = useDescription({
-        schema: detailSchema,
-        column: DescItemSizeEnum.DEFAULT,
-      });
+export default defineComponent({
+  name: 'JobLogModal',
+  components: {BasicModal, Description},
+  emits: ['register'],
+  setup(_, {}) {
+    const [register, {setDescProps}] = useDescription({
+      schema: detailSchema,
+      column: DescItemSizeEnum.DEFAULT,
+    });
 
-      const [registerModal, { setModalProps }] = useModalInner(async (data) => {
-        setModalProps({ confirmLoading: false });
-        const jobLog = await getJobLogApi(data.record.id);
-        setDescProps({ data: jobLog });
-      });
+    const [registerModal, {setModalProps}] = useModalInner(async (data) => {
+      setModalProps({confirmLoading: false});
+      const jobLog = await getJobLogApi(data.record.id);
+      setDescProps({data: jobLog});
+    });
 
-      /** 标题初始化 */
-      const getTitle = computed(() => '调度日志详情');
+    /** 标题初始化 */
+    const getTitle = computed(() => '调度日志详情');
 
-      return { registerModal, register, getTitle };
-    },
-  });
+    return {registerModal, register, getTitle};
+  },
+});
 </script>

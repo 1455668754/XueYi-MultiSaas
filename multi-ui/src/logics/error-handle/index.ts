@@ -2,12 +2,12 @@
  * Used to configure the global error handling function, which can monitor vue errors, script errors, static resource errors and Promise errors
  */
 
-import type { ErrorLogInfo } from '/#/store';
+import type {ErrorLogInfo} from '/#/store';
 
-import { useErrorLogStoreWithOut } from '/@/store/modules/errorLog';
+import {useErrorLogStoreWithOut} from '/@/store/modules/errorLog';
 
-import { ErrorTypeEnum } from '@/enums';
-import { App } from 'vue';
+import {ErrorTypeEnum} from '@/enums/basic';
+import {App} from 'vue';
 import projectSetting from '/@/settings/projectSetting';
 
 /**
@@ -65,7 +65,7 @@ function formatComponentName(vm: any) {
 
 function vueErrorHandler(err: Error, vm: any, info: string) {
   const errorLogStore = useErrorLogStoreWithOut();
-  const { name, path } = formatComponentName(vm);
+  const {name, path} = formatComponentName(vm);
   errorLogStore.addErrorLogInfo({
     type: ErrorTypeEnum.VUE,
     name,
@@ -166,7 +166,7 @@ function registerResourceErrorHandler() {
  * @param app
  */
 export function setupErrorHandle(app: App) {
-  const { useErrorHandle } = projectSetting;
+  const {useErrorHandle} = projectSetting;
   if (!useErrorHandle) {
     return;
   }

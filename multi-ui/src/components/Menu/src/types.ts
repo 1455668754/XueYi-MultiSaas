@@ -1,6 +1,6 @@
 // import { ComputedRef } from 'vue';
-// import { ThemeEnum } from '@/enums';
-// import { MenuModeEnum } from '@/enums';
+// import { ThemeEnum } from '@/enums/basic';
+// import { MenuModeEnum } from '@/enums/basic';
 export interface MenuState {
   // 默认选中的列表
   defaultSelectedKeys: string[];

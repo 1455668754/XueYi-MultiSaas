@@ -1,13 +1,13 @@
-import type { ErrorMessageMode } from '/#/axios';
-import { useMessage } from '/@/hooks/web/useMessage';
-import { useI18n } from '/@/hooks/web/useI18n';
+import type {ErrorMessageMode} from '/#/axios';
+import {useMessage} from '/@/hooks/web/useMessage';
+import {useI18n} from '/@/hooks/web/useI18n';
 // import router from '/@/router';
-// import { PageEnum } from '@/enums';
-import { useUserStoreWithOut } from '/@/store/modules/user';
+// import { PageEnum } from '@/enums/basic';
+import {useUserStoreWithOut} from '/@/store/modules/user';
 import projectSetting from '/@/settings/projectSetting';
-import { SessionTimeoutProcessingEnum } from '@/enums';
+import {SessionTimeoutProcessingEnum} from '@/enums/basic';
 
-const { createMessage, createErrorModal } = useMessage();
+const {createMessage, createErrorModal} = useMessage();
 const error = createMessage.error!;
 const stp = projectSetting.sessionTimeoutProcessing;
 
@@ -16,7 +16,7 @@ export function checkStatus(
   msg: string,
   errorMessageMode: ErrorMessageMode = 'message',
 ): void {
-  const { t } = useI18n();
+  const {t} = useI18n();
   const userStore = useUserStoreWithOut();
   let errMessage = '';
 
@@ -72,9 +72,9 @@ export function checkStatus(
 
   if (errMessage) {
     if (errorMessageMode === 'modal') {
-      createErrorModal({ title: t('sys.api.errorTip'), content: errMessage });
+      createErrorModal({title: t('sys.api.errorTip'), content: errMessage});
     } else if (errorMessageMode === 'message') {
-      error({ content: errMessage, key: `global_error_message_status_${status}` });
+      error({content: errMessage, key: `global_error_message_status_${status}`});
     }
   }
 }

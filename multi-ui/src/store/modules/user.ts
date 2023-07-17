@@ -1,6 +1,6 @@
-import type { ErrorMessageMode } from '/#/axios';
-import { defineStore } from 'pinia';
-import { store } from '/@/store';
+import type {ErrorMessageMode} from '/#/axios';
+import {defineStore} from 'pinia';
+import {store} from '/@/store';
 import {
   PageEnum,
   ROLES_KEY,
@@ -8,22 +8,22 @@ import {
   TOKEN_KEY,
   USER_INFO_KEY,
   UserTypeEnum,
-} from '@/enums';
-import { getAuthCache, setAuthCache } from '/@/utils/auth';
-import { useI18n } from '/@/hooks/web/useI18n';
-import { useMessage } from '/@/hooks/web/useMessage';
-import { router } from '/@/router';
-import { usePermissionStore } from '/@/store/modules/permission';
-import { RouteRecordRaw } from 'vue-router';
-import { PAGE_NOT_FOUND_ROUTE } from '/@/router/routes/basic';
-import { isArray } from '/@/utils/is';
-import { h } from 'vue';
-import { doLogout, getCodeImg, getUserInfo, oauthLoginApi } from '@/api/sys/login.api';
-import { EnterpriseIM, UserIM } from '@/model/system';
-import { DicCommonPrivateEnum } from '/@/enums';
-import { GetUserIM, LoginPM } from '@/model/sys';
-import { isMap } from '@vue/shared';
-import { MODULE_CACHE } from '@/enums/system';
+} from '@/enums/basic';
+import {getAuthCache, setAuthCache} from '/@/utils/auth';
+import {useI18n} from '/@/hooks/web/useI18n';
+import {useMessage} from '/@/hooks/web/useMessage';
+import {router} from '/@/router';
+import {usePermissionStore} from '/@/store/modules/permission';
+import {RouteRecordRaw} from 'vue-router';
+import {PAGE_NOT_FOUND_ROUTE} from '/@/router/routes/basic';
+import {isArray} from '/@/utils/is';
+import {h} from 'vue';
+import {doLogout, getCodeImg, getUserInfo, oauthLoginApi} from '@/api/sys/login.api';
+import {EnterpriseIM, UserIM} from '@/model/system';
+import {DicCommonPrivateEnum} from '/@/enums';
+import {GetUserIM, LoginPM} from '@/model/sys';
+import {isMap} from '@vue/shared';
+import {MODULE_CACHE} from '@/enums/system';
 
 interface UserState {
   enterpriseInfo: Nullable<EnterpriseIM>;
@@ -144,14 +144,14 @@ export const useUserStore = defineStore({
     },
     getRoutePath(name: string, param?: string) {
       if (this.routePathMap == null) {
-        const { createMessage } = useMessage();
+        const {createMessage} = useMessage();
         createMessage.warning('请先登录！');
       } else {
         const path = this.routePathMap.get(name);
         if (path !== undefined) {
           param !== undefined ? router.push(path + param) : router.push(path);
         } else {
-          const { createMessage } = useMessage();
+          const {createMessage} = useMessage();
           createMessage.warning('路由不存在！');
         }
       }
@@ -166,9 +166,9 @@ export const useUserStore = defineStore({
       },
     ): Promise<GetUserIM | null> {
       try {
-        const { goHome = true, mode, ...loginParams } = params;
+        const {goHome = true, mode, ...loginParams} = params;
         const data = await oauthLoginApi(loginParams, mode);
-        const { access_token } = data;
+        const {access_token} = data;
 
         // save token
         this.setToken(access_token);
@@ -203,7 +203,7 @@ export const useUserStore = defineStore({
     async getUserInfoAction(): Promise<GetUserIM | null> {
       if (!this.getToken) return null;
       const getInfo = await getUserInfo();
-      const { roles = [], permissions = [], routes, user, enterprise } = getInfo;
+      const {roles = [], permissions = [], routes, user, enterprise} = getInfo;
       if (isArray(roles)) {
         const roleList = roles as string[];
         this.setRoleList(roleList);
@@ -253,8 +253,8 @@ export const useUserStore = defineStore({
      * @description: Confirm before logging out
      */
     confirmLoginOut() {
-      const { createConfirm } = useMessage();
-      const { t } = useI18n();
+      const {createConfirm} = useMessage();
+      const {t} = useI18n();
       createConfirm({
         iconType: 'warning',
         title: () => h('span', t('sys.app.logoutTip')),

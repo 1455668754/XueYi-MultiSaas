@@ -1,19 +1,19 @@
-import { computed, defineComponent, unref } from 'vue';
-import { BasicDrawer } from '/@/components/Drawer/index';
-import { Divider } from 'ant-design-vue';
-import { InputNumberItem, SelectItem, SettingFooter, SwitchItem, TypePicker } from './components';
+import {computed, defineComponent, unref} from 'vue';
+import {BasicDrawer} from '/@/components/Drawer/index';
+import {Divider} from 'ant-design-vue';
+import {InputNumberItem, SelectItem, SettingFooter, SwitchItem, TypePicker} from './components';
 
 // import { AppDarkModeToggle } from '/@/components/Application';
-import { MenuTypeEnum, TriggerEnum } from '@/enums';
+import {MenuTypeEnum, TriggerEnum} from '@/enums/basic';
 
-import { useRootSetting } from '/@/hooks/setting/useRootSetting';
-import { useMenuSetting } from '/@/hooks/setting/useMenuSetting';
-import { useHeaderSetting } from '/@/hooks/setting/useHeaderSetting';
-import { useMultipleTabSetting } from '/@/hooks/setting/useMultipleTabSetting';
-import { useTransitionSetting } from '/@/hooks/setting/useTransitionSetting';
-import { useI18n } from '/@/hooks/web/useI18n';
+import {useRootSetting} from '/@/hooks/setting/useRootSetting';
+import {useMenuSetting} from '/@/hooks/setting/useMenuSetting';
+import {useHeaderSetting} from '/@/hooks/setting/useHeaderSetting';
+import {useMultipleTabSetting} from '/@/hooks/setting/useMultipleTabSetting';
+import {useTransitionSetting} from '/@/hooks/setting/useTransitionSetting';
+import {useI18n} from '/@/hooks/web/useI18n';
 
-import { baseHandler } from './handler';
+import {baseHandler} from './handler';
 
 import {
   contentModeOptions,
@@ -31,11 +31,11 @@ import {
 //   APP_PRESET_COLOR_LIST,
 // } from '/@/settings/designSetting';
 
-const { t } = useI18n();
+const {t} = useI18n();
 
 export default defineComponent({
   name: 'SettingDrawer',
-  setup(_, { attrs }) {
+  setup(_, {attrs}) {
     const {
       getContentMode,
       getShowFooter,
@@ -50,7 +50,7 @@ export default defineComponent({
       // getThemeColor,
     } = useRootSetting();
 
-    const { getOpenPageLoading, getBasicTransition, getEnableTransition, getOpenNProgress } =
+    const {getOpenPageLoading, getBasicTransition, getEnableTransition, getOpenNProgress} =
       useTransitionSetting();
 
     const {
@@ -81,7 +81,7 @@ export default defineComponent({
       getShowSearch,
     } = useHeaderSetting();
 
-    const { getShowMultipleTab, getShowQuick, getShowRedo, getShowFold } = useMultipleTabSetting();
+    const {getShowMultipleTab, getShowQuick, getShowRedo, getShowFold} = useMultipleTabSetting();
 
     const getShowMenuRef = computed(() => {
       return unref(getShowMenu) && !unref(getIsHorizontal);
@@ -411,8 +411,8 @@ export default defineComponent({
         {renderContent()}
         <Divider>{() => t('layout.setting.animation')}</Divider>
         {renderTransition()}
-        <Divider />
-        <SettingFooter />
+        <Divider/>
+        <SettingFooter/>
       </BasicDrawer>
     );
   },

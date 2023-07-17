@@ -1,18 +1,18 @@
-import type { Ref } from 'vue';
-import { computed, nextTick, onMounted, unref } from 'vue';
+import type {Ref} from 'vue';
+import {computed, nextTick, onMounted, unref} from 'vue';
 
-import { TriggerEnum } from '@/enums';
+import {TriggerEnum} from '@/enums/basic';
 
-import { useMenuSetting } from '/@/hooks/setting/useMenuSetting';
-import { useDebounceFn } from '@vueuse/core';
-import { useAppStore } from '/@/store/modules/app';
+import {useMenuSetting} from '/@/hooks/setting/useMenuSetting';
+import {useDebounceFn} from '@vueuse/core';
+import {useAppStore} from '/@/store/modules/app';
 
 /**
  * Handle related operations of menu events
  */
 export function useSiderEvent() {
   const appStore = useAppStore();
-  const { getMiniWidthNumber } = useMenuSetting();
+  const {getMiniWidthNumber} = useMenuSetting();
 
   const getCollapsedWidth = computed(() => {
     return unref(getMiniWidthNumber);
@@ -26,14 +26,14 @@ export function useSiderEvent() {
     });
   }
 
-  return { getCollapsedWidth, onBreakpointChange };
+  return {getCollapsedWidth, onBreakpointChange};
 }
 
 /**
  * Handle related operations of menu folding
  */
 export function useTrigger(getIsMobile: Ref<boolean>) {
-  const { getTrigger, getSplit } = useMenuSetting();
+  const {getTrigger, getSplit} = useMenuSetting();
 
   const getShowTrigger = computed(() => {
     const trigger = unref(getTrigger);
@@ -54,7 +54,7 @@ export function useTrigger(getIsMobile: Ref<boolean>) {
     };
   });
 
-  return { getTriggerAttr, getShowTrigger };
+  return {getTriggerAttr, getShowTrigger};
 }
 
 /**
@@ -63,7 +63,7 @@ export function useTrigger(getIsMobile: Ref<boolean>) {
  * @param dragBarRef
  */
 export function useDragLine(siderRef: Ref<any>, dragBarRef: Ref<any>, mix = false) {
-  const { getMiniWidthNumber, getCollapsed, setMenuSetting } = useMenuSetting();
+  const {getMiniWidthNumber, getCollapsed, setMenuSetting} = useMenuSetting();
 
   onMounted(() => {
     nextTick(() => {
@@ -108,13 +108,13 @@ export function useDragLine(siderRef: Ref<any>, dragBarRef: Ref<any>, mix = fals
         const miniWidth = unref(getMiniWidthNumber);
         if (!unref(getCollapsed)) {
           width > miniWidth + 20
-            ? setMenuSetting({ menuWidth: width })
-            : setMenuSetting({ collapsed: true });
+            ? setMenuSetting({menuWidth: width})
+            : setMenuSetting({collapsed: true});
         } else {
-          width > miniWidth && setMenuSetting({ collapsed: false, menuWidth: width });
+          width > miniWidth && setMenuSetting({collapsed: false, menuWidth: width});
         }
       } else {
-        setMenuSetting({ menuWidth: width });
+        setMenuSetting({menuWidth: width});
       }
 
       ele.releaseCapture?.();

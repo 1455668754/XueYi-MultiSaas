@@ -6,11 +6,11 @@ import {
   RouterTransitionEnum,
   TopMenuAlignEnum,
   TriggerEnum,
-} from '@/enums';
+} from '@/enums/basic';
 
-import { useI18n } from '/@/hooks/web/useI18n';
+import {useI18n} from '/@/hooks/web/useI18n';
 
-const { t } = useI18n();
+const {t} = useI18n();
 
 export enum HandlerEnum {
   CHANGE_LAYOUT,
@@ -99,11 +99,11 @@ export const getMenuTriggerOptions = (hideTop: boolean) => {
     ...(hideTop
       ? []
       : [
-          {
-            value: TriggerEnum.HEADER,
-            label: t('layout.setting.menuTriggerTop'),
-          },
-        ]),
+        {
+          value: TriggerEnum.HEADER,
+          label: t('layout.setting.menuTriggerTop'),
+        },
+      ]),
   ];
 };
 

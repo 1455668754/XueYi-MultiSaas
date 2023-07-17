@@ -1,17 +1,17 @@
-import type { AppRouteRecordRaw, Menu } from '/@/router/types';
-import { defineStore } from 'pinia';
-import { store } from '/@/store';
-import { useI18n } from '/@/hooks/web/useI18n';
-import { useUserStore } from './user';
-import { toRaw } from 'vue';
-import { flatMultiLevelRoutes, transformObjToRoute } from '/@/router/helper/routeHelper';
-import { transformRouteToMenu } from '/@/router/helper/menuHelper';
-import { PageEnum, PermEnum } from '@/enums';
-import { asyncRoutes } from '/@/router/routes';
-import { filter } from '/@/utils/helper/treeHelper';
-import { useMessage } from '/@/hooks/web/useMessage';
-import { COMMON_MODULE, MODULE_CACHE } from '@/enums/system';
-import { getMenuList } from '@/api/sys/menu.api';
+import type {AppRouteRecordRaw, Menu} from '/@/router/types';
+import {defineStore} from 'pinia';
+import {store} from '/@/store';
+import {useI18n} from '/@/hooks/web/useI18n';
+import {useUserStore} from './user';
+import {toRaw} from 'vue';
+import {flatMultiLevelRoutes, transformObjToRoute} from '/@/router/helper/routeHelper';
+import {transformRouteToMenu} from '/@/router/helper/menuHelper';
+import {PageEnum, PermEnum} from '@/enums/basic';
+import {asyncRoutes} from '/@/router/routes';
+import {filter} from '/@/utils/helper/treeHelper';
+import {useMessage} from '/@/hooks/web/useMessage';
+import {COMMON_MODULE, MODULE_CACHE} from '@/enums/system';
+import {getMenuList} from '@/api/sys/menu.api';
 
 interface PermissionState {
   // Permission code list
@@ -112,25 +112,25 @@ export const usePermissionStore = defineStore({
 
     // 构建路由
     async buildRoutesAction(): Promise<AppRouteRecordRaw[]> {
-      const { t } = useI18n();
+      const {t} = useI18n();
       const userStore = useUserStore();
 
       let routes: AppRouteRecordRaw[] = [];
       const roleList = toRaw(userStore.getRoleList) || [];
       // 路由过滤器 在 函数filter 作为回调传入遍历使用
       const routeFilter = (route: AppRouteRecordRaw) => {
-        const { meta } = route;
+        const {meta} = route;
         // 抽出角色
-        const { roles } = meta || {};
+        const {roles} = meta || {};
         if (!roles) return true;
         // 进行角色权限判断
         return roleList.some((role) => roles.includes(role));
       };
 
       const routeRemoveIgnoreFilter = (route: AppRouteRecordRaw) => {
-        const { meta } = route;
+        const {meta} = route;
         // ignoreRoute 为true 则路由仅用于菜单生成，不会在实际的路由表中出现
-        const { ignoreRoute } = meta || {};
+        const {ignoreRoute} = meta || {};
         // arr.filter 返回 true 表示该元素通过测试
         return !ignoreRoute;
       };
@@ -145,13 +145,13 @@ export const usePermissionStore = defineStore({
         function patcher(routes: AppRouteRecordRaw[], parentPath = '') {
           if (parentPath) parentPath = parentPath + '/';
           routes.forEach((route: AppRouteRecordRaw) => {
-            const { path, children, redirect } = route;
+            const {path, children, redirect} = route;
             const currentPath = path.startsWith('/') ? path : parentPath + path;
             if (currentPath === homePath) {
               if (redirect) {
                 homePath = route.redirect! as string;
               } else {
-                route.meta = Object.assign({}, route.meta, { affix: true });
+                route.meta = Object.assign({}, route.meta, {affix: true});
                 throw new Error('end');
               }
             }
@@ -167,7 +167,7 @@ export const usePermissionStore = defineStore({
         return;
       };
 
-      const { createMessage } = useMessage();
+      const {createMessage} = useMessage();
       createMessage.loading(t('sys.app.menuLoading'));
 
       // !Simulate to obtain permission codes from the background,
