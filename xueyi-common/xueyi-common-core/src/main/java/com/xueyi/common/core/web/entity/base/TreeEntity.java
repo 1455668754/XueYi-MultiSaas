@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.xueyi.common.core.utils.core.ConvertUtil;
 import com.xueyi.common.core.utils.core.NumberUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -38,10 +39,10 @@ public class TreeEntity<D> extends BaseEntity {
     /** 层级 */
     protected Integer level;
 
-    /** 是否存在默认顶级（true存在 false不存在） */
+    /** 存在默认顶级（true存在 false不存在） */
     @JsonIgnore
     @TableField(exist = false)
-    protected Boolean defaultNode = Boolean.FALSE;
+    protected Boolean defaultNode;
 
     /** 自定义顶级节点名称 */
     @JsonIgnore
@@ -51,7 +52,7 @@ public class TreeEntity<D> extends BaseEntity {
     /** 移除当前及子节点（true是 false否） */
     @JsonIgnore
     @TableField(exist = false)
-    protected Boolean exNodes = Boolean.FALSE;
+    protected Boolean exNodes;
 
     /** 子节点集合 */
     @TableField(exist = false)
@@ -66,6 +67,18 @@ public class TreeEntity<D> extends BaseEntity {
     @JsonIgnore
     @TableField(exist = false)
     protected Integer oldLevel;
+
+    /** 判定是否存在默认顶级 */
+    @JsonIgnore
+    public Boolean getDefaultNode() {
+        return ObjectUtil.isNotNull(this.defaultNode) ? this.defaultNode: Boolean.FALSE;
+    }
+
+    /** 判定是否移除当前及子节点 */
+    @JsonIgnore
+    public Boolean getExNodes() {
+        return ObjectUtil.isNotNull(this.exNodes) ? this.exNodes: Boolean.FALSE;
+    }
 
     /** 获取当前节点的子节点对应的祖籍 */
     @JsonIgnore
