@@ -1,17 +1,15 @@
-package com.xueyi.system.notice.controller;
+package com.xueyi.system.notice.controller.admin;
 
 
-import com.xueyi.common.core.constant.basic.BaseConstants;
-import com.xueyi.common.core.constant.system.NoticeConstants;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
-import com.xueyi.common.web.entity.controller.BaseController;
+import com.xueyi.common.security.annotation.AdminAuth;
+import com.xueyi.system.notice.controller.base.BSysNoticeController;
 import com.xueyi.system.notice.domain.dto.SysNoticeDto;
 import com.xueyi.system.notice.domain.query.SysNoticeQuery;
-import com.xueyi.system.notice.service.ISysNoticeService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -28,19 +26,14 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 系统服务 | 消息模块 | 通知公告管理 业务处理
+ * 系统服务 | 消息模块 | 通知公告管理 | 管理端 业务处理
  *
  * @author xueyi
  */
+@AdminAuth
 @RestController
-@RequestMapping("/notice")
-public class SysNoticeController extends BaseController<SysNoticeQuery, SysNoticeDto, ISysNoticeService> {
-
-    /** 定义节点名称 */
-    @Override
-    protected String getNodeName() {
-        return "通知公告";
-    }
+@RequestMapping("/admin/notice")
+public class ASysNoticeController extends BSysNoticeController {
 
     /**
      * 查询通知公告列表
@@ -126,13 +119,4 @@ public class SysNoticeController extends BaseController<SysNoticeQuery, SysNotic
         return super.option();
     }
 
-    /**
-     * 前置校验 （强制）增加/修改
-     */
-    @Override
-    protected void AEHandle(BaseConstants.Operate operate, SysNoticeDto notice) {
-        // 初始化发送状态
-        if (operate.isAdd())
-            notice.setStatus(NoticeConstants.NoticeStatus.READY.getCode());
-    }
 }

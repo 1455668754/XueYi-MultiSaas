@@ -43,6 +43,7 @@
   import { sourceAssign } from '/@/utils/xueyi';
 
   const emit = defineEmits(['submit']);
+  defineExpose({ initialize, submit });
 
   const state = reactive<{
     info: Nullable<GenTableIM>;
@@ -126,7 +127,11 @@
     const parentMenuIdOptions =
       options?.parentModuleId === undefined
         ? []
-        : await getMenuRouteListApi(options?.parentModuleId, MenuTypeEnum.DIR);
+        : await getMenuRouteListApi({
+            moduleId: options?.parentModuleId,
+            menuTypeLimit: MenuTypeEnum.DIR,
+            defaultNode: true,
+          });
     baseUpdateSchema([
       { field: 'parentMenuId', componentProps: { treeData: parentMenuIdOptions } },
     ]);

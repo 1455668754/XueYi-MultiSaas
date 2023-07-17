@@ -5,6 +5,7 @@ import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
+import com.xueyi.common.security.annotation.AdminAuth;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
 import com.xueyi.system.api.organize.domain.query.SysDeptQuery;
 import com.xueyi.system.organize.controller.base.BSysDeptController;
@@ -30,6 +31,7 @@ import java.util.List;
  *
  * @author xueyi
  */
+@AdminAuth
 @RestController
 @RequestMapping("/admin/dept")
 public class ASysDeptController extends BSysDeptController {

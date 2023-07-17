@@ -18,4 +18,6 @@ public class SysMenuQuery extends SysMenuPo {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    /** 菜单类型限制（M目录 C菜单 X详情 F按钮） */
+    private String menuTypeLimit;
 }

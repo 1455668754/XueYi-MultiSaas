@@ -5,6 +5,7 @@ import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
+import com.xueyi.common.security.annotation.AdminAuth;
 import com.xueyi.common.security.service.TokenUserService;
 import com.xueyi.common.security.utils.SecurityUserUtils;
 import com.xueyi.system.api.model.DataScope;
@@ -35,6 +36,7 @@ import java.util.List;
  *
  * @author xueyi
  */
+@AdminAuth
 @RestController
 @RequestMapping("/admin/user")
 public class ASysUserController extends BSysUserController {

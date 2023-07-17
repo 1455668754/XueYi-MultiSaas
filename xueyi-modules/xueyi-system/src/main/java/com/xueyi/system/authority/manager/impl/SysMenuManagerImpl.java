@@ -1,13 +1,13 @@
 package com.xueyi.system.authority.manager.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.constant.basic.SqlConstants;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.core.utils.core.CollUtil;
-import com.xueyi.common.core.utils.core.NumberUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.security.utils.SecurityUserUtils;
 import com.xueyi.common.web.entity.manager.impl.TreeManagerImpl;
@@ -29,9 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static com.xueyi.common.core.constant.basic.SqlConstants.ANCESTORS_PART_UPDATE;
-import static com.xueyi.common.core.constant.basic.SqlConstants.TREE_LEVEL_UPDATE;
 
 /**
  * 系统服务 | 权限模块 | 菜单管理 数据封装层处理
@@ -67,7 +64,7 @@ public class SysMenuManagerImpl extends TreeManagerImpl<SysMenuQuery, SysMenuDto
     public List<SysMenuDto> loginMenuList() {
         // 1.获取租户授权的公共菜单Ids
         List<SysTenantMenuMerge> tenantMenuMerges = tenantMenuMergeMapper.selectList(Wrappers.query());
-        List<SysMenuPo> menuList = baseMapper.selectList(Wrappers.<SysMenuPo>query().lambda()
+        List<SysMenuPo> menuList = baseMapper.selectList(Wrappers.<SysMenuPo>lambdaQuery()
                 .eq(SysMenuPo::getIsCommon, DictConstants.DicCommonPrivate.PRIVATE.getCode())
                 .func(i -> {
                     if (CollUtil.isNotEmpty(tenantMenuMerges)) {
@@ -90,12 +87,12 @@ public class SysMenuManagerImpl extends TreeManagerImpl<SysMenuQuery, SysMenuDto
             return new ArrayList<>();
         // 1.获取用户可使用角色集内的所有菜单Ids
         List<SysRoleMenuMerge> roleMenuMerges = roleMenuMergeMapper.selectList(
-                Wrappers.<SysRoleMenuMerge>query().lambda()
+                Wrappers.<SysRoleMenuMerge>lambdaQuery()
                         .in(SysRoleMenuMerge::getRoleId, roleIds));
         // 2.获取用户可使用的菜单
         return CollUtil.isNotEmpty(roleMenuMerges)
                 ? baseConverter.mapperDto(baseMapper.selectList(
-                Wrappers.<SysMenuPo>query().lambda()
+                Wrappers.<SysMenuPo>lambdaQuery()
                         .in(SysMenuPo::getId, roleMenuMerges.stream().map(SysRoleMenuMerge::getMenuId).collect(Collectors.toSet()))))
                 : new ArrayList<>();
     }
@@ -109,16 +106,14 @@ public class SysMenuManagerImpl extends TreeManagerImpl<SysMenuQuery, SysMenuDto
     public List<SysMenuDto> selectCommonList() {
         // 校验租管租户 ? 查询所有 : 查询租户-菜单关联表,校验是否有数据 ? 查有关联权限的公共菜单与所有私有菜单 : 查询所有私有菜单
         if (SecurityUserUtils.isAdminTenant()) {
-            List<SysMenuPo> menuList = baseMapper.selectList(Wrappers.<SysMenuPo>query().lambda()
-                    .ne(SysMenuPo::getId, AuthorityConstants.MENU_TOP_NODE)
+            List<SysMenuPo> menuList = baseMapper.selectList(Wrappers.<SysMenuPo>lambdaQuery()
                     .eq(SysMenuPo::getIsCommon, DictConstants.DicCommonPrivate.COMMON.getCode())
                     .eq(SysMenuPo::getStatus, BaseConstants.Status.NORMAL.getCode()));
             return baseConverter.mapperDto(menuList);
         } else {
             List<SysTenantMenuMerge> tenantMenuMerges = tenantMenuMergeMapper.selectList(Wrappers.query());
             return CollUtil.isNotEmpty(tenantMenuMerges)
-                    ? baseConverter.mapperDto(baseMapper.selectList(Wrappers.<SysMenuPo>query().lambda()
-                    .ne(SysMenuPo::getId, AuthorityConstants.MENU_TOP_NODE)
+                    ? baseConverter.mapperDto(baseMapper.selectList(Wrappers.<SysMenuPo>lambdaQuery()
                     .eq(SysMenuPo::getIsCommon, DictConstants.DicCommonPrivate.COMMON.getCode())
                     .eq(SysMenuPo::getStatus, BaseConstants.Status.NORMAL.getCode())
                     .in(SysMenuPo::getId, tenantMenuMerges.stream().map(SysTenantMenuMerge::getMenuId).collect(Collectors.toList()))))
@@ -135,14 +130,12 @@ public class SysMenuManagerImpl extends TreeManagerImpl<SysMenuQuery, SysMenuDto
     public List<SysMenuDto> selectTenantList() {
         // 校验租管租户 ? 查询所有 : 查询租户-菜单关联表,校验是否有数据 ? 查有关联权限的公共菜单 : 返回空集合
         if (SecurityUserUtils.isAdminTenant()) {
-            List<SysMenuPo> menuList = baseMapper.selectList(Wrappers.<SysMenuPo>query().lambda()
-                    .ne(SysMenuPo::getId, AuthorityConstants.MENU_TOP_NODE)
+            List<SysMenuPo> menuList = baseMapper.selectList(Wrappers.<SysMenuPo>lambdaQuery()
                     .eq(SysMenuPo::getStatus, BaseConstants.Status.NORMAL.getCode()));
             return baseConverter.mapperDto(menuList);
         } else {
             List<SysTenantMenuMerge> tenantMenuMerges = tenantMenuMergeMapper.selectList(Wrappers.query());
-            List<SysMenuPo> menuList = baseMapper.selectList(Wrappers.<SysMenuPo>query().lambda()
-                    .ne(SysMenuPo::getId, AuthorityConstants.MENU_TOP_NODE)
+            List<SysMenuPo> menuList = baseMapper.selectList(Wrappers.<SysMenuPo>lambdaQuery()
                     .eq(SysMenuPo::getStatus, BaseConstants.Status.NORMAL.getCode())
                     .func(i -> {
                         if (CollUtil.isNotEmpty(tenantMenuMerges))
@@ -186,7 +179,7 @@ public class SysMenuManagerImpl extends TreeManagerImpl<SysMenuQuery, SysMenuDto
                 return new ArrayList<>();
             // 1.获取用户可使用角色集内的所有菜单Ids
             List<SysRoleMenuMerge> roleMenuMerges = roleMenuMergeMapper.selectList(
-                    Wrappers.<SysRoleMenuMerge>query().lambda()
+                    Wrappers.<SysRoleMenuMerge>lambdaQuery()
                             .in(SysRoleMenuMerge::getRoleId, roleIds));
             // 2.获取用户可使用的菜单
             if (CollUtil.isNotEmpty(roleMenuMerges)) {
@@ -198,83 +191,11 @@ public class SysMenuManagerImpl extends TreeManagerImpl<SysMenuQuery, SysMenuDto
         }
         menuQueryWrapper
                 .eq(SysMenuPo::getModuleId, moduleId)
-                .ne(SysMenuPo::getId, AuthorityConstants.MENU_TOP_NODE)
                 .and(i -> i
                         .eq(SysMenuPo::getMenuType, AuthorityConstants.MenuType.DIR.getCode())
                         .or().eq(SysMenuPo::getMenuType, AuthorityConstants.MenuType.MENU.getCode())
                         .or().eq(SysMenuPo::getMenuType, AuthorityConstants.MenuType.DETAILS.getCode()));
         return baseConverter.mapperDto(baseMapper.selectList(menuQueryWrapper));
-    }
-
-    /**
-     * 根据菜单类型及模块Id获取可配菜单集
-     *
-     * @param moduleId 模块Id
-     * @param menuType 菜单类型
-     * @return 菜单列表
-     */
-    @Override
-    public List<SysMenuDto> getMenuByMenuType(Long moduleId, String menuType) {
-        LambdaQueryWrapper<SysMenuPo> queryWrapper = new LambdaQueryWrapper<>();
-        switch (AuthorityConstants.MenuType.getByCode(menuType)) {
-            case BUTTON, DETAILS -> queryWrapper
-                    .eq(SysMenuPo::getModuleId, moduleId)
-                    .and(i -> i
-                            .eq(SysMenuPo::getMenuType, AuthorityConstants.MenuType.MENU.getCode())
-                            .or().eq(SysMenuPo::getMenuType, AuthorityConstants.MenuType.DIR.getCode()))
-                    .or().eq(SysMenuPo::getId, AuthorityConstants.MENU_TOP_NODE);
-            case MENU, DIR -> queryWrapper
-                    .eq(SysMenuPo::getModuleId, moduleId)
-                    .eq(SysMenuPo::getMenuType, AuthorityConstants.MenuType.DIR.getCode())
-                    .or().eq(SysMenuPo::getId, AuthorityConstants.MENU_TOP_NODE);
-            default -> {
-                return new ArrayList<>();
-            }
-        }
-        return baseConverter.mapperDto(baseMapper.selectList(queryWrapper));
-    }
-
-    /**
-     * 修改其子节点的祖籍
-     *
-     * @param dto 数据对象
-     * @return 结果
-     */
-    @Override
-    public int updateChildrenAncestors(SysMenuDto dto) {
-        String newAncestors = dto.getChildAncestors();
-        String oldAncestors = dto.getOldChildAncestors();
-        return StrUtil.notEquals(newAncestors, oldAncestors)
-                ? baseMapper.update(
-                null, Wrappers.<SysMenuPo>update().lambda()
-                        .set(SysMenuPo::getModuleId, dto.getModuleId())
-                        .setSql(StrUtil.format(ANCESTORS_PART_UPDATE, SqlConstants.Entity.ANCESTORS.getCode(), SqlConstants.Entity.ANCESTORS.getCode(), NumberUtil.One, oldAncestors.length(), newAncestors))
-                        .setSql(StrUtil.format(TREE_LEVEL_UPDATE, SqlConstants.Entity.LEVEL.getCode(), SqlConstants.Entity.LEVEL.getCode(), dto.getLevelChange()))
-                        .likeRight(SysMenuPo::getAncestors, oldAncestors))
-                : NumberUtil.Zero;
-    }
-
-    /**
-     * 修改子节点的祖籍和状态
-     *
-     * @param dto 数据对象
-     * @return 结果
-     */
-    @Override
-    public int updateChildren(SysMenuDto dto) {
-        String newAncestors = dto.getChildAncestors();
-        String oldAncestors = dto.getOldChildAncestors();
-        return baseMapper.update(null,
-                Wrappers.<SysMenuPo>update().lambda()
-                        .set(SysMenuPo::getStatus, dto.getStatus())
-                        .set(SysMenuPo::getModuleId, dto.getModuleId())
-                        .func(i -> {
-                            if (StrUtil.notEquals(newAncestors, oldAncestors)) {
-                                i.setSql(StrUtil.format(ANCESTORS_PART_UPDATE, SqlConstants.Entity.ANCESTORS.getCode(), SqlConstants.Entity.ANCESTORS.getCode(), NumberUtil.One, oldAncestors.length(), newAncestors))
-                                        .setSql(StrUtil.format(TREE_LEVEL_UPDATE, SqlConstants.Entity.LEVEL.getCode(), SqlConstants.Entity.LEVEL.getCode(), dto.getLevelChange()));
-                            }
-                        })
-                        .likeRight(SysMenuPo::getAncestors, oldAncestors));
     }
 
     /**
@@ -286,7 +207,7 @@ public class SysMenuManagerImpl extends TreeManagerImpl<SysMenuQuery, SysMenuDto
     @Override
     public SysTenantMenuMerge checkMenuExistTenant(Long id) {
         return tenantMenuMergeMapper.selectOne(
-                Wrappers.<SysTenantMenuMerge>query().lambda()
+                Wrappers.<SysTenantMenuMerge>lambdaQuery()
                         .eq(SysTenantMenuMerge::getMenuId, id)
                         .last(SqlConstants.LIMIT_ONE));
     }
@@ -300,8 +221,42 @@ public class SysMenuManagerImpl extends TreeManagerImpl<SysMenuQuery, SysMenuDto
     @Override
     public SysRoleMenuMerge checkMenuExistRole(Long id) {
         return roleMenuMergeMapper.selectOne(
-                Wrappers.<SysRoleMenuMerge>query().lambda()
+                Wrappers.<SysRoleMenuMerge>lambdaQuery()
                         .eq(SysRoleMenuMerge::getMenuId, id)
                         .last(SqlConstants.LIMIT_ONE));
+    }
+
+    /**
+     * 查询条件构造 | 列表查询
+     *
+     * @param query 数据查询对象
+     * @return 条件构造器
+     */
+    protected LambdaQueryWrapper<SysMenuPo> selectListQuery(SysMenuQuery query) {
+        return Wrappers.<SysMenuPo>lambdaQuery(query)
+                .func(i -> {
+                    if (StrUtil.isNotBlank(query.getMenuTypeLimit())) {
+                        switch (AuthorityConstants.MenuType.getByCode(query.getMenuTypeLimit())) {
+                            case BUTTON, DETAILS -> i
+                                    .and(ai -> ai.eq(SysMenuPo::getMenuType, AuthorityConstants.MenuType.MENU.getCode())
+                                            .or().eq(SysMenuPo::getMenuType, AuthorityConstants.MenuType.DIR.getCode()));
+                            case MENU, DIR -> i
+                                    .eq(SysMenuPo::getMenuType, AuthorityConstants.MenuType.DIR.getCode());
+                        }
+                    }
+                });
+    }
+
+    /**
+     * 修改条件构造 | 树子数据修改
+     *
+     * @param menu          数据传输对象
+     * @param updateWrapper 更新条件构造器
+     * @return 条件构造器
+     */
+    @Override
+    protected LambdaUpdateWrapper<SysMenuPo> updateChildrenWrapper(SysMenuDto menu, LambdaUpdateWrapper<SysMenuPo> updateWrapper) {
+        updateWrapper.set(SysMenuPo::getModuleId, menu.getModuleId());
+        return updateWrapper;
     }
 }

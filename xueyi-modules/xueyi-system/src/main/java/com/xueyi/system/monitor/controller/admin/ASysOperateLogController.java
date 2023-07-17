@@ -3,6 +3,7 @@ package com.xueyi.system.monitor.controller.admin;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
+import com.xueyi.common.security.annotation.AdminAuth;
 import com.xueyi.system.api.log.domain.query.SysOperateLogQuery;
 import com.xueyi.system.monitor.controller.base.BSysOperateLogController;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,6 +23,7 @@ import java.util.List;
  *
  * @author xueyi
  */
+@AdminAuth
 @RestController
 @RequestMapping("/admin/operateLog")
 public class ASysOperateLogController extends BSysOperateLogController {

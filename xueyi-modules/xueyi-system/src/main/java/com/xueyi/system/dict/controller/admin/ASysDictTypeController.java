@@ -5,6 +5,7 @@ import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
+import com.xueyi.common.security.annotation.AdminAuth;
 import com.xueyi.system.api.dict.domain.dto.SysDictTypeDto;
 import com.xueyi.system.api.dict.domain.query.SysDictTypeQuery;
 import com.xueyi.system.dict.controller.base.BSysDictTypeController;
@@ -28,6 +29,7 @@ import java.util.List;
  *
  * @author xueyi
  */
+@AdminAuth
 @RestController
 @RequestMapping("/admin/dict/type")
 public class ASysDictTypeController extends BSysDictTypeController {

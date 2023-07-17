@@ -9,6 +9,7 @@ import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.core.web.validate.V_CUS;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
+import com.xueyi.common.security.annotation.AdminAuth;
 import com.xueyi.common.security.service.TokenUserService;
 import com.xueyi.common.security.utils.SecurityUserUtils;
 import com.xueyi.common.web.entity.controller.BasisController;
@@ -35,6 +36,7 @@ import java.util.Arrays;
  *
  * @author xueyi
  */
+@AdminAuth
 @RestController
 @RequestMapping("/admin/user/profile")
 public class ASysProfileController extends BasisController {

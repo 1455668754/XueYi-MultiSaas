@@ -2,6 +2,7 @@ package com.xueyi.system.authority.controller.admin;
 
 import com.xueyi.common.core.utils.TreeUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
+import com.xueyi.common.security.annotation.AdminAuth;
 import com.xueyi.common.web.entity.controller.BasisController;
 import com.xueyi.system.authority.service.ISysAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author xueyi
  */
+@AdminAuth
 @RestController
 @RequestMapping("/admin/auth")
 public class ASysAuthController extends BasisController {

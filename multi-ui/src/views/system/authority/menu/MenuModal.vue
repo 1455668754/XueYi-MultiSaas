@@ -13,7 +13,6 @@
     editMenuApi,
     getMenuApi,
     getMenuRouteListApi,
-    getMenuRouteListExNodesApi,
   } from '@/api/system/authority/menu.api';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
@@ -71,10 +70,13 @@
 
   /** 生成菜单树 */
   async function setMenuTree(id: string | undefined, moduleId: string) {
-    const treeData =
-      id === undefined
-        ? await getMenuRouteListApi(moduleId, MenuTypeEnum.DETAILS)
-        : await getMenuRouteListExNodesApi(id, moduleId, MenuTypeEnum.DETAILS);
+    const treeData = await getMenuRouteListApi({
+      id: id,
+      moduleId: moduleId,
+      menuTypeLimit: MenuTypeEnum.DIR,
+      exNodes: id !== undefined,
+      defaultNode: true,
+    });
     updateSchema({
       field: 'parentId',
       componentProps: { treeData },

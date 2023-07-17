@@ -3,6 +3,7 @@ package com.xueyi.system.monitor.controller.admin;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
+import com.xueyi.common.security.annotation.AdminAuth;
 import com.xueyi.system.api.log.domain.query.SysLoginLogQuery;
 import com.xueyi.system.monitor.controller.base.BSysLoginLogController;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,6 +22,7 @@ import java.util.List;
  *
  * @author xueyi
  */
+@AdminAuth
 @RestController
 @RequestMapping("/admin/loginLog")
 public class ASysLoginLogController extends BSysLoginLogController {

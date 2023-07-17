@@ -2,13 +2,13 @@ import { NoticeIM, NoticeLRM, NoticePPM } from '@/model/system';
 import { defHttp } from '/@/utils/http/axios';
 
 enum Api {
-  LIST_NOTICE = '/system/notice/list',
-  OPTION_NOTICE = '/system/notice/option',
-  GET_NOTICE = '/system/notice/',
-  ADD_NOTICE = '/system/notice',
-  EDIT_NOTICE = '/system/notice',
-  EDIT_STATUS_NOTICE = '/system/notice/status',
-  DEL_BATCH_NOTICE = '/system/notice/batch/',
+  LIST_NOTICE = '/system/admin/notice/list',
+  OPTION_NOTICE = '/system/admin/notice/option',
+  GET_NOTICE = '/system/admin/notice/',
+  ADD_NOTICE = '/system/admin/notice',
+  EDIT_NOTICE = '/system/admin/notice',
+  EDIT_STATUS_NOTICE = '/system/admin/notice/status',
+  DEL_BATCH_NOTICE = '/system/admin/notice/batch/',
 }
 
 /** 查询通知公告列表 */

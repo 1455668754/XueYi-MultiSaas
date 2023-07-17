@@ -1,6 +1,7 @@
 package com.xueyi.system.organize.controller.admin;
 
 import com.xueyi.common.core.web.result.AjaxResult;
+import com.xueyi.common.security.annotation.AdminAuth;
 import com.xueyi.common.security.utils.SecurityUserUtils;
 import com.xueyi.system.organize.controller.base.BSysEnterpriseController;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author xueyi
  */
+@AdminAuth
 @RestController
 @RequestMapping("/admin/enterprise")
 public class ASysEnterpriseController extends BSysEnterpriseController {

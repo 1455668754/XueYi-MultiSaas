@@ -10,6 +10,7 @@
   import { sourceCopy } from '/@/utils/xueyi';
 
   const emit = defineEmits(['submit']);
+  defineExpose({ initialize, submit });
 
   const state = reactive<{
     info: Nullable<GenTableIM>;

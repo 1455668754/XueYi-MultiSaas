@@ -6,6 +6,7 @@ import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.datasource.utils.DSUtil;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
+import com.xueyi.common.security.annotation.AdminAuth;
 import com.xueyi.tenant.api.source.domain.dto.TeSourceDto;
 import com.xueyi.tenant.api.source.domain.query.TeSourceQuery;
 import com.xueyi.tenant.source.controller.base.BTeSourceController;
@@ -29,6 +30,7 @@ import java.util.List;
  *
  * @author xueyi
  */
+@AdminAuth
 @RestController
 @RequestMapping("/admin/source")
 public class ATeSourceController extends BTeSourceController {

@@ -1,12 +1,9 @@
 import { defHttp } from '/@/utils/http/axios';
 import { MenuIM, MenuLM, MenuPM } from '@/model/system';
-import { MenuTypeEnum } from '@/enums/system';
 
 enum Api {
   LIST_MENU = '/system/admin/menu/list',
-  LIST_MENU_EXCLUDE_NODES = '/system/admin/menu/list/exclude',
   LIST_MENU_BY_TYPE = '/system/admin/menu/routeList',
-  LIST_MENU_BY_TYPE_EXCLUDE_NODES = '/system/admin/menu/routeList/exclude',
   GET_MENU = '/system/admin/menu/',
   ADD_MENU = '/system/admin/menu',
   EDIT_MENU = '/system/admin/menu',
@@ -17,29 +14,11 @@ enum Api {
 /** 查询菜单列表 */
 export const listMenuApi = (params?: MenuPM) => defHttp.get<MenuLM>({ url: Api.LIST_MENU, params });
 
-/** 查询菜单列表（排除节点） */
-export const listMenuExNodesApi = (id: string | undefined, moduleId: string) =>
-  defHttp.get<MenuLM>({
-    url: Api.LIST_MENU_EXCLUDE_NODES,
-    params: { id: id, moduleId: moduleId },
-  });
-
 /** 根据菜单类型获取指定模块的可配菜单集 */
-export const getMenuRouteListApi = (moduleId: string, menuType: MenuTypeEnum) =>
-  defHttp.post<MenuLM>({
-    url: Api.LIST_MENU_BY_TYPE,
-    params: { moduleId: moduleId, menuType: menuType },
-  });
-
-/** 根据菜单类型获取指定模块的可配菜单集（不包含自己及其子集） */
-export const getMenuRouteListExNodesApi = (
-  id: string | undefined,
-  moduleId: string,
-  menuType: MenuTypeEnum,
-) =>
-  defHttp.post<MenuLM>({
-    url: Api.LIST_MENU_BY_TYPE_EXCLUDE_NODES,
-    params: { id: id, moduleId: moduleId, menuType: menuType },
+export const getMenuRouteListApi = (params?: MenuPM) =>
+  defHttp.get<MenuLM>({
+    url: Api.LIST_MENU,
+    params,
   });
 
 /** 查询菜单详细 */

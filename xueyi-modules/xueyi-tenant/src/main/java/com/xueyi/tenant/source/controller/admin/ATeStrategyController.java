@@ -5,6 +5,7 @@ import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
+import com.xueyi.common.security.annotation.AdminAuth;
 import com.xueyi.tenant.api.source.domain.dto.TeStrategyDto;
 import com.xueyi.tenant.api.source.domain.query.TeStrategyQuery;
 import com.xueyi.tenant.source.controller.base.BTeStrategyController;
@@ -28,6 +29,7 @@ import java.util.List;
  *
  * @author xueyi
  */
+@AdminAuth
 @RestController
 @RequestMapping("/admin/strategy")
 public class ATeStrategyController extends BTeStrategyController {

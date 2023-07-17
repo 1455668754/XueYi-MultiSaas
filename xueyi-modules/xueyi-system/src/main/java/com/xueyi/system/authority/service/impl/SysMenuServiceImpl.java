@@ -1,6 +1,6 @@
 package com.xueyi.system.authority.service.impl;
 
-import com.xueyi.common.core.constant.system.AuthorityConstants;
+import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.xueyi.common.core.utils.TreeUtil;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.IdUtil;
@@ -81,7 +81,7 @@ public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuQuery, SysMenuDto
     @Override
     public Map<String, String> getLessorRouteMap() {
         List<SysMenuDto> menuList = baseManager.loginLessorMenuList()
-                .stream().filter(menu -> ObjectUtil.notEqual(menu.getId(), AuthorityConstants.MENU_TOP_NODE) && (menu.isDir() || menu.isMenu() || menu.isDetails()))
+                .stream().filter(menu -> (menu.isDir() || menu.isMenu() || menu.isDetails()))
                 .collect(Collectors.toList());
         return buildRoutePath(menuList);
     }
@@ -94,7 +94,7 @@ public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuQuery, SysMenuDto
     @Override
     public Map<String, String> getRouteMap() {
         List<SysMenuDto> menuList = baseManager.loginMenuList()
-                .stream().filter(menu -> ObjectUtil.notEqual(menu.getId(), AuthorityConstants.MENU_TOP_NODE) && (menu.isDir() || menu.isMenu() || menu.isDetails()))
+                .stream().filter(menu -> (menu.isDir() || menu.isMenu() || menu.isDetails()))
                 .collect(Collectors.toList());
         return buildRoutePath(menuList);
     }
@@ -108,7 +108,7 @@ public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuQuery, SysMenuDto
     @Override
     public Map<String, String> getRouteMap(Set<Long> roleIds) {
         List<SysMenuDto> menuList = baseManager.loginMenuList(roleIds)
-                .stream().filter(menu -> ObjectUtil.notEqual(menu.getId(), AuthorityConstants.MENU_TOP_NODE) && (menu.isDir() || menu.isMenu() || menu.isDetails()))
+                .stream().filter(menu -> (menu.isDir() || menu.isMenu() || menu.isDetails()))
                 .collect(Collectors.toList());
         return buildRoutePath(menuList);
     }
@@ -137,24 +137,13 @@ public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuQuery, SysMenuDto
     }
 
     /**
-     * 根据菜单类型及模块Id获取可配菜单集
-     *
-     * @param moduleId 模块Id
-     * @param menuType 菜单类型
-     * @return 菜单列表
-     */
-    @Override
-    public List<SysMenuDto> getMenuByMenuType(Long moduleId, String menuType) {
-        return baseManager.getMenuByMenuType(moduleId, menuType);
-    }
-
-    /**
      * 新增菜单对象
      *
      * @param menu 菜单对象
      * @return 结果
      */
     @Override
+    @DSTransactional
     public int insert(SysMenuDto menu) {
         menu.setName(IdUtil.simpleUUID());
         return super.insert(menu);
@@ -167,6 +156,7 @@ public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuQuery, SysMenuDto
      * @return 结果
      */
     @Override
+    @DSTransactional
     public int insertBatch(Collection<SysMenuDto> menuList) {
         if (CollUtil.isNotEmpty(menuList))
             menuList.forEach(menu -> menu.setName(IdUtil.simpleUUID()));

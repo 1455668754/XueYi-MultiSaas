@@ -41,13 +41,26 @@ public class BSysMenuController extends TreeController<SysMenuQuery, SysMenuDto,
     }
 
     /**
+     * 构造树型Top节点
+     *
+     * @param query 数据查询对象
+     * @return Top节点对象
+     */
+    @Override
+    protected SysMenuDto TopNodeBuilder(SysMenuQuery query) {
+        SysMenuDto topMenu = super.TopNodeBuilder(query);
+        topMenu.setTitle(topMenu.getName());
+        topMenu.setFrameType(AuthorityConstants.FrameType.NORMAL.getCode());
+        topMenu.setMenuType(AuthorityConstants.MenuType.DIR.getCode());
+        topMenu.setModuleId(query.getModuleId());
+        return topMenu;
+    }
+
+    /**
      * 前置校验 新增/修改
      */
     @Override
     protected void AEHandle(BaseConstants.Operate operate, SysMenuDto menu) {
-        if (ObjectUtil.equals(menu.getId(), AuthorityConstants.MENU_TOP_NODE)) {
-            warn(StrUtil.format("默认{}不允许修改！", getNodeName()));
-        }
         if (baseService.checkNameUnique(menu.getId(), menu.getParentId(), menu.getName())) {
             warn(StrUtil.format("{}{}{}失败，{}名称已存在！", operate.getInfo(), getNodeName(), menu.getTitle(), getNodeName()));
         }
@@ -96,7 +109,7 @@ public class BSysMenuController extends TreeController<SysMenuQuery, SysMenuDto,
         Map<Long, SysMenuDto> moduleMap = moduleList.stream().filter(item -> isTenant || item.isNotCommon())
                 .collect(Collectors.toMap(SysMenuDto::getId, Function.identity()));
         for (int i = idList.size() - 1; i >= 0; i--) {
-            if (!moduleMap.containsKey(idList.get(i)) || ObjectUtil.equals(idList.get(i), AuthorityConstants.MENU_TOP_NODE)) {
+            if (!moduleMap.containsKey(idList.get(i))) {
                 idList.remove(i);
             }
         }

@@ -50,14 +50,14 @@ public class SysModuleManagerImpl extends BaseManagerImpl<SysModuleQuery, SysMod
         if (SecurityUserUtils.isAdminUser()) {
             if (SecurityUserUtils.isAdminTenant()) {
                 List<SysModulePo> moduleList = baseMapper.selectList(
-                        Wrappers.<SysModulePo>query().lambda()
+                        Wrappers.<SysModulePo>lambdaQuery()
                                 .eq(SysModulePo::getStatus, BaseConstants.Status.NORMAL.getCode())
                                 .eq(SysModulePo::getHideModule, DictConstants.DicShowHide.SHOW.getCode()));
                 return mapperDto(moduleList);
             } else {
                 List<SysTenantModuleMerge> tenantModuleMerges = tenantModuleMergeMapper.selectList(Wrappers.query());
                 List<SysModulePo> moduleList = baseMapper.selectList(
-                        Wrappers.<SysModulePo>query().lambda()
+                        Wrappers.<SysModulePo>lambdaQuery()
                                 .eq(SysModulePo::getStatus, BaseConstants.Status.NORMAL.getCode())
                                 .eq(SysModulePo::getHideModule, DictConstants.DicShowHide.SHOW.getCode())
                                 .and(i -> i.
@@ -76,11 +76,11 @@ public class SysModuleManagerImpl extends BaseManagerImpl<SysModuleQuery, SysMod
             if (CollUtil.isEmpty(roleIds))
                 return new ArrayList<>();
             List<SysRoleModuleMerge> roleModuleMerges = roleModuleMergeMapper.selectList(
-                    Wrappers.<SysRoleModuleMerge>query().lambda()
+                    Wrappers.<SysRoleModuleMerge>lambdaQuery()
                             .in(SysRoleModuleMerge::getRoleId, roleIds));
             return CollUtil.isNotEmpty(roleModuleMerges)
                     ? mapperDto(baseMapper.selectList(
-                    Wrappers.<SysModulePo>query().lambda()
+                    Wrappers.<SysModulePo>lambdaQuery()
                             .eq(SysModulePo::getStatus, BaseConstants.Status.NORMAL.getCode())
                             .eq(SysModulePo::getHideModule, DictConstants.DicShowHide.SHOW.getCode())
                             .in(SysModulePo::getId, roleModuleMerges.stream().map(SysRoleModuleMerge::getModuleId).collect(Collectors.toList()))))
@@ -97,14 +97,14 @@ public class SysModuleManagerImpl extends BaseManagerImpl<SysModuleQuery, SysMod
     public List<SysModuleDto> selectCommonList() {
         // 校验租管租户 ? 查询所有 : 查询租户-模块关联表,校验是否有数据 ? 查有关联权限的公共模块 : 返回空集合
         if (SecurityUserUtils.isAdminTenant()) {
-            List<SysModulePo> moduleList = baseMapper.selectList(Wrappers.<SysModulePo>query().lambda()
+            List<SysModulePo> moduleList = baseMapper.selectList(Wrappers.<SysModulePo>lambdaQuery()
                     .eq(SysModulePo::getIsCommon, DictConstants.DicCommonPrivate.COMMON.getCode())
                     .eq(SysModulePo::getStatus, BaseConstants.Status.NORMAL.getCode()));
             return mapperDto(moduleList);
         } else {
             List<SysTenantModuleMerge> tenantModuleMerges = tenantModuleMergeMapper.selectList(Wrappers.query());
             return CollUtil.isNotEmpty(tenantModuleMerges)
-                    ? mapperDto(baseMapper.selectList(Wrappers.<SysModulePo>query().lambda()
+                    ? mapperDto(baseMapper.selectList(Wrappers.<SysModulePo>lambdaQuery()
                     .eq(SysModulePo::getIsCommon, DictConstants.DicCommonPrivate.COMMON.getCode())
                     .eq(SysModulePo::getStatus, BaseConstants.Status.NORMAL.getCode())
                     .in(SysModulePo::getId, tenantModuleMerges.stream().map(SysTenantModuleMerge::getModuleId).collect(Collectors.toList()))))
@@ -121,21 +121,22 @@ public class SysModuleManagerImpl extends BaseManagerImpl<SysModuleQuery, SysMod
     public List<SysModuleDto> selectTenantList() {
         // 校验租管租户 ? 查询所有 : 查询租户-模块关联表,校验是否有数据 ? 查有关联权限的公共模块与所有私有模块 : 查询所有私有模块
         if (SecurityUserUtils.isAdminTenant()) {
-            List<SysModulePo> moduleList = baseMapper.selectList(Wrappers.<SysModulePo>query().lambda()
+            List<SysModulePo> moduleList = baseMapper.selectList(Wrappers.<SysModulePo>lambdaQuery()
                     .eq(SysModulePo::getStatus, BaseConstants.Status.NORMAL.getCode()));
             return mapperDto(moduleList);
         } else {
             List<SysTenantModuleMerge> tenantModuleMerges = tenantModuleMergeMapper.selectList(Wrappers.query());
-            List<SysModulePo> moduleList = baseMapper.selectList(Wrappers.<SysModulePo>query().lambda()
+            List<SysModulePo> moduleList = baseMapper.selectList(Wrappers.<SysModulePo>lambdaQuery()
                     .eq(SysModulePo::getStatus, BaseConstants.Status.NORMAL.getCode())
                     .func(i -> {
-                        if (CollUtil.isNotEmpty(tenantModuleMerges))
+                        if (CollUtil.isNotEmpty(tenantModuleMerges)) {
                             i.and(j -> j.
                                     eq(SysModulePo::getIsCommon, DictConstants.DicCommonPrivate.PRIVATE.getCode())
                                     .or().in(SysModulePo::getId, tenantModuleMerges.stream().map(SysTenantModuleMerge::getModuleId).collect(Collectors.toList()))
                             );
-                        else
+                        } else {
                             i.eq(SysModulePo::getIsCommon, DictConstants.DicCommonPrivate.PRIVATE.getCode());
+                        }
                     }));
             return mapperDto(moduleList);
         }

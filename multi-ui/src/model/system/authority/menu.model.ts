@@ -1,4 +1,5 @@
 import { BasicFetchResult, BasicPageParams, TreeEntity } from '@/model/basic';
+import { MenuTypeEnum } from '@/enums/system';
 
 /** menu info model */
 export interface MenuIM extends TreeEntity<MenuIM> {
@@ -16,7 +17,7 @@ export interface MenuIM extends TreeEntity<MenuIM> {
   isAffix: string;
   isDisabled: string;
   frameType: string;
-  menuType: string;
+  menuType: MenuTypeEnum;
   hideTab: string;
   hideMenu: string;
   hideBreadcrumb: string;
@@ -53,7 +54,9 @@ export interface MenuPM extends TreeEntity<MenuIM> {
   isAffix?: string;
   isDisabled?: string;
   frameType?: string;
-  menuType?: string;
+  menuType?: MenuTypeEnum;
+  /** 菜单类型限制（M目录 C菜单 X详情 F按钮） */
+  menuTypeLimit?: MenuTypeEnum;
   hideTab?: string;
   hideMenu?: string;
   hideBreadcrumb?: string;

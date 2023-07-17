@@ -1,14 +1,13 @@
 package com.xueyi.system.authority.controller.admin;
 
 import com.xueyi.common.core.utils.TreeUtil;
-import com.xueyi.common.core.utils.core.ArrayUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
-import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
+import com.xueyi.common.security.annotation.AdminAuth;
 import com.xueyi.common.security.service.TokenUserService;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.authority.domain.query.SysMenuQuery;
@@ -36,6 +35,7 @@ import java.util.Map;
  *
  * @author xueyi
  */
+@AdminAuth
 @RestController
 @RequestMapping("/admin/menu")
 public class ASysMenuController extends BSysMenuController {
@@ -46,7 +46,7 @@ public class ASysMenuController extends BSysMenuController {
     /**
      * 获取路由信息
      */
-    @GetMapping("/getMultiRouters/{moduleId}")
+    @GetMapping("/getRouters/{moduleId}")
     public AjaxResult getMultiRouters(@PathVariable Long moduleId) {
         Map<String, Object> menuMap = tokenService.getMenuRoute();
         String moduleKey = moduleId.toString();
@@ -71,15 +71,6 @@ public class ASysMenuController extends BSysMenuController {
     }
 
     /**
-     * 查询菜单列表（排除节点）
-     */
-    @GetMapping("/list/exclude")
-    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_MENU_LIST)")
-    public AjaxResult listExNodes(SysMenuQuery menu) {
-        return super.listExNodes(menu);
-    }
-
-    /**
      * 查询菜单详细
      */
     @Override
@@ -87,29 +78,6 @@ public class ASysMenuController extends BSysMenuController {
     @PreAuthorize("@ss.hasAuthority(@Auth.SYS_MENU_SINGLE)")
     public AjaxResult getInfo(@PathVariable Serializable id) {
         return super.getInfo(id);
-    }
-
-    /**
-     * 根据菜单类型获取指定模块的可配菜单集
-     */
-    @PostMapping("/routeList")
-    public AjaxResult getMenuByMenuType(@RequestBody SysMenuDto menu) {
-        if (ObjectUtil.isNull(menu) || ObjectUtil.isNull(menu.getModuleId()) || ObjectUtil.isNull(menu.getMenuType()))
-            warn("请传入有效参数");
-        List<SysMenuDto> menus = baseService.getMenuByMenuType(menu.getModuleId(), menu.getMenuType());
-        return success(TreeUtil.buildTree((menus)));
-    }
-
-    /**
-     * 根据菜单类型获取指定模块的可配菜单集（排除节点）
-     */
-    @PostMapping("/routeList/exclude")
-    public AjaxResult getMenuByMenuTypeExNodes(@RequestBody SysMenuDto menu) {
-        if (ObjectUtil.isNull(menu) || ObjectUtil.isNull(menu.getModuleId()) || ObjectUtil.isNull(menu.getMenuType()))
-            warn("请传入有效参数");
-        List<SysMenuDto> menus = baseService.getMenuByMenuType(menu.getModuleId(), menu.getMenuType());
-        menus.removeIf(next -> ObjectUtil.equals(next.getId(), menu.getId()) || ArrayUtil.contains(StrUtil.splitToArray(next.getAncestors(), StrUtil.COMMA), menu.getId() + StrUtil.EMPTY));
-        return success(TreeUtil.buildTree((menus)));
     }
 
     /**

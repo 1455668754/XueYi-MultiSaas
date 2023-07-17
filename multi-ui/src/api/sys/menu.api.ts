@@ -3,7 +3,7 @@ import { GetMenuLM } from '@/model/sys';
 import { ModuleLM } from '@/model/system';
 
 enum Api {
-  GetMenuList = '/system/admin/menu/getMultiRouters/',
+  GetMenuList = '/system/admin/menu/getRouters/',
   GetModuleList = '/system/admin/module/getRouters',
 }
 

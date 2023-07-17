@@ -8,6 +8,7 @@
   import { GenTableIM } from '@/model/gen';
 
   const emit = defineEmits(['submit']);
+  defineExpose({ initialize, submit });
 
   const [registerTable, { setTableData, getDataSource }] = useTable({
     title: '字段配置',

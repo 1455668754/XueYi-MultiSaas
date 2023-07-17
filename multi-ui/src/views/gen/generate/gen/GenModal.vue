@@ -35,7 +35,7 @@
     setModalProps({ confirmLoading: false });
   });
 
-  const [registerTable, { reload }] = useTable({
+  const [registerTable] = useTable({
     title: '数据表列表',
     api: listDBGenApi,
     columns: modelColumns,
@@ -51,7 +51,7 @@
     showIndexColumn: true,
     rowSelection: {
       onChange: (selectedRowKeys) => {
-        state.dbNames = selectedRowKeys;
+        state.dbNames = selectedRowKeys as string[];
       },
     },
   });

@@ -61,15 +61,6 @@ public interface ISysMenuService extends ITreeService<SysMenuQuery, SysMenuDto> 
     List<SysMenuDto> getRoutes(Long moduleId);
 
     /**
-     * 根据菜单类型及模块Id获取可配菜单集
-     *
-     * @param moduleId 模块Id
-     * @param menuType 菜单类型
-     * @return 菜单列表
-     */
-    List<SysMenuDto> getMenuByMenuType(Long moduleId, String menuType);
-
-    /**
      * 校验菜单是否存在租户
      *
      * @param id 菜单Id
