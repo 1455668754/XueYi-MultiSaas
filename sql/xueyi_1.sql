@@ -171,8 +171,7 @@ create table sys_menu (
 ) engine = innodb comment = '菜单权限表';
 
 insert into sys_menu (id, parent_id, name, title, level, ancestors, path, frame_src, component, param_path, transition_name, ignore_route, is_cache, is_affix, is_disabled, frame_type, menu_type, hide_tab, hide_menu, hide_breadcrumb, hide_children, hide_path_for_children, dynamic_level, real_path, perms, icon, sort, remark, is_common, is_default, module_id, tenant_id)
-values (0, 0, 'd346c7dbf265416086dbe2951a7465b2', '默认菜单', 0, '', 'default', null, null, null, null, 'N', 'N', 'N', 'N', '0', 'M', '0', '0', '0', '0', '0', 1, null, null, '', 1, '目录:默认菜单', '0', 'Y', 1, 0),
-       (13000000, 0, '4be0456e05a7422d9f1c82fb7bf19377', '组织管理', 1, '0', 'organize', null, '', null, null, 'N', 'N', 'N', 'N', '0', 'M', '0', '0', '0', '0', '0', 1, null, '', 'ant-design:apartment-outlined', 1, '目录:组织管理', '0', 'Y', 1, 0),
+values (13000000, 0, '4be0456e05a7422d9f1c82fb7bf19377', '组织管理', 1, '0', 'organize', null, '', null, null, 'N', 'N', 'N', 'N', '0', 'M', '0', '0', '0', '0', '0', 1, null, '', 'ant-design:apartment-outlined', 1, '目录:组织管理', '0', 'Y', 1, 0),
            (13010000, 13000000, '0a612ebdfaa64ea4b8fd8cfd787042ea', '部门管理', 2, '0,13000000', 'dept', null, 'system/organize/dept/index', null, null, 'N', 'N', 'N', 'N', '0', 'C', '0', '0', '0', '0', '0', 1, null, 'organize:dept:list', 'ant-design:partition-outlined', 1, '菜单:部门管理', '0', 'Y', 1, 0),
                (13010100, 13010000, 'c67c9520af2c48d89e1bae0d2a0342d1', '部门详情', 3, '0,13000000,13010000', 'deptDetail/:id', null, 'system/organize/dept/DeptDetail', null, null, 'N', 'Y', 'N', 'N', '0', 'X', '0', '1', '0', '0', '0', 5, null, 'organize:dept:single', null, 1, '详情:部门详情', '0', 'Y', 1, 0),
                (13010200, 13010000, '5e50660b195a49c4860607aec14fc330', '部门新增', 3, '0,13000000,13010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'organize:dept:add', null, 2, '按钮:部门新增', '0', 'Y', 1, 0),
@@ -601,51 +600,6 @@ create table sys_job_log (
   tenant_id		            bigint	            not null                                comment '租户Id',
   primary key (id)
 ) engine = innodb comment = '定时任务调度日志表';
-
--- ----------------------------
--- 13、文件信息表
--- ----------------------------
-drop table if exists sys_file;
-create table sys_file (
-  id		                bigint	            not null                                comment '文件Id',
-  folder_id		            bigint	            not null default 0	                    comment '分类Id',
-  name		                varchar(100)	    not null	                            comment '文件名称',
-  nick	                    varchar(100)	    default null	                        comment '文件别名',
-  url		                varchar(500)	    not null 	                            comment '文件地址',
-  size		                decimal(8,4)	    not null 	                            comment '文件大小',
-  type		                char(1)	            not null default '0'	                comment '文件类型（0默认 1系统）',
-  sort                      int unsigned        not null default 0                      comment '显示顺序',
-  status                    char(1)             not null default '0'                    comment '状态（0正常 1停用）',
-  create_by                 bigint              default null                            comment '创建者',
-  create_time               datetime            default current_timestamp               comment '创建时间',
-  update_by                 bigint              default null                            comment '更新者',
-  update_time               datetime            on update current_timestamp             comment '更新时间',
-  del_flag		            tinyint             not null default 0                      comment '删除标志（0正常 1删除）',
-  tenant_id		            bigint	            not null                                comment '租户Id',
-  primary key (id)
-) engine = innodb comment = '文件信息表';
-
--- ----------------------------
--- 14、文件分类信息表
--- ----------------------------
-drop table if exists sys_file_folder;
-create table sys_file_folder (
-  id		                bigint	            not null                                comment '分类Id',
-  parent_id		            bigint	            not null default 0                      comment '父分类Id',
-  name		                varchar(100)	    not null	                            comment '分类名称',
-  level                     int                 not null                                comment '树层级',
-  ancestors                 varchar(500)        default ''                              comment '祖级列表',
-  type		                char(1)	            not null default '0'	                comment '分类类型（0默认文件夹 1系统文件夹）',
-  sort                      int unsigned        not null default 0                      comment '显示顺序',
-  status                    char(1)             not null default '0'                    comment '状态（0正常 1停用）',
-  create_by                 bigint              default null                            comment '创建者',
-  create_time               datetime            default current_timestamp               comment '创建时间',
-  update_by                 bigint              default null                            comment '更新者',
-  update_time               datetime            on update current_timestamp             comment '更新时间',
-  del_flag		            tinyint             not null default 0                      comment '删除标志（0正常 1删除）',
-  tenant_id		            bigint	            not null                                comment '租户Id',
-  primary key (id)
-) engine = innodb comment = '文件分类信息表';
 
 -- ----------------------------
 -- 15、代码生成业务表
