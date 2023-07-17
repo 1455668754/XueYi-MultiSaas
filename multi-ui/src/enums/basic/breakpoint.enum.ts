@@ -1,4 +1,4 @@
-export enum sizeEnum {
+export enum ScreenSizeEnum {
   XS = 'XS',
   SM = 'SM',
   MD = 'MD',
@@ -7,7 +7,7 @@ export enum sizeEnum {
   XXL = 'XXL',
 }
 
-export enum screenEnum {
+export enum ScreenEnum {
   XS = 480,
   SM = 576,
   MD = 768,
@@ -16,13 +16,13 @@ export enum screenEnum {
   XXL = 1600,
 }
 
-const screenMap = new Map<sizeEnum, number>();
+const screenMap = new Map<ScreenSizeEnum, number>();
 
-screenMap.set(sizeEnum.XS, screenEnum.XS);
-screenMap.set(sizeEnum.SM, screenEnum.SM);
-screenMap.set(sizeEnum.MD, screenEnum.MD);
-screenMap.set(sizeEnum.LG, screenEnum.LG);
-screenMap.set(sizeEnum.XL, screenEnum.XL);
-screenMap.set(sizeEnum.XXL, screenEnum.XXL);
+screenMap.set(ScreenSizeEnum.XS, ScreenEnum.XS);
+screenMap.set(ScreenSizeEnum.SM, ScreenEnum.SM);
+screenMap.set(ScreenSizeEnum.MD, ScreenEnum.MD);
+screenMap.set(ScreenSizeEnum.LG, ScreenEnum.LG);
+screenMap.set(ScreenSizeEnum.XL, ScreenEnum.XL);
+screenMap.set(ScreenSizeEnum.XXL, ScreenEnum.XXL);
 
 export { screenMap };

@@ -1,57 +1,57 @@
-import {computed, ComputedRef, ref, unref} from 'vue';
-import {useEventListener} from '/@/hooks/event/useEventListener';
-import {screenEnum, screenMap, sizeEnum} from '@/enums/basic';
+import { computed, ComputedRef, ref, unref } from 'vue';
+import { useEventListener } from '/@/hooks/event/useEventListener';
+import { ScreenEnum, screenMap, ScreenSizeEnum } from '@/enums/basic';
 
 // 可以用这个替换，优化项
 // import { Grid } from 'ant-design-vue';
 // const { useBreakpoint } = Grid;
 
-let globalScreenRef: ComputedRef<sizeEnum | undefined>;
+let globalScreenRef: ComputedRef<ScreenSizeEnum | undefined>;
 let globalWidthRef: ComputedRef<number>;
 let globalRealWidthRef: ComputedRef<number>;
 
 export interface CreateCallbackParams {
-  screen: ComputedRef<sizeEnum | undefined>;
+  screen: ComputedRef<ScreenSizeEnum | undefined>;
   width: ComputedRef<number>;
   realWidth: ComputedRef<number>;
-  screenEnum: typeof screenEnum;
-  screenMap: Map<sizeEnum, number>;
-  sizeEnum: typeof sizeEnum;
+  screenEnum: typeof ScreenEnum;
+  screenMap: Map<ScreenSizeEnum, number>;
+  sizeEnum: typeof ScreenSizeEnum;
 }
 
 export function useBreakpoint() {
   return {
     screenRef: computed(() => unref(globalScreenRef)),
     widthRef: globalWidthRef,
-    screenEnum,
+    screenEnum: ScreenEnum,
     realWidthRef: globalRealWidthRef,
   };
 }
 
 // Just call it once
 export function createBreakpointListen(fn?: (opt: CreateCallbackParams) => void) {
-  const screenRef = ref<sizeEnum>(sizeEnum.XL);
+  const screenRef = ref<ScreenSizeEnum>(ScreenSizeEnum.XL);
   const realWidthRef = ref(window.innerWidth);
 
   function getWindowWidth() {
     const width = document.body.clientWidth;
-    const xs = screenMap.get(sizeEnum.XS)!;
-    const sm = screenMap.get(sizeEnum.SM)!;
-    const md = screenMap.get(sizeEnum.MD)!;
-    const lg = screenMap.get(sizeEnum.LG)!;
-    const xl = screenMap.get(sizeEnum.XL)!;
+    const xs = screenMap.get(ScreenSizeEnum.XS)!;
+    const sm = screenMap.get(ScreenSizeEnum.SM)!;
+    const md = screenMap.get(ScreenSizeEnum.MD)!;
+    const lg = screenMap.get(ScreenSizeEnum.LG)!;
+    const xl = screenMap.get(ScreenSizeEnum.XL)!;
     if (width < xs) {
-      screenRef.value = sizeEnum.XS;
+      screenRef.value = ScreenSizeEnum.XS;
     } else if (width < sm) {
-      screenRef.value = sizeEnum.SM;
+      screenRef.value = ScreenSizeEnum.SM;
     } else if (width < md) {
-      screenRef.value = sizeEnum.MD;
+      screenRef.value = ScreenSizeEnum.MD;
     } else if (width < lg) {
-      screenRef.value = sizeEnum.LG;
+      screenRef.value = ScreenSizeEnum.LG;
     } else if (width < xl) {
-      screenRef.value = sizeEnum.XL;
+      screenRef.value = ScreenSizeEnum.XL;
     } else {
-      screenRef.value = sizeEnum.XXL;
+      screenRef.value = ScreenSizeEnum.XXL;
     }
     realWidthRef.value = width;
   }
@@ -77,16 +77,16 @@ export function createBreakpointListen(fn?: (opt: CreateCallbackParams) => void)
       screen: globalScreenRef,
       width: globalWidthRef,
       realWidth: globalRealWidthRef,
-      screenEnum,
+      screenEnum: ScreenEnum,
       screenMap,
-      sizeEnum,
+      sizeEnum: ScreenSizeEnum,
     });
   }
 
   resizeFn();
   return {
     screenRef: globalScreenRef,
-    screenEnum,
+    screenEnum: ScreenEnum,
     widthRef: globalWidthRef,
     realWidthRef: globalRealWidthRef,
   };
