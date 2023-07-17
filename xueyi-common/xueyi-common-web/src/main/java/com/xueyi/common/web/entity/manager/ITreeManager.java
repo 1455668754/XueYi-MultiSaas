@@ -40,14 +40,6 @@ public interface ITreeManager<Q extends TreeEntity<D>, D extends TreeEntity<D>> 
     List<D> selectChildListByIds(Collection<? extends Serializable> idList);
 
     /**
-     * 修改子节点的状态
-     *
-     * @param dto 数据对象
-     * @return 结果
-     */
-    int updateChildrenStatus(D dto);
-
-    /**
      * 修改其子节点的祖籍
      *
      * @param dto 数据对象
@@ -69,7 +61,7 @@ public interface ITreeManager<Q extends TreeEntity<D>, D extends TreeEntity<D>> 
      * @param id Id
      * @return 结果
      */
-    int deleteChildren(Serializable id);
+    int deleteChildrenById(Serializable id);
 
     /**
      * 根据祖籍删除对应子节点

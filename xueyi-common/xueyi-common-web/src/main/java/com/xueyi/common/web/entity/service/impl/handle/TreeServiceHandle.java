@@ -93,7 +93,7 @@ public class TreeServiceHandle<Q extends TreeEntity<D>, D extends TreeEntity<D>,
             case EDIT_STATUS -> {
                 // update children data ?.status
                 if (ObjectUtil.equals(BaseConstants.Status.DISABLE.getCode(), newDto.getStatus())) {
-                    baseManager.updateChildrenStatus(newDto);
+                    baseManager.updateChildren(newDto);
                 }
                 // refresh cache
                 refreshCache(operate, RedisConstants.OperateType.REFRESH, newDto);

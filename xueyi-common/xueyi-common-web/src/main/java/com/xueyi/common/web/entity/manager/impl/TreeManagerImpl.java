@@ -94,20 +94,6 @@ public class TreeManagerImpl<Q extends P, D extends P, P extends TreeEntity<D>, 
     }
 
     /**
-     * 修改子节点的状态
-     *
-     * @param dto 数据对象
-     * @return 结果
-     */
-    @Override
-    public int updateChildrenStatus(D dto) {
-        return baseMapper.update(null,
-                Wrappers.<P>update().lambda()
-                        .set(P::getStatus, dto.getStatus())
-                        .likeRight(P::getAncestors, dto.getOldChildAncestors()));
-    }
-
-    /**
      * 修改其子节点的祖籍
      *
      * @param dto 数据对象
@@ -117,13 +103,13 @@ public class TreeManagerImpl<Q extends P, D extends P, P extends TreeEntity<D>, 
     public int updateChildrenAncestors(D dto) {
         String newAncestors = dto.getChildAncestors();
         String oldAncestors = dto.getOldChildAncestors();
-        return StrUtil.notEquals(newAncestors, oldAncestors)
-                ? baseMapper.update(
-                null, Wrappers.<P>update().lambda()
-                        .setSql(StrUtil.format(ANCESTORS_PART_UPDATE, Entity.ANCESTORS.getCode(), Entity.ANCESTORS.getCode(), NumberUtil.One, oldAncestors.length(), newAncestors))
-                        .setSql(StrUtil.format(TREE_LEVEL_UPDATE, Entity.LEVEL.getCode(), Entity.LEVEL.getCode(), dto.getLevelChange()))
-                        .likeRight(P::getAncestors, oldAncestors))
-                : NumberUtil.Zero;
+        if (StrUtil.equals(newAncestors, oldAncestors)) {
+            return NumberUtil.Zero;
+        }
+        return baseMapper.update(null, updateChildrenWrapper(dto, Wrappers.<P>lambdaUpdate()
+                .setSql(StrUtil.format(ANCESTORS_PART_UPDATE, Entity.ANCESTORS.getCode(), Entity.ANCESTORS.getCode(), NumberUtil.One, oldAncestors.length(), newAncestors))
+                .setSql(StrUtil.format(TREE_LEVEL_UPDATE, Entity.LEVEL.getCode(), Entity.LEVEL.getCode(), dto.getLevelChange()))
+                .likeRight(P::getAncestors, oldAncestors)));
     }
 
     /**
@@ -136,16 +122,15 @@ public class TreeManagerImpl<Q extends P, D extends P, P extends TreeEntity<D>, 
     public int updateChildren(D dto) {
         String newAncestors = dto.getChildAncestors();
         String oldAncestors = dto.getOldChildAncestors();
-        return baseMapper.update(null,
-                Wrappers.<P>update().lambda()
-                        .set(P::getStatus, dto.getStatus())
-                        .func(i -> {
-                            if (StrUtil.notEquals(newAncestors, oldAncestors)) {
-                                i.setSql(StrUtil.format(ANCESTORS_PART_UPDATE, Entity.ANCESTORS.getCode(), Entity.ANCESTORS.getCode(), NumberUtil.One, oldAncestors.length(), newAncestors))
-                                        .setSql(StrUtil.format(TREE_LEVEL_UPDATE, Entity.LEVEL.getCode(), Entity.LEVEL.getCode(), dto.getLevelChange()));
-                            }
-                        })
-                        .likeRight(P::getAncestors, oldAncestors));
+        return baseMapper.update(null, updateChildrenWrapper(dto, Wrappers.<P>lambdaUpdate()
+                .set(P::getStatus, dto.getStatus())
+                .func(i -> {
+                    if (StrUtil.notEquals(newAncestors, oldAncestors)) {
+                        i.setSql(StrUtil.format(ANCESTORS_PART_UPDATE, Entity.ANCESTORS.getCode(), Entity.ANCESTORS.getCode(), NumberUtil.One, oldAncestors.length(), newAncestors))
+                                .setSql(StrUtil.format(TREE_LEVEL_UPDATE, Entity.LEVEL.getCode(), Entity.LEVEL.getCode(), dto.getLevelChange()));
+                    }
+                })
+                .likeRight(P::getAncestors, oldAncestors)));
     }
 
     /**
@@ -155,9 +140,9 @@ public class TreeManagerImpl<Q extends P, D extends P, P extends TreeEntity<D>, 
      * @return 结果
      */
     @Override
-    public int deleteChildren(Serializable id) {
+    public int deleteChildrenById(Serializable id) {
         return baseMapper.delete(
-                Wrappers.<P>update().lambda()
+                Wrappers.<P>lambdaUpdate()
                         .eq(P::getId, id)
                         .apply(ANCESTORS_FIND, id));
     }
@@ -174,7 +159,7 @@ public class TreeManagerImpl<Q extends P, D extends P, P extends TreeEntity<D>, 
             return NumberUtil.Zero;
         }
         return baseMapper.delete(
-                Wrappers.<P>update().lambda()
+                Wrappers.<P>lambdaUpdate()
                         .apply(NONE_FIND)
                         .func(i -> {
                             for (String ancestor : ancestors) {
