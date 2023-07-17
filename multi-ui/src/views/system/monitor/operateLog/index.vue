@@ -67,7 +67,7 @@
       const { createMessage, createConfirm } = useMessage();
       const [registerModal, { openModal }] = useModal();
       const state = reactive<{
-        ids: (string | number)[];
+        ids: string[];
         idNames: string;
       }>({
         ids: [],

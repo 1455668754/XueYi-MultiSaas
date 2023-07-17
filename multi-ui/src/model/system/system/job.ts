@@ -3,7 +3,7 @@ import { JobLogIM } from './jobLog';
 
 /** job info model */
 export interface JobIM extends SubBaseEntity<JobLogIM> {
-  id: string | number;
+  id: string;
   name: string;
   jobGroup: string;
   invokeTarget: string;
@@ -18,7 +18,17 @@ export interface JobIM extends SubBaseEntity<JobLogIM> {
 export type JobLM = JobIM[];
 
 /** job param model */
-export type JobPM = JobIM;
+export interface JobPM extends SubBaseEntity<JobLogIM> {
+  id?: string;
+  name?: string;
+  jobGroup?: string;
+  invokeTarget?: string;
+  cronExpression?: string;
+  misfirePolicy?: string;
+  concurrent?: string;
+  status?: string;
+  remark?: string;
+}
 
 /** job page param model */
 export type JobPPM = BasicPageParams & JobPM;

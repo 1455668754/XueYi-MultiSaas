@@ -21,12 +21,11 @@ export const listPostApi = (params?: PostPPM) =>
 export const optionPostApi = () => defHttp.get<PostLRM>({ url: Api.OPTION_POST });
 
 /** 查询岗位详细 */
-export const getPostApi = (id: string | number) =>
-  defHttp.get<PostIM>({ url: Api.GET_POST, params: id });
+export const getPostApi = (id: string) => defHttp.get<PostIM>({ url: Api.GET_POST, params: id });
 
 /** 查询岗位的角色权限节点集 */
-export const getAuthPostApi = (id: string | number) =>
-  defHttp.get<(string | number)[]>({
+export const getAuthPostApi = (id: string) =>
+  defHttp.get<string[]>({
     url: Api.GET_AUTH_POST,
     params: id,
   });
@@ -38,19 +37,19 @@ export const addPostApi = (params: PostIM) => defHttp.post({ url: Api.ADD_POST, 
 export const editPostApi = (params: PostIM) => defHttp.put({ url: Api.EDIT_POST, params });
 
 /** 修改岗位的角色权限 */
-export const editAuthPostScopeApi = (id: string | number, roleIds: (string | number)[]) =>
+export const editAuthPostScopeApi = (id: string, roleIds: string[]) =>
   defHttp.put({
     url: Api.EDIT_AUTH_POST,
     params: { id: id, roleIds: roleIds },
   });
 
 /** 修改岗位状态 */
-export const editStatusPostApi = (id: string | number, status: any) =>
+export const editStatusPostApi = (id: string, status: any) =>
   defHttp.put({
     url: Api.EDIT_STATUS_POST,
     params: { id: id, status: status },
   });
 
 /** 删除岗位 */
-export const delPostApi = (ids: (string | number) | (string | number)[]) =>
+export const delPostApi = (ids: string | string[]) =>
   defHttp.delete({ url: Api.DEL_BATCH_POST, params: ids.toString() });

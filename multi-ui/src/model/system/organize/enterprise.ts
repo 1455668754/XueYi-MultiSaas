@@ -1,8 +1,8 @@
-import { BasicFetchResult, BasicPageParams, BaseEntity } from '/@/model/src';
+import { BaseEntity, BasicFetchResult, BasicPageParams } from '/@/model/src';
 
 /** enterprise item model */
 export interface EnterpriseIM extends BaseEntity {
-  id: string | number;
+  id: string;
   name: string;
   status: string;
   type: string;
@@ -19,7 +19,19 @@ export interface EnterpriseIM extends BaseEntity {
 export type EnterpriseLM = EnterpriseIM[];
 
 /** enterprise param model */
-export type EnterprisePM = EnterpriseIM;
+export interface EnterprisePM extends BaseEntity {
+  id?: string;
+  name?: string;
+  status?: string;
+  type?: string;
+  sort?: number;
+  nameFrequency?: string;
+  nick?: string;
+  systemName?: string;
+  isLessor?: string;
+  logo?: string;
+  isDefault?: string;
+}
 
 /** enterprise page param model */
 export type EnterprisePPM = BasicPageParams & EnterprisePM;

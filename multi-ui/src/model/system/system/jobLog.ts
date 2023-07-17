@@ -1,8 +1,8 @@
-import { BasicFetchResult, BasicPageParams, BaseEntity } from '/@/model/src';
+import { BaseEntity, BasicFetchResult, BasicPageParams } from '/@/model/src';
 
 /** log info model */
 export interface JobLogIM extends BaseEntity {
-  id: string | number;
+  id: string;
   name: string;
   jobGroup: string;
   invokeTarget: string;
@@ -16,7 +16,16 @@ export interface JobLogIM extends BaseEntity {
 export type JobLogLM = JobLogIM[];
 
 /** log param model */
-export type JobLogPM = JobLogIM;
+export interface JobLogPM extends BaseEntity {
+  id?: string;
+  name?: string;
+  jobGroup?: string;
+  invokeTarget?: string;
+  jobMessage?: string;
+  status?: string;
+  exceptionInfo?: string;
+  delTime?: any;
+}
 
 /** log page param model */
 export type JobLogPPM = BasicPageParams & JobLogPM;

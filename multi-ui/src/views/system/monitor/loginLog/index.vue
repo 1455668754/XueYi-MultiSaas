@@ -41,9 +41,9 @@
 <script lang="ts">
   import { defineComponent, reactive } from 'vue';
   import {
-    listLoginLogApi,
-    delLoginLogApi,
     cleanLoginLogApi,
+    delLoginLogApi,
+    listLoginLogApi,
   } from '/@/api/system/monitor/loginLog';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { IconEnum } from '/@/enums/appEnum';
@@ -57,7 +57,7 @@
     setup() {
       const { createMessage, createConfirm } = useMessage();
       const state = reactive<{
-        ids: (string | number)[];
+        ids: string[];
         idNames: string;
       }>({
         ids: [],

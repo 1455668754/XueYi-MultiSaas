@@ -34,8 +34,8 @@
     setup(_, { emit }) {
       const { createMessage } = useMessage();
       const authTree = ref<TreeItem[]>([]);
-      const authKeys = ref<(string | number)[]>([]);
-      const authHalfKeys = ref<(string | number)[]>([]);
+      const authKeys = ref<string[]>([]);
+      const authHalfKeys = ref<string[]>([]);
 
       const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
         labelWidth: 100,
@@ -82,9 +82,9 @@
       }
 
       /** 获取权限Id */
-      function authCheck(checkedKeys, e) {
-        authKeys.value = checkedKeys as (string | number)[];
-        authHalfKeys.value = e.halfCheckedKeys as (string | number)[];
+      function authCheck(checkedKeys: string[], e) {
+        authKeys.value = checkedKeys;
+        authHalfKeys.value = e.halfCheckedKeys as string[];
       }
 
       return {

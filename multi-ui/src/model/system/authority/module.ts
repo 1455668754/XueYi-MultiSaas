@@ -3,7 +3,7 @@ import { MenuIM } from './menu';
 
 /** module info model */
 export interface ModuleIM extends SubBaseEntity<MenuIM> {
-  id: string | number;
+  id: string;
   name: string;
   logo: string;
   path: string;
@@ -21,7 +21,20 @@ export interface ModuleIM extends SubBaseEntity<MenuIM> {
 export type ModuleLM = ModuleIM[];
 
 /** module param model */
-export type ModulePM = ModuleIM;
+export interface ModulePM extends SubBaseEntity<MenuIM> {
+  id?: string;
+  name?: string;
+  logo?: string;
+  path?: string;
+  paramPath?: string;
+  type?: string;
+  hideModule?: string;
+  sort?: number;
+  status?: string;
+  remark?: string;
+  isCommon?: string;
+  isDefault?: string;
+}
 
 /** module page param model */
 export type ModulePPM = BasicPageParams & ModulePM;

@@ -9,11 +9,11 @@
   import { formSchema, initialize } from './menu.data';
   import { useMessage } from '/@/hooks/web/useMessage';
   import {
-    getMenuApi,
     addMenuApi,
     editMenuApi,
-    getMenuRouteListExNodesApi,
+    getMenuApi,
     getMenuRouteListApi,
+    getMenuRouteListExNodesApi,
   } from '/@/api/system/authority/menu';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
@@ -73,7 +73,7 @@
       }
 
       /** 生成菜单树 */
-      async function setMenuTree(id: string | number | undefined, moduleId: string | number) {
+      async function setMenuTree(id: string | undefined, moduleId: string) {
         const treeData =
           id === undefined
             ? await getMenuRouteListApi(moduleId, MenuTypeEnum.DETAILS)

@@ -30,7 +30,7 @@
       });
 
       onMounted(async () => {
-        const id = route.params.id as string | number;
+        const id = route.params.id as string;
         const data = await getModuleApi(id);
         setDescProps({ data: data });
         getTitle.value = '模块详情:' + data?.name;

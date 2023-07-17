@@ -30,7 +30,7 @@
       });
 
       onMounted(async () => {
-        const id = route.params.id as string | number;
+        const id = route.params.id as string;
         const data = await getStrategyApi(id);
         setDescProps({ data: data });
         getTitle.value = '源策略详情:' + data?.name;

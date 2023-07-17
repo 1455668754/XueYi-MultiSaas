@@ -51,7 +51,7 @@
       }
 
       async function create() {
-        const id = route.params.id as string | number;
+        const id = route.params.id as string;
         const data = await getGenApi(id);
         codeList.value = await previewGenApi(id);
         getTitle.value = data?.comment;

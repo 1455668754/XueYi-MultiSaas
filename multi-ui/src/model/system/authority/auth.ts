@@ -1,8 +1,8 @@
-import { TreeEntity, BasicFetchResult, BasicPageParams } from '/@/model/src';
+import { BasicFetchResult, BasicPageParams, TreeEntity } from '/@/model/src';
 
 /** auth info model */
 export interface AuthIM extends TreeEntity<AuthIM> {
-  id: string | number;
+  id: string;
   label: string;
   status: string;
   type: string;
@@ -12,7 +12,12 @@ export interface AuthIM extends TreeEntity<AuthIM> {
 export type AuthLM = AuthIM[];
 
 /** auth param model */
-export type AuthPM = AuthIM;
+export interface AuthPM extends TreeEntity<AuthIM> {
+  id?: string;
+  label?: string;
+  status?: string;
+  type?: string;
+}
 
 /** auth page param model */
 export type AuthPPM = BasicPageParams & AuthPM;

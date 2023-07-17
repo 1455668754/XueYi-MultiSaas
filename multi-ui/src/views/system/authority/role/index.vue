@@ -67,7 +67,7 @@
 
 <script lang="ts">
   import { defineComponent, reactive } from 'vue';
-  import { listRoleApi, delRoleApi } from '/@/api/system/authority/role';
+  import { delRoleApi, listRoleApi } from '/@/api/system/authority/role';
   import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { IconEnum } from '/@/enums/appEnum';
@@ -98,7 +98,7 @@
       const [authRegisterModal, { openModal: authOpenModal }] = useModal();
       const [organizeRegisterModal, { openModal: organizeOpenModal }] = useModal();
       const state = reactive<{
-        ids: (string | number)[];
+        ids: string[];
         idNames: string;
       }>({
         ids: [],

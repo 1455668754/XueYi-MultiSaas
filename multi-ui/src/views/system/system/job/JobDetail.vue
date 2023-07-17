@@ -30,7 +30,7 @@
       });
 
       onMounted(async () => {
-        const id = route.params.id as string | number;
+        const id = route.params.id as string;
         const data = await getJobApi(id);
         setDescProps({ data: data });
         getTitle.value = '调度任务详情:' + data?.name;

@@ -12,7 +12,7 @@ export const listLoginLogApi = (params?: LoginLogPPM) =>
   defHttp.get<LoginLogLRM>({ url: Api.LIST_LOGIN_LOG, params });
 
 /** 删除系统访问记录 */
-export const delLoginLogApi = (ids: (string | number) | (string | number)[]) =>
+export const delLoginLogApi = (ids: string | string[]) =>
   defHttp.delete({
     url: Api.DEL_BATCH_LOGIN_LOG,
     params: ids.toString(),

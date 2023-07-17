@@ -1,8 +1,8 @@
-import { BasicFetchResult, BasicPageParams, BaseEntity } from '/@/model/src';
+import { BaseEntity, BasicFetchResult, BasicPageParams } from '/@/model/src';
 
 /** source info model */
 export interface SourceIM extends BaseEntity {
-  id: string | number;
+  id: string;
   name: string;
   slave: string;
   driverClassName: string;
@@ -20,7 +20,15 @@ export interface SourceIM extends BaseEntity {
 export type SourceLM = SourceIM[];
 
 /** source param model */
-export type SourcePM = SourceIM;
+export interface SourcePM extends BaseEntity {
+  id?: string;
+  name?: string;
+  slave?: string;
+  driverClassName?: string;
+  username?: string;
+  status?: string;
+  isDefault?: string;
+}
 
 /** source page param model */
 export type SourcePPM = BasicPageParams & SourcePM;

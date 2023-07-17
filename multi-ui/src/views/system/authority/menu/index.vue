@@ -57,7 +57,7 @@
 
 <script lang="ts">
   import { defineComponent, reactive } from 'vue';
-  import { listMenuApi, delMenuApi } from '/@/api/system/authority/menu';
+  import { delMenuApi, listMenuApi } from '/@/api/system/authority/menu';
   import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
@@ -75,7 +75,7 @@
       const { createMessage, createConfirm } = useMessage();
       const [registerModal, { openModal }] = useModal();
       const state = reactive<{
-        ids: (string | number)[];
+        ids: string[];
         idNames: string;
       }>({
         ids: [],

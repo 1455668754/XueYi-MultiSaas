@@ -81,7 +81,7 @@
 
 <script lang="ts">
   import { defineComponent, reactive } from 'vue';
-  import { listUserApi, delUserApi, exportUserApi } from '/@/api/system/organize/user';
+  import { delUserApi, exportUserApi, listUserApi } from '/@/api/system/organize/user';
   import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
@@ -116,7 +116,7 @@
       const [registerRoleModal, { openModal: openRoleModal }] = useModal();
       const [registerResPwdModal, { openModal: openResPwdModal }] = useModal();
       const state = reactive<{
-        ids: (string | number)[];
+        ids: string[];
         idNames: string;
       }>({
         ids: [],

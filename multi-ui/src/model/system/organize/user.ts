@@ -1,12 +1,12 @@
-import { BasicFetchResult, BasicPageParams, BaseEntity } from '/@/model/src';
+import { BaseEntity, BasicFetchResult, BasicPageParams } from '/@/model/src';
 import { RoleLM } from '../authority';
 import { PostIM } from './post';
 
 /** user item model */
 export interface UserIM extends BaseEntity {
-  id: string | number;
-  postId: string | number;
-  deptId: string | number;
+  id: string;
+  postId: string;
+  deptId: string;
   code: string;
   userName: string;
   nickName: string;
@@ -22,7 +22,7 @@ export interface UserIM extends BaseEntity {
   login_date: Date;
   post: PostIM;
   roles: RoleLM;
-  roleIds: (string | number)[];
+  roleIds: string[];
   homePath?: string;
 }
 
@@ -30,7 +30,26 @@ export interface UserIM extends BaseEntity {
 export type UserLM = UserIM[];
 
 /** user param model */
-export type UserPM = UserIM;
+export interface UserPM extends BaseEntity {
+  id?: string;
+  postId?: string;
+  deptId?: string;
+  code?: string;
+  userName?: string;
+  nickName?: string;
+  userType?: string;
+  status?: string;
+  sort?: number;
+  avatar?: string;
+  phone?: string;
+  email?: string;
+  sex?: string;
+  profile?: string;
+  login_ip?: string;
+  login_date?: Date;
+  roleIds?: string[];
+  homePath?: string;
+}
 
 /** user page param model */
 export type UserPPM = BasicPageParams & UserPM;

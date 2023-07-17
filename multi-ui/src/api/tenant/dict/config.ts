@@ -20,7 +20,7 @@ export const listConfigApi = (params?: ConfigPPM) =>
 export const optionConfigApi = () => defHttp.get<ConfigLRM>({ url: Api.OPTION_CONFIG });
 
 /** 查询参数详细 */
-export const getConfigApi = (id: string | number) =>
+export const getConfigApi = (id: string) =>
   defHttp.get<ConfigIM>({ url: Api.GET_CONFIG, params: id });
 
 /** 新增参数 */
@@ -30,11 +30,11 @@ export const addConfigApi = (params: ConfigIM) => defHttp.post({ url: Api.ADD_CO
 export const editConfigApi = (params: ConfigIM) => defHttp.put({ url: Api.EDIT_CONFIG, params });
 
 /** 删除参数 */
-export const delConfigApi = (ids: (string | number) | (string | number)[]) =>
+export const delConfigApi = (ids: string | string[]) =>
   defHttp.delete({ url: Api.DEL_BATCH_CONFIG, params: ids.toString() });
 
 /** 强制删除参数 */
-export const delForceConfigApi = (ids: (string | number) | (string | number)[]) =>
+export const delForceConfigApi = (ids: string | string[]) =>
   defHttp.delete({
     url: Api.DEL_BATCH_FORCE_CONFIG,
     params: ids.toString(),

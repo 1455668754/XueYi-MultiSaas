@@ -1,8 +1,8 @@
-import { BasicFetchResult, BasicPageParams, BaseEntity } from '/@/model/src';
+import { BaseEntity, BasicFetchResult, BasicPageParams } from '/@/model/src';
 
 /** role info model */
 export interface RoleIM extends BaseEntity {
-  id: string | number;
+  id: string;
   code: string;
   name: string;
   roleKey: string;
@@ -10,15 +10,26 @@ export interface RoleIM extends BaseEntity {
   sort: number;
   status: string;
   remark: string;
-  authIds: (string | number)[];
-  organizeIds: (string | number)[];
+  authIds: string[];
+  organizeIds: string[];
 }
 
 /** role list model */
 export type RoleLM = RoleIM[];
 
 /** role param model */
-export type RolePM = RoleIM;
+export interface RolePM extends BaseEntity {
+  id?: string;
+  code?: string;
+  name?: string;
+  roleKey?: string;
+  dataScope?: string;
+  sort?: number;
+  status?: string;
+  remark?: string;
+  authIds?: string[];
+  organizeIds?: string[];
+}
 
 /** role page param model */
 export type RolePPM = BasicPageParams & RolePM;

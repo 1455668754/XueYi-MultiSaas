@@ -20,12 +20,11 @@ export const listDeptApi = (params?: DeptPM) => defHttp.get<DeptLM>({ url: Api.L
 export const optionDeptApi = () => defHttp.get<DeptLM>({ url: Api.OPTION_DEPT });
 
 /** 查询部门详细 */
-export const getDeptApi = (id: string | number) =>
-  defHttp.get<DeptIM>({ url: Api.GET_DEPT, params: id });
+export const getDeptApi = (id: string) => defHttp.get<DeptIM>({ url: Api.GET_DEPT, params: id });
 
 /** 查询部门的角色权限节点集 */
-export const getAuthDeptApi = (id: string | number) =>
-  defHttp.get<(string | number)[]>({
+export const getAuthDeptApi = (id: string) =>
+  defHttp.get<string[]>({
     url: Api.GET_AUTH_DEPT,
     params: id,
   });
@@ -37,19 +36,19 @@ export const addDeptApi = (params: DeptIM) => defHttp.post({ url: Api.ADD_DEPT, 
 export const editDeptApi = (params: DeptIM) => defHttp.put({ url: Api.EDIT_DEPT, params });
 
 /** 修改部门的角色权限 */
-export const editAuthDeptScopeApi = (id: string | number, roleIds: (string | number)[]) =>
+export const editAuthDeptScopeApi = (id: string, roleIds: string[]) =>
   defHttp.put({
     url: Api.EDIT_AUTH_DEPT,
     params: { id: id, roleIds: roleIds },
   });
 
 /** 修改部门状态 */
-export const editStatusDeptApi = (id: string | number, status: any) =>
+export const editStatusDeptApi = (id: string, status: any) =>
   defHttp.put({
     url: Api.EDIT_STATUS_DEPT,
     params: { id: id, status: status },
   });
 
 /** 删除部门 */
-export const delDeptApi = (ids: (string | number) | (string | number)[]) =>
+export const delDeptApi = (ids: string | string[]) =>
   defHttp.delete({ url: Api.DEL_BATCH_DEPT, params: ids.toString() });

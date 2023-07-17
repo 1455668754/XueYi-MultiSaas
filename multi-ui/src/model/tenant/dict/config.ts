@@ -1,8 +1,8 @@
-import { BasicFetchResult, BasicPageParams, BaseEntity } from '/@/model/src';
+import { BaseEntity, BasicFetchResult, BasicPageParams } from '/@/model/src';
 
 /** config info model */
 export interface ConfigIM extends BaseEntity {
-  id: string | number;
+  id: string;
   name: string;
   code: string;
   value: string;
@@ -15,7 +15,13 @@ export interface ConfigIM extends BaseEntity {
 export type ConfigLM = ConfigIM[];
 
 /** config param model */
-export type ConfigPM = ConfigIM;
+export interface ConfigPM extends BaseEntity {
+  id?: string;
+  name?: string;
+  code?: string;
+  value?: string;
+  type?: string;
+}
 
 /** config page param model */
 export type ConfigPPM = BasicPageParams & ConfigPM;

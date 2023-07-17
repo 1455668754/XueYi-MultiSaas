@@ -43,17 +43,17 @@
       </div>
     </div>
     <template #centerFooter>
-      <a-button type="default" @click="handleStepPrev" v-show="current > 0"> 上一步 </a-button>
+      <a-button type="default" @click="handleStepPrev" v-show="current > 0"> 上一步</a-button>
     </template>
     <template #appendFooter>
-      <a-button type="primary" @click="handleStepNext" v-show="current < 2"> 下一步 </a-button>
+      <a-button type="primary" @click="handleStepNext" v-show="current < 2"> 下一步</a-button>
     </template>
   </BasicModal>
 </template>
 
 <script lang="ts">
   import { computed, defineComponent, ref, unref } from 'vue';
-  import { roleInitList, roleFormSchema, authFormSchema, organizeFormSchema } from './role.data';
+  import { authFormSchema, organizeFormSchema, roleFormSchema, roleInitList } from './role.data';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
@@ -79,8 +79,8 @@
       const current = ref(0);
       const authTree = ref<TreeItem[]>([]);
       const organizeTree = ref<TreeItem[]>([]);
-      const authKeys = ref<(string | number)[]>([]);
-      const authHalfKeys = ref<(string | number)[]>([]);
+      const authKeys = ref<string[]>([]);
+      const authHalfKeys = ref<string[]>([]);
 
       const [roleRegister, { resetFields: roleResetFields, validate: roleValidate }] = useForm({
         labelWidth: 100,
@@ -187,9 +187,9 @@
       }
 
       /** 获取权限Id */
-      function authCheck(checkedKeys, e) {
-        authKeys.value = checkedKeys as (string | number)[];
-        authHalfKeys.value = e.halfCheckedKeys as (string | number)[];
+      function authCheck(checkedKeys: string[], e) {
+        authKeys.value = checkedKeys;
+        authHalfKeys.value = e.halfCheckedKeys as string[];
       }
 
       return {

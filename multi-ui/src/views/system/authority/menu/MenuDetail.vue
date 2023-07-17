@@ -30,7 +30,7 @@
       });
 
       onMounted(async () => {
-        const id = route.params.id as string | number;
+        const id = route.params.id as string;
         const data = await getMenuApi(id);
         setDescProps({ data: data });
         getTitle.value = '菜单详情:' + data?.title;

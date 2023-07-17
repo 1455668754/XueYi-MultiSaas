@@ -61,7 +61,7 @@
 
 <script lang="ts">
   import { defineComponent, reactive } from 'vue';
-  import { listTenantApi, delTenantApi } from '/@/api/tenant/tenant/tenant';
+  import { delTenantApi, listTenantApi } from '/@/api/tenant/tenant/tenant';
   import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { useGo } from '/@/hooks/web/usePage';
@@ -90,7 +90,7 @@
       const [initRegisterModal, { openModal: initOpenModal }] = useModal();
       const [authRegisterModal, { openModal: authOpenModal }] = useModal();
       const state = reactive<{
-        ids: (string | number)[];
+        ids: string[];
         idNames: string;
       }>({
         ids: [],
@@ -121,7 +121,7 @@
         },
         rowSelection: {
           onChange: (selectedRowKeys, selectRows) => {
-            state.ids = selectedRowKeys;
+            state.ids = selectedRowKeys as string[];
             state.idNames = selectRows
               .map((item) => {
                 return item.name;

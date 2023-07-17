@@ -1,8 +1,8 @@
-import { BasicFetchResult, BasicPageParams, BaseEntity } from '/@/model/src';
+import { BaseEntity, BasicFetchResult, BasicPageParams } from '/@/model/src';
 
 /** notice info model */
 export interface NoticeIM extends BaseEntity {
-  id: string | number;
+  id: string;
   name: string;
   type: string;
   content: string;
@@ -14,7 +14,14 @@ export interface NoticeIM extends BaseEntity {
 export type NoticeLM = NoticeIM[];
 
 /** notice param model */
-export type NoticePM = NoticeIM;
+export interface NoticePM extends BaseEntity {
+  id?: string;
+  name?: string;
+  type?: string;
+  content?: string;
+  status?: string;
+  remark?: string;
+}
 
 /** notice page param model */
 export type NoticePPM = BasicPageParams & NoticePM;

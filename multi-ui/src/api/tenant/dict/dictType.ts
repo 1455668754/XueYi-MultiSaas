@@ -20,7 +20,7 @@ export const listDictTypeApi = (params?: DictTypePPM) =>
 export const optionDictTypeApi = () => defHttp.get<DictTypeLRM>({ url: Api.OPTION_DICT_TYPE });
 
 /** 查询字典类型详细 */
-export const getDictTypeApi = (id: string | number) =>
+export const getDictTypeApi = (id: string) =>
   defHttp.get<DictTypeIM>({ url: Api.GET_DICT_TYPE, params: id });
 
 /** 新增字典类型 */
@@ -32,14 +32,14 @@ export const editDictTypeApi = (params: DictTypeIM) =>
   defHttp.put({ url: Api.EDIT_DICT_TYPE, params });
 
 /** 修改字典类型状态 */
-export const editStatusDictTypeApi = (id: string | number, status: any) =>
+export const editStatusDictTypeApi = (id: string, status: any) =>
   defHttp.put({
     url: Api.EDIT_STATUS_DICT_TYPE,
     params: { id: id, status: status },
   });
 
 /** 删除字典类型 */
-export const delDictTypeApi = (ids: (string | number)[]) =>
+export const delDictTypeApi = (ids: string[]) =>
   defHttp.delete({
     url: Api.DEL_BATCH_DICT_TYPE,
     params: ids.toString(),

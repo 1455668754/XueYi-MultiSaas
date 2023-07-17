@@ -30,7 +30,7 @@
       });
 
       onMounted(async () => {
-        const id = route.params.id as string | number;
+        const id = route.params.id as string;
         const data = await getDictTypeApi(id);
         setDescProps({ data: data });
         getTitle.value = '字典类型详情:' + data?.name;

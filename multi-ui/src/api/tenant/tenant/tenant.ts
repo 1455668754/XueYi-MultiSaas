@@ -19,11 +19,11 @@ export const listTenantApi = (params?: TenantPPM) =>
   defHttp.get<TenantLRM>({ url: Api.LIST_TENANT, params });
 
 /** 查询租户详细 */
-export const getTenantApi = (id: string | number) =>
+export const getTenantApi = (id: string) =>
   defHttp.get<TenantIM>({ url: Api.GET_TENANT, params: id });
 
 /** 查询租户权限（叶子节点） */
-export const getAuthTenantApi = (id: string | number) =>
+export const getAuthTenantApi = (id: string) =>
   defHttp.get<[]>({ url: Api.GET_AUTH_TENANT, params: id });
 
 /** 查询公共权限范围树 */
@@ -40,12 +40,12 @@ export const editAuthTenantApi = (params: TenantIM) =>
   defHttp.put({ url: Api.EDIT_AUTH_TENANT, params });
 
 /** 修改租户状态 */
-export const editStatusTenantApi = (id: string | number, status: any) =>
+export const editStatusTenantApi = (id: string, status: any) =>
   defHttp.put({
     url: Api.EDIT_STATUS_TENANT,
     params: { id: id, status: status },
   });
 
 /** 删除租户 */
-export const delTenantApi = (ids: (string | number) | (string | number)[]) =>
+export const delTenantApi = (ids: string | string[]) =>
   defHttp.delete({ url: Api.DEL_BATCH_TENANT, params: ids.toString() });

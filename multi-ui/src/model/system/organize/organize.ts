@@ -2,7 +2,7 @@ import { BasicFetchResult, BasicPageParams, TreeEntity } from '/@/model/src';
 
 /** organize info model */
 export interface OrganizeIM extends TreeEntity<OrganizeIM> {
-  id: string | number;
+  id: string;
   label: string;
   status: string;
   type: string;
@@ -12,7 +12,12 @@ export interface OrganizeIM extends TreeEntity<OrganizeIM> {
 export type OrganizeLM = OrganizeIM[];
 
 /** organize param model */
-export type OrganizePM = OrganizeIM;
+export interface OrganizePM extends TreeEntity<OrganizeIM> {
+  id?: string;
+  label?: string;
+  status?: string;
+  type?: string;
+}
 
 /** organize page param model */
 export type OrganizePPM = BasicPageParams & OrganizePM;

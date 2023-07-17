@@ -1,16 +1,16 @@
-import { BasicFetchResult, BasicPageParams, BaseEntity } from '/@/model/src';
+import { BaseEntity, BasicFetchResult, BasicPageParams } from '/@/model/src';
 
 /** operateLog info model */
 export interface OperateLogIM extends BaseEntity {
-  id: string | number;
+  id: string;
   title: string;
   businessType: string;
   method: string;
   requestMethod: string;
   operateType: string;
-  userId: string | number;
-  userName: string | number;
-  userNick: string | number;
+  userId: string;
+  userName: string;
+  userNick: string;
   url: string;
   ip: string;
   param: string;
@@ -18,14 +18,32 @@ export interface OperateLogIM extends BaseEntity {
   jsonResult: string;
   status: string;
   errorMsg: string;
-  operateTime: any;
+  operateTime: string;
 }
 
 /** operateLog list model */
 export type OperateLogLM = OperateLogIM[];
 
 /** operateLog param model */
-export type OperateLogPM = OperateLogIM;
+export interface OperateLogPM extends BaseEntity {
+  id?: string;
+  title?: string;
+  businessType?: string;
+  method?: string;
+  requestMethod?: string;
+  operateType?: string;
+  userId?: string;
+  userName?: string;
+  userNick?: string;
+  url?: string;
+  ip?: string;
+  param?: string;
+  location?: string;
+  jsonResult?: string;
+  status?: string;
+  errorMsg?: string;
+  operateTime?: string;
+}
 
 /** operateLog page param model */
 export type OperateLogPPM = BasicPageParams & OperateLogPM;

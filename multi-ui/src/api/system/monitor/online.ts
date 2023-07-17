@@ -11,5 +11,5 @@ export const listOnlineApi = (params?: OnlinePPM) =>
   defHttp.get<OnlineLRM>({ url: Api.LIST_ONLINE, params });
 
 /** 强退在线用户 */
-export const delOnlineApi = (ids: (string | number) | (string | number)[]) =>
+export const delOnlineApi = (ids: string | string[]) =>
   defHttp.delete({ url: Api.DEL_BATCH_ONLINE, params: ids.toString() });

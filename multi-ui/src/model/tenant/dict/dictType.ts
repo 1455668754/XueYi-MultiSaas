@@ -3,7 +3,7 @@ import { DictDataIM } from './dictData';
 
 /** dictType info model */
 export interface DictTypeIM extends SubBaseEntity<DictDataIM> {
-  id: string | number;
+  id: string;
   name: string;
   code: string;
   sort: number;
@@ -15,7 +15,12 @@ export interface DictTypeIM extends SubBaseEntity<DictDataIM> {
 export type DictTypeLM = DictTypeIM[];
 
 /** dictType param model */
-export type DictTypePM = DictTypeIM;
+export interface DictTypePM extends SubBaseEntity<DictDataIM> {
+  id?: string;
+  name?: string;
+  code?: string;
+  status?: string;
+}
 
 /** dictType page param model */
 export type DictTypePPM = BasicPageParams & DictTypePM;

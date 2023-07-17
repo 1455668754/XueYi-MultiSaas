@@ -52,7 +52,7 @@
 
 <script lang="ts">
   import { defineComponent, reactive } from 'vue';
-  import { listSourceApi, delSourceApi } from '/@/api/tenant/source/source';
+  import { delSourceApi, listSourceApi } from '/@/api/tenant/source/source';
   import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { IconEnum } from '/@/enums/appEnum';
@@ -71,7 +71,7 @@
       const { createMessage, createConfirm } = useMessage();
       const [registerModal, { openModal }] = useModal();
       const state = reactive<{
-        ids: (string | number)[];
+        ids: string[];
         idNames: string;
       }>({
         ids: [],

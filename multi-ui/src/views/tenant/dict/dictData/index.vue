@@ -46,7 +46,7 @@
 
 <script lang="ts">
   import { defineComponent, reactive, ref } from 'vue';
-  import { listDictDataApi, delDictDataApi } from '/@/api/tenant/dict/dictData';
+  import { delDictDataApi, listDictDataApi } from '/@/api/tenant/dict/dictData';
   import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { IconEnum } from '/@/enums/appEnum';
@@ -66,7 +66,7 @@
       const [registerModal, { openModal }] = useModal();
       const dictCode = ref(route.params.code as string);
       const state = reactive<{
-        ids: (string | number)[];
+        ids: string[];
         idNames: string;
       }>({
         ids: [],

@@ -33,10 +33,10 @@
       </div>
     </div>
     <template #centerFooter>
-      <a-button type="default" @click="handleStepPrev" v-show="current > 0"> 上一步 </a-button>
+      <a-button type="default" @click="handleStepPrev" v-show="current > 0"> 上一步</a-button>
     </template>
     <template #appendFooter>
-      <a-button type="primary" @click="handleStepNext" v-show="current < 3"> 下一步 </a-button>
+      <a-button type="primary" @click="handleStepNext" v-show="current < 3"> 下一步</a-button>
     </template>
   </BasicModal>
 </template>
@@ -72,8 +72,8 @@
       const { createMessage } = useMessage();
       const current = ref(0);
       const authTree = ref<TreeItem[]>([]);
-      const authKeys = ref<(string | number)[]>([]);
-      const authHalfKeys = ref<(string | number)[]>([]);
+      const authKeys = ref<string[]>([]);
+      const authHalfKeys = ref<string[]>([]);
 
       const [strategyRegister, { resetFields: strategyResetFields, validate: strategyValidate }] =
         useForm({
@@ -176,9 +176,9 @@
       }
 
       /** 获取权限Id */
-      function authCheck(checkedKeys, e) {
-        authKeys.value = checkedKeys as (string | number)[];
-        authHalfKeys.value = e.halfCheckedKeys as (string | number)[];
+      function authCheck(checkedKeys: string[], e) {
+        authKeys.value = checkedKeys;
+        authHalfKeys.value = e.halfCheckedKeys as string[];
       }
 
       return {

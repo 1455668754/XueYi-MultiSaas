@@ -20,7 +20,7 @@ export const listGenApi = (params?: GenTablePPM) =>
   defHttp.get<GenTableLRM>({ url: Api.LIST_GEN, params });
 
 /** 查询生成表的字段列表 */
-export const listGenColumnApi = (tableId: string | number) =>
+export const listGenColumnApi = (tableId: string) =>
   defHttp.get<GenTableColumnLRM>({
     url: Api.LIST_GEN_COLUMN,
     params: tableId,
@@ -31,27 +31,26 @@ export const listDBGenApi = (params?: GenTablePPM) =>
   defHttp.get<GenTableLRM>({ url: Api.LIST_DB_GEN, params });
 
 /** 查询生成表配置详细 */
-export const getGenApi = (id: string | number) =>
-  defHttp.get<GenTableIM>({ url: Api.GET_GEN, params: id });
+export const getGenApi = (id: string) => defHttp.get<GenTableIM>({ url: Api.GET_GEN, params: id });
 
 /** 查询生成表配置详细 | 带子数据 */
-export const getSubGenApi = (id: string | number) =>
+export const getSubGenApi = (id: string) =>
   defHttp.get<GenTableIM>({ url: Api.GET_SUB_GEN, params: id });
 
 /** 预览代码 */
-export const previewGenApi = (tableId: string | number) =>
+export const previewGenApi = (tableId: string) =>
   defHttp.get<GenCodeLM>({ url: Api.PREVIEW_GEN, params: tableId });
 
 /** 生成代码（下载方式） */
-export const downloadGenApi = async (tableId: string | number, title: string) =>
+export const downloadGenApi = async (tableId: string, title: string) =>
   defHttp.download<any>({ url: Api.DOWNLOAD_GEN, params: tableId }, title);
 
 /** 生成代码（自定义路径） */
-export const generateGenApi = (tableId: string | number) =>
+export const generateGenApi = (tableId: string) =>
   defHttp.get<GenCodeLM>({ url: Api.GENERATE_GEN, params: tableId });
 
 /** 导入数据表 */
-export const importDBGenApi = (names: (string | number)[]) =>
+export const importDBGenApi = (names: string[]) =>
   defHttp.post(
     {
       url: Api.IMPORT_DB_GEN,
@@ -64,7 +63,7 @@ export const importDBGenApi = (names: (string | number)[]) =>
 export const editGenApi = (params: GenTableIM) => defHttp.put({ url: Api.EDIT_GEN, params });
 
 /** 强制删除业务表 */
-export const delForceGenApi = (ids: (string | number) | (string | number)[]) =>
+export const delForceGenApi = (ids: string | string[]) =>
   defHttp.delete({
     url: Api.DEL_BATCH_FORCE_DEPT,
     params: ids.toString(),

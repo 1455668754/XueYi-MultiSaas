@@ -19,7 +19,7 @@ export const listModuleApi = (params?: ModulePPM) =>
 export const optionModuleApi = () => defHttp.get<ModuleLRM>({ url: Api.OPTION_MODULE });
 
 /** 查询模块详细 */
-export const getModuleApi = (id: string | number) =>
+export const getModuleApi = (id: string) =>
   defHttp.get<ModuleIM>({ url: Api.GET_MODULE, params: id });
 
 /** 新增模块 */
@@ -29,12 +29,12 @@ export const addModuleApi = (params: ModuleIM) => defHttp.post({ url: Api.ADD_MO
 export const editModuleApi = (params: ModuleIM) => defHttp.put({ url: Api.EDIT_MODULE, params });
 
 /** 修改模块状态 */
-export const editStatusModuleApi = (id: string | number, status: any) =>
+export const editStatusModuleApi = (id: string, status: any) =>
   defHttp.put({
     url: Api.EDIT_STATUS_MODULE,
     params: { id: id, status: status },
   });
 
 /** 删除模块 */
-export const delModuleApi = (ids: (string | number) | (string | number)[]) =>
+export const delModuleApi = (ids: string | string[]) =>
   defHttp.delete({ url: Api.DEL_BATCH_MODULE, params: ids.toString() });

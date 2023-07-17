@@ -19,7 +19,7 @@ export const listStrategyApi = (params?: StrategyPPM) =>
 export const optionStrategyApi = () => defHttp.get<StrategyLRM>({ url: Api.OPTION_STRATEGY });
 
 /** 查询数据源策略详细 */
-export const getStrategyApi = (id: string | number) =>
+export const getStrategyApi = (id: string) =>
   defHttp.get<StrategyIM>({ url: Api.GET_STRATEGY, params: id });
 
 /** 新增数据源策略 */
@@ -31,12 +31,12 @@ export const editStrategyApi = (params: StrategyIM) =>
   defHttp.put({ url: Api.EDIT_STRATEGY, params });
 
 /** 修改数据源策略状态 */
-export const editStatusStrategyApi = (id: string | number, status: any) =>
+export const editStatusStrategyApi = (id: string, status: any) =>
   defHttp.put({
     url: Api.EDIT_STATUS_STRATEGY,
     params: { id: id, status: status },
   });
 
 /** 删除数据源策略 */
-export const delStrategyApi = (ids: (string | number) | (string | number)[]) =>
+export const delStrategyApi = (ids: string | string[]) =>
   defHttp.delete({ url: Api.DEL_BATCH_STRATEGY, params: ids.toString() });

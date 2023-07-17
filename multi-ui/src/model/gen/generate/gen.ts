@@ -1,8 +1,8 @@
-import { BaseEntity, SubBaseEntity, BasicFetchResult, BasicPageParams } from '/@/model/src';
+import { BaseEntity, BasicFetchResult, BasicPageParams, SubBaseEntity } from '/@/model/src';
 
 /** genTable item model */
 export interface GenTableIM extends SubBaseEntity<GenTableColumnIM> {
-  id: string | number;
+  id: string;
   name: string;
   comment: string;
   type: string;
@@ -27,7 +27,27 @@ export interface GenTableIM extends SubBaseEntity<GenTableColumnIM> {
 export type GenTableLM = GenTableIM[];
 
 /** genTable param model */
-export type GenTablePM = GenTableLM;
+export interface GenTablePM extends SubBaseEntity<GenTableColumnIM> {
+  id?: string;
+  name?: string;
+  comment?: string;
+  type?: string;
+  subTableName?: string;
+  subTableFkName?: string;
+  className?: string;
+  prefix?: string;
+  tplCategory?: string;
+  packageName?: string;
+  moduleName?: string;
+  authorityName?: string;
+  businessName?: string;
+  functionName?: string;
+  functionAuthor?: string;
+  genType?: string;
+  genPath?: string;
+  uiPath?: string;
+  options?: string;
+}
 
 /** genTable page param model */
 export type GenTablePPM = BasicPageParams & GenTablePM;
@@ -37,8 +57,8 @@ export type GenTableLRM = BasicFetchResult<GenTableIM>;
 
 /** genTableColumn item model */
 export interface GenTableColumnIM extends BaseEntity {
-  id: string | number;
-  tableId: string | number;
+  id: string;
+  tableId: string;
   name: string;
   comment: string;
   type: string;
@@ -89,17 +109,17 @@ export type GenCodeLM = GenCodeIM[];
 export interface OptionIM {
   isTenant: string;
   sourceMode: string;
-  parentModuleId: string | number;
-  parentMenuId: string | number;
-  id: string | number;
-  name: string | number;
-  status: string | number;
-  sort: string | number;
-  treeCode: string | number;
-  parentId: string | number;
-  treeName: string | number;
-  ancestors: string | number;
-  foreignId: string | number;
-  subTableId: string | number;
-  subForeignId: string | number;
+  parentModuleId: string;
+  parentMenuId: string;
+  id: string;
+  name: string;
+  status: string;
+  sort: string;
+  treeCode: string;
+  parentId: string;
+  treeName: string;
+  ancestors: string;
+  foreignId: string;
+  subTableId: string;
+  subForeignId: string;
 }

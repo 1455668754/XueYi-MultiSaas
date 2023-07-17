@@ -30,7 +30,7 @@
       });
 
       onMounted(async () => {
-        const id = route.params.id as string | number;
+        const id = route.params.id as string;
         const data = await getNoticeApi(id);
         setDescProps({ data: data });
         getTitle.value = '通知公告详情:' + data?.name;

@@ -134,7 +134,7 @@ export const formSchema: FormSchema[] = [
           key: 'id',
           value: 'id',
         },
-        onSelect: (value: string | number, node: any) => {
+        onSelect: (value: string, node: any) => {
           if (formModel !== undefined && isEqual(node?.type, OrganizeTypeEnum.DEPT)) {
             pull(formModel.postIds, value);
           }

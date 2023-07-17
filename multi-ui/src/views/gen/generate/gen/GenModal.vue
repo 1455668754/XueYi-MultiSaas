@@ -29,7 +29,7 @@
       const { createMessage } = useMessage();
 
       const state = reactive<{
-        dbNames: (string | number)[];
+        dbNames: string[];
       }>({
         dbNames: [],
       });

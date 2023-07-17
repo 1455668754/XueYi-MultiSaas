@@ -15,7 +15,7 @@ export const listDictDataApi = (params?: DictDataPPM) =>
   defHttp.get<DictDataLRM>({ url: Api.LIST_DICT_DATA, params });
 
 /** 查询字典数据详细 */
-export const getDictDataApi = (id: string | number) =>
+export const getDictDataApi = (id: string) =>
   defHttp.get<DictDataIM>({ url: Api.GET_DICT_DATA, params: id });
 
 /** 新增字典数据 */
@@ -27,14 +27,14 @@ export const editDictDataApi = (params: DictDataIM) =>
   defHttp.put({ url: Api.EDIT_DICT_DATA, params });
 
 /** 修改字典数据状态 */
-export const editStatusDictDataApi = (id: string | number, status: any) =>
+export const editStatusDictDataApi = (id: string, status: any) =>
   defHttp.put({
     url: Api.EDIT_STATUS_DICT_DATA,
     params: { id: id, status: status },
   });
 
 /** 删除字典数据 */
-export const delDictDataApi = (ids: (string | number)[]) =>
+export const delDictDataApi = (ids: string[]) =>
   defHttp.delete({
     url: Api.DEL_BATCH_DICT_DATA,
     params: ids.toString(),

@@ -25,12 +25,11 @@ export const listUserApi = (params?: UserPPM) =>
 export const optionUserApi = () => defHttp.get<UserLRM>({ url: Api.OPTION_USER });
 
 /** 查询用户详细 */
-export const getUserApi = (id: string | number) =>
-  defHttp.get<UserIM>({ url: Api.GET_USER, params: id });
+export const getUserApi = (id: string) => defHttp.get<UserIM>({ url: Api.GET_USER, params: id });
 
 /** 查询用户的角色权限节点集 */
-export const getAuthUserApi = (id: string | number) =>
-  defHttp.get<(string | number)[]>({
+export const getAuthUserApi = (id: string) =>
+  defHttp.get<string[]>({
     url: Api.GET_AUTH_USER,
     params: id,
   });
@@ -42,21 +41,21 @@ export const addUserApi = (params: UserIM) => defHttp.post({ url: Api.ADD_USER, 
 export const editUserApi = (params: UserIM) => defHttp.put({ url: Api.EDIT_USER, params });
 
 /** 修改用户的角色权限 */
-export const editAuthUserScopeApi = (id: string | number, roleIds: (string | number)[]) =>
+export const editAuthUserScopeApi = (id: string, roleIds: string[]) =>
   defHttp.put({
     url: Api.EDIT_AUTH_USER,
     params: { id: id, roleIds: roleIds },
   });
 
 /** 修改用户状态 */
-export const editStatusUserApi = (id: string | number, status: any) =>
+export const editStatusUserApi = (id: string, status: any) =>
   defHttp.put({
     url: Api.EDIT_STATUS_USER,
     params: { id: id, status: status },
   });
 
 /** 删除用户 */
-export const delUserApi = (ids: (string | number) | (string | number)[]) =>
+export const delUserApi = (ids: string | string[]) =>
   defHttp.delete({ url: Api.DEL_BATCH_USER, params: ids.toString() });
 
 /** 用户导出 */
@@ -67,7 +66,7 @@ export const exportUserApi = async (params: UserPM) =>
   );
 
 /** 用户密码重置 */
-export const resetUserPwdApi = (id: string | number, password: string) =>
+export const resetUserPwdApi = (id: string, password: string) =>
   defHttp.put({
     url: Api.RESET_USER_PWD,
     params: { id: id, password: password },

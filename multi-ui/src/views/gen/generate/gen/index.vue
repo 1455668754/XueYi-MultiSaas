@@ -70,10 +70,10 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import { GenAuth } from '/@/auth/gen';
   import {
-    listGenApi,
+    delForceGenApi,
     downloadGenApi,
     generateGenApi,
-    delForceGenApi,
+    listGenApi,
   } from '/@/api/gen/generate/gen';
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
   import { GenCodeDetailGo, GenGenerateDetailGo } from '/@/enums/gen';
@@ -85,7 +85,7 @@
     components: { BasicTable, GenModal, TableAction },
     setup() {
       const state = reactive<{
-        ids: (string | number)[];
+        ids: string[];
         idNames: string;
       }>({
         ids: [],

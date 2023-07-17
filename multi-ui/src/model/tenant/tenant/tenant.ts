@@ -1,9 +1,9 @@
-import { BasicFetchResult, BasicPageParams, BaseEntity } from '/@/model/src';
+import { BaseEntity, BasicFetchResult, BasicPageParams } from '/@/model/src';
 
 /** tenant info model */
 export interface TenantIM extends BaseEntity {
-  id: string | number;
-  strategyId: string | number;
+  id: string;
+  strategyId: string;
   name: string;
   systemName: string;
   nick: string;
@@ -14,14 +14,25 @@ export interface TenantIM extends BaseEntity {
   status: string;
   remark: string;
   isDefault: string;
-  authIds: (string | number)[];
+  authIds: string[];
 }
 
 /** tenant list model */
 export type TenantLM = TenantIM[];
 
 /** tenant param model */
-export type TenantPM = TenantIM;
+export interface TenantPM extends BaseEntity {
+  id?: string;
+  strategyId?: string;
+  name?: string;
+  systemName?: string;
+  nick?: string;
+  nameFrequency?: number;
+  isLessor?: string;
+  status?: string;
+  isDefault?: string;
+  authIds?: string[];
+}
 
 /** tenant page param model */
 export type TenantPPM = BasicPageParams & TenantPM;

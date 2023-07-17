@@ -30,7 +30,7 @@
       });
 
       onMounted(async () => {
-        const id = route.params.id as string | number;
+        const id = route.params.id as string;
         const data = await getSourceApi(id);
         setDescProps({ data: data });
         getTitle.value = '数据源详情:' + data?.name;

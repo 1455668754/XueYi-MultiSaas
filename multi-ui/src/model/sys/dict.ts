@@ -2,7 +2,7 @@ import { BaseEntity } from '/@/model/src';
 
 /** dict item model */
 export interface DictIM extends BaseEntity {
-  id: string | number;
+  id: string;
   code: string;
   status: string;
   sort: number;

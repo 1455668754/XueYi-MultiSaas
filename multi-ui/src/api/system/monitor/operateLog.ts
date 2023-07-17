@@ -13,11 +13,11 @@ export const listOperateLogApi = (params?: OperateLogPPM) =>
   defHttp.get<OperateLogLRM>({ url: Api.LIST_OPERATE_LOG, params });
 
 /** 查询操作日志详细 */
-export const getOperateLogApi = (id: string | number) =>
+export const getOperateLogApi = (id: string) =>
   defHttp.get<OperateLogIM>({ url: Api.GET_OPERATE_LOG, params: id });
 
 /** 删除操作日志 */
-export const delOperateLogApi = (ids: (string | number) | (string | number)[]) =>
+export const delOperateLogApi = (ids: string | string[]) =>
   defHttp.delete({
     url: Api.DEL_BATCH_OPERATE_LOG,
     params: ids.toString(),

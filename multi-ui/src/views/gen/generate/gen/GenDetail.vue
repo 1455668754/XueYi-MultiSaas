@@ -88,7 +88,7 @@
 
       /** 初始加载 */
       async function create() {
-        const id = route.params.id as string | number;
+        const id = route.params.id as string;
         genState.info = await getSubGenApi(id);
         getTitle.value = genState.info?.comment;
         setTitle('生成配置：' + getTitle.value);

@@ -31,7 +31,7 @@
 
 <script lang="ts">
   import { defineComponent, reactive } from 'vue';
-  import { listOnlineApi, delOnlineApi } from '/@/api/system/monitor/online';
+  import { delOnlineApi, listOnlineApi } from '/@/api/system/monitor/online';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { IconEnum } from '/@/enums/appEnum';
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
@@ -44,7 +44,7 @@
     setup() {
       const { createMessage, createConfirm } = useMessage();
       const state = reactive<{
-        ids: (string | number)[];
+        ids: string[];
         idNames: string;
       }>({
         ids: [],

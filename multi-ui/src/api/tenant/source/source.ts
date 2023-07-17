@@ -20,7 +20,7 @@ export const listSourceApi = (params?: SourcePPM) =>
 export const optionSourceApi = () => defHttp.get<SourceLRM>({ url: Api.OPTION_SOURCE });
 
 /** 查询数据源详细 */
-export const getSourceApi = (id: string | number) =>
+export const getSourceApi = (id: string) =>
   defHttp.get<SourceIM>({ url: Api.GET_SOURCE, params: id });
 
 /** 数据源连接测试 */
@@ -34,12 +34,12 @@ export const addSourceApi = (params: SourceIM) => defHttp.post({ url: Api.ADD_SO
 export const editSourceApi = (params: SourceIM) => defHttp.put({ url: Api.EDIT_SOURCE, params });
 
 /** 修改数据源状态 */
-export const editStatusSourceApi = (id: string | number, status: any) =>
+export const editStatusSourceApi = (id: string, status: any) =>
   defHttp.put({
     url: Api.EDIT_STATUS_SOURCE,
     params: { id: id, status: status },
   });
 
 /** 删除数据源 */
-export const delSourceApi = (ids: (string | number) | (string | number)[]) =>
+export const delSourceApi = (ids: string | string[]) =>
   defHttp.delete({ url: Api.DEL_BATCH_SOURCE, params: ids.toString() });
