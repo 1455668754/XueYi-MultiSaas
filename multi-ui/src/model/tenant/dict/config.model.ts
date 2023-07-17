@@ -1,4 +1,4 @@
-import { BaseEntity, BasicFetchResult, BasicPageParams } from '/@/model/basic';
+import { BaseEntity, BasicFetchResult, BasicPageParams } from '@/model/basic';
 
 /** config info model */
 export interface ConfigIM extends BaseEntity {

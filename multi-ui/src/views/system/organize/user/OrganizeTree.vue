@@ -17,8 +17,8 @@
 <script lang="ts">
   import { defineComponent, onMounted, ref } from 'vue';
   import { BasicTree, TreeItem } from '/@/components/Tree';
-  import { organizeOptionApi } from '/@/api/system/organize/organize';
-  import { OrganizeTypeEnum } from '/@/enums/system';
+  import { organizeOptionApi } from '@/api/system/organize/organize.api';
+  import { OrganizeTypeEnum } from '@/enums/system';
   import { ScrollContainer } from '/@/components/Container';
 
   export default defineComponent({

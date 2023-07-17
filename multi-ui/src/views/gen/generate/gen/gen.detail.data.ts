@@ -1,7 +1,7 @@
-import { dicDictList } from '/@/api/sys/dict';
-import { optionModuleApi } from '/@/api/system/authority/module';
-import { getMenuRouteListApi } from '/@/api/system/authority/menu';
-import { optionDictTypeApi } from '/@/api/tenant/dict/dictType';
+import { dicDictList } from '@/api/sys/dict.api';
+import { optionModuleApi } from '@/api/system/authority/module.api';
+import { getMenuRouteListApi } from '@/api/system/authority/menu.api';
+import { optionDictTypeApi } from '@/api/tenant/dict/dictType.api';
 import { FormSchema } from '/@/components/Form';
 import {
   GenerationModeEnum,
@@ -9,10 +9,10 @@ import {
   IsTickEnum,
   SourceModeEnum,
   TemplateTypeEnum,
-} from '/@/enums/gen';
-import { MenuTypeEnum } from '/@/enums/system';
+} from '@/enums/gen';
+import { MenuTypeEnum } from '@/enums/system';
 import { BasicColumn } from '/@/components/Table';
-import { GenTableColumnIM, GenTableColumnLM, GenTableLM } from '/@/model/gen';
+import { GenTableColumnIM, GenTableColumnLM, GenTableLM } from '@/model/gen';
 import { h } from 'vue';
 import { Input, Select, Switch } from 'ant-design-vue';
 

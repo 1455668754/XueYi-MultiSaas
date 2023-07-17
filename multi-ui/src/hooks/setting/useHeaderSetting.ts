@@ -7,7 +7,7 @@ import { useAppStore } from '/@/store/modules/app';
 import { useMenuSetting } from '/@/hooks/setting/useMenuSetting';
 import { useRootSetting } from '/@/hooks/setting/useRootSetting';
 import { useFullContent } from '/@/hooks/web/useFullContent';
-import { MenuModeEnum } from '/@/enums/menuEnum';
+import { MenuModeEnum } from '@/enums/menuEnum';
 
 export function useHeaderSetting() {
   const { getFullContent } = useFullContent();
@@ -86,6 +86,7 @@ export function useHeaderSetting() {
   function setHeaderSetting(headerSetting: Partial<HeaderSetting>) {
     appStore.setProjectConfig({ headerSetting });
   }
+
   return {
     setHeaderSetting,
 

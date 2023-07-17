@@ -14,7 +14,7 @@
   import { computed, defineComponent, ref, unref } from 'vue';
   import { formSchema } from './job.data';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { getJobApi, addJobApi, editJobApi } from '/@/api/system/system/job';
+  import { addJobApi, editJobApi, getJobApi } from '@/api/system/system/job.api';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
 

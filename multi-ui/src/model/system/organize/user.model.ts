@@ -1,4 +1,4 @@
-import { BaseEntity, BasicFetchResult, BasicPageParams } from '/@/model/basic';
+import { BaseEntity, BasicFetchResult, BasicPageParams } from '@/model/basic';
 import { RoleLM } from '../authority';
 import { PostIM } from './post.model';
 

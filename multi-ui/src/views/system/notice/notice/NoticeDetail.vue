@@ -6,15 +6,15 @@
 
 <script lang="ts">
   import { defineComponent, onMounted, ref } from 'vue';
-  import { getNoticeApi } from '/@/api/system/notice/notice';
+  import { getNoticeApi } from '@/api/system/notice/notice.api';
   import { Description, useDescription } from '/@/components/Description';
   import { detailSchema } from './notice.data';
   import { useRoute } from 'vue-router';
-  import { NoticeIndexGo } from '/@/enums/system';
+  import { NoticeIndexGo } from '@/enums/system';
   import { useTabs } from '/@/hooks/web/useTabs';
   import { PageWrapper } from '/@/components/Page';
   import { useUserStore } from '/@/store/modules/user';
-  import { DescItemSizeEnum } from '/@/enums/appEnum';
+  import { DescItemSizeEnum } from '@/enums';
 
   export default defineComponent({
     components: { Description, PageWrapper },

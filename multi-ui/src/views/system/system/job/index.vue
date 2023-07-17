@@ -59,14 +59,14 @@
 
 <script lang="ts">
   import { defineComponent, reactive } from 'vue';
-  import { delJobApi, listJobApi, runJobApi } from '/@/api/system/system/job';
+  import { delJobApi, listJobApi, runJobApi } from '@/api/system/system/job.api';
   import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { IconEnum } from '/@/enums/appEnum';
+  import { IconEnum } from '@/enums';
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
   import { JobAuth } from '/@/auth/system';
   import { columns, searchFormSchema } from './job.data';
-  import { JobDetailGo, JobLogIndexGo } from '/@/enums/system';
+  import { JobDetailGo, JobLogIndexGo } from '@/enums/system';
   import JobModal from './JobModal.vue';
   import { useUserStore } from '/@/store/modules/user';
 

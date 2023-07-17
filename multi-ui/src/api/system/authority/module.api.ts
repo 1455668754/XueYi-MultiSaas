@@ -1,4 +1,4 @@
-import { ModuleIM, ModuleLRM, ModulePPM } from '/@/model/system';
+import { ModuleIM, ModuleLRM, ModulePPM } from '@/model/system';
 import { defHttp } from '/@/utils/http/axios';
 
 enum Api {

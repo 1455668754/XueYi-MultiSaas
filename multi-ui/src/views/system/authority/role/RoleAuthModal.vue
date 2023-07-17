@@ -22,9 +22,9 @@
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicTree, TreeItem } from '/@/components/Tree';
   import { BasicForm, useForm } from '/@/components/Form';
-  import { editAuthScopeApi, getAuthRoleApi } from '/@/api/system/authority/role';
-  import { authScopeEnterpriseApi } from '/@/api/system/authority/auth';
-  import { RoleIM } from '/@/model/system';
+  import { editAuthScopeApi, getAuthRoleApi } from '@/api/system/authority/role.api';
+  import { authScopeEnterpriseApi } from '@/api/system/authority/auth.api';
+  import { RoleIM } from '@/model/system';
   import { authFormSchema } from './role.data';
 
   export default defineComponent({

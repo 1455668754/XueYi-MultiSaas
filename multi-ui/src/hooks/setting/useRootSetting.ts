@@ -3,7 +3,7 @@ import type { ProjectConfig } from '/#/config';
 import { computed } from 'vue';
 
 import { useAppStore } from '/@/store/modules/app';
-import { ContentEnum, ThemeEnum } from '/@/enums/appEnum';
+import { ContentEnum, ThemeEnum } from '@/enums';
 
 type RootSetting = Omit<
   ProjectConfig,

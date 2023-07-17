@@ -10,7 +10,7 @@ import { VAxios } from './Axios';
 import { checkStatus } from './checkStatus';
 import { useGlobSetting } from '/@/hooks/setting';
 import { useMessage } from '/@/hooks/web/useMessage';
-import { ContentTypeEnum, RequestEnum, ResultEnum } from '/@/enums/httpEnum';
+import { ContentTypeEnum, RequestEnum, ResultEnum } from '@/enums/httpEnum';
 import { isEmpty, isNull, isString, isUnDef } from '/@/utils/is';
 import { getToken } from '/@/utils/auth';
 import { deepMerge, setObjToUrlParams } from '/@/utils';

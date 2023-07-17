@@ -1,4 +1,4 @@
-import { BaseEntity, BasicFetchResult, BasicPageParams } from '/@/model/basic';
+import { BaseEntity, BasicFetchResult, BasicPageParams } from '@/model/basic';
 
 /** enterprise item model */
 export interface EnterpriseIM extends BaseEntity {

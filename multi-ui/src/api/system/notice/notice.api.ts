@@ -1,4 +1,4 @@
-import { NoticeIM, NoticeLRM, NoticePPM } from '/@/model/system';
+import { NoticeIM, NoticeLRM, NoticePPM } from '@/model/system';
 import { defHttp } from '/@/utils/http/axios';
 
 enum Api {

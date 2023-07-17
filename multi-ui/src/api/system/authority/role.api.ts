@@ -1,4 +1,4 @@
-import { RoleIM, RoleLRM, RolePPM } from '/@/model/system';
+import { RoleIM, RoleLRM, RolePPM } from '@/model/system';
 import { defHttp } from '/@/utils/http/axios';
 
 enum Api {

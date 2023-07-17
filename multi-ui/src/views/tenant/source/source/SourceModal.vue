@@ -12,11 +12,11 @@
   import { formSchema } from './source.data';
   import { useMessage } from '/@/hooks/web/useMessage';
   import {
-    getSourceApi,
     addSourceApi,
-    editSourceApi,
     connectionSourceApi,
-  } from '/@/api/tenant/source/source';
+    editSourceApi,
+    getSourceApi,
+  } from '@/api/tenant/source/source.api';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
 

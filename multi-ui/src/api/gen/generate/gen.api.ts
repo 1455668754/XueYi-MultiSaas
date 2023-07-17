@@ -1,4 +1,4 @@
-import { GenCodeLM, GenTableColumnLRM, GenTableIM, GenTableLRM, GenTablePPM } from '/@/model/gen';
+import { GenCodeLM, GenTableColumnLRM, GenTableIM, GenTableLRM, GenTablePPM } from '@/model/gen';
 import { defHttp } from '/@/utils/http/axios';
 
 enum Api {

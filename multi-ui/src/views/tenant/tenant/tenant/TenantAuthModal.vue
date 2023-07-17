@@ -24,11 +24,11 @@
     authScopeTenantApi,
     editAuthTenantApi,
     getAuthTenantApi,
-  } from '/@/api/tenant/tenant/tenant';
+  } from '@/api/tenant/tenant/tenant.api';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicTree, TreeItem } from '/@/components/Tree';
   import { BasicForm, useForm } from '/@/components/Form';
-  import { TenantIM } from '/@/model/tenant';
+  import { TenantIM } from '@/model/tenant';
 
   export default defineComponent({
     name: 'TenantAuthModal',

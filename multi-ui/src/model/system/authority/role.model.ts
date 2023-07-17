@@ -1,4 +1,4 @@
-import { BaseEntity, BasicFetchResult, BasicPageParams } from '/@/model/basic';
+import { BaseEntity, BasicFetchResult, BasicPageParams } from '@/model/basic';
 
 /** role info model */
 export interface RoleIM extends BaseEntity {

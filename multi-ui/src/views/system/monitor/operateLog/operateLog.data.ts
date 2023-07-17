@@ -1,8 +1,8 @@
 import { FormSchema } from '/@/components/Form';
 import { BasicColumn } from '/@/components/Table';
 import { DescItem } from '/@/components/Description';
-import { dicDictList } from '/@/api/sys/dict';
-import { OperateLogIM } from '/@/model/system';
+import { dicDictList } from '@/api/sys/dict.api';
+import { OperateLogIM } from '@/model/system';
 import { dictConversion } from '/@/utils/xueyi';
 
 /** 字典查询 */

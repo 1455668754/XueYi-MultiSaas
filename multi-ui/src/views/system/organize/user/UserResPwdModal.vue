@@ -8,7 +8,7 @@
   import { defineComponent } from 'vue';
   import { resPwdFormSchema } from './user.data';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { resetUserPwdApi } from '/@/api/system/organize/user';
+  import { resetUserPwdApi } from '@/api/system/organize/user.api';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
 

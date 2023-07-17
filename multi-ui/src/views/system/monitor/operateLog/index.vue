@@ -49,7 +49,7 @@
   import { defineComponent, reactive } from 'vue';
   import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { IconEnum } from '/@/enums/appEnum';
+  import { IconEnum } from '@/enums';
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
   import { OperateLogAuth } from '/@/auth/system';
   import { columns, searchFormSchema } from './operateLog.data';
@@ -58,7 +58,7 @@
     cleanOperateLogApi,
     delOperateLogApi,
     listOperateLogApi,
-  } from '/@/api/system/monitor/operateLog';
+  } from '@/api/system/monitor/operateLog.api';
 
   export default defineComponent({
     name: 'OperateLogManagement',

@@ -1,10 +1,10 @@
 import { FormSchema } from '/@/components/Form';
 import { BasicColumn } from '/@/components/Table';
 import { DescItem } from '/@/components/Description';
-import { dicDictList } from '/@/api/sys/dict';
+import { dicDictList } from '@/api/sys/dict.api';
 import { dictConversion } from '/@/utils/xueyi';
-import { JobIM } from '/@/model/system';
-import { JobConcurrentEnum, JobMisfireEnum, JobStatusEnum } from '/@/enums/system';
+import { JobIM } from '@/model/system';
+import { JobConcurrentEnum, JobMisfireEnum, JobStatusEnum } from '@/enums/system';
 
 /** 字典查询 */
 export const dictMap = await dicDictList([

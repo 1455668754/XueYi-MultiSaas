@@ -14,10 +14,10 @@
     getMenuApi,
     getMenuRouteListApi,
     getMenuRouteListExNodesApi,
-  } from '/@/api/system/authority/menu';
+  } from '@/api/system/authority/menu.api';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
-  import { COMMON_MODULE, MenuTypeEnum } from '/@/enums/system';
+  import { COMMON_MODULE, MenuTypeEnum } from '@/enums/system';
 
   export default defineComponent({
     name: 'MenuModal',

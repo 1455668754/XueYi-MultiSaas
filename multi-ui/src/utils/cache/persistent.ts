@@ -5,18 +5,18 @@ import type { RouteLocationNormalized } from 'vue-router';
 import { createLocalStorage, createSessionStorage } from '/@/utils/cache';
 import { Memory } from './memory';
 import {
-  TOKEN_KEY,
-  USER_INFO_KEY,
-  ROLES_KEY,
-  LOCK_INFO_KEY,
-  PROJ_CFG_KEY,
   APP_LOCAL_CACHE_KEY,
   APP_SESSION_CACHE_KEY,
+  LOCK_INFO_KEY,
   MULTIPLE_TABS_KEY,
-} from '/@/enums/cacheEnum';
+  PROJ_CFG_KEY,
+  ROLES_KEY,
+  TOKEN_KEY,
+  USER_INFO_KEY,
+} from '@/enums/cacheEnum';
 import { DEFAULT_CACHE_TIME } from '/@/settings/encryptionSetting';
 import { toRaw } from 'vue';
-import { pick, omit } from 'lodash-es';
+import { omit, pick } from 'lodash-es';
 
 interface BasicStore {
   [TOKEN_KEY]: string | number | null | undefined;
@@ -81,6 +81,7 @@ export class Persistent {
     sessionMemory.remove(key);
     immediate && ss.set(APP_SESSION_CACHE_KEY, sessionMemory.getCache);
   }
+
   static clearSession(immediate = false): void {
     sessionMemory.clear();
     immediate && ss.clear();

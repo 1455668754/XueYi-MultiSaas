@@ -52,7 +52,7 @@
   import { omit } from 'lodash-es';
   import { PageHeader } from 'ant-design-vue';
   import { useContentHeight } from '/@/hooks/web/useContentHeight';
-  import { PageWrapperFixedHeightKey } from '/@/enums/pageEnum';
+  import { PageWrapperFixedHeightKey } from '@/enums/pageEnum';
 
   defineOptions({
     name: 'PageWrapper',

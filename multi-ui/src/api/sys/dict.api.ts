@@ -1,5 +1,5 @@
 import { defHttp } from '/@/utils/http/axios';
-import { DictLM } from '/@/model/sys';
+import { DictLM } from '@/model/sys';
 
 enum Api {
   DIC_CONFIG = '/system/admin/config/code/',

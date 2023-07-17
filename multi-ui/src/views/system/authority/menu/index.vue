@@ -57,16 +57,16 @@
 
 <script lang="ts">
   import { defineComponent, reactive } from 'vue';
-  import { delMenuApi, listMenuApi } from '/@/api/system/authority/menu';
+  import { delMenuApi, listMenuApi } from '@/api/system/authority/menu.api';
   import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
   import { MenuAuth } from '/@/auth/system';
   import { columns, searchFormSchema } from './menu.data';
-  import { COMMON_MENU, MenuDetailGo } from '/@/enums/system';
+  import { COMMON_MENU, MenuDetailGo } from '@/enums/system';
   import MenuModal from './MenuModal.vue';
   import { useUserStore } from '/@/store/modules/user';
-  import { IconEnum } from '/@/enums/appEnum';
+  import { IconEnum } from '@/enums';
 
   export default defineComponent({
     name: 'MenuManagement',

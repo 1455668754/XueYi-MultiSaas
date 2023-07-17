@@ -1,4 +1,4 @@
-import { BasicFetchResult, BasicPageParams, SubBaseEntity } from '/@/model/basic';
+import { BasicFetchResult, BasicPageParams, SubBaseEntity } from '@/model/basic';
 import { DictDataIM } from './dictData.model';
 
 /** dictType info model */

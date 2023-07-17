@@ -1,4 +1,4 @@
-import { AuthLM } from '/@/model/system';
+import { AuthLM } from '@/model/system';
 import { defHttp } from '/@/utils/http/axios';
 
 enum Api {

@@ -3,7 +3,7 @@
  */
 import type { ProjectConfig } from '/#/config';
 
-import { PROJ_CFG_KEY } from '/@/enums/cacheEnum';
+import { PROJ_CFG_KEY } from '@/enums/cacheEnum';
 import projectSetting from '/@/settings/projectSetting';
 
 import { updateHeaderBgColor, updateSidebarBgColor } from '/@/logics/theme/updateBackground';
@@ -18,7 +18,7 @@ import { getCommonStoragePrefix, getStorageShortName } from '/@/utils/env';
 
 import { Persistent } from '/@/utils/cache/persistent';
 import { deepMerge } from '/@/utils';
-import { ThemeEnum } from '/@/enums/appEnum';
+import { ThemeEnum } from '@/enums';
 
 // Initial project configuration
 export function initAppConfigStore() {

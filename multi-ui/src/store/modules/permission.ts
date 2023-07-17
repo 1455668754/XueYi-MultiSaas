@@ -4,15 +4,15 @@ import { store } from '/@/store';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { useUserStore } from './user';
 import { toRaw } from 'vue';
-import { transformObjToRoute, flatMultiLevelRoutes } from '/@/router/helper/routeHelper';
+import { flatMultiLevelRoutes, transformObjToRoute } from '/@/router/helper/routeHelper';
 import { transformRouteToMenu } from '/@/router/helper/menuHelper';
-import { PermEnum } from '/@/enums/appEnum';
+import { PermEnum } from '@/enums';
 import { asyncRoutes } from '/@/router/routes';
 import { filter } from '/@/utils/helper/treeHelper';
 import { useMessage } from '/@/hooks/web/useMessage';
-import { PageEnum } from '/@/enums/pageEnum';
-import { COMMON_MODULE, MODULE_CACHE } from '/@/enums/system';
-import { getMenuList } from '/@/api/sys/menu';
+import { PageEnum } from '@/enums/pageEnum';
+import { COMMON_MODULE, MODULE_CACHE } from '@/enums/system';
+import { getMenuList } from '@/api/sys/menu.api';
 
 interface PermissionState {
   // Permission code list

@@ -61,14 +61,14 @@
 
 <script lang="ts">
   import { defineComponent, reactive } from 'vue';
-  import { delDeptApi, listDeptApi } from '/@/api/system/organize/dept';
+  import { delDeptApi, listDeptApi } from '@/api/system/organize/dept.api';
   import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { IconEnum } from '/@/enums/appEnum';
+  import { IconEnum } from '@/enums';
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
   import { DeptAuth } from '/@/auth/system';
   import { columns, searchFormSchema } from './dept.data';
-  import { DeptDetailGo } from '/@/enums/system';
+  import { DeptDetailGo } from '@/enums/system';
   import DeptModal from './DeptModal.vue';
   import DeptRoleModal from './DeptRoleModal.vue';
   import { useUserStore } from '/@/store/modules/user';

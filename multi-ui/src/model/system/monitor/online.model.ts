@@ -1,4 +1,4 @@
-import { BaseEntity, BasicFetchResult, BasicPageParams } from '/@/model/basic';
+import { BaseEntity, BasicFetchResult, BasicPageParams } from '@/model/basic';
 
 /** online info model */
 export interface OnlineIM extends BaseEntity {

@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts">
-  import { Button, Row, Col } from 'ant-design-vue';
+  import { Button, Col, Row } from 'ant-design-vue';
   import { computed, defineComponent, onMounted } from 'vue';
   import { BasicForm, useForm } from '/@/components/Form';
   import { CollapseContainer } from '/@/components/Container';
@@ -32,7 +32,7 @@
   import headerImg from '/@/assets/images/header.jpg';
   import { baseSettingSchemas } from './data';
   import { useUserStore } from '/@/store/modules/user';
-  import { getUserProfileApi, editUserProfileApi, editAvatarApi } from '/@/api/sys/user';
+  import { editAvatarApi, editUserProfileApi, getUserProfileApi } from '@/api/sys/user.api';
 
   export default defineComponent({
     components: {

@@ -8,7 +8,7 @@
   import { computed, defineComponent } from 'vue';
   import { formSchema } from './tenant.data';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { getTenantApi, editTenantApi } from '/@/api/tenant/tenant/tenant';
+  import { editTenantApi, getTenantApi } from '@/api/tenant/tenant/tenant.api';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
 

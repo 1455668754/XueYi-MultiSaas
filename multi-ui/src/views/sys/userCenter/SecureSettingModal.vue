@@ -18,7 +18,7 @@
     resetUserNameApi,
     resetUserPhoneApi,
     resetUserPwdApi,
-  } from '/@/api/sys/user';
+  } from '@/api/sys/user.api';
 
   export default defineComponent({
     name: 'SetSecureModal',

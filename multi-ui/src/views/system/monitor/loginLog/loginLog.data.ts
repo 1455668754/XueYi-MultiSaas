@@ -1,7 +1,7 @@
 import { FormSchema } from '/@/components/Form';
 import { BasicColumn } from '/@/components/Table';
-import { dicDictList } from '/@/api/sys/dict';
-import { LoginLogIM } from '/@/model/system';
+import { dicDictList } from '@/api/sys/dict.api';
+import { LoginLogIM } from '@/model/system';
 import { dictConversion } from '/@/utils/xueyi';
 
 /** 字典查询 */

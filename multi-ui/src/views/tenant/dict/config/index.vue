@@ -61,14 +61,14 @@
 
 <script lang="ts">
   import { defineComponent, reactive } from 'vue';
-  import { delConfigApi, listConfigApi, refreshConfigApi } from '/@/api/tenant/dict/config';
+  import { delConfigApi, listConfigApi, refreshConfigApi } from '@/api/tenant/dict/config.api';
   import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { IconEnum } from '/@/enums/appEnum';
+  import { IconEnum } from '@/enums';
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
   import { ConfigAuth } from '/@/auth/tenant';
   import { columns, searchFormSchema } from './config.data';
-  import { ConfigDetailGo } from '/@/enums/tenant';
+  import { ConfigDetailGo } from '@/enums/tenant';
   import ConfigModal from './ConfigModal.vue';
   import { useUserStore } from '/@/store/modules/user';
 

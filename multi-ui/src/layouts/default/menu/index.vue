@@ -1,12 +1,11 @@
 <script lang="tsx">
-  import type { PropType, CSSProperties } from 'vue';
-
-  import { computed, defineComponent, unref, toRef } from 'vue';
+  import type { CSSProperties, PropType } from 'vue';
+  import { computed, defineComponent, toRef, unref } from 'vue';
   import { BasicMenu } from '/@/components/Menu';
   import { SimpleMenu } from '/@/components/SimpleMenu';
   import { AppLogo } from '/@/components/Application';
 
-  import { MenuModeEnum, MenuSplitTyeEnum } from '/@/enums/menuEnum';
+  import { MenuModeEnum, MenuSplitTyeEnum } from '@/enums/menuEnum';
 
   import { useMenuSetting } from '/@/hooks/setting/useMenuSetting';
   import { ScrollContainer } from '/@/components/Container';
@@ -105,6 +104,7 @@
           onMenuClick: handleMenuClick,
         };
       });
+
       /**
        * click menu
        * @param menu

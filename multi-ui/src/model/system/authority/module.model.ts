@@ -1,4 +1,4 @@
-import { BasicFetchResult, BasicPageParams, SubBaseEntity } from '/@/model/basic';
+import { BasicFetchResult, BasicPageParams, SubBaseEntity } from '@/model/basic';
 import { MenuIM } from './menu.model';
 
 /** module info model */

@@ -60,14 +60,14 @@
 
 <script lang="ts">
   import { defineComponent, reactive } from 'vue';
-  import { delPostApi, listPostApi } from '/@/api/system/organize/post';
+  import { delPostApi, listPostApi } from '@/api/system/organize/post.api';
   import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { IconEnum } from '/@/enums/appEnum';
+  import { IconEnum } from '@/enums';
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
   import { PostAuth } from '/@/auth/system';
   import { columns, searchFormSchema } from './post.data';
-  import { PostDetailGo } from '/@/enums/system';
+  import { PostDetailGo } from '@/enums/system';
   import PostModal from './PostModal.vue';
   import PostRoleModal from './PostRoleModal.vue';
   import { useUserStore } from '/@/store/modules/user';

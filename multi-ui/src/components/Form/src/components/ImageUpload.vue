@@ -32,7 +32,7 @@
   import { useRuleFormItem } from '/@/hooks/component/useFormItem';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { buildShortUUID } from '/@/utils/uuid';
-  import { fileUploadApi } from '/@/api/sys/upload';
+  import { fileUploadApi } from '@/api/sys/upload.api';
   import { isEmpty } from 'lodash-es';
 
   export type ImageUploadType = 'text' | 'picture' | 'picture-card';

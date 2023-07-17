@@ -22,10 +22,10 @@
   import { BasicTree, TreeItem } from '/@/components/Tree';
   import { BasicForm, useForm } from '/@/components/Form';
   import { organizeFormSchema } from './role.data';
-  import { editDataScopeApi, getOrganizeRoleApi } from '/@/api/system/authority/role';
-  import { RoleIM } from '/@/model/system';
-  import { DataScopeEnum } from '/@/enums/system';
-  import { organizeScopeApi } from '/@/api/system/organize/organize';
+  import { editDataScopeApi, getOrganizeRoleApi } from '@/api/system/authority/role.api';
+  import { RoleIM } from '@/model/system';
+  import { DataScopeEnum } from '@/enums/system';
+  import { organizeScopeApi } from '@/api/system/organize/organize.api';
   import { isEqual } from 'lodash-es';
 
   export default defineComponent({

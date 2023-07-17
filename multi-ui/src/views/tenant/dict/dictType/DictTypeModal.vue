@@ -8,7 +8,7 @@
   import { computed, defineComponent, ref, unref } from 'vue';
   import { formSchema } from './dictType.data';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { getDictTypeApi, addDictTypeApi, editDictTypeApi } from '/@/api/tenant/dict/dictType';
+  import { addDictTypeApi, editDictTypeApi, getDictTypeApi } from '@/api/tenant/dict/dictType.api';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
 

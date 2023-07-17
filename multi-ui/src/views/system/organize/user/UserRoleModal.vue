@@ -22,10 +22,10 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
-  import { optionRoleApi } from '/@/api/system/authority/role';
-  import { UserIM, RoleIM, RoleLM } from '/@/model/system';
+  import { optionRoleApi } from '@/api/system/authority/role.api';
+  import { RoleIM, RoleLM, UserIM } from '@/model/system';
   import { roleFormSchema } from './user.data';
-  import { editAuthUserScopeApi, getAuthUserApi } from '/@/api/system/organize/user';
+  import { editAuthUserScopeApi, getAuthUserApi } from '@/api/system/organize/user.api';
 
   export default defineComponent({
     name: 'UserRoleModal',

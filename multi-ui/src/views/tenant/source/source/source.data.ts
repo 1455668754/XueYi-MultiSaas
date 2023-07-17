@@ -1,15 +1,15 @@
 import { FormSchema } from '/@/components/Form';
 import { BasicColumn } from '/@/components/Table';
 import { DescItem } from '/@/components/Description';
-import { dicDictList } from '/@/api/sys/dict';
+import { dicDictList } from '@/api/sys/dict.api';
 import { dictConversion } from '/@/utils/xueyi';
 import { isEmpty, isNil } from 'lodash-es';
-import { DicSortEnum, DicStatusEnum } from '/@/enums/basic';
-import { SourceIM } from '/@/model/tenant';
-import { DRIVER_CLASSNAME, URL_APPEND, URL_PREPEND } from '/@/enums/tenant';
+import { DicSortEnum, DicStatusEnum } from '@/enums/basic';
+import { SourceIM } from '@/model/tenant';
+import { DRIVER_CLASSNAME, URL_APPEND, URL_PREPEND } from '@/enums/tenant';
 import { h } from 'vue';
 import { Tag } from 'ant-design-vue';
-import { ColorEnum } from '/@/enums/appEnum';
+import { ColorEnum } from '@/enums';
 
 /** 字典查询 */
 export const dictMap = await dicDictList(['sys_yes_no', 'sys_normal_disable']);

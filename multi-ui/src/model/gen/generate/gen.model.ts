@@ -1,4 +1,4 @@
-import { BaseEntity, BasicFetchResult, BasicPageParams, SubBaseEntity } from '/@/model/basic';
+import { BaseEntity, BasicFetchResult, BasicPageParams, SubBaseEntity } from '@/model/basic';
 
 /** genTable item model */
 export interface GenTableIM extends SubBaseEntity<GenTableColumnIM> {

@@ -17,13 +17,13 @@
 <script lang="ts">
   import { defineComponent, h, ref, unref } from 'vue';
   import { Modal, Space, Tabs } from 'ant-design-vue';
-  import { GenCodeLM } from '/@/model/gen';
+  import { GenCodeLM } from '@/model/gen';
   import { useRoute } from 'vue-router';
   import { CodeEditor, JsonPreview, MODE } from '/@/components/CodeEditor';
   import { useTabs } from '/@/hooks/web/useTabs';
-  import { getGenApi, previewGenApi } from '/@/api/gen/generate/gen';
+  import { getGenApi, previewGenApi } from '@/api/gen/generate/gen.api';
   import { PageWrapper } from '/@/components/Page';
-  import { GenIndexGo } from '/@/enums/gen';
+  import { GenIndexGo } from '@/enums/gen';
   import { useUserStore } from '/@/store/modules/user';
 
   export default defineComponent({

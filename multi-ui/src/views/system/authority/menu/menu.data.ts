@@ -1,25 +1,25 @@
-import {FormSchema} from '/@/components/Form';
-import {BasicColumn} from '/@/components/Table';
-import {DescItem} from '/@/components/Description';
-import {dicDictList} from '/@/api/sys/dict';
+import { FormSchema } from '/@/components/Form';
+import { BasicColumn } from '/@/components/Table';
+import { DescItem } from '/@/components/Description';
+import { dicDictList } from '@/api/sys/dict.api';
 import {
+  DicCommonPrivateEnum,
+  DicShowHideEnum,
   DicSortEnum,
   DicStatusEnum,
   DicYesNoEnum,
-  DicShowHideEnum,
-  DicCommonPrivateEnum,
-} from '/@/enums/basic';
-import {MenuIM} from '/@/model/system';
-import {optionModuleApi} from '/@/api/system/authority/module';
-import {getMenuRouteListApi, getMenuRouteListExNodesApi} from '/@/api/system/authority/menu';
-import {COMMON_MENU, COMMON_MODULE, FrameTypeEnum, MenuTypeEnum} from '/@/enums/system';
-import {h} from 'vue';
+} from '@/enums/basic';
+import { MenuIM } from '@/model/system';
+import { optionModuleApi } from '@/api/system/authority/module.api';
+import { getMenuRouteListApi, getMenuRouteListExNodesApi } from '@/api/system/authority/menu.api';
+import { COMMON_MENU, COMMON_MODULE, FrameTypeEnum, MenuTypeEnum } from '@/enums/system';
+import { h } from 'vue';
 import Icon from '@/components/Icon/Icon.vue';
-import {Tag} from 'ant-design-vue';
-import {useUserStore} from '/@/store/modules/user';
-import {ColorEnum} from '/@/enums/appEnum';
-import {dictConversion} from '/@/utils/xueyi';
-import {isEmpty, isNil} from 'lodash-es';
+import { Tag } from 'ant-design-vue';
+import { useUserStore } from '/@/store/modules/user';
+import { ColorEnum } from '@/enums';
+import { dictConversion } from '/@/utils/xueyi';
+import { isEmpty, isNil } from 'lodash-es';
 
 /** 字典查询 */
 export const dictMap = await dicDictList([
@@ -121,9 +121,9 @@ export const columns: BasicColumn[] = [
     title: '菜单图标',
     dataIndex: 'icon',
     width: 220,
-    customRender: ({record}) => {
+    customRender: ({ record }) => {
       const data = record as MenuIM;
-      return h(Icon, {icon: data.icon});
+      return h(Icon, { icon: data.icon });
     },
   },
   {
@@ -135,7 +135,7 @@ export const columns: BasicColumn[] = [
     title: '菜单类型',
     dataIndex: 'menuType',
     width: 220,
-    customRender: ({record}) => {
+    customRender: ({ record }) => {
       const data = record as MenuIM;
       return dictConversion(dict.DicAuthMenuTypeOptions, data.menuType);
     },
@@ -144,16 +144,16 @@ export const columns: BasicColumn[] = [
     title: '权限标识',
     dataIndex: 'perms',
     width: 220,
-    customRender: ({record}) => {
+    customRender: ({ record }) => {
       const data = record as MenuIM;
-      return !data.perms ? data.perms : h(Tag, {color: ColorEnum.ORANGE}, () => data.perms);
+      return !data.perms ? data.perms : h(Tag, { color: ColorEnum.ORANGE }, () => data.perms);
     },
   },
   {
     title: '状态',
     dataIndex: 'status',
     width: 220,
-    customRender: ({record}) => {
+    customRender: ({ record }) => {
       const data = record as MenuIM;
       return dictConversion(dict.DicNormalDisableOptions, data.status);
     },
@@ -162,7 +162,7 @@ export const columns: BasicColumn[] = [
     title: '公共菜单',
     dataIndex: 'isCommon',
     width: 220,
-    customRender: ({record}) => {
+    customRender: ({ record }) => {
       const data = record as MenuIM;
       return dictConversion(dict.DicCommonPrivateOptions, data.isCommon);
     },
@@ -183,13 +183,13 @@ export const searchFormSchema: FormSchema[] = [
       labelField: 'name',
       valueField: 'id',
     },
-    colProps: {span: 6},
+    colProps: { span: 6 },
   },
   {
     label: '菜单标题',
     field: 'title',
     component: 'Input',
-    colProps: {span: 6},
+    colProps: { span: 6 },
   },
   {
     label: '菜单类型',
@@ -200,7 +200,7 @@ export const searchFormSchema: FormSchema[] = [
       showSearch: true,
       optionFilterProp: 'label',
     },
-    colProps: {span: 6},
+    colProps: { span: 6 },
   },
   {
     label: '状态',
@@ -211,7 +211,7 @@ export const searchFormSchema: FormSchema[] = [
       showSearch: true,
       optionFilterProp: 'label',
     },
-    colProps: {span: 6},
+    colProps: { span: 6 },
   },
   {
     label: '公共菜单',
@@ -222,7 +222,7 @@ export const searchFormSchema: FormSchema[] = [
       showSearch: true,
       optionFilterProp: 'label',
     },
-    colProps: {span: 6},
+    colProps: { span: 6 },
   },
 ];
 
@@ -233,14 +233,14 @@ export const formSchema: FormSchema[] = [
     field: 'id',
     component: 'Input',
     show: false,
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '模块',
     field: 'moduleId',
     component: 'ApiSelect',
     defaultValue: COMMON_MODULE,
-    componentProps: ({formModel, formActionType}) => {
+    componentProps: ({ formModel, formActionType }) => {
       return {
         api: optionModuleApi,
         showSearch: true,
@@ -254,13 +254,13 @@ export const formSchema: FormSchema[] = [
               e === undefined
                 ? []
                 : formModel.id === undefined
-                  ? await getMenuRouteListApi(e, MenuTypeEnum.DETAILS)
-                  : await getMenuRouteListExNodesApi(formModel.id, e, MenuTypeEnum.DETAILS);
+                ? await getMenuRouteListApi(e, MenuTypeEnum.DETAILS)
+                : await getMenuRouteListExNodesApi(formModel.id, e, MenuTypeEnum.DETAILS);
             formModel.parentId = searchTree(treeData, formModel.parentId);
-            const {updateSchema} = formActionType;
+            const { updateSchema } = formActionType;
             updateSchema({
               field: 'parentId',
-              componentProps: {treeData},
+              componentProps: { treeData },
             });
           }
 
@@ -283,7 +283,7 @@ export const formSchema: FormSchema[] = [
       };
     },
     required: true,
-    colProps: {span: 24},
+    colProps: { span: 24 },
   },
   {
     label: '父级菜单',
@@ -301,7 +301,7 @@ export const formSchema: FormSchema[] = [
       getPopupContainer: () => document.body,
     },
     required: true,
-    colProps: {span: 24},
+    colProps: { span: 24 },
   },
   {
     label: '菜单名称',
@@ -309,7 +309,7 @@ export const formSchema: FormSchema[] = [
     component: 'Input',
     helpMessage: ['显示的菜单名称，如：`用户管理`'],
     required: true,
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '显示顺序',
@@ -317,7 +317,7 @@ export const formSchema: FormSchema[] = [
     component: 'InputNumber',
     defaultValue: DicSortEnum.ZERO,
     required: true,
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '公共菜单',
@@ -328,10 +328,10 @@ export const formSchema: FormSchema[] = [
       options: dict.DicCommonPrivateOptions,
     },
     helpMessage: ['是否可以被其他租户使用'],
-    dynamicDisabled: ({values}) => !isNil(values.id) && !isEmpty(values.id),
+    dynamicDisabled: ({ values }) => !isNil(values.id) && !isEmpty(values.id),
     required: () => useUserStore().isLessor,
     ifShow: () => useUserStore().isLessor,
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '状态',
@@ -342,7 +342,7 @@ export const formSchema: FormSchema[] = [
       options: dict.DicNormalDisableOptions,
     },
     required: true,
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '菜单类型',
@@ -353,7 +353,7 @@ export const formSchema: FormSchema[] = [
       options: dict.DicAuthMenuTypeOptions,
     },
     required: true,
-    colProps: {span: 24},
+    colProps: { span: 24 },
   },
   {
     label: '页面类型',
@@ -363,82 +363,82 @@ export const formSchema: FormSchema[] = [
     componentProps: {
       options: dict.DicAuthFrameTypeOptions,
     },
-    required: ({values}) => isMenu(values.menuType),
-    ifShow: ({values}) => isMenu(values.menuType),
-    colProps: {span: 24},
+    required: ({ values }) => isMenu(values.menuType),
+    ifShow: ({ values }) => isMenu(values.menuType),
+    colProps: { span: 24 },
   },
   {
     label: '路由名称',
     field: 'path',
     component: 'Input',
     helpMessage: ['访问的路由，如：`user`'],
-    required: ({values}) =>
+    required: ({ values }) =>
       !(isExternalLinksMenu(values.menuType, values.frameType) || isButton(values.menuType)),
-    ifShow: ({values}) =>
+    ifShow: ({ values }) =>
       !(isExternalLinksMenu(values.menuType, values.frameType) || isButton(values.menuType)),
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '菜单图标',
     field: 'icon',
     component: 'IconPicker',
-    ifShow: ({values}) => isDir(values.menuType) || isMenu(values.menuType),
-    colProps: {span: 12},
+    ifShow: ({ values }) => isDir(values.menuType) || isMenu(values.menuType),
+    colProps: { span: 12 },
   },
   {
     label: '外链路径',
     field: 'frameSrc',
     component: 'Input',
     helpMessage: ['访问的外网地址，以`http(s)://`开头'],
-    ifShow: ({values}) =>
+    ifShow: ({ values }) =>
       isEmbeddedMenu(values.menuType, values.frameType) ||
       isExternalLinksMenu(values.menuType, values.frameType),
-    dynamicRules: ({values}) =>
+    dynamicRules: ({ values }) =>
       isEmbeddedMenu(values.menuType, values.frameType) ||
       isExternalLinksMenu(values.menuType, values.frameType)
         ? [
-          {
-            required: true,
-            message: '请输入外链路径',
-          },
-          {
-            type: 'url',
-            message: '请输入正确的外链路径',
-            trigger: ['change', 'blur'],
-          },
-        ]
+            {
+              required: true,
+              message: '请输入外链路径',
+            },
+            {
+              type: 'url',
+              message: '请输入正确的外链路径',
+              trigger: ['change', 'blur'],
+            },
+          ]
         : [],
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '组件路径',
     field: 'component',
     component: 'Input',
     helpMessage: ['访问的组件路径，如：`system/user/index`，默认在`views`目录下'],
-    required: ({values}) =>
+    required: ({ values }) =>
       isDetails(values.menuType) || isNormalMenu(values.menuType, values.frameType),
-    ifShow: ({values}) =>
+    ifShow: ({ values }) =>
       isDetails(values.menuType) || isNormalMenu(values.menuType, values.frameType),
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '路由参数',
     field: 'paramPath',
     component: 'Input',
     helpMessage: ['访问菜单时传递的参数'],
-    ifShow: ({values}) => isDetails(values.menuType) || isMenu(values.menuType),
-    colProps: {span: 12},
+    ifShow: ({ values }) => isDetails(values.menuType) || isMenu(values.menuType),
+    colProps: { span: 12 },
   },
   {
     label: '权限标识',
     field: 'perms',
     component: 'Input',
     helpMessage: ["控制器中定义的权限字符，如：'system:user:list'"],
-    required: ({values}) =>
+    required: ({ values }) =>
       !isDir(values.menuType) && !isExternalLinksMenu(values.menuType, values.frameType),
-    ifShow: ({values}) =>
+    ifShow: ({ values }) =>
       !isDir(values.menuType) && !isExternalLinksMenu(values.menuType, values.frameType),
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '页面缓存',
@@ -449,13 +449,13 @@ export const formSchema: FormSchema[] = [
       options: dict.DicYesNoOptions,
     },
     helpMessage: ['选择是则该页面切换不会自动刷新'],
-    required: ({values}) =>
+    required: ({ values }) =>
       (isMenu(values.menuType) || isDetails(values.menuType)) &&
       !isExternalLinksMenu(values.menuType, values.frameType),
-    ifShow: ({values}) =>
+    ifShow: ({ values }) =>
       (isMenu(values.menuType) || isDetails(values.menuType)) &&
       !isExternalLinksMenu(values.menuType, values.frameType),
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '固定标签',
@@ -466,13 +466,13 @@ export const formSchema: FormSchema[] = [
       options: dict.DicYesNoOptions,
     },
     helpMessage: ['选择是则该标签会始终固定在页签中'],
-    required: ({values}) =>
+    required: ({ values }) =>
       (isMenu(values.menuType) || isDetails(values.menuType)) &&
       !isExternalLinksMenu(values.menuType, values.frameType),
-    ifShow: ({values}) =>
+    ifShow: ({ values }) =>
       (isMenu(values.menuType) || isDetails(values.menuType)) &&
       !isExternalLinksMenu(values.menuType, values.frameType),
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '菜单状态',
@@ -483,9 +483,9 @@ export const formSchema: FormSchema[] = [
       options: dict.DicShowHideOptions,
     },
     helpMessage: ['选择隐藏则菜单将不会出现在侧边栏'],
-    required: ({values}) => isDir(values.menuType) || isMenu(values.menuType),
-    ifShow: ({values}) => isDir(values.menuType) || isMenu(values.menuType),
-    colProps: {span: 12},
+    required: ({ values }) => isDir(values.menuType) || isMenu(values.menuType),
+    ifShow: ({ values }) => isDir(values.menuType) || isMenu(values.menuType),
+    colProps: { span: 12 },
   },
   {
     label: '标签状态',
@@ -496,13 +496,13 @@ export const formSchema: FormSchema[] = [
       options: dict.DicShowHideOptions,
     },
     helpMessage: ['选择隐藏则打开该将页面不会出现'],
-    required: ({values}) =>
+    required: ({ values }) =>
       (isMenu(values.menuType) || isDetails(values.menuType)) &&
       !isExternalLinksMenu(values.menuType, values.frameType),
-    ifShow: ({values}) =>
+    ifShow: ({ values }) =>
       (isMenu(values.menuType) || isDetails(values.menuType)) &&
       !isExternalLinksMenu(values.menuType, values.frameType),
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
 ];
 
@@ -632,7 +632,7 @@ export const detailSchema: DescItem[] = [
   {
     label: '菜单图标',
     field: 'icon',
-    render: (val) => h(Icon, {icon: val}),
+    render: (val) => h(Icon, { icon: val }),
     span: 8,
   },
   {

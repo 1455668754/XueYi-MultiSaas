@@ -32,12 +32,12 @@
   import FieldForm from './FieldForm.vue';
   import GenerateForm from './GenerateForm.vue';
   import { genList } from './gen.detail.data';
-  import { editGenApi, getSubGenApi } from '/@/api/gen/generate/gen';
+  import { editGenApi, getSubGenApi } from '@/api/gen/generate/gen.api';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { useTabs } from '/@/hooks/web/useTabs';
   import { PageWrapper } from '/@/components/Page';
-  import { GenTableIM } from '/@/model/gen';
-  import { GenIndexGo } from '/@/enums/gen';
+  import { GenTableIM } from '@/model/gen';
+  import { GenIndexGo } from '@/enums/gen';
   import { GenAuth } from '/@/auth/gen';
   import { useUserStore } from '/@/store/modules/user';
 

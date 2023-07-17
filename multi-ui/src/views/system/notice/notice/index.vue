@@ -52,14 +52,14 @@
 
 <script lang="ts">
   import { defineComponent, reactive } from 'vue';
-  import { delNoticeApi, listNoticeApi } from '/@/api/system/notice/notice';
+  import { delNoticeApi, listNoticeApi } from '@/api/system/notice/notice.api';
   import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { IconEnum } from '/@/enums/appEnum';
+  import { IconEnum } from '@/enums';
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
   import { NoticeAuth } from '/@/auth/system';
   import { columns, searchFormSchema } from './notice.data';
-  import { NoticeDetailGo } from '/@/enums/system';
+  import { NoticeDetailGo } from '@/enums/system';
   import NoticeModal from './NoticeModal.vue';
   import { useUserStore } from '/@/store/modules/user';
 

@@ -8,7 +8,7 @@
   import { computed, defineComponent, ref, unref } from 'vue';
   import { formSchema } from './dept.data';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { addDeptApi, editDeptApi, getDeptApi, listDeptApi } from '/@/api/system/organize/dept';
+  import { addDeptApi, editDeptApi, getDeptApi, listDeptApi } from '@/api/system/organize/dept.api';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
 

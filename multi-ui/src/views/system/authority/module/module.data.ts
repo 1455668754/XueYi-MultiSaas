@@ -1,12 +1,12 @@
 import { FormSchema } from '/@/components/Form';
 import { BasicColumn } from '/@/components/Table';
 import { DescItem } from '/@/components/Description';
-import { dicDictList } from '/@/api/sys/dict';
-import { DicCommonPrivateEnum, DicShowHideEnum, DicSortEnum, DicStatusEnum } from '/@/enums/basic';
-import { ModuleIM } from '/@/model/system';
+import { dicDictList } from '@/api/sys/dict.api';
+import { DicCommonPrivateEnum, DicShowHideEnum, DicSortEnum, DicStatusEnum } from '@/enums/basic';
+import { ModuleIM } from '@/model/system';
 import { useUserStore } from '/@/store/modules/user';
-import { FrameTypeEnum } from '/@/enums/system';
-import { fileUploadApi } from '/@/api/sys/upload';
+import { FrameTypeEnum } from '@/enums/system';
+import { fileUploadApi } from '@/api/sys/upload.api';
 import { dictConversion } from '/@/utils/xueyi';
 import { isEmpty, isNil } from 'lodash-es';
 

@@ -1,11 +1,11 @@
 import { FormSchema } from '/@/components/Form';
 import { BasicColumn } from '/@/components/Table';
 import { DescItem } from '/@/components/Description';
-import { dicDictList } from '/@/api/sys/dict';
+import { dicDictList } from '@/api/sys/dict.api';
 import { h } from 'vue';
 import { Tinymce } from '/@/components/Tinymce';
-import { NoticeIM } from '/@/model/system';
-import { NoticeTypeEnum } from '/@/enums/system';
+import { NoticeIM } from '@/model/system';
+import { NoticeTypeEnum } from '@/enums/system';
 import { dictConversion } from '/@/utils/xueyi';
 import { isEmpty, isNil } from 'lodash-es';
 

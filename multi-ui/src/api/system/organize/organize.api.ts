@@ -1,4 +1,4 @@
-import { OrganizeLM } from '/@/model/system';
+import { OrganizeLM } from '@/model/system';
 import { defHttp } from '/@/utils/http/axios';
 
 enum Api {

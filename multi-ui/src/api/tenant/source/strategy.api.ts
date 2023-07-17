@@ -1,4 +1,4 @@
-import { StrategyIM, StrategyLRM, StrategyPPM } from '/@/model/tenant';
+import { StrategyIM, StrategyLRM, StrategyPPM } from '@/model/tenant';
 import { defHttp } from '/@/utils/http/axios';
 
 enum Api {

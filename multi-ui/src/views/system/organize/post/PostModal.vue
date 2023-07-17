@@ -8,7 +8,7 @@
   import { computed, defineComponent, ref, unref } from 'vue';
   import { formSchema } from './post.data';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { getPostApi, addPostApi, editPostApi } from '/@/api/system/organize/post';
+  import { addPostApi, editPostApi, getPostApi } from '@/api/system/organize/post.api';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
 

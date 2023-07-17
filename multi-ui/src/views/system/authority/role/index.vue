@@ -67,14 +67,14 @@
 
 <script lang="ts">
   import { defineComponent, reactive } from 'vue';
-  import { delRoleApi, listRoleApi } from '/@/api/system/authority/role';
+  import { delRoleApi, listRoleApi } from '@/api/system/authority/role.api';
   import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { IconEnum } from '/@/enums/appEnum';
+  import { IconEnum } from '@/enums';
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
   import { RoleAuth } from '/@/auth/system';
   import { columns, searchFormSchema } from './role.data';
-  import { RoleDetailGo } from '/@/enums/system';
+  import { RoleDetailGo } from '@/enums/system';
   import RoleModal from './RoleModal.vue';
   import { useUserStore } from '/@/store/modules/user';
   import RoleInitModal from './RoleInitModal.vue';

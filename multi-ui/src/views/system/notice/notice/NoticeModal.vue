@@ -14,7 +14,7 @@
   import { computed, defineComponent, ref, unref } from 'vue';
   import { formSchema } from './notice.data';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { getNoticeApi, addNoticeApi, editNoticeApi } from '/@/api/system/notice/notice';
+  import { addNoticeApi, editNoticeApi, getNoticeApi } from '@/api/system/notice/notice.api';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
 

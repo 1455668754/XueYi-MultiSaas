@@ -8,7 +8,7 @@
   import { computed, defineComponent, ref, unref } from 'vue';
   import { formSchema } from './config.data';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { getConfigApi, addConfigApi, editConfigApi } from '/@/api/tenant/dict/config';
+  import { addConfigApi, editConfigApi, getConfigApi } from '@/api/tenant/dict/config.api';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
 

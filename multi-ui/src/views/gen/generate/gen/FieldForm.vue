@@ -6,7 +6,7 @@
   import { fieldColumns, genList } from './gen.detail.data';
   import { defineComponent } from 'vue';
   import { BasicTable, useTable } from '/@/components/Table';
-  import { GenTableIM } from '/@/model/gen';
+  import { GenTableIM } from '@/model/gen';
 
   export default defineComponent({
     name: 'FieldFrom',

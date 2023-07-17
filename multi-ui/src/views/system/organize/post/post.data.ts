@@ -1,11 +1,11 @@
 import { FormSchema } from '/@/components/Form';
 import { BasicColumn } from '/@/components/Table';
 import { DescItem } from '/@/components/Description';
-import { dicDictList } from '/@/api/sys/dict';
+import { dicDictList } from '@/api/sys/dict.api';
 import { dictConversion } from '/@/utils/xueyi';
-import { DicSortEnum, DicStatusEnum } from '/@/enums/basic';
-import { PostIM } from '/@/model/system';
-import { listDeptApi } from '/@/api/system/organize/dept';
+import { DicSortEnum, DicStatusEnum } from '@/enums/basic';
+import { PostIM } from '@/model/system';
+import { listDeptApi } from '@/api/system/organize/dept.api';
 
 /** 字典查询 */
 export const dictMap = await dicDictList(['sys_normal_disable']);

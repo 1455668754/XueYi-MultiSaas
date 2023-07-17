@@ -32,12 +32,12 @@
 <script lang="ts">
   import { defineComponent, ref } from 'vue';
   import { useModal } from '/@/components/Modal';
-  import { IconEnum } from '/@/enums/appEnum';
+  import { IconEnum } from '@/enums';
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
   import { JobAuth } from '/@/auth/system';
   import { columns, searchFormSchema } from './jobLog.data';
   import JobLogModal from './JobLogModal.vue';
-  import { cleanJobLogApi, listJobLogApi } from '/@/api/system/system/jobLog';
+  import { cleanJobLogApi, listJobLogApi } from '@/api/system/system/jobLog.api';
   import { useRoute } from 'vue-router';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { isEmpty } from 'lodash-es';

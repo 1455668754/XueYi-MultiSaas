@@ -61,18 +61,18 @@
 
 <script lang="ts">
   import { defineComponent, reactive } from 'vue';
-  import { delTenantApi, listTenantApi } from '/@/api/tenant/tenant/tenant';
+  import { delTenantApi, listTenantApi } from '@/api/tenant/tenant/tenant.api';
   import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { useGo } from '/@/hooks/web/usePage';
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
   import { TenantAuth } from '/@/auth/tenant';
   import { columns, searchFormSchema } from './tenant.data';
-  import { TenantDetailGo } from '/@/enums/tenant';
+  import { TenantDetailGo } from '@/enums/tenant';
   import TenantModal from './TenantModal.vue';
   import TenantInitModal from './TenantInitModal.vue';
   import TenantAuthModal from './TenantAuthModal.vue';
-  import { IconEnum, TenantTypeEnum } from '/@/enums/appEnum';
+  import { IconEnum, TenantTypeEnum } from '@/enums';
 
   export default defineComponent({
     name: 'TenantManagement',

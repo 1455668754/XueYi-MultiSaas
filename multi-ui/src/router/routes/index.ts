@@ -1,6 +1,6 @@
 import type { AppRouteModule, AppRouteRecordRaw } from '/@/router/types';
 import { PAGE_NOT_FOUND_ROUTE, REDIRECT_ROUTE } from '/@/router/routes/basic';
-import { PageEnum } from '/@/enums/pageEnum';
+import { PageEnum } from '@/enums/pageEnum';
 import { t } from '/@/hooks/web/useI18n';
 import userCenter from '/@/router/routes/modules/userCenter';
 

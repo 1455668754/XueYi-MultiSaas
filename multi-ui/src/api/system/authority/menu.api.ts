@@ -1,6 +1,6 @@
 import { defHttp } from '/@/utils/http/axios';
-import { MenuIM, MenuLM, MenuPM } from '/@/model/system';
-import { MenuTypeEnum } from '/@/enums/system';
+import { MenuIM, MenuLM, MenuPM } from '@/model/system';
+import { MenuTypeEnum } from '@/enums/system';
 
 enum Api {
   LIST_MENU = '/system/admin/menu/list',

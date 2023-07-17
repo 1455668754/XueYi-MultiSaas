@@ -6,15 +6,15 @@
 
 <script lang="ts">
   import { defineComponent, onMounted, ref } from 'vue';
-  import { getTenantApi } from '/@/api/tenant/tenant/tenant';
+  import { getTenantApi } from '@/api/tenant/tenant/tenant.api';
   import { Description, useDescription } from '/@/components/Description';
   import { detailSchema } from './tenant.data';
   import { useRoute } from 'vue-router';
-  import { TenantIndexGo } from '/@/enums/tenant';
+  import { TenantIndexGo } from '@/enums/tenant';
   import { useTabs } from '/@/hooks/web/useTabs';
   import { PageWrapper } from '/@/components/Page';
   import { useUserStore } from '/@/store/modules/user';
-  import { DescItemSizeEnum } from '/@/enums/appEnum';
+  import { DescItemSizeEnum } from '@/enums';
 
   export default defineComponent({
     components: { Description, PageWrapper },

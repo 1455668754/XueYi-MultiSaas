@@ -1,4 +1,4 @@
-import { DeptIM, DeptLM, DeptPM } from '/@/model/system';
+import { DeptIM, DeptLM, DeptPM } from '@/model/system';
 import { defHttp } from '/@/utils/http/axios';
 
 enum Api {

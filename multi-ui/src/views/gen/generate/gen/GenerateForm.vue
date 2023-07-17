@@ -23,8 +23,8 @@
 <script lang="ts">
   import { CollapseContainer } from '/@/components/Container';
   import { BasicForm, useForm } from '/@/components/Form';
-  import { TemplateTypeEnum } from '/@/enums/gen';
-  import { GenTableIM, OptionIM } from '/@/model/gen';
+  import { TemplateTypeEnum } from '@/enums/gen';
+  import { GenTableIM, OptionIM } from '@/model/gen';
   import { defineComponent, reactive, ref } from 'vue';
   import {
     dict,
@@ -38,8 +38,8 @@
     isMergeTpl,
     isTreeTpl,
   } from './gen.detail.data';
-  import { getMenuRouteListApi } from '/@/api/system/authority/menu';
-  import { MenuTypeEnum } from '/@/enums/system';
+  import { getMenuRouteListApi } from '@/api/system/authority/menu.api';
+  import { MenuTypeEnum } from '@/enums/system';
   import { sourceAssign } from '/@/utils/xueyi';
 
   export default defineComponent({

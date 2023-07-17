@@ -44,9 +44,9 @@
     cleanLoginLogApi,
     delLoginLogApi,
     listLoginLogApi,
-  } from '/@/api/system/monitor/loginLog';
+  } from '@/api/system/monitor/loginLog.api';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { IconEnum } from '/@/enums/appEnum';
+  import { IconEnum } from '@/enums';
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
   import { LoginLogAuth } from '/@/auth/system';
   import { columns, searchFormSchema } from './loginLog.data';

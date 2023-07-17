@@ -81,22 +81,22 @@
 
 <script lang="ts">
   import { defineComponent, reactive } from 'vue';
-  import { delUserApi, exportUserApi, listUserApi } from '/@/api/system/organize/user';
+  import { delUserApi, exportUserApi, listUserApi } from '@/api/system/organize/user.api';
   import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
   import { UserAuth } from '/@/auth/system';
   import { columns, searchFormSchema } from './user.data';
-  import { UserDetailGo } from '/@/enums/system';
+  import { UserDetailGo } from '@/enums/system';
   import UserModal from './UserModal.vue';
   import UserRoleModal from './UserRoleModal.vue';
   import { useUserStore } from '/@/store/modules/user';
   import PageWrapper from '/@/components/Page/src/PageWrapper.vue';
   import OrganizeTree from './OrganizeTree.vue';
-  import { UserPM } from '/@/model/system';
+  import { UserPM } from '@/model/system';
   import UserResPwdModal from './UserResPwdModal.vue';
   import { isEqual } from 'lodash-es';
-  import { IconEnum, UserTypeEnum } from '/@/enums/appEnum';
+  import { IconEnum, UserTypeEnum } from '@/enums';
 
   export default defineComponent({
     name: 'UserManagement',

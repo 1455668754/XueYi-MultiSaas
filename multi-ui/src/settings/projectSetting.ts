@@ -1,14 +1,14 @@
-import type {ProjectConfig} from '/#/config';
-import {MenuTypeEnum, MenuModeEnum, TriggerEnum, MixSidebarTriggerEnum} from '/@/enums/menuEnum';
-import {CacheTypeEnum} from '/@/enums/cacheEnum';
+import type { ProjectConfig } from '/#/config';
+import { MenuModeEnum, MenuTypeEnum, MixSidebarTriggerEnum, TriggerEnum } from '@/enums/menuEnum';
+import { CacheTypeEnum } from '@/enums/cacheEnum';
 import {
   ContentEnum,
-  ThemeEnum,
   RouterTransitionEnum,
-  SettingButtonPositionEnum,
   SessionTimeoutProcessingEnum,
-} from '/@/enums/appEnum';
-import {SIDE_BAR_BG_COLOR_LIST, HEADER_PRESET_BG_COLOR_LIST} from './designSetting';
+  SettingButtonPositionEnum,
+  ThemeEnum,
+} from '@/enums';
+import { HEADER_PRESET_BG_COLOR_LIST, SIDE_BAR_BG_COLOR_LIST } from './designSetting';
 
 const primaryColor = '#0960bd';
 

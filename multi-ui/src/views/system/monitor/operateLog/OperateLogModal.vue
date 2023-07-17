@@ -15,9 +15,9 @@
   import { computed, defineComponent } from 'vue';
   import { detailSchema } from './operateLog.data';
   import { Description, useDescription } from '/@/components/Description';
-  import { getOperateLogApi } from '/@/api/system/monitor/operateLog';
+  import { getOperateLogApi } from '@/api/system/monitor/operateLog.api';
   import { BasicModal, useModalInner } from '/@/components/Modal';
-  import { DescItemSizeEnum } from '/@/enums/appEnum';
+  import { DescItemSizeEnum } from '@/enums';
 
   export default defineComponent({
     name: 'OperateLogModal',

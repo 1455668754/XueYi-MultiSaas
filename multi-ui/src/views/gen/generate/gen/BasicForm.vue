@@ -6,7 +6,7 @@
   import { defineComponent, reactive } from 'vue';
   import { basicFormSchema, genList } from './gen.detail.data';
   import { BasicForm, useForm } from '/@/components/Form';
-  import { GenTableIM } from '/@/model/gen';
+  import { GenTableIM } from '@/model/gen';
   import { sourceCopy } from '/@/utils/xueyi';
 
   export default defineComponent({

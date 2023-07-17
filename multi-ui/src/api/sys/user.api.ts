@@ -1,6 +1,6 @@
-import { UserIM } from '/@/model/system';
+import { UserIM } from '@/model/system';
 import { defHttp } from '/@/utils/http/axios';
-import { UploadIM } from '/@/model/sys';
+import { UploadIM } from '@/model/sys';
 import { UploadFileParams } from '/#/axios';
 import { useGlobSetting } from '/@/hooks/setting';
 import { AxiosProgressEvent } from 'axios';

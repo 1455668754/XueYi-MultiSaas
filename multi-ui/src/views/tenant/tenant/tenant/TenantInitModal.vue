@@ -51,7 +51,7 @@
     tenantInitList,
   } from './tenant.data';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { addTenantApi, authScopeTenantApi } from '/@/api/tenant/tenant/tenant';
+  import { addTenantApi, authScopeTenantApi } from '@/api/tenant/tenant/tenant.api';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
   import { BasicTree, TreeItem } from '/@/components/Tree';

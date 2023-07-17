@@ -69,8 +69,8 @@
   import { useMenuSetting } from '/@/hooks/setting/useMenuSetting';
   import { useRootSetting } from '/@/hooks/setting/useRootSetting';
 
-  import { MenuModeEnum, MenuSplitTyeEnum } from '/@/enums/menuEnum';
-  import { SettingButtonPositionEnum } from '/@/enums/appEnum';
+  import { MenuModeEnum, MenuSplitTyeEnum } from '@/enums/menuEnum';
+  import { SettingButtonPositionEnum } from '@/enums';
 
   import { ErrorAction, FullScreen, LayoutBreadcrumb, Notify, UserDropDown } from './components';
   import { useAppInject } from '/@/hooks/web/useAppInject';

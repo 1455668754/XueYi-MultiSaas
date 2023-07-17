@@ -1,4 +1,4 @@
-import { BasicFetchResult, BasicPageParams, TreeEntity } from '/@/model/basic';
+import { BasicFetchResult, BasicPageParams, TreeEntity } from '@/model/basic';
 
 /** organize info model */
 export interface OrganizeIM extends TreeEntity<OrganizeIM> {

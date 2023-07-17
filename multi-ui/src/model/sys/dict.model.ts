@@ -1,4 +1,4 @@
-import { BaseEntity } from '/@/model/basic';
+import { BaseEntity } from '@/model/basic';
 
 /** dict item model */
 export interface DictIM extends BaseEntity {

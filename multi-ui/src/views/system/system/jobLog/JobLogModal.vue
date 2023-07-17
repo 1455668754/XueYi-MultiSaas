@@ -15,8 +15,8 @@
   import { computed, defineComponent } from 'vue';
   import { Description, useDescription } from '/@/components/Description';
   import { BasicModal, useModalInner } from '/@/components/Modal';
-  import { DescItemSizeEnum } from '/@/enums/appEnum';
-  import { getJobLogApi } from '/@/api/system/system/jobLog';
+  import { DescItemSizeEnum } from '@/enums';
+  import { getJobLogApi } from '@/api/system/system/jobLog.api';
   import { detailSchema } from './jobLog.data';
 
   export default defineComponent({

@@ -1,11 +1,11 @@
-import { ContentEnum, RouterTransitionEnum } from '/@/enums/appEnum';
+import { ContentEnum, RouterTransitionEnum } from '@/enums';
 import {
   MenuModeEnum,
   MenuTypeEnum,
+  MixSidebarTriggerEnum,
   TopMenuAlignEnum,
   TriggerEnum,
-  MixSidebarTriggerEnum,
-} from '/@/enums/menuEnum';
+} from '@/enums/menuEnum';
 
 import { useI18n } from '/@/hooks/web/useI18n';
 

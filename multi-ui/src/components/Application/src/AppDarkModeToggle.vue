@@ -12,7 +12,7 @@
   import { useRootSetting } from '/@/hooks/setting/useRootSetting';
   import { updateHeaderBgColor, updateSidebarBgColor } from '/@/logics/theme/updateBackground';
   import { updateDarkTheme } from '/@/logics/theme/dark';
-  import { ThemeEnum } from '/@/enums/appEnum';
+  import { ThemeEnum } from '@/enums';
 
   const { prefixCls } = useDesign('dark-switch');
   const { getDarkMode, setDarkMode, getShowDarkModeToggle } = useRootSetting();

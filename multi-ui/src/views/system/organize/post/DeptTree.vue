@@ -17,7 +17,7 @@
 <script lang="ts">
   import { defineComponent, onMounted, ref } from 'vue';
   import { BasicTree, TreeItem } from '/@/components/Tree';
-  import { optionDeptApi } from '/@/api/system/organize/dept';
+  import { optionDeptApi } from '@/api/system/organize/dept.api';
   import { ScrollContainer } from '/@/components/Container';
 
   export default defineComponent({

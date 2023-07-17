@@ -1,6 +1,6 @@
-import { TenantIM, TenantLRM, TenantPPM } from '/@/model/tenant';
+import { TenantIM, TenantLRM, TenantPPM } from '@/model/tenant';
 import { defHttp } from '/@/utils/http/axios';
-import { AuthLM } from '/@/model/system';
+import { AuthLM } from '@/model/system';
 
 enum Api {
   LIST_TENANT = '/tenant/admin/tenant/list',

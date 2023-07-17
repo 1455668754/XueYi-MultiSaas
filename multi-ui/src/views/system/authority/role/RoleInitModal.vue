@@ -59,9 +59,9 @@
   import { BasicForm, useForm } from '/@/components/Form';
   import { BasicTree, TreeItem } from '/@/components/Tree';
   import { Steps } from 'ant-design-vue';
-  import { addRoleApi } from '/@/api/system/authority/role';
-  import { authScopeEnterpriseApi } from '/@/api/system/authority/auth';
-  import { organizeScopeApi } from '/@/api/system/organize/organize';
+  import { addRoleApi } from '@/api/system/authority/role.api';
+  import { authScopeEnterpriseApi } from '@/api/system/authority/auth.api';
+  import { organizeScopeApi } from '@/api/system/organize/organize.api';
   import { sourceAssign } from '/@/utils/xueyi';
 
   export default defineComponent({

@@ -8,7 +8,7 @@
   import { computed, defineComponent } from 'vue';
   import { roleFormSchema } from './role.data';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { getRoleApi, editRoleApi } from '/@/api/system/authority/role';
+  import { editRoleApi, getRoleApi } from '@/api/system/authority/role.api';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
 

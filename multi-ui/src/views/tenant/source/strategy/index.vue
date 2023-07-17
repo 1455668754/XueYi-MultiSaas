@@ -52,14 +52,14 @@
 
 <script lang="ts">
   import { defineComponent, reactive } from 'vue';
-  import { delStrategyApi, listStrategyApi } from '/@/api/tenant/source/strategy';
+  import { delStrategyApi, listStrategyApi } from '@/api/tenant/source/strategy.api';
   import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { IconEnum } from '/@/enums/appEnum';
+  import { IconEnum } from '@/enums';
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
   import { StrategyAuth } from '/@/auth/tenant';
   import { columns, searchFormSchema } from './strategy.data';
-  import { StrategyDetailGo } from '/@/enums/tenant';
+  import { StrategyDetailGo } from '@/enums/tenant';
   import StrategyModal from './StrategyModal.vue';
   import { useUserStore } from '/@/store/modules/user';
 

@@ -1,4 +1,4 @@
-import { BasicFetchResult, BasicPageParams, TreeEntity } from '/@/model/basic';
+import { BasicFetchResult, BasicPageParams, TreeEntity } from '@/model/basic';
 import { RoleLM } from '../authority';
 
 /** dept item model */

@@ -1,6 +1,6 @@
 import { FormSchema } from '/@/components/Form';
 import { BasicColumn } from '/@/components/Table';
-import { OnlineIM } from '/@/model/system';
+import { OnlineIM } from '@/model/system';
 import { parseTime } from '/@/utils/xueyi';
 
 /** 表格数据 */

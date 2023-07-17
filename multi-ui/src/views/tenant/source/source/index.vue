@@ -52,15 +52,15 @@
 
 <script lang="ts">
   import { defineComponent, reactive } from 'vue';
-  import { delSourceApi, listSourceApi } from '/@/api/tenant/source/source';
+  import { delSourceApi, listSourceApi } from '@/api/tenant/source/source.api';
   import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { IconEnum } from '/@/enums/appEnum';
-  import { DicYesNoEnum } from '/@/enums/basic';
+  import { IconEnum } from '@/enums';
+  import { DicYesNoEnum } from '@/enums/basic';
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
   import { SourceAuth } from '/@/auth/tenant';
   import { columns, searchFormSchema } from './source.data';
-  import { SourceDetailGo } from '/@/enums/tenant';
+  import { SourceDetailGo } from '@/enums/tenant';
   import SourceModal from './SourceModal.vue';
   import { useUserStore } from '/@/store/modules/user';
 

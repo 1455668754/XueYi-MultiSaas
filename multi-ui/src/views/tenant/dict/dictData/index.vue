@@ -46,10 +46,10 @@
 
 <script lang="ts">
   import { defineComponent, reactive, ref } from 'vue';
-  import { delDictDataApi, listDictDataApi } from '/@/api/tenant/dict/dictData';
+  import { delDictDataApi, listDictDataApi } from '@/api/tenant/dict/dictData.api';
   import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { IconEnum } from '/@/enums/appEnum';
+  import { IconEnum } from '@/enums';
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
   import { DictTypeAuth } from '/@/auth/tenant';
   import { columns, searchFormSchema } from './dictData.data';

@@ -31,9 +31,9 @@
 
 <script lang="ts">
   import { defineComponent, reactive } from 'vue';
-  import { delOnlineApi, listOnlineApi } from '/@/api/system/monitor/online';
+  import { delOnlineApi, listOnlineApi } from '@/api/system/monitor/online.api';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { IconEnum } from '/@/enums/appEnum';
+  import { IconEnum } from '@/enums';
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
   import { OnlineAuth } from '/@/auth/system';
   import { columns, searchFormSchema } from './online.data';
