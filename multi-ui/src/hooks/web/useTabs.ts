@@ -1,5 +1,4 @@
 import type { RouteLocationNormalized, Router } from 'vue-router';
-
 import { useRouter } from 'vue-router';
 import { unref } from 'vue';
 

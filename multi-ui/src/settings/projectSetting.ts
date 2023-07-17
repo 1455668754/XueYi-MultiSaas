@@ -1,4 +1,4 @@
-import type {ProjectConfig} from '/#/config';
+import type { ProjectConfig } from '/#/config';
 import {
   CacheTypeEnum,
   ContentEnum,
@@ -11,7 +11,7 @@ import {
   ThemeEnum,
   TriggerEnum,
 } from '@/enums/basic';
-import {HEADER_PRESET_BG_COLOR_LIST, SIDE_BAR_BG_COLOR_LIST} from './designSetting';
+import { HEADER_PRESET_BG_COLOR_LIST, SIDE_BAR_BG_COLOR_LIST } from './designSetting';
 
 const primaryColor = '#0960bd';
 

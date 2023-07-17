@@ -1,13 +1,13 @@
-import type {ErrorMessageMode} from '/#/axios';
-import {useMessage} from '/@/hooks/web/useMessage';
-import {useI18n} from '/@/hooks/web/useI18n';
+import type { ErrorMessageMode } from '/#/axios';
+import { useMessage } from '/@/hooks/web/useMessage';
+import { useI18n } from '/@/hooks/web/useI18n';
 // import router from '/@/router';
 // import { PageEnum } from '@/enums/basic';
-import {useUserStoreWithOut} from '/@/store/modules/user';
+import { useUserStoreWithOut } from '/@/store/modules/user';
 import projectSetting from '/@/settings/projectSetting';
-import {SessionTimeoutProcessingEnum} from '@/enums/basic';
+import { SessionTimeoutProcessingEnum } from '@/enums/basic';
 
-const {createMessage, createErrorModal} = useMessage();
+const { createMessage, createErrorModal } = useMessage();
 const error = createMessage.error!;
 const stp = projectSetting.sessionTimeoutProcessing;
 

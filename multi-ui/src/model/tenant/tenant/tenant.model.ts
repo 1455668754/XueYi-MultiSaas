@@ -1,4 +1,4 @@
-import { BaseEntity, BasicFetchResult, BasicPageParams } from '@/model/basic';
+import {BaseEntity, BasicFetchResult, BasicPageParams} from '@/model/basic';
 
 /** tenant info model */
 export interface TenantIM extends BaseEntity {

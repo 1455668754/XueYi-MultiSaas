@@ -14,32 +14,25 @@
   </div>
 </template>
 
-<script lang="ts">
-  import { defineComponent, onMounted, ref } from 'vue';
+<script setup lang="ts">
+  import { onMounted, ref } from 'vue';
   import { BasicTree, TreeItem } from '/@/components/Tree';
   import { optionDeptApi } from '@/api/system/organize/dept.api';
   import { ScrollContainer } from '/@/components/Container';
 
-  export default defineComponent({
-    name: 'DeptTree',
-    components: { ScrollContainer, BasicTree },
-    emits: ['select'],
-    setup(_, { emit }) {
-      const treeData = ref<TreeItem[]>([]);
+  const emit = defineEmits(['select']);
 
-      async function fetch() {
-        treeData.value = (await optionDeptApi()) as unknown as TreeItem[];
-      }
+  const treeData = ref<TreeItem[]>([]);
 
-      function handleSelect(keys) {
-        emit('select', keys[0]);
-      }
+  async function fetch() {
+    treeData.value = (await optionDeptApi()) as unknown as TreeItem[];
+  }
 
-      onMounted(() => {
-        fetch();
-      });
+  function handleSelect(keys) {
+    emit('select', keys[0]);
+  }
 
-      return { treeData, handleSelect };
-    },
+  onMounted(() => {
+    fetch();
   });
 </script>

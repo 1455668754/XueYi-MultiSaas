@@ -24,9 +24,9 @@
 </template>
 <script lang="ts">
   import { computed, defineComponent, ref } from 'vue';
-  import { Popover, Tabs, Badge } from 'ant-design-vue';
+  import { Badge, Popover, Tabs } from 'ant-design-vue';
   import { BellOutlined } from '@ant-design/icons-vue';
-  import { tabListData, ListItem } from './data';
+  import { ListItem, tabListData } from './data';
   import NoticeList from './NoticeList.vue';
   import { useDesign } from '/@/hooks/web/useDesign';
   import { useMessage } from '/@/hooks/web/useMessage';

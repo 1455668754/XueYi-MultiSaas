@@ -2,7 +2,7 @@
   <div :class="getClass" :style="getDragBarStyle"></div>
 </template>
 <script lang="ts">
-  import { defineComponent, computed, unref } from 'vue';
+  import { computed, defineComponent, unref } from 'vue';
 
   import { useDesign } from '/@/hooks/web/useDesign';
   import { useMenuSetting } from '/@/hooks/setting/useMenuSetting';

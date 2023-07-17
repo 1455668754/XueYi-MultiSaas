@@ -21,7 +21,7 @@
         </a-button>
       </template>
       <template #logo="{ text }">
-        <Image :height="30" :width="30" :src="text"/>
+        <Image :height="30" :width="30" :src="text" />
       </template>
       <template #action="{ record }">
         <TableAction
@@ -49,127 +49,109 @@
         />
       </template>
     </BasicTable>
-    <ModuleModal @register="registerModal" @success="handleSuccess"/>
+    <ModuleModal @register="registerModal" @success="handleSuccess" />
   </div>
 </template>
 
-<script lang="ts">
-import {defineComponent, reactive} from 'vue';
-import {delModuleApi, listModuleApi} from '@/api/system/authority/module.api';
-import {useModal} from '/@/components/Modal';
-import {useMessage} from '/@/hooks/web/useMessage';
-import {useUserStore} from '/@/store/modules/user';
-import {IconEnum} from '@/enums/basic';
-import {BasicTable, TableAction, useTable} from '/@/components/Table';
-import {Image} from 'ant-design-vue';
-import {ModuleAuth} from '/@/auth/system';
-import {columns, searchFormSchema} from './module.data';
-import {ModuleDetailGo} from '@/enums/system';
-import ModuleModal from './ModuleModal.vue';
+<script setup lang="ts">
+  import { reactive } from 'vue';
+  import { delModuleApi, listModuleApi } from '@/api/system/authority/module.api';
+  import { useModal } from '/@/components/Modal';
+  import { useMessage } from '/@/hooks/web/useMessage';
+  import { useUserStore } from '/@/store/modules/user';
+  import { IconEnum } from '@/enums/basic';
+  import { BasicTable, TableAction, useTable } from '/@/components/Table';
+  import { Image } from 'ant-design-vue';
+  import { ModuleAuth } from '/@/auth/system';
+  import { columns, searchFormSchema } from './module.data';
+  import { ModuleDetailGo } from '@/enums/system';
+  import ModuleModal from './ModuleModal.vue';
 
-export default defineComponent({
-  name: 'ModuleManagement',
-  components: {BasicTable, ModuleModal, TableAction, Image},
-  setup() {
-    const {createMessage, createConfirm} = useMessage();
-    const [registerModal, {openModal}] = useModal();
-    const state = reactive<{
-      ids: string[];
-      idNames: string;
-    }>({
-      ids: [],
-      idNames: '',
+  const { createMessage, createConfirm } = useMessage();
+  const [registerModal, { openModal }] = useModal();
+  const state = reactive<{
+    ids: string[];
+    idNames: string;
+  }>({
+    ids: [],
+    idNames: '',
+  });
+  const [registerTable, { reload }] = useTable({
+    title: '模块列表',
+    api: listModuleApi,
+    striped: false,
+    useSearchForm: true,
+    rowKey: 'id',
+    bordered: true,
+    showIndexColumn: true,
+    columns,
+    formConfig: {
+      labelWidth: 120,
+      schemas: searchFormSchema,
+    },
+    showTableSetting: true,
+    tableSetting: {
+      fullScreen: true,
+    },
+    actionColumn: {
+      width: 220,
+      title: '操作',
+      dataIndex: 'action',
+      slots: { customRender: 'action' },
+    },
+    rowSelection: {
+      onChange: (selectedRowKeys, selectRows) => {
+        state.ids = selectedRowKeys;
+        state.idNames = selectRows
+          .map((item) => {
+            return item.name;
+          })
+          .join(',');
+      },
+    },
+  });
+
+  /** 查看按钮 */
+  function handleView(record: Recordable) {
+    useUserStore().getRoutePath(ModuleDetailGo, record.id);
+  }
+
+  /** 新增按钮 */
+  function handleCreate() {
+    openModal(true, {
+      isUpdate: false,
     });
-    const [registerTable, {reload}] = useTable({
-      title: '模块列表',
-      api: listModuleApi,
-      striped: false,
-      useSearchForm: true,
-      rowKey: 'id',
-      bordered: true,
-      showIndexColumn: true,
-      columns,
-      formConfig: {
-        labelWidth: 120,
-        schemas: searchFormSchema,
-      },
-      showTableSetting: true,
-      tableSetting: {
-        fullScreen: true,
-      },
-      actionColumn: {
-        width: 220,
-        title: '操作',
-        dataIndex: 'action',
-        slots: {customRender: 'action'},
-      },
-      rowSelection: {
-        onChange: (selectedRowKeys, selectRows) => {
-          state.ids = selectedRowKeys;
-          state.idNames = selectRows
-            .map((item) => {
-              return item.name;
-            })
-            .join(',');
-        },
-      },
+  }
+
+  /** 修改按钮 */
+  function handleEdit(record: Recordable) {
+    openModal(true, {
+      record,
+      isUpdate: true,
     });
+  }
 
-    /** 查看按钮 */
-    function handleView(record: Recordable) {
-      useUserStore().getRoutePath(ModuleDetailGo, record.id);
-    }
-
-    /** 新增按钮 */
-    function handleCreate() {
-      openModal(true, {
-        isUpdate: false,
+  /** 删除按钮 */
+  function handleDelete(record: Recordable) {
+    const delIds = record.id || state.ids;
+    const delNames = record.name || state.idNames;
+    if (!record.id && state.ids.length === 0) {
+      createMessage.warning('请选择要操作的数据！');
+    } else {
+      createConfirm({
+        iconType: 'warning',
+        title: '提示',
+        content: '是否确定要删除' + delNames + '?',
+        onOk: () =>
+          delModuleApi(delIds).then(() => {
+            createMessage.success('删除' + delNames + '成功！');
+            reload();
+          }),
       });
     }
+  }
 
-    /** 修改按钮 */
-    function handleEdit(record: Recordable) {
-      openModal(true, {
-        record,
-        isUpdate: true,
-      });
-    }
-
-    /** 删除按钮 */
-    function handleDelete(record: Recordable) {
-      const delIds = record.id || state.ids;
-      const delNames = record.name || state.idNames;
-      if (!record.id && state.ids.length === 0) {
-        createMessage.warning('请选择要操作的数据！');
-      } else {
-        createConfirm({
-          iconType: 'warning',
-          title: '提示',
-          content: '是否确定要删除' + delNames + '?',
-          onOk: () =>
-            delModuleApi(delIds).then(() => {
-              createMessage.success('删除' + delNames + '成功！');
-              reload();
-            }),
-        });
-      }
-    }
-
-    function handleSuccess() {
-      reload();
-    }
-
-    return {
-      IconEnum,
-      ModuleAuth,
-      registerTable,
-      registerModal,
-      handleView,
-      handleCreate,
-      handleEdit,
-      handleDelete,
-      handleSuccess,
-    };
-  },
-});
+  function handleSuccess() {
+    reload();
+  }
 </script>

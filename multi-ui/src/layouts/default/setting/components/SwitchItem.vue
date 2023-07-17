@@ -11,7 +11,7 @@
   </div>
 </template>
 <script lang="ts">
-  import { defineComponent, PropType, computed } from 'vue';
+  import { computed, defineComponent, PropType } from 'vue';
 
   import { Switch } from 'ant-design-vue';
   import { useDesign } from '/@/hooks/web/useDesign';

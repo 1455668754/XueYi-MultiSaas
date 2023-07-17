@@ -1,17 +1,17 @@
-import type {AppRouteRecordRaw, Menu} from '/@/router/types';
-import {defineStore} from 'pinia';
-import {store} from '/@/store';
-import {useI18n} from '/@/hooks/web/useI18n';
-import {useUserStore} from './user';
-import {toRaw} from 'vue';
-import {flatMultiLevelRoutes, transformObjToRoute} from '/@/router/helper/routeHelper';
-import {transformRouteToMenu} from '/@/router/helper/menuHelper';
-import {PageEnum, PermEnum} from '@/enums/basic';
-import {asyncRoutes} from '/@/router/routes';
-import {filter} from '/@/utils/helper/treeHelper';
-import {useMessage} from '/@/hooks/web/useMessage';
-import {COMMON_MODULE, MODULE_CACHE} from '@/enums/system';
-import {getMenuList} from '@/api/sys/menu.api';
+import type { AppRouteRecordRaw, Menu } from '/@/router/types';
+import { defineStore } from 'pinia';
+import { store } from '/@/store';
+import { useI18n } from '/@/hooks/web/useI18n';
+import { useUserStore } from './user';
+import { toRaw } from 'vue';
+import { flatMultiLevelRoutes, transformObjToRoute } from '/@/router/helper/routeHelper';
+import { transformRouteToMenu } from '/@/router/helper/menuHelper';
+import { PageEnum, PermEnum } from '@/enums/basic';
+import { asyncRoutes } from '/@/router/routes';
+import { filter } from '/@/utils/helper/treeHelper';
+import { useMessage } from '/@/hooks/web/useMessage';
+import { COMMON_MODULE, MODULE_CACHE } from '@/enums/system';
+import { getMenuList } from '@/api/sys/menu.api';
 
 interface PermissionState {
   // Permission code list

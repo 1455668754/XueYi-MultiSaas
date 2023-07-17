@@ -1,9 +1,8 @@
 import type { TabContentProps } from './types';
+import { MenuEventEnum } from './types';
 import type { DropMenu } from '/@/components/Dropdown';
 import type { ComputedRef } from 'vue';
-
-import { computed, unref, reactive } from 'vue';
-import { MenuEventEnum } from './types';
+import { computed, reactive, unref } from 'vue';
 import { useMultipleTabStore } from '/@/store/modules/multipleTab';
 import { RouteLocationNormalized, useRouter } from 'vue-router';
 import { useTabs } from '/@/hooks/web/useTabs';

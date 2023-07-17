@@ -1,15 +1,15 @@
-import type {RouteRecordRaw} from 'vue-router';
-import {usePermissionStore} from '/@/store/modules/permission';
-import {useTabs} from './useTabs';
-import {router, resetRouter} from '/@/router';
-import {intersection} from 'lodash-es';
-import {isArray} from '/@/utils/is';
-import {useMultipleTabStore} from '/@/store/modules/multipleTab';
+import type { RouteRecordRaw } from 'vue-router';
+import { usePermissionStore } from '/@/store/modules/permission';
+import { useTabs } from './useTabs';
+import { resetRouter, router } from '/@/router';
+import { intersection } from 'lodash-es';
+import { isArray } from '/@/utils/is';
+import { useMultipleTabStore } from '/@/store/modules/multipleTab';
 
 // User permissions related operations
 export function usePermission() {
   const permissionStore = usePermissionStore();
-  const {closeAll} = useTabs(router);
+  const { closeAll } = useTabs(router);
 
   /**
    * Reset and regain authority resource information
@@ -56,5 +56,5 @@ export function usePermission() {
     resume();
   }
 
-  return {hasPermission, refreshMenu};
+  return { hasPermission, refreshMenu };
 }

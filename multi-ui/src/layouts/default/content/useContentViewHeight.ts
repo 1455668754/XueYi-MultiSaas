@@ -1,6 +1,6 @@
-import {ref, computed, unref} from 'vue';
-import {createPageContext} from '/@/hooks/component/usePageContext';
-import {useWindowSizeFn} from '@xueyi/hooks';
+import { computed, ref, unref } from 'vue';
+import { createPageContext } from '/@/hooks/component/usePageContext';
+import { useWindowSizeFn } from '@xueyi/hooks';
 
 const headerHeightRef = ref(0);
 const footerHeightRef = ref(0);

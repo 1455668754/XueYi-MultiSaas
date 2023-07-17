@@ -6,7 +6,7 @@
   </div>
 </template>
 <script lang="ts">
-  import { defineComponent, unref, computed, CSSProperties } from 'vue';
+  import { computed, CSSProperties, defineComponent, unref } from 'vue';
 
   import LayoutHeader from './index.vue';
   import MultipleTabs from '../tabs/index.vue';

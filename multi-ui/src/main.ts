@@ -5,16 +5,16 @@ import 'ant-design-vue/dist/antd.less';
 // Register icon sprite
 import 'virtual:svg-icons-register';
 
-import {createApp} from 'vue';
+import { createApp } from 'vue';
 
-import {registerGlobComp} from '@/components/registerGlobComp';
-import {setupGlobDirectives} from '@/directives';
-import {setupI18n} from '@/locales/setupI18n';
-import {setupErrorHandle} from '@/logics/error-handle';
-import {initAppConfigStore} from '@/logics/initAppConfig';
-import {router, setupRouter} from '@/router';
-import {setupRouterGuard} from '@/router/guard';
-import {setupStore} from '@/store';
+import { registerGlobComp } from '@/components/registerGlobComp';
+import { setupGlobDirectives } from '@/directives';
+import { setupI18n } from '@/locales/setupI18n';
+import { setupErrorHandle } from '@/logics/error-handle';
+import { initAppConfigStore } from '@/logics/initAppConfig';
+import { router, setupRouter } from '@/router';
+import { setupRouterGuard } from '@/router/guard';
+import { setupStore } from '@/store';
 
 import App from './App.vue';
 

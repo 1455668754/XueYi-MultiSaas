@@ -1,20 +1,20 @@
-import type {EChartsOption} from 'echarts';
-import type {Ref} from 'vue';
-import {useTimeoutFn} from '@xueyi/hooks';
-import {tryOnUnmounted, useDebounceFn} from '@vueuse/core';
-import {unref, nextTick, watch, computed, ref} from 'vue';
-import {useEventListener} from '/@/hooks/event/useEventListener';
-import {useBreakpoint} from '/@/hooks/event/useBreakpoint';
+import type { EChartsOption } from 'echarts';
+import type { Ref } from 'vue';
+import { computed, nextTick, ref, unref, watch } from 'vue';
+import { useTimeoutFn } from '@xueyi/hooks';
+import { tryOnUnmounted, useDebounceFn } from '@vueuse/core';
+import { useEventListener } from '/@/hooks/event/useEventListener';
+import { useBreakpoint } from '/@/hooks/event/useBreakpoint';
 import echarts from '/@/utils/lib/echarts';
-import {useRootSetting} from '/@/hooks/setting/useRootSetting';
-import {useMenuSetting} from '/@/hooks/setting/useMenuSetting';
+import { useRootSetting } from '/@/hooks/setting/useRootSetting';
+import { useMenuSetting } from '/@/hooks/setting/useMenuSetting';
 
 export function useECharts(
   elRef: Ref<HTMLDivElement>,
   theme: 'light' | 'dark' | 'default' = 'default',
 ) {
-  const {getDarkMode: getSysDarkMode} = useRootSetting();
-  const {getCollapsed} = useMenuSetting();
+  const { getDarkMode: getSysDarkMode } = useRootSetting();
+  const { getCollapsed } = useMenuSetting();
 
   const getDarkMode = computed(() => {
     return theme === 'default' ? getSysDarkMode.value : theme;
@@ -22,8 +22,7 @@ export function useECharts(
   let chartInstance: echarts.ECharts | null = null;
   let resizeFn: Fn = resize;
   const cacheOptions = ref({}) as Ref<EChartsOption>;
-  let removeResizeFn: Fn = () => {
-  };
+  let removeResizeFn: Fn = () => {};
 
   resizeFn = useDebounceFn(resize, 200);
 
@@ -44,13 +43,13 @@ export function useECharts(
     }
 
     chartInstance = echarts.init(el, t);
-    const {removeEvent} = useEventListener({
+    const { removeEvent } = useEventListener({
       el: window,
       name: 'resize',
       listener: resizeFn,
     });
     removeResizeFn = removeEvent;
-    const {widthRef, screenEnum} = useBreakpoint();
+    const { widthRef, screenEnum } = useBreakpoint();
     if (unref(widthRef) <= screenEnum.MD || el.offsetHeight === 0) {
       useTimeoutFn(() => {
         resizeFn();

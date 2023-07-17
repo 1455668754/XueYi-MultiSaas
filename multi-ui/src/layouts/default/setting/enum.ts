@@ -8,9 +8,9 @@ import {
   TriggerEnum,
 } from '@/enums/basic';
 
-import {useI18n} from '/@/hooks/web/useI18n';
+import { useI18n } from '/@/hooks/web/useI18n';
 
-const {t} = useI18n();
+const { t } = useI18n();
 
 export enum HandlerEnum {
   CHANGE_LAYOUT,

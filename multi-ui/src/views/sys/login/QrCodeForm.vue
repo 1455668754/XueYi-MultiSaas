@@ -21,7 +21,7 @@
   import { Button, Divider } from 'ant-design-vue';
   import { QrCode } from '/@/components/Qrcode';
   import { useI18n } from '/@/hooks/web/useI18n';
-  import { useLoginState, LoginStateEnum } from './useLogin';
+  import { LoginStateEnum, useLoginState } from './useLogin';
 
   const qrCodeUrl = 'https://vvbin.cn/next/login';
 

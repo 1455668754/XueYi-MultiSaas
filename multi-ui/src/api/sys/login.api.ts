@@ -1,7 +1,7 @@
-import {CodeImgIM, GetEnterpriseIM, GetUserIM, LoginIM, LoginPM} from '@/model/sys';
-import {defHttp} from '/@/utils/http/axios';
-import {ErrorMessageMode} from '/#/axios';
-import {ContentTypeEnum} from '@/enums/basic';
+import { CodeImgIM, GetEnterpriseIM, GetUserIM, LoginIM, LoginPM } from '@/model/sys';
+import { defHttp } from '/@/utils/http/axios';
+import { ErrorMessageMode } from '/#/axios';
+import { ContentTypeEnum } from '@/enums/basic';
 
 enum Api {
   GetCodeImg = '/code',

@@ -16,8 +16,8 @@
   </BasicModal>
 </template>
 
-<script lang="ts">
-  import { computed, defineComponent, ref, unref } from 'vue';
+<script setup lang="ts">
+  import { computed, ref, unref } from 'vue';
   import { Transfer } from 'ant-design-vue';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { BasicModal, useModalInner } from '/@/components/Modal';
@@ -27,64 +27,50 @@
   import { roleFormSchema } from './dept.data';
   import { editAuthDeptScopeApi, getAuthDeptApi } from '@/api/system/organize/dept.api';
 
-  export default defineComponent({
-    name: 'UserRoleModal',
-    components: { BasicModal, BasicForm, Transfer },
-    emits: ['success', 'register'],
-    setup(_, { emit }) {
-      const { createMessage } = useMessage();
-      const roleList = ref<RoleLM>([]);
+  const emit = defineEmits(['success', 'register']);
 
-      const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
-        labelWidth: 70,
-        schemas: roleFormSchema,
-        showActionButtonGroup: false,
-      });
+  const { createMessage } = useMessage();
+  const roleList = ref<RoleLM>([]);
 
-      const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
-        resetFields();
-        roleList.value = [];
-        setModalProps({ confirmLoading: false });
-        const record = data.record as DeptIM;
-        record.roleIds = await getAuthDeptApi(record.id);
-        if (unref(roleList).length === 0) {
-          roleList.value = await optionRoleApi().then((item) => item.items);
-        }
-        setFieldsValue({
-          ...record,
-        });
-      });
-
-      /** 标题初始化 */
-      const getTitle = computed(() => '角色分配');
-
-      /** 提交按钮 */
-      async function handleSubmit() {
-        try {
-          const values = await validate();
-          setModalProps({ confirmLoading: true });
-          await editAuthDeptScopeApi(values.id, values.roleIds).then(() => {
-            closeModal();
-            createMessage.success('角色分配成功！');
-          });
-          emit('success');
-        } finally {
-          setModalProps({ confirmLoading: false });
-        }
-      }
-
-      const filterOption = (inputValue: string, option: RoleIM) => {
-        return option.name.indexOf(inputValue) > -1;
-      };
-
-      return {
-        registerModal,
-        registerForm,
-        getTitle,
-        roleList,
-        handleSubmit,
-        filterOption,
-      };
-    },
+  const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
+    labelWidth: 70,
+    schemas: roleFormSchema,
+    showActionButtonGroup: false,
   });
+
+  const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
+    resetFields();
+    roleList.value = [];
+    setModalProps({ confirmLoading: false });
+    const record = data.record as DeptIM;
+    record.roleIds = await getAuthDeptApi(record.id);
+    if (unref(roleList).length === 0) {
+      roleList.value = await optionRoleApi().then((item) => item.items);
+    }
+    setFieldsValue({
+      ...record,
+    });
+  });
+
+  /** 标题初始化 */
+  const getTitle = computed(() => '角色分配');
+
+  /** 提交按钮 */
+  async function handleSubmit() {
+    try {
+      const values = await validate();
+      setModalProps({ confirmLoading: true });
+      await editAuthDeptScopeApi(values.id, values.roleIds).then(() => {
+        closeModal();
+        createMessage.success('角色分配成功！');
+      });
+      emit('success');
+    } finally {
+      setModalProps({ confirmLoading: false });
+    }
+  }
+
+  const filterOption = (inputValue: string, option: RoleIM) => {
+    return option.name.indexOf(inputValue) > -1;
+  };
 </script>

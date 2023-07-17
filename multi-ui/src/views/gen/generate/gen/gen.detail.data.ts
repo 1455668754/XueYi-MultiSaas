@@ -1,8 +1,8 @@
-import { dicDictList } from '@/api/sys/dict.api';
-import { optionModuleApi } from '@/api/system/authority/module.api';
-import { getMenuRouteListApi } from '@/api/system/authority/menu.api';
-import { optionDictTypeApi } from '@/api/tenant/dict/dictType.api';
-import { FormSchema } from '/@/components/Form';
+import {dicDictList} from '@/api/sys/dict.api';
+import {optionModuleApi} from '@/api/system/authority/module.api';
+import {getMenuRouteListApi} from '@/api/system/authority/menu.api';
+import {optionDictTypeApi} from '@/api/tenant/dict/dictType.api';
+import {FormSchema} from '/@/components/Form';
 import {
   GenerationModeEnum,
   GenStatusEnum,
@@ -10,11 +10,11 @@ import {
   SourceModeEnum,
   TemplateTypeEnum,
 } from '@/enums/gen';
-import { MenuTypeEnum } from '@/enums/system';
-import { BasicColumn } from '/@/components/Table';
-import { GenTableColumnIM, GenTableColumnLM, GenTableLM } from '@/model/gen';
-import { h } from 'vue';
-import { Input, Select, Switch } from 'ant-design-vue';
+import {MenuTypeEnum} from '@/enums/system';
+import {BasicColumn} from '/@/components/Table';
+import {GenTableColumnIM, GenTableColumnLM, GenTableLM} from '@/model/gen';
+import {h} from 'vue';
+import {Input, Select, Switch} from 'ant-design-vue';
 
 /** 字典查询 */
 export const dictMap = await dicDictList([

@@ -1,4 +1,4 @@
-import {ThemeEnum} from '@/enums/basic';
+import { ThemeEnum } from '@/enums/basic';
 
 export const prefixCls = 'xueyi';
 

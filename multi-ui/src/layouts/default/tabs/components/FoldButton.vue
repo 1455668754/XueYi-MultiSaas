@@ -4,7 +4,7 @@
   </span>
 </template>
 <script lang="ts">
-  import { defineComponent, unref, computed } from 'vue';
+  import { computed, defineComponent, unref } from 'vue';
   import Icon from '@/components/Icon/Icon.vue';
 
   import { useDesign } from '/@/hooks/web/useDesign';

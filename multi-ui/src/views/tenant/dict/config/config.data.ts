@@ -1,11 +1,11 @@
-import { FormSchema } from '/@/components/Form';
-import { BasicColumn } from '/@/components/Table';
-import { DescItem } from '/@/components/Description';
-import { dicDictList } from '@/api/sys/dict.api';
-import { DicSortEnum, DicYesNoEnum } from '@/enums/basic';
-import { ConfigIM } from '@/model/tenant';
-import { dictConversion } from '/@/utils/xueyi';
-import { isEmpty, isNil } from 'lodash-es';
+import {FormSchema} from '/@/components/Form';
+import {BasicColumn} from '/@/components/Table';
+import {DescItem} from '/@/components/Description';
+import {dicDictList} from '@/api/sys/dict.api';
+import {DicSortEnum, DicYesNoEnum} from '@/enums/basic';
+import {ConfigIM} from '@/model/tenant';
+import {dictConversion} from '/@/utils/xueyi';
+import {isEmpty, isNil} from 'lodash-es';
 
 /** 字典查询 */
 export const dictMap = await dicDictList(['sys_yes_no']);

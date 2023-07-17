@@ -1,5 +1,5 @@
-import {type AnyFunction} from '@xueyi/types';
-import {tryOnMounted, tryOnUnmounted, useDebounceFn} from '@vueuse/core';
+import { tryOnMounted, tryOnUnmounted, useDebounceFn } from '@vueuse/core';
+import { type AnyFunction } from '@xueyi/types';
 
 interface UseWindowSizeOptions {
   wait?: number;
@@ -9,7 +9,7 @@ interface UseWindowSizeOptions {
 }
 
 function useWindowSizeFn(fn: AnyFunction, options: UseWindowSizeOptions = {}) {
-  const {wait = 150, immediate} = options;
+  const { wait = 150, immediate } = options;
   let handler = () => {
     fn();
   };
@@ -34,7 +34,7 @@ function useWindowSizeFn(fn: AnyFunction, options: UseWindowSizeOptions = {}) {
   tryOnUnmounted(() => {
     stop();
   });
-  return {start, stop};
+  return { start, stop };
 }
 
-export {useWindowSizeFn, type UseWindowSizeOptions};
+export { useWindowSizeFn, type UseWindowSizeOptions };

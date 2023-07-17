@@ -1,8 +1,8 @@
-import type {MenuSetting} from '/#/config';
+import type { MenuSetting } from '/#/config';
 
-import {computed, ref, unref} from 'vue';
+import { computed, ref, unref } from 'vue';
 
-import {useAppStore} from '/@/store/modules/app';
+import { useAppStore } from '/@/store/modules/app';
 
 import {
   MenuModeEnum,
@@ -11,7 +11,7 @@ import {
   SIDE_BAR_SHOW_TIT_MINI_WIDTH,
   TriggerEnum,
 } from '@/enums/basic';
-import {useFullContent} from '/@/hooks/web/useFullContent';
+import { useFullContent } from '/@/hooks/web/useFullContent';
 
 const mixSideHasChildren = ref(false);
 

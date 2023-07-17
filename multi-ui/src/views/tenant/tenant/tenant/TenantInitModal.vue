@@ -41,8 +41,8 @@
   </BasicModal>
 </template>
 
-<script lang="ts">
-  import { computed, defineComponent, ref, unref } from 'vue';
+<script setup lang="ts">
+  import { computed, ref, unref } from 'vue';
   import {
     authorityFormSchema,
     organizeFormSchema,
@@ -55,149 +55,118 @@
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
   import { BasicTree, TreeItem } from '/@/components/Tree';
-  import { Steps } from 'ant-design-vue';
   import { sourceAssign } from '/@/utils/xueyi';
 
-  export default defineComponent({
-    name: 'TenantInitModal',
-    components: {
-      BasicModal,
-      BasicForm,
-      BasicTree,
-      [Steps.name]: Steps,
-      [Steps.Step.name]: Steps.Step,
-    },
-    emits: ['success', 'register'],
-    setup(_, { emit }) {
-      const { createMessage } = useMessage();
-      const current = ref(0);
-      const authTree = ref<TreeItem[]>([]);
-      const authKeys = ref<string[]>([]);
-      const authHalfKeys = ref<string[]>([]);
+  const emit = defineEmits(['success', 'register']);
 
-      const [strategyRegister, { resetFields: strategyResetFields, validate: strategyValidate }] =
-        useForm({
-          labelWidth: 100,
-          schemas: strategyFormSchema,
-          showActionButtonGroup: false,
-        });
+  const { createMessage } = useMessage();
+  const current = ref(0);
+  const authTree = ref<TreeItem[]>([]);
+  const authKeys = ref<string[]>([]);
+  const authHalfKeys = ref<string[]>([]);
 
-      const [tenantRegister, { resetFields: tenantResetFields, validate: tenantValidate }] =
-        useForm({
-          labelWidth: 100,
-          schemas: tenantFormSchema,
-          showActionButtonGroup: false,
-        });
+  const [strategyRegister, { resetFields: strategyResetFields, validate: strategyValidate }] =
+    useForm({
+      labelWidth: 100,
+      schemas: strategyFormSchema,
+      showActionButtonGroup: false,
+    });
 
-      const [organizeRegister, { resetFields: organizeResetFields, validate: organizeValidate }] =
-        useForm({
-          labelWidth: 100,
-          schemas: organizeFormSchema,
-          showActionButtonGroup: false,
-        });
-
-      const [
-        authorityRegister,
-        { resetFields: authorityResetFields, validate: authorityValidate },
-      ] = useForm({
-        labelWidth: 100,
-        schemas: authorityFormSchema,
-        showActionButtonGroup: false,
-      });
-
-      const [registerModal, { setModalProps, closeModal }] = useModalInner(async () => {
-        current.value = 0;
-        Promise.all([
-          strategyResetFields(),
-          tenantResetFields(),
-          organizeResetFields(),
-          authorityResetFields(),
-        ]);
-        authReset();
-        if (unref(authTree).length === 0) {
-          authTree.value = (await authScopeTenantApi()) as any as TreeItem[];
-        }
-        setModalProps({ confirmLoading: false });
-      });
-
-      /** 标题初始化 */
-      const getTitle = computed(() => '新增租户');
-
-      /** 上一步按钮 */
-      function handleStepPrev() {
-        current.value--;
-      }
-
-      /** 下一步按钮 */
-      async function handleStepNext() {
-        switch (current.value) {
-          case 0:
-            await strategyValidate();
-            break;
-          case 1:
-            await tenantValidate();
-            break;
-          case 2:
-            await organizeValidate();
-            break;
-          case 3:
-            await authorityValidate();
-            break;
-        }
-        current.value++;
-      }
-
-      /** 提交按钮 */
-      async function handleSubmit() {
-        try {
-          const [strategy, tenant, organize, authority] = await Promise.all([
-            strategyValidate(),
-            tenantValidate(),
-            organizeValidate(),
-            authorityValidate(),
-          ]);
-          setModalProps({ confirmLoading: true });
-          const data = sourceAssign({}, strategy, tenant, organize, authority);
-          data.authIds = authKeys.value.concat(authHalfKeys.value);
-          await addTenantApi(data).then(() => {
-            closeModal();
-            createMessage.success('新增租户成功！');
-          });
-          emit('success');
-        } finally {
-          setModalProps({ confirmLoading: false });
-        }
-      }
-
-      /** 权限Id重置 */
-      function authReset() {
-        authKeys.value = [];
-        authHalfKeys.value = [];
-      }
-
-      /** 获取权限Id */
-      function authCheck(checkedKeys: string[], e) {
-        authKeys.value = checkedKeys;
-        authHalfKeys.value = e.halfCheckedKeys as string[];
-      }
-
-      return {
-        tenantInitList,
-        current,
-        registerModal,
-        strategyRegister,
-        tenantRegister,
-        organizeRegister,
-        authorityRegister,
-        getTitle,
-        authTree,
-        authCheck,
-        handleStepPrev,
-        handleStepNext,
-        handleSubmit,
-      };
-    },
+  const [tenantRegister, { resetFields: tenantResetFields, validate: tenantValidate }] = useForm({
+    labelWidth: 100,
+    schemas: tenantFormSchema,
+    showActionButtonGroup: false,
   });
+
+  const [organizeRegister, { resetFields: organizeResetFields, validate: organizeValidate }] =
+    useForm({
+      labelWidth: 100,
+      schemas: organizeFormSchema,
+      showActionButtonGroup: false,
+    });
+
+  const [authorityRegister, { resetFields: authorityResetFields, validate: authorityValidate }] =
+    useForm({
+      labelWidth: 100,
+      schemas: authorityFormSchema,
+      showActionButtonGroup: false,
+    });
+
+  const [registerModal, { setModalProps, closeModal }] = useModalInner(async () => {
+    current.value = 0;
+    Promise.all([
+      strategyResetFields(),
+      tenantResetFields(),
+      organizeResetFields(),
+      authorityResetFields(),
+    ]);
+    authReset();
+    if (unref(authTree).length === 0) {
+      authTree.value = (await authScopeTenantApi()) as any as TreeItem[];
+    }
+    setModalProps({ confirmLoading: false });
+  });
+
+  /** 标题初始化 */
+  const getTitle = computed(() => '新增租户');
+
+  /** 上一步按钮 */
+  function handleStepPrev() {
+    current.value--;
+  }
+
+  /** 下一步按钮 */
+  async function handleStepNext() {
+    switch (current.value) {
+      case 0:
+        await strategyValidate();
+        break;
+      case 1:
+        await tenantValidate();
+        break;
+      case 2:
+        await organizeValidate();
+        break;
+      case 3:
+        await authorityValidate();
+        break;
+    }
+    current.value++;
+  }
+
+  /** 提交按钮 */
+  async function handleSubmit() {
+    try {
+      const [strategy, tenant, organize, authority] = await Promise.all([
+        strategyValidate(),
+        tenantValidate(),
+        organizeValidate(),
+        authorityValidate(),
+      ]);
+      setModalProps({ confirmLoading: true });
+      const data = sourceAssign({}, strategy, tenant, organize, authority);
+      data.authIds = authKeys.value.concat(authHalfKeys.value);
+      await addTenantApi(data).then(() => {
+        closeModal();
+        createMessage.success('新增租户成功！');
+      });
+      emit('success');
+    } finally {
+      setModalProps({ confirmLoading: false });
+    }
+  }
+
+  /** 权限Id重置 */
+  function authReset() {
+    authKeys.value = [];
+    authHalfKeys.value = [];
+  }
+
+  /** 获取权限Id */
+  function authCheck(checkedKeys: string[], e) {
+    authKeys.value = checkedKeys;
+    authHalfKeys.value = e.halfCheckedKeys as string[];
+  }
 </script>
 
 <style lang="less" scoped>

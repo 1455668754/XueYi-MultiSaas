@@ -1,5 +1,5 @@
-import {type Recordable} from '@xueyi/types';
-import {getCurrentInstance, reactive, shallowRef, watchEffect} from 'vue';
+import { type Recordable } from '@xueyi/types';
+import { getCurrentInstance, reactive, shallowRef, watchEffect } from 'vue';
 
 interface UseAttrsOptions {
   excludeListeners?: boolean;

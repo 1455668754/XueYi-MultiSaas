@@ -1,10 +1,10 @@
 import type {
-  ComponentRenderProxy,
-  VNode,
-  VNodeChild,
   ComponentPublicInstance,
+  ComponentRenderProxy,
   FunctionalComponent,
   PropType as VuePropType,
+  VNode,
+  VNodeChild,
 } from 'vue';
 
 declare global {

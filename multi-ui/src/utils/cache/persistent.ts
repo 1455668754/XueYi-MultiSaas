@@ -1,9 +1,9 @@
-import type {LockInfo, UserInfo} from '/#/store';
-import type {ProjectConfig} from '/#/config';
-import type {RouteLocationNormalized} from 'vue-router';
+import type { LockInfo, UserInfo } from '/#/store';
+import type { ProjectConfig } from '/#/config';
+import type { RouteLocationNormalized } from 'vue-router';
 
-import {createLocalStorage, createSessionStorage} from '/@/utils/cache';
-import {Memory} from './memory';
+import { createLocalStorage, createSessionStorage } from '/@/utils/cache';
+import { Memory } from './memory';
 import {
   APP_LOCAL_CACHE_KEY,
   APP_SESSION_CACHE_KEY,
@@ -14,9 +14,9 @@ import {
   TOKEN_KEY,
   USER_INFO_KEY,
 } from '@/enums/basic';
-import {DEFAULT_CACHE_TIME} from '/@/settings/encryptionSetting';
-import {toRaw} from 'vue';
-import {omit, pick} from 'lodash-es';
+import { DEFAULT_CACHE_TIME } from '/@/settings/encryptionSetting';
+import { toRaw } from 'vue';
+import { omit, pick } from 'lodash-es';
 
 interface BasicStore {
   [TOKEN_KEY]: string | number | null | undefined;

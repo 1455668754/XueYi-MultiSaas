@@ -16,10 +16,9 @@
 </template>
 <script lang="ts">
   import type { PropType } from 'vue';
+  import { computed, defineComponent, unref } from 'vue';
   import type { RouteLocationNormalized } from 'vue-router';
-
-  import { defineComponent, computed, unref } from 'vue';
-  import { Dropdown } from '/@/components/Dropdown/index';
+  import { Dropdown } from '/@/components/Dropdown';
   import Icon from '@/components/Icon/Icon.vue';
 
   import { TabContentProps } from '../types';

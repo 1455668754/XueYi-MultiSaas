@@ -1,24 +1,24 @@
 // axios配置  可自行根据项目进行更改，只需更改该文件即可，其他文件可以不动
 // The axios configuration can be changed according to the project, just change the file, other files can be left unchanged
 
-import type {AxiosInstance, AxiosResponse} from 'axios';
+import type { AxiosInstance, AxiosResponse } from 'axios';
 import axios from 'axios';
-import {clone} from 'lodash-es';
-import type {RequestOptions, Result} from '/#/axios';
-import type {AxiosTransform, CreateAxiosOptions} from './axiosTransform';
-import {VAxios} from './Axios';
-import {checkStatus} from './checkStatus';
-import {useGlobSetting} from '/@/hooks/setting';
-import {useMessage} from '/@/hooks/web/useMessage';
-import {ContentTypeEnum, RequestEnum, ResultEnum} from '@/enums/basic';
-import {isEmpty, isNull, isString, isUnDef} from '/@/utils/is';
-import {getToken} from '/@/utils/auth';
-import {deepMerge, setObjToUrlParams} from '/@/utils';
-import {useErrorLogStoreWithOut} from '/@/store/modules/errorLog';
-import {useI18n} from '/@/hooks/web/useI18n';
-import {formatRequestDate, joinTimestamp} from './helper';
-import {useUserStoreWithOut} from '/@/store/modules/user';
-import {AxiosRetry} from '/@/utils/http/axios/axiosRetry';
+import { clone } from 'lodash-es';
+import type { RequestOptions, Result } from '/#/axios';
+import type { AxiosTransform, CreateAxiosOptions } from './axiosTransform';
+import { VAxios } from './Axios';
+import { checkStatus } from './checkStatus';
+import { useGlobSetting } from '/@/hooks/setting';
+import { useMessage } from '/@/hooks/web/useMessage';
+import { ContentTypeEnum, RequestEnum, ResultEnum } from '@/enums/basic';
+import { isEmpty, isNull, isString, isUnDef } from '/@/utils/is';
+import { getToken } from '/@/utils/auth';
+import { deepMerge, setObjToUrlParams } from '/@/utils';
+import { useErrorLogStoreWithOut } from '/@/store/modules/errorLog';
+import { useI18n } from '/@/hooks/web/useI18n';
+import { formatRequestDate, joinTimestamp } from './helper';
+import { useUserStoreWithOut } from '/@/store/modules/user';
+import { AxiosRetry } from '/@/utils/http/axios/axiosRetry';
 
 const globSetting = useGlobSetting();
 const urlPrefix = globSetting.urlPrefix;

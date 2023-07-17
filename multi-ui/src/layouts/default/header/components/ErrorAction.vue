@@ -6,42 +6,42 @@
     @click="handleToErrorList"
   >
     <Badge :count="getCount" :offset="[0, 10]" :overflowCount="99">
-      <Icon icon="ion:bug-outline"/>
+      <Icon icon="ion:bug-outline" />
     </Badge>
   </Tooltip>
 </template>
 <script lang="ts">
-import {computed, defineComponent} from 'vue';
-import {Badge, Tooltip} from 'ant-design-vue';
-import Icon from '@/components/Icon/Icon.vue';
-import {useI18n} from '/@/hooks/web/useI18n';
-import {useErrorLogStore} from '/@/store/modules/errorLog';
-import {PageEnum} from '@/enums/basic';
+  import { computed, defineComponent } from 'vue';
+  import { Badge, Tooltip } from 'ant-design-vue';
+  import Icon from '@/components/Icon/Icon.vue';
+  import { useI18n } from '/@/hooks/web/useI18n';
+  import { useErrorLogStore } from '/@/store/modules/errorLog';
+  import { PageEnum } from '@/enums/basic';
 
-import {useRouter} from 'vue-router';
+  import { useRouter } from 'vue-router';
 
-export default defineComponent({
-  name: 'ErrorAction',
-  components: {Icon, Tooltip, Badge},
+  export default defineComponent({
+    name: 'ErrorAction',
+    components: { Icon, Tooltip, Badge },
 
-  setup() {
-    const {t} = useI18n();
-    const {push} = useRouter();
-    const errorLogStore = useErrorLogStore();
+    setup() {
+      const { t } = useI18n();
+      const { push } = useRouter();
+      const errorLogStore = useErrorLogStore();
 
-    const getCount = computed(() => errorLogStore.getErrorLogListCount);
+      const getCount = computed(() => errorLogStore.getErrorLogListCount);
 
-    function handleToErrorList() {
-      push(PageEnum.ERROR_LOG_PAGE).then(() => {
-        errorLogStore.setErrorLogListCount(0);
-      });
-    }
+      function handleToErrorList() {
+        push(PageEnum.ERROR_LOG_PAGE).then(() => {
+          errorLogStore.setErrorLogListCount(0);
+        });
+      }
 
-    return {
-      t,
-      getCount,
-      handleToErrorList,
-    };
-  },
-});
+      return {
+        t,
+        getCount,
+        handleToErrorList,
+      };
+    },
+  });
 </script>

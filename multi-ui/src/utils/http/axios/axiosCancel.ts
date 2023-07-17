@@ -1,4 +1,4 @@
-import type { AxiosRequestConfig } from 'axios';
+import type {AxiosRequestConfig} from 'axios';
 
 // 用于存储每个请求的标识和取消函数
 const pendingMap = new Map<string, AbortController>();

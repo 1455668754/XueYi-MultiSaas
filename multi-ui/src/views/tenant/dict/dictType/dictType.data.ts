@@ -1,11 +1,11 @@
-import { FormSchema } from '/@/components/Form';
-import { BasicColumn } from '/@/components/Table';
-import { DescItem } from '/@/components/Description';
-import { dicDictList } from '@/api/sys/dict.api';
-import { dictConversion } from '/@/utils/xueyi';
-import { isEmpty, isNil } from 'lodash-es';
-import { DicSortEnum, DicStatusEnum } from '@/enums/basic';
-import { DictTypeIM } from '@/model/tenant';
+import {FormSchema} from '/@/components/Form';
+import {BasicColumn} from '/@/components/Table';
+import {DescItem} from '/@/components/Description';
+import {dicDictList} from '@/api/sys/dict.api';
+import {dictConversion} from '/@/utils/xueyi';
+import {isEmpty, isNil} from 'lodash-es';
+import {DicSortEnum, DicStatusEnum} from '@/enums/basic';
+import {DictTypeIM} from '@/model/tenant';
 
 /** 字典查询 */
 export const dictMap = await dicDictList(['sys_normal_disable']);

@@ -28,8 +28,9 @@
 </template>
 <script lang="ts">
   import type { RouteLocationNormalized, RouteMeta } from 'vue-router';
+  import { useRouter } from 'vue-router';
 
-  import { defineComponent, computed, unref, ref } from 'vue';
+  import { computed, defineComponent, ref, unref } from 'vue';
 
   import { Tabs } from 'ant-design-vue';
   import TabContent from './components/TabContent.vue';
@@ -47,8 +48,6 @@
 
   import { REDIRECT_NAME } from '/@/router/constant';
   import { listenerRouteChange } from '/@/logics/mitt/routeChange';
-
-  import { useRouter } from 'vue-router';
 
   export default defineComponent({
     name: 'MultipleTabs',

@@ -1,12 +1,12 @@
 /**
  * Multi-language related operations
  */
-import type {LocaleType} from '/#/config';
+import type { LocaleType } from '/#/config';
 
-import {i18n} from './setupI18n';
-import {useLocaleStoreWithOut} from '/@/store/modules/locale';
-import {unref, computed} from 'vue';
-import {loadLocalePool, setHtmlPageLang} from './helper';
+import { i18n } from './setupI18n';
+import { useLocaleStoreWithOut } from '/@/store/modules/locale';
+import { computed, unref } from 'vue';
+import { loadLocalePool, setHtmlPageLang } from './helper';
 
 interface LangModule {
   message: Recordable;

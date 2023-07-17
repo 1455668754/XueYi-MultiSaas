@@ -1,10 +1,10 @@
-import { FormSchema } from '/@/components/Form';
-import { BasicColumn } from '/@/components/Table';
-import { dicDictList } from '@/api/sys/dict.api';
-import { dictConversion } from '/@/utils/xueyi';
-import { DicSortEnum, DicStatusEnum, DicYesNoEnum } from '@/enums/basic';
-import { DictDataIM } from '@/model/tenant';
-import { optionDictTypeApi } from '@/api/tenant/dict/dictType.api';
+import {FormSchema} from '/@/components/Form';
+import {BasicColumn} from '/@/components/Table';
+import {dicDictList} from '@/api/sys/dict.api';
+import {dictConversion} from '/@/utils/xueyi';
+import {DicSortEnum, DicStatusEnum, DicYesNoEnum} from '@/enums/basic';
+import {DictDataIM} from '@/model/tenant';
+import {optionDictTypeApi} from '@/api/tenant/dict/dictType.api';
 
 /** 字典查询 */
 export const dictMap = await dicDictList(['sys_yes_no', 'sys_dict_color', 'sys_normal_disable']);

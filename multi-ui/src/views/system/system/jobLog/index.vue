@@ -25,100 +25,100 @@
         />
       </template>
     </BasicTable>
-    <JobLogModal @register="registerModal" @success="handleSuccess"/>
+    <JobLogModal @register="registerModal" @success="handleSuccess" />
   </div>
 </template>
 
 <script lang="ts">
-import {defineComponent, ref} from 'vue';
-import {useModal} from '/@/components/Modal';
-import {IconEnum} from '@/enums/basic';
-import {BasicTable, TableAction, useTable} from '/@/components/Table';
-import {JobAuth} from '/@/auth/system';
-import {columns, searchFormSchema} from './jobLog.data';
-import JobLogModal from './JobLogModal.vue';
-import {cleanJobLogApi, listJobLogApi} from '@/api/system/system/jobLog.api';
-import {useRoute} from 'vue-router';
-import {useMessage} from '/@/hooks/web/useMessage';
-import {isEmpty} from 'lodash-es';
+  import { defineComponent, ref } from 'vue';
+  import { useModal } from '/@/components/Modal';
+  import { IconEnum } from '@/enums/basic';
+  import { BasicTable, TableAction, useTable } from '/@/components/Table';
+  import { JobAuth } from '/@/auth/system';
+  import { columns, searchFormSchema } from './jobLog.data';
+  import JobLogModal from './JobLogModal.vue';
+  import { cleanJobLogApi, listJobLogApi } from '@/api/system/system/jobLog.api';
+  import { useRoute } from 'vue-router';
+  import { useMessage } from '/@/hooks/web/useMessage';
+  import { isEmpty } from 'lodash-es';
 
-export default defineComponent({
-  name: 'JobLogManagement',
-  components: {BasicTable, JobLogModal, TableAction},
-  setup() {
-    const route = useRoute();
-    const jobId = ref(route.params.id as string);
+  export default defineComponent({
+    name: 'JobLogManagement',
+    components: { BasicTable, JobLogModal, TableAction },
+    setup() {
+      const route = useRoute();
+      const jobId = ref(route.params.id as string);
 
-    const {createMessage, createConfirm} = useMessage();
-    const [registerModal, {openModal}] = useModal();
-    const [registerTable, {reload, getForm}] = useTable({
-      title: '调度日志列表',
-      api: listJobLogApi,
-      striped: false,
-      useSearchForm: true,
-      rowKey: 'id',
-      bordered: true,
-      showIndexColumn: true,
-      columns,
-      formConfig: {
-        labelWidth: 120,
-        schemas: searchFormSchema,
-      },
-      showTableSetting: true,
-      tableSetting: {
-        fullScreen: true,
-      },
-      actionColumn: {
-        width: 120,
-        title: '操作',
-        dataIndex: 'action',
-        slots: {customRender: 'action'},
-      },
-      beforeFetch(info) {
-        if (isEmpty(info.jobId)) {
-          info.jobId = jobId.value;
-          jobId.value = '';
-          getForm().setFieldsValue({jobId: info.jobId});
-        }
-        return info;
-      },
-    });
-
-    /** 查看按钮 */
-    function handleView(record: Recordable) {
-      openModal(true, {
-        record,
-        isUpdate: true,
-      });
-    }
-
-    /** 清空按钮 */
-    function handleClean() {
-      createConfirm({
-        iconType: 'warning',
-        title: '提示',
-        content: '是否确定要清空调度日志?',
-        onOk: () => {
-          cleanJobLogApi();
-          createMessage.success('清空成功！');
-          reload();
+      const { createMessage, createConfirm } = useMessage();
+      const [registerModal, { openModal }] = useModal();
+      const [registerTable, { reload, getForm }] = useTable({
+        title: '调度日志列表',
+        api: listJobLogApi,
+        striped: false,
+        useSearchForm: true,
+        rowKey: 'id',
+        bordered: true,
+        showIndexColumn: true,
+        columns,
+        formConfig: {
+          labelWidth: 120,
+          schemas: searchFormSchema,
+        },
+        showTableSetting: true,
+        tableSetting: {
+          fullScreen: true,
+        },
+        actionColumn: {
+          width: 120,
+          title: '操作',
+          dataIndex: 'action',
+          slots: { customRender: 'action' },
+        },
+        beforeFetch(info) {
+          if (isEmpty(info.jobId)) {
+            info.jobId = jobId.value;
+            jobId.value = '';
+            getForm().setFieldsValue({ jobId: info.jobId });
+          }
+          return info;
         },
       });
-    }
 
-    function handleSuccess() {
-      reload();
-    }
+      /** 查看按钮 */
+      function handleView(record: Recordable) {
+        openModal(true, {
+          record,
+          isUpdate: true,
+        });
+      }
 
-    return {
-      IconEnum,
-      JobAuth,
-      registerTable,
-      registerModal,
-      handleView,
-      handleClean,
-      handleSuccess,
-    };
-  },
-});
+      /** 清空按钮 */
+      function handleClean() {
+        createConfirm({
+          iconType: 'warning',
+          title: '提示',
+          content: '是否确定要清空调度日志?',
+          onOk: () => {
+            cleanJobLogApi();
+            createMessage.success('清空成功！');
+            reload();
+          },
+        });
+      }
+
+      function handleSuccess() {
+        reload();
+      }
+
+      return {
+        IconEnum,
+        JobAuth,
+        registerTable,
+        registerModal,
+        handleView,
+        handleClean,
+        handleSuccess,
+      };
+    },
+  });
 </script>
