@@ -1,7 +1,9 @@
 package com.xueyi.common.security.aspect;
 
+import cn.hutool.core.annotation.AnnotationUtil;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.exception.InnerAuthException;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.utils.servlet.ServletUtil;
 import com.xueyi.common.security.annotation.AdminAuth;
@@ -12,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -31,7 +34,11 @@ public class AuthAspect implements Ordered {
      */
     @SneakyThrows
     @Around("@within(innerAuth) || @annotation(innerAuth)")
-    public Object innerAround(ProceedingJoinPoint point, InnerAuth innerAuth) throws Throwable {
+    public Object innerAround(ProceedingJoinPoint point, InnerAuth innerAuth) {
+        if (ObjectUtil.isNull(innerAuth)) {
+            MethodSignature signature = (MethodSignature) point.getSignature();
+            innerAuth = AnnotationUtil.getAnnotation(signature.getMethod().getDeclaringClass(), InnerAuth.class);
+        }
         HttpServletRequest request = ServletUtil.getRequest();
         Assert.notNull(request, "request cannot be null");
         String source = request.getHeader(SecurityConstants.FROM_SOURCE);
@@ -42,7 +49,7 @@ public class AuthAspect implements Ordered {
         }
 
         // 用户信息验证
-        if (innerAuth.isUser()) {
+        if (ObjectUtil.isNotNull(innerAuth) && innerAuth.isUser()) {
             String enterpriseId = request.getHeader(SecurityConstants.BaseSecurity.ENTERPRISE_ID.getCode());
             String userId = request.getHeader(SecurityConstants.BaseSecurity.USER_ID.getCode());
             String sourceName = request.getHeader(SecurityConstants.BaseSecurity.SOURCE_NAME.getCode());
