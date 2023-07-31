@@ -3,6 +3,7 @@ package com.xueyi.system.api.dict.domain.po;
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.xueyi.common.core.web.tenant.base.TBaseEntity;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -47,5 +48,10 @@ public class SysDictTypePo extends TBaseEntity {
     @NotBlank(message = "字典名称不能为空")
     @Size(max = 100, message = "字典名称长度不能超过100个字符")
     protected String name;
+
+    /** 租户Id */
+    @JsonIgnore
+    @TableField
+    protected Long tenantId;
 
 }

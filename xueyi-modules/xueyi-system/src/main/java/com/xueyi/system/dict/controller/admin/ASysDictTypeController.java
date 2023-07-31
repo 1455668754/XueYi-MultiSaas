@@ -58,8 +58,10 @@ public class ASysDictTypeController extends BSysDictTypeController {
     @Override
     @GetMapping("/list")
     @PreAuthorize("@ss.hasAuthority(@Auth.SYS_DICT_LIST)")
-    public AjaxResult list(SysDictTypeQuery dictType) {
-        return super.list(dictType);
+    public AjaxResult list(SysDictTypeQuery query) {
+        startPage();
+        List<SysDictTypeDto> list = baseService.selectAllListScope(query);
+        return getDataTable(list);
     }
 
     /**

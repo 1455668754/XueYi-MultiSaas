@@ -9,6 +9,7 @@ import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.utils.route.MMetaVo;
 import com.xueyi.system.utils.route.MRouterVo;
 import com.xueyi.system.utils.route.MTagVo;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -181,6 +182,7 @@ public class MRouteUtils {
     }
 
     /** 组件标识 */
+    @Getter
     private enum ComponentType {
 
         LAYOUT("LAYOUT"),
@@ -190,10 +192,6 @@ public class MRouteUtils {
 
         ComponentType(String code) {
             this.code = code;
-        }
-
-        public String getCode() {
-            return code;
         }
 
     }

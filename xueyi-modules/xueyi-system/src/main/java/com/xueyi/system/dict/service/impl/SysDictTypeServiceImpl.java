@@ -12,6 +12,7 @@ import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.entity.base.BasisEntity;
 import com.xueyi.common.redis.constant.RedisConstants;
 import com.xueyi.common.security.utils.SecurityUtils;
+import com.xueyi.common.web.annotation.TenantIgnore;
 import com.xueyi.common.web.correlate.contant.CorrelateConstants;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
@@ -47,13 +48,25 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeQuery, Sy
     private ISysDictDataService dictDataService;
 
     /**
+     * 查询全部字典数据列表
+     *
+     * @param query 字典数据查询对象
+     * @return 字典数据对象集合
+     */
+    @Override
+    @TenantIgnore
+    public List<SysDictTypeDto> selectAllListScope(SysDictTypeQuery query) {
+        SysDictTypeCorrelate correlate = SysDictTypeCorrelate.EN_INFO_LIST;
+        return subCorrelates(selectList(query), correlate);
+    }
+
+    /**
      * 默认方法关联配置定义
      */
     @Override
     protected Map<CorrelateConstants.ServiceType, SysDictTypeCorrelate> defaultCorrelate() {
         return new HashMap<>() {{
-            put(CorrelateConstants.ServiceType.SELECT, SysDictTypeCorrelate.INFO_LIST);
-            put(CorrelateConstants.ServiceType.CACHE_REFRESH, SysDictTypeCorrelate.INFO_LIST);
+            put(CorrelateConstants.ServiceType.CACHE_REFRESH, SysDictTypeCorrelate.CACHE_REFRESH);
             put(CorrelateConstants.ServiceType.DELETE, SysDictTypeCorrelate.BASE_DEL);
         }};
     }
