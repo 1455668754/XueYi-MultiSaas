@@ -1,9 +1,9 @@
-import {DictLM} from '@/model/sys';
-import {h} from 'vue';
-import {Tag} from 'ant-design-vue';
-import {isArray} from './is';
-import {deepMerge} from '@/utils/index';
-import {cloneDeep, includes, isNil} from 'lodash-es';
+import { DictLM } from '@/model/sys';
+import { h } from 'vue';
+import { Tag } from 'ant-design-vue';
+import { isArray } from './is';
+import { deepMerge } from '@/utils/index';
+import { cloneDeep, includes, isNil } from 'lodash-es';
 
 /** 字典转换 */
 export function dictConvert(dictOptions: DictLM, val: string): string {
