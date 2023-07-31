@@ -27,7 +27,14 @@
           // Animation execution time
         }, 1200);
       }
+
       return { prefixCls, handleRedo, loading };
     },
   });
 </script>
+
+<style lang="less" scoped>
+  span.anticon-redo {
+    vertical-align: baseline !important;
+  }
+</style>
