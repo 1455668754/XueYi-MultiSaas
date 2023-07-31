@@ -1,13 +1,13 @@
-import {FormSchema} from '/@/components/Form';
-import {BasicColumn} from '/@/components/Table';
-import {DescItem} from '/@/components/Description';
-import {dicDictList} from '@/api/sys/dict.api';
-import {dictConversion} from '/@/utils/xueyi';
-import {ColorEnum, DicSortEnum, DicStatusEnum, DicYesNoEnum} from '@/enums/basic';
-import {TenantIM} from '@/model/tenant';
-import {optionStrategyApi} from '@/api/tenant/source/strategy.api';
-import {h} from 'vue';
-import {Tag} from 'ant-design-vue';
+import { FormSchema } from '/@/components/Form';
+import { BasicColumn } from '/@/components/Table';
+import { DescItem } from '/@/components/Description';
+import { dicDictList } from '@/api/sys/dict.api';
+import { dictConversion } from '/@/utils/xueyi';
+import { ColorEnum, DicSortEnum, DicStatusEnum, DicYesNoEnum } from '@/enums/basic';
+import { TenantIM } from '@/model/tenant';
+import { optionStrategyApi } from '@/api/tenant/source/strategy.api';
+import { h } from 'vue';
+import { Tag } from 'ant-design-vue';
 
 /** 字典查询 */
 export const dictMap = await dicDictList(['sys_yes_no', 'sys_normal_disable']);
@@ -20,10 +20,10 @@ export const dict: any = {
 
 /** 租户新增分页数据 */
 export const tenantInitList = [
-  {key: 'strategy', title: '策略源', current: 0},
-  {key: 'tenant', title: '租户信息', current: 1},
-  {key: 'organize', title: '租户数据', current: 2},
-  {key: 'authority', title: '租户权限', current: 3},
+  { key: 'strategy', title: '策略源', current: 0 },
+  { key: 'tenant', title: '租户信息', current: 1 },
+  { key: 'organize', title: '租户数据', current: 2 },
+  { key: 'authority', title: '租户权限', current: 3 },
 ];
 
 /** 表格数据 */
@@ -31,9 +31,9 @@ export const columns: BasicColumn[] = [
   {
     title: '租户账号',
     dataIndex: 'name',
-    customRender: ({record}) => {
+    customRender: ({ record }) => {
       const data = record as TenantIM;
-      return h(Tag, {color: ColorEnum.BLUE}, () => data.name);
+      return h(Tag, { color: ColorEnum.BLUE }, () => data.name);
     },
     width: 220,
   },
@@ -50,6 +50,7 @@ export const columns: BasicColumn[] = [
   {
     title: '租户logo',
     dataIndex: 'logo',
+    slots: { customRender: 'logo' },
     width: 220,
   },
   {
@@ -60,9 +61,9 @@ export const columns: BasicColumn[] = [
   {
     title: '修改次数',
     dataIndex: 'nameFrequency',
-    customRender: ({record}) => {
+    customRender: ({ record }) => {
       const data = record as TenantIM;
-      return h(Tag, {color: ColorEnum.CYAN}, () => data.nameFrequency);
+      return h(Tag, { color: ColorEnum.CYAN }, () => data.nameFrequency);
     },
     width: 220,
   },
@@ -70,7 +71,7 @@ export const columns: BasicColumn[] = [
     title: '状态',
     dataIndex: 'status',
     width: 220,
-    customRender: ({record}) => {
+    customRender: ({ record }) => {
       const data = record as TenantIM;
       return dictConversion(dict.DicNormalDisableOptions, data.status);
     },
@@ -79,7 +80,7 @@ export const columns: BasicColumn[] = [
     title: '超管租户',
     dataIndex: 'isLessor',
     width: 220,
-    customRender: ({record}) => {
+    customRender: ({ record }) => {
       const data = record as TenantIM;
       return dictConversion(dict.DicYesNoOptions, data.isLessor);
     },
@@ -88,7 +89,7 @@ export const columns: BasicColumn[] = [
     title: '默认租户',
     dataIndex: 'isDefault',
     width: 220,
-    customRender: ({record}) => {
+    customRender: ({ record }) => {
       const data = record as TenantIM;
       return dictConversion(dict.DicYesNoOptions, data.isDefault);
     },
@@ -114,25 +115,25 @@ export const searchFormSchema: FormSchema[] = [
       labelField: 'name',
       valueField: 'id',
     },
-    colProps: {span: 6},
+    colProps: { span: 6 },
   },
   {
     label: '租户账号',
     field: 'name',
     component: 'Input',
-    colProps: {span: 6},
+    colProps: { span: 6 },
   },
   {
     label: '系统名称',
     field: 'systemName',
     component: 'Input',
-    colProps: {span: 6},
+    colProps: { span: 6 },
   },
   {
     label: '租户名称',
     field: 'nick',
     component: 'Input',
-    colProps: {span: 6},
+    colProps: { span: 6 },
   },
   {
     label: '超管租户',
@@ -143,7 +144,7 @@ export const searchFormSchema: FormSchema[] = [
       showSearch: true,
       optionFilterProp: 'label',
     },
-    colProps: {span: 6},
+    colProps: { span: 6 },
   },
   {
     label: '状态',
@@ -154,7 +155,7 @@ export const searchFormSchema: FormSchema[] = [
       showSearch: true,
       optionFilterProp: 'label',
     },
-    colProps: {span: 6},
+    colProps: { span: 6 },
   },
   {
     label: '默认租户',
@@ -165,7 +166,7 @@ export const searchFormSchema: FormSchema[] = [
       showSearch: true,
       optionFilterProp: 'label',
     },
-    colProps: {span: 6},
+    colProps: { span: 6 },
   },
 ];
 
@@ -185,7 +186,7 @@ export const strategyFormSchema: FormSchema[] = [
     },
     helpMessage: '租户使用过程中产生数据所存储数据源对应的源策略',
     required: true,
-    colProps: {span: 24},
+    colProps: { span: 24 },
   },
 ];
 
@@ -197,7 +198,7 @@ export const tenantFormSchema: FormSchema[] = [
     component: 'Input',
     helpMessage: '租户的名称：如雪忆科技',
     required: true,
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '租户账号',
@@ -205,7 +206,7 @@ export const tenantFormSchema: FormSchema[] = [
     component: 'Input',
     helpMessage: '租户登录时的企业账号',
     required: true,
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '系统名称',
@@ -213,13 +214,13 @@ export const tenantFormSchema: FormSchema[] = [
     component: 'Input',
     helpMessage: '租户登录系统后显示的系统名称',
     required: true,
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '租户logo',
     field: 'tenant.logo',
-    component: 'Upload',
-    colProps: {span: 24},
+    component: 'ImageUpload',
+    colProps: { span: 24 },
   },
   {
     label: '超管租户',
@@ -230,7 +231,7 @@ export const tenantFormSchema: FormSchema[] = [
       options: dict.DicYesNoOptions,
     },
     helpMessage: '超管租户具备比普通租户更高的权限，比如租户管理等',
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '状态',
@@ -240,7 +241,7 @@ export const tenantFormSchema: FormSchema[] = [
     componentProps: {
       options: dict.DicNormalDisableOptions,
     },
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '修改次数',
@@ -248,20 +249,20 @@ export const tenantFormSchema: FormSchema[] = [
     component: 'InputNumber',
     defaultValue: DicSortEnum.FIVE,
     helpMessage: '租户账号允许被修改的次数',
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '显示顺序',
     field: 'tenant.sort',
     component: 'InputNumber',
     defaultValue: DicSortEnum.ZERO,
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '备注',
     field: 'tenant.remark',
     component: 'InputTextArea',
-    colProps: {span: 24},
+    colProps: { span: 24 },
   },
 ];
 
@@ -271,7 +272,7 @@ export const organizeFormSchema: FormSchema[] = [
     label: '组织信息',
     field: '',
     component: 'Divider',
-    colProps: {span: 24},
+    colProps: { span: 24 },
   },
   {
     label: '部门名称',
@@ -279,7 +280,7 @@ export const organizeFormSchema: FormSchema[] = [
     field: 'dept.name',
     component: 'Input',
     required: true,
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '岗位名称',
@@ -287,13 +288,13 @@ export const organizeFormSchema: FormSchema[] = [
     field: 'post.name',
     component: 'Input',
     required: true,
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '管理员信息',
     field: '',
     component: 'Divider',
-    colProps: {span: 24},
+    colProps: { span: 24 },
   },
   {
     label: '账号',
@@ -302,7 +303,7 @@ export const organizeFormSchema: FormSchema[] = [
     component: 'Input',
     helpMessage: '新租户初始管理员的用户账号',
     required: true,
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '昵称',
@@ -311,7 +312,7 @@ export const organizeFormSchema: FormSchema[] = [
     component: 'Input',
     helpMessage: '新租户初始管理员的用户昵称',
     required: true,
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '密码',
@@ -320,7 +321,7 @@ export const organizeFormSchema: FormSchema[] = [
     component: 'InputPassword',
     helpMessage: ['新租户初始管理员的密码', '初始密码：123456'],
     required: true,
-    colProps: {span: 24},
+    colProps: { span: 24 },
   },
 ];
 
@@ -331,7 +332,7 @@ export const authorityFormSchema: FormSchema[] = [
     field: 'authIds',
     slot: 'menu',
     component: 'Input',
-    colProps: {span: 24},
+    colProps: { span: 24 },
   },
 ];
 
@@ -342,7 +343,7 @@ export const formSchema: FormSchema[] = [
     field: 'id',
     component: 'Input',
     show: false,
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '租户名称',
@@ -350,7 +351,7 @@ export const formSchema: FormSchema[] = [
     component: 'Input',
     helpMessage: '租户的名称：如雪忆科技',
     required: true,
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '租户账号',
@@ -358,7 +359,7 @@ export const formSchema: FormSchema[] = [
     component: 'Input',
     helpMessage: '租户登录时的企业账号',
     dynamicDisabled: true,
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '系统名称',
@@ -366,7 +367,7 @@ export const formSchema: FormSchema[] = [
     component: 'Input',
     helpMessage: '租户登录系统后显示的系统名称',
     required: true,
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '源策略',
@@ -382,13 +383,13 @@ export const formSchema: FormSchema[] = [
     },
     helpMessage: '租户使用过程中产生数据所存储数据源对应的源策略',
     dynamicDisabled: true,
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '租户logo',
     field: 'logo',
-    component: 'Upload',
-    colProps: {span: 24},
+    component: 'ImageUpload',
+    colProps: { span: 24 },
   },
   {
     label: '超管租户',
@@ -399,7 +400,7 @@ export const formSchema: FormSchema[] = [
       options: dict.DicYesNoOptions,
     },
     helpMessage: '超管租户具备比普通租户更高的权限，比如租户管理等',
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '状态',
@@ -409,7 +410,7 @@ export const formSchema: FormSchema[] = [
     componentProps: {
       options: dict.DicNormalDisableOptions,
     },
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '修改次数',
@@ -417,20 +418,20 @@ export const formSchema: FormSchema[] = [
     component: 'InputNumber',
     defaultValue: DicSortEnum.FIVE,
     helpMessage: '租户账号允许被修改的次数',
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '显示顺序',
     field: 'sort',
     component: 'InputNumber',
     defaultValue: DicSortEnum.ZERO,
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '备注',
     field: 'remark',
     component: 'InputTextArea',
-    colProps: {span: 24},
+    colProps: { span: 24 },
   },
 ];
 
@@ -441,21 +442,21 @@ export const authFormSchema: FormSchema[] = [
     field: 'id',
     component: 'Input',
     show: false,
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '租户名称',
     field: 'name',
     component: 'Input',
     dynamicDisabled: true,
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: ' ',
     field: 'authIds',
     slot: 'menu',
     component: 'Input',
-    colProps: {span: 24},
+    colProps: { span: 24 },
   },
 ];
 

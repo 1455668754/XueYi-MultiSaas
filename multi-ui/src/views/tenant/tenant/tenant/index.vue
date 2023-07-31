@@ -20,6 +20,9 @@
           删除
         </a-button>
       </template>
+      <template #logo="{ text }">
+        <Image :height="30" :width="30" :src="text" />
+      </template>
       <template #action="{ record }">
         <TableAction
           :actions="[
@@ -73,6 +76,7 @@
   import TenantInitModal from './TenantInitModal.vue';
   import TenantAuthModal from './TenantAuthModal.vue';
   import { IconEnum, TenantTypeEnum } from '@/enums/basic';
+  import { Image } from 'ant-design-vue';
 
   const go = useGo();
   const { createMessage, createConfirm } = useMessage();
