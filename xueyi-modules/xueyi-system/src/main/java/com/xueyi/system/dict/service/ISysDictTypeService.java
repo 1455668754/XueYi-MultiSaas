@@ -15,7 +15,7 @@ import java.util.List;
 public interface ISysDictTypeService extends IBaseService<SysDictTypeQuery, SysDictTypeDto> {
 
     /**
-     * 查询全部字典数据列表
+     * 查询全部字典数据列表 | 全局
      *
      * @param query 字典数据查询对象
      * @return 字典数据对象集合

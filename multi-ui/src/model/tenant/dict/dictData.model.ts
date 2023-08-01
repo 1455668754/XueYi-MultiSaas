@@ -6,12 +6,10 @@ export interface DictDataIM extends BaseEntity {
   code: string;
   value: string;
   label: string;
-  sort: number;
   isDefault: string;
   cssClass: string;
   listClass: string;
   status: string;
-  remark: string;
 }
 
 /** dictData list model */
@@ -19,13 +17,9 @@ export type DictDataLM = DictDataIM[];
 
 /** dictData param model */
 export interface DictDataPM extends BaseEntity {
-  id?: string;
   code?: string;
   value?: string;
   label?: string;
-  isDefault?: string;
-  cssClass?: string;
-  listClass?: string;
   status?: string;
 }
 

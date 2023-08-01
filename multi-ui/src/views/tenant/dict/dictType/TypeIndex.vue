@@ -39,6 +39,12 @@
               onClick: handleEdit.bind(null, record),
             },
             {
+              icon: 'ant-design:read-outlined',
+              tooltip: '字典数据',
+              auth: DictTypeAuth.DICT,
+              onClick: handleDict.bind(null, record),
+            },
+            {
               icon: IconEnum.DELETE,
               tooltip: '删除',
               auth: DictTypeAuth.DELETE,
@@ -64,6 +70,7 @@
   import DictTypeModal from './DictTypeModal.vue';
   import { typeColumns, typeSearchFormSchema } from './dict.data';
 
+  const emit = defineEmits(['dict-change']);
   const { createMessage, createConfirm } = useMessage();
   const [registerModal, { openModal }] = useModal();
   const state = reactive<{
@@ -80,6 +87,7 @@
     useSearchForm: true,
     rowKey: 'id',
     bordered: true,
+    clickToRowSelect: true,
     showIndexColumn: true,
     columns: typeColumns,
     isCanResizeParent: true,
@@ -92,7 +100,7 @@
       fullScreen: true,
     },
     actionColumn: {
-      width: 120,
+      width: 180,
       title: '操作',
       dataIndex: 'action',
       slots: { customRender: 'action' },
@@ -114,6 +122,11 @@
     openModal(true, {
       isUpdate: false,
     });
+  }
+
+  /** 字典管理按钮 */
+  function handleDict(record: Recordable) {
+    emit('dict-change', record);
   }
 
   /** 修改按钮 */

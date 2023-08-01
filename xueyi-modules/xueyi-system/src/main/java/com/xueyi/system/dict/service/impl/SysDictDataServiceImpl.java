@@ -6,6 +6,7 @@ import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.redis.constant.RedisConstants;
 import com.xueyi.common.security.utils.SecurityUtils;
+import com.xueyi.common.web.annotation.TenantIgnore;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
 import com.xueyi.system.api.dict.domain.po.SysDictDataPo;
@@ -15,6 +16,7 @@ import com.xueyi.system.dict.manager.ISysDictDataManager;
 import com.xueyi.system.dict.service.ISysDictDataService;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +37,30 @@ public class SysDictDataServiceImpl extends BaseServiceImpl<SysDictDataQuery, Sy
     @Override
     public CacheConstants.CacheType getCacheKey() {
         return CacheConstants.CacheType.SYS_DICT_KEY;
+    }
+
+    /**
+     * 查询全部字典数据列表 | 全局
+     *
+     * @param query 字典数据查询对象
+     * @return 字典数据对象集合
+     */
+    @Override
+    @TenantIgnore
+    public List<SysDictDataDto> selectAllListScope(SysDictDataQuery query) {
+        return selectListScope(query);
+    }
+
+    /**
+     * 根据Id查询单条数据对象 | 全局
+     *
+     * @param id Id
+     * @return 数据对象
+     */
+    @Override
+    @TenantIgnore
+    public SysDictDataDto selectAllById(Serializable id) {
+        return selectById(id);
     }
 
     /**

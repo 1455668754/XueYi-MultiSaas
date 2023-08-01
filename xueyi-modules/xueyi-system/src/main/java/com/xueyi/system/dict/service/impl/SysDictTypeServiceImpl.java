@@ -81,11 +81,9 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeQuery, Sy
     @Override
     @TenantIgnore
     public SysDictTypeDto selectAllById(Serializable id) {
-        SysDictTypeDto dto = baseManager.selectById(id);
-        SysDictTypeCorrelate correlate = SysDictTypeCorrelate.EN_INFO_SELECT;
-        return subCorrelates(dto, correlate);
+        return selectById(id);
     }
-
+    
     /**
      * 根据Id查询单条数据对象
      *
@@ -98,7 +96,7 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeQuery, Sy
         SysDictTypeCorrelate correlate = SysDictTypeCorrelate.EN_INFO_SELECT;
         return subCorrelates(dto, correlate);
     }
-
+    
     /**
      * 默认方法关联配置定义
      */

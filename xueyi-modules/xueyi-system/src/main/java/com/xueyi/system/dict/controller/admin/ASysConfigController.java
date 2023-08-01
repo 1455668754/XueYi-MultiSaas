@@ -6,6 +6,7 @@ import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.AdminAuth;
+import com.xueyi.common.security.utils.SecurityUserUtils;
 import com.xueyi.system.api.dict.domain.dto.SysConfigDto;
 import com.xueyi.system.api.dict.domain.query.SysConfigQuery;
 import com.xueyi.system.dict.controller.base.BSysConfigController;
@@ -63,8 +64,12 @@ public class ASysConfigController extends BSysConfigController {
     @Override
     @GetMapping("/list")
     @PreAuthorize("@ss.hasAuthority(@Auth.SYS_CONFIG_LIST)")
-    public AjaxResult list(SysConfigQuery config) {
-        return super.list(config);
+    public AjaxResult list(SysConfigQuery query) {
+        startPage();
+        List<SysConfigDto> list = SecurityUserUtils.isNotAdminUser()
+                ? baseService.selectListScope(query)
+                : baseService.selectAllListScope(query);
+        return getDataTable(list);
     }
 
     /**
@@ -74,7 +79,10 @@ public class ASysConfigController extends BSysConfigController {
     @GetMapping(value = "/{id}")
     @PreAuthorize("@ss.hasAuthority(@Auth.SYS_CONFIG_SINGLE)")
     public AjaxResult getInfo(@PathVariable Serializable id) {
-        return super.getInfo(id);
+        SysConfigDto info = SecurityUserUtils.isNotAdminUser()
+                ? baseService.selectById(id)
+                : baseService.selectAllById(id);
+        return success(info);
     }
 
     /**

@@ -8,13 +8,13 @@
   import { onMounted, ref } from 'vue';
   import { getDictTypeApi } from '@/api/tenant/dict/dictType.api';
   import { Description, useDescription } from '/@/components/Description';
-  import { detailSchema } from './dictType.data';
   import { useRoute } from 'vue-router';
   import { DictTypeIndexGo } from '@/enums/tenant';
   import { useTabs } from '/@/hooks/web/useTabs';
   import { PageWrapper } from '/@/components/Page';
   import { useUserStore } from '/@/store/modules/user';
   import { DescItemSizeEnum } from '@/enums/basic';
+  import { typeDetailSchema } from '@/views/tenant/dict/dictType/dict.data';
 
   const route = useRoute();
   const { setTitle } = useTabs();
@@ -22,7 +22,7 @@
 
   const [register, { setDescProps }] = useDescription({
     title: '字典类型详情',
-    schema: detailSchema,
+    schema: typeDetailSchema,
     column: DescItemSizeEnum.DEFAULT,
   });
 

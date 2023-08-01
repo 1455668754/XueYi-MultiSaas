@@ -40,36 +40,41 @@
         />
       </template>
     </BasicTable>
-    <!--    <DictDataModal @register="registerModal" @success="handleSuccess" />-->
+    <DictDataModal @register="registerModal" @success="handleSuccess" />
   </div>
 </template>
 
 <script setup lang="ts">
-  import { reactive, ref } from 'vue';
+  import { reactive } from 'vue';
   import { delDictDataApi, listDictDataApi } from '@/api/tenant/dict/dictData.api';
   import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { IconEnum } from '@/enums/basic';
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
   import { DictTypeAuth } from '/@/auth/tenant';
-  // import DictDataModal from './DictDataModal.vue';
-  import { useRoute } from 'vue-router';
-  import { isEmpty } from 'lodash-es';
+  import DictDataModal from './DictDataModal.vue';
   import { dataColumns, dataSearchFormSchema } from './dict.data';
+  import { DictTypeIM } from '@/model/tenant';
 
-  const route = useRoute();
+  defineExpose({
+    onChangeDictInfo,
+  });
+
   const { createMessage, createConfirm } = useMessage();
   const [registerModal, { openModal }] = useModal();
-  const dictCode = ref(route.params.code as string);
   const state = reactive<{
     ids: string[];
     idNames: string;
+    title: string;
+    dictCode?: string;
+    enterpriseId?: string;
   }>({
     ids: [],
     idNames: '',
+    title: '字典明细列表',
   });
-  const [registerTable, { reload, getForm }] = useTable({
-    title: '字典数据列表',
+  const [registerTable, { reload }] = useTable({
+    title: state.title,
     api: listDictDataApi,
     striped: false,
     useSearchForm: true,
@@ -77,6 +82,7 @@
     bordered: true,
     showIndexColumn: true,
     columns: dataColumns,
+    immediate: false,
     isCanResizeParent: true,
     formConfig: {
       labelWidth: 120,
@@ -87,23 +93,18 @@
       fullScreen: true,
     },
     actionColumn: {
-      width: 220,
+      width: 120,
       title: '操作',
       dataIndex: 'action',
       slots: { customRender: 'action' },
     },
-    beforeFetch(info) {
-      if (isEmpty(info.code)) {
-        info.code = dictCode.value;
-        getForm().setFieldsValue({ code: dictCode.value });
-      } else {
-        dictCode.value = info.code;
-      }
+    beforeFetch: (info) => {
+      info.code = state.dictCode;
       return info;
     },
     rowSelection: {
       onChange: (selectedRowKeys, selectRows) => {
-        state.ids = selectedRowKeys;
+        state.ids = selectedRowKeys as string[];
         state.idNames = selectRows
           .map((item) => {
             return item.label;
@@ -116,7 +117,7 @@
   /** 新增按钮 */
   function handleCreate() {
     openModal(true, {
-      dictCode: dictCode,
+      dictCode: state.dictCode,
       isUpdate: false,
     });
   }
@@ -147,6 +148,13 @@
           }),
       });
     }
+  }
+
+  function onChangeDictInfo(dict?: DictTypeIM) {
+    state.title = '字典【' + dict?.name + '】的明细列表';
+    state.dictCode = dict?.code || 'null';
+    state.enterpriseId = dict?.enterpriseInfo?.id || '0';
+    reload();
   }
 
   function handleSuccess() {

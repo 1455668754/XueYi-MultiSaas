@@ -6,12 +6,11 @@
 
 <script setup lang="ts">
   import { computed, ref, unref } from 'vue';
+  import { dataFormSchema } from './dict.data';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { addDictTypeApi, editDictTypeApi, getDictTypeApi } from '@/api/tenant/dict/dictType.api';
+  import { addDictDataApi, editDictDataApi, getDictDataApi } from '@/api/tenant/dict/dictData.api';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
-  import { typeFormSchema } from './dict.data';
-  import { DicCacheTypeEnum } from '@/enums/tenant';
 
   const emit = defineEmits(['success', 'register']);
 
@@ -20,7 +19,7 @@
 
   const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
     labelWidth: 100,
-    schemas: typeFormSchema,
+    schemas: dataFormSchema,
     showActionButtonGroup: false,
   });
 
@@ -30,29 +29,29 @@
     isUpdate.value = !!data?.isUpdate;
 
     if (unref(isUpdate)) {
-      const dictType = await getDictTypeApi(data.record.id);
-      setFieldsValue({ ...dictType });
+      const dictData = await getDictDataApi(data.record.id);
+      setFieldsValue({ ...dictData });
+    } else {
+      setFieldsValue({ code: data?.dictCode });
     }
   });
 
   /** 标题初始化 */
-  const getTitle = computed(() => (!unref(isUpdate) ? '新增字典类型' : '编辑字典类型'));
+  const getTitle = computed(() => (!unref(isUpdate) ? '新增字典数据' : '编辑字典数据'));
 
   /** 提交按钮 */
   async function handleSubmit() {
     try {
       const values = await validate();
-      if (values.cacheType === DicCacheTypeEnum.OVERALL) {
-      }
       setModalProps({ confirmLoading: true });
       unref(isUpdate)
-        ? await editDictTypeApi(values).then(() => {
+        ? await editDictDataApi(values).then(() => {
             closeModal();
-            createMessage.success('编辑字典类型成功！');
+            createMessage.success('编辑字典数据成功！');
           })
-        : await addDictTypeApi(values).then(() => {
+        : await addDictDataApi(values).then(() => {
             closeModal();
-            createMessage.success('新增字典类型成功！');
+            createMessage.success('新增字典数据成功！');
           });
       emit('success');
     } finally {

@@ -11,6 +11,7 @@ import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.redis.constant.RedisConstants;
 import com.xueyi.common.security.utils.SecurityUtils;
+import com.xueyi.common.web.annotation.TenantIgnore;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.dict.domain.dto.SysConfigDto;
 import com.xueyi.system.api.dict.domain.query.SysConfigQuery;
@@ -19,6 +20,7 @@ import com.xueyi.system.dict.manager.ISysConfigManager;
 import com.xueyi.system.dict.service.ISysConfigService;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -47,6 +49,55 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigQuery, SysCon
      */
     protected CacheConstants.CacheType getCacheRouteKey() {
         return CacheConstants.CacheType.ROUTE_CONFIG_KEY;
+    }
+
+    /**
+     * 查询全部参数数据列表 | 全局
+     *
+     * @param query 参数数据查询对象
+     * @return 参数数据对象集合
+     */
+    @Override
+    @TenantIgnore
+    public List<SysConfigDto> selectAllListScope(SysConfigQuery query) {
+        return selectListScope(query);
+    }
+
+    /**
+     * 查询数据对象列表 | 数据权限 | 附加数据
+     *
+     * @param query 数据查询对象
+     * @return 数据对象集合
+     */
+    @Override
+    public List<SysConfigDto> selectListScope(SysConfigQuery query) {
+        SysConfigCorrelate correlate = SysConfigCorrelate.EN_INFO_SELECT;
+        return subCorrelates(selectList(query), correlate);
+    }
+
+    /**
+     * 根据Id查询单条数据对象 | 全局
+     *
+     * @param id Id
+     * @return 数据对象
+     */
+    @Override
+    @TenantIgnore
+    public SysConfigDto selectAllById(Serializable id) {
+        return selectById(id);
+    }
+
+    /**
+     * 根据Id查询单条数据对象
+     *
+     * @param id Id
+     * @return 数据对象
+     */
+    @Override
+    public SysConfigDto selectById(Serializable id) {
+        SysConfigDto dto = baseManager.selectById(id);
+        SysConfigCorrelate correlate = SysConfigCorrelate.EN_INFO_SELECT;
+        return subCorrelates(dto, correlate);
     }
 
     /**

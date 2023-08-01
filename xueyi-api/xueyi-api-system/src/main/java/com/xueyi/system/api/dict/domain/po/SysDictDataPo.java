@@ -3,6 +3,7 @@ package com.xueyi.system.api.dict.domain.po;
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.xueyi.common.core.web.tenant.base.TBaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -50,4 +51,8 @@ public class SysDictDataPo extends TBaseEntity {
     /** 是否默认（Y是 N否） */
     protected String isDefault;
 
+    /** 租户Id */
+    @JsonIgnore
+    @TableField(updateStrategy = FieldStrategy.NEVER)
+    protected Long tenantId;
 }

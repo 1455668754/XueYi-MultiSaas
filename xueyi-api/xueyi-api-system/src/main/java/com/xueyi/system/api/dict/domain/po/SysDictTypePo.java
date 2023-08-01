@@ -51,7 +51,7 @@ public class SysDictTypePo extends TBaseEntity {
 
     /** 租户Id */
     @JsonIgnore
-    @TableField
+    @TableField(updateStrategy = FieldStrategy.NEVER)
     protected Long tenantId;
 
 }

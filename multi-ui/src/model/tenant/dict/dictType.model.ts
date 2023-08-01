@@ -2,6 +2,7 @@ import { BasicFetchResult, BasicPageParams, SubBaseEntity } from '@/model/basic'
 import { DictDataIM } from '@/model/tenant';
 import { DicCacheTypeEnum, DicDataTypeEnum } from '@/enums/tenant';
 import { DicStatusEnum } from '@/enums';
+import { EnterpriseIM } from '@/model/system';
 
 /** dictType info model */
 export interface DictTypeIM extends SubBaseEntity<DictDataIM> {
@@ -17,6 +18,8 @@ export interface DictTypeIM extends SubBaseEntity<DictDataIM> {
   cacheType: DicCacheTypeEnum;
   /** 状态（0启用 1禁用） */
   status: DicStatusEnum;
+  /** 企业信息 */
+  enterpriseInfo?: EnterpriseIM;
 }
 
 /** dictType list model */

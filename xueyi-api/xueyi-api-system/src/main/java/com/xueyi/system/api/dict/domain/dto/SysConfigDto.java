@@ -1,6 +1,7 @@
 package com.xueyi.system.api.dict.domain.dto;
 
 import com.xueyi.system.api.dict.domain.po.SysConfigPo;
+import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -17,5 +18,8 @@ public class SysConfigDto extends SysConfigPo {
 
     @Serial
     private static final long serialVersionUID = 1L;
+
+    /** 企业信息 */
+    private SysEnterpriseDto enterpriseInfo;
 
 }

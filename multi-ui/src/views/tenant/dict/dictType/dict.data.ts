@@ -6,6 +6,8 @@ import { DicCodeEnum, DicSortEnum, DicStatusEnum, DicYesNoEnum } from '@/enums';
 import { optionDictTypeApi } from '@/api/tenant/dict/dictType.api';
 import { DicCacheTypeEnum, DicCodeDictEnum, DicDataTypeEnum } from '@/enums/tenant';
 import { isNotEmpty } from '@/utils/is';
+import { DescItem } from '@/components/Description';
+import { listTenantApi } from '@/api/tenant/tenant/tenant.api';
 
 /** 字典查询 */
 export const dictMap = await dicDictList([
@@ -36,7 +38,7 @@ export const typeColumns: BasicColumn[] = [
   {
     title: '数据类型',
     dataIndex: 'dataType',
-    width: 220,
+    width: 120,
     customRender: ({ record }) => {
       const data = record as DictTypeIM;
       return dictConversion(dict.DicDictDataTypeOptions, data?.dataType);
@@ -45,19 +47,28 @@ export const typeColumns: BasicColumn[] = [
   {
     title: '缓存类型',
     dataIndex: 'cacheType',
-    width: 220,
+    width: 120,
     customRender: ({ record }) => {
       const data = record as DictTypeIM;
       return dictConversion(dict.DicDictCacheTypeOptions, data?.cacheType);
     },
   },
   {
-    title: '状态',
-    dataIndex: 'status',
-    width: 220,
+    title: '租户',
+    dataIndex: 'enterpriseInfo.nick',
+    width: 120,
     customRender: ({ record }) => {
       const data = record as DictTypeIM;
-      return dictConversion(dict.DicNormalDisableOptions, data?.status);
+      return data.cacheType === DicCacheTypeEnum.TENANT ? data?.enterpriseInfo?.nick : '通用';
+    },
+  },
+  {
+    title: '数据类型',
+    dataIndex: 'dataType',
+    width: 120,
+    customRender: ({ record }) => {
+      const data = record as DictTypeIM;
+      return dictConversion(dict.DicDictDataTypeOptions, data?.dataType);
     },
   },
   {
@@ -111,13 +122,13 @@ export const typeSearchFormSchema: FormSchema[] = [
     label: '字典名称',
     field: 'name',
     component: 'Input',
-    colProps: { span: 12 },
+    colProps: { span: 8 },
   },
   {
     label: '字典类型',
     field: 'code',
     component: 'Input',
-    colProps: { span: 12 },
+    colProps: { span: 8 },
   },
   {
     label: '数据类型',
@@ -128,7 +139,7 @@ export const typeSearchFormSchema: FormSchema[] = [
       showSearch: true,
       optionFilterProp: 'label',
     },
-    colProps: { span: 12 },
+    colProps: { span: 8 },
   },
   {
     label: '缓存类型',
@@ -139,7 +150,7 @@ export const typeSearchFormSchema: FormSchema[] = [
       showSearch: true,
       optionFilterProp: 'label',
     },
-    colProps: { span: 12 },
+    colProps: { span: 8 },
   },
   {
     label: '状态',
@@ -150,31 +161,23 @@ export const typeSearchFormSchema: FormSchema[] = [
       showSearch: true,
       optionFilterProp: 'label',
     },
-    colProps: { span: 12 },
+    colProps: { span: 8 },
   },
 ];
 
 /** 字典数据 - 查询数据 */
 export const dataSearchFormSchema: FormSchema[] = [
   {
-    label: '字典名称',
-    field: 'code',
-    component: 'ApiSelect',
-    componentProps: {
-      api: optionDictTypeApi,
-      showSearch: true,
-      optionFilterProp: 'label',
-      resultField: 'items',
-      labelField: 'name',
-      valueField: 'code',
-    },
-    colProps: { span: 6 },
+    label: '数据键值',
+    field: 'value',
+    component: 'Input',
+    colProps: { span: 12 },
   },
   {
     label: '数据标签',
     field: 'label',
     component: 'Input',
-    colProps: { span: 6 },
+    colProps: { span: 12 },
   },
   {
     label: '状态',
@@ -185,7 +188,7 @@ export const dataSearchFormSchema: FormSchema[] = [
       showSearch: true,
       optionFilterProp: 'label',
     },
-    colProps: { span: 6 },
+    colProps: { span: 12 },
   },
 ];
 
@@ -225,6 +228,24 @@ export const typeFormSchema: FormSchema[] = [
     },
     dynamicDisabled: ({ values }) => isNotEmpty(values.id),
     required: true,
+    colProps: { span: 12 },
+  },
+  {
+    label: '租户名称',
+    field: 'tenantId',
+    component: 'ApiSelect',
+    componentProps: {
+      api: listTenantApi,
+      params: { status: DicStatusEnum.NORMAL },
+      showSearch: true,
+      optionFilterProp: 'label',
+      resultField: 'items',
+      labelField: 'nick',
+      valueField: 'id',
+    },
+    dynamicDisabled: ({ values }) => isNotEmpty(values.id),
+    ifShow: ({ values }) => values.cacheType === DicCacheTypeEnum.TENANT,
+    required: ({ values }) => values.cacheType === DicCacheTypeEnum.TENANT,
     colProps: { span: 12 },
   },
   {
@@ -357,5 +378,37 @@ export const dataFormSchema: FormSchema[] = [
     field: 'remark',
     component: 'InputTextArea',
     colProps: { span: 24 },
+  },
+];
+
+/** 字典 - 详情数据 */
+export const typeDetailSchema: DescItem[] = [
+  {
+    label: '字典名称',
+    field: 'name',
+    span: 8,
+  },
+  {
+    label: '字典类型',
+    field: 'code',
+    span: 8,
+  },
+  {
+    label: '显示顺序',
+    field: 'sort',
+    span: 8,
+  },
+  {
+    label: '状态',
+    field: 'status',
+    render: (val) => {
+      return dictConversion(dict.DicNormalDisableOptions, val);
+    },
+    span: 8,
+  },
+  {
+    label: '备注',
+    field: 'remark',
+    span: 8,
   },
 ];
