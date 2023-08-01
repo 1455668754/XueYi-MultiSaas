@@ -15,6 +15,8 @@ export interface BaseEntity {
   updateBy?: string;
   updateName?: string;
   updateTime?: string;
+  sort?: number;
+  remark?: string;
   params?: {};
 }
 

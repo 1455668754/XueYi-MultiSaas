@@ -6,11 +6,11 @@
 
 <script setup lang="ts">
   import { computed, ref, unref } from 'vue';
-  import { formSchema } from './dictType.data';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { addDictTypeApi, editDictTypeApi, getDictTypeApi } from '@/api/tenant/dict/dictType.api';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
+  import { typeFormSchema } from './dict.data';
 
   const emit = defineEmits(['success', 'register']);
 
@@ -19,7 +19,7 @@
 
   const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
     labelWidth: 100,
-    schemas: formSchema,
+    schemas: typeFormSchema,
     showActionButtonGroup: false,
   });
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full" :style="{ 'background-color': '#bd1212' }">
+  <div class="h-full">
     <BasicTable @register="registerTable">
       <template #toolbar>
         <a-button
@@ -33,22 +33,10 @@
         <TableAction
           :actions="[
             {
-              icon: IconEnum.VIEW,
-              tooltip: '查看',
-              auth: DictTypeAuth.SINGLE,
-              onClick: handleView.bind(null, record),
-            },
-            {
               icon: IconEnum.EDIT,
               tooltip: '编辑',
               auth: DictTypeAuth.EDIT,
               onClick: handleEdit.bind(null, record),
-            },
-            {
-              icon: 'ant-design:read-outlined',
-              tooltip: '字典数据',
-              auth: DictTypeAuth.DICT,
-              onClick: handleDict.bind(null, record),
             },
             {
               icon: IconEnum.DELETE,
@@ -73,9 +61,7 @@
   import { IconEnum } from '@/enums/basic';
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
   import { DictTypeAuth } from '/@/auth/tenant';
-  import { DictDataIndexGo, DictTypeDetailGo } from '@/enums/tenant';
   import DictTypeModal from './DictTypeModal.vue';
-  import { useUserStore } from '/@/store/modules/user';
   import { typeColumns, typeSearchFormSchema } from './dict.data';
 
   const { createMessage, createConfirm } = useMessage();
@@ -106,7 +92,7 @@
       fullScreen: true,
     },
     actionColumn: {
-      width: 220,
+      width: 120,
       title: '操作',
       dataIndex: 'action',
       slots: { customRender: 'action' },
@@ -123,11 +109,6 @@
     },
   });
 
-  /** 查看按钮 */
-  function handleView(record: Recordable) {
-    useUserStore().getRoutePath(DictTypeDetailGo, record.id);
-  }
-
   /** 新增按钮 */
   function handleCreate() {
     openModal(true, {
@@ -141,11 +122,6 @@
       record,
       isUpdate: true,
     });
-  }
-
-  /** 字典管理按钮 */
-  function handleDict(record: Recordable) {
-    useUserStore().getRoutePath(DictDataIndexGo, record.code);
   }
 
   /** 删除按钮 */

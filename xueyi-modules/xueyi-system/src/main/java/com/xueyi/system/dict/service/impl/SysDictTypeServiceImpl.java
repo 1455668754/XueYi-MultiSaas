@@ -26,6 +26,7 @@ import com.xueyi.system.dict.service.ISysDictTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -48,7 +49,7 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeQuery, Sy
     private ISysDictDataService dictDataService;
 
     /**
-     * 查询全部字典数据列表
+     * 查询全部字典数据列表 | 全局
      *
      * @param query 字典数据查询对象
      * @return 字典数据对象集合
@@ -56,8 +57,46 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeQuery, Sy
     @Override
     @TenantIgnore
     public List<SysDictTypeDto> selectAllListScope(SysDictTypeQuery query) {
-        SysDictTypeCorrelate correlate = SysDictTypeCorrelate.EN_INFO_LIST;
+        return selectListScope(query);
+    }
+
+    /**
+     * 查询数据对象列表 | 数据权限 | 附加数据
+     *
+     * @param query 数据查询对象
+     * @return 数据对象集合
+     */
+    @Override
+    public List<SysDictTypeDto> selectListScope(SysDictTypeQuery query) {
+        SysDictTypeCorrelate correlate = SysDictTypeCorrelate.EN_INFO_SELECT;
         return subCorrelates(selectList(query), correlate);
+    }
+
+    /**
+     * 根据Id查询单条数据对象 | 全局
+     *
+     * @param id Id
+     * @return 数据对象
+     */
+    @Override
+    @TenantIgnore
+    public SysDictTypeDto selectAllById(Serializable id) {
+        SysDictTypeDto dto = baseManager.selectById(id);
+        SysDictTypeCorrelate correlate = SysDictTypeCorrelate.EN_INFO_SELECT;
+        return subCorrelates(dto, correlate);
+    }
+
+    /**
+     * 根据Id查询单条数据对象
+     *
+     * @param id Id
+     * @return 数据对象
+     */
+    @Override
+    public SysDictTypeDto selectById(Serializable id) {
+        SysDictTypeDto dto = baseManager.selectById(id);
+        SysDictTypeCorrelate correlate = SysDictTypeCorrelate.EN_INFO_SELECT;
+        return subCorrelates(dto, correlate);
     }
 
     /**

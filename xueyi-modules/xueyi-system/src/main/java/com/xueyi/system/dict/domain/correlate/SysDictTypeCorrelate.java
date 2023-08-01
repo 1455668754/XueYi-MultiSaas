@@ -26,7 +26,7 @@ import static com.xueyi.common.web.correlate.contant.CorrelateConstants.SubOpera
 @AllArgsConstructor
 public enum SysDictTypeCorrelate implements CorrelateService {
 
-    EN_INFO_LIST("列表|（企业信息）", new ArrayList<>() {{
+    EN_INFO_SELECT("企业查询|（企业信息）", new ArrayList<>() {{
         // 字典类型 | 企业信息
         add(new Direct<>(SELECT, ISysEnterpriseService.class, SysDictTypeDto::getTenantId, SysEnterpriseDto::getId, SysDictTypeDto::getEnterpriseInfo));
     }}),

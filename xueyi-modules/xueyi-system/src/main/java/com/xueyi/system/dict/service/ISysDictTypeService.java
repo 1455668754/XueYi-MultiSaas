@@ -4,6 +4,7 @@ import com.xueyi.common.web.entity.service.IBaseService;
 import com.xueyi.system.api.dict.domain.dto.SysDictTypeDto;
 import com.xueyi.system.api.dict.domain.query.SysDictTypeQuery;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -20,6 +21,14 @@ public interface ISysDictTypeService extends IBaseService<SysDictTypeQuery, SysD
      * @return 字典数据对象集合
      */
     List<SysDictTypeDto> selectAllListScope(SysDictTypeQuery query);
+
+    /**
+     * 根据Id查询单条数据对象 | 全局
+     *
+     * @param id Id
+     * @return 数据对象
+     */
+    SysDictTypeDto selectAllById(Serializable id);
 
     /**
      * 更新缓存数据

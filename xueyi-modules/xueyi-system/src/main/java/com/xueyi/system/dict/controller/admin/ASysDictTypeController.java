@@ -6,6 +6,7 @@ import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.AdminAuth;
+import com.xueyi.common.security.utils.SecurityUserUtils;
 import com.xueyi.system.api.dict.domain.dto.SysDictTypeDto;
 import com.xueyi.system.api.dict.domain.query.SysDictTypeQuery;
 import com.xueyi.system.dict.controller.base.BSysDictTypeController;
@@ -60,7 +61,9 @@ public class ASysDictTypeController extends BSysDictTypeController {
     @PreAuthorize("@ss.hasAuthority(@Auth.SYS_DICT_LIST)")
     public AjaxResult list(SysDictTypeQuery query) {
         startPage();
-        List<SysDictTypeDto> list = baseService.selectAllListScope(query);
+        List<SysDictTypeDto> list = SecurityUserUtils.isNotAdminUser()
+                ? baseService.selectListScope(query)
+                : baseService.selectAllListScope(query);
         return getDataTable(list);
     }
 
@@ -71,7 +74,10 @@ public class ASysDictTypeController extends BSysDictTypeController {
     @GetMapping(value = "/{id}")
     @PreAuthorize("@ss.hasAuthority(@Auth.SYS_DICT_SINGLE)")
     public AjaxResult getInfo(@PathVariable Serializable id) {
-        return super.getInfo(id);
+        SysDictTypeDto info = SecurityUserUtils.isNotAdminUser()
+                ? baseService.selectById(id)
+                : baseService.selectAllById(id);
+        return success(info);
     }
 
     /**

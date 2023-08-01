@@ -1,3 +1,9 @@
+/** 字典编码：基础 */
+export enum DicCodeEnum {
+  // 系统开关
+  SYS_NORMAL_DISABLE = 'sys_normal_disable',
+}
+
 /** 字典：状态（0正常 1停用） */
 export enum DicStatusEnum {
   // 正常

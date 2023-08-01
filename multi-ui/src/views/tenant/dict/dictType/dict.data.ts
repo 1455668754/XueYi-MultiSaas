@@ -2,16 +2,23 @@ import { dicDictList } from '@/api/sys/dict.api';
 import { BasicColumn, FormSchema } from '@/components/Table';
 import { DictDataIM, DictTypeIM } from '@/model/tenant';
 import { dictConversion } from '@/utils/xueyi';
-import { isEmpty, isNil } from 'lodash-es';
-import { DicSortEnum, DicStatusEnum, DicYesNoEnum } from '@/enums';
+import { DicCodeEnum, DicSortEnum, DicStatusEnum, DicYesNoEnum } from '@/enums';
 import { optionDictTypeApi } from '@/api/tenant/dict/dictType.api';
+import { DicCacheTypeEnum, DicCodeDictEnum, DicDataTypeEnum } from '@/enums/tenant';
+import { isNotEmpty } from '@/utils/is';
 
 /** 字典查询 */
-export const dictMap = await dicDictList(['sys_normal_disable']);
+export const dictMap = await dicDictList([
+  DicCodeEnum.SYS_NORMAL_DISABLE,
+  DicCodeDictEnum.SYS_DICT_DATA_TYPE,
+  DicCodeDictEnum.SYS_DICT_CACHE_TYPE,
+]);
 
 /** 字典表 */
 export const dict: any = {
-  DicNormalDisableOptions: dictMap['sys_normal_disable'],
+  DicNormalDisableOptions: dictMap[DicCodeEnum.SYS_NORMAL_DISABLE],
+  DicDictDataTypeOptions: dictMap[DicCodeDictEnum.SYS_DICT_DATA_TYPE],
+  DicDictCacheTypeOptions: dictMap[DicCodeDictEnum.SYS_DICT_CACHE_TYPE],
 };
 
 /** 字典类型 - 表格数据 */
@@ -27,12 +34,30 @@ export const typeColumns: BasicColumn[] = [
     width: 220,
   },
   {
+    title: '数据类型',
+    dataIndex: 'dataType',
+    width: 220,
+    customRender: ({ record }) => {
+      const data = record as DictTypeIM;
+      return dictConversion(dict.DicDictDataTypeOptions, data?.dataType);
+    },
+  },
+  {
+    title: '缓存类型',
+    dataIndex: 'cacheType',
+    width: 220,
+    customRender: ({ record }) => {
+      const data = record as DictTypeIM;
+      return dictConversion(dict.DicDictCacheTypeOptions, data?.cacheType);
+    },
+  },
+  {
     title: '状态',
     dataIndex: 'status',
     width: 220,
     customRender: ({ record }) => {
       const data = record as DictTypeIM;
-      return dictConversion(dict.DicNormalDisableOptions, data.status);
+      return dictConversion(dict.DicNormalDisableOptions, data?.status);
     },
   },
   {
@@ -86,13 +111,35 @@ export const typeSearchFormSchema: FormSchema[] = [
     label: '字典名称',
     field: 'name',
     component: 'Input',
-    colProps: { span: 6 },
+    colProps: { span: 12 },
   },
   {
     label: '字典类型',
     field: 'code',
     component: 'Input',
-    colProps: { span: 6 },
+    colProps: { span: 12 },
+  },
+  {
+    label: '数据类型',
+    field: 'dataType',
+    component: 'Select',
+    componentProps: {
+      options: dict.DicDictDataTypeOptions,
+      showSearch: true,
+      optionFilterProp: 'label',
+    },
+    colProps: { span: 12 },
+  },
+  {
+    label: '缓存类型',
+    field: 'cacheType',
+    component: 'Select',
+    componentProps: {
+      options: dict.DicDictCacheTypeOptions,
+      showSearch: true,
+      optionFilterProp: 'label',
+    },
+    colProps: { span: 12 },
   },
   {
     label: '状态',
@@ -103,7 +150,7 @@ export const typeSearchFormSchema: FormSchema[] = [
       showSearch: true,
       optionFilterProp: 'label',
     },
-    colProps: { span: 6 },
+    colProps: { span: 12 },
   },
 ];
 
@@ -162,7 +209,21 @@ export const typeFormSchema: FormSchema[] = [
     label: '字典类型',
     field: 'code',
     component: 'Input',
-    dynamicDisabled: ({ values }) => !isNil(values.id) && !isEmpty(values.id),
+    dynamicDisabled: ({ values }) => isNotEmpty(values.id),
+    required: true,
+    colProps: { span: 12 },
+  },
+  {
+    label: '缓存类型',
+    field: 'cacheType',
+    component: 'RadioButtonGroup',
+    defaultValue: DicCacheTypeEnum.OVERALL,
+    componentProps: {
+      options: dict.DicDictCacheTypeOptions,
+      showSearch: true,
+      optionFilterProp: 'label',
+    },
+    dynamicDisabled: ({ values }) => isNotEmpty(values.id),
     required: true,
     colProps: { span: 12 },
   },
@@ -176,6 +237,18 @@ export const typeFormSchema: FormSchema[] = [
     },
     required: true,
     colProps: { span: 12 },
+  },
+  {
+    label: '数据类型',
+    field: 'dataType',
+    component: 'RadioButtonGroup',
+    defaultValue: DicDataTypeEnum.DEFAULT,
+    componentProps: {
+      options: dict.DicDictDataTypeOptions,
+      showSearch: true,
+      optionFilterProp: 'label',
+    },
+    colProps: { span: 24 },
   },
   {
     label: '显示顺序',
