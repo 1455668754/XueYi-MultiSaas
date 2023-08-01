@@ -29,6 +29,7 @@ import org.springframework.security.oauth2.server.authorization.web.authenticati
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationConverter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.util.Arrays;
 
@@ -69,16 +70,22 @@ public class AuthServerConfig {
                 )
         );
 
-        DefaultSecurityFilterChain securityFilterChain = http.authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        // 自定义接口、端点暴露
-                        .requestMatchers("/token/**", "/actuator/**", "/css/**", "/error").permitAll()
-                        .anyRequest().authenticated()
-                ).apply(authorizationServerConfigurer
-                        // redis存储token的实现
-                        .authorizationService(authorizationService)
-                        .authorizationServerSettings(AuthorizationServerSettings.builder().issuer(SecurityConstants.PROJECT_LICENSE).build()))
-                // 授权码登录的登录页个性化
-                .and().apply(new FormIdentityLoginConfigurer()).and().build();
+        AntPathRequestMatcher[] requestMatchers = new AntPathRequestMatcher[]{
+                AntPathRequestMatcher.antMatcher("/token/**"), AntPathRequestMatcher.antMatcher("/actuator/**"),
+                AntPathRequestMatcher.antMatcher("/css/**"), AntPathRequestMatcher.antMatcher("/error")};
+
+
+        http.authorizeHttpRequests(authorizeRequests -> authorizeRequests
+                // 自定义接口、端点暴露
+                .requestMatchers(requestMatchers).permitAll()
+                .anyRequest().authenticated()
+        ).apply(authorizationServerConfigurer
+                // redis存储token的实现
+                .authorizationService(authorizationService)
+                .authorizationServerSettings(AuthorizationServerSettings.builder().issuer(SecurityConstants.PROJECT_LICENSE).build()));
+        // 授权码登录的登录页个性化
+        http.apply(new FormIdentityLoginConfigurer());
+        DefaultSecurityFilterChain securityFilterChain = http.build();
 
         // 注入自定义授权模式实现
         addCustomOAuth2GrantAuthenticationProvider(http);

@@ -12,6 +12,8 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.oauth2.server.resource.introspection.OpaqueTokenIntrospector;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -57,10 +59,8 @@ public class SecurityConfig {
                                 // 认证失败处理类
                                 .authenticationEntryPoint(resourceAuthenticationHandler)
                                 .bearerTokenResolver(bearerTokenHandler))
-                // 禁用HTTP响应标头
-                .headers().frameOptions().disable()
-                // CSRF禁用，因为不使用session
-                .and().csrf().disable();
+                .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
+                .csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }
 }

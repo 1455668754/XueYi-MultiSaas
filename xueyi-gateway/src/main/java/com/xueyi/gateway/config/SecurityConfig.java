@@ -32,9 +32,9 @@ public class SecurityConfig {
         http.authorizeExchange((authorize) -> authorize.anyExchange().permitAll())
                 // 网关鉴权
                 .addFilterAfter(new AuthFilter(redisService, ignoreWhite), SecurityWebFiltersOrder.FIRST)
-                .cors().disable()
+                .cors(ServerHttpSecurity.CorsSpec::disable)
                 // CSRF禁用，因为不使用session
-                .csrf().disable();
+                .csrf(ServerHttpSecurity.CsrfSpec::disable);
         return http.build();
     }
 }

@@ -31,7 +31,7 @@ public class BaseEntity extends BasisEntity {
     @TableField(condition = LIKE)
     protected String name;
 
-    /** 状态（0 启用 1 禁用） */
+    /** 状态（0启用 1禁用） */
     protected String status;
 
     /** 显示顺序 */

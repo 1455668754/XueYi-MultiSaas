@@ -19,18 +19,15 @@ import java.util.Set;
  *
  * @author xueyi
  */
+@Getter
 public abstract class AuthenticationBaseToken extends AbstractAuthenticationToken {
 
-    @Getter
     private final GrantType grantType;
 
-    @Getter
     private final Authentication clientPrincipal;
 
-    @Getter
     private final Set<String> scopes;
 
-    @Getter
     private final Map<String, Object> additionalParameters;
 
     public AuthenticationBaseToken(GrantType grantType, Authentication clientPrincipal, @Nullable Set<String> scopes, @Nullable Map<String, Object> additionalParameters) {

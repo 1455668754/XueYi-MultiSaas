@@ -1,6 +1,7 @@
 package com.xueyi.common.core.utils;
 
 import com.xueyi.common.core.constant.basic.BaseConstants;
+import com.xueyi.common.core.exception.UtilException;
 import com.xueyi.common.core.exception.base.BaseException;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
@@ -144,7 +145,7 @@ public class TreeUtil {
                 }
             }
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
+            throw new UtilException(e);
         }
         if (returnList.isEmpty()) {
             returnList = list;
@@ -166,7 +167,7 @@ public class TreeUtil {
                 topList.add(top);
                 return topList;
             } catch (NoSuchFieldException | IllegalAccessException e) {
-                e.printStackTrace();
+                throw new UtilException(e);
             }
         }
         return returnList;
@@ -219,7 +220,7 @@ public class TreeUtil {
                 children.set(t, childList);
             }
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
+            throw new UtilException(e);
         }
         for (T tChild : childList) {
             if (hasChild(list, tChild, IdName, FIdName)) {
@@ -246,7 +247,7 @@ public class TreeUtil {
                 }
             }
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
+            throw new UtilException(e);
         }
         return tList;
     }
@@ -255,7 +256,7 @@ public class TreeUtil {
      * 判断是否有子节点
      */
     private static <T> boolean hasChild(List<T> list, T t, String IdName, String FIdName) {
-        return getChildList(list, t, IdName, FIdName).size() > 0;
+        return CollUtil.isNotEmpty(getChildList(list, t, IdName, FIdName));
     }
 
     /**
@@ -268,9 +269,8 @@ public class TreeUtil {
                 FId.setAccessible(true);
                 return !Objects.equals(FId.get(vo), topNode);
             } catch (NoSuchFieldException | IllegalAccessException e) {
-                e.printStackTrace();
+                throw new UtilException(e);
             }
-            return false;
         });
     }
 
@@ -324,7 +324,7 @@ public class TreeUtil {
                     recursionLeafFn(returnList, childList, childrenName, childrenKey);
                 }
             } catch (NoSuchFieldException | IllegalAccessException e) {
-                e.printStackTrace();
+                throw new UtilException(e);
             }
         }
     }

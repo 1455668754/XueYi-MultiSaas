@@ -1,5 +1,7 @@
 package com.xueyi.common.core.utils.html;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -95,6 +97,7 @@ public final class HTMLFilter {
      * flag determining whether to try to make tags when presented with "unbalanced" angle brackets (e.g. "<b text </b>"
      * becomes "<b> text </b>"). If set to false, unbalanced angle brackets will be html escaped.
      */
+    @Getter
     private final boolean alwaysMakeTags;
 
     /**
@@ -205,10 +208,6 @@ public final class HTMLFilter {
         // s = validateEntities(s);
 
         return s;
-    }
-
-    public boolean isAlwaysMakeTags() {
-        return alwaysMakeTags;
     }
 
     public boolean isStripComments() {
@@ -411,7 +410,7 @@ public final class HTMLFilter {
         Matcher m = P_ENTITY.matcher(s);
         while (m.find()) {
             final String match = m.group(1);
-            final int decimal = Integer.decode(match).intValue();
+            final int decimal = Integer.decode(match);
             m.appendReplacement(buf, Matcher.quoteReplacement(chr(decimal)));
         }
         m.appendTail(buf);
@@ -421,7 +420,7 @@ public final class HTMLFilter {
         m = P_ENTITY_UNICODE.matcher(s);
         while (m.find()) {
             final String match = m.group(1);
-            final int decimal = Integer.valueOf(match, 16).intValue();
+            final int decimal = Integer.valueOf(match, 16);
             m.appendReplacement(buf, Matcher.quoteReplacement(chr(decimal)));
         }
         m.appendTail(buf);
@@ -431,7 +430,7 @@ public final class HTMLFilter {
         m = P_ENCODE.matcher(s);
         while (m.find()) {
             final String match = m.group(1);
-            final int decimal = Integer.valueOf(match, 16).intValue();
+            final int decimal = Integer.valueOf(match, 16);
             m.appendReplacement(buf, Matcher.quoteReplacement(chr(decimal)));
         }
         m.appendTail(buf);

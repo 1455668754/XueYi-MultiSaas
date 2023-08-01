@@ -39,7 +39,7 @@ public class ResourceAuthenticationHandler implements AuthenticationEntryPoint {
     @SneakyThrows
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) {
         response.setCharacterEncoding(HttpConstants.Character.UTF8.getCode());
-        response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         R<String> result = new R<>();
         result.setCode(R.FAIL);
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
@@ -57,5 +57,4 @@ public class ResourceAuthenticationHandler implements AuthenticationEntryPoint {
         PrintWriter printWriter = response.getWriter();
         printWriter.append(objectMapper.writeValueAsString(result));
     }
-
 }
