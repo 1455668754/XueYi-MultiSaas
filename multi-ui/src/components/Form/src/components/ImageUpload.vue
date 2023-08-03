@@ -28,11 +28,11 @@
   import { message, Modal, Upload, UploadProps } from 'ant-design-vue';
   import { UploadFile } from 'ant-design-vue/lib/upload/interface';
   import { useI18n } from '/@/hooks/web/useI18n';
-  import { fileUploadApi } from '/@/api/sys/upload.api';
   import { join } from 'lodash-es';
   import { buildShortUUID } from '@/utils/uuid';
-  import { isUrl } from '@/utils/is';
+  import { isArray, isNotEmpty, isUrl } from '@/utils/is';
   import { useRuleFormItem } from '@/hooks/component/useFormItem';
+  import { fileUploadApi } from '@/api/sys/upload.api';
 
   type ImageUploadType = 'text' | 'picture' | 'picture-card';
 
@@ -98,6 +98,7 @@
   watch(
     () => fileList.value,
     (v) => {
+      console.error(fileList.value);
       fileState.newList = v
         .filter((item) => {
           return item?.url && item.status === 'done' && isUrl(item?.url);
@@ -107,10 +108,14 @@
       // 不相等代表数据变更
       if (fileState.newStr !== fileState.oldStr) {
         fileState.oldStr = fileState.newStr;
-        if (props.multiple) {
-          state.value = fileState.newList;
+        if (!fileState.isLoad) {
+          if (props.multiple) {
+            state.value = fileState.newList;
+          } else {
+            state.value = fileState.newStr;
+          }
         } else {
-          state.value = fileState.newStr;
+          fileState.isLoad = false;
         }
       }
     },
@@ -127,17 +132,29 @@
         if (stateStr !== fileState.oldStr) {
           fileState.isLoad = true;
           fileList.value = [];
-          const list = v !== undefined ? (props.multiple ? (v as string[]) : [v as string]) : [];
-          for (let i = 0; i < list.length; i++) {
+          let list: string[] = [];
+          if (props.multiple) {
+            if (isNotEmpty(v)) {
+              if (isArray(v)) {
+                list = v as string[];
+              } else {
+                list.push(v as string);
+              }
+            }
+          } else {
+            if (isNotEmpty(v)) {
+              list.push(v as string);
+            }
+          }
+          fileList.value = list.map((item) => {
             const uuid = buildShortUUID();
-            fileList.value.push({
+            return {
               uid: uuid,
               name: uuid,
               status: 'done',
-              url: list[i],
-            });
-          }
-          fileState.isLoad = false;
+              url: item,
+            };
+          });
         } else {
           emit('update:value', v);
         }
