@@ -1,5 +1,6 @@
 package com.xueyi.system.dict.controller.admin;
 
+import com.xueyi.common.core.context.SecurityContextHolder;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
@@ -10,7 +11,6 @@ import com.xueyi.common.security.utils.SecurityUserUtils;
 import com.xueyi.system.api.dict.domain.dto.SysConfigDto;
 import com.xueyi.system.api.dict.domain.query.SysConfigQuery;
 import com.xueyi.system.dict.controller.base.BSysConfigController;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -65,11 +65,10 @@ public class ASysConfigController extends BSysConfigController {
     @GetMapping("/list")
     @PreAuthorize("@ss.hasAuthority(@Auth.SYS_CONFIG_LIST)")
     public AjaxResult list(SysConfigQuery query) {
-        startPage();
-        List<SysConfigDto> list = SecurityUserUtils.isNotAdminUser()
-                ? baseService.selectListScope(query)
-                : baseService.selectAllListScope(query);
-        return getDataTable(list);
+        if (SecurityUserUtils.isAdminTenant()) {
+            SecurityContextHolder.setTenantIgnore();
+        }
+        return super.list(query);
     }
 
     /**
@@ -79,21 +78,10 @@ public class ASysConfigController extends BSysConfigController {
     @GetMapping(value = "/{id}")
     @PreAuthorize("@ss.hasAuthority(@Auth.SYS_CONFIG_SINGLE)")
     public AjaxResult getInfo(@PathVariable Serializable id) {
-        SysConfigDto info = SecurityUserUtils.isNotAdminUser()
-                ? baseService.selectById(id)
-                : baseService.selectAllById(id);
-        return success(info);
-    }
-
-    /**
-     * 参数导出
-     */
-    @Override
-    @PostMapping("/export")
-    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_CONFIG_EXPORT)")
-    @Log(title = "参数管理", businessType = BusinessType.EXPORT)
-    public void export(HttpServletResponse response, SysConfigQuery config) {
-        super.export(response, config);
+        if (SecurityUserUtils.isAdminTenant()) {
+            SecurityContextHolder.setTenantIgnore();
+        }
+        return super.getInfo(id);
     }
 
     /**
@@ -137,18 +125,10 @@ public class ASysConfigController extends BSysConfigController {
     @PreAuthorize("@ss.hasAuthority(@Auth.SYS_CONFIG_DEL)")
     @Log(title = "参数管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
+        if (SecurityUserUtils.isAdminTenant()) {
+            SecurityContextHolder.setTenantIgnore();
+        }
         return super.batchRemove(idList);
-    }
-
-    /**
-     * 参数强制批量删除
-     */
-    @Override
-    @DeleteMapping("/batch/force/{idList}")
-    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_CONFIG_DEL_FORCE)")
-    @Log(title = "参数管理", businessType = BusinessType.DELETE_FORCE)
-    public AjaxResult batchRemoveForce(@PathVariable List<Long> idList) {
-        return super.batchRemoveForce(idList);
     }
 
     /**
@@ -161,5 +141,4 @@ public class ASysConfigController extends BSysConfigController {
     public AjaxResult refreshCache() {
         return super.refreshCache();
     }
-
 }

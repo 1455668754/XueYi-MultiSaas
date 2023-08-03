@@ -14,7 +14,7 @@
   import { PageWrapper } from '/@/components/Page';
   import { useUserStore } from '/@/store/modules/user';
   import { DescItemSizeEnum } from '@/enums/basic';
-  import { typeDetailSchema } from '@/views/tenant/dict/dictType/dict.data';
+  import { typeDetailSchema } from '@/views/tenant/dict/dict/dict.data';
 
   const route = useRoute();
   const { setTitle } = useTabs();

@@ -6,13 +6,14 @@ import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.context.SecurityContextHolder;
+import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.entity.base.BasisEntity;
 import com.xueyi.common.redis.constant.RedisConstants;
+import com.xueyi.common.security.utils.SecurityUserUtils;
 import com.xueyi.common.security.utils.SecurityUtils;
-import com.xueyi.common.web.annotation.TenantIgnore;
 import com.xueyi.common.web.correlate.contant.CorrelateConstants;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
@@ -49,18 +50,6 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeQuery, Sy
     private ISysDictDataService dictDataService;
 
     /**
-     * 查询全部字典数据列表 | 全局
-     *
-     * @param query 字典数据查询对象
-     * @return 字典数据对象集合
-     */
-    @Override
-    @TenantIgnore
-    public List<SysDictTypeDto> selectAllListScope(SysDictTypeQuery query) {
-        return selectListScope(query);
-    }
-
-    /**
      * 查询数据对象列表 | 数据权限 | 附加数据
      *
      * @param query 数据查询对象
@@ -73,18 +62,6 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeQuery, Sy
     }
 
     /**
-     * 根据Id查询单条数据对象 | 全局
-     *
-     * @param id Id
-     * @return 数据对象
-     */
-    @Override
-    @TenantIgnore
-    public SysDictTypeDto selectAllById(Serializable id) {
-        return selectById(id);
-    }
-    
-    /**
      * 根据Id查询单条数据对象
      *
      * @param id Id
@@ -96,7 +73,7 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeQuery, Sy
         SysDictTypeCorrelate correlate = SysDictTypeCorrelate.EN_INFO_SELECT;
         return subCorrelates(dto, correlate);
     }
-    
+
     /**
      * 默认方法关联配置定义
      */
@@ -188,6 +165,50 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeQuery, Sy
     @Override
     public boolean checkDictCodeUnique(Long Id, String dictCode) {
         return ObjectUtil.isNotNull(baseManager.checkDictCodeUnique(ObjectUtil.isNull(Id) ? BaseConstants.NONE_ID : Id, dictCode));
+    }
+
+
+    /**
+     * 单条操作 - 开始处理
+     *
+     * @param operate   服务层 - 操作类型
+     * @param originDto 源数据对象（新增时不存在）
+     * @param newDto    新数据对象（删除时不存在）
+     */
+    protected void startHandle(OperateConstants.ServiceType operate, SysDictTypeDto originDto, SysDictTypeDto newDto) {
+        switch (operate) {
+            case ADD -> {
+                if (ObjectUtil.notEqual(newDto.getTenantId(), SecurityUtils.getEnterpriseId())) {
+                    if (SecurityUserUtils.isAdminTenant()) {
+                        SecurityContextHolder.setEnterpriseId(newDto.getTenantId().toString());
+                    } else {
+                        throw new ServiceException("新增失败，无权限！");
+                    }
+                }
+            }
+            case EDIT, EDIT_STATUS -> {
+                if (ObjectUtil.notEqual(originDto.getTenantId(), SecurityUtils.getEnterpriseId())) {
+                    if (SecurityUserUtils.isAdminTenant()) {
+                        SecurityContextHolder.setEnterpriseId(newDto.getTenantId().toString());
+                    } else {
+                        throw new ServiceException("新增失败，无权限！");
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 单条操作 - 结束处理
+     *
+     * @param operate   服务层 - 操作类型
+     * @param row       操作数据条数
+     * @param originDto 源数据对象（新增时不存在）
+     * @param newDto    新数据对象（删除时不存在）
+     */
+    protected void endHandle(OperateConstants.ServiceType operate, int row, SysDictTypeDto originDto, SysDictTypeDto newDto) {
+        super.endHandle(operate, row, originDto, newDto);
+        SecurityContextHolder.rollLastEnterpriseId();
     }
 
     /**

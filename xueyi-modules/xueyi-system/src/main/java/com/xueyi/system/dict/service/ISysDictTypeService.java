@@ -5,7 +5,7 @@ import com.xueyi.system.api.dict.domain.dto.SysDictTypeDto;
 import com.xueyi.system.api.dict.domain.query.SysDictTypeQuery;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 
 /**
  * 系统服务 | 字典模块 | 字典类型管理 服务层
@@ -13,22 +13,6 @@ import java.util.List;
  * @author xueyi
  */
 public interface ISysDictTypeService extends IBaseService<SysDictTypeQuery, SysDictTypeDto> {
-
-    /**
-     * 查询全部字典数据列表 | 全局
-     *
-     * @param query 字典数据查询对象
-     * @return 字典数据对象集合
-     */
-    List<SysDictTypeDto> selectAllListScope(SysDictTypeQuery query);
-
-    /**
-     * 根据Id查询单条数据对象 | 全局
-     *
-     * @param id Id
-     * @return 数据对象
-     */
-    SysDictTypeDto selectAllById(Serializable id);
 
     /**
      * 更新缓存数据

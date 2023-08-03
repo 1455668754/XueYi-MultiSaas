@@ -2,11 +2,14 @@ package com.xueyi.system.dict.service.impl;
 
 import com.xueyi.common.cache.constant.CacheConstants;
 import com.xueyi.common.core.constant.basic.OperateConstants;
+import com.xueyi.common.core.context.SecurityContextHolder;
+import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.core.CollUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.redis.constant.RedisConstants;
+import com.xueyi.common.security.utils.SecurityUserUtils;
 import com.xueyi.common.security.utils.SecurityUtils;
-import com.xueyi.common.web.annotation.TenantIgnore;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
 import com.xueyi.system.api.dict.domain.po.SysDictDataPo;
@@ -16,7 +19,6 @@ import com.xueyi.system.dict.manager.ISysDictDataManager;
 import com.xueyi.system.dict.service.ISysDictDataService;
 import org.springframework.stereotype.Service;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -39,39 +41,48 @@ public class SysDictDataServiceImpl extends BaseServiceImpl<SysDictDataQuery, Sy
         return CacheConstants.CacheType.SYS_DICT_KEY;
     }
 
+
     /**
-     * 查询全部字典数据列表 | 全局
+     * 单条操作 - 开始处理
      *
-     * @param query 字典数据查询对象
-     * @return 字典数据对象集合
+     * @param operate   服务层 - 操作类型
+     * @param originDto 源数据对象（新增时不存在）
+     * @param newDto    新数据对象（删除时不存在）
      */
-    @Override
-    @TenantIgnore
-    public List<SysDictDataDto> selectAllListScope(SysDictDataQuery query) {
-        return selectListScope(query);
+    protected void startHandle(OperateConstants.ServiceType operate, SysDictDataDto originDto, SysDictDataDto newDto) {
+        switch (operate) {
+            case EDIT, EDIT_STATUS -> {
+                if (ObjectUtil.notEqual(originDto.getTenantId(), SecurityUtils.getEnterpriseId())) {
+                    if (SecurityUserUtils.isAdminTenant()) {
+                        SecurityContextHolder.setEnterpriseId(newDto.getTenantId().toString());
+                    } else {
+                        throw new ServiceException("新增失败，无权限！");
+                    }
+                }
+            }
+            case ADD -> {
+                if (ObjectUtil.notEqual(newDto.getTenantId(), SecurityUtils.getEnterpriseId())) {
+                    if (SecurityUserUtils.isAdminTenant()) {
+                        SecurityContextHolder.setEnterpriseId(newDto.getTenantId().toString());
+                    } else {
+                        throw new ServiceException("新增失败，无权限！");
+                    }
+                }
+            }
+        }
     }
 
     /**
-     * 根据Id查询单条数据对象 | 全局
+     * 单条操作 - 结束处理
      *
-     * @param id Id
-     * @return 数据对象
+     * @param operate   服务层 - 操作类型
+     * @param row       操作数据条数
+     * @param originDto 源数据对象（新增时不存在）
+     * @param newDto    新数据对象（删除时不存在）
      */
-    @Override
-    @TenantIgnore
-    public SysDictDataDto selectAllById(Serializable id) {
-        return selectById(id);
-    }
-
-    /**
-     * 查询字典数据对象列表
-     *
-     * @param code 字典编码
-     * @return 字典数据对象集合
-     */
-    @Override
-    public List<SysDictDataDto> selectListByCode(String code) {
-        return baseManager.selectListByCode(code);
+    protected void endHandle(OperateConstants.ServiceType operate, int row, SysDictDataDto originDto, SysDictDataDto newDto) {
+        super.endHandle(operate, row, originDto, newDto);
+        SecurityContextHolder.rollLastEnterpriseId();
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.xueyi.system.dict.controller.admin;
 
+import com.xueyi.common.core.context.SecurityContextHolder;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
@@ -10,7 +11,6 @@ import com.xueyi.common.security.utils.SecurityUserUtils;
 import com.xueyi.system.api.dict.domain.dto.SysDictTypeDto;
 import com.xueyi.system.api.dict.domain.query.SysDictTypeQuery;
 import com.xueyi.system.dict.controller.base.BSysDictTypeController;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -60,11 +60,10 @@ public class ASysDictTypeController extends BSysDictTypeController {
     @GetMapping("/list")
     @PreAuthorize("@ss.hasAuthority(@Auth.SYS_DICT_LIST)")
     public AjaxResult list(SysDictTypeQuery query) {
-        startPage();
-        List<SysDictTypeDto> list = SecurityUserUtils.isNotAdminUser()
-                ? baseService.selectListScope(query)
-                : baseService.selectAllListScope(query);
-        return getDataTable(list);
+        if (SecurityUserUtils.isAdminTenant()) {
+            SecurityContextHolder.setTenantIgnore();
+        }
+        return super.list(query);
     }
 
     /**
@@ -74,21 +73,10 @@ public class ASysDictTypeController extends BSysDictTypeController {
     @GetMapping(value = "/{id}")
     @PreAuthorize("@ss.hasAuthority(@Auth.SYS_DICT_SINGLE)")
     public AjaxResult getInfo(@PathVariable Serializable id) {
-        SysDictTypeDto info = SecurityUserUtils.isNotAdminUser()
-                ? baseService.selectById(id)
-                : baseService.selectAllById(id);
-        return success(info);
-    }
-
-    /**
-     * 字典类型导出
-     */
-    @Override
-    @PostMapping("/export")
-    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_DICT_EXPORT)")
-    @Log(title = "字典类型管理", businessType = BusinessType.EXPORT)
-    public void export(HttpServletResponse response, SysDictTypeQuery dictType) {
-        super.export(response, dictType);
+        if (SecurityUserUtils.isAdminTenant()) {
+            SecurityContextHolder.setTenantIgnore();
+        }
+        return super.getInfo(id);
     }
 
     /**
@@ -132,18 +120,10 @@ public class ASysDictTypeController extends BSysDictTypeController {
     @PreAuthorize("@ss.hasAuthority(@Auth.SYS_DICT_DEL)")
     @Log(title = "字典类型管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
+        if (SecurityUserUtils.isAdminTenant()) {
+            SecurityContextHolder.setTenantIgnore();
+        }
         return super.batchRemove(idList);
-    }
-
-    /**
-     * 字典类型强制批量删除
-     */
-    @Override
-    @DeleteMapping("/batch/force/{idList}")
-    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_DICT_DEL)")
-    @Log(title = "字典类型管理", businessType = BusinessType.DELETE_FORCE)
-    public AjaxResult batchRemoveForce(@PathVariable List<Long> idList) {
-        return super.batchRemoveForce(idList);
     }
 
     /**
@@ -165,5 +145,4 @@ public class ASysDictTypeController extends BSysDictTypeController {
     public AjaxResult option() {
         return super.option();
     }
-
 }

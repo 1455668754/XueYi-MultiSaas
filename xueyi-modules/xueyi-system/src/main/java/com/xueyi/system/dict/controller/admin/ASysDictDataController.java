@@ -1,5 +1,6 @@
 package com.xueyi.system.dict.controller.admin;
 
+import com.xueyi.common.core.context.SecurityContextHolder;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
@@ -42,11 +43,10 @@ public class ASysDictDataController extends BSysDictDataController {
     @GetMapping("/list")
     @PreAuthorize("@ss.hasAuthority(@Auth.SYS_DICT_LIST)")
     public AjaxResult list(SysDictDataQuery query) {
-        startPage();
-        List<SysDictDataDto> list = SecurityUserUtils.isNotAdminUser()
-                ? baseService.selectListScope(query)
-                : baseService.selectAllListScope(query);
-        return getDataTable(list);
+        if (SecurityUserUtils.isAdminTenant()) {
+            SecurityContextHolder.setTenantIgnore();
+        }
+        return super.list(query);
     }
 
     /**
@@ -56,10 +56,10 @@ public class ASysDictDataController extends BSysDictDataController {
     @GetMapping(value = "/{id}")
     @PreAuthorize("@ss.hasAuthority(@Auth.SYS_DICT_LIST)")
     public AjaxResult getInfo(@PathVariable Serializable id) {
-        SysDictDataDto info = SecurityUserUtils.isNotAdminUser()
-                ? baseService.selectById(id)
-                : baseService.selectAllById(id);
-        return success(info);
+        if (SecurityUserUtils.isAdminTenant()) {
+            SecurityContextHolder.setTenantIgnore();
+        }
+        return super.getInfo(id);
     }
 
     /**
@@ -114,6 +114,9 @@ public class ASysDictDataController extends BSysDictDataController {
     @PreAuthorize("@ss.hasAuthority(@Auth.SYS_DICT_DICT)")
     @Log(title = "字典数据管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
+        if (SecurityUserUtils.isAdminTenant()) {
+            SecurityContextHolder.setTenantIgnore();
+        }
         return super.batchRemove(idList);
     }
 }

@@ -6,12 +6,13 @@ import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.context.SecurityContextHolder;
+import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.redis.constant.RedisConstants;
+import com.xueyi.common.security.utils.SecurityUserUtils;
 import com.xueyi.common.security.utils.SecurityUtils;
-import com.xueyi.common.web.annotation.TenantIgnore;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.dict.domain.dto.SysConfigDto;
 import com.xueyi.system.api.dict.domain.query.SysConfigQuery;
@@ -52,18 +53,6 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigQuery, SysCon
     }
 
     /**
-     * 查询全部参数数据列表 | 全局
-     *
-     * @param query 参数数据查询对象
-     * @return 参数数据对象集合
-     */
-    @Override
-    @TenantIgnore
-    public List<SysConfigDto> selectAllListScope(SysConfigQuery query) {
-        return selectListScope(query);
-    }
-
-    /**
      * 查询数据对象列表 | 数据权限 | 附加数据
      *
      * @param query 数据查询对象
@@ -73,18 +62,6 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigQuery, SysCon
     public List<SysConfigDto> selectListScope(SysConfigQuery query) {
         SysConfigCorrelate correlate = SysConfigCorrelate.EN_INFO_SELECT;
         return subCorrelates(selectList(query), correlate);
-    }
-
-    /**
-     * 根据Id查询单条数据对象 | 全局
-     *
-     * @param id Id
-     * @return 数据对象
-     */
-    @Override
-    @TenantIgnore
-    public SysConfigDto selectAllById(Serializable id) {
-        return selectById(id);
     }
 
     /**
@@ -165,6 +142,49 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigQuery, SysCon
     @Override
     public boolean checkIsBuiltIn(Long Id) {
         return ObjectUtil.isNotNull(baseManager.checkIsBuiltIn(ObjectUtil.isNull(Id) ? BaseConstants.NONE_ID : Id));
+    }
+
+    /**
+     * 单条操作 - 开始处理
+     *
+     * @param operate   服务层 - 操作类型
+     * @param originDto 源数据对象（新增时不存在）
+     * @param newDto    新数据对象（删除时不存在）
+     */
+    protected void startHandle(OperateConstants.ServiceType operate, SysConfigDto originDto, SysConfigDto newDto) {
+        switch (operate) {
+            case ADD -> {
+                if (ObjectUtil.notEqual(newDto.getTenantId(), SecurityUtils.getEnterpriseId())) {
+                    if (SecurityUserUtils.isAdminTenant()) {
+                        SecurityContextHolder.setEnterpriseId(newDto.getTenantId().toString());
+                    } else {
+                        throw new ServiceException("新增失败，无权限！");
+                    }
+                }
+            }
+            case EDIT, EDIT_STATUS -> {
+                if (ObjectUtil.notEqual(originDto.getTenantId(), SecurityUtils.getEnterpriseId())) {
+                    if (SecurityUserUtils.isAdminTenant()) {
+                        SecurityContextHolder.setEnterpriseId(newDto.getTenantId().toString());
+                    } else {
+                        throw new ServiceException("新增失败，无权限！");
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 单条操作 - 结束处理
+     *
+     * @param operate   服务层 - 操作类型
+     * @param row       操作数据条数
+     * @param originDto 源数据对象（新增时不存在）
+     * @param newDto    新数据对象（删除时不存在）
+     */
+    protected void endHandle(OperateConstants.ServiceType operate, int row, SysConfigDto originDto, SysConfigDto newDto) {
+        super.endHandle(operate, row, originDto, newDto);
+        SecurityContextHolder.rollLastEnterpriseId();
     }
 
     /**
