@@ -202,6 +202,7 @@ public class SecurityConstants {
         REFRESH_TOKEN("refresh_token", "用户唯一标识 - 刷新令牌"),
         ENTERPRISE("enterprise", "企业信息"),
         ENTERPRISE_ID("enterprise_id", "企业Id"),
+        LAST_ENTERPRISE_ID("last_enterprise_id", "上一次变更企业Id"),
         ENTERPRISE_NAME("enterprise_name", "企业账号"),
         PASSWORD("password", "用户密码"),
         USER("user", "用户信息"),

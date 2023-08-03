@@ -31,7 +31,28 @@ public class SecurityContextHolder {
      * 设置企业Id
      */
     public static void setEnterpriseId(String enterpriseId) {
+        Long lastEnterpriseId = getEnterpriseId();
         set(SecurityConstants.BaseSecurity.ENTERPRISE_ID.getCode(), enterpriseId);
+        setLastEnterpriseId(lastEnterpriseId);
+    }
+
+    /**
+     * 记录上一次企业Id
+     */
+    private static void setLastEnterpriseId(Long enterpriseId) {
+        if (ObjectUtil.isNotNull(enterpriseId)) {
+            set(SecurityConstants.BaseSecurity.LAST_ENTERPRISE_ID.getCode(), enterpriseId.toString());
+        }
+    }
+
+    /**
+     * 回滚上一次企业Id | 如若无上一次则不变更
+     */
+    public static void rollLastEnterpriseId() {
+        String lastEnterpriseId = get(SecurityConstants.BaseSecurity.LAST_ENTERPRISE_ID.getCode());
+        if (StrUtil.isNotBlank(lastEnterpriseId)) {
+            setEnterpriseId(lastEnterpriseId);
+        }
     }
 
     /**
