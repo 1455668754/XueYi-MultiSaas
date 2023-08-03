@@ -39,6 +39,7 @@ public class FeignRequestInterceptor implements RequestInterceptor {
             setHeaderKey(requestTemplate, headers, SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode());
             setHeaderKey(requestTemplate, headers, SecurityConstants.BaseSecurity.AUTHORIZATION_HEADER.getCode());
             setHeaderKey(requestTemplate, headers, SecurityConstants.BaseSecurity.SUPPLY_AUTHORIZATION_HEADER.getCode());
+            setHeaderKey(requestTemplate, headers, SecurityConstants.BaseSecurity.TENANT_IGNORE.getCode());
 
             String accountType = SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode();
 

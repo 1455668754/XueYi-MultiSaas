@@ -1,6 +1,7 @@
 package com.xueyi.common.web.handler;
 
 import com.xueyi.common.core.constant.basic.TenantConstants;
+import com.xueyi.common.core.context.SecurityContextHolder;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.annotation.TenantIgnore;
@@ -71,9 +72,13 @@ public class TenantLineHandler implements BasicLineHandler {
     @Override
     public boolean ignoreTable(String tableName) {
         if (isTenantTable(tableName)) {
-            TenantIgnore tenantIgnore = threadLocal.get();
-            return ObjectUtil.isNotNull(tenantIgnore) && tenantIgnore.tenantLine();
+            if (SecurityContextHolder.getTenantIgnore()) {
+                return Boolean.TRUE;
+            } else {
+                TenantIgnore tenantIgnore = threadLocal.get();
+                return ObjectUtil.isNotNull(tenantIgnore) && tenantIgnore.tenantLine();
+            }
         }
-        return true;
+        return Boolean.TRUE;
     }
 }

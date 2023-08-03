@@ -215,6 +215,7 @@ public class SecurityConstants {
         SOURCE_NAME("source_name", "租户策略源名称"),
         USER_INFO("user_info", "登录用户"),
         ACCOUNT_TYPE("account_type", "账户类型"),
+        TENANT_IGNORE("tenant_ignore", "租户控制忽略"),
         EXPIRE_TIME("expire_time", "过期时间");
 
         private final String code;

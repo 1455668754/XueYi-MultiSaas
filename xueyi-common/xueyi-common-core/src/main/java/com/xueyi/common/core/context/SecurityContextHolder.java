@@ -1,8 +1,10 @@
 package com.xueyi.common.core.context;
 
 import com.alibaba.ttl.TransmittableThreadLocal;
+import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.utils.core.ConvertUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 
 import java.util.Map;
@@ -171,6 +173,36 @@ public class SecurityContextHolder {
      */
     public static void setUserKey(String userKey) {
         set(SecurityConstants.BaseSecurity.USER_KEY.getCode(), userKey);
+    }
+
+    /**
+     * 获取租户忽略控制
+     */
+    public static Boolean getTenantIgnore() {
+        return ObjectUtil.equals(DictConstants.DicYesNo.YES.getCode(), get(SecurityConstants.BaseSecurity.TENANT_IGNORE.getCode()));
+    }
+
+    /**
+     * 设置租户忽略控制
+     */
+    public static void setTenantIgnore(String tenantIgnore) {
+        if (ObjectUtil.equals(DictConstants.DicYesNo.YES.getCode(), tenantIgnore)) {
+            setTenantIgnore();
+        }
+    }
+
+    /**
+     * 设置租户忽略控制
+     */
+    public static void setTenantIgnore() {
+        set(SecurityConstants.BaseSecurity.TENANT_IGNORE.getCode(), DictConstants.DicYesNo.YES.getCode());
+    }
+
+    /**
+     * 移除租户忽略控制
+     */
+    public static void clearTenantIgnore() {
+        set(SecurityConstants.BaseSecurity.TENANT_IGNORE.getCode(), DictConstants.DicYesNo.NO.getCode());
     }
 
     public static void set(String key, Object value) {

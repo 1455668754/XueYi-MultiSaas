@@ -19,10 +19,6 @@ public interface SysDictPool {
     String SYS_DICT_ES = "dict:dict:es" ;
     /** 系统服务 | 字典模块 | 字典管理 | 删除 */
     String SYS_DICT_DEL = "dict:dict:delete" ;
-    /** 系统服务 | 字典模块 | 字典管理 | 导入 */
-    String SYS_DICT_IMPORT = "dict:dict:import" ;
-    /** 系统服务 | 字典模块 | 字典管理 | 导出 */
-    String SYS_DICT_EXPORT = "dict:dict:export" ;
     /** 系统服务 | 字典模块 | 字典管理 | 字典管理 */
     String SYS_DICT_DICT = "dict:dict:dict" ;
 
@@ -40,9 +36,5 @@ public interface SysDictPool {
     String SYS_CONFIG_DEL = "dict:config:delete" ;
     /** 系统服务 | 字典模块 | 参数管理 | 强制删除 */
     String SYS_CONFIG_DEL_FORCE = "dict:config:delForce" ;
-    /** 系统服务 | 字典模块 | 参数管理 | 导入 */
-    String SYS_CONFIG_IMPORT = "dict:config:import" ;
-    /** 系统服务 | 字典模块 | 参数管理 | 导出 */
-    String SYS_CONFIG_EXPORT = "dict:config:export" ;
 
 }
