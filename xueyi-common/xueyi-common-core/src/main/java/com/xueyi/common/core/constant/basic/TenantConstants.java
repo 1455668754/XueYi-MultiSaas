@@ -16,6 +16,9 @@ public class TenantConstants {
     /** 公共字段名 */
     public static final String COMMON_ID = "is_common";
 
+    /** 公共租户Id */
+    public static final Long COMMON_TENANT_ID = BaseConstants.COMMON_ID;
+
     /** 注册租户默认策略Id */
     public static final Long REGISTER_TENANT_STRATEGY_ID = BaseConstants.COMMON_ID;
 
