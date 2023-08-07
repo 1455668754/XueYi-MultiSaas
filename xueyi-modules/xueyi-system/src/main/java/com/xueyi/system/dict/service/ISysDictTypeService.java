@@ -5,7 +5,6 @@ import com.xueyi.system.api.dict.domain.dto.SysDictTypeDto;
 import com.xueyi.system.api.dict.domain.query.SysDictTypeQuery;
 
 import java.io.Serializable;
-import java.util.Collection;
 
 /**
  * 系统服务 | 字典模块 | 字典类型管理 服务层
@@ -18,6 +17,14 @@ public interface ISysDictTypeService extends IBaseService<SysDictTypeQuery, SysD
      * 更新缓存数据
      */
     Boolean syncCache();
+
+    /**
+     * 根据Id查询单条数据对象 | 全局
+     *
+     * @param id Id
+     * @return 数据对象
+     */
+    SysDictTypeDto selectByIdIgnore(Serializable id);
 
     /**
      * 校验字典编码是否唯一

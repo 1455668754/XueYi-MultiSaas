@@ -1,4 +1,5 @@
 import { BaseEntity, BasicFetchResult, BasicPageParams } from '@/model/basic';
+import { DicYesNoEnum } from '@/enums';
 
 /** config info model */
 export interface ConfigIM extends BaseEntity {
@@ -6,9 +7,7 @@ export interface ConfigIM extends BaseEntity {
   name: string;
   code: string;
   value: string;
-  type: string;
-  sort: number;
-  remark: string;
+  type: DicYesNoEnum;
 }
 
 /** config list model */

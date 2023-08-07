@@ -11,16 +11,20 @@ import { listTenantApi } from '@/api/tenant/tenant/tenant.api';
 
 /** 字典查询 */
 export const dictMap = await dicDictList([
+  DicCodeEnum.SYS_YES_NO,
   DicCodeEnum.SYS_NORMAL_DISABLE,
   DicCodeDictEnum.SYS_DICT_DATA_TYPE,
   DicCodeDictEnum.SYS_DICT_CACHE_TYPE,
+  DicCodeDictEnum.SYS_DICT_COLOR,
 ]);
 
 /** 字典表 */
 export const dict: any = {
+  DicYesNoOptions: dictMap[DicCodeEnum.SYS_YES_NO],
   DicNormalDisableOptions: dictMap[DicCodeEnum.SYS_NORMAL_DISABLE],
   DicDictDataTypeOptions: dictMap[DicCodeDictEnum.SYS_DICT_DATA_TYPE],
   DicDictCacheTypeOptions: dictMap[DicCodeDictEnum.SYS_DICT_CACHE_TYPE],
+  DicDictColorOptions: dictMap[DicCodeDictEnum.SYS_DICT_COLOR],
 };
 
 /** 字典类型 - 表格数据 */
@@ -160,6 +164,20 @@ export const typeSearchFormSchema: FormSchema[] = [
       options: dict.DicNormalDisableOptions,
       showSearch: true,
       optionFilterProp: 'label',
+    },
+    colProps: { span: 8 },
+  },
+  {
+    label: '所属租户',
+    field: 'tenantId',
+    component: 'Select',
+    componentProps: {
+      showSearch: true,
+      optionFilterProp: 'label',
+      fieldNames: {
+        label: 'nick',
+        value: 'id',
+      },
     },
     colProps: { span: 8 },
   },

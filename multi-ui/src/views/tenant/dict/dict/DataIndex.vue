@@ -5,6 +5,7 @@
         <a-button
           :preIcon="IconEnum.ADD"
           v-auth="DictTypeAuth.DICT"
+          v-if="state.hasDict"
           @click="handleCreate"
           type="primary"
         >
@@ -13,6 +14,7 @@
         <a-button
           :preIcon="IconEnum.DELETE"
           v-auth="DictTypeAuth.DICT"
+          v-if="state.hasDict"
           @click="handleDelete"
           type="primary"
           color="error"
@@ -66,14 +68,15 @@
     ids: string[];
     idNames: string;
     title: string;
-    dictCode?: string;
-    enterpriseId?: string;
+    dictTypeInfo?: DictTypeIM;
+    hasDict: boolean;
   }>({
     ids: [],
     idNames: '',
     title: '字典明细列表',
+    hasDict: false,
   });
-  const [registerTable, { reload }] = useTable({
+  const [registerTable, { reload, setProps }] = useTable({
     title: state.title,
     api: listDictDataApi,
     striped: false,
@@ -99,7 +102,7 @@
       slots: { customRender: 'action' },
     },
     beforeFetch: (info) => {
-      info.code = state.dictCode;
+      info.code = state.dictTypeInfo?.code || 'null';
       return info;
     },
     rowSelection: {
@@ -117,7 +120,7 @@
   /** 新增按钮 */
   function handleCreate() {
     openModal(true, {
-      dictCode: state.dictCode,
+      dictTypeInfo: state.dictTypeInfo,
       isUpdate: false,
     });
   }
@@ -125,6 +128,7 @@
   /** 修改按钮 */
   function handleEdit(record: Recordable) {
     openModal(true, {
+      dictTypeInfo: state.dictTypeInfo,
       record,
       isUpdate: true,
     });
@@ -152,8 +156,12 @@
 
   function onChangeDictInfo(dict?: DictTypeIM) {
     state.title = '字典【' + dict?.name + '】的明细列表';
-    state.dictCode = dict?.code || 'null';
-    state.enterpriseId = dict?.enterpriseInfo?.id || '0';
+    setProps({ title: state.title });
+    state.hasDict = !!dict;
+    if (dict) {
+      dict.tenantId = dict?.enterpriseInfo?.id;
+    }
+    state.dictTypeInfo = dict;
     reload();
   }
 

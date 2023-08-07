@@ -1,10 +1,12 @@
 package com.xueyi.system.dict.service.impl;
 
+import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.xueyi.common.cache.constant.CacheConstants;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
+import com.xueyi.common.core.constant.basic.TenantConstants;
 import com.xueyi.common.core.context.SecurityContextHolder;
 import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.core.CollUtil;
@@ -14,6 +16,7 @@ import com.xueyi.common.core.web.entity.base.BasisEntity;
 import com.xueyi.common.redis.constant.RedisConstants;
 import com.xueyi.common.security.utils.SecurityUserUtils;
 import com.xueyi.common.security.utils.SecurityUtils;
+import com.xueyi.common.web.annotation.TenantIgnore;
 import com.xueyi.common.web.correlate.contant.CorrelateConstants;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
@@ -50,31 +53,6 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeQuery, Sy
     private ISysDictDataService dictDataService;
 
     /**
-     * 查询数据对象列表 | 数据权限 | 附加数据
-     *
-     * @param query 数据查询对象
-     * @return 数据对象集合
-     */
-    @Override
-    public List<SysDictTypeDto> selectListScope(SysDictTypeQuery query) {
-        SysDictTypeCorrelate correlate = SysDictTypeCorrelate.EN_INFO_SELECT;
-        return subCorrelates(selectList(query), correlate);
-    }
-
-    /**
-     * 根据Id查询单条数据对象
-     *
-     * @param id Id
-     * @return 数据对象
-     */
-    @Override
-    public SysDictTypeDto selectById(Serializable id) {
-        SysDictTypeDto dto = baseManager.selectById(id);
-        SysDictTypeCorrelate correlate = SysDictTypeCorrelate.EN_INFO_SELECT;
-        return subCorrelates(dto, correlate);
-    }
-
-    /**
      * 默认方法关联配置定义
      */
     @Override
@@ -98,6 +76,58 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeQuery, Sy
      */
     protected CacheConstants.CacheType getCacheRouteKey() {
         return CacheConstants.CacheType.ROUTE_DICT_KEY;
+    }
+
+    /**
+     * 查询数据对象列表 | 数据权限 | 附加数据
+     *
+     * @param query 数据查询对象
+     * @return 数据对象集合
+     */
+    @Override
+    public List<SysDictTypeDto> selectListScope(SysDictTypeQuery query) {
+        return subCorrelates(selectList(query), SysDictTypeCorrelate.EN_INFO_SELECT);
+    }
+
+    /**
+     * 根据Id查询单条数据对象
+     *
+     * @param id Id
+     * @return 数据对象
+     */
+    @Override
+    public SysDictTypeDto selectById(Serializable id) {
+        return subCorrelates(baseManager.selectById(id), SysDictTypeCorrelate.EN_INFO_SELECT);
+    }
+
+    /**
+     * 根据Id查询单条数据对象 | 全局
+     *
+     * @param id Id
+     * @return 数据对象
+     */
+    @Override
+    @TenantIgnore
+    public SysDictTypeDto selectByIdIgnore(Serializable id) {
+        return selectById(id);
+    }
+
+    /**
+     * 修改数据对象
+     *
+     * @param dto 数据对象
+     * @return 结果
+     */
+    @Override
+    @DSTransactional
+    public int update(SysDictTypeDto dto) {
+        SecurityContextHolder.setTenantIgnore();
+        SysDictTypeDto originDto = selectById(dto.getId());
+        SecurityContextHolder.clearTenantIgnore();
+        startHandle(OperateConstants.ServiceType.EDIT, originDto, dto);
+        int row = baseManager.update(dto);
+        endHandle(OperateConstants.ServiceType.EDIT, row, originDto, dto);
+        return row;
     }
 
     /**
@@ -163,6 +193,7 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeQuery, Sy
      * @return 结果 | true/false 唯一/不唯一
      */
     @Override
+    @TenantIgnore
     public boolean checkDictCodeUnique(Long Id, String dictCode) {
         return ObjectUtil.isNotNull(baseManager.checkDictCodeUnique(ObjectUtil.isNull(Id) ? BaseConstants.NONE_ID : Id, dictCode));
     }
@@ -178,6 +209,11 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeQuery, Sy
     protected void startHandle(OperateConstants.ServiceType operate, SysDictTypeDto originDto, SysDictTypeDto newDto) {
         switch (operate) {
             case ADD -> {
+                if (StrUtil.equals(DictConstants.DicCacheType.OVERALL.getCode(), newDto.getCacheType())) {
+                    newDto.setTenantId(TenantConstants.COMMON_TENANT_ID);
+                } else if (ObjectUtil.equals(TenantConstants.COMMON_TENANT_ID, newDto.getTenantId())) {
+                    throw new ServiceException("新增失败，非全局字典禁止设置为公共租户！");
+                }
                 if (ObjectUtil.notEqual(newDto.getTenantId(), SecurityUtils.getEnterpriseId())) {
                     if (SecurityUserUtils.isAdminTenant()) {
                         SecurityContextHolder.setEnterpriseId(newDto.getTenantId().toString());
@@ -189,7 +225,7 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeQuery, Sy
             case EDIT, EDIT_STATUS -> {
                 if (ObjectUtil.notEqual(originDto.getTenantId(), SecurityUtils.getEnterpriseId())) {
                     if (SecurityUserUtils.isAdminTenant()) {
-                        SecurityContextHolder.setEnterpriseId(newDto.getTenantId().toString());
+                        SecurityContextHolder.setEnterpriseId(originDto.getTenantId().toString());
                     } else {
                         throw new ServiceException("新增失败，无权限！");
                     }

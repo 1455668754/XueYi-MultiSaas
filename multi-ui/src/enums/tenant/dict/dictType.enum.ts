@@ -13,6 +13,8 @@ export enum DicCodeDictEnum {
   SYS_DICT_DATA_TYPE = 'sys_dict_data_type',
   // 字典管理-缓存类型
   SYS_DICT_CACHE_TYPE = 'sys_dict_cache_type',
+  // 字典管理-字典颜色
+  SYS_DICT_COLOR = 'sys_dict_color',
 }
 
 /** 字典：字典数据类型列表（0默认 1只增 2只减 3只读） */

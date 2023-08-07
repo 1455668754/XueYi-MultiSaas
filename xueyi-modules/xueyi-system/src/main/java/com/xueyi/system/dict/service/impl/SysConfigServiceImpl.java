@@ -1,10 +1,12 @@
 package com.xueyi.system.dict.service.impl;
 
+import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.xueyi.common.cache.constant.CacheConstants;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
+import com.xueyi.common.core.constant.basic.TenantConstants;
 import com.xueyi.common.core.context.SecurityContextHolder;
 import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.core.CollUtil;
@@ -94,6 +96,24 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigQuery, SysCon
     }
 
     /**
+     * 修改数据对象
+     *
+     * @param dto 数据对象
+     * @return 结果
+     */
+    @Override
+    @DSTransactional
+    public int update(SysConfigDto dto) {
+        SecurityContextHolder.setTenantIgnore();
+        SysConfigDto originDto = selectById(dto.getId());
+        SecurityContextHolder.clearTenantIgnore();
+        startHandle(OperateConstants.ServiceType.EDIT, originDto, dto);
+        int row = baseManager.update(dto);
+        endHandle(OperateConstants.ServiceType.EDIT, row, originDto, dto);
+        return row;
+    }
+
+    /**
      * 更新缓存数据
      */
     @Override
@@ -154,6 +174,11 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigQuery, SysCon
     protected void startHandle(OperateConstants.ServiceType operate, SysConfigDto originDto, SysConfigDto newDto) {
         switch (operate) {
             case ADD -> {
+                if (StrUtil.equals(DictConstants.DicCacheType.OVERALL.getCode(), newDto.getCacheType())) {
+                    newDto.setTenantId(TenantConstants.COMMON_TENANT_ID);
+                } else if (ObjectUtil.equals(TenantConstants.COMMON_TENANT_ID, newDto.getTenantId())) {
+                    throw new ServiceException("新增失败，非全局参数禁止设置为公共租户！");
+                }
                 if (ObjectUtil.notEqual(newDto.getTenantId(), SecurityUtils.getEnterpriseId())) {
                     if (SecurityUserUtils.isAdminTenant()) {
                         SecurityContextHolder.setEnterpriseId(newDto.getTenantId().toString());
@@ -165,7 +190,7 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigQuery, SysCon
             case EDIT, EDIT_STATUS -> {
                 if (ObjectUtil.notEqual(originDto.getTenantId(), SecurityUtils.getEnterpriseId())) {
                     if (SecurityUserUtils.isAdminTenant()) {
-                        SecurityContextHolder.setEnterpriseId(newDto.getTenantId().toString());
+                        SecurityContextHolder.setEnterpriseId(originDto.getTenantId().toString());
                     } else {
                         throw new ServiceException("新增失败，无权限！");
                     }

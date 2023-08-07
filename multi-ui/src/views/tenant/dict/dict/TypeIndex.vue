@@ -60,7 +60,7 @@
 </template>
 
 <script setup lang="ts">
-  import { reactive } from 'vue';
+  import { onMounted, reactive } from 'vue';
   import { delDictTypeApi, listDictTypeApi, refreshDictApi } from '@/api/tenant/dict/dictType.api';
   import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
@@ -69,8 +69,10 @@
   import { DictTypeAuth } from '/@/auth/tenant';
   import DictTypeModal from './DictTypeModal.vue';
   import { typeColumns, typeSearchFormSchema } from './dict.data';
+  import { listTenantApi } from '@/api/tenant/tenant/tenant.api';
+  import { TenantIM } from '@/model/tenant';
 
-  const emit = defineEmits(['dict-change']);
+  const emit = defineEmits(['dict-change', 'dict-del']);
   const { createMessage, createConfirm } = useMessage();
   const [registerModal, { openModal }] = useModal();
   const state = reactive<{
@@ -80,7 +82,7 @@
     ids: [],
     idNames: '',
   });
-  const [registerTable, { reload }] = useTable({
+  const [registerTable, { reload, getForm }] = useTable({
     title: '字典类型列表',
     api: listDictTypeApi,
     striped: false,
@@ -117,6 +119,24 @@
     },
   });
 
+  onMounted(() => {
+    initTenantList();
+  });
+
+  async function initTenantList() {
+    const tenantList = await listTenantApi();
+    tenantList.items.push({
+      id: '0',
+      nick: '通用',
+    } as TenantIM);
+    getForm().updateSchema({
+      field: 'tenantId',
+      componentProps: {
+        options: tenantList.items,
+      },
+    });
+  }
+
   /** 新增按钮 */
   function handleCreate() {
     openModal(true, {
@@ -151,6 +171,7 @@
         onOk: () =>
           delDictTypeApi(delIds).then(() => {
             createMessage.success('删除' + delNames + '成功！');
+            emit('dict-del', delIds);
             reload();
           }),
       });

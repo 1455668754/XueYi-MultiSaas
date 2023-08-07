@@ -11,11 +11,13 @@
   import { addDictDataApi, editDictDataApi, getDictDataApi } from '@/api/tenant/dict/dictData.api';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
+  import { DictTypeIM } from '@/model/tenant';
 
   const emit = defineEmits(['success', 'register']);
 
   const { createMessage } = useMessage();
   const isUpdate = ref(true);
+  const dictTypeInfo = ref<DictTypeIM>();
 
   const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
     labelWidth: 100,
@@ -27,12 +29,12 @@
     resetFields();
     setModalProps({ confirmLoading: false });
     isUpdate.value = !!data?.isUpdate;
-
+    dictTypeInfo.value = data?.dictTypeInfo;
     if (unref(isUpdate)) {
       const dictData = await getDictDataApi(data.record.id);
       setFieldsValue({ ...dictData });
     } else {
-      setFieldsValue({ code: data?.dictCode });
+      setFieldsValue({ code: dictTypeInfo.value?.code });
     }
   });
 
@@ -43,6 +45,8 @@
   async function handleSubmit() {
     try {
       const values = await validate();
+      values.tenantId = dictTypeInfo.value?.tenantId;
+      values.dictTypeId = dictTypeInfo.value?.id;
       setModalProps({ confirmLoading: true });
       unref(isUpdate)
         ? await editDictDataApi(values).then(() => {

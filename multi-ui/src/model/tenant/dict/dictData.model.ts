@@ -1,4 +1,6 @@
 import { BaseEntity, BasicFetchResult, BasicPageParams } from '@/model/basic';
+import { DicStatusEnum, DicYesNoEnum } from '@/enums';
+import { DictTypeIM } from '@/model/tenant';
 
 /** dictData info model */
 export interface DictDataIM extends BaseEntity {
@@ -6,10 +8,14 @@ export interface DictDataIM extends BaseEntity {
   code: string;
   value: string;
   label: string;
-  isDefault: string;
+  isDefault: DicYesNoEnum;
   cssClass: string;
   listClass: string;
-  status: string;
+  status: DicStatusEnum;
+  /** 字典类型Id */
+  dictTypeId?: string;
+  /** 字典类型信息 */
+  dictTypeInfo?: DictTypeIM;
 }
 
 /** dictData list model */

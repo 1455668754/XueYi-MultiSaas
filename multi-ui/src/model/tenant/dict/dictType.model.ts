@@ -18,6 +18,8 @@ export interface DictTypeIM extends SubBaseEntity<DictDataIM> {
   cacheType: DicCacheTypeEnum;
   /** 状态（0启用 1禁用） */
   status: DicStatusEnum;
+  /** 企业Id */
+  tenantId?: string;
   /** 企业信息 */
   enterpriseInfo?: EnterpriseIM;
 }
@@ -37,6 +39,8 @@ export interface DictTypePM extends SubBaseEntity<DictDataIM> {
   cacheType?: DicCacheTypeEnum;
   /** 状态（0启用 1禁用） */
   status?: DicStatusEnum;
+  tenantId?: string;
+  tenantIds?: string[];
 }
 
 /** dictType page param model */

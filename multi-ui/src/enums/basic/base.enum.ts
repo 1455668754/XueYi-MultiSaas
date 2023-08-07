@@ -2,6 +2,8 @@
 export enum DicCodeEnum {
   // 系统开关
   SYS_NORMAL_DISABLE = 'sys_normal_disable',
+  // 是否
+  SYS_YES_NO = 'sys_yes_no',
 }
 
 /** 字典：状态（0正常 1停用） */

@@ -18,4 +18,9 @@ public class SysDictDataDto extends SysDictDataPo {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    /** 字典类型Id */
+    private Long dictTypeId;
+
+    /** 字典类型信息 */
+    private SysDictTypeDto dictTypeInfo;
 }

@@ -11,7 +11,6 @@
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
   import { typeFormSchema } from './dict.data';
-  import { DicCacheTypeEnum } from '@/enums/tenant';
 
   const emit = defineEmits(['success', 'register']);
 
@@ -31,6 +30,7 @@
 
     if (unref(isUpdate)) {
       const dictType = await getDictTypeApi(data.record.id);
+      dictType.tenantId = dictType?.enterpriseInfo?.id;
       setFieldsValue({ ...dictType });
     }
   });
@@ -42,8 +42,6 @@
   async function handleSubmit() {
     try {
       const values = await validate();
-      if (values.cacheType === DicCacheTypeEnum.OVERALL) {
-      }
       setModalProps({ confirmLoading: true });
       unref(isUpdate)
         ? await editDictTypeApi(values).then(() => {
