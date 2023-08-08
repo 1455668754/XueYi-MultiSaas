@@ -1,4 +1,5 @@
 import { BaseEntity, BasicFetchResult, BasicPageParams } from '@/model/basic';
+import { DicStatusEnum, DicYesNoEnum } from '@/enums';
 
 /** source info model */
 export interface SourceIM extends BaseEntity {
@@ -10,10 +11,8 @@ export interface SourceIM extends BaseEntity {
   urlAppend: string;
   username: string;
   password: string;
-  sort: number;
-  status: string;
-  remark: string;
-  isDefault: string;
+  status: DicStatusEnum;
+  isDefault: DicYesNoEnum;
 }
 
 /** source list model */
@@ -26,8 +25,8 @@ export interface SourcePM extends BaseEntity {
   slave?: string;
   driverClassName?: string;
   username?: string;
-  status?: string;
-  isDefault?: string;
+  status?: DicStatusEnum;
+  isDefault?: DicYesNoEnum;
 }
 
 /** source page param model */

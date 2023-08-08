@@ -3,7 +3,7 @@
     v-bind="$attrs"
     @register="registerModal"
     destroyOnClose
-    :width="700"
+    :width="800"
     :title="getTitle"
     @ok="handleSubmit"
   >
@@ -35,12 +35,12 @@
     setModalProps({ confirmLoading: false });
   });
 
-  const [registerTable] = useTable({
+  const [registerTable, { getForm }] = useTable({
     title: '数据表列表',
     api: listDBGenApi,
     columns: modelColumns,
     formConfig: {
-      labelWidth: 70,
+      labelWidth: 100,
       schemas: searchModelFormSchema,
     },
     rowKey: 'name',
@@ -61,7 +61,9 @@
   async function handleSubmit() {
     try {
       setModalProps({ confirmLoading: true, destroyOnClose: true });
-      await importDBGenApi(state.dbNames).then(() => {
+      const values = await getForm().validate();
+      console.error(values);
+      await importDBGenApi(state.dbNames, values?.sourceName).then(() => {
         closeModal();
         createMessage.success('导入成功！');
       });

@@ -1,5 +1,17 @@
 import { FormSchema } from '/@/components/Form';
 import { BasicColumn } from '/@/components/Table';
+import { listSourceApi } from '@/api/tenant/source/source.api';
+import { DicStatusEnum } from '@/enums';
+import { SourceIM } from '@/model/tenant';
+
+async function sourceList() {
+  const list = await listSourceApi({ status: DicStatusEnum.NORMAL });
+  list.items.push({
+    slave: 'master',
+    name: '主数据源',
+  } as SourceIM);
+  return list;
+}
 
 /** 表格数据 */
 export const columns: BasicColumn[] = [
@@ -70,12 +82,26 @@ export const searchModelFormSchema: FormSchema[] = [
     label: '表名称',
     field: 'name',
     component: 'Input',
-    colProps: { span: 8 },
+    colProps: { span: 12 },
   },
   {
     label: '表描述',
     field: 'comment',
     component: 'Input',
-    colProps: { span: 8 },
+    colProps: { span: 12 },
+  },
+  {
+    label: '所属数据源',
+    field: 'sourceName',
+    component: 'ApiSelect',
+    componentProps: {
+      api: sourceList,
+      showSearch: true,
+      optionFilterProp: 'label',
+      resultField: 'items',
+      labelField: 'name',
+      valueField: 'slave',
+    },
+    colProps: { span: 12 },
   },
 ];

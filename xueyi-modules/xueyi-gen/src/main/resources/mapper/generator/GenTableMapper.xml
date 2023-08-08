@@ -17,11 +17,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		from information_schema.tables
 	</sql>
 
-	<select id="selectDbTableList" parameterType="com.xueyi.gen.domain.dto.GenTableDto" resultMap="GenTableResult">
+	<select id="selectDbTableList" parameterType="com.xueyi.gen.domain.query.GenTableQuery" resultMap="GenTableResult">
 		<include refid="schema"/>
 		where table_schema = (select database())
         AND table_name NOT LIKE 'qrtz_%' AND table_name NOT LIKE 'gen_%'
-		AND table_name NOT IN (select name from gen_table)
+		<if test="sourceName = null">
+			AND table_name NOT IN (select name from gen_table)
+		</if>
 		<if test="name != null and name != ''">
 			AND lower(table_name) like lower(concat('%', #{name}, '%'))
 		</if>

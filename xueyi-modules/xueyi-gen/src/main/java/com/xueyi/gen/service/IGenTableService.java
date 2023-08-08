@@ -17,18 +17,19 @@ public interface IGenTableService extends IBaseService<GenTableQuery, GenTableDt
     /**
      * 查询据库列表
      *
-     * @param genTable 业务信息
+     * @param table 业务信息
      * @return 数据库表集合
      */
-    List<GenTableDto> selectDbTableList(GenTableDto genTable);
+    List<GenTableDto> selectDbTableList(GenTableQuery table);
 
     /**
      * 查询据库列表
      *
      * @param tableNames 表名称组
+     * @param sourceName 数据源
      * @return 数据库表集合
      */
-    List<GenTableDto> selectDbTableListByNames(String[] tableNames);
+    List<GenTableDto> selectDbTableListByNames(String[] tableNames, String sourceName);
 
     /**
      * 导入表结构

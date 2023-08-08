@@ -1,6 +1,8 @@
 package com.xueyi.gen.mapper;
 
 import com.baomidou.mybatisplus.annotation.InterceptorIgnore;
+import com.xueyi.common.datasource.annotation.Isolate;
+import com.xueyi.common.datasource.annotation.Master;
 import com.xueyi.common.web.entity.mapper.BaseMapper;
 import com.xueyi.gen.domain.dto.GenTableDto;
 import com.xueyi.gen.domain.po.GenTablePo;
@@ -13,6 +15,7 @@ import java.util.List;
  *
  * @author xueyi
  */
+@Master
 public interface GenTableMapper extends BaseMapper<GenTableQuery, GenTableDto, GenTablePo> {
 
     /**
@@ -21,8 +24,9 @@ public interface GenTableMapper extends BaseMapper<GenTableQuery, GenTableDto, G
      * @param genTableDto 业务对象
      * @return 数据库表集合
      */
+    @Isolate
     @InterceptorIgnore(tenantLine = "1")
-    List<GenTableDto> selectDbTableList(GenTableDto genTableDto);
+    List<GenTableDto> selectDbTableList(GenTableQuery genTableDto);
 
     /**
      * 根据表名称组查询数据库列表
@@ -30,6 +34,7 @@ public interface GenTableMapper extends BaseMapper<GenTableQuery, GenTableDto, G
      * @param names 表名称组
      * @return 数据库表集合
      */
+    @Isolate
     @InterceptorIgnore(tenantLine = "1")
     List<GenTableDto> selectDbTableListByNames(String[] names);
 

@@ -25,19 +25,19 @@ public enum GenTableCorrelate implements CorrelateService {
 
     INFO_LIST("默认列表|（业务字段）", new ArrayList<>() {{
         // 业务 | 业务字段
-        add(new Direct<>(SELECT, IGenTableColumnService.class, GenTableColumnDto::getTableId, GenTableDto::getId));
+        add(new Direct<>(SELECT, IGenTableColumnService.class, GenTableDto::getId, GenTableColumnDto::getTableId));
     }}),
     BASE_ADD("默认新增|（业务字段）", new ArrayList<>() {{
         // 业务 | 业务字段
-        add(new Direct<>(ADD, IGenTableColumnService.class, GenTableColumnDto::getTableId, GenTableDto::getId));
+        add(new Direct<>(ADD, IGenTableColumnService.class, GenTableDto::getId, GenTableColumnDto::getTableId));
     }}),
     BASE_EDIT("默认修改|（业务字段）", new ArrayList<>() {{
         // 业务 | 业务字段
-        add(new Direct<>(EDIT, IGenTableColumnService.class, GenTableColumnDto::getTableId, GenTableDto::getId));
+        add(new Direct<>(EDIT, IGenTableColumnService.class, GenTableDto::getId, GenTableColumnDto::getTableId));
     }}),
     BASE_DEL("默认删除|（业务字段）", new ArrayList<>() {{
         // 业务 | 业务字段
-        add(new Direct<>(DELETE, IGenTableColumnService.class, GenTableColumnDto::getTableId, GenTableDto::getId));
+        add(new Direct<>(DELETE, IGenTableColumnService.class, GenTableDto::getId, GenTableColumnDto::getTableId));
     }});
 
     private final String info;

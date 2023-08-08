@@ -1,6 +1,8 @@
 package com.xueyi.gen.manager.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.xueyi.common.core.context.SecurityContextHolder;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.gen.domain.dto.GenTableDto;
 import com.xueyi.gen.domain.model.GenTableConverter;
@@ -24,23 +26,34 @@ public class GenTableManagerImpl extends BaseManagerImpl<GenTableQuery, GenTable
     /**
      * 查询数据库列表
      *
-     * @param genTableDto 业务对象
+     * @param table 业务对象
      * @return 数据库表集合
      */
     @Override
-    public List<GenTableDto> selectDbTableList(GenTableDto genTableDto) {
-        return baseMapper.selectDbTableList(genTableDto);
+    public List<GenTableDto> selectDbTableList(GenTableQuery table) {
+        if (StrUtil.isNotBlank(table.getSourceName())) {
+            SecurityContextHolder.setSourceName(table.getSourceName());
+        }
+        List<GenTableDto> list = baseMapper.selectDbTableList(table);
+        SecurityContextHolder.rollLastSourceName();
+        return list;
     }
 
     /**
      * 根据表名称组查询数据库列表
      *
-     * @param names 表名称组
+     * @param names      表名称组
+     * @param sourceName 数据源
      * @return 数据库表集合
      */
     @Override
-    public List<GenTableDto> selectDbTableListByNames(String[] names) {
-        return baseMapper.selectDbTableListByNames(names);
+    public List<GenTableDto> selectDbTableListByNames(String[] names, String sourceName) {
+        if (StrUtil.isNotBlank(sourceName)) {
+            SecurityContextHolder.setSourceName(sourceName);
+        }
+        List<GenTableDto> list = baseMapper.selectDbTableListByNames(names);
+        SecurityContextHolder.rollLastSourceName();
+        return list;
     }
 
     /**

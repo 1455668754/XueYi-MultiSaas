@@ -111,23 +111,24 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
     /**
      * 查询数据库列表
      *
-     * @param genTableDto 业务对象
+     * @param table 业务对象
      * @return 数据库表集合
      */
     @Override
-    public List<GenTableDto> selectDbTableList(GenTableDto genTableDto) {
-        return baseManager.selectDbTableList(genTableDto);
+    public List<GenTableDto> selectDbTableList(GenTableQuery table) {
+        return baseManager.selectDbTableList(table);
     }
 
     /**
      * 根据表名称组查询数据库列表
      *
      * @param tableNames 表名称组
+     * @param sourceName 数据源
      * @return 数据库表集合
      */
     @Override
-    public List<GenTableDto> selectDbTableListByNames(String[] tableNames) {
-        return baseManager.selectDbTableListByNames(tableNames);
+    public List<GenTableDto> selectDbTableListByNames(String[] tableNames, String sourceName) {
+        return baseManager.selectDbTableListByNames(tableNames, sourceName);
     }
 
     /**

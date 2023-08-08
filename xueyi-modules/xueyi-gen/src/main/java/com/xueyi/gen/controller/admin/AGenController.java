@@ -1,22 +1,17 @@
-package com.xueyi.gen.controller;
+package com.xueyi.gen.controller.admin;
 
 import com.alibaba.fastjson2.JSONObject;
-import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.utils.core.ConvertUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
-import com.xueyi.common.web.entity.controller.BaseController;
+import com.xueyi.gen.controller.base.BGenController;
 import com.xueyi.gen.domain.dto.GenTableColumnDto;
 import com.xueyi.gen.domain.dto.GenTableDto;
 import com.xueyi.gen.domain.query.GenTableColumnQuery;
 import com.xueyi.gen.domain.query.GenTableQuery;
-import com.xueyi.gen.service.IGenTableColumnService;
-import com.xueyi.gen.service.IGenTableService;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.commons.io.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -39,19 +34,8 @@ import java.util.List;
  * @author xueyi
  */
 @RestController
-@RequestMapping("/gen")
-public class GenController extends BaseController<GenTableQuery, GenTableDto, IGenTableService> {
-
-    @Autowired
-    private IGenTableColumnService subService;
-
-    /**
-     * 定义节点名称
-     */
-    @Override
-    protected String getNodeName() {
-        return "业务表";
-    }
+@RequestMapping("/admin/gen")
+public class AGenController extends BGenController {
 
     /**
      * 查询代码生成列表
@@ -68,7 +52,7 @@ public class GenController extends BaseController<GenTableQuery, GenTableDto, IG
      */
     @GetMapping("/db/list")
     @PreAuthorize("@ss.hasAuthority(@Auth.GEN_GENERATE_LIST)")
-    public AjaxResult dataList(GenTableDto table) {
+    public AjaxResult dataList(GenTableQuery table) {
         startPage();
         List<GenTableDto> list = baseService.selectDbTableList(table);
         return getDataTable(list);
@@ -107,7 +91,7 @@ public class GenController extends BaseController<GenTableQuery, GenTableDto, IG
     /**
      * 预览代码
      */
-    @GetMapping("/multi/preview/{tableId}")
+    @GetMapping("/preview/{tableId}")
     @PreAuthorize("@ss.hasAuthority(@Auth.GEN_GENERATE_PREVIEW)")
     public AjaxResult previewMulti(@PathVariable("tableId") Long tableId) {
         List<JSONObject> dataMap = baseService.previewCode(tableId);
@@ -120,10 +104,10 @@ public class GenController extends BaseController<GenTableQuery, GenTableDto, IG
     @PostMapping("/importTable")
     @PreAuthorize("@ss.hasAuthority(@Auth.GEN_GENERATE_IMPORT)")
     @Log(title = "代码生成", businessType = BusinessType.IMPORT)
-    public AjaxResult importTableSave(@RequestParam("tables") String tables) {
+    public AjaxResult importTableSave(@RequestParam("tables") String tables, @RequestParam(value = "sourceName", required = false) String sourceName) {
         String[] tableNames = ConvertUtil.toStrArray(tables);
         // 查询表信息
-        List<GenTableDto> tableList = baseService.selectDbTableListByNames(tableNames);
+        List<GenTableDto> tableList = baseService.selectDbTableListByNames(tableNames, sourceName);
         baseService.importGenTable(tableList);
         return success();
     }
@@ -144,7 +128,7 @@ public class GenController extends BaseController<GenTableQuery, GenTableDto, IG
      */
     @PreAuthorize("@ss.hasAuthority(@Auth.GEN_GENERATE_CODE)")
     @Log(title = "代码生成", businessType = BusinessType.GEN_CODE)
-    @GetMapping("/multi/download/{tableId}")
+    @GetMapping("/download/{tableId}")
     public void downloadMulti(HttpServletResponse response, @PathVariable("tableId") Long tableId) throws IOException {
         byte[] data = baseService.downloadCode(tableId);
         genCode(response, data);
@@ -155,7 +139,7 @@ public class GenController extends BaseController<GenTableQuery, GenTableDto, IG
      */
     @PreAuthorize("@ss.hasAuthority(@Auth.GEN_GENERATE_CODE)")
     @Log(title = "代码生成", businessType = BusinessType.GEN_CODE)
-    @GetMapping("/multi/generate/{tableId}")
+    @GetMapping("/generate/{tableId}")
     public AjaxResult genMultiCode(@PathVariable("tableId") Long tableId) {
         baseService.generatorCode(tableId);
         return success();
@@ -166,7 +150,7 @@ public class GenController extends BaseController<GenTableQuery, GenTableDto, IG
      */
     @PreAuthorize("@ss.hasAuthority(@Auth.GEN_GENERATE_CODE)")
     @Log(title = "代码生成", businessType = BusinessType.GEN_CODE)
-    @GetMapping("/multi/batchGenCode")
+    @GetMapping("/batchGenCode")
     public void batchMultiGenCode(HttpServletResponse response, Long[] ids) throws IOException {
         byte[] data = baseService.downloadCode(ids);
         genCode(response, data);
@@ -183,23 +167,4 @@ public class GenController extends BaseController<GenTableQuery, GenTableDto, IG
         return super.batchRemoveForce(idList);
     }
 
-    /**
-     * 生成zip文件
-     */
-    private void genCode(HttpServletResponse response, byte[] data) throws IOException {
-        response.reset();
-        response.setHeader("Content-Disposition", "attachment; filename=\"xueyi.zip\"");
-        response.addHeader("Content-Length", "" + data.length);
-        response.setContentType("application/octet-stream; charset=UTF-8");
-        IOUtils.write(data, response.getOutputStream());
-    }
-
-    /**
-     * 前置校验 （强制）增加/修改
-     */
-    @Override
-    protected void AEHandle(BaseConstants.Operate operate, GenTableDto table) {
-        if (operate.isEdit())
-            baseService.validateEdit(table);
-    }
 }

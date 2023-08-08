@@ -2,17 +2,17 @@ import { GenCodeLM, GenTableColumnLRM, GenTableIM, GenTableLRM, GenTablePPM } fr
 import { defHttp } from '/@/utils/http/axios';
 
 enum Api {
-  LIST_GEN = '/code/gen/list',
-  LIST_DB_GEN = '/code/gen/db/list',
-  LIST_GEN_COLUMN = '/code/gen/column/',
-  PREVIEW_GEN = '/code/gen/multi/preview/',
-  DOWNLOAD_GEN = '/code/gen/multi/download/',
-  GENERATE_GEN = '/code/gen/multi/generate/',
-  GET_GEN = '/code/gen/',
-  GET_SUB_GEN = '/code/gen/sub/',
-  IMPORT_DB_GEN = '/code/gen/importTable',
-  EDIT_GEN = '/code/gen',
-  DEL_BATCH_FORCE_DEPT = '/code/gen/batch/force/',
+  LIST_GEN = '/code/admin/gen/list',
+  LIST_DB_GEN = '/code/admin/gen/db/list',
+  LIST_GEN_COLUMN = '/code/admin/gen/column/',
+  PREVIEW_GEN = '/code/admin/gen/preview/',
+  DOWNLOAD_GEN = '/code/admin/gen/download/',
+  GENERATE_GEN = '/code/admin/gen/generate/',
+  GET_GEN = '/code/admin/gen/',
+  GET_SUB_GEN = '/code/admin/gen/sub/',
+  IMPORT_DB_GEN = '/code/admin/gen/importTable',
+  EDIT_GEN = '/code/admin/gen',
+  DEL_BATCH_FORCE_DEPT = '/code/admin/gen/batch/force/',
 }
 
 /** 查询业务表列表 */
@@ -50,11 +50,11 @@ export const generateGenApi = (tableId: string) =>
   defHttp.get<GenCodeLM>({ url: Api.GENERATE_GEN, params: tableId });
 
 /** 导入数据表 */
-export const importDBGenApi = (names: string[]) =>
+export const importDBGenApi = (names: string[], sourceName?: string) =>
   defHttp.post(
     {
       url: Api.IMPORT_DB_GEN,
-      params: { tables: names.toString() },
+      params: { tables: names.toString(), sourceName: sourceName },
     },
     { joinParamsToUrl: true },
   );

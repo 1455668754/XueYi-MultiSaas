@@ -28,7 +28,8 @@ public class BSysRoleController extends BaseController<SysRoleQuery, SysRoleDto,
         if (baseService.checkNameUnique(role.getId(), role.getName()))
             warn(StrUtil.format("{}{}{}失败，角色名称已存在", operate.getInfo(), getNodeName(), role.getName()));
         // 修改禁止操作权限范围
-        if (operate.isEdit())
+        if (operate.isEdit()) {
             role.setDataScope(null);
+        }
     }
 }
