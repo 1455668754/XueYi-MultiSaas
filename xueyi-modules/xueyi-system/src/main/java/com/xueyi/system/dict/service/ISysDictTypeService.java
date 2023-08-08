@@ -19,6 +19,11 @@ public interface ISysDictTypeService extends IBaseService<SysDictTypeQuery, SysD
     Boolean syncCache();
 
     /**
+     * 清空缓存数据
+     */
+    void clearCache();
+
+    /**
      * 根据Id查询单条数据对象 | 全局
      *
      * @param id Id

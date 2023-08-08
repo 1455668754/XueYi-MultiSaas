@@ -7,3 +7,4 @@ export * from './http.enum';
 export * from './menu.enum';
 export * from './page.enum';
 export * from './size.enum';
+export * from './tenant.enum';

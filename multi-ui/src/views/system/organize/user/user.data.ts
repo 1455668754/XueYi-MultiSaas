@@ -1,13 +1,14 @@
-import {FormSchema} from '/@/components/Form';
-import {BasicColumn} from '/@/components/Table';
-import {DescItem} from '/@/components/Description';
-import {dicDictList} from '@/api/sys/dict.api';
-import {DicSortEnum, DicStatusEnum} from '@/enums/basic';
-import {UserIM} from '@/model/system';
-import {DefaultPassword, OrganizeTypeEnum, SexEnum} from '@/enums/system';
-import {organizeOptionApi} from '@/api/system/organize/organize.api';
-import {isEmpty, isEqual, isNil, pull} from 'lodash-es';
-import {dictConversion} from '/@/utils/xueyi';
+import { FormSchema } from '/@/components/Form';
+import { BasicColumn } from '/@/components/Table';
+import { DescItem } from '/@/components/Description';
+import { dicDictList } from '@/api/sys/dict.api';
+import { DicSortEnum, DicStatusEnum } from '@/enums/basic';
+import { UserIM } from '@/model/system';
+import { DefaultPassword, OrganizeTypeEnum, SexEnum } from '@/enums/system';
+import { organizeOptionApi } from '@/api/system/organize/organize.api';
+import { isEmpty, isEqual, pull } from 'lodash-es';
+import { dictConversion } from '/@/utils/xueyi';
+import { isNotEmpty } from '@/utils/is';
 
 /** 字典查询 */
 export const dictMap = await dicDictList(['sys_normal_disable', 'sys_user_sex']);
@@ -149,7 +150,7 @@ export const formSchema: FormSchema[] = [
     label: '用户账号',
     field: 'userName',
     component: 'Input',
-    dynamicDisabled: ({ values }) => !isNil(values.id) && !isEmpty(values.id),
+    dynamicDisabled: ({ values }) => isNotEmpty(values.id),
     required: true,
     colProps: { span: 24 },
   },

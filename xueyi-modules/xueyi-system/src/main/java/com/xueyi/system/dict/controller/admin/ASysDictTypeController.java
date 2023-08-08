@@ -134,7 +134,8 @@ public class ASysDictTypeController extends BSysDictTypeController {
     @Log(title = "字典类型", businessType = BusinessType.REFRESH)
     @GetMapping("/refresh")
     public AjaxResult refreshCache() {
-        return super.refreshCache();
+        baseService.clearCache();
+        return AjaxResult.success();
     }
 
     /**

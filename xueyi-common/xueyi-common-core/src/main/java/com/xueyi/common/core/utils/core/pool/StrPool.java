@@ -20,4 +20,5 @@ public interface StrPool {
     String SEMICOLON = ";";
     String EQUAL = "=";
     String AMPERSAND = "&";
+    String ASTERISK = "*";
 }

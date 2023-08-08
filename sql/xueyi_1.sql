@@ -317,8 +317,8 @@ create table sys_dict_type (
   id                        bigint              not null                                comment '字典主键',
   name                      varchar(100)        default ''                              comment '字典名称',
   code                      varchar(100)        default ''                              comment '字典类型',
-  data_type		            char(1)	            not null default '0'	                comment '数据类型（0默认 1只增 2只减 3只读）',
-  cache_type		        char(1)	            not null default '0'	                comment '缓存类型（0租户 1全局）',
+  data_type		            char(1)	            not null	                            comment '数据类型（0默认 1只增 2只减 3只读）',
+  cache_type		        char(1)	            not null	                            comment '缓存类型（0租户 1全局）',
   sort                      int unsigned        not null default 0                      comment '显示顺序',
   status                    char(1)             not null default '0'                    comment '状态（0正常 1停用）',
   remark                    varchar(200)        default null                            comment '备注',
@@ -332,37 +332,37 @@ create table sys_dict_type (
 ) engine = innodb comment = '字典类型表';
 
 insert into sys_dict_type (id, name, code, remark, data_type, cache_type, tenant_id)
-values (10001, '用户性别', 'sys_user_sex', '用户性别列表', 0, 1, 0),
-       (10002, '常规：显隐', 'sys_show_hide', '常规：显隐列表', 0, 1, 0),
-       (10003, '常规：公共私有', 'sys_common_private', '常规：公共私有列表', 0, 1, 0),
-       (10004, '系统开关', 'sys_normal_disable', '系统开关列表', 0, 1, 0),
-       (10005, '任务状态', 'sys_job_status', '任务状态列表', 0, 1, 0),
-       (10006, '任务策略', 'sys_job_policy', '任务策略列表', 0, 1, 0),
-       (10007, '任务并发', 'sys_job_concurrent', '任务并发列表', 0, 1, 0),
-       (10008, '任务分组', 'sys_job_group', '任务分组列表', 0, 1, 0),
-       (10009, '常规-是否', 'sys_yes_no', '常规：是否列表', 0, 1, 0),
-       (10010, '通知类型', 'sys_notice_type', '通知：类型列表', 0, 1, 0),
-       (10011, '通知状态', 'sys_notice_status', '通知：状态列表', 0, 1, 0),
-       (10012, '日志：操作类型', 'sys_operate_business', '日志：操作类型列表', 0, 1, 0),
-       (10013, '日志：操作类别', 'sys_operate_type', '日志：操作类别列表', 0, 1, 0),
-       (10014, '日志：操作状态', 'sys_operate_status', '日志：操作状态列表', 0, 1, 0),
-       (10015, '状态：成功失败', 'sys_message_status', '状态：成功失败列表', 0, 1, 0),
-       (10016, '字典：颜色', 'sys_dict_color', '字典：颜色列表', 0, 1, 0),
-       (10017, '授权类型', 'sys_grant_type', '授权类型列表', 0, 1, 0),
-       (10018, '权限：页面类型', 'auth_frame_type', '权限：页面类型列表', 0, 1, 0),
-       (10019, '权限：菜单类型', 'auth_menu_type', '权限：菜单类型列表', 0, 1, 0),
-       (10020, '权限：数据范围', 'auth_data_scope', '权限：数据范围列表', 0, 1, 0),
-       (10021, '读写类型', 'sys_source_type', '读写类型列表', 0, 1, 0),
-       (10022, '数据源类型', 'sys_database_type', '数据源类型列表', 0, 1, 0),
-       (10023, '配置类型', 'te_configuration_type', '配置类型列表', 0, 1, 0),
-       (10024, '代码生成：模板类型', 'gen_template_type', '代码生成：模板类型列表', 0, 1, 0),
-       (10025, '代码生成：属性类型', 'gen_java_type', '代码生成：属性类型列表', 0, 1, 0),
-       (10026, '代码生成：查询类型', 'gen_query_type', '代码生成：查询类型列表', 0, 1, 0),
-       (10027, '代码生成：显示类型', 'gen_display_type', '代码生成：显示类型列表', 0, 1, 0),
-       (10028, '代码生成：生成方式', 'gen_generation_mode', '代码生成：生成方式列表', 0, 1, 0),
-       (10029, '代码生成：源策略模式', 'gen_source_mode', '代码生成：源策略模式列表', 0, 1, 0),
-       (10030, '字典管理：数据类型', 'sys_dict_data_type', '字典管理：数据类型列表', 0, 1, 0),
-       (10031, '字典管理：缓存类型', 'sys_dict_cache_type', '字典管理：缓存类型列表', 0, 1, 0);
+values (10001, '用户性别', 'sys_user_sex', '用户性别列表', '0', '1', 0),
+       (10002, '常规：显隐', 'sys_show_hide', '常规：显隐列表', '0', '1', 0),
+       (10003, '常规：公共私有', 'sys_common_private', '常规：公共私有列表', '0', '1', 0),
+       (10004, '系统开关', 'sys_normal_disable', '系统开关列表', '0', '1', 0),
+       (10005, '任务状态', 'sys_job_status', '任务状态列表', '0', '1', 0),
+       (10006, '任务策略', 'sys_job_policy', '任务策略列表', '0', '1', 0),
+       (10007, '任务并发', 'sys_job_concurrent', '任务并发列表', '0', '1', 0),
+       (10008, '任务分组', 'sys_job_group', '任务分组列表', '0', '1', 0),
+       (10009, '常规-是否', 'sys_yes_no', '常规：是否列表', '0', '1', 0),
+       (10010, '通知类型', 'sys_notice_type', '通知：类型列表', '0', '1', 0),
+       (10011, '通知状态', 'sys_notice_status', '通知：状态列表', '0', '1', 0),
+       (10012, '日志：操作类型', 'sys_operate_business', '日志：操作类型列表', '0', '1', 0),
+       (10013, '日志：操作类别', 'sys_operate_type', '日志：操作类别列表', '0', '1', 0),
+       (10014, '日志：操作状态', 'sys_operate_status', '日志：操作状态列表', '0', '1', 0),
+       (10015, '状态：成功失败', 'sys_message_status', '状态：成功失败列表', '0', '1', 0),
+       (10016, '字典：颜色', 'sys_dict_color', '字典：颜色列表', '0', '1', 0),
+       (10017, '授权类型', 'sys_grant_type', '授权类型列表', '0', '1', 0),
+       (10018, '权限：页面类型', 'auth_frame_type', '权限：页面类型列表', '0', '1', 0),
+       (10019, '权限：菜单类型', 'auth_menu_type', '权限：菜单类型列表', '0', '1', 0),
+       (10020, '权限：数据范围', 'auth_data_scope', '权限：数据范围列表', '0', '1', 0),
+       (10021, '读写类型', 'sys_source_type', '读写类型列表', '0', '1', 0),
+       (10022, '数据源类型', 'sys_database_type', '数据源类型列表', '0', '1', 0),
+       (10023, '配置类型', 'te_configuration_type', '配置类型列表', '0', '1', 0),
+       (10024, '代码生成：模板类型', 'gen_template_type', '代码生成：模板类型列表', '0', '1', 0),
+       (10025, '代码生成：属性类型', 'gen_java_type', '代码生成：属性类型列表', '0', '1', 0),
+       (10026, '代码生成：查询类型', 'gen_query_type', '代码生成：查询类型列表', '0', '1', 0),
+       (10027, '代码生成：显示类型', 'gen_display_type', '代码生成：显示类型列表', '0', '1', 0),
+       (10028, '代码生成：生成方式', 'gen_generation_mode', '代码生成：生成方式列表', '0', '1', 0),
+       (10029, '代码生成：源策略模式', 'gen_source_mode', '代码生成：源策略模式列表', '0', '1', 0),
+       (10030, '字典管理：数据类型', 'sys_dict_data_type', '字典管理：数据类型列表', '0', '1', 0),
+       (10031, '字典管理：缓存类型', 'sys_dict_cache_type', '字典管理：缓存类型列表', '0', '1', 0);
 
 -- ----------------------------
 -- 9、字典数据表
@@ -534,8 +534,8 @@ create table sys_config (
   name                      varchar(100)        default ''                              comment '参数名称',
   code                      varchar(100)        default ''                              comment '参数编码',
   value                     varchar(1000)       default ''                              comment '参数键值',
-  data_type		            char(1)	            not null default '0'	                comment '数据类型（0默认 1只读）',
-  cache_type		        char(1)	            not null default '0'	                comment '缓存类型（0租户 1全局）',
+  data_type		            char(1)	            not null	                            comment '数据类型（0默认 1只读）',
+  cache_type		        char(1)	            not null	                            comment '缓存类型（0租户 1全局）',
   type                      char(1)             default 'N'                             comment '系统内置（Y是 N否）',
   sort                      int unsigned        not null default 0                      comment '显示顺序',
   remark                    varchar(200)        default null                            comment '备注',
@@ -548,11 +548,11 @@ create table sys_config (
   primary key (id)
 ) engine = innodb comment = '参数配置表';
 
-insert into sys_config (id, name, code, value, type, remark, tenant_id)
-values (1, '主框架页-默认皮肤样式名称',           'sys.index.skinName',               'skin-blue',       'Y',    '蓝色 skin-blue、绿色 skin-green、紫色 skin-purple、红色 skin-red、黄色 skin-yellow', 0),
-       (2, '用户管理-账号初始密码',              'sys.user.initPassword',            '123456',          'Y',    '初始化密码 123456', 0),
-       (3, '主框架页-侧边栏主题',                'sys.index.sideTheme',              'theme-dark',      'Y',    '深色主题theme-dark，浅色主题theme-light', 0),
-       (4, '账号自助-是否开启租户注册功能',        'sys.account.registerTenant',       'false',           'Y',    '是否开启注册租户功能（true开启，false关闭）', 0);
+insert into sys_config (id, name, code, value, type, data_type, cache_type, remark, tenant_id)
+values (1, '主框架页-默认皮肤样式名称',           'sys.index.skinName',          'skin-blue',      'Y',  '0',  '0',    '蓝色 skin-blue、绿色 skin-green、紫色 skin-purple、红色 skin-red、黄色 skin-yellow', 0),
+       (2, '用户管理-账号初始密码',              'sys.user.initPassword',         '123456',       'Y',  '0',  '0',    '初始化密码 123456', 0),
+       (3, '主框架页-侧边栏主题',                'sys.index.sideTheme',           'theme-dark',   'Y',  '0',  '0',    '深色主题theme-dark，浅色主题theme-light', 0),
+       (4, '账号自助-是否开启租户注册功能',        'sys.account.registerTenant',    'false',        'Y',  '0',  '0',    '是否开启注册租户功能（true开启，false关闭）', 0);
 
 -- ----------------------------
 -- 11、定时任务调度表

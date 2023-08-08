@@ -2,6 +2,7 @@ package com.xueyi.system.dict.manager.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.basic.SqlConstants;
+import com.xueyi.common.core.constant.basic.TenantConstants;
 import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.system.api.dict.domain.dto.SysDictTypeDto;
 import com.xueyi.system.api.dict.domain.po.SysDictTypePo;
@@ -29,11 +30,11 @@ public class SysDictTypeManagerImpl extends BaseManagerImpl<SysDictTypeQuery, Sy
     @Override
     public SysDictTypeDto checkDictCodeUnique(Long Id, String code) {
         SysDictTypePo dictType = baseMapper.selectOne(
-                Wrappers.<SysDictTypePo>query().lambda()
+                Wrappers.<SysDictTypePo>lambdaQuery()
                         .ne(SysDictTypePo::getId, Id)
                         .eq(SysDictTypePo::getCode, code)
+                        .eq(SysDictTypePo::getTenantId, TenantConstants.COMMON_TENANT_ID)
                         .last(SqlConstants.LIMIT_ONE));
         return baseConverter.mapperDto(dictType);
     }
-
 }

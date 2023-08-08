@@ -86,7 +86,7 @@ public class SysDictDataServiceImpl extends BaseServiceImpl<SysDictDataQuery, Sy
                     if (SecurityUserUtils.isAdminTenant()) {
                         SecurityContextHolder.setEnterpriseId(newDto.getTenantId().toString());
                     } else {
-                        throw new ServiceException("新增失败，无权限！");
+                        throw new ServiceException("修改失败，无权限！");
                     }
                 }
             }

@@ -30,6 +30,7 @@
 
     if (unref(isUpdate)) {
       const config = await getConfigApi(data.record.id);
+      config.tenantId = config?.enterpriseInfo?.id;
       setFieldsValue({ ...config });
     }
   });

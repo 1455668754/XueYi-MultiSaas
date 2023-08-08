@@ -209,16 +209,14 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeQuery, Sy
     protected void startHandle(OperateConstants.ServiceType operate, SysDictTypeDto originDto, SysDictTypeDto newDto) {
         switch (operate) {
             case ADD -> {
-                if (StrUtil.equals(DictConstants.DicCacheType.OVERALL.getCode(), newDto.getCacheType())) {
+                if (StrUtil.equals(DictConstants.DicCacheType.TENANT.getCode(), newDto.getCacheType()) || StrUtil.equals(DictConstants.DicCacheType.OVERALL.getCode(), newDto.getCacheType())) {
                     newDto.setTenantId(TenantConstants.COMMON_TENANT_ID);
-                } else if (ObjectUtil.equals(TenantConstants.COMMON_TENANT_ID, newDto.getTenantId())) {
-                    throw new ServiceException("新增失败，非全局字典禁止设置为公共租户！");
                 }
                 if (ObjectUtil.notEqual(newDto.getTenantId(), SecurityUtils.getEnterpriseId())) {
                     if (SecurityUserUtils.isAdminTenant()) {
                         SecurityContextHolder.setEnterpriseId(newDto.getTenantId().toString());
                     } else {
-                        throw new ServiceException("新增失败，无权限！");
+                        throw new ServiceException("新增字典失败，无权限！");
                     }
                 }
             }
@@ -227,7 +225,7 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeQuery, Sy
                     if (SecurityUserUtils.isAdminTenant()) {
                         SecurityContextHolder.setEnterpriseId(originDto.getTenantId().toString());
                     } else {
-                        throw new ServiceException("新增失败，无权限！");
+                        throw new ServiceException("修改字典失败，无权限！");
                     }
                 }
             }
@@ -245,6 +243,17 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeQuery, Sy
     protected void endHandle(OperateConstants.ServiceType operate, int row, SysDictTypeDto originDto, SysDictTypeDto newDto) {
         super.endHandle(operate, row, originDto, newDto);
         SecurityContextHolder.rollLastEnterpriseId();
+    }
+
+    /**
+     * 清空缓存数据
+     */
+    @Override
+    public void clearCache() {
+        Collection<String> keys = redisService.keys(RedisConstants.CacheKey.DICT_KEY.getCacheName(StrUtil.ASTERISK));
+        if (CollUtil.isNotEmpty(keys)) {
+            redisService.deleteObject(keys);
+        }
     }
 
     /**
@@ -276,6 +285,13 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeQuery, Sy
                 }
             }
             case REFRESH -> {
+                if (ObjectUtil.equals(SecurityConstants.COMMON_TENANT_ID, enterpriseId)) {
+                    if (operate.isSingle()) {
+                        redisService.refreshMapValueCache(getCacheRouteKey().getCode(), dto::getCode, dto::getSubList);
+                    } else if (operate.isBatch()) {
+                        dtoList.forEach(item -> redisService.refreshMapValueCache(getCacheRouteKey().getCode(), item::getCode, item::getSubList));
+                    }
+                }
                 if (operate.isSingle()) {
                     redisService.refreshMapValueCache(cacheKey, dto::getCode, dto::getSubList);
                 } else if (operate.isBatch()) {
@@ -283,6 +299,13 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeQuery, Sy
                 }
             }
             case REMOVE -> {
+                if (ObjectUtil.equals(SecurityConstants.COMMON_TENANT_ID, enterpriseId)) {
+                    if (operate.isSingle()) {
+                        redisService.removeMapValueCache(getCacheRouteKey().getCode(), dto.getCode());
+                    } else if (operate.isBatch()) {
+                        redisService.removeMapValueCache(getCacheRouteKey().getCode(), dtoList.stream().map(SysDictTypeDto::getCode).toArray(String[]::new));
+                    }
+                }
                 if (operate.isSingle()) {
                     redisService.removeMapValueCache(cacheKey, dto.getCode());
                 } else if (operate.isBatch()) {

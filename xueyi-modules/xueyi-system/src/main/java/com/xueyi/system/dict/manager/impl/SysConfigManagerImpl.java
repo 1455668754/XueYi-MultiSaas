@@ -3,6 +3,7 @@ package com.xueyi.system.dict.manager.impl;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.SqlConstants;
+import com.xueyi.common.core.constant.basic.TenantConstants;
 import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.system.api.dict.domain.dto.SysConfigDto;
 import com.xueyi.system.api.dict.domain.po.SysConfigPo;
@@ -29,7 +30,7 @@ public class SysConfigManagerImpl extends BaseManagerImpl<SysConfigQuery, SysCon
     @Override
     public SysConfigDto selectConfigByCode(String code) {
         SysConfigPo config = baseMapper.selectOne(
-                Wrappers.<SysConfigPo>query().lambda()
+                Wrappers.<SysConfigPo>lambdaQuery()
                         .eq(SysConfigPo::getCode, code)
                         .last(SqlConstants.LIMIT_ONE));
         return baseConverter.mapperDto(config);
@@ -45,9 +46,10 @@ public class SysConfigManagerImpl extends BaseManagerImpl<SysConfigQuery, SysCon
     @Override
     public SysConfigDto checkConfigCodeUnique(Long Id, String code) {
         SysConfigPo config = baseMapper.selectOne(
-                Wrappers.<SysConfigPo>query().lambda()
+                Wrappers.<SysConfigPo>lambdaQuery()
                         .ne(SysConfigPo::getId, Id)
                         .eq(SysConfigPo::getCode, code)
+                        .eq(SysConfigPo::getTenantId, TenantConstants.COMMON_TENANT_ID)
                         .last(SqlConstants.LIMIT_ONE));
         return baseConverter.mapperDto(config);
     }
@@ -61,7 +63,7 @@ public class SysConfigManagerImpl extends BaseManagerImpl<SysConfigQuery, SysCon
     @Override
     public SysConfigDto checkIsBuiltIn(Long Id) {
         SysConfigPo config = baseMapper.selectOne(
-                Wrappers.<SysConfigPo>query().lambda()
+                Wrappers.<SysConfigPo>lambdaQuery()
                         .eq(SysConfigPo::getId, Id)
                         .eq(SysConfigPo::getType, BaseConstants.Whether.YES.getCode())
                         .last(SqlConstants.LIMIT_ONE));

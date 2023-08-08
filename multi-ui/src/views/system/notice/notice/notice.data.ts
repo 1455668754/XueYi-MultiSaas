@@ -1,13 +1,13 @@
-import {FormSchema} from '/@/components/Form';
-import {BasicColumn} from '/@/components/Table';
-import {DescItem} from '/@/components/Description';
-import {dicDictList} from '@/api/sys/dict.api';
-import {h} from 'vue';
-import {Tinymce} from '/@/components/Tinymce';
-import {NoticeIM} from '@/model/system';
-import {NoticeTypeEnum} from '@/enums/system';
-import {dictConversion} from '/@/utils/xueyi';
-import {isEmpty, isNil} from 'lodash-es';
+import { FormSchema } from '/@/components/Form';
+import { BasicColumn } from '/@/components/Table';
+import { DescItem } from '/@/components/Description';
+import { dicDictList } from '@/api/sys/dict.api';
+import { h } from 'vue';
+import { Tinymce } from '/@/components/Tinymce';
+import { NoticeIM } from '@/model/system';
+import { NoticeTypeEnum } from '@/enums/system';
+import { dictConversion } from '/@/utils/xueyi';
+import { isNotEmpty } from '@/utils/is';
 
 /** 字典查询 */
 export const dictMap = await dicDictList(['sys_notice_type', 'sys_notice_status']);
@@ -137,7 +137,7 @@ export const formSchema: FormSchema[] = [
       optionFilterProp: 'label',
     },
     dynamicDisabled: true,
-    ifShow: ({ values }) => !isNil(values.id) && !isEmpty(values.id),
+    ifShow: ({ values }) => isNotEmpty(values.id),
     colProps: { span: 12 },
   },
   {

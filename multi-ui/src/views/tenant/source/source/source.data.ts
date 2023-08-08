@@ -1,14 +1,14 @@
-import {FormSchema} from '/@/components/Form';
-import {BasicColumn} from '/@/components/Table';
-import {DescItem} from '/@/components/Description';
-import {dicDictList} from '@/api/sys/dict.api';
-import {dictConversion} from '/@/utils/xueyi';
-import {isEmpty, isNil} from 'lodash-es';
-import {ColorEnum, DicSortEnum, DicStatusEnum} from '@/enums/basic';
-import {SourceIM} from '@/model/tenant';
-import {DRIVER_CLASSNAME, URL_APPEND, URL_PREPEND} from '@/enums/tenant';
-import {h} from 'vue';
-import {Tag} from 'ant-design-vue';
+import { FormSchema } from '/@/components/Form';
+import { BasicColumn } from '/@/components/Table';
+import { DescItem } from '/@/components/Description';
+import { dicDictList } from '@/api/sys/dict.api';
+import { dictConversion } from '/@/utils/xueyi';
+import { ColorEnum, DicSortEnum, DicStatusEnum } from '@/enums/basic';
+import { SourceIM } from '@/model/tenant';
+import { DRIVER_CLASSNAME, URL_APPEND, URL_PREPEND } from '@/enums/tenant';
+import { h } from 'vue';
+import { Tag } from 'ant-design-vue';
+import { isNotEmpty } from '@/utils/is';
 
 /** 字典查询 */
 export const dictMap = await dicDictList(['sys_yes_no', 'sys_normal_disable']);
@@ -29,9 +29,9 @@ export const columns: BasicColumn[] = [
   {
     title: '数据源编码',
     dataIndex: 'slave',
-    customRender: ({record}) => {
+    customRender: ({ record }) => {
       const data = record as SourceIM;
-      return h(Tag, {color: ColorEnum.ORANGE}, () => data.slave);
+      return h(Tag, { color: ColorEnum.ORANGE }, () => data.slave);
     },
     width: 280,
   },
@@ -39,7 +39,7 @@ export const columns: BasicColumn[] = [
     title: '状态',
     dataIndex: 'status',
     width: 220,
-    customRender: ({record}) => {
+    customRender: ({ record }) => {
       const data = record as SourceIM;
       return dictConversion(dict.DicNormalDisableOptions, data.status);
     },
@@ -48,7 +48,7 @@ export const columns: BasicColumn[] = [
     title: '默认数据源',
     dataIndex: 'isDefault',
     width: 220,
-    customRender: ({record}) => {
+    customRender: ({ record }) => {
       const data = record as SourceIM;
       return dictConversion(dict.DicYesNoOptions, data.isDefault);
     },
@@ -66,7 +66,7 @@ export const searchFormSchema: FormSchema[] = [
     label: '数据源名称',
     field: 'name',
     component: 'Input',
-    colProps: {span: 6},
+    colProps: { span: 6 },
   },
   {
     label: '状态',
@@ -77,7 +77,7 @@ export const searchFormSchema: FormSchema[] = [
       showSearch: true,
       optionFilterProp: 'label',
     },
-    colProps: {span: 6},
+    colProps: { span: 6 },
   },
 ];
 
@@ -88,22 +88,22 @@ export const formSchema: FormSchema[] = [
     field: 'id',
     component: 'Input',
     show: false,
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '数据源名称',
     field: 'name',
     component: 'Input',
     required: true,
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '数据源编码',
     field: 'slave',
     component: 'Input',
-    ifShow: ({values}) => !isNil(values.id) && !isEmpty(values.id),
+    ifShow: ({ values }) => isNotEmpty(values.id),
     dynamicDisabled: true,
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '驱动',
@@ -111,7 +111,7 @@ export const formSchema: FormSchema[] = [
     component: 'InputTextArea',
     defaultValue: DRIVER_CLASSNAME,
     required: true,
-    colProps: {span: 24},
+    colProps: { span: 24 },
   },
   {
     label: '连接地址',
@@ -119,7 +119,7 @@ export const formSchema: FormSchema[] = [
     component: 'InputTextArea',
     defaultValue: URL_PREPEND,
     required: true,
-    colProps: {span: 24},
+    colProps: { span: 24 },
   },
   {
     label: '连接参数',
@@ -127,21 +127,21 @@ export const formSchema: FormSchema[] = [
     component: 'InputTextArea',
     defaultValue: URL_APPEND,
     required: true,
-    colProps: {span: 24},
+    colProps: { span: 24 },
   },
   {
     label: '用户名',
     field: 'userName',
     component: 'Input',
     required: true,
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '密码',
     field: 'password',
     component: 'InputPassword',
     required: true,
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '状态',
@@ -151,20 +151,20 @@ export const formSchema: FormSchema[] = [
     componentProps: {
       options: dict.DicNormalDisableOptions,
     },
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '显示顺序',
     field: 'sort',
     component: 'InputNumber',
     defaultValue: DicSortEnum.ZERO,
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '备注',
     field: 'remark',
     component: 'InputTextArea',
-    colProps: {span: 24},
+    colProps: { span: 24 },
   },
 ];
 

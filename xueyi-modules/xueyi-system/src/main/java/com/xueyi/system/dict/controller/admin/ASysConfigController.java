@@ -139,6 +139,7 @@ public class ASysConfigController extends BSysConfigController {
     @PreAuthorize("@ss.hasAuthority(@Auth.SYS_CONFIG_EDIT)")
     @Log(title = "参数管理", businessType = BusinessType.REFRESH)
     public AjaxResult refreshCache() {
-        return super.refreshCache();
+        baseService.clearCache();
+        return AjaxResult.success();
     }
 }

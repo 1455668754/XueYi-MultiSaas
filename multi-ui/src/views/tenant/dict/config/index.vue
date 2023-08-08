@@ -60,7 +60,7 @@
 </template>
 
 <script setup lang="ts">
-  import { reactive } from 'vue';
+  import { onMounted, reactive } from 'vue';
   import { delConfigApi, listConfigApi, refreshConfigApi } from '@/api/tenant/dict/config.api';
   import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
@@ -71,6 +71,8 @@
   import { ConfigDetailGo } from '@/enums/tenant';
   import ConfigModal from './ConfigModal.vue';
   import { useUserStore } from '/@/store/modules/user';
+  import { listTenantApi } from '@/api/tenant/tenant/tenant.api';
+  import { TenantIM } from '@/model/tenant';
 
   const { createMessage, createConfirm } = useMessage();
   const [registerModal, { openModal }] = useModal();
@@ -81,7 +83,7 @@
     ids: [],
     idNames: '',
   });
-  const [registerTable, { reload }] = useTable({
+  const [registerTable, { reload, getForm }] = useTable({
     title: '参数列表',
     api: listConfigApi,
     striped: false,
@@ -106,7 +108,7 @@
     },
     rowSelection: {
       onChange: (selectedRowKeys, selectRows) => {
-        state.ids = selectedRowKeys;
+        state.ids = selectedRowKeys as string[];
         state.idNames = selectRows
           .map((item) => {
             return item.name;
@@ -115,6 +117,24 @@
       },
     },
   });
+
+  onMounted(() => {
+    initTenantList();
+  });
+
+  async function initTenantList() {
+    const tenantList = await listTenantApi();
+    tenantList.items.push({
+      id: '0',
+      nick: '通用',
+    } as TenantIM);
+    getForm().updateSchema({
+      field: 'tenantId',
+      componentProps: {
+        options: tenantList.items,
+      },
+    });
+  }
 
   /** 查看按钮 */
   function handleView(record: Recordable) {

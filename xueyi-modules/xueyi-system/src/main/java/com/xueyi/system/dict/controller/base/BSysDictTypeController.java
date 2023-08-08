@@ -3,6 +3,7 @@ package com.xueyi.system.dict.controller.base;
 import cn.hutool.core.collection.CollUtil;
 import com.xueyi.common.cache.utils.DictUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.web.entity.controller.BaseController;
@@ -50,7 +51,7 @@ public class BSysDictTypeController extends BaseController<SysDictTypeQuery, Sys
      */
     @Override
     protected void AEHandle(BaseConstants.Operate operate, SysDictTypeDto dictType) {
-        if (baseService.checkDictCodeUnique(dictType.getId(), dictType.getCode())) {
+        if (ObjectUtil.isNull(dictType.getTenantId()) && baseService.checkDictCodeUnique(dictType.getId(), dictType.getCode())) {
             warn(StrUtil.format("{}{}{}失败，字典编码已存在", operate.getInfo(), getNodeName(), dictType.getName()));
         }
     }

@@ -2,7 +2,7 @@ import { dicDictList } from '@/api/sys/dict.api';
 import { BasicColumn, FormSchema } from '@/components/Table';
 import { DictDataIM, DictTypeIM } from '@/model/tenant';
 import { dictConversion } from '@/utils/xueyi';
-import { DicCodeEnum, DicSortEnum, DicStatusEnum, DicYesNoEnum } from '@/enums';
+import { COMMON_TENANT_ID, DicCodeEnum, DicSortEnum, DicStatusEnum, DicYesNoEnum } from '@/enums';
 import { optionDictTypeApi } from '@/api/tenant/dict/dictType.api';
 import { DicCacheTypeEnum, DicCodeDictEnum, DicDataTypeEnum } from '@/enums/tenant';
 import { isNotEmpty } from '@/utils/is';
@@ -63,16 +63,9 @@ export const typeColumns: BasicColumn[] = [
     width: 120,
     customRender: ({ record }) => {
       const data = record as DictTypeIM;
-      return data.cacheType === DicCacheTypeEnum.TENANT ? data?.enterpriseInfo?.nick : '通用';
-    },
-  },
-  {
-    title: '数据类型',
-    dataIndex: 'dataType',
-    width: 120,
-    customRender: ({ record }) => {
-      const data = record as DictTypeIM;
-      return dictConversion(dict.DicDictDataTypeOptions, data?.dataType);
+      return data.cacheType === DicCacheTypeEnum.TENANT
+        ? data?.enterpriseInfo?.nick || '通用'
+        : '公共';
     },
   },
   {
@@ -262,8 +255,14 @@ export const typeFormSchema: FormSchema[] = [
       valueField: 'id',
     },
     dynamicDisabled: ({ values }) => isNotEmpty(values.id),
-    ifShow: ({ values }) => values.cacheType === DicCacheTypeEnum.TENANT,
-    required: ({ values }) => values.cacheType === DicCacheTypeEnum.TENANT,
+    ifShow: ({ values }) =>
+      isNotEmpty(values.tenantId) &&
+      values.tenantId !== COMMON_TENANT_ID &&
+      values.cacheType === DicCacheTypeEnum.TENANT,
+    required: ({ values }) =>
+      isNotEmpty(values.tenantId) &&
+      values.tenantId !== COMMON_TENANT_ID &&
+      values.cacheType === DicCacheTypeEnum.TENANT,
     colProps: { span: 12 },
   },
   {

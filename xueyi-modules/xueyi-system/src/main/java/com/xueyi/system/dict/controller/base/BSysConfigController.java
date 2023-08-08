@@ -4,9 +4,9 @@ import com.xueyi.common.cache.constant.CacheConstants;
 import com.xueyi.common.cache.utils.DictUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.utils.core.CollUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
-import com.xueyi.common.security.utils.SecurityUserUtils;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.system.api.dict.domain.dto.SysConfigDto;
 import com.xueyi.system.api.dict.domain.query.SysConfigQuery;
@@ -43,7 +43,7 @@ public class BSysConfigController extends BaseController<SysConfigQuery, SysConf
      */
     @Override
     protected void AEHandle(BaseConstants.Operate operate, SysConfigDto config) {
-        if (baseService.checkConfigCodeUnique(config.getId(), config.getCode())) {
+        if (ObjectUtil.isNull(config.getTenantId()) && baseService.checkConfigCodeUnique(config.getId(), config.getCode())) {
             warn(StrUtil.format("{}{}{}失败，参数编码已存在", operate.getInfo(), getNodeName(), config.getName()));
         }
     }

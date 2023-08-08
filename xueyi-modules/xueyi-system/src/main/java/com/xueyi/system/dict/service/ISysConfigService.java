@@ -4,9 +4,6 @@ import com.xueyi.common.web.entity.service.IBaseService;
 import com.xueyi.system.api.dict.domain.dto.SysConfigDto;
 import com.xueyi.system.api.dict.domain.query.SysConfigQuery;
 
-import java.io.Serializable;
-import java.util.Collection;
-
 /**
  * 系统服务 | 字典模块 | 参数管理 服务层
  *
@@ -26,6 +23,11 @@ public interface ISysConfigService extends IBaseService<SysConfigQuery, SysConfi
      * 更新缓存数据
      */
     Boolean syncCache();
+
+    /**
+     * 清空缓存数据
+     */
+    void clearCache();
 
     /**
      * 校验参数编码是否唯一

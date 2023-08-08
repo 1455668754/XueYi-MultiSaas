@@ -15,6 +15,7 @@ import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.redis.constant.RedisConstants;
 import com.xueyi.common.security.utils.SecurityUserUtils;
 import com.xueyi.common.security.utils.SecurityUtils;
+import com.xueyi.common.web.annotation.TenantIgnore;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.dict.domain.dto.SysConfigDto;
 import com.xueyi.system.api.dict.domain.query.SysConfigQuery;
@@ -149,6 +150,7 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigQuery, SysCon
      * @return 结果 | true/false 唯一/不唯一
      */
     @Override
+    @TenantIgnore
     public boolean checkConfigCodeUnique(Long Id, String configCode) {
         return ObjectUtil.isNotNull(baseManager.checkConfigCodeUnique(ObjectUtil.isNull(Id) ? BaseConstants.NONE_ID : Id, configCode));
     }
@@ -174,16 +176,14 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigQuery, SysCon
     protected void startHandle(OperateConstants.ServiceType operate, SysConfigDto originDto, SysConfigDto newDto) {
         switch (operate) {
             case ADD -> {
-                if (StrUtil.equals(DictConstants.DicCacheType.OVERALL.getCode(), newDto.getCacheType())) {
+                if (StrUtil.equals(DictConstants.DicCacheType.TENANT.getCode(), newDto.getCacheType()) || StrUtil.equals(DictConstants.DicCacheType.OVERALL.getCode(), newDto.getCacheType())) {
                     newDto.setTenantId(TenantConstants.COMMON_TENANT_ID);
-                } else if (ObjectUtil.equals(TenantConstants.COMMON_TENANT_ID, newDto.getTenantId())) {
-                    throw new ServiceException("新增失败，非全局参数禁止设置为公共租户！");
                 }
                 if (ObjectUtil.notEqual(newDto.getTenantId(), SecurityUtils.getEnterpriseId())) {
                     if (SecurityUserUtils.isAdminTenant()) {
                         SecurityContextHolder.setEnterpriseId(newDto.getTenantId().toString());
                     } else {
-                        throw new ServiceException("新增失败，无权限！");
+                        throw new ServiceException("新增参数失败，无权限！");
                     }
                 }
             }
@@ -192,7 +192,7 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigQuery, SysCon
                     if (SecurityUserUtils.isAdminTenant()) {
                         SecurityContextHolder.setEnterpriseId(originDto.getTenantId().toString());
                     } else {
-                        throw new ServiceException("新增失败，无权限！");
+                        throw new ServiceException("修改参数失败，无权限！");
                     }
                 }
             }
@@ -210,6 +210,17 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigQuery, SysCon
     protected void endHandle(OperateConstants.ServiceType operate, int row, SysConfigDto originDto, SysConfigDto newDto) {
         super.endHandle(operate, row, originDto, newDto);
         SecurityContextHolder.rollLastEnterpriseId();
+    }
+
+    /**
+     * 清空缓存数据
+     */
+    @Override
+    public void clearCache() {
+        Collection<String> keys = redisService.keys(RedisConstants.CacheKey.CONFIG_KEY.getCacheName(StrUtil.ASTERISK));
+        if (CollUtil.isNotEmpty(keys)) {
+            redisService.deleteObject(keys);
+        }
     }
 
     /**
@@ -236,15 +247,27 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigQuery, SysCon
             }
             case REFRESH -> {
                 if (operate.isSingle()) {
+                    if (ObjectUtil.equals(SecurityConstants.COMMON_TENANT_ID, enterpriseId)) {
+                        redisService.refreshMapValueCache(getCacheRouteKey().getCode(), dto::getCode, dto::getValue);
+                    }
                     redisService.refreshMapValueCache(cacheKey, dto::getCode, dto::getValue);
                 } else if (operate.isBatch()) {
+                    if (ObjectUtil.equals(SecurityConstants.COMMON_TENANT_ID, enterpriseId)) {
+                        dtoList.forEach(item -> redisService.refreshMapValueCache(getCacheRouteKey().getCode(), item::getCode, item::getValue));
+                    }
                     dtoList.forEach(item -> redisService.refreshMapValueCache(cacheKey, item::getCode, item::getValue));
                 }
             }
             case REMOVE -> {
                 if (operate.isSingle()) {
+                    if (ObjectUtil.equals(SecurityConstants.COMMON_TENANT_ID, enterpriseId)) {
+                        redisService.removeMapValueCache(getCacheRouteKey().getCode(), dto.getCode());
+                    }
                     redisService.removeMapValueCache(cacheKey, dto.getCode());
                 } else if (operate.isBatch()) {
+                    if (ObjectUtil.equals(SecurityConstants.COMMON_TENANT_ID, enterpriseId)) {
+                        redisService.removeMapValueCache(getCacheRouteKey().getCode(), dtoList.stream().map(SysConfigDto::getCode).toArray(String[]::new));
+                    }
                     redisService.removeMapValueCache(cacheKey, dtoList.stream().map(SysConfigDto::getCode).toArray(String[]::new));
                 }
             }

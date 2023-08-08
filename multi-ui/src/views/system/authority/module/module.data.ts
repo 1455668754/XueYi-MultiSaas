@@ -1,14 +1,14 @@
-import {FormSchema} from '/@/components/Form';
-import {BasicColumn} from '/@/components/Table';
-import {DescItem} from '/@/components/Description';
-import {dicDictList} from '@/api/sys/dict.api';
-import {DicCommonPrivateEnum, DicShowHideEnum, DicSortEnum, DicStatusEnum} from '@/enums/basic';
-import {ModuleIM} from '@/model/system';
-import {useUserStore} from '/@/store/modules/user';
-import {FrameTypeEnum} from '@/enums/system';
-import {fileUploadApi} from '@/api/sys/upload.api';
-import {dictConversion} from '/@/utils/xueyi';
-import {isEmpty, isNil} from 'lodash-es';
+import { FormSchema } from '/@/components/Form';
+import { BasicColumn } from '/@/components/Table';
+import { DescItem } from '/@/components/Description';
+import { dicDictList } from '@/api/sys/dict.api';
+import { DicCommonPrivateEnum, DicShowHideEnum, DicSortEnum, DicStatusEnum } from '@/enums/basic';
+import { ModuleIM } from '@/model/system';
+import { useUserStore } from '/@/store/modules/user';
+import { FrameTypeEnum } from '@/enums/system';
+import { fileUploadApi } from '@/api/sys/upload.api';
+import { dictConversion } from '/@/utils/xueyi';
+import { isNotEmpty } from '@/utils/is';
 
 /** 字典查询 */
 export const dictMap = await dicDictList([
@@ -156,7 +156,7 @@ export const formSchema: FormSchema[] = [
       options: dict.DicCommonPrivateOptions,
     },
     helpMessage: ['是否可以被其他租户使用'],
-    dynamicDisabled: ({ values }) => !isNil(values.id) && !isEmpty(values.id),
+    dynamicDisabled: ({ values }) => isNotEmpty(values.id),
     required: () => useUserStore().isLessor,
     ifShow: () => useUserStore().isLessor,
     colProps: { span: 12 },

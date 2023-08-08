@@ -1,18 +1,32 @@
-import {FormSchema} from '/@/components/Form';
-import {BasicColumn} from '/@/components/Table';
-import {DescItem} from '/@/components/Description';
-import {dicDictList} from '@/api/sys/dict.api';
-import {DicSortEnum, DicYesNoEnum} from '@/enums/basic';
-import {ConfigIM} from '@/model/tenant';
-import {dictConversion} from '/@/utils/xueyi';
-import {isEmpty, isNil} from 'lodash-es';
+import { FormSchema } from '/@/components/Form';
+import { BasicColumn } from '/@/components/Table';
+import { DescItem } from '/@/components/Description';
+import { dicDictList } from '@/api/sys/dict.api';
+import {
+  COMMON_TENANT_ID,
+  DicCodeEnum,
+  DicSortEnum,
+  DicStatusEnum,
+  DicYesNoEnum,
+} from '@/enums/basic';
+import { ConfigIM } from '@/model/tenant';
+import { dictConversion } from '/@/utils/xueyi';
+import { DicCacheTypeEnum, DicCodeDictEnum, DicDataTypeEnum } from '@/enums/tenant';
+import { isNotEmpty } from '@/utils/is';
+import { listTenantApi } from '@/api/tenant/tenant/tenant.api';
 
 /** 字典查询 */
-export const dictMap = await dicDictList(['sys_yes_no']);
+export const dictMap = await dicDictList([
+  DicCodeEnum.SYS_YES_NO,
+  DicCodeDictEnum.SYS_DICT_DATA_TYPE,
+  DicCodeDictEnum.SYS_DICT_CACHE_TYPE,
+]);
 
 /** 字典表 */
 export const dict: any = {
-  DicYesNoOptions: dictMap['sys_yes_no'],
+  DicYesNoOptions: dictMap[DicCodeEnum.SYS_YES_NO],
+  DicDictDataTypeOptions: dictMap[DicCodeDictEnum.SYS_DICT_DATA_TYPE],
+  DicDictCacheTypeOptions: dictMap[DicCodeDictEnum.SYS_DICT_CACHE_TYPE],
 };
 
 /** 表格数据 */
@@ -31,6 +45,35 @@ export const columns: BasicColumn[] = [
     title: '参数键值',
     dataIndex: 'value',
     width: 220,
+  },
+  {
+    title: '数据类型',
+    dataIndex: 'dataType',
+    width: 120,
+    customRender: ({ record }) => {
+      const data = record as ConfigIM;
+      return dictConversion(dict.DicDictDataTypeOptions, data?.dataType);
+    },
+  },
+  {
+    title: '缓存类型',
+    dataIndex: 'cacheType',
+    width: 120,
+    customRender: ({ record }) => {
+      const data = record as ConfigIM;
+      return dictConversion(dict.DicDictCacheTypeOptions, data?.cacheType);
+    },
+  },
+  {
+    title: '租户',
+    dataIndex: 'enterpriseInfo.nick',
+    width: 120,
+    customRender: ({ record }) => {
+      const data = record as ConfigIM;
+      return data.cacheType === DicCacheTypeEnum.TENANT
+        ? data?.enterpriseInfo?.nick || '通用'
+        : '公共';
+    },
   },
   {
     title: '系统内置',
@@ -60,6 +103,42 @@ export const searchFormSchema: FormSchema[] = [
     label: '参数编码',
     field: 'code',
     component: 'Input',
+    colProps: { span: 6 },
+  },
+  {
+    label: '数据类型',
+    field: 'dataType',
+    component: 'Select',
+    componentProps: {
+      options: dict.DicDictDataTypeOptions,
+      showSearch: true,
+      optionFilterProp: 'label',
+    },
+    colProps: { span: 6 },
+  },
+  {
+    label: '缓存类型',
+    field: 'cacheType',
+    component: 'Select',
+    componentProps: {
+      options: dict.DicDictCacheTypeOptions,
+      showSearch: true,
+      optionFilterProp: 'label',
+    },
+    colProps: { span: 6 },
+  },
+  {
+    label: '所属租户',
+    field: 'tenantId',
+    component: 'Select',
+    componentProps: {
+      showSearch: true,
+      optionFilterProp: 'label',
+      fieldNames: {
+        label: 'nick',
+        value: 'id',
+      },
+    },
     colProps: { span: 6 },
   },
   {
@@ -95,7 +174,7 @@ export const formSchema: FormSchema[] = [
     label: '参数编码',
     field: 'code',
     component: 'Input',
-    dynamicDisabled: ({ values }) => !isNil(values.id) && !isEmpty(values.id),
+    dynamicDisabled: ({ values }) => isNotEmpty(values.id),
     required: true,
     colProps: { span: 12 },
   },
@@ -107,6 +186,52 @@ export const formSchema: FormSchema[] = [
     colProps: { span: 12 },
   },
   {
+    label: '缓存类型',
+    field: 'cacheType',
+    component: 'RadioButtonGroup',
+    defaultValue: DicCacheTypeEnum.OVERALL,
+    componentProps: {
+      options: dict.DicDictCacheTypeOptions,
+      showSearch: true,
+      optionFilterProp: 'label',
+    },
+    dynamicDisabled: ({ values }) => isNotEmpty(values.id),
+    required: true,
+    colProps: { span: 12 },
+  },
+  {
+    label: '租户名称',
+    field: 'tenantId',
+    component: 'ApiSelect',
+    componentProps: {
+      api: listTenantApi,
+      params: { status: DicStatusEnum.NORMAL },
+      showSearch: true,
+      optionFilterProp: 'label',
+      resultField: 'items',
+      labelField: 'nick',
+      valueField: 'id',
+    },
+    dynamicDisabled: ({ values }) => isNotEmpty(values.id),
+    ifShow: ({ values }) =>
+      values.tenantId !== COMMON_TENANT_ID && values.cacheType === DicCacheTypeEnum.TENANT,
+    required: ({ values }) =>
+      values.tenantId !== COMMON_TENANT_ID && values.cacheType === DicCacheTypeEnum.TENANT,
+    colProps: { span: 12 },
+  },
+  {
+    label: '数据类型',
+    field: 'dataType',
+    component: 'RadioButtonGroup',
+    defaultValue: DicDataTypeEnum.DEFAULT,
+    componentProps: {
+      options: dict.DicDictDataTypeOptions,
+      showSearch: true,
+      optionFilterProp: 'label',
+    },
+    colProps: { span: 24 },
+  },
+  {
     label: '系统内置',
     field: 'type',
     component: 'RadioButtonGroup',
@@ -114,7 +239,7 @@ export const formSchema: FormSchema[] = [
     componentProps: {
       options: dict.DicYesNoOptions,
     },
-    dynamicDisabled: ({ values }) => !isNil(values.id) && !isEmpty(values.id),
+    dynamicDisabled: ({ values }) => isNotEmpty(values.id),
     required: true,
     colProps: { span: 12 },
   },
