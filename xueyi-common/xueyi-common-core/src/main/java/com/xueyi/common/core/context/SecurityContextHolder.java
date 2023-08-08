@@ -165,7 +165,28 @@ public class SecurityContextHolder {
      * 设置租户策略源
      */
     public static void setSourceName(String sourceName) {
+        String lastSourceName = getSourceName();
         set(SecurityConstants.BaseSecurity.SOURCE_NAME.getCode(), sourceName);
+        setLastSourceName(lastSourceName);
+    }
+
+    /**
+     * 记录上一次租户策略源
+     */
+    private static void setLastSourceName(String sourceName) {
+        if (StrUtil.isNotBlank(sourceName)) {
+            set(SecurityConstants.BaseSecurity.LAST_SOURCE_NAME.getCode(), sourceName);
+        }
+    }
+
+    /**
+     * 回滚上一次租户策略源 | 如若无上一次则不变更
+     */
+    public static void rollLastSourceName() {
+        String lastSourceName = get(SecurityConstants.BaseSecurity.LAST_SOURCE_NAME.getCode());
+        if (StrUtil.isNotBlank(lastSourceName)) {
+            setSourceName(lastSourceName);
+        }
     }
 
     /**
