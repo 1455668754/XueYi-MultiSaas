@@ -80,7 +80,7 @@
       }>({
         info: null,
       });
-      const currentKey = ref(genList[0].key);
+      const currentKey = ref<string>(genList[0].key);
       const submitCheck = ref(true);
       const getTitle = ref('生成配置');
 
@@ -127,7 +127,7 @@
       }
 
       /** 校验错误页跳转 */
-      function handleCheck(current) {
+      function handleCheck(current: string) {
         submitCheck.value = false;
         currentKey.value = current;
       }

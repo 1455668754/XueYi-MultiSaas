@@ -10,10 +10,10 @@ import {
   SourceModeEnum,
   TemplateTypeEnum,
 } from '@/enums/gen';
-import { MenuTypeEnum } from '@/enums/system';
+import { COMMON_MENU, MenuTypeEnum } from '@/enums/system';
 import { BasicColumn } from '/@/components/Table';
 import { GenTableColumnIM, GenTableColumnLM, GenTableLM } from '@/model/gen';
-import { h } from 'vue';
+import { Component, h } from 'vue';
 import { Input, Select, Switch } from 'ant-design-vue';
 
 /** 字典查询 */
@@ -190,7 +190,7 @@ export const fieldColumns: BasicColumn[] = [
     dataIndex: 'isHide',
     customRender: ({ record }) => {
       const data = record as GenTableColumnIM;
-      return h(Switch, {
+      return h(Switch as Component, {
         checked: data.isHide,
         checkedChildren: IsTickEnum.YES,
         unCheckedChildren: IsTickEnum.NO,
@@ -216,7 +216,7 @@ export const fieldColumns: BasicColumn[] = [
     dataIndex: 'isInsert',
     customRender: ({ record }) => {
       const data = record as GenTableColumnIM;
-      return h(Switch, {
+      return h(Switch as Component, {
         checked: data.isInsert,
         checkedChildren: IsTickEnum.YES,
         unCheckedChildren: IsTickEnum.NO,
@@ -232,7 +232,7 @@ export const fieldColumns: BasicColumn[] = [
     dataIndex: 'isEdit',
     customRender: ({ record }) => {
       const data = record as GenTableColumnIM;
-      return h(Switch, {
+      return h(Switch as Component, {
         checked: data.isEdit,
         checkedChildren: IsTickEnum.YES,
         unCheckedChildren: IsTickEnum.NO,
@@ -248,7 +248,7 @@ export const fieldColumns: BasicColumn[] = [
     dataIndex: 'isView',
     customRender: ({ record }) => {
       const data = record as GenTableColumnIM;
-      return h(Switch, {
+      return h(Switch as Component, {
         checked: data.isView,
         checkedChildren: IsTickEnum.YES,
         unCheckedChildren: IsTickEnum.NO,
@@ -264,7 +264,7 @@ export const fieldColumns: BasicColumn[] = [
     dataIndex: 'isImport',
     customRender: ({ record }) => {
       const data = record as GenTableColumnIM;
-      return h(Switch, {
+      return h(Switch as Component, {
         checked: data.isImport,
         checkedChildren: IsTickEnum.YES,
         unCheckedChildren: IsTickEnum.NO,
@@ -280,7 +280,7 @@ export const fieldColumns: BasicColumn[] = [
     dataIndex: 'isExport',
     customRender: ({ record }) => {
       const data = record as GenTableColumnIM;
-      return h(Switch, {
+      return h(Switch as Component, {
         checked: data.isExport,
         checkedChildren: IsTickEnum.YES,
         unCheckedChildren: IsTickEnum.NO,
@@ -296,7 +296,7 @@ export const fieldColumns: BasicColumn[] = [
     dataIndex: 'isUnique',
     customRender: ({ record }) => {
       const data = record as GenTableColumnIM;
-      return h(Switch, {
+      return h(Switch as Component, {
         checked: data.isUnique,
         checkedChildren: IsTickEnum.YES,
         unCheckedChildren: IsTickEnum.NO,
@@ -312,7 +312,7 @@ export const fieldColumns: BasicColumn[] = [
     dataIndex: 'isRequired',
     customRender: ({ record }) => {
       const data = record as GenTableColumnIM;
-      return h(Switch, {
+      return h(Switch as Component, {
         checked: data.isRequired,
         checkedChildren: IsTickEnum.YES,
         unCheckedChildren: IsTickEnum.NO,
@@ -328,7 +328,7 @@ export const fieldColumns: BasicColumn[] = [
     dataIndex: 'isList',
     customRender: ({ record }) => {
       const data = record as GenTableColumnIM;
-      return h(Switch, {
+      return h(Switch as Component, {
         checked: data.isList,
         checkedChildren: IsTickEnum.YES,
         unCheckedChildren: IsTickEnum.NO,
@@ -344,7 +344,7 @@ export const fieldColumns: BasicColumn[] = [
     dataIndex: 'isQuery',
     customRender: ({ record }) => {
       const data = record as GenTableColumnIM;
-      return h(Switch, {
+      return h(Switch as Component, {
         checked: data.isQuery,
         checkedChildren: IsTickEnum.YES,
         unCheckedChildren: IsTickEnum.NO,
@@ -545,7 +545,9 @@ export const generateBaseSchema: FormSchema[] = [
                   menuTypeLimit: MenuTypeEnum.DIR,
                   defaultNode: true,
                 });
-          formModel.parentMenuId = undefined;
+          if (formModel.parentMenuId !== COMMON_MENU) {
+            formModel.parentMenuId = undefined;
+          }
           const { updateSchema } = formActionType;
           updateSchema({
             field: 'parentMenuId',
