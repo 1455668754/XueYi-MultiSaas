@@ -11,7 +11,7 @@
   import { addDictDataApi, editDictDataApi, getDictDataApi } from '@/api/tenant/dict/dictData.api';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
-  import { DictTypeIM } from '@/model/tenant';
+  import { DictTypeIM } from '@/model/tenant/dict';
 
   const emit = defineEmits(['success', 'register']);
 

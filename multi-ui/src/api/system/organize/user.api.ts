@@ -1,4 +1,4 @@
-import { UserIM, UserLRM, UserPM, UserPPM } from '@/model/system';
+import { UserIM, UserLRM, UserPM, UserPPM } from '@/model/system/organize';
 import { defHttp } from '/@/utils/http/axios';
 import { formatToDateTime } from '/@/utils/dateUtil';
 import dayjs from 'dayjs';

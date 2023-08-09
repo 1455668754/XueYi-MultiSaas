@@ -23,7 +23,8 @@
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
   import { optionRoleApi } from '@/api/system/authority/role.api';
-  import { DeptIM, RoleIM, RoleLM } from '@/model/system';
+  import { DeptIM } from '@/model/system/organize';
+  import { RoleIM, RoleLM } from '@/model/system/authority';
   import { roleFormSchema } from './dept.data';
   import { editAuthDeptScopeApi, getAuthDeptApi } from '@/api/system/organize/dept.api';
 

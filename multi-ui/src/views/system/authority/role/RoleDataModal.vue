@@ -23,8 +23,8 @@
   import { BasicForm, useForm } from '/@/components/Form';
   import { organizeFormSchema } from './role.data';
   import { editDataScopeApi, getOrganizeRoleApi } from '@/api/system/authority/role.api';
-  import { RoleIM } from '@/model/system';
-  import { DataScopeEnum } from '@/enums/system';
+  import { RoleIM } from '@/model/system/authority';
+  import { DataScopeEnum } from '@/enums/system/authority';
   import { organizeScopeApi } from '@/api/system/organize/organize.api';
   import { isEqual } from 'lodash-es';
 

@@ -10,10 +10,10 @@ import {
   DicStatusEnum,
   DicYesNoEnum,
 } from '@/enums/basic';
-import { MenuIM } from '@/model/system';
+import { MenuIM } from '@/model/system/authority';
 import { optionModuleApi } from '@/api/system/authority/module.api';
 import { getMenuRouteListApi } from '@/api/system/authority/menu.api';
-import { COMMON_MENU, COMMON_MODULE, FrameTypeEnum, MenuTypeEnum } from '@/enums/system';
+import { COMMON_MENU, COMMON_MODULE, FrameTypeEnum, MenuTypeEnum } from '@/enums/system/authority';
 import { h } from 'vue';
 import Icon from '@/components/Icon/Icon.vue';
 import { Tag } from 'ant-design-vue';

@@ -59,7 +59,7 @@
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
   import { NoticeAuth } from '/@/auth/system';
   import { columns, searchFormSchema } from './notice.data';
-  import { NoticeDetailGo } from '@/enums/system';
+  import { NoticeDetailGo } from '@/enums/system/notice';
   import NoticeModal from './NoticeModal.vue';
   import { useUserStore } from '/@/store/modules/user';
 
@@ -97,7 +97,7 @@
     },
     rowSelection: {
       onChange: (selectedRowKeys, selectRows) => {
-        state.ids = selectedRowKeys;
+        state.ids = selectedRowKeys as string[];
         state.idNames = selectRows
           .map((item) => {
             return item.name;

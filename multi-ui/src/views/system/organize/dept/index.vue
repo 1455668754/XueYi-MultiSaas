@@ -68,7 +68,7 @@
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
   import { DeptAuth } from '/@/auth/system';
   import { columns, searchFormSchema } from './dept.data';
-  import { DeptDetailGo } from '@/enums/system';
+  import { DeptDetailGo } from '@/enums/system/organize';
   import DeptModal from './DeptModal.vue';
   import DeptRoleModal from './DeptRoleModal.vue';
   import { useUserStore } from '/@/store/modules/user';

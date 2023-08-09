@@ -1,13 +1,13 @@
-import {FormSchema} from '/@/components/Form';
-import {BasicColumn} from '/@/components/Table';
-import {DescItem} from '/@/components/Description';
-import {dicDictList} from '@/api/sys/dict.api';
-import {dictConversion} from '/@/utils/xueyi';
-import {ColorEnum, DicSortEnum, DicStatusEnum} from '@/enums/basic';
-import {StrategyIM, TenantIM} from '@/model/tenant';
-import {optionSourceApi} from '@/api/tenant/source/source.api';
-import {h} from 'vue';
-import {Tag} from 'ant-design-vue';
+import { FormSchema } from '/@/components/Form';
+import { BasicColumn } from '/@/components/Table';
+import { DescItem } from '/@/components/Description';
+import { dicDictList } from '@/api/sys/dict.api';
+import { dictConversion } from '/@/utils/xueyi';
+import { ColorEnum, DicSortEnum, DicStatusEnum } from '@/enums/basic';
+import { StrategyIM, TenantIM } from '@/model/tenant/source';
+import { optionSourceApi } from '@/api/tenant/source/source.api';
+import { h } from 'vue';
+import { Tag } from 'ant-design-vue';
 
 /** 字典查询 */
 export const dictMap = await dicDictList(['sys_yes_no', 'sys_normal_disable']);
@@ -33,9 +33,9 @@ export const columns: BasicColumn[] = [
   {
     title: '数据源编码',
     dataIndex: 'sourceSlave',
-    customRender: ({record}) => {
+    customRender: ({ record }) => {
       const data = record as StrategyIM;
-      return h(Tag, {color: ColorEnum.ORANGE}, () => data.sourceSlave);
+      return h(Tag, { color: ColorEnum.ORANGE }, () => data.sourceSlave);
     },
     width: 280,
   },
@@ -43,7 +43,7 @@ export const columns: BasicColumn[] = [
     title: '状态',
     dataIndex: 'status',
     width: 220,
-    customRender: ({record}) => {
+    customRender: ({ record }) => {
       const data = record as StrategyIM;
       return dictConversion(dict.DicNormalDisableOptions, data.status);
     },
@@ -52,7 +52,7 @@ export const columns: BasicColumn[] = [
     title: '默认策略',
     dataIndex: 'isDefault',
     width: 220,
-    customRender: ({record}) => {
+    customRender: ({ record }) => {
       const data = record as TenantIM;
       return dictConversion(dict.DicYesNoOptions, data.isDefault);
     },
@@ -70,7 +70,7 @@ export const searchFormSchema: FormSchema[] = [
     label: '策略名称',
     field: 'name',
     component: 'Input',
-    colProps: {span: 6},
+    colProps: { span: 6 },
   },
   {
     label: '数据源',
@@ -84,7 +84,7 @@ export const searchFormSchema: FormSchema[] = [
       labelField: 'name',
       valueField: 'id',
     },
-    colProps: {span: 6},
+    colProps: { span: 6 },
   },
   {
     label: '状态',
@@ -95,7 +95,7 @@ export const searchFormSchema: FormSchema[] = [
       showSearch: true,
       optionFilterProp: 'label',
     },
-    colProps: {span: 6},
+    colProps: { span: 6 },
   },
 ];
 
@@ -106,14 +106,14 @@ export const formSchema: FormSchema[] = [
     field: 'id',
     component: 'Input',
     show: false,
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '策略名称',
     field: 'name',
     component: 'Input',
     required: true,
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '数据源',
@@ -128,14 +128,14 @@ export const formSchema: FormSchema[] = [
       valueField: 'id',
     },
     required: true,
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '显示顺序',
     field: 'sort',
     component: 'InputNumber',
     defaultValue: DicSortEnum.ZERO,
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '状态',
@@ -145,13 +145,13 @@ export const formSchema: FormSchema[] = [
     componentProps: {
       options: dict.DicNormalDisableOptions,
     },
-    colProps: {span: 12},
+    colProps: { span: 12 },
   },
   {
     label: '备注',
     field: 'remark',
     component: 'InputTextArea',
-    colProps: {span: 24},
+    colProps: { span: 24 },
   },
 ];
 

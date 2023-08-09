@@ -9,7 +9,7 @@
   import { getDictTypeApi } from '@/api/tenant/dict/dictType.api';
   import { Description, useDescription } from '/@/components/Description';
   import { useRoute } from 'vue-router';
-  import { DictTypeIndexGo } from '@/enums/tenant';
+  import { DictTypeIndexGo } from '@/enums/tenant/dict';
   import { useTabs } from '/@/hooks/web/useTabs';
   import { PageWrapper } from '/@/components/Page';
   import { useUserStore } from '/@/store/modules/user';

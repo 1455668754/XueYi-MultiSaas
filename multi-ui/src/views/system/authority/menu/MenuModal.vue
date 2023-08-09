@@ -16,7 +16,7 @@
   } from '@/api/system/authority/menu.api';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
-  import { COMMON_MODULE, MenuTypeEnum } from '@/enums/system';
+  import { COMMON_MODULE, MenuTypeEnum } from '@/enums/system/authority';
 
   const emit = defineEmits(['success', 'register']);
 

@@ -6,7 +6,7 @@
   import { reactive } from 'vue';
   import { basicFormSchema, genList } from './gen.detail.data';
   import { BasicForm, useForm } from '/@/components/Form';
-  import { GenTableIM } from '@/model/gen';
+  import { GenTableIM } from '@/model/gen/generate';
   import { sourceCopy } from '/@/utils/xueyi';
 
   const emit = defineEmits(['submit']);

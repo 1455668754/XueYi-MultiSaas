@@ -1,7 +1,7 @@
 import { BaseEntity, BasicFetchResult, BasicPageParams } from '@/model/basic';
 import { DicStatusEnum, DicYesNoEnum } from '@/enums';
-import { DicCacheTypeEnum, DicDataTypeEnum } from '@/enums/tenant';
-import { EnterpriseIM } from '@/model/system';
+import { DicCacheTypeEnum, DicDataTypeEnum } from '@/enums/tenant/dict';
+import { EnterpriseIM } from '@/model/system/organize';
 
 /** config info model */
 export interface ConfigIM extends BaseEntity {

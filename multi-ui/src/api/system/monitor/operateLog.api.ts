@@ -1,4 +1,4 @@
-import { OperateLogIM, OperateLogLRM, OperateLogPPM } from '@/model/system';
+import { OperateLogIM, OperateLogLRM, OperateLogPPM } from '@/model/system/monitor';
 import { defHttp } from '/@/utils/http/axios';
 
 enum Api {

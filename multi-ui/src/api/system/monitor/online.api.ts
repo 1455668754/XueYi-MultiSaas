@@ -1,4 +1,4 @@
-import { OnlineLRM, OnlinePPM } from '@/model/system';
+import { OnlineLRM, OnlinePPM } from '@/model/system/monitor';
 import { defHttp } from '/@/utils/http/axios';
 
 enum Api {

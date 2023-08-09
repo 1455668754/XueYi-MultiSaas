@@ -10,7 +10,7 @@
   import { Description, useDescription } from '/@/components/Description';
   import { detailSchema } from './config.data';
   import { useRoute } from 'vue-router';
-  import { ConfigIndexGo } from '@/enums/tenant';
+  import { ConfigIndexGo } from '@/enums/tenant/dict';
   import { useTabs } from '/@/hooks/web/useTabs';
   import { PageWrapper } from '/@/components/Page';
   import { useUserStore } from '/@/store/modules/user';

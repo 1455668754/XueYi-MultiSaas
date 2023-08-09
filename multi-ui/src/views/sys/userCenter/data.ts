@@ -1,6 +1,6 @@
 import { FormSchema } from '/@/components/Form';
 import { dicDictList } from '@/api/sys/dict.api';
-import { SexEnum } from '@/enums/system';
+import { SexEnum } from '@/enums/system/organize';
 
 export interface ListItem {
   key: string;

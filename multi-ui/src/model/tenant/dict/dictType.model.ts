@@ -1,8 +1,8 @@
 import { BasicFetchResult, BasicPageParams, SubBaseEntity } from '@/model/basic';
-import { DictDataIM } from '@/model/tenant';
-import { DicCacheTypeEnum, DicDataTypeEnum } from '@/enums/tenant';
+import { DictDataIM } from '@/model/tenant/dict';
+import { DicCacheTypeEnum, DicDataTypeEnum } from '@/enums/tenant/dict';
 import { DicStatusEnum } from '@/enums';
-import { EnterpriseIM } from '@/model/system';
+import { EnterpriseIM } from '@/model/system/organize';
 
 /** dictType info model */
 export interface DictTypeIM extends SubBaseEntity<DictDataIM> {

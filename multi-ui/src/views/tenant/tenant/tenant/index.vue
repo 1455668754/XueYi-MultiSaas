@@ -71,7 +71,7 @@
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
   import { TenantAuth } from '/@/auth/tenant';
   import { columns, searchFormSchema } from './tenant.data';
-  import { TenantDetailGo } from '@/enums/tenant';
+  import { TenantDetailGo } from '@/enums/tenant/tenant';
   import TenantModal from './TenantModal.vue';
   import TenantInitModal from './TenantInitModal.vue';
   import TenantAuthModal from './TenantAuthModal.vue';

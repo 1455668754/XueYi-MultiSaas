@@ -1,10 +1,10 @@
 import { dicDictList } from '@/api/sys/dict.api';
 import { BasicColumn, FormSchema } from '@/components/Table';
-import { DictDataIM, DictTypeIM } from '@/model/tenant';
+import { DictDataIM, DictTypeIM } from '@/model/tenant/dict';
 import { dictConversion } from '@/utils/xueyi';
 import { COMMON_TENANT_ID, DicCodeEnum, DicSortEnum, DicStatusEnum, DicYesNoEnum } from '@/enums';
 import { optionDictTypeApi } from '@/api/tenant/dict/dictType.api';
-import { DicCacheTypeEnum, DicCodeDictEnum, DicDataTypeEnum } from '@/enums/tenant';
+import { DicCacheTypeEnum, DicCodeDictEnum, DicDataTypeEnum } from '@/enums/tenant/dict';
 import { isNotEmpty } from '@/utils/is';
 import { DescItem } from '@/components/Description';
 import { listTenantApi } from '@/api/tenant/tenant/tenant.api';

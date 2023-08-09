@@ -1,4 +1,4 @@
-import { SourceIM, SourceLRM, SourcePPM } from '@/model/tenant';
+import { SourceIM, SourceLRM, SourcePPM } from '@/model/tenant/source';
 import { defHttp } from '/@/utils/http/axios';
 
 enum Api {

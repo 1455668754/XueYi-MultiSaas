@@ -10,7 +10,7 @@
   import { Description, useDescription } from '/@/components/Description';
   import { detailSchema } from './job.data';
   import { useRoute } from 'vue-router';
-  import { JobIndexGo } from '@/enums/system';
+  import { JobIndexGo } from '@/enums/system/system';
   import { useTabs } from '/@/hooks/web/useTabs';
   import { PageWrapper } from '/@/components/Page';
   import { useUserStore } from '/@/store/modules/user';

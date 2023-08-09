@@ -15,7 +15,7 @@
   import DataIndex from './DataIndex.vue';
   import TypeIndex from './TypeIndex.vue';
   import { computed, ref } from 'vue';
-  import { DictTypeIM } from '@/model/tenant';
+  import { DictTypeIM } from '@/model/tenant/dict';
   import { isArray, isNotEmpty } from '@/utils/is';
   import { indexOf } from 'lodash-es';
 

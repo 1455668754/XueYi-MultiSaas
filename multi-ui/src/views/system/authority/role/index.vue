@@ -74,7 +74,7 @@
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
   import { RoleAuth } from '/@/auth/system';
   import { columns, searchFormSchema } from './role.data';
-  import { RoleDetailGo } from '@/enums/system';
+  import { RoleDetailGo } from '@/enums/system/authority';
   import RoleModal from './RoleModal.vue';
   import { useUserStore } from '/@/store/modules/user';
   import RoleInitModal from './RoleInitModal.vue';

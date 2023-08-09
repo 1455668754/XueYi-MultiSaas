@@ -27,8 +27,8 @@
   import { Card, Tag } from 'ant-design-vue';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { usePermission } from '/@/hooks/web/usePermission';
-  import { MODULE_CACHE } from '@/enums/system';
-  import { ModuleIM, ModuleLM } from '@/model/system';
+  import { MODULE_CACHE } from '@/enums/system/authority';
+  import { ModuleIM, ModuleLM } from '@/model/system/authority';
   import { getModuleList } from '@/api/sys/menu.api';
   import { isEqual } from 'lodash-es';
   import { usePermissionStore } from '/@/store/modules/permission';

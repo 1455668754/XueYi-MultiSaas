@@ -56,7 +56,7 @@
   import { DictTypeAuth } from '/@/auth/tenant';
   import DictDataModal from './DictDataModal.vue';
   import { dataColumns, dataSearchFormSchema } from './dict.data';
-  import { DictTypeIM } from '@/model/tenant';
+  import { DictTypeIM } from '@/model/tenant/dict';
 
   defineExpose({
     onChangeDictInfo,

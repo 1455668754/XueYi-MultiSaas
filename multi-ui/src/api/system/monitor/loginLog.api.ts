@@ -1,4 +1,4 @@
-import { LoginLogLRM, LoginLogPPM } from '@/model/system';
+import { LoginLogLRM, LoginLogPPM } from '@/model/system/monitor';
 import { defHttp } from '/@/utils/http/axios';
 
 enum Api {

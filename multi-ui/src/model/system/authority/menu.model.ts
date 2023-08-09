@@ -1,5 +1,5 @@
 import { BasicFetchResult, BasicPageParams, TreeEntity } from '@/model/basic';
-import { MenuTypeEnum } from '@/enums/system';
+import { MenuTypeEnum } from '@/enums/system/authority';
 
 /** menu info model */
 export interface MenuIM extends TreeEntity<MenuIM> {

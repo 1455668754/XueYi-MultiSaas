@@ -5,7 +5,7 @@
 <script setup lang="ts">
   import { fieldColumns, genList } from './gen.detail.data';
   import { BasicTable, useTable } from '/@/components/Table';
-  import { GenTableIM } from '@/model/gen';
+  import { GenTableIM } from '@/model/gen/generate';
 
   const emit = defineEmits(['submit']);
   defineExpose({ initialize, submit });

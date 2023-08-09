@@ -10,7 +10,7 @@
   import { Description, useDescription } from '/@/components/Description';
   import { detailSchema } from './source.data';
   import { useRoute } from 'vue-router';
-  import { SourceIndexGo } from '@/enums/tenant';
+  import { SourceIndexGo } from '@/enums/tenant/source';
   import { useTabs } from '/@/hooks/web/useTabs';
   import { PageWrapper } from '/@/components/Page';
   import { DescItemSizeEnum } from '@/enums/basic';

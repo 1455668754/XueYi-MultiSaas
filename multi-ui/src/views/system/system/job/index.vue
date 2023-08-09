@@ -66,7 +66,7 @@
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
   import { JobAuth } from '/@/auth/system';
   import { columns, searchFormSchema } from './job.data';
-  import { JobDetailGo, JobLogIndexGo } from '@/enums/system';
+  import { JobDetailGo, JobLogIndexGo } from '@/enums/system/system';
   import JobModal from './JobModal.vue';
   import { useUserStore } from '/@/store/modules/user';
 

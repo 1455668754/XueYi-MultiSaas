@@ -76,7 +76,7 @@
     listGenApi,
   } from '@/api/gen/generate/gen.api';
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
-  import { GenCodeDetailGo, GenGenerateDetailGo } from '@/enums/gen';
+  import { GenCodeDetailGo, GenGenerateDetailGo } from '@/enums/gen/generate';
   import { useUserStore } from '/@/store/modules/user';
   import { IconEnum } from '@/enums/basic';
 

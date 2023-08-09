@@ -24,7 +24,7 @@
   import { BasicForm, useForm } from '/@/components/Form';
   import { editAuthScopeApi, getAuthRoleApi } from '@/api/system/authority/role.api';
   import { authScopeEnterpriseApi } from '@/api/system/authority/auth.api';
-  import { RoleIM } from '@/model/system';
+  import { RoleIM } from '@/model/system/authority';
   import { authFormSchema } from './role.data';
 
   const emit = defineEmits(['success', 'register']);

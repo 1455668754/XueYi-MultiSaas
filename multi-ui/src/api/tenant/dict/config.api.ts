@@ -1,4 +1,4 @@
-import { ConfigIM, ConfigLRM, ConfigPPM } from '@/model/tenant';
+import { ConfigIM, ConfigLRM, ConfigPPM } from '@/model/tenant/dict';
 import { defHttp } from '/@/utils/http/axios';
 
 enum Api {

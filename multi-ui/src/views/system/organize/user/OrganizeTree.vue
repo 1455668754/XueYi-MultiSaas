@@ -18,7 +18,7 @@
   import { onMounted, ref } from 'vue';
   import { BasicTree, TreeItem } from '/@/components/Tree';
   import { organizeOptionApi } from '@/api/system/organize/organize.api';
-  import { OrganizeTypeEnum } from '@/enums/system';
+  import { OrganizeTypeEnum } from '@/enums/system/organize';
   import { ScrollContainer } from '/@/components/Container';
 
   const emit = defineEmits(['select']);

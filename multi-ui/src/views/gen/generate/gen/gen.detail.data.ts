@@ -9,10 +9,10 @@ import {
   IsTickEnum,
   SourceModeEnum,
   TemplateTypeEnum,
-} from '@/enums/gen';
-import { COMMON_MENU, MenuTypeEnum } from '@/enums/system';
+} from '@/enums/gen/generate';
+import { COMMON_MENU, MenuTypeEnum } from '@/enums/system/authority';
 import { BasicColumn } from '/@/components/Table';
-import { GenTableColumnIM, GenTableColumnLM, GenTableLM } from '@/model/gen';
+import { GenTableColumnIM, GenTableColumnLM, GenTableLM } from '@/model/gen/generate';
 import { Component, h } from 'vue';
 import { Input, Select, Switch } from 'ant-design-vue';
 

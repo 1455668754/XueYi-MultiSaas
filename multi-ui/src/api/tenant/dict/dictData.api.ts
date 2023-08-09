@@ -1,5 +1,5 @@
 import { defHttp } from '/@/utils/http/axios';
-import { DictDataIM, DictDataLRM, DictDataPPM } from '@/model/tenant';
+import { DictDataIM, DictDataLRM, DictDataPPM } from '@/model/tenant/dict';
 
 enum Api {
   LIST_DICT_DATA = '/system/admin/dict/data/list',

@@ -1,6 +1,6 @@
 import { defHttp } from '/@/utils/http/axios';
 import { GetMenuLM } from '@/model/sys';
-import { ModuleLM } from '@/model/system';
+import { ModuleLM } from '@/model/system/authority';
 
 enum Api {
   GetMenuList = '/system/admin/menu/getRouters/',

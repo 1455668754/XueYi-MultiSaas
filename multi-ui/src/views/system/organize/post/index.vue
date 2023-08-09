@@ -67,7 +67,7 @@
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
   import { PostAuth } from '/@/auth/system';
   import { columns, searchFormSchema } from './post.data';
-  import { PostDetailGo } from '@/enums/system';
+  import { PostDetailGo } from '@/enums/system/organize';
   import PostModal from './PostModal.vue';
   import PostRoleModal from './PostRoleModal.vue';
   import { useUserStore } from '/@/store/modules/user';

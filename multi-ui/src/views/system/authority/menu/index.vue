@@ -63,7 +63,7 @@
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
   import { MenuAuth } from '/@/auth/system';
   import { columns, searchFormSchema } from './menu.data';
-  import { COMMON_MENU, MenuDetailGo } from '@/enums/system';
+  import { COMMON_MENU, MenuDetailGo } from '@/enums/system/authority';
   import MenuModal from './MenuModal.vue';
   import { useUserStore } from '/@/store/modules/user';
   import { IconEnum } from '@/enums/basic';

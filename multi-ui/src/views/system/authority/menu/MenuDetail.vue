@@ -10,7 +10,7 @@
   import { Description, useDescription } from '/@/components/Description';
   import { detailSchema } from './menu.data';
   import { useRoute } from 'vue-router';
-  import { MenuIndexGo } from '@/enums/system';
+  import { MenuIndexGo } from '@/enums/system/authority';
   import { useTabs } from '/@/hooks/web/useTabs';
   import { PageWrapper } from '/@/components/Page';
   import { useUserStore } from '/@/store/modules/user';

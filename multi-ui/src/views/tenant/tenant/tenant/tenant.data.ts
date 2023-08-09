@@ -4,7 +4,7 @@ import { DescItem } from '/@/components/Description';
 import { dicDictList } from '@/api/sys/dict.api';
 import { dictConversion } from '/@/utils/xueyi';
 import { ColorEnum, DicSortEnum, DicStatusEnum, DicYesNoEnum } from '@/enums/basic';
-import { TenantIM } from '@/model/tenant';
+import { TenantIM } from '@/model/tenant/tenant';
 import { optionStrategyApi } from '@/api/tenant/source/strategy.api';
 import { h } from 'vue';
 import { Tag } from 'ant-design-vue';

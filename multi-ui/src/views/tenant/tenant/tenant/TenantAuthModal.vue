@@ -28,7 +28,7 @@
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicTree, TreeItem } from '/@/components/Tree';
   import { BasicForm, useForm } from '/@/components/Form';
-  import { TenantIM } from '@/model/tenant';
+  import { TenantIM } from '@/model/tenant/tenant';
 
   const emit = defineEmits(['success', 'register']);
 

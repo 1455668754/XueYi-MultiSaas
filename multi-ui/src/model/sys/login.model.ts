@@ -1,4 +1,4 @@
-import { EnterpriseIM, UserIM } from '../system';
+import { EnterpriseIM, UserIM } from '../system/organize';
 
 /**
  * @description: Login interface parameters

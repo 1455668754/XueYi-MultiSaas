@@ -70,7 +70,7 @@
   import DictTypeModal from './DictTypeModal.vue';
   import { typeColumns, typeSearchFormSchema } from './dict.data';
   import { listTenantApi } from '@/api/tenant/tenant/tenant.api';
-  import { TenantIM } from '@/model/tenant';
+  import { TenantIM } from '@/model/tenant/tenant';
 
   const emit = defineEmits(['dict-change', 'dict-del']);
   const { createMessage, createConfirm } = useMessage();

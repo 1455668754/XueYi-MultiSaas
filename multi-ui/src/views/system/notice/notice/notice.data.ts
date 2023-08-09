@@ -4,8 +4,8 @@ import { DescItem } from '/@/components/Description';
 import { dicDictList } from '@/api/sys/dict.api';
 import { h } from 'vue';
 import { Tinymce } from '/@/components/Tinymce';
-import { NoticeIM } from '@/model/system';
-import { NoticeTypeEnum } from '@/enums/system';
+import { NoticeIM } from '@/model/system/notice';
+import { NoticeTypeEnum } from '@/enums/system/notice';
 import { dictConversion } from '/@/utils/xueyi';
 import { isNotEmpty } from '@/utils/is';
 

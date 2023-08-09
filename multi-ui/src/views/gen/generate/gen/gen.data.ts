@@ -2,7 +2,7 @@ import { FormSchema } from '/@/components/Form';
 import { BasicColumn } from '/@/components/Table';
 import { listSourceApi } from '@/api/tenant/source/source.api';
 import { DicStatusEnum } from '@/enums';
-import { SourceIM } from '@/model/tenant';
+import { SourceIM } from '@/model/tenant/source';
 
 async function sourceList() {
   const list = await listSourceApi({ status: DicStatusEnum.NORMAL });

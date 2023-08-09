@@ -59,7 +59,7 @@
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
   import { SourceAuth } from '/@/auth/tenant';
   import { columns, searchFormSchema } from './source.data';
-  import { SourceDetailGo } from '@/enums/tenant';
+  import { SourceDetailGo } from '@/enums/tenant/source';
   import SourceModal from './SourceModal.vue';
   import { useUserStore } from '/@/store/modules/user';
 

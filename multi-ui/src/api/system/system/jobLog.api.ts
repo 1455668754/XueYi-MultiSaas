@@ -1,4 +1,4 @@
-import { JobLogIM, JobLogLRM, JobLogPPM } from '@/model/system';
+import { JobLogIM, JobLogLRM, JobLogPPM } from '@/model/system/system';
 import { defHttp } from '/@/utils/http/axios';
 
 enum Api {

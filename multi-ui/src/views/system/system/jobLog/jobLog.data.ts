@@ -1,10 +1,10 @@
-import {FormSchema} from '/@/components/Form';
-import {BasicColumn} from '/@/components/Table';
-import {DescItem} from '/@/components/Description';
-import {dicDictList} from '@/api/sys/dict.api';
-import {dictConversion} from '/@/utils/xueyi';
-import {JobLogIM} from '@/model/system';
-import {optionJobApi} from '@/api/system/system/job.api';
+import { FormSchema } from '/@/components/Form';
+import { BasicColumn } from '/@/components/Table';
+import { DescItem } from '/@/components/Description';
+import { dicDictList } from '@/api/sys/dict.api';
+import { dictConversion } from '/@/utils/xueyi';
+import { JobLogIM } from '@/model/system/system';
+import { optionJobApi } from '@/api/system/system/job.api';
 
 /** 字典查询 */
 export const dictMap = await dicDictList(['sys_job_group', 'sys_message_status']);

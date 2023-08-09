@@ -1,4 +1,4 @@
-import { UserIM } from '@/model/system';
+import { UserIM } from '@/model/system/organize';
 import { defHttp } from '/@/utils/http/axios';
 import { UploadIM } from '@/model/sys';
 import { UploadFileParams } from '/#/axios';

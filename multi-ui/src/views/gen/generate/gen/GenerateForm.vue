@@ -23,8 +23,8 @@
 <script setup lang="ts">
   import { CollapseContainer } from '/@/components/Container';
   import { BasicForm, useForm } from '/@/components/Form';
-  import { TemplateTypeEnum } from '@/enums/gen';
-  import { GenTableIM, OptionIM } from '@/model/gen';
+  import { TemplateTypeEnum } from '@/enums/gen/generate';
+  import { GenTableIM, OptionIM } from '@/model/gen/generate';
   import { reactive, ref } from 'vue';
   import {
     dict,
@@ -39,7 +39,7 @@
     isTreeTpl,
   } from './gen.detail.data';
   import { getMenuRouteListApi } from '@/api/system/authority/menu.api';
-  import { MenuTypeEnum } from '@/enums/system';
+  import { MenuTypeEnum } from '@/enums/system/authority';
   import { sourceAssign } from '/@/utils/xueyi';
 
   const emit = defineEmits(['submit']);

@@ -36,8 +36,8 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import { useTabs } from '/@/hooks/web/useTabs';
   import { PageWrapper } from '/@/components/Page';
-  import { GenTableIM } from '@/model/gen';
-  import { GenIndexGo } from '@/enums/gen';
+  import { GenTableIM } from '@/model/gen/generate';
+  import { GenIndexGo } from '@/enums/gen/generate';
   import { GenAuth } from '/@/auth/gen';
   import { useUserStore } from '/@/store/modules/user';
 

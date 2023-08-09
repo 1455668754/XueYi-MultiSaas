@@ -68,11 +68,11 @@
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
   import { ConfigAuth } from '/@/auth/tenant';
   import { columns, searchFormSchema } from './config.data';
-  import { ConfigDetailGo } from '@/enums/tenant';
+  import { ConfigDetailGo } from '@/enums/tenant/dict';
   import ConfigModal from './ConfigModal.vue';
   import { useUserStore } from '/@/store/modules/user';
   import { listTenantApi } from '@/api/tenant/tenant/tenant.api';
-  import { TenantIM } from '@/model/tenant';
+  import { TenantIM } from '@/model/tenant/tenant';
 
   const { createMessage, createConfirm } = useMessage();
   const [registerModal, { openModal }] = useModal();

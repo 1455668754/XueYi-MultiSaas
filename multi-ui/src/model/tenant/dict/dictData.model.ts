@@ -1,6 +1,6 @@
 import { BaseEntity, BasicFetchResult, BasicPageParams } from '@/model/basic';
 import { DicStatusEnum, DicYesNoEnum } from '@/enums';
-import { DictTypeIM } from '@/model/tenant';
+import { DictTypeIM } from '@/model/tenant/dict';
 
 /** dictData info model */
 export interface DictDataIM extends BaseEntity {

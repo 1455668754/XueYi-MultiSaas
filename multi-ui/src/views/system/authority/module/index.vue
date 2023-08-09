@@ -64,7 +64,7 @@
   import { Image } from 'ant-design-vue';
   import { ModuleAuth } from '/@/auth/system';
   import { columns, searchFormSchema } from './module.data';
-  import { ModuleDetailGo } from '@/enums/system';
+  import { ModuleDetailGo } from '@/enums/system/authority';
   import ModuleModal from './ModuleModal.vue';
 
   const { createMessage, createConfirm } = useMessage();

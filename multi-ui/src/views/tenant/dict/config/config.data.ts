@@ -9,9 +9,9 @@ import {
   DicStatusEnum,
   DicYesNoEnum,
 } from '@/enums/basic';
-import { ConfigIM } from '@/model/tenant';
+import { ConfigIM } from '@/model/tenant/dict';
 import { dictConversion } from '/@/utils/xueyi';
-import { DicCacheTypeEnum, DicCodeDictEnum, DicDataTypeEnum } from '@/enums/tenant';
+import { DicCacheTypeEnum, DicCodeDictEnum, DicDataTypeEnum } from '@/enums/tenant/dict';
 import { isNotEmpty } from '@/utils/is';
 import { listTenantApi } from '@/api/tenant/tenant/tenant.api';
 
