@@ -4,54 +4,45 @@
   </PageWrapper>
 </template>
 
-<script lang="ts">
-  import { defineComponent, onMounted, ref } from 'vue';
-  import { get${BusinessName}Api } from '/@/api/${moduleName}/${authorityName}/${businessName}';
-  import { Description, useDescription } from '/@/components/Description';
-  import { detailSchema } from './${businessName}.data';
-  import { useRoute } from 'vue-router';
-  import { ${BusinessName}IndexGo } from '/@/enums/${moduleName}';
-  import { useTabs } from '/@/hooks/web/useTabs';
-  import { PageWrapper } from '/@/components/Page';
-  import { useUserStore } from '/@/store/modules/user';
-  import { DescItemSizeEnum } from '/@/enums/appEnum';
-
-  export default defineComponent({
-    components: { Description, PageWrapper },
-    setup() {
-      const route = useRoute();
-      const { setTitle } = useTabs();
-      const getTitle = ref('${functionName}详情');
-
-      const [register, { setDescProps }] = useDescription({
-        title: '${functionName}详情',
-        schema: detailSchema,
-        column: DescItemSizeEnum.DEFAULT,
-      });
-#if($pkColumn.javaType == 'Long')
-#set($IdType = 'string | number')
+#if($pkColumn.javaType == 'Long' || $pkColumn.javaType == 'String')
+    #set($IdType = 'string')
 #elseif($pkColumn.javaType == 'Integer' || $pkColumn.javaType == 'Double' || $pkColumn.javaType == 'BigDecimal')
-#set($IdType = 'number')
-#elseif($pkColumn.javaType == 'String')
-#set($IdType = 'string')
+    #set($IdType = 'number')
 #else
-#set($IdType = 'any')
+    #set($IdType = 'any')
 #end
+<script setup lang="ts">
+    import { onMounted, ref } from 'vue';
+    import { get${BusinessName}Api } from '@/api/${moduleName}/${authorityName}/${businessName}.api';
+    import { Description, useDescription } from '/@/components/Description';
+    import { detailSchema } from './${businessName}.data';
+    import { useRoute } from 'vue-router';
+    import { ${BusinessName}IndexGo } from '@/enums/${moduleName}/${authorityName}';
+    import { useTabs } from '/@/hooks/web/useTabs';
+    import { PageWrapper } from '/@/components/Page';
+    import { useUserStore } from '/@/store/modules/user';
+    import { DescItemSizeEnum } from '@/enums/basic';
 
-      onMounted(async () => {
-        const ${pkColumn.javaField} = route.params.${pkColumn.javaField} as ${IdType};
-        const data = await get${BusinessName}Api(${pkColumn.javaField});
-        setDescProps({ data: data });
-        getTitle.value = '${functionName}详情:' + data?.#if($nameColumn)${nameColumn.javaField}#else${pkColumn.javaField}#end;
-        setTitle(getTitle.value);
-      });
+    const route = useRoute();
+    const { setTitle } = useTabs();
+    const getTitle = ref('${functionName}详情');
 
-      /** 返回${functionName}主页 */
-      function goBack() {
-        useUserStore().getRoutePath(${BusinessName}IndexGo);
-      }
+    const [register, { setDescProps }] = useDescription({
+      title: '${functionName}详情',
+      schema: detailSchema,
+      column: DescItemSizeEnum.DEFAULT,
+    });
 
-      return { register, getTitle, goBack };
-    },
-  });
+    onMounted(async () => {
+      const ${pkColumn.javaField} = route.params.${pkColumn.javaField} as ${IdType};
+      const data = await get${BusinessName}Api(${pkColumn.javaField});
+      setDescProps({ data: data });
+      getTitle.value = '${functionName}详情:' + data?.#if($nameColumn)${nameColumn.javaField}#else${pkColumn.javaField}#end;
+      setTitle(getTitle.value);
+    });
+
+    /** 返回${functionName}主页 */
+    function goBack() {
+      useUserStore().getRoutePath(${BusinessName}IndexGo);
+    }
 </script>
