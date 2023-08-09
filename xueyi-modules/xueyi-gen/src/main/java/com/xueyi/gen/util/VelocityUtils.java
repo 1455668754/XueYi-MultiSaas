@@ -220,19 +220,22 @@ public class VelocityUtils {
         List<String> templates = new ArrayList<>();
 
         if (StrUtil.equals(tplCategory, GenConstants.TemplateType.MERGE.getCode())) {
-            templates.add("vm/java/merge/merge.java.vm");
-            templates.add("vm/java/merge/mergeMapper.java.vm");
+            templates.add("vm/java/domain/merge.java.vm");
+            templates.add("vm/java/mapper/mergeMapper.java.vm");
         } else {
-            templates.add("vm/java/query.java.vm");
-            templates.add("vm/java/dto.java.vm");
-            templates.add("vm/java/po.java.vm");
-            templates.add("vm/java/converter.java.vm");
-            templates.add("vm/java/controller.java.vm");
-            templates.add("vm/java/service.java.vm");
-            templates.add("vm/java/serviceImpl.java.vm");
-            templates.add("vm/java/manager.java.vm");
-            templates.add("vm/java/managerImpl.java.vm");
-            templates.add("vm/java/mapper.java.vm");
+            templates.add("vm/java/domain/correlate.java.vm");
+            templates.add("vm/java/domain/query.java.vm");
+            templates.add("vm/java/domain/dto.java.vm");
+            templates.add("vm/java/domain/po.java.vm");
+            templates.add("vm/java/domain/converter.java.vm");
+            templates.add("vm/java/controller/aController.java.vm");
+            templates.add("vm/java/controller/bController.java.vm");
+            templates.add("vm/java/controller/iController.java.vm");
+            templates.add("vm/java/service/service.java.vm");
+            templates.add("vm/java/service/serviceImpl.java.vm");
+            templates.add("vm/java/manager/manager.java.vm");
+            templates.add("vm/java/manager/managerImpl.java.vm");
+            templates.add("vm/java/mapper/mapper.java.vm");
             templates.add("vm/sql/sql.sql.vm");
             templates.add("vm/multi/ts/api.ts.vm");
             templates.add("vm/multi/ts/data.ts.vm");

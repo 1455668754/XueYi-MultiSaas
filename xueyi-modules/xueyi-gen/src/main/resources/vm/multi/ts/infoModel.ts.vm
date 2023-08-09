@@ -4,17 +4,8 @@
 #elseif($table.tree)
 #set($Entity="Tree")
 #set($generics = "<"+${BusinessName}+"IM>")
-#elseif($table.subBase)
-#set($Entity="SubBase")
-#set($generics = "<"+${subBusinessName}+"IM>")
-#elseif($table.subTree)
-#set($Entity="SubTree")
-#set($generics = "<"+${BusinessName}+"IM, "+${subBusinessName}+"IM>")
 #end
 import { BasicFetchResult, BasicPageParams, ${Entity}Entity } from '/@/model/src';
-#if($table.subBase || $table.subTree)
-import { ${subBusinessName}IM } from '${relativePath}/${subbusinessName}';
-#end
 
 /** ${businessName} info model */
 export interface ${BusinessName}IM extends ${Entity}Entity${generics} {

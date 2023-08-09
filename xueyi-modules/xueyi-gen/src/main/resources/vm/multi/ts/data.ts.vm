@@ -11,7 +11,7 @@ import { DescItem } from '/@/components/Description';
 #set($justEdit = false)
 #set($justInsert = false)
 #set($show = true)
-#if((($table.tree || $table.subTree) && $column.javaField == $treeMap.parentIdColumn.javaField))
+#if(($table.tree && $column.javaField == $treeMap.parentIdColumn.javaField))
 #set($show = false)
 #end
 #foreach($item in $mustHideField)
@@ -158,7 +158,7 @@ export const formSchema: FormSchema[] = [
 #set($justOperate = false)
 #set($justEdit = false)
 #set($justInsert = false)
-#if(($table.tree || $table.subTree) && $column.javaField == $treeMap.parentIdColumn.javaField)
+#if($table.tree && $column.javaField == $treeMap.parentIdColumn.javaField)
   {
     label: '${treeMap.parentIdColumn.readNameNoSuffix()}',
     field: '${treeMap.parentIdColumn.javaField}',

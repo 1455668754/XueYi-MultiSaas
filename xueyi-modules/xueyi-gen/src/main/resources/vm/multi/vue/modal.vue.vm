@@ -17,7 +17,7 @@
     get${BusinessName}Api,
     add${BusinessName}Api,
     edit${BusinessName}Api,
-#if($table.tree || $table.subTree)
+#if($table.tree)
     list${BusinessName}ExNodesApi,
 #end
   } from '/@/api/${moduleName}/${authorityName}/${businessName}';
@@ -32,7 +32,7 @@
       const { createMessage } = useMessage();
       const isUpdate = ref(true);
 
-      const [registerForm, { resetFields, setFieldsValue, #if($table.tree || $table.subTree)updateSchema,#end validate }] = useForm({
+      const [registerForm, { resetFields, setFieldsValue, #if($table.tree)updateSchema,#end validate }] = useForm({
         labelWidth: 100,
         schemas: formSchema,
         showActionButtonGroup: false,
@@ -48,7 +48,7 @@
             const ${businessName} = await get${BusinessName}Api(data.record.${pkColumn.javaField});
             setFieldsValue({...${businessName}});
           }
-#if($table.tree || $table.subTree)
+#if($table.tree)
           const treeData = await list${BusinessName}ExNodesApi(
             unref(isUpdate) ? data.record.${pkColumn.javaField} : undefined,
           );

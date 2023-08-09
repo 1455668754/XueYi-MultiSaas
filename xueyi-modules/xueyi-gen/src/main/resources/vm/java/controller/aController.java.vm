@@ -1,20 +1,15 @@
-package ${packageName}.controller;
+package ${packageName}.controller.admin;
 
-#if($table.base)
-#set($Entity="Base")
-#elseif($table.tree)
-#set($Entity="Tree")
-#end
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import org.springframework.security.access.prepost.PreAuthorize;
-import com.xueyi.common.web.entity.controller.${Entity}Controller;
+import ${packageName}.controller.base.B${ClassName}Controller;
 import ${packageName}.domain.dto.${ClassName}Dto;
 import ${packageName}.domain.query.${ClassName}Query;
-import ${packageName}.service.I${ClassName}Service;
+import com.xueyi.common.security.annotation.AdminAuth;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,31 +24,16 @@ import java.util.List;
 #end
 
 /**
- * ${functionName}管理 业务处理
+ * ${functionName}管理 | 管理端 业务处理
  *
  * @author ${author}
  */
+@AdminAuth
 @RestController
-@RequestMapping("/${businessName}")
-public class ${ClassName}Controller extends ${Entity}Controller<${ClassName}Query, ${ClassName}Dto, I${ClassName}Service> {
+@RequestMapping("/admin/${businessName}")
+public class A${ClassName}Controller extends B${ClassName}Controller {
 
-    /** 定义节点名称 */
-    @Override
-    protected String getNodeName() {
-        return "${functionName}" ;
-    }
 #if($api.cache)
-
-    /**
-     * 刷新${functionName}缓存 | 内部调用
-     */
-    @Override
-    @InnerAuth
-    @GetMapping("/inner/refresh")
-    @Log(title = "${functionName}管理", businessType = BusinessType.REFRESH)
-    public R<Boolean> refreshCacheInner() {
-        return super.refreshCacheInner();
-    }
 
     /**
      * 刷新${functionName}缓存

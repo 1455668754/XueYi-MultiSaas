@@ -1,4 +1,4 @@
-import { ${BusinessName}IM,#if($table.tree || $table.subTree || $api.export) ${BusinessName}PM,#end#if(!($table.tree || $table.subTree)) ${BusinessName}PPM,#end#if($table.tree || $table.subTree) ${BusinessName}LM#else ${BusinessName}LRM#end } from '/@/model/${moduleName}';
+import { ${BusinessName}IM,#if($table.tree || $api.export) ${BusinessName}PM,#end#if(!$table.tree) ${BusinessName}PPM,#end#if($table.tree) ${BusinessName}LM#else ${BusinessName}LRM#end } from '/@/model/${moduleName}';
 import { defHttp } from '/@/utils/http/axios';
 #if($api.export)
 import { formatToDateTime } from '/@/utils/dateUtil';
@@ -7,22 +7,22 @@ import dayjs from 'dayjs';
 
 enum Api {
 #if($api.list)
-  LIST_${BUSINESSName} = '/${moduleName}/${businessName}/list',
-#if($table.tree || $table.subTree)
-  LIST_${BUSINESSName}_EXCLUDE_NODES = '/${moduleName}/${businessName}/list/exclude',
+  LIST_${BUSINESSName} = '/${moduleName}/admin/${businessName}/list',
+#if($table.tree)
+  LIST_${BUSINESSName}_EXCLUDE_NODES = '/${moduleName}/admin/${businessName}/list/exclude',
 #end
-  OPTION_${BUSINESSName} = '/${moduleName}/${businessName}/option',
+  OPTION_${BUSINESSName} = '/${moduleName}/admin/${businessName}/option',
 #end
-  GET_${BUSINESSName} = '/${moduleName}/${businessName}/',
-  ADD_${BUSINESSName} = '/${moduleName}/${businessName}',
-  EDIT_${BUSINESSName} = '/${moduleName}/${businessName}',
+  GET_${BUSINESSName} = '/${moduleName}/admin/${businessName}/',
+  ADD_${BUSINESSName} = '/${moduleName}/admin/${businessName}',
+  EDIT_${BUSINESSName} = '/${moduleName}/admin/${businessName}',
 #if($api.editStatus || $api.editStatusForce)
-  EDIT_STATUS_${BUSINESSName} = '/${moduleName}/${businessName}/status',
+  EDIT_STATUS_${BUSINESSName} = '/${moduleName}/admin/${businessName}/status',
 #end
-  DEL_BATCH_${BUSINESSName} = '/${moduleName}/${businessName}/batch/',
-  DEL_BATCH_FORCE_${BUSINESSName} = '/${moduleName}/${businessName}/batch/force/',
+  DEL_BATCH_${BUSINESSName} = '/${moduleName}/admin/${businessName}/batch/',
+  DEL_BATCH_FORCE_${BUSINESSName} = '/${moduleName}/admin/${businessName}/batch/force/',
 #if($api.export)
-  EXPORT_${BUSINESSName} = '/${moduleName}/${businessName}/export',
+  EXPORT_${BUSINESSName} = '/${moduleName}/admin/${businessName}/export',
 #end
 }
 #set($IdName = $pkColumn.javaField)
@@ -38,9 +38,9 @@ enum Api {
 #if($api.list)
 
 /** 查询${functionName}列表 */
-export const list${BusinessName}Api = (params?: #if($table.tree || $table.subTree)${BusinessName}PM#else${BusinessName}PPM#end) =>
-  defHttp.get<#if($table.tree || $table.subTree)${BusinessName}LM#else${BusinessName}LRM#end>({ url: Api.LIST_${BUSINESSName}, params });
-#if($table.tree || $table.subTree)
+export const list${BusinessName}Api = (params?: #if($table.tree)${BusinessName}PM#else${BusinessName}PPM#end) =>
+  defHttp.get<#if($table.tree)${BusinessName}LM#else${BusinessName}LRM#end>({ url: Api.LIST_${BUSINESSName}, params });
+#if($table.tree)
 
 /** 查询${functionName}列表（排除节点） */
 export const list${BusinessName}ExNodesApi = (${IdName}: ${IdType} | undefined) =>
@@ -52,7 +52,7 @@ export const list${BusinessName}ExNodesApi = (${IdName}: ${IdType} | undefined) 
 
 /** 查询${functionName}选择框列表 */
 export const option${BusinessName}Api = () =>
-  defHttp.get<#if($table.tree || $table.subTree)${BusinessName}LM#else${BusinessName}LRM#end>({ url: Api.OPTION_${BUSINESSName} });
+  defHttp.get<#if($table.tree)${BusinessName}LM#else${BusinessName}LRM#end>({ url: Api.OPTION_${BUSINESSName} });
 #end
 
 /** 查询${functionName}详细 */

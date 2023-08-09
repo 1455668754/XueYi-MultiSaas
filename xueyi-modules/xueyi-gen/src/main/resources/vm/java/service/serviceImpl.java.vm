@@ -7,6 +7,7 @@ package ${packageName}.service.impl;
 #end
 import ${packageName}.domain.dto.${ClassName}Dto;
 import ${packageName}.domain.query.${ClassName}Query;
+import ${packageName}.domain.correlate.${ClassName}Correlate;
 import ${packageName}.service.I${ClassName}Service;
 import ${packageName}.manager.I${ClassName}Manager;
 import com.xueyi.common.web.entity.service.impl.${Entity}ServiceImpl;
@@ -20,7 +21,7 @@ import java.util.List;
  * @author ${author}
  */
 @Service
-public class ${ClassName}ServiceImpl extends ${Entity}ServiceImpl<${ClassName}Query, ${ClassName}Dto, I${ClassName}Manager> implements I${ClassName}Service {
+public class ${ClassName}ServiceImpl extends ${Entity}ServiceImpl<${ClassName}Query, ${ClassName}Dto, ${ClassName}Correlate, I${ClassName}Manager> implements I${ClassName}Service {
 
     /**
      * 查询${functionName}对象列表 | 数据权限
