@@ -48,6 +48,8 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import static com.xueyi.common.core.constant.system.AuthorityConstants.MENU_TOP_NODE;
+
 /**
  * 业务管理 业务层处理
  *
@@ -450,14 +452,22 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
      */
     private void setMenuOptions(GenTableDto table, JSONObject optionsObj) {
         Long menuId = optionsObj.getLong(OptionField.PARENT_MENU_ID.getCode());
-        R<SysMenuDto> result = remoteMenuService.getInfoInner(menuId);
-        if (result.isFail()) AjaxResult.warn("菜单服务异常，请联系管理员！");
-        else if (ObjectUtil.isNull(result.getData())) AjaxResult.warn("该服务对应的菜单已被删除，请先修改后再生成代码！");
-        if (StrUtil.isEmpty(result.getData().getAncestors()))
-            optionsObj.put(OptionField.PARENT_MENU_ANCESTORS.getCode(), result.getData().getId());
-        else
-            optionsObj.put(OptionField.PARENT_MENU_ANCESTORS.getCode(), result.getData().getAncestors() + "," + result.getData().getId());
+        if (ObjectUtil.equals(MENU_TOP_NODE, menuId)) {
+            optionsObj.put(OptionField.PARENT_MENU_ANCESTORS.getCode(), menuId);
+        } else {
+            R<SysMenuDto> result = remoteMenuService.getInfoInner(menuId);
+            if (result.isFail()) {
+                AjaxResult.warn("菜单服务异常，请联系管理员！");
+            } else if (ObjectUtil.isNull(result.getData())) {
+                AjaxResult.warn("该服务对应的菜单已被删除，请先修改后再生成代码！");
+            }
+            SysMenuDto menu = result.getData();
+            if (StrUtil.isEmpty(menu.getAncestors())) {
+                optionsObj.put(OptionField.PARENT_MENU_ANCESTORS.getCode(), menu.getId());
+            } else {
+                optionsObj.put(OptionField.PARENT_MENU_ANCESTORS.getCode(), menu.getAncestors() + "," + menu.getId());
+            }
+        }
         table.setOptions(optionsObj.toString());
     }
-
 }

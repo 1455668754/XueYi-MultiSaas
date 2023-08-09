@@ -15,8 +15,8 @@
 </template>
 
 <script setup lang="ts">
-  import { h, ref, unref } from 'vue';
-  import { Modal } from 'ant-design-vue';
+  import { h, onMounted, ref, unref } from 'vue';
+  import { Modal, Tabs } from 'ant-design-vue';
   import { GenCodeLM } from '@/model/gen/generate';
   import { useRoute } from 'vue-router';
   import { CodeEditor, JsonPreview, MODE } from '/@/components/CodeEditor';
@@ -25,6 +25,9 @@
   import { PageWrapper } from '/@/components/Page';
   import { GenIndexGo } from '@/enums/gen/generate';
   import { useUserStore } from '/@/store/modules/user';
+
+  const ATabs = Tabs;
+  const ATabPane = Tabs.TabPane;
 
   const route = useRoute();
   const { setTitle } = useTabs();
@@ -49,7 +52,7 @@
     setTitle('生成预览：' + getTitle.value);
   }
 
-  create();
+  onMounted(() => create());
 
   function showData() {
     if (unref(codeMode) === MODE.JSON) {
