@@ -42,10 +42,4 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
 	</select>
 
-	<select id="selectDbTableByName" parameterType="String" resultMap="GenTableResult">
-		<include refid="schema"/>
-		where table_comment <![CDATA[ <> ]]> '' and table_schema = (select database())
-		and table_name = #{name}
-	</select>
-
 </mapper>

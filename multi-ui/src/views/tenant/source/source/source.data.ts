@@ -3,7 +3,7 @@ import { BasicColumn } from '/@/components/Table';
 import { DescItem } from '/@/components/Description';
 import { dicDictList } from '@/api/sys/dict.api';
 import { dictConversion } from '/@/utils/xueyi';
-import { ColorEnum, DicSortEnum, DicStatusEnum } from '@/enums/basic';
+import { ColorEnum, DicCodeEnum, DicSortEnum, DicStatusEnum } from '@/enums/basic';
 import { SourceIM } from '@/model/tenant/source';
 import { DRIVER_CLASSNAME, URL_APPEND, URL_PREPEND } from '@/enums/tenant/source';
 import { h } from 'vue';
@@ -11,11 +11,11 @@ import { Tag } from 'ant-design-vue';
 import { isNotEmpty } from '@/utils/is';
 
 /** 字典查询 */
-export const dictMap = await dicDictList(['sys_yes_no', 'sys_normal_disable']);
+export const dictMap = await dicDictList([DicCodeEnum.SYS_YES_NO, 'sys_normal_disable']);
 
 /** 字典表 */
 export const dict: any = {
-  DicYesNoOptions: dictMap['sys_yes_no'],
+  DicYesNoOptions: dictMap[DicCodeEnum.SYS_YES_NO],
   DicNormalDisableOptions: dictMap['sys_normal_disable'],
 };
 

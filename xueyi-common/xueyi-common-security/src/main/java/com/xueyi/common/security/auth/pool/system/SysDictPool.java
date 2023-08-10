@@ -34,7 +34,5 @@ public interface SysDictPool {
     String SYS_CONFIG_ES = "dict:config:es" ;
     /** 系统服务 | 字典模块 | 参数管理 | 删除 */
     String SYS_CONFIG_DEL = "dict:config:delete" ;
-    /** 系统服务 | 字典模块 | 参数管理 | 强制删除 */
-    String SYS_CONFIG_DEL_FORCE = "dict:config:delForce" ;
 
 }

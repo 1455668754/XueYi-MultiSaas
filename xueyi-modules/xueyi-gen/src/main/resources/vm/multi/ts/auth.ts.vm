@@ -8,19 +8,19 @@ export enum ${BusinessName}Auth {
   // 查询${functionName}详情
   SINGLE = '${authorityName}:${businessName}:single',
 #end
-#if($api.add || $api.addForce)
+#if($api.add)
   // 新增${functionName}
   ADD = '${authorityName}:${businessName}:add',
 #end
-#if($api.edit || $api.editForce)
+#if($api.edit)
   // 修改${functionName}
   EDIT = '${authorityName}:${businessName}:edit',
 #end
-#if($api.editStatus || $api.editStatusForce)
+#if($api.editStatus)
   // 修改${functionName}状态
   EDIT_STATUS = '${authorityName}:${businessName}:es',
 #end
-#if($api.batchRemove || $api.batchRemoveForce)
+#if($api.batchRemove)
   // 删除${functionName}
   DELETE = '${authorityName}:${businessName}:delete',
 #end
@@ -31,5 +31,9 @@ export enum ${BusinessName}Auth {
 #if($api.export)
   // ${functionName}导出
   EXPORT = '${authorityName}:${businessName}:export',
+#end
+#if($api.cache)
+  // ${functionName}缓存刷新
+  CACHE = '${authorityName}:${businessName}:cache',
 #end
 }

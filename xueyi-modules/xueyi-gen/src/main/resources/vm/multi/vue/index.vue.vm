@@ -93,7 +93,7 @@
       const [registerModal, { openModal }] = useModal();
 #if($api.batchRemove || $api.batchRemoveForce)
       const state = reactive<{
-        ${pkColumn.javaField}s: (string | number)[]
+        ${pkColumn.javaField}s: string[]
         ${pkColumn.javaField}Names: string
       }>({
         ${pkColumn.javaField}s: [],

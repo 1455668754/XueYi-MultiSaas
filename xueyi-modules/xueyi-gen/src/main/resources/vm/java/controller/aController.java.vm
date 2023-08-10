@@ -32,15 +32,17 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin/${businessName}")
 public class A${ClassName}Controller extends B${ClassName}Controller {
-
 #if($api.cache)
 
     /**
      * 刷新${functionName}缓存
      */
     @Override
-    // @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_CACHE)")
+#if($isDependMode)
+    @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_CACHE)")
+#else
     @PreAuthorize("@ss.hasAuthority('${authorityName}:${businessName}:cache')")
+#end
     @Log(title = "${functionName}管理", businessType = BusinessType.REFRESH)
     @GetMapping("/refresh")
     public AjaxResult refreshCache() {
@@ -54,23 +56,14 @@ public class A${ClassName}Controller extends B${ClassName}Controller {
      */
     @Override
     @GetMapping("/list")
-    // @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_LIST)")
+#if($isDependMode)
+    @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_LIST)")
+#else
     @PreAuthorize("@ss.hasAuthority('${authorityName}:${businessName}:list')")
+#end
     public AjaxResult list(${ClassName}Query ${classNameNoPrefix}) {
         return super.list(${classNameNoPrefix});
     }
-#if($table.tree)
-
-    /**
-     * 查询${functionName}列表（排除节点）
-     */
-    @GetMapping("/list/exclude")
-    // @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_LIST)")
-    @PreAuthorize("@ss.hasAuthority('${authorityName}:${businessName}:list')")
-    public AjaxResult listExNodes(${ClassName}Query ${classNameNoPrefix}) {
-        return super.listExNodes(${classNameNoPrefix});
-    }
-#end
 #end
 #if($api.getInfo)
 
@@ -79,8 +72,11 @@ public class A${ClassName}Controller extends B${ClassName}Controller {
      */
     @Override
     @GetMapping(value = "/{id}")
-    // @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_SINGLE)")
+#if($isDependMode)
+    @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_SINGLE)")
+#else
     @PreAuthorize("@ss.hasAuthority('${authorityName}:${businessName}:single')")
+#end
     public AjaxResult getInfo(@PathVariable Serializable id) {
         return super.getInfo(id);
     }
@@ -92,8 +88,11 @@ public class A${ClassName}Controller extends B${ClassName}Controller {
      */
     @Override
     @PostMapping("/export")
-    // @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_EXPORT)")
+#if($isDependMode)
+    @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_EXPORT)")
+#else
     @PreAuthorize("@ss.hasAuthority('${authorityName}:${businessName}:export')")
+#end
     @Log(title = "${functionName}管理", businessType = BusinessType.EXPORT)
     public void export(HttpServletResponse response, ${ClassName}Query ${classNameNoPrefix}) {
         super.export(response, ${classNameNoPrefix});
@@ -106,8 +105,11 @@ public class A${ClassName}Controller extends B${ClassName}Controller {
      */
     @Override
     @PostMapping
-    // @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_ADD)")
+#if($isDependMode)
+    @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_ADD)")
+#else
     @PreAuthorize("@ss.hasAuthority('${authorityName}:${businessName}:add')")
+#end
     @Log(title = "${functionName}管理", businessType = BusinessType.INSERT)
     public AjaxResult add(@Validated({V_A.class}) @RequestBody ${ClassName}Dto ${classNameNoPrefix}) {
         return super.add(${classNameNoPrefix});
@@ -120,8 +122,11 @@ public class A${ClassName}Controller extends B${ClassName}Controller {
      */
     @Override
     @PutMapping
-    // @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_EDIT)")
+#if($isDependMode)
+    @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_EDIT)")
+#else
     @PreAuthorize("@ss.hasAuthority('${authorityName}:${businessName}:edit')")
+#end
     @Log(title = "${functionName}管理", businessType = BusinessType.UPDATE)
     public AjaxResult edit(@Validated({V_E.class}) @RequestBody ${ClassName}Dto ${classNameNoPrefix}) {
         return super.edit(${classNameNoPrefix});
@@ -134,8 +139,11 @@ public class A${ClassName}Controller extends B${ClassName}Controller {
      */
     @Override
     @PutMapping("/status")
-    // @PreAuthorize("@ss.hasAnyAuthority(@Auth.${ClASS_NAME}_EDIT, @Auth.${ClASS_NAME}_ES)")
+#if($isDependMode)
+    @PreAuthorize("@ss.hasAnyAuthority(@Auth.${ClASS_NAME}_EDIT, @Auth.${ClASS_NAME}_ES)")
+#else
     @PreAuthorize("@ss.hasAnyAuthority('${authorityName}:${businessName}:edit', '${authorityName}:${businessName}:es')")
+#end
     @Log(title = "${functionName}管理", businessType = BusinessType.UPDATE_STATUS)
     public AjaxResult editStatus(@RequestBody ${ClassName}Dto ${classNameNoPrefix}) {
         return super.editStatus(${classNameNoPrefix});
@@ -148,61 +156,55 @@ public class A${ClassName}Controller extends B${ClassName}Controller {
      */
     @Override
     @DeleteMapping("/batch/{idList}")
-    // @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_DEL)")
+#if($isDependMode)
+    @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_DEL)")
+#else
     @PreAuthorize("@ss.hasAuthority('${authorityName}:${businessName}:delete')")
+#end
     @Log(title = "${functionName}管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);
     }
 #end
-#if($api.list)
-
-    /**
-     * 获取${functionName}选择框列表
-     */
-    @Override
-    @GetMapping("/option")
-    public AjaxResult option() {
-        return super.option();
-    }
-#end
+#if($isDependMode)
 
     interface Auth {
-    #if($api.list)
+#if($api.list)
         /** 系统 - ${functionName}管理 - 列表 */
         String ${ClASS_NAME}_LIST = "${authorityName}:${businessName}:list";
-    #end
-    #if($api.getInfo)
+#end
+#if($api.getInfo)
         /** 系统 - ${functionName}管理 - 详情 */
         String ${ClASS_NAME}_SINGLE = "${authorityName}:${businessName}:single";
-    #end
-    #if($api.add)
+#end
+#if($api.add)
         /** 系统 - ${functionName}管理 - 新增 */
         String ${ClASS_NAME}_ADD = "${authorityName}:${businessName}:add";
-    #end
-    #if($api.edit)
+#end
+#if($api.edit)
         /** 系统 - ${functionName}管理 - 修改 */
         String ${ClASS_NAME}_EDIT = "${authorityName}:${businessName}:edit";
-    #end
-    #if($api.editStatus)
+#end
+#if($api.editStatus)
         /** 系统 - ${functionName}管理 - 修改状态 */
         String ${ClASS_NAME}_ES = "${authorityName}:${businessName}:es";
-    #end
-    #if($api.batchRemove)
+#end
+#if($api.batchRemove)
         /** 系统 - ${functionName}管理 - 删除 */
         String ${ClASS_NAME}_DEL = "${authorityName}:${businessName}:delete";
-    #end
-    #if($api.import)
+#end
+#if($api.import)
         /** 系统 - ${functionName}管理 - 导入 */
         String ${ClASS_NAME}_IMPORT = "${authorityName}:${businessName}:import";
-    #end
-    #if($api.export)
+#end
+#if($api.export)
         /** 系统 - ${functionName}管理 - 导出 */
         String ${ClASS_NAME}_EXPORT = "${authorityName}:${businessName}:export";
-    #end
-    #if($api.export)
+#end
+#if($api.cache)
         /** 系统 - ${functionName}管理 - 缓存 */
         String ${ClASS_NAME}_CACHE = "${authorityName}:${businessName}:cache";
-    #end
+#end
     }
+#end
 }

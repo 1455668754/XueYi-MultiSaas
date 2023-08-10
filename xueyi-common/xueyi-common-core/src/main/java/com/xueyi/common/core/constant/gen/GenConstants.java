@@ -82,6 +82,7 @@ public class GenConstants {
         IS_TENANT("isTenant", "多租户", null),
         IS_COMMON("isCommon", "数据混合", null),
         SOURCE_MODE("sourceMode", "源策略模式", null),
+        DEPEND_MODE("dependMode", "依赖缩写模式", null),
         COMMON_MODE("commonMode", "数据混合模式", null),
 
         HAS_API_ES("hasApiES", "存在接口：修改状态", null),

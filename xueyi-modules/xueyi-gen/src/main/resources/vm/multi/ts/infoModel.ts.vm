@@ -19,12 +19,10 @@ export interface ${BusinessName}IM extends ${Entity}Entity${generics} {
 #end
 #if($hide)
 #set($columnName = $column.javaField)
-#if($column.javaType == 'Long')
-#set($columnType = 'string | number')
+#if($column.javaType == 'Long' || $column.javaType == 'String')
+#set($columnType = 'string')
 #elseif($column.javaType == 'Integer' || $column.javaType == 'Double' || $column.javaType == 'BigDecimal')
 #set($columnType = 'number')
-#elseif($column.javaType == 'String')
-#set($columnType = 'string')
 #else
 #set($columnType = 'any')
 #end
@@ -37,7 +35,28 @@ export interface ${BusinessName}IM extends ${Entity}Entity${generics} {
 export type ${BusinessName}LM = ${BusinessName}IM[];
 
 /** ${businessName} param model */
-export type ${BusinessName}PM = ${BusinessName}IM;
+export interface ${BusinessName}PM extends ${Entity}Entity${generics} {
+#foreach ($column in $columns)
+#set($hide = true)
+#foreach($item in $frontHideField)
+#if($column.javaField == $item)
+#set($hide = false)
+#break
+#end
+#end
+#if($hide)
+#set($columnName = $column.javaField)
+#if($column.javaType == 'Long' || $column.javaType == 'String')
+#set($columnType = 'string')
+#elseif($column.javaType == 'Integer' || $column.javaType == 'Double' || $column.javaType == 'BigDecimal')
+#set($columnType = 'number')
+#else
+#set($columnType = 'any')
+#end
+  ${columnName}?: ${columnType};
+#end
+#end
+}
 
 /** ${businessName} page param model */
 export type ${BusinessName}PPM = BasicPageParams & ${BusinessName}PM;

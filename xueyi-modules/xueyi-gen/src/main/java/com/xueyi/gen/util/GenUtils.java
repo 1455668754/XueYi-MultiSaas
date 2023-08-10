@@ -57,7 +57,9 @@ public class GenUtils {
                 StrUtil.equals(optionJson.getString(GenConstants.OptionField.IS_TENANT.getCode()), DictConstants.DicYesNo.YES.getCode())
                         ? GenConstants.SourceMode.ISOLATE.getCode()
                         : GenConstants.SourceMode.MASTER.getCode());
-        // 5.初始化配置
+        // 5.设置默认依赖缩写模式
+        optionJson.put(GenConstants.OptionField.DEPEND_MODE.getCode(), DictConstants.DicYesNo.NO.getCode());
+        // 6.初始化配置
         optionJson.put(GenConstants.OptionField.HAS_API_ES.getCode(), DictConstants.DicYesNo.NO.getCode());
         optionJson.put(GenConstants.OptionField.API_LIST.getCode(), DictConstants.DicYesNo.YES.getCode());
         optionJson.put(GenConstants.OptionField.API_GET_INFO.getCode(), DictConstants.DicYesNo.YES.getCode());
@@ -73,8 +75,9 @@ public class GenUtils {
             if (ObjectUtil.isNotNull(optionField)) {
                 switch (optionField) {
                     case ID -> {
-                        if (column.getIsPk())
+                        if (column.getIsPk()) {
                             optionJson.put(GenConstants.OptionField.TREE_ID.getCode(), column.getIdStr());
+                        }
                     }
                     case NAME -> optionJson.put(GenConstants.OptionField.TREE_NAME.getCode(), column.getIdStr());
                     case STATUS -> {

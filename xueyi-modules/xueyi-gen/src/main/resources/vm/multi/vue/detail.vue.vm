@@ -5,11 +5,11 @@
 </template>
 
 #if($pkColumn.javaType == 'Long' || $pkColumn.javaType == 'String')
-    #set($IdType = 'string')
+#set($IdType = 'string')
 #elseif($pkColumn.javaType == 'Integer' || $pkColumn.javaType == 'Double' || $pkColumn.javaType == 'BigDecimal')
-    #set($IdType = 'number')
+#set($IdType = 'number')
 #else
-    #set($IdType = 'any')
+#set($IdType = 'any')
 #end
 <script setup lang="ts">
     import { onMounted, ref } from 'vue';

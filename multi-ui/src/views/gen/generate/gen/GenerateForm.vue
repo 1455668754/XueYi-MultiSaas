@@ -113,7 +113,7 @@
       field: 'tplCategory',
       componentProps: () => {
         return {
-          options: dict.templateTypeOption,
+          options: dict.DicTemplateTypeOption,
           onChange: (e: any) => {
             tplType.value = e;
           },

@@ -22,5 +22,4 @@ public class B${ClassName}Controller extends ${Entity}Controller<${ClassName}Que
     protected String getNodeName() {
         return "${functionName}" ;
     }
-
 }

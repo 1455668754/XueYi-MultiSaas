@@ -8,30 +8,34 @@ import dayjs from 'dayjs';
 enum Api {
 #if($api.list)
   LIST_${BUSINESSName} = '/${moduleName}/admin/${businessName}/list',
-#if($table.tree)
-  LIST_${BUSINESSName}_EXCLUDE_NODES = '/${moduleName}/admin/${businessName}/list/exclude',
 #end
-  OPTION_${BUSINESSName} = '/${moduleName}/admin/${businessName}/option',
-#end
+#if($api.getInfo)
   GET_${BUSINESSName} = '/${moduleName}/admin/${businessName}/',
+#end
+#if($api.add)
   ADD_${BUSINESSName} = '/${moduleName}/admin/${businessName}',
+#end
+#if($api.edit)
   EDIT_${BUSINESSName} = '/${moduleName}/admin/${businessName}',
-#if($api.editStatus || $api.editStatusForce)
+#end
+#if($api.editStatus)
   EDIT_STATUS_${BUSINESSName} = '/${moduleName}/admin/${businessName}/status',
 #end
+#if($api.batchRemove)
   DEL_BATCH_${BUSINESSName} = '/${moduleName}/admin/${businessName}/batch/',
-  DEL_BATCH_FORCE_${BUSINESSName} = '/${moduleName}/admin/${businessName}/batch/force/',
+#end
 #if($api.export)
   EXPORT_${BUSINESSName} = '/${moduleName}/admin/${businessName}/export',
 #end
+#if($api.cache)
+  REFRESH_${BUSINESSName} = '/${moduleName}/admin/${businessName}/refresh',
+#end
 }
 #set($IdName = $pkColumn.javaField)
-#if($pkColumn.javaType == 'Long')
-#set($IdType = 'string | number')
+#if($pkColumn.javaType == 'Long' || $pkColumn.javaType == 'String')
+#set($IdType = 'string')
 #elseif($pkColumn.javaType == 'Integer' || $pkColumn.javaType == 'Double' || $pkColumn.javaType == 'BigDecimal')
 #set($IdType = 'number')
-#elseif($pkColumn.javaType == 'String')
-#set($IdType = 'string')
 #else
 #set($IdType = 'any')
 #end
@@ -40,40 +44,31 @@ enum Api {
 /** 查询${functionName}列表 */
 export const list${BusinessName}Api = (params?: #if($table.tree)${BusinessName}PM#else${BusinessName}PPM#end) =>
   defHttp.get<#if($table.tree)${BusinessName}LM#else${BusinessName}LRM#end>({ url: Api.LIST_${BUSINESSName}, params });
-#if($table.tree)
-
-/** 查询${functionName}列表（排除节点） */
-export const list${BusinessName}ExNodesApi = (${IdName}: ${IdType} | undefined) =>
-  defHttp.get<${BusinessName}LM>({
-    url: Api.LIST_${BUSINESSName}_EXCLUDE_NODES,
-    params: { ${IdName}: ${IdName} },
-  });
 #end
-
-/** 查询${functionName}选择框列表 */
-export const option${BusinessName}Api = () =>
-  defHttp.get<#if($table.tree)${BusinessName}LM#else${BusinessName}LRM#end>({ url: Api.OPTION_${BUSINESSName} });
-#end
+#if($api.getInfo)
 
 /** 查询${functionName}详细 */
 export const get${BusinessName}Api = (${IdName}: ${IdType}) =>
   defHttp.get<${BusinessName}IM>({ url: Api.GET_${BUSINESSName}, params: ${IdName} });
+#end
+#if($api.add)
 
 /** 新增${functionName} */
 export const add${BusinessName}Api = (params: ${BusinessName}IM) =>
   defHttp.post({ url: Api.ADD_${BUSINESSName}, params });
+#end
+#if($api.edit)
 
 /** 修改${functionName} */
 export const edit${BusinessName}Api = (params: ${BusinessName}IM) =>
   defHttp.put({ url: Api.EDIT_${BUSINESSName}, params });
-#if($api.editStatus || $api.editStatusForce)
+#end
+#if($api.editStatus)
 #set($StatusName = $statusColumn.javaField)
-#if($statusColumn.javaType == 'Long')
-#set($StatusType = 'string | number')
+#if($statusColumn.javaType == 'Long' || $statusColumn.javaType == 'String')
+#set($StatusType = 'string')
 #elseif($statusColumn.javaType == 'Integer' || $statusColumn.javaType == 'Double' || $statusColumn.javaType == 'BigDecimal')
 #set($StatusType = 'number')
-#elseif($pkColumn.javaType == 'String')
-#set($StatusType = 'string')
 #else
 #set($StatusType = 'any')
 #end
@@ -88,14 +83,8 @@ export const editStatus${BusinessName}Api = (${IdName}: ${IdType}, ${StatusName}
 #if($api.batchRemove)
 
 /** 删除${functionName} */
-export const del${BusinessName}Api = (${IdName}s: #if($IdType == 'string | number')(${IdType}) | (${IdType})[]#else${IdType} | ${IdType}[]#end) =>
+export const del${BusinessName}Api = (${IdName}s: ${IdType} | ${IdType}[]) =>
   defHttp.delete({ url: Api.DEL_BATCH_${BUSINESSName}, params: ${IdName}s.toString() });
-#end
-#if($api.batchRemoveForce)
-
-/** 强制删除${functionName} */
-export const delForce${BusinessName}Api = (${IdName}s: #if($IdType == 'string | number')(${IdType}) | (${IdType})[]#else${IdType} | ${IdType}[]#end) =>
-  defHttp.delete({ url: Api.DEL_BATCH_FORCE_${BUSINESSName}, params: ${IdName}s.toString() });
 #end
 #if($api.export)
 
@@ -105,4 +94,9 @@ export const export${BusinessName}Api = async (params?: ${BusinessName}PM) =>
     { url: Api.EXPORT_${BUSINESSName}, params: params },
     '${functionName}_' + formatToDateTime(dayjs()) + '.xlsx',
   );
+#end
+#if($api.cache)
+
+/** 刷新${functionName}缓存 */
+export const refresh${BusinessName}Api = () => defHttp.get({ url: Api.REFRESH_${BUSINESSName} });
 #end

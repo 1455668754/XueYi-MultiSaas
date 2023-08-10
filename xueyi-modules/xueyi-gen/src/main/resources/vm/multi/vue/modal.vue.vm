@@ -42,7 +42,7 @@
     });
 
     /** 标题初始化 */
-    const getTitle = computed(() => (!unref(isUpdate) ? '新增${BusinessName}' : '编辑${BusinessName}'));
+    const getTitle = computed(() => (!unref(isUpdate) ? '新增${functionName}' : '编辑${functionName}'));
 
     /** 提交按钮 */
     async function handleSubmit() {
@@ -52,11 +52,11 @@
         unref(isUpdate)
           ? await editNoticeApi(values).then(() => {
               closeModal();
-              createMessage.success('编辑${BusinessName}成功！');
+              createMessage.success('编辑${functionName}成功！');
             })
           : await addNoticeApi(values).then(() => {
               closeModal();
-              createMessage.success('新增${BusinessName}成功！');
+              createMessage.success('新增${functionName}成功！');
             });
         emit('success');
       } finally {

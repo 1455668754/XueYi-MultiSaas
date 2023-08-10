@@ -117,6 +117,8 @@ public class VelocityUtils {
         velocityContext.put("isTenant", isTenant(genTable));
         // 源策略模式
         velocityContext.put("sourceMode", getSourceMode(optionsObj));
+        // 依赖缩写模式
+        velocityContext.put("isDependMode", getDependMode(optionsObj));
         // 源策略是否为主库
         velocityContext.put("isMasterSource", isMasterSource(genTable));
         // 获取其他重要参数（名称、状态...）
@@ -136,12 +138,13 @@ public class VelocityUtils {
      */
     public static void getOtherMainColum(VelocityContext context, GenTableDto genTable) {
         for (GenTableColumnDto column : genTable.getSubList()) {
-            if (StrUtil.equals(column.getJavaField(), GenConstants.OptionField.NAME.getCode()))
+            if (StrUtil.equals(column.getJavaField(), GenConstants.OptionField.NAME.getCode())) {
                 context.put("nameColumn", column); // 名称字段
-            else if (StrUtil.equals(column.getJavaField(), GenConstants.OptionField.STATUS.getCode()))
+            } else if (StrUtil.equals(column.getJavaField(), GenConstants.OptionField.STATUS.getCode())) {
                 context.put("statusColumn", column); // 状态字段
-            else if (StrUtil.equals(column.getJavaField(), GenConstants.OptionField.SORT.getCode()))
+            } else if (StrUtil.equals(column.getJavaField(), GenConstants.OptionField.SORT.getCode())) {
                 context.put("sortColumn", column); // 排序字段
+            }
         }
     }
 
@@ -218,7 +221,6 @@ public class VelocityUtils {
      */
     public static List<String> getTemplateList(String tplCategory) {
         List<String> templates = new ArrayList<>();
-
         if (StrUtil.equals(tplCategory, GenConstants.TemplateType.MERGE.getCode())) {
             templates.add("vm/java/domain/merge.java.vm");
             templates.add("vm/java/mapper/mergeMapper.java.vm");
@@ -272,39 +274,48 @@ public class VelocityUtils {
 
         String javaPath = PROJECT_PATH + StrUtil.SLASH + StrUtil.replace(packageName, StrUtil.DOT, StrUtil.SLASH);
 
-        if (template.contains("query.java.vm"))
+        if (template.contains("query.java.vm")) {
             return StrUtil.format("{}/domain/query/{}Query.java", javaPath, className);
-        else if (template.contains("dto.java.vm"))
+        } else if (template.contains("dto.java.vm")) {
             return StrUtil.format("{}/domain/dto/{}Dto.java", javaPath, className);
-        else if (template.contains("po.java.vm")) return StrUtil.format("{}/domain/po/{}Po.java", javaPath, className);
-        else if (template.contains("converter.java.vm"))
+        } else if (template.contains("po.java.vm")) {
+            return StrUtil.format("{}/domain/po/{}Po.java", javaPath, className);
+        } else if (template.contains("converter.java.vm")) {
             return StrUtil.format("{}/domain/model/{}Converter.java", javaPath, className);
-        else if (template.contains("controller.java.vm"))
-            return StrUtil.format("{}/controller/{}Controller.java", javaPath, className);
-        else if (template.contains("service.java.vm"))
+        }  else if (template.contains("correlate.java.vm")) {
+            return StrUtil.format("{}/domain/correlate/{}Correlate.java", javaPath, className);
+        } else if (template.contains("aController.java.vm")) {
+            return StrUtil.format("{}/controller/admin/A{}Controller.java", javaPath, className);
+        }  else if (template.contains("bController.java.vm")) {
+            return StrUtil.format("{}/controller/base/B{}Controller.java", javaPath, className);
+        }  else if (template.contains("iController.java.vm")) {
+            return StrUtil.format("{}/controller/inner/I{}Controller.java", javaPath, className);
+        } else if (template.contains("service.java.vm")) {
             return StrUtil.format("{}/service/I{}Service.java", javaPath, className);
-        else if (template.contains("serviceImpl.java.vm"))
+        } else if (template.contains("serviceImpl.java.vm")) {
             return StrUtil.format("{}/service/impl/{}ServiceImpl.java", javaPath, className);
-        else if (template.contains("manager.java.vm"))
+        } else if (template.contains("manager.java.vm")) {
             return StrUtil.format("{}/manager/I{}Manager.java", javaPath, className);
-        else if (template.contains("managerImpl.java.vm"))
+        } else if (template.contains("managerImpl.java.vm")) {
             return StrUtil.format("{}/manager/impl/{}ManagerImpl.java", javaPath, className);
-        else if (template.contains("mapper.java.vm"))
+        } else if (template.contains("mapper.java.vm")) {
             return StrUtil.format("{}/mapper/{}Mapper.java", javaPath, className);
-        else if (template.contains("merge.java.vm"))
+        } else if (template.contains("merge.java.vm")) {
             return StrUtil.format("{}/domain/merge/{}.java", javaPath, className);
-        else if (template.contains("mergeMapper.java.vm"))
+        } else if (template.contains("mergeMapper.java.vm")) {
             return StrUtil.format("{}/mapper/merge/{}Mapper.java", javaPath, className);
+        } else if (template.contains("sql.sql.vm")) {
+            return StrUtil.format("sql/{}.sql", businessName);
+        }
 
-        else if (template.contains("sql.sql.vm")) return StrUtil.format("sql/{}.sql", businessName);
-
-        if (template.contains("api.ts.vm"))
-            return StrUtil.format("multi-ui/src/api/{}/{}/{}.ts", moduleName, authorityName, businessName);
-        else if (template.contains("infoModel.ts.vm")) {
+        if (template.contains("api.ts.vm")) {
+            String suffixFile = ".api";
+            return StrUtil.format("multi-ui/src/api/{}/{}/{}{}.ts", moduleName, authorityName, businessName, suffixFile);
+        } else if (template.contains("infoModel.ts.vm")) {
             String prefixPath = "multi-ui/src/model";
-            String suffixFile = "";
+            String suffixFile = ".model";
             initIndexFile(realPath, prefixPath, suffixFile, moduleName, authorityName, businessName);
-            return StrUtil.format("{}/{}/{}/{}.ts", prefixPath, moduleName, authorityName, businessName);
+            return StrUtil.format("{}/{}/{}/{}{}.ts", prefixPath, moduleName, authorityName, businessName, suffixFile);
         } else if (template.contains("auth.ts.vm")) {
             String prefixPath = "multi-ui/src/auth";
             String suffixFile = ".auth";
@@ -315,15 +326,16 @@ public class VelocityUtils {
             String suffixFile = ".enum";
             initIndexFile(realPath, prefixPath, suffixFile, moduleName, authorityName, businessName);
             return StrUtil.format("{}/{}/{}/{}{}.ts", prefixPath, moduleName, authorityName, businessName, suffixFile);
-        } else if (template.contains("data.ts.vm"))
+        } else if (template.contains("data.ts.vm")) {
             return StrUtil.format("multi-ui/src/views/{}/{}/{}/{}.data.ts", moduleName, authorityName, businessName, businessName);
-        else if (template.contains("index.vue.vm"))
+        } else if (template.contains("index.vue.vm")) {
             return StrUtil.format("multi-ui/src/views/{}/{}/{}/index.vue", moduleName, authorityName, businessName);
-        else if (template.contains("detail.vue.vm"))
+        } else if (template.contains("detail.vue.vm")) {
             return StrUtil.format("multi-ui/src/views/{}/{}/{}/{}Detail.vue", moduleName, authorityName, businessName, BusinessName);
-        else if (template.contains("modal.vue.vm"))
+        } else if (template.contains("modal.vue.vm")) {
             return StrUtil.format("multi-ui/src/views/{}/{}/{}/{}Modal.vue", moduleName, authorityName, businessName, BusinessName);
-        return "";
+        }
+        return StrUtil.EMPTY;
     }
 
     /**
@@ -444,6 +456,16 @@ public class VelocityUtils {
      */
     public static String getSourceMode(JSONObject optionsObj) {
         return optionsObj.getString(GenConstants.OptionField.SOURCE_MODE.getCode());
+    }
+
+    /**
+     * 获取依赖缩写模式
+     *
+     * @param optionsObj 生成其他选项
+     * @return 是否为依赖缩写模式
+     */
+    public static Boolean getDependMode(JSONObject optionsObj) {
+        return ObjectUtil.equals(DictConstants.DicYesNo.YES.getCode(), optionsObj.getString(GenConstants.OptionField.DEPEND_MODE.getCode()));
     }
 
     /**

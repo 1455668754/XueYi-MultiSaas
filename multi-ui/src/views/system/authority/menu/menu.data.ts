@@ -4,6 +4,7 @@ import { DescItem } from '/@/components/Description';
 import { dicDictList } from '@/api/sys/dict.api';
 import {
   ColorEnum,
+  DicCodeEnum,
   DicCommonPrivateEnum,
   DicShowHideEnum,
   DicSortEnum,
@@ -24,7 +25,7 @@ import { isNotEmpty } from '@/utils/is';
 /** 字典查询 */
 export const dictMap = await dicDictList([
   'auth_frame_type',
-  'sys_yes_no',
+  DicCodeEnum.SYS_YES_NO,
   'sys_show_hide',
   'auth_menu_type',
   'sys_normal_disable',
@@ -34,7 +35,7 @@ export const dictMap = await dicDictList([
 /** 字典表 */
 export const dict: any = {
   DicAuthFrameTypeOptions: dictMap['auth_frame_type'],
-  DicYesNoOptions: dictMap['sys_yes_no'],
+  DicYesNoOptions: dictMap[DicCodeEnum.SYS_YES_NO],
   DicShowHideOptions: dictMap['sys_show_hide'],
   DicAuthMenuTypeOptions: dictMap['auth_menu_type'],
   DicNormalDisableOptions: dictMap['sys_normal_disable'],

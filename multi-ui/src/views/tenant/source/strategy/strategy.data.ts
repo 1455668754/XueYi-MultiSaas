@@ -3,18 +3,19 @@ import { BasicColumn } from '/@/components/Table';
 import { DescItem } from '/@/components/Description';
 import { dicDictList } from '@/api/sys/dict.api';
 import { dictConversion } from '/@/utils/xueyi';
-import { ColorEnum, DicSortEnum, DicStatusEnum } from '@/enums/basic';
-import { StrategyIM, TenantIM } from '@/model/tenant/source';
+import { ColorEnum, DicCodeEnum, DicSortEnum, DicStatusEnum } from '@/enums/basic';
+import { StrategyIM } from '@/model/tenant/source';
+import { TenantIM } from '@/model/tenant/tenant';
 import { optionSourceApi } from '@/api/tenant/source/source.api';
 import { h } from 'vue';
 import { Tag } from 'ant-design-vue';
 
 /** 字典查询 */
-export const dictMap = await dicDictList(['sys_yes_no', 'sys_normal_disable']);
+export const dictMap = await dicDictList([DicCodeEnum.SYS_YES_NO, 'sys_normal_disable']);
 
 /** 字典表 */
 export const dict: any = {
-  DicYesNoOptions: dictMap['sys_yes_no'],
+  DicYesNoOptions: dictMap[DicCodeEnum.SYS_YES_NO],
   DicNormalDisableOptions: dictMap['sys_normal_disable'],
 };
 

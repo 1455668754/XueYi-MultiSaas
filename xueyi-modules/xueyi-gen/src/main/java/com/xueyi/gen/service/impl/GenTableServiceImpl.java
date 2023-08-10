@@ -5,6 +5,7 @@ import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.constant.basic.HttpConstants;
+import com.xueyi.common.core.constant.basic.TenantConstants;
 import com.xueyi.common.core.constant.gen.GenConstants.OptionField;
 import com.xueyi.common.core.constant.gen.GenConstants.TemplateType;
 import com.xueyi.common.core.utils.core.ArrayUtil;
@@ -102,7 +103,7 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
      */
     public static String getUiPath(GenTableDto table, String template) {
         String uiPath = table.getUiPath();
-        if (StrUtil.equals(uiPath, StrUtil.SLASH)) {
+        if (StrUtil.equals(StrUtil.SLASH, uiPath)) {
             String prefixPath = System.getProperty("user.dir") + File.separator;
             return prefixPath + VelocityUtils.getFileName(prefixPath, template, table);
         }
@@ -118,7 +119,7 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
      */
     @Override
     public List<GenTableDto> selectDbTableList(GenTableQuery table) {
-        return baseManager.selectDbTableList(table);
+        return StrUtil.isNotBlank(table.getSourceName()) && StrUtil.notEquals(TenantConstants.Source.MASTER.getCode(), table.getSourceName()) ? baseManager.selectDbTableList(table, table.getSourceName()) : baseManager.selectDbTableList(table);
     }
 
     /**
@@ -130,7 +131,7 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
      */
     @Override
     public List<GenTableDto> selectDbTableListByNames(String[] tableNames, String sourceName) {
-        return baseManager.selectDbTableListByNames(tableNames, sourceName);
+        return StrUtil.isNotBlank(sourceName) && StrUtil.notEquals(TenantConstants.Source.MASTER.getCode(), sourceName) ? baseManager.selectDbTableListByNames(tableNames, sourceName) : baseManager.selectDbTableListByNames(tableNames);
     }
 
     /**
@@ -167,7 +168,9 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
     @DSTransactional
     public int update(GenTableDto table) {
         int row = baseManager.update(table);
-        if (row > 0) GenUtils.updateCheckColumn(table);
+        if (row > 0) {
+            GenUtils.updateCheckColumn(table);
+        }
         table.getSubList().forEach(column -> subService.update(column));
         return row;
     }
@@ -381,10 +384,11 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
      * @param optionsObj 其它生成选项信息
      */
     private void checkTclBase(JSONObject optionsObj) {
-        if (StrUtil.isEmpty(optionsObj.getString(OptionField.PARENT_MODULE_ID.getCode())))
+        if (StrUtil.isEmpty(optionsObj.getString(OptionField.PARENT_MODULE_ID.getCode()))) {
             AjaxResult.warn("归属模块不能为空");
-        else if (StrUtil.isEmpty(optionsObj.getString(OptionField.PARENT_MENU_ID.getCode())))
+        } else if (StrUtil.isEmpty(optionsObj.getString(OptionField.PARENT_MENU_ID.getCode()))) {
             AjaxResult.warn("归属菜单不能为空");
+        }
     }
 
     /**
@@ -393,14 +397,15 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
      * @param optionsObj 其它生成选项信息
      */
     private void checkTclTree(JSONObject optionsObj) {
-        if (StrUtil.isEmpty(optionsObj.getString(OptionField.TREE_ID.getCode())))
+        if (StrUtil.isEmpty(optionsObj.getString(OptionField.TREE_ID.getCode()))) {
             AjaxResult.warn("树编码字段不能为空");
-        else if (StrUtil.isEmpty(optionsObj.getString(OptionField.PARENT_ID.getCode())))
+        } else if (StrUtil.isEmpty(optionsObj.getString(OptionField.PARENT_ID.getCode()))) {
             AjaxResult.warn("树父编码字段不能为空");
-        else if (StrUtil.isEmpty(optionsObj.getString(OptionField.TREE_NAME.getCode())))
+        } else if (StrUtil.isEmpty(optionsObj.getString(OptionField.TREE_NAME.getCode()))) {
             AjaxResult.warn("树名称字段不能为空");
-        else if (StrUtil.isEmpty(optionsObj.getString(OptionField.ANCESTORS.getCode())))
+        } else if (StrUtil.isEmpty(optionsObj.getString(OptionField.ANCESTORS.getCode()))) {
             AjaxResult.warn("树祖籍列表字段不能为空");
+        }
     }
 
     /**
@@ -431,7 +436,9 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
      */
     private void setBaseTable(GenTableDto table, JSONObject optionsObj) {
         table.getSubList().forEach(column -> {
-            if (column.getIsPk()) table.setPkColumn(column);
+            if (column.getIsPk()) {
+                table.setPkColumn(column);
+            }
         });
     }
 

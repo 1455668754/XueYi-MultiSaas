@@ -13,14 +13,4 @@ import com.xueyi.common.security.auth.pool.system.SysOrganizePool;
  * @author xueyi
  */
 public interface SystemPool extends SysApplicationPool, SysAuthorityPool, SysDictPool, SysMonitorPool, SysNoticePool, SysOrganizePool {
-
-
-    /** 系统 - 文件管理 - 列表 */
-    String SYS_FILE_LIST = "system:file:list";
-    /** 系统 - 文件管理 - 详情 */
-    String SYS_FILE_SINGLE = "system:file:single";
-    /** 系统 - 文件管理 - 新增 */
-    String SYS_FILE_ADD = "system:file:add";
-    /** 系统 - 文件管理 - 删除 */
-    String SYS_FILE_DEL = "system:file:delete";
 }

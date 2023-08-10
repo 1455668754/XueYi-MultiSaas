@@ -4,6 +4,7 @@ import { getMenuRouteListApi } from '@/api/system/authority/menu.api';
 import { optionDictTypeApi } from '@/api/tenant/dict/dictType.api';
 import { FormSchema } from '/@/components/Form';
 import {
+  DicCodeGenEnum,
   GenerationModeEnum,
   GenStatusEnum,
   IsTickEnum,
@@ -15,28 +16,29 @@ import { BasicColumn } from '/@/components/Table';
 import { GenTableColumnIM, GenTableColumnLM, GenTableLM } from '@/model/gen/generate';
 import { Component, h } from 'vue';
 import { Input, Select, Switch } from 'ant-design-vue';
+import { DicCodeEnum, DicYesNoEnum } from '@/enums';
 
 /** 字典查询 */
 export const dictMap = await dicDictList([
-  'gen_template_type',
-  'gen_java_type',
-  'gen_query_type',
-  'gen_display_type',
-  'gen_generation_mode',
-  'sys_yes_no',
-  'gen_source_mode',
+  DicCodeGenEnum.GEN_TEMPLATE_TYPE,
+  DicCodeGenEnum.GEN_JAVA_TYPE,
+  DicCodeGenEnum.GEN_QUERY_TYPE,
+  DicCodeGenEnum.GEN_DISPLAY_TYPE,
+  DicCodeGenEnum.GEN_GENERATION_MODE,
+  DicCodeEnum.SYS_YES_NO,
+  DicCodeGenEnum.GEN_SOURCE_MODE,
 ]);
 
 /** 字典 */
 export const dict: any = {
-  templateTypeOption: dictMap['gen_template_type'],
-  javaTypeOption: dictMap['gen_java_type'],
-  queryTypeOption: dictMap['gen_query_type'],
-  displayTypeOption: dictMap['gen_display_type'],
-  generationMode: dictMap['gen_generation_mode'],
-  genStatus: dictMap['sys_yes_no'],
-  sourceMode: dictMap['gen_source_mode'],
-  dictTypeOption: await optionDictTypeApi().then((res) => {
+  DicTemplateTypeOption: dictMap[DicCodeGenEnum.GEN_TEMPLATE_TYPE],
+  DicJavaTypeOption: dictMap[DicCodeGenEnum.GEN_JAVA_TYPE],
+  DicQueryTypeOption: dictMap[DicCodeGenEnum.GEN_QUERY_TYPE],
+  DicDisplayTypeOption: dictMap[DicCodeGenEnum.GEN_DISPLAY_TYPE],
+  DicGenerationMode: dictMap[DicCodeGenEnum.GEN_GENERATION_MODE],
+  DicYesNoOptions: dictMap[DicCodeEnum.SYS_YES_NO],
+  DicSourceMode: dictMap[DicCodeGenEnum.GEN_SOURCE_MODE],
+  DicDictTypeOption: await optionDictTypeApi().then((res) => {
     return res.items.map((item) => {
       return { label: item.name, value: item.code };
     });
@@ -163,7 +165,7 @@ export const fieldColumns: BasicColumn[] = [
         style: { width: '100px' },
         showSearch: true,
         optionFilterProp: 'label',
-        options: dict.javaTypeOption,
+        options: dict.DicJavaTypeOption,
         onChange(e) {
           data.javaType = e as string;
         },
@@ -365,7 +367,7 @@ export const fieldColumns: BasicColumn[] = [
         style: { width: '140px' },
         showSearch: true,
         optionFilterProp: 'label',
-        options: dict.queryTypeOption,
+        options: dict.DicQueryTypeOption,
         onChange(e) {
           data.queryType = e as string;
         },
@@ -383,7 +385,7 @@ export const fieldColumns: BasicColumn[] = [
         style: { width: '160px' },
         showSearch: true,
         optionFilterProp: 'label',
-        options: dict.displayTypeOption,
+        options: dict.DicDisplayTypeOption,
         onChange(e) {
           data.htmlType = e as string;
         },
@@ -401,7 +403,7 @@ export const fieldColumns: BasicColumn[] = [
         style: { width: '160px' },
         showSearch: true,
         optionFilterProp: 'label',
-        options: dict.dictTypeOption,
+        options: dict.DicDictTypeOption,
         onChange(e) {
           data.dictType = e as string;
         },
@@ -467,17 +469,17 @@ export const generateFormSchema: FormSchema[] = [
     colProps: { span: 12 },
   },
   {
-    label: '生成代码方式',
+    label: '生成路径',
     field: 'genType',
     component: 'RadioGroup',
     defaultValue: GenerationModeEnum.ZIP,
     componentProps: {
-      options: dict.generationMode,
+      options: dict.DicGenerationMode,
       resultField: 'items',
       labelField: 'name',
       valueField: 'id',
     },
-    helpMessage: ['默认为zip压缩包下载，也可以自定义生成路径'],
+    helpMessage: ['默认路径生成到当前项目目录下，也可以自定义生成路径'],
     colProps: { span: 12 },
   },
   {
@@ -504,7 +506,7 @@ export const generateBasicSchema: FormSchema[] = [
     component: 'RadioButtonGroup',
     defaultValue: GenStatusEnum.FALSE,
     componentProps: {
-      options: dict.genStatus,
+      options: dict.DicYesNoOptions,
     },
     required: true,
     colProps: { span: 12 },
@@ -515,8 +517,20 @@ export const generateBasicSchema: FormSchema[] = [
     component: 'RadioButtonGroup',
     defaultValue: SourceModeEnum.ISOLATE,
     componentProps: {
-      options: dict.sourceMode,
+      options: dict.DicSourceMode,
     },
+    required: true,
+    colProps: { span: 12 },
+  },
+  {
+    label: '依赖缩写模式',
+    field: 'dependMode',
+    component: 'RadioButtonGroup',
+    defaultValue: DicYesNoEnum.NO,
+    componentProps: {
+      options: dict.DicYesNoOptions,
+    },
+    helpMessage: ['否：默认引用到具体文件或字段', '是：默认引用到相应文件夹或类'],
     required: true,
     colProps: { span: 12 },
   },
@@ -650,7 +664,7 @@ export const generateApiSchema: FormSchema[] = [
     component: 'RadioButtonGroup',
     defaultValue: GenStatusEnum.FALSE,
     componentProps: {
-      options: dict.genStatus,
+      options: dict.DicYesNoOptions,
     },
     required: true,
     colProps: { span: 12 },
@@ -661,7 +675,7 @@ export const generateApiSchema: FormSchema[] = [
     component: 'RadioButtonGroup',
     defaultValue: GenStatusEnum.FALSE,
     componentProps: {
-      options: dict.genStatus,
+      options: dict.DicYesNoOptions,
     },
     required: true,
     colProps: { span: 12 },
@@ -672,7 +686,7 @@ export const generateApiSchema: FormSchema[] = [
     component: 'RadioButtonGroup',
     defaultValue: GenStatusEnum.FALSE,
     componentProps: {
-      options: dict.genStatus,
+      options: dict.DicYesNoOptions,
     },
     required: true,
     colProps: { span: 12 },
@@ -683,7 +697,7 @@ export const generateApiSchema: FormSchema[] = [
     component: 'RadioButtonGroup',
     defaultValue: GenStatusEnum.FALSE,
     componentProps: {
-      options: dict.genStatus,
+      options: dict.DicYesNoOptions,
     },
     required: true,
     colProps: { span: 12 },
@@ -694,7 +708,7 @@ export const generateApiSchema: FormSchema[] = [
     component: 'RadioButtonGroup',
     defaultValue: GenStatusEnum.FALSE,
     componentProps: {
-      options: dict.genStatus,
+      options: dict.DicYesNoOptions,
     },
     required: true,
     colProps: { span: 12 },
@@ -705,7 +719,7 @@ export const generateApiSchema: FormSchema[] = [
     component: 'RadioButtonGroup',
     defaultValue: GenStatusEnum.FALSE,
     componentProps: {
-      options: dict.genStatus,
+      options: dict.DicYesNoOptions,
     },
     required: true,
     colProps: { span: 12 },
@@ -716,7 +730,7 @@ export const generateApiSchema: FormSchema[] = [
     component: 'RadioButtonGroup',
     defaultValue: GenStatusEnum.FALSE,
     componentProps: {
-      options: dict.genStatus,
+      options: dict.DicYesNoOptions,
     },
     required: true,
     colProps: { span: 12 },
@@ -727,7 +741,7 @@ export const generateApiSchema: FormSchema[] = [
     component: 'RadioButtonGroup',
     defaultValue: GenStatusEnum.FALSE,
     componentProps: {
-      options: dict.genStatus,
+      options: dict.DicYesNoOptions,
     },
     required: true,
     colProps: { span: 12 },
@@ -738,7 +752,7 @@ export const generateApiSchema: FormSchema[] = [
     component: 'RadioButtonGroup',
     defaultValue: GenStatusEnum.FALSE,
     componentProps: {
-      options: dict.genStatus,
+      options: dict.DicYesNoOptions,
     },
     required: true,
     colProps: { span: 12 },
