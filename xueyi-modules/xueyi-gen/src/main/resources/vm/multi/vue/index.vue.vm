@@ -1,7 +1,9 @@
 <template>
   <div>
     <BasicTable @register="registerTable">
+#if($api.add || $api.batchRemove || $api.export || $api.cache || $table.tree)
       <template #toolbar>
+#if($api.add)
         <a-button
           :preIcon="IconEnum.ADD"
           v-auth="${BusinessName}Auth.ADD"
@@ -10,7 +12,8 @@
         >
           新增
         </a-button>
-#if($api.batchRemove || $api.batchRemoveForce)
+#end
+#if($api.batchRemove)
         <a-button
           :preIcon="IconEnum.DELETE"
           v-auth="${BusinessName}Auth.DELETE"
@@ -32,27 +35,44 @@
           导出
         </a-button>
 #end
+#if($api.cache)
+        <a-button
+          :preIcon="IconEnum.RESET"
+          v-auth="${BusinessName}Auth.CACHE"
+          @click="handleRefresh"
+          type="primary"
+          color="error"
+        >
+          刷新缓存
+        </a-button>
+#end
 #if($table.tree)
         <a-button type="primary" @click="expandAll">展开全部</a-button>
         <a-button type="primary" @click="collapseAll">折叠全部</a-button>
 #end
       </template>
+#end
+#if($api.getInfo || $api.edit || $api.batchRemove)
       <template #action="{ record }">
         <TableAction
           :actions="[
+#if($api.getInfo)
             {
               icon: IconEnum.VIEW,
               tooltip: '查看',
               auth: ${BusinessName}Auth.SINGLE,
               onClick: handleView.bind(null, record),
             },
+#end
+#if($api.edit)
             {
               icon: IconEnum.EDIT,
               tooltip: '编辑',
               auth: ${BusinessName}Auth.EDIT,
               onClick: handleEdit.bind(null, record),
             },
-#if($api.batchRemove || $api.batchRemoveForce)
+#end
+#if($api.batchRemove)
             {
               icon: IconEnum.DELETE,
               tooltip: '删除',
@@ -64,165 +84,175 @@
           ]"
         />
       </template>
+#end
     </BasicTable>
+#if($api.add || $api.edit)
     <${BusinessName}Modal @register="registerModal" @success="handleSuccess" />
+#end
   </div>
 </template>
 
-<script lang="ts">
-  import { defineComponent, reactive } from 'vue';
-  import { list${BusinessName}Api, del${BusinessName}Api#if($api.export), export${BusinessName}Api#end } from '/@/api/${moduleName}/${authorityName}/${businessName}';
-  import { useModal } from '/@/components/Modal';
-  import { useMessage } from '/@/hooks/web/useMessage';
-  import { IconEnum } from '/@/enums/appEnum';
-  import { BasicTable, TableAction, useTable } from '/@/components/Table';
-  import { ${BusinessName}Auth } from '/@/auth/${moduleName}';
-  import { columns, searchFormSchema } from './${businessName}.data';
-  import { ${BusinessName}DetailGo } from '/@/enums/${moduleName}';
-  import ${BusinessName}Modal from './${BusinessName}Modal.vue';
-  import { useUserStore } from '/@/store/modules/user';
-#if($api.export)
-  import { ${BusinessName}PM } from '/@/model/${moduleName}';
+#if($pkColumn.javaType == 'Long' || $pkColumn.javaType == 'String')
+#set($IdType = 'string')
+#elseif($pkColumn.javaType == 'Integer' || $pkColumn.javaType == 'Double' || $pkColumn.javaType == 'BigDecimal')
+#set($IdType = 'number')
+#else
+#set($IdType = 'any')
 #end
-
-  export default defineComponent({
-    name: '${BusinessName}Management',
-    components: { BasicTable, ${BusinessName}Modal, TableAction },
-    setup() {
-      const { createMessage, createConfirm } = useMessage();
-      const [registerModal, { openModal }] = useModal();
-#if($api.batchRemove || $api.batchRemoveForce)
-      const state = reactive<{
-        ${pkColumn.javaField}s: string[]
-        ${pkColumn.javaField}Names: string
-      }>({
-        ${pkColumn.javaField}s: [],
-        ${pkColumn.javaField}Names: '',
-      });
-#end
-      const [registerTable, { reload#if($table.tree), expandAll, collapseAll#end#if($api.export), getForm#end }] = useTable({
-        title: '${functionName}列表',
-        api: list${BusinessName}Api,
-        striped: false,
-        useSearchForm: true,
-        rowKey: '${pkColumn.javaField}',
-        bordered: true,
-        showIndexColumn: true,
-        columns,
-        formConfig: {
-          labelWidth: 120,
-          schemas: searchFormSchema,
-        },
-#if($table.tree)
-        isTreeTable: true,
-        pagination: false,
-        canResize: false,
-#end
-        showTableSetting: true,
-        tableSetting: {
-          fullScreen: true,
-        },
-        actionColumn: {
-          width: 220,
-          title: '操作',
-          dataIndex: 'action',
-          slots: { customRender: 'action' },
-        },
-#if($api.batchRemove || $api.batchRemoveForce)
-        rowSelection: {
-          onChange: (selectedRowKeys, selectRows) => {
-            state.${pkColumn.javaField}s = selectedRowKeys
-            state.${pkColumn.javaField}Names = selectRows
-              .map((item) => {
-                return item.#if($nameColumn)${nameColumn.javaField}#else${pkColumn.javaField}#end
-              })
-              .join(',')
-          },
-        },
-#end
-      });
-
-      /** 查看按钮 */
-      function handleView(record: Recordable) {
-        useUserStore().getRoutePath(${BusinessName}DetailGo, record.${pkColumn.javaField});
-      }
-
-      /** 新增按钮 */
-      function handleCreate() {
-        openModal(true, {
-          isUpdate: false,
-        });
-      }
-
-      /** 修改按钮 */
-      function handleEdit(record: Recordable) {
-        openModal(true, {
-          record,
-          isUpdate: true,
-        });
-      }
-#if($api.batchRemove || $api.batchRemoveForce)
-
-      /** 删除按钮 */
-      function handleDelete(record: Recordable) {
-        const delIds = record.${pkColumn.javaField} || state.${pkColumn.javaField}s;
-        const delNames = record.#if($nameColumn)${nameColumn.javaField}#else${pkColumn.javaField}#end || state.${pkColumn.javaField}Names;
-        if (!record.${pkColumn.javaField} && state.${pkColumn.javaField}s.length === 0) {
-          createMessage.warning('请选择要操作的数据！');
-        } else {
-          createConfirm({
-            iconType: 'warning',
-            title: '提示',
-            content: '是否确定要删除' + delNames + '?',
-            onOk: () =>
+<script setup lang="ts">
 #if($api.batchRemove)
-              del${BusinessName}Api(delIds).then(() => {
-                createMessage.success('删除' + delNames + '成功！');
-                reload();
-              }),
-#elseif($api.batchRemoveForce)
-              delForce${BusinessName}Api(delIds).then(() => {
-                createMessage.success('删除' + delNames + '成功！');
-                reload();
-              }),
+  import { reactive } from 'vue';
 #end
-          });
-        }
-      }
+  import { list${BusinessName}Api#if($api.export), del${BusinessName}Api#end#if($api.export), export${BusinessName}Api#end#if($api.cache), refresh${BusinessName}Api#end } from '@/api/${moduleName}/${authorityName}/${businessName}.api';
+#if($api.add || $api.edit)
+  import { useModal } from '/@/components/Modal';
+  import ${BusinessName}Modal from './${BusinessName}Modal.vue';
 #end
-#if($api.export)
-
-      /** 导出按钮 */
-      function handleExport() {
-        const value = getForm().getFieldsValue() as ${BusinessName}PM;
-        export${BusinessName}Api(value);
-      }
+#if($api.batchRemove || $api.cache)
+  import { useMessage } from '/@/hooks/web/useMessage';
 #end
-
-      function handleSuccess() {
-        reload();
-      }
-
-      return {
-        IconEnum,
-        ${BusinessName}Auth,
-        registerTable,
-        registerModal,
-        handleView,
-        handleCreate,
-        handleEdit,
-#if($api.batchRemove || $api.batchRemoveForce)
-        handleDelete,
+#if($api.getInfo || $api.edit || $api.batchRemove || $api.export || $api.cache)
+  import { IconEnum } from '@/enums/basic';
+#end
+  import { BasicTable, TableAction, useTable } from '/@/components/Table';
+#if($api.getInfo || $api.add || $api.edit || $api.batchRemove || $api.export || $api.cache)
+  import { ${BusinessName}Auth } from '/@/auth/${moduleName}/${authorityName}#if($isDependMode)/${businessName}.auth#end';
+#end
+  import { columns, searchFormSchema } from './${businessName}.data';
+#if($api.getInfo)
+  import { ${BusinessName}DetailGo } from '@/enums/${moduleName}/${authorityName}#if($isDependMode)/${businessName}.enum#end';
+  import { useUserStore } from '/@/store/modules/user';
 #end
 #if($api.export)
-        handleExport,
+  import { ${BusinessName}PM } from '/@/model/${moduleName}/${authorityName}#if($isDependMode)/${businessName}.model#end';
 #end
-        handleSuccess,
-#if($table.tree)
-        expandAll,
-        collapseAll,
+
+#if($api.batchRemove || $api.cache)
+  const { createMessage#if($api.batchRemove), createConfirm#end } = useMessage();
 #end
-      };
-    },
+#if($api.add || $api.edit)
+  const [registerModal, { openModal }] = useModal();
+#end
+#if($api.batchRemove)
+  const state = reactive<{
+    ${pkColumn.javaField}s: ${IdType}[];
+    ${pkColumn.javaField}Names: string;
+  }>({
+    ${pkColumn.javaField}s: [],
+    ${pkColumn.javaField}Names: '',
   });
+#end
+
+  const [registerTable, { reload#if($table.tree), expandAll, collapseAll#end#if($api.export), getForm#end }] = useTable({
+    title: '${functionName}列表',
+    api: list${BusinessName}Api,
+    striped: false,
+    useSearchForm: true,
+    rowKey: '${pkColumn.javaField}',
+    bordered: true,
+    showIndexColumn: true,
+    columns,
+    formConfig: {
+      labelWidth: 120,
+      schemas: searchFormSchema,
+    },
+#if($table.tree)
+    isTreeTable: true,
+    pagination: false,
+    canResize: false,
+#end
+    showTableSetting: true,
+    tableSetting: {
+      fullScreen: true,
+    },
+#if($api.getInfo || $api.edit || $api.batchRemove)
+    actionColumn: {
+      width: 220,
+      title: '操作',
+      dataIndex: 'action',
+      slots: { customRender: 'action' },
+    },
+#end
+#if($api.batchRemove)
+    rowSelection: {
+      onChange: (selectedRowKeys, selectRows) => {
+        state.${pkColumn.javaField}s = selectedRowKeys as ${IdType}[];
+        state.${pkColumn.javaField}Names = selectRows
+          .map((item) => {
+            return item.#if($nameColumn)${nameColumn.javaField}#else${pkColumn.javaField}#end
+          })
+          .join(',');
+      },
+    },
+#end
+  });
+#if($api.getInfo)
+
+  /** 查看按钮 */
+  function handleView(record: Recordable) {
+    useUserStore().getRoutePath(${BusinessName}DetailGo, record?.${pkColumn.javaField});
+  }
+#end
+#if($api.add)
+
+    /** 新增按钮 */
+    function handleCreate() {
+      openModal(true, {
+        isUpdate: false,
+      });
+    }
+#end
+#if($api.edit)
+
+    /** 修改按钮 */
+    function handleEdit(record: Recordable) {
+      openModal(true, {
+        record,
+        isUpdate: true,
+      });
+    }
+#end
+#if($api.batchRemove)
+
+    /** 删除按钮 */
+    function handleDelete(record: Recordable) {
+      const delIds = record?.${pkColumn.javaField} || state.${pkColumn.javaField}s;
+      const delNames = record?.#if($nameColumn)${nameColumn.javaField}#else${pkColumn.javaField}#end || state.${pkColumn.javaField}Names;
+      if (!record?.${pkColumn.javaField} && state.${pkColumn.javaField}s.length === 0) {
+        createMessage.warning('请选择要操作的数据！');
+      } else {
+        createConfirm({
+          iconType: 'warning',
+          title: '提示',
+          content: '是否确定要删除' + delNames + '?',
+          onOk: () =>
+            del${BusinessName}Api(delIds).then(() => {
+              createMessage.success('删除' + delNames + '成功！');
+              reload();
+            }),
+        });
+      }
+    }
+#end
+#if($api.export)
+
+  /** 导出按钮 */
+  function handleExport() {
+    const value = getForm().getFieldsValue() as ${BusinessName}PM;
+    export${BusinessName}Api(value);
+  }
+#end
+#if($api.cache)
+
+  /** 刷新缓存按钮 */
+  function handleRefresh() {
+    refresh${BusinessName}Api().then(() => createMessage.success('${functionName}缓存刷新成功！'));
+  }
+#end
+#if($api.add || $api.edit)
+
+  function handleSuccess() {
+    reload();
+  }
+#end
 </script>

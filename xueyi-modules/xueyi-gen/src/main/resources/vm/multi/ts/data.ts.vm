@@ -62,7 +62,7 @@ import { MarkDown } from '/@/components/Markdown';
 #end
 #foreach ($column in $columns)
 #if($column.dictType && $column.dictName)
-import { ${BusinessName}IM } from '/@/model/${moduleName}';
+import { ${BusinessName}IM } from '/@/model/${moduleName}/${authorityName}#if($isDependMode)/${businessName}.model#end';
 #break
 #end
 #end

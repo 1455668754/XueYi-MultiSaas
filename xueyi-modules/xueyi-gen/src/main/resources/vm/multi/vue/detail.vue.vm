@@ -12,37 +12,37 @@
 #set($IdType = 'any')
 #end
 <script setup lang="ts">
-    import { onMounted, ref } from 'vue';
-    import { get${BusinessName}Api } from '@/api/${moduleName}/${authorityName}/${businessName}.api';
-    import { Description, useDescription } from '/@/components/Description';
-    import { detailSchema } from './${businessName}.data';
-    import { useRoute } from 'vue-router';
-    import { ${BusinessName}IndexGo } from '@/enums/${moduleName}/${authorityName}';
-    import { useTabs } from '/@/hooks/web/useTabs';
-    import { PageWrapper } from '/@/components/Page';
-    import { useUserStore } from '/@/store/modules/user';
-    import { DescItemSizeEnum } from '@/enums/basic';
+  import { onMounted, ref } from 'vue';
+  import { get${BusinessName}Api } from '@/api/${moduleName}/${authorityName}/${businessName}.api';
+  import { Description, useDescription } from '/@/components/Description';
+  import { detailSchema } from './${businessName}.data';
+  import { useRoute } from 'vue-router';
+  import { ${BusinessName}IndexGo } from '@/enums/${moduleName}/${authorityName}#if($isDependMode)/${businessName}.enum#end';
+  import { useTabs } from '/@/hooks/web/useTabs';
+  import { PageWrapper } from '/@/components/Page';
+  import { useUserStore } from '/@/store/modules/user';
+  import { DescItemSizeEnum } from '@/enums/basic';
 
-    const route = useRoute();
-    const { setTitle } = useTabs();
-    const getTitle = ref('${functionName}详情');
+  const route = useRoute();
+  const { setTitle } = useTabs();
+  const getTitle = ref('${functionName}详情');
 
-    const [register, { setDescProps }] = useDescription({
-      title: '${functionName}详情',
-      schema: detailSchema,
-      column: DescItemSizeEnum.DEFAULT,
-    });
+  const [register, { setDescProps }] = useDescription({
+    title: '${functionName}详情',
+    schema: detailSchema,
+    column: DescItemSizeEnum.DEFAULT,
+  });
 
-    onMounted(async () => {
-      const ${pkColumn.javaField} = route.params.${pkColumn.javaField} as ${IdType};
-      const data = await get${BusinessName}Api(${pkColumn.javaField});
-      setDescProps({ data: data });
-      getTitle.value = '${functionName}详情:' + data?.#if($nameColumn)${nameColumn.javaField}#else${pkColumn.javaField}#end;
-      setTitle(getTitle.value);
-    });
+  onMounted(async () => {
+    const ${pkColumn.javaField} = route.params.${pkColumn.javaField} as ${IdType};
+    const data = await get${BusinessName}Api(${pkColumn.javaField});
+    setDescProps({ data: data });
+    getTitle.value = '${functionName}详情:' + data?.#if($nameColumn)${nameColumn.javaField}#else${pkColumn.javaField}#end;
+    setTitle(getTitle.value);
+  });
 
-    /** 返回${functionName}主页 */
-    function goBack() {
-      useUserStore().getRoutePath(${BusinessName}IndexGo);
-    }
+  /** 返回${functionName}主页 */
+  function goBack() {
+    useUserStore().getRoutePath(${BusinessName}IndexGo);
+  }
 </script>

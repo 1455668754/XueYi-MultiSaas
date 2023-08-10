@@ -59,7 +59,7 @@
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
   import { StrategyAuth } from '/@/auth/tenant';
   import { columns, searchFormSchema } from './strategy.data';
-  import { StrategyDetailGo } from '@/enums/tenant';
+  import { StrategyDetailGo } from '@/enums/tenant/source';
   import StrategyModal from './StrategyModal.vue';
   import { useUserStore } from '/@/store/modules/user';
 
