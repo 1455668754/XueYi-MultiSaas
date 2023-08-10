@@ -327,7 +327,8 @@ public class VelocityUtils {
             initIndexFile(realPath, prefixPath, suffixFile, moduleName, authorityName, businessName);
             return StrUtil.format("{}/{}/{}/{}{}.ts", prefixPath, moduleName, authorityName, businessName, suffixFile);
         } else if (template.contains("data.ts.vm")) {
-            return StrUtil.format("multi-ui/src/views/{}/{}/{}/{}.data.ts", moduleName, authorityName, businessName, businessName);
+            String suffixFile = ".data";
+            return StrUtil.format("multi-ui/src/views/{}/{}/{}/{}{}.ts", moduleName, authorityName, businessName, businessName, suffixFile);
         } else if (template.contains("index.vue.vm")) {
             return StrUtil.format("multi-ui/src/views/{}/{}/{}/index.vue", moduleName, authorityName, businessName);
         } else if (template.contains("detail.vue.vm")) {
