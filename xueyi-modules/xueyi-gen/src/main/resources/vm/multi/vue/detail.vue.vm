@@ -14,13 +14,13 @@
 <script setup lang="ts">
   import { onMounted, ref } from 'vue';
   import { get${BusinessName}Api } from '@/api/${moduleName}/${authorityName}/${businessName}.api';
-  import { Description, useDescription } from '/@/components/Description';
+  import { Description, useDescription } from '@/components/Description';
   import { detailSchema } from './${businessName}.data';
   import { useRoute } from 'vue-router';
-  import { ${BusinessName}IndexGo } from '@/enums/${moduleName}/${authorityName}#if($isDependMode)/${businessName}.enum#end';
-  import { useTabs } from '/@/hooks/web/useTabs';
-  import { PageWrapper } from '/@/components/Page';
-  import { useUserStore } from '/@/store/modules/user';
+  import { ${BusinessName}IndexGo } from '@/enums/${moduleName}/${authorityName}#if(!$isDependMode)/${businessName}.enum#end';
+  import { useTabs } from '@/hooks/web/useTabs';
+  import { PageWrapper } from '@/components/Page';
+  import { useUserStore } from '@/store/modules/user';
   import { DescItemSizeEnum } from '@/enums/basic';
 
   const route = useRoute();

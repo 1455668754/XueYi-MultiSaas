@@ -103,28 +103,28 @@
 #if($api.batchRemove)
   import { reactive } from 'vue';
 #end
-  import { list${BusinessName}Api#if($api.export), del${BusinessName}Api#end#if($api.export), export${BusinessName}Api#end#if($api.cache), refresh${BusinessName}Api#end } from '@/api/${moduleName}/${authorityName}/${businessName}.api';
+  import { list${BusinessName}Api#if($api.batchRemove), del${BusinessName}Api#end#if($api.export), export${BusinessName}Api#end#if($api.cache), refresh${BusinessName}Api#end } from '@/api/${moduleName}/${authorityName}/${businessName}.api';
 #if($api.add || $api.edit)
-  import { useModal } from '/@/components/Modal';
+  import { useModal } from '@/components/Modal';
   import ${BusinessName}Modal from './${BusinessName}Modal.vue';
 #end
 #if($api.batchRemove || $api.cache)
-  import { useMessage } from '/@/hooks/web/useMessage';
+  import { useMessage } from '@/hooks/web/useMessage';
 #end
 #if($api.getInfo || $api.edit || $api.batchRemove || $api.export || $api.cache)
   import { IconEnum } from '@/enums/basic';
 #end
-  import { BasicTable, TableAction, useTable } from '/@/components/Table';
+  import { BasicTable, TableAction, useTable } from '@/components/Table';
 #if($api.getInfo || $api.add || $api.edit || $api.batchRemove || $api.export || $api.cache)
-  import { ${BusinessName}Auth } from '/@/auth/${moduleName}/${authorityName}#if($isDependMode)/${businessName}.auth#end';
+  import { ${BusinessName}Auth } from '@/auth/${moduleName}/${authorityName}#if(!$isDependMode)/${businessName}.auth#end';
 #end
   import { columns, searchFormSchema } from './${businessName}.data';
 #if($api.getInfo)
-  import { ${BusinessName}DetailGo } from '@/enums/${moduleName}/${authorityName}#if($isDependMode)/${businessName}.enum#end';
-  import { useUserStore } from '/@/store/modules/user';
+  import { ${BusinessName}DetailGo } from '@/enums/${moduleName}/${authorityName}#if(!$isDependMode)/${businessName}.enum#end';
+  import { useUserStore } from '@/store/modules/user';
 #end
 #if($api.export)
-  import { ${BusinessName}PM } from '/@/model/${moduleName}/${authorityName}#if($isDependMode)/${businessName}.model#end';
+  import { ${BusinessName}PM } from '@/model/${moduleName}/${authorityName}#if(!$isDependMode)/${businessName}.model#end';
 #end
 
 #if($api.batchRemove || $api.cache)
@@ -179,7 +179,7 @@
         state.${pkColumn.javaField}s = selectedRowKeys as ${IdType}[];
         state.${pkColumn.javaField}Names = selectRows
           .map((item) => {
-            return item.#if($nameColumn)${nameColumn.javaField}#else${pkColumn.javaField}#end
+            return item.#if($nameColumn)${nameColumn.javaField}#else${pkColumn.javaField}#end;
           })
           .join(',');
       },
@@ -195,44 +195,44 @@
 #end
 #if($api.add)
 
-    /** 新增按钮 */
-    function handleCreate() {
-      openModal(true, {
-        isUpdate: false,
-      });
-    }
+  /** 新增按钮 */
+  function handleCreate() {
+    openModal(true, {
+      isUpdate: false,
+    });
+  }
 #end
 #if($api.edit)
 
-    /** 修改按钮 */
-    function handleEdit(record: Recordable) {
-      openModal(true, {
-        record,
-        isUpdate: true,
-      });
-    }
+  /** 修改按钮 */
+  function handleEdit(record: Recordable) {
+    openModal(true, {
+      record,
+      isUpdate: true,
+    });
+  }
 #end
 #if($api.batchRemove)
 
-    /** 删除按钮 */
-    function handleDelete(record: Recordable) {
-      const delIds = record?.${pkColumn.javaField} || state.${pkColumn.javaField}s;
-      const delNames = record?.#if($nameColumn)${nameColumn.javaField}#else${pkColumn.javaField}#end || state.${pkColumn.javaField}Names;
-      if (!record?.${pkColumn.javaField} && state.${pkColumn.javaField}s.length === 0) {
-        createMessage.warning('请选择要操作的数据！');
-      } else {
-        createConfirm({
-          iconType: 'warning',
-          title: '提示',
-          content: '是否确定要删除' + delNames + '?',
-          onOk: () =>
-            del${BusinessName}Api(delIds).then(() => {
-              createMessage.success('删除' + delNames + '成功！');
-              reload();
-            }),
-        });
-      }
+  /** 删除按钮 */
+  function handleDelete(record: Recordable) {
+    const delIds = record?.${pkColumn.javaField} || state.${pkColumn.javaField}s;
+    const delNames = record?.#if($nameColumn)${nameColumn.javaField}#else${pkColumn.javaField}#end || state.${pkColumn.javaField}Names;
+    if (!record?.${pkColumn.javaField} && state.${pkColumn.javaField}s.length === 0) {
+      createMessage.warning('请选择要操作的数据！');
+    } else {
+      createConfirm({
+        iconType: 'warning',
+        title: '提示',
+        content: '是否确定要删除' + delNames + '?',
+        onOk: () =>
+          del${BusinessName}Api(delIds).then(() => {
+            createMessage.success('删除' + delNames + '成功！');
+            reload();
+          }),
+      });
     }
+  }
 #end
 #if($api.export)
 

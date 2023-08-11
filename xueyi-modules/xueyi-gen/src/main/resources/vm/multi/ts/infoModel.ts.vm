@@ -1,14 +1,16 @@
 #if($table.base)
 #set($Entity="Base")
-#set($generics = "")
+#set($genericsIM = "")
+#set($genericsPM = "")
 #elseif($table.tree)
 #set($Entity="Tree")
-#set($generics = "<"+${BusinessName}+"IM>")
+#set($genericsIM = "<"+${BusinessName}+"IM>")
+#set($genericsPM = "<"+${BusinessName}+"PM>")
 #end
-import { BasicFetchResult, BasicPageParams, ${Entity}Entity } from '/@/model/src';
+import { BasicFetchResult, BasicPageParams, ${Entity}Entity } from '@/model/basic';
 
 /** ${businessName} info model */
-export interface ${BusinessName}IM extends ${Entity}Entity${generics} {
+export interface ${BusinessName}IM extends ${Entity}Entity${genericsIM} {
 #foreach ($column in $columns)
 #set($hide = true)
 #foreach($item in $frontHideField)
@@ -18,7 +20,6 @@ export interface ${BusinessName}IM extends ${Entity}Entity${generics} {
 #end
 #end
 #if($hide)
-#set($columnName = $column.javaField)
 #if($column.javaType == 'Long' || $column.javaType == 'String')
 #set($columnType = 'string')
 #elseif($column.javaType == 'Integer' || $column.javaType == 'Double' || $column.javaType == 'BigDecimal')
@@ -26,7 +27,8 @@ export interface ${BusinessName}IM extends ${Entity}Entity${generics} {
 #else
 #set($columnType = 'any')
 #end
-  ${columnName}: ${columnType};
+  /** ${column.comment} */
+  ${column.javaField}: ${columnType};
 #end
 #end
 }
@@ -35,7 +37,7 @@ export interface ${BusinessName}IM extends ${Entity}Entity${generics} {
 export type ${BusinessName}LM = ${BusinessName}IM[];
 
 /** ${businessName} param model */
-export interface ${BusinessName}PM extends ${Entity}Entity${generics} {
+export interface ${BusinessName}PM extends ${Entity}Entity${genericsPM} {
 #foreach ($column in $columns)
 #set($hide = true)
 #foreach($item in $frontHideField)
@@ -45,7 +47,6 @@ export interface ${BusinessName}PM extends ${Entity}Entity${generics} {
 #end
 #end
 #if($hide)
-#set($columnName = $column.javaField)
 #if($column.javaType == 'Long' || $column.javaType == 'String')
 #set($columnType = 'string')
 #elseif($column.javaType == 'Integer' || $column.javaType == 'Double' || $column.javaType == 'BigDecimal')
@@ -53,7 +54,8 @@ export interface ${BusinessName}PM extends ${Entity}Entity${generics} {
 #else
 #set($columnType = 'any')
 #end
-  ${columnName}?: ${columnType};
+  /** ${column.comment} */
+  ${column.javaField}?: ${columnType};
 #end
 #end
 }

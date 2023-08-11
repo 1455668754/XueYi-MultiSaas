@@ -7,7 +7,7 @@ import ${import};
 #set($Entity="BaseEntity")
 #set($generics = "")
 #elseif($table.tree)
-#set($Entity="TreeEntity<"+${ClassName}+"Dto>")
+#set($Entity="TreeEntity")
 #set($generics="<"+${ClassName}+"Dto>")
 #end
 #set($entityUrl="entity")

@@ -1,6 +1,6 @@
-import { FormSchema } from '/@/components/Form';
-import { BasicColumn } from '/@/components/Table';
-import { DescItem } from '/@/components/Description';
+import { FormSchema } from '@/components/Form';
+import { BasicColumn } from '@/components/Table';
+import { DescItem } from '@/components/Description';
 #set($hasDict = false)
 #if($dictMap)
 #set($hasDict = true)
@@ -30,11 +30,11 @@ import { DescItem } from '/@/components/Description';
 #end
 #end
 #if($hasDict == true)
-import { dicDictList } from '/@/api/sys/dict';
-import { dictConversion } from '/@/utils/xueyi';
+import { dicDictList } from '@/api/sys/dict.api';
+import { dictConversion } from '@/utils/xueyi';
 #end
 #if($hasEmpty == true)
-import { isEmpty } from '/@/utils/is';
+import { isEmpty } from '@/utils/is';
 #end
 #set($InputNumber = false)
 #set($tinymce = false)
@@ -52,17 +52,17 @@ import { isEmpty } from '/@/utils/is';
 import { h } from 'vue';
 #end
 #if($InputNumber)
-import { DicSortEnum } from '/@/enums/basic';
+import { DicSortEnum } from '@/enums/basic';
 #end
 #if($tinymce)
-import { Tinymce } from '/@/components/Tinymce';
+import { Tinymce } from '@/components/Tinymce';
 #end
 #if($markdown)
-import { MarkDown } from '/@/components/Markdown';
+import { MarkDown } from '@/components/Markdown';
 #end
 #foreach ($column in $columns)
 #if($column.dictType && $column.dictName)
-import { ${BusinessName}IM } from '/@/model/${moduleName}/${authorityName}#if($isDependMode)/${businessName}.model#end';
+import { ${BusinessName}IM } from '@/model/${moduleName}/${authorityName}#if(!$isDependMode)/${businessName}.model#end';
 #break
 #end
 #end
