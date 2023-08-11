@@ -15,14 +15,14 @@ import { DescItem } from '@/components/Description';
 #set($show = false)
 #end
 #foreach($item in $mustHideField)
-#if($column.javaField == $item && !$column.isPk())
+#if($column.javaField == $item && !$column.isPk)
 #set($show = false)
 #break
 #end
 #end
-#if($column.isInsert() == false && $column.isEdit() == false && !$column.isPk())
+#if($column.isInsert == false && $column.isEdit == false && !$column.isPk)
 #set($show = false)
-#elseif($column.isInsert() != $column.isEdit() && !$column.isPk())
+#elseif($column.isInsert != $column.isEdit && !$column.isPk)
 #if($show == true)
 #set($hasEmpty = true)
 #break
@@ -40,12 +40,16 @@ import { isEmpty } from '@/utils/is';
 #set($tinymce = false)
 #set($markdown = false)
 #foreach ($column in $columns)
-#if($column.htmlType == 'InputNumber' && ($column.isInsert() || $column.isEdit()))
+#if($column.isInsert || $column.isEdit)
+#if($column.htmlType == 'InputNumber')
 #set($InputNumber = true)
-#elseif($column.htmlType == 'tinymce' && ($column.isInsert() || $column.isEdit()))
+#end
+#if($column.htmlType == 'tinymce')
 #set($tinymce = true)
-#elseif($column.htmlType == 'markdown' && ($column.isInsert() || $column.isEdit()))
+#end
+#if($column.htmlType == 'markdown')
 #set($markdown = true)
+#end
 #end
 #end
 #if($tinymce || $markdown)
@@ -93,7 +97,7 @@ export const columns: BasicColumn[] = [
 #break
 #end
 #end
-#if($column.isList() == false)
+#if($column.isList == false)
 #set($show = false)
 #end
 #if($show)
@@ -125,7 +129,7 @@ export const searchFormSchema: FormSchema[] = [
 #break
 #end
 #end
-#if($column.isQuery() == false)
+#if($column.isQuery == false)
 #set($show = false)
 #end
 #if($show)
@@ -167,9 +171,9 @@ export const formSchema: FormSchema[] = [
       showSearch: true,
       treeNodeFilterProp: 'title',
       fieldNames: {
-      label: '${treeMap.nameColumn.javaField}',
-      key: '${treeMap.idColumn.javaField}',
-      value: '${treeMap.idColumn.javaField}',
+        label: '${treeMap.nameColumn.javaField}',
+        key: '${treeMap.idColumn.javaField}',
+        value: '${treeMap.idColumn.javaField}',
       },
       getPopupContainer: () => document.body,
     },
@@ -179,18 +183,18 @@ export const formSchema: FormSchema[] = [
 #else
 #set($show = true)
 #foreach($item in $mustHideField)
-#if($column.javaField == $item && !$column.isPk())
+#if($column.javaField == $item && !$column.isPk)
 #set($show = false)
 #break
 #end
 #end
-#if($column.isInsert() == false && $column.isEdit() == false && !$column.isPk())
+#if($column.isInsert == false && $column.isEdit == false && !$column.isPk)
 #set($show = false)
-#elseif($column.isInsert() == false || $column.isEdit() == false && !$column.isPk())
+#elseif($column.isInsert == false || $column.isEdit == false && !$column.isPk)
 #set($justOperate = true)
-#if($column.isInsert() == false)
+#if($column.isInsert == false)
 #set($justEdit = true)
-#if($column.isEdit() == false)
+#if($column.isEdit == false)
 #set($justInsert = true)
 #end
 #end
@@ -234,7 +238,7 @@ export const formSchema: FormSchema[] = [
     },
 #end
 #end
-#if($column.isPk())
+#if($column.isPk)
     show: false,
 #elseif($justOperate == true)
 #set($isEmptyStr = 'isEmpty')
@@ -243,7 +247,7 @@ export const formSchema: FormSchema[] = [
 #end
     ifShow: ({ values }) => ${isEmptyStr}(values.${pkColumn.javaField}),
 #end
-#if($column.isRequired())
+#if($column.isRequired)
     required: true,
 #end
 #if($column.htmlType == 'ImageUpload' || $column.htmlType == 'Upload' || $column.htmlType == 'InputTextArea' || $column.htmlType == 'tinymce' || $column.htmlType == 'markdown')
@@ -267,7 +271,7 @@ export const detailSchema: DescItem[] = [
 #break
 #end
 #end
-#if($column.isView() == false)
+#if($column.isView == false)
 #set($hide = false)
 #end
 #if($hide)
