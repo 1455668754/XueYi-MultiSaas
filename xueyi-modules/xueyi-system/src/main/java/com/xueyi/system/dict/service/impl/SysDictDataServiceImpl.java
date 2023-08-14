@@ -91,9 +91,9 @@ public class SysDictDataServiceImpl extends BaseServiceImpl<SysDictDataQuery, Sy
                 }
             }
             case ADD -> {
-                if (ObjectUtil.notEqual(newDto.getTenantId(), SecurityUtils.getEnterpriseId())) {
+                if (ObjectUtil.notEqual(newDto.getDictTypeInfo().getTenantId(), SecurityUtils.getEnterpriseId())) {
                     if (SecurityUserUtils.isAdminTenant()) {
-                        SecurityContextHolder.setEnterpriseId(newDto.getTenantId().toString());
+                        SecurityContextHolder.setEnterpriseId(newDto.getDictTypeInfo().getTenantId().toString());
                     } else {
                         throw new ServiceException("新增失败，无权限！");
                     }
