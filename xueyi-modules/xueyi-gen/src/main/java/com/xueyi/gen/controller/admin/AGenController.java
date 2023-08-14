@@ -108,7 +108,7 @@ public class AGenController extends BGenController {
         String[] tableNames = ConvertUtil.toStrArray(tables);
         // 查询表信息
         List<GenTableDto> tableList = baseService.selectDbTableListByNames(tableNames, sourceName);
-        baseService.importGenTable(tableList);
+        baseService.importGenTable(tableList, sourceName);
         return success();
     }
 
@@ -151,7 +151,7 @@ public class AGenController extends BGenController {
     @PreAuthorize("@ss.hasAuthority(@Auth.GEN_GENERATE_CODE)")
     @Log(title = "代码生成", businessType = BusinessType.GEN_CODE)
     @GetMapping("/batchGenCode")
-    public void batchMultiGenCode(HttpServletResponse response, Long[] ids) throws IOException {
+    public void batchMultiGenCode(HttpServletResponse response, @RequestParam Long[] ids) throws IOException {
         byte[] data = baseService.downloadCode(ids);
         genCode(response, data);
     }
@@ -166,5 +166,4 @@ public class AGenController extends BGenController {
     public AjaxResult batchRemoveForce(@PathVariable List<Long> idList) {
         return super.batchRemoveForce(idList);
     }
-
 }

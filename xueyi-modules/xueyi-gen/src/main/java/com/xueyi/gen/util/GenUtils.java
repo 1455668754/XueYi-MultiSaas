@@ -15,6 +15,7 @@ import com.xueyi.gen.config.GenConfig;
 import com.xueyi.gen.domain.dto.GenTableColumnDto;
 import com.xueyi.gen.domain.dto.GenTableDto;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -229,6 +230,12 @@ public class GenUtils {
                     genTable.setPackageName(removeItem.getPackageName());
                     genTable.setModuleName(getModuleName(removeItem.getPackageName()));
                     genTable.setAuthorityName(genTable.getModuleName());
+                    if (StrUtil.isNotBlank(removeItem.getBackPackageRoute())) {
+                        genTable.setGenPath(System.getProperty("user.dir") + StrUtil.replace(removeItem.getBackPackageRoute(), StrUtil.SLASH, File.separator));
+                    }
+                    if (StrUtil.isNotBlank(GenConfig.getUiPath())) {
+                        genTable.setUiPath(System.getProperty("user.dir") + StrUtil.replace(GenConfig.getUiPath(), StrUtil.SLASH, File.separator));
+                    }
                     return;
                 }
             }

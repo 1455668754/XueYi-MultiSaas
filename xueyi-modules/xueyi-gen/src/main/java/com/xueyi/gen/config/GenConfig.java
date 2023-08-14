@@ -145,6 +145,9 @@ public class GenConfig {
         /** 生成包路径 */
         private String packageName;
 
+        /** 生成后端包地址 */
+        private String backPackageRoute;
+
         /** 生成前端包路径 */
         private String frontPackageName;
 

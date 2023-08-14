@@ -86,7 +86,7 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
      */
     public static String getGenPath(GenTableDto table, String template) {
         String genPath = table.getGenPath();
-        if (StrUtil.equals(genPath, StrUtil.SLASH)) {
+        if (StrUtil.isBlank(genPath)) {
             String prefixPath = System.getProperty("user.dir") + File.separator + "src" + File.separator;
             return prefixPath + VelocityUtils.getFileName(prefixPath, template, table);
         }
@@ -103,7 +103,7 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
      */
     public static String getUiPath(GenTableDto table, String template) {
         String uiPath = table.getUiPath();
-        if (StrUtil.equals(StrUtil.SLASH, uiPath)) {
+        if (StrUtil.isBlank(uiPath)) {
             String prefixPath = System.getProperty("user.dir") + File.separator;
             return prefixPath + VelocityUtils.getFileName(prefixPath, template, table);
         }
@@ -137,17 +137,19 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
     /**
      * 导入表结构
      *
-     * @param tableList 导入表列表
+     * @param tableList  导入表列表
+     * @param sourceName 数据源
      */
+
     @Override
     @DSTransactional
-    public void importGenTable(List<GenTableDto> tableList) {
+    public void importGenTable(List<GenTableDto> tableList, String sourceName) {
         try {
             tableList.forEach(table -> {
                 GenUtils.initTable(table);
                 int row = baseManager.insert(table);
                 if (row > 0) {
-                    List<GenTableColumnDto> columnList = subService.selectDbTableColumnsByName(table.getName());
+                    List<GenTableColumnDto> columnList = subService.selectDbTableColumnsByName(table.getName(), sourceName);
                     columnList.forEach(column -> GenUtils.initColumnField(column, table));
                     subService.insertBatch(columnList);
                     GenUtils.initTableOptions(columnList, table);
@@ -279,7 +281,6 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
      * @param zip 压缩包流
      */
     private void generatorCode(Long id, ZipOutputStream zip) {
-
         // 查询表信息
         GenTableDto table = initTable(id);
 

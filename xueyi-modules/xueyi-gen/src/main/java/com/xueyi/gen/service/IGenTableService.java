@@ -34,9 +34,10 @@ public interface IGenTableService extends IBaseService<GenTableQuery, GenTableDt
     /**
      * 导入表结构
      *
-     * @param tableList 导入表列表
+     * @param tableList  导入表列表
+     * @param sourceName 数据源
      */
-    void importGenTable(List<GenTableDto> tableList);
+    void importGenTable(List<GenTableDto> tableList, String sourceName);
 
     /**
      * 预览代码

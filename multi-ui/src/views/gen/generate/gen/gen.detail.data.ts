@@ -486,14 +486,14 @@ export const generateFormSchema: FormSchema[] = [
     label: '后端生成路径',
     field: 'genPath',
     component: 'Input',
-    ifShow: ({ values }) => values.genType == GenerationModeEnum.CUSTOM,
+    show: ({ values }) => values.genType == GenerationModeEnum.CUSTOM,
     colProps: { span: 12 },
   },
   {
     label: '前端生成路径',
     field: 'uiPath',
     component: 'Input',
-    ifShow: ({ values }) => values.genType == GenerationModeEnum.CUSTOM,
+    show: ({ values }) => values.genType == GenerationModeEnum.CUSTOM,
     colProps: { span: 12 },
   },
 ];

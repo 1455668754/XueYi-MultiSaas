@@ -14,10 +14,19 @@ import java.util.List;
 public interface IGenTableColumnManager extends IBaseManager<GenTableColumnQuery, GenTableColumnDto> {
 
     /**
-     * 根据表名称查询数据库表列信息
+     * 根据表名称查询数据库表列信息 | 主库
      *
      * @param tableName 表名称
      * @return 数据库表列信息
      */
     List<GenTableColumnDto> selectDbTableColumnsByName(String tableName);
+
+    /**
+     * 根据表名称查询数据库表列信息 | 租户库
+     *
+     * @param tableName  表名称
+     * @param sourceName 数据源
+     * @return 数据库表列信息
+     */
+    List<GenTableColumnDto> selectDbTableColumnsByName(String tableName, String sourceName);
 }

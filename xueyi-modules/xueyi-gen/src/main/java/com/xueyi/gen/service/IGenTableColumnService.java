@@ -16,8 +16,9 @@ public interface IGenTableColumnService extends IBaseService<GenTableColumnQuery
     /**
      * 根据表名称查询数据库表列信息
      *
-     * @param tableName 表名称
+     * @param tableName  表名称
+     * @param sourceName 数据源
      * @return 数据库表列信息
      */
-    List<GenTableColumnDto> selectDbTableColumnsByName(String tableName);
+    List<GenTableColumnDto> selectDbTableColumnsByName(String tableName, String sourceName);
 }
