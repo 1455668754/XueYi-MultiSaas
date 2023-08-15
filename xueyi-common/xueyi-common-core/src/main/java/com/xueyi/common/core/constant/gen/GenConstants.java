@@ -71,10 +71,6 @@ public class GenConstants {
         ANCESTORS("ancestors", "祖籍列表字段", "ancestors"),
         LEVEL("level", "层级字段", "level"),
 
-//        FOREIGN_ID("foreignId", "外键关联的主表字段字段", null),
-//        SUB_TABLE_ID("subTableId", "关联子表的表名字段", null),
-//        SUB_FOREIGN_ID("subForeignId", "关联子表的外键名字段", null),
-
         ID("id", "主键字段", "id"),
         NAME("name", "名称字段", "name"),
         STATUS("status", "状态字段", "status"),
@@ -208,13 +204,13 @@ public class GenConstants {
 
     }
 
-    /** 源策略模式 */
+    /** 生成路径类型 */
     @Getter
     @AllArgsConstructor
     public enum GenType {
 
-        ISOLATE("Isolate", "策略源"),
-        MASTER("Master", "主数据源");
+        DEFAULT("0", "默认路径"),
+        CUSTOM("1", "自定义路径");
 
         private final String code;
         private final String info;

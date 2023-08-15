@@ -65,6 +65,9 @@ public class GenTablePo extends BaseEntity {
     @NotBlank(message = "作者不能为空")
     protected String functionAuthor;
 
+    /** 生成路径类型（0默认路径 1自定义路径） */
+    protected String genType;
+
     /** 后端生成路径（不填默认项目路径） */
     protected String genPath;
 

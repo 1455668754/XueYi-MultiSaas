@@ -60,7 +60,12 @@ export const importDBGenApi = (names: string[], sourceName?: string) =>
   defHttp.post(
     {
       url: Api.IMPORT_DB_GEN,
-      params: { tables: names.toString(), sourceName: sourceName },
+      params: sourceName
+        ? {
+            tables: names.toString(),
+            sourceName: sourceName,
+          }
+        : { tables: names.toString() },
     },
     { joinParamsToUrl: true },
   );

@@ -230,12 +230,8 @@ public class GenUtils {
                     genTable.setPackageName(removeItem.getPackageName());
                     genTable.setModuleName(getModuleName(removeItem.getPackageName()));
                     genTable.setAuthorityName(genTable.getModuleName());
-                    if (StrUtil.isNotBlank(removeItem.getBackPackageRoute())) {
-                        genTable.setGenPath(System.getProperty("user.dir") + StrUtil.replace(removeItem.getBackPackageRoute(), StrUtil.SLASH, File.separator));
-                    }
-                    if (StrUtil.isNotBlank(GenConfig.getUiPath())) {
-                        genTable.setUiPath(System.getProperty("user.dir") + StrUtil.replace(GenConfig.getUiPath(), StrUtil.SLASH, File.separator));
-                    }
+                    genTable.setGenPath(StrUtil.isNotBlank(removeItem.getBackPackageRoute()) ? (System.getProperty("user.dir") + StrUtil.replace(removeItem.getBackPackageRoute(), StrUtil.SLASH, File.separator) + File.separator + "src" + File.separator) : (System.getProperty("user.dir") + File.separator + "src" + File.separator));
+                    genTable.setUiPath(StrUtil.isNotBlank(GenConfig.getUiPath()) ? (System.getProperty("user.dir") + StrUtil.replace(GenConfig.getUiPath(), StrUtil.SLASH, File.separator) + File.separator) : (System.getProperty("user.dir") + File.separator));
                     return;
                 }
             }

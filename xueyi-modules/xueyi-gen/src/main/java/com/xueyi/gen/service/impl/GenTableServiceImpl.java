@@ -78,40 +78,6 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
     }
 
     /**
-     * 获取后端代码生成地址
-     *
-     * @param table    业务表信息
-     * @param template 模板文件路径
-     * @return 生成地址
-     */
-    public static String getGenPath(GenTableDto table, String template) {
-        String genPath = table.getGenPath();
-        if (StrUtil.isBlank(genPath)) {
-            String prefixPath = System.getProperty("user.dir") + File.separator + "src" + File.separator;
-            return prefixPath + VelocityUtils.getFileName(prefixPath, template, table);
-        }
-        String prefixPath = genPath + File.separator;
-        return prefixPath + VelocityUtils.getFileName(prefixPath, template, table);
-    }
-
-    /**
-     * 获取前端代码生成地址
-     *
-     * @param table    业务表信息
-     * @param template 模板文件路径
-     * @return 生成地址
-     */
-    public static String getUiPath(GenTableDto table, String template) {
-        String uiPath = table.getUiPath();
-        if (StrUtil.isBlank(uiPath)) {
-            String prefixPath = System.getProperty("user.dir") + File.separator;
-            return prefixPath + VelocityUtils.getFileName(prefixPath, template, table);
-        }
-        String prefixPath = uiPath + File.separator;
-        return prefixPath + VelocityUtils.getFileName(prefixPath, template, table);
-    }
-
-    /**
      * 查询数据库列表
      *
      * @param table 业务对象
@@ -242,14 +208,13 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
 
         // 获取模板列表
         List<String> templates = VelocityUtils.getTemplateList(table.getTplCategory());
-        String[] genFiles = {"merge.java.vm", "mergeMapper.java.vm", "query.java.vm", "dto.java.vm", "po.java.vm", "converter.java.vm", "controller.java.vm", "service.java.vm", "serviceImpl.java.vm", "manager.java.vm", "managerImpl.java.vm", "manager.java.vm", "mapper.java.vm", "sql.sql.vm"};
         for (String template : templates) {
             // 渲染模板
             StringWriter sw = new StringWriter();
             Template tpl = Velocity.getTemplate(template, HttpConstants.Character.UTF8.getCode());
             tpl.merge(context, sw);
             try {
-                String path = StrUtil.containsAny(template, genFiles) ? getGenPath(table, template) : getUiPath(table, template);
+                String path = VelocityUtils.getFileName(template, table, Boolean.FALSE);
                 FileUtils.writeStringToFile(new File(path), sw.toString(), CharsetUtil.UTF_8);
             } catch (IOException e) {
                 AjaxResult.warn(StrUtil.format("渲染模板失败，表名：{}", table.getName()));
@@ -295,7 +260,7 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
             Template tpl = Velocity.getTemplate(template, HttpConstants.Character.UTF8.getCode());
             tpl.merge(context, sw);
             try {
-                String fileUrl = VelocityUtils.getFileName(StrUtil.EMPTY, template, table);
+                String fileUrl = VelocityUtils.getFileName(template, table, Boolean.TRUE);
                 // 添加到zip
                 zip.putNextEntry(new ZipEntry(fileUrl));
                 IOUtils.write(sw.toString(), zip, HttpConstants.Character.UTF8.getCode());

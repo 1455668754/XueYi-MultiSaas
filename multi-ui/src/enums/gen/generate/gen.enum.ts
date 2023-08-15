@@ -42,9 +42,9 @@ export enum GenStatusEnum {
 }
 
 /** 字典：生成方式 */
-export enum GenerationModeEnum {
-  // zip压缩包
-  ZIP = '0',
+export enum GenModeEnum {
+  // 默认路径
+  DEFAULT = '0',
   // 自定义路径
   CUSTOM = '1',
 }

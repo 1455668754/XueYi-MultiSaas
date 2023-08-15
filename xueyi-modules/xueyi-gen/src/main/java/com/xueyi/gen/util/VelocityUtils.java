@@ -37,13 +37,13 @@ import java.util.stream.Collectors;
 public class VelocityUtils {
 
     /** 主目录 */
-    private static final String PROJECT_PATH = "main/java" ;
+    private static final String PROJECT_PATH = "main/java";
 
     /** 隐藏字段数组 */
-    private static final String HIDE = "hide" ;
+    private static final String HIDE = "hide";
 
     /** 覆写字段数组 */
-    private static final String COVER = "cover" ;
+    private static final String COVER = "cover";
 
     /**
      * 设置模板变量信息
@@ -254,95 +254,118 @@ public class VelocityUtils {
     /**
      * 获取文件名
      *
-     * @param realPath 物理路径
      * @param template 文件名
-     * @param genTable 业务表数据传输对象
+     * @param table    业务表数据传输对象
+     * @param isZip    生成到ZIP
      */
-    public static String getFileName(String realPath, String template, GenTableDto genTable) {
+    public static String getFileName(String template, GenTableDto table, Boolean isZip) {
         // 包路径
-        String packageName = genTable.getPackageName();
+        String packageName = table.getPackageName();
         // 模块名
-        String moduleName = genTable.getModuleName();
+        String moduleName = table.getModuleName();
         // 权限名
-        String authorityName = genTable.getAuthorityName();
+        String authorityName = table.getAuthorityName();
         // 大写类名
-        String className = genTable.getClassName();
+        String className = table.getClassName();
         // 业务名称
-        String businessName = genTable.getBusinessName();
+        String businessName = table.getBusinessName();
+
         // 业务名称(首字母大写)
-        String BusinessName = StrUtil.capitalize(genTable.getBusinessName());
+        String BusinessName = StrUtil.capitalize(table.getBusinessName());
+
+        JSONObject optionsObj = JSON.parseObject(table.getOptions());
+        // 获取依赖缩写模式
+        Boolean isDependMode = getDependMode(optionsObj);
+
+        String realGenPath, realUiPath;
+        if (isZip) {
+            realGenPath = StrUtil.EMPTY;
+            realUiPath = StrUtil.EMPTY;
+        } else if (StrUtil.equals(GenConstants.GenType.DEFAULT.getCode(), table.getGenType()) || StrUtil.isBlank(table.getGenPath())) {
+            realGenPath = System.getProperty("user.dir") + File.separator+ "genFile" + File.separator + "src" + File.separator;
+            realUiPath = System.getProperty("user.dir") + File.separator+ "genFile" + File.separator;
+        } else {
+            realGenPath = table.getGenPath();
+            realUiPath = table.getUiPath();
+        }
 
         String javaPath = PROJECT_PATH + StrUtil.SLASH + StrUtil.replace(packageName, StrUtil.DOT, StrUtil.SLASH);
-        String uiPath = "multi-ui" ;
+        String uiPath = "multi-ui";
 
         if (template.contains("query.java.vm")) {
-            return StrUtil.format("{}/domain/query/{}Query.java", javaPath, className);
+            return StrUtil.format("{}{}/domain/query/{}Query.java", realGenPath, javaPath, className);
         } else if (template.contains("dto.java.vm")) {
-            return StrUtil.format("{}/domain/dto/{}Dto.java", javaPath, className);
+            return StrUtil.format("{}{}/domain/dto/{}Dto.java", realGenPath, javaPath, className);
         } else if (template.contains("po.java.vm")) {
-            return StrUtil.format("{}/domain/po/{}Po.java", javaPath, className);
+            return StrUtil.format("{}{}/domain/po/{}Po.java", realGenPath, javaPath, className);
         } else if (template.contains("converter.java.vm")) {
-            return StrUtil.format("{}/domain/model/{}Converter.java", javaPath, className);
+            return StrUtil.format("{}{}/domain/model/{}Converter.java", realGenPath, javaPath, className);
         } else if (template.contains("correlate.java.vm")) {
-            return StrUtil.format("{}/domain/correlate/{}Correlate.java", javaPath, className);
+            return StrUtil.format("{}{}/domain/correlate/{}Correlate.java", realGenPath, javaPath, className);
         } else if (template.contains("aController.java.vm")) {
-            return StrUtil.format("{}/controller/admin/A{}Controller.java", javaPath, className);
+            return StrUtil.format("{}{}/controller/admin/A{}Controller.java", realGenPath, javaPath, className);
         } else if (template.contains("bController.java.vm")) {
-            return StrUtil.format("{}/controller/base/B{}Controller.java", javaPath, className);
+            return StrUtil.format("{}{}/controller/base/B{}Controller.java", realGenPath, javaPath, className);
         } else if (template.contains("iController.java.vm")) {
-            return StrUtil.format("{}/controller/inner/I{}Controller.java", javaPath, className);
+            return StrUtil.format("{}{}/controller/inner/I{}Controller.java", realGenPath, javaPath, className);
         } else if (template.contains("service.java.vm")) {
-            return StrUtil.format("{}/service/I{}Service.java", javaPath, className);
+            return StrUtil.format("{}{}/service/I{}Service.java", realGenPath, javaPath, className);
         } else if (template.contains("serviceImpl.java.vm")) {
-            return StrUtil.format("{}/service/impl/{}ServiceImpl.java", javaPath, className);
+            return StrUtil.format("{}{}/service/impl/{}ServiceImpl.java", realGenPath, javaPath, className);
         } else if (template.contains("manager.java.vm")) {
-            return StrUtil.format("{}/manager/I{}Manager.java", javaPath, className);
+            return StrUtil.format("{}{}/manager/I{}Manager.java", realGenPath, javaPath, className);
         } else if (template.contains("managerImpl.java.vm")) {
-            return StrUtil.format("{}/manager/impl/{}ManagerImpl.java", javaPath, className);
+            return StrUtil.format("{}{}/manager/impl/{}ManagerImpl.java", realGenPath, javaPath, className);
         } else if (template.contains("mapper.java.vm")) {
-            return StrUtil.format("{}/mapper/{}Mapper.java", javaPath, className);
+            return StrUtil.format("{}{}/mapper/{}Mapper.java", realGenPath, javaPath, className);
         } else if (template.contains("merge.java.vm")) {
-            return StrUtil.format("{}/domain/merge/{}.java", javaPath, className);
+            return StrUtil.format("{}{}/domain/merge/{}.java", realGenPath, javaPath, className);
         } else if (template.contains("mergeMapper.java.vm")) {
-            return StrUtil.format("{}/mapper/merge/{}Mapper.java", javaPath, className);
+            return StrUtil.format("{}{}/mapper/merge/{}Mapper.java", realGenPath, javaPath, className);
         } else if (template.contains("sql.sql.vm")) {
-            return StrUtil.format("sql/{}.sql", businessName);
+            return StrUtil.format("{}sql/{}.sql", realUiPath, businessName);
         }
 
         if (template.contains("api.ts.vm")) {
-            String prefixPath = StrUtil.format("{}/src/api", uiPath);
-            String suffixFile = ".api" ;
+            String prefixPath = StrUtil.format("{}{}/src/api", realUiPath, uiPath);
+            String suffixFile = ".api";
             return StrUtil.format("{}/{}/{}/{}{}.ts", prefixPath, moduleName, authorityName, businessName, suffixFile);
         } else if (template.contains("infoModel.ts.vm")) {
-            String prefixPath = StrUtil.format("{}/src/model", uiPath);
-            String suffixFile = ".model" ;
-            initIndexFile(realPath, prefixPath, suffixFile, moduleName, authorityName, businessName);
+            String prefixPath = StrUtil.format("{}{}/src/model", realUiPath, uiPath);
+            String suffixFile = ".model";
+            if (!isZip && isDependMode) {
+                initIndexFile(prefixPath, suffixFile, moduleName, authorityName, businessName);
+            }
             return StrUtil.format("{}/{}/{}/{}{}.ts", prefixPath, moduleName, authorityName, businessName, suffixFile);
         } else if (template.contains("auth.ts.vm")) {
-            String prefixPath = StrUtil.format("{}/src/auth", uiPath);
-            String suffixFile = ".auth" ;
-            initIndexFile(realPath, prefixPath, suffixFile, moduleName, authorityName, businessName);
+            String prefixPath = StrUtil.format("{}{}/src/auth", realUiPath, uiPath);
+            String suffixFile = ".auth";
+            if (!isZip && isDependMode) {
+                initIndexFile(prefixPath, suffixFile, moduleName, authorityName, businessName);
+            }
             return StrUtil.format("{}/{}/{}/{}{}.ts", prefixPath, moduleName, authorityName, businessName, suffixFile);
         } else if (template.contains("enum.ts.vm")) {
-            String prefixPath = StrUtil.format("{}/src/enums", uiPath);
-            String suffixFile = ".enum" ;
-            initIndexFile(realPath, prefixPath, suffixFile, moduleName, authorityName, businessName);
+            String prefixPath = StrUtil.format("{}{}/src/enums", realUiPath, uiPath);
+            String suffixFile = ".enum";
+            if (!isZip && isDependMode) {
+                initIndexFile(prefixPath, suffixFile, moduleName, authorityName, businessName);
+            }
             return StrUtil.format("{}/{}/{}/{}{}.ts", prefixPath, moduleName, authorityName, businessName, suffixFile);
         } else if (template.contains("data.ts.vm")) {
-            String prefixPath = StrUtil.format("{}/src/views", uiPath);
-            String suffixFile = ".data" ;
+            String prefixPath = StrUtil.format("{}{}/src/views", realUiPath, uiPath);
+            String suffixFile = ".data";
             return StrUtil.format("{}/{}/{}/{}/{}{}.ts", prefixPath, moduleName, authorityName, businessName, businessName, suffixFile);
         } else if (template.contains("index.vue.vm")) {
-            String prefixPath = StrUtil.format("{}/src/views", uiPath);
+            String prefixPath = StrUtil.format("{}{}/src/views", realUiPath, uiPath);
             return StrUtil.format("{}/{}/{}/{}/index.vue", prefixPath, moduleName, authorityName, businessName);
         } else if (template.contains("detail.vue.vm")) {
-            String prefixPath = StrUtil.format("{}/src/views", uiPath);
+            String prefixPath = StrUtil.format("{}{}/src/views", realUiPath, uiPath);
             return StrUtil.format("{}/{}/{}/{}/{}Detail.vue", prefixPath, moduleName, authorityName, businessName, BusinessName);
         } else if (template.contains("modal.vue.vm")) {
-            String prefixPath = StrUtil.format("{}/src/views", uiPath);
+            String prefixPath = StrUtil.format("{}{}/src/views", realUiPath, uiPath);
             return StrUtil.format("{}/{}/{}/{}/{}Modal.vue", prefixPath, moduleName, authorityName, businessName, BusinessName);
         }
-        return StrUtil.EMPTY;
+        throw new ServiceException("未知文件无法生成！");
     }
 
     /**
@@ -612,29 +635,17 @@ public class VelocityUtils {
     }
 
     /**
-     * 获取生成相对路径
-     *
-     * @param table    业务表对象
-     * @param subTable 子业务表对象
-     * @return 生成相对路径
-     */
-    public static String getRelativePath(GenTableDto table, GenTableDto subTable) {
-        return StrUtil.equals(table.getModuleName(), subTable.getModuleName()) ? StrUtil.equals(table.getAuthorityName(), subTable.getAuthorityName()) ? StrUtil.DOT : StrUtil.DOUBLE_DOT + StrUtil.SLASH + subTable.getAuthorityName() : StrUtil.DOUBLE_DOT + StrUtil.SLASH + StrUtil.DOUBLE_DOT + StrUtil.SLASH + subTable.getAuthorityName();
-    }
-
-    /**
      * 生成前端index文件
      *
-     * @param realPath      项目路径
      * @param prefixPath    路径前缀
      * @param suffixFile    文件后缀
      * @param moduleName    生成模块路径
      * @param authorityName 生成权限名
      * @param businessName  生成业务名
      */
-    public static void initIndexFile(String realPath, String prefixPath, String suffixFile, String moduleName, String authorityName, String businessName) {
-        if (StrUtil.isEmpty(realPath)) return;
-        outIndexFile(realPath + prefixPath + File.separator + moduleName + File.separator + authorityName + File.separator + "index.ts", StrUtil.format("export * from './{}{}'", businessName, suffixFile));
+    public static void initIndexFile(String prefixPath, String suffixFile, String moduleName, String authorityName, String businessName) {
+        if (StrUtil.isBlank(prefixPath)) return;
+        outIndexFile(prefixPath + File.separator + moduleName + File.separator + authorityName + File.separator + "index.ts", StrUtil.format("export * from './{}{}'", businessName, suffixFile));
     }
 
     /**

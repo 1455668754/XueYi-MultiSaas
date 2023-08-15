@@ -5,7 +5,7 @@ import { optionDictTypeApi } from '@/api/tenant/dict/dictType.api';
 import { FormSchema } from '/@/components/Form';
 import {
   DicCodeGenEnum,
-  GenerationModeEnum,
+  GenModeEnum,
   GenStatusEnum,
   IsTickEnum,
   SourceModeEnum,
@@ -472,7 +472,7 @@ export const generateFormSchema: FormSchema[] = [
     label: '生成路径',
     field: 'genType',
     component: 'RadioGroup',
-    defaultValue: GenerationModeEnum.ZIP,
+    defaultValue: GenModeEnum.DEFAULT,
     componentProps: {
       options: dict.DicGenerationMode,
       resultField: 'items',
@@ -486,14 +486,14 @@ export const generateFormSchema: FormSchema[] = [
     label: '后端生成路径',
     field: 'genPath',
     component: 'Input',
-    show: ({ values }) => values.genType == GenerationModeEnum.CUSTOM,
+    show: ({ values }) => values.genType == GenModeEnum.CUSTOM,
     colProps: { span: 12 },
   },
   {
     label: '前端生成路径',
     field: 'uiPath',
     component: 'Input',
-    show: ({ values }) => values.genType == GenerationModeEnum.CUSTOM,
+    show: ({ values }) => values.genType == GenModeEnum.CUSTOM,
     colProps: { span: 12 },
   },
 ];
