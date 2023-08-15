@@ -10,7 +10,6 @@ import com.xueyi.common.security.annotation.AdminAuth;
 import com.xueyi.tenant.api.source.domain.dto.TeSourceDto;
 import com.xueyi.tenant.api.source.domain.query.TeSourceQuery;
 import com.xueyi.tenant.source.controller.base.BTeSourceController;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -51,7 +50,7 @@ public class ATeSourceController extends BTeSourceController {
      */
     @Override
     @GetMapping("/list")
-    @PreAuthorize("@ss.hasAuthority(@Auth.TE_SOURCE_LIST)")
+    @PreAuthorize("@ss.hasAuthority(@Auth.TE_SOURCE_LIST, @Auth.TE_STRATEGY_LIST)")
     public AjaxResult list(TeSourceQuery source) {
         return super.list(source);
     }
@@ -64,16 +63,6 @@ public class ATeSourceController extends BTeSourceController {
     @PreAuthorize("@ss.hasAuthority(@Auth.TE_SOURCE_SINGLE)")
     public AjaxResult getInfo(@PathVariable Serializable id) {
         return super.getInfo(id);
-    }
-
-    /**
-     * 数据源导出
-     */
-    @Override
-    @PostMapping("/export")
-    @PreAuthorize("@ss.hasAuthority(@Auth.TE_SOURCE_EXPORT)")
-    public void export(HttpServletResponse response, TeSourceQuery source) {
-        super.export(response, source);
     }
 
     /**
@@ -127,15 +116,6 @@ public class ATeSourceController extends BTeSourceController {
     @Log(title = "数据源管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);
-    }
-
-    /**
-     * 获取数据源选择框列表
-     */
-    @Override
-    @GetMapping("/option")
-    public AjaxResult option() {
-        return super.option();
     }
 
 }

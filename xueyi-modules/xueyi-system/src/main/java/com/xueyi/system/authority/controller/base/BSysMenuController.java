@@ -66,9 +66,9 @@ public class BSysMenuController extends TreeController<SysMenuQuery, SysMenuDto,
         }
 
         switch (operate) {
-            case ADD, ADD_FORCE -> {
+            case ADD -> {
             }
-            case EDIT, EDIT_FORCE -> {
+            case EDIT -> {
                 SysMenuDto original = baseService.selectById(menu.getId());
                 if (ObjectUtil.isNull(original)) {
                     warn("数据不存在！");

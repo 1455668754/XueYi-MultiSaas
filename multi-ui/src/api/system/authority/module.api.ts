@@ -3,7 +3,6 @@ import { defHttp } from '/@/utils/http/axios';
 
 enum Api {
   LIST_MODULE = '/system/admin/module/list',
-  OPTION_MODULE = '/system/admin/module/option',
   GET_MODULE = '/system/admin/module/',
   ADD_MODULE = '/system/admin/module',
   EDIT_MODULE = '/system/admin/module',
@@ -14,9 +13,6 @@ enum Api {
 /** 查询模块列表 */
 export const listModuleApi = (params?: ModulePPM) =>
   defHttp.get<ModuleLRM>({ url: Api.LIST_MODULE, params });
-
-/** 查询模块选择框列表 */
-export const optionModuleApi = () => defHttp.get<ModuleLRM>({ url: Api.OPTION_MODULE });
 
 /** 查询模块详细 */
 export const getModuleApi = (id: string) =>

@@ -15,9 +15,6 @@ enum Api {
 export const listStrategyApi = (params?: StrategyPPM) =>
   defHttp.get<StrategyLRM>({ url: Api.LIST_STRATEGY, params });
 
-/** 查询源策略选择框列表 */
-export const optionStrategyApi = () => defHttp.get<StrategyLRM>({ url: Api.OPTION_STRATEGY });
-
 /** 查询数据源策略详细 */
 export const getStrategyApi = (id: string) =>
   defHttp.get<StrategyIM>({ url: Api.GET_STRATEGY, params: id });

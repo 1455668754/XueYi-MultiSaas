@@ -10,7 +10,6 @@ import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
 import com.xueyi.system.api.organize.domain.query.SysDeptQuery;
 import com.xueyi.system.organize.controller.base.BSysDeptController;
 import com.xueyi.system.organize.service.ISysOrganizeService;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -69,17 +68,6 @@ public class ASysDeptController extends BSysDeptController {
     }
 
     /**
-     * 部门导出
-     */
-    @Override
-    @PostMapping("/export")
-    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_DEPT_EXPORT)")
-    @Log(title = "部门管理", businessType = BusinessType.EXPORT)
-    public void export(HttpServletResponse response, SysDeptQuery dept) {
-        super.export(response, dept);
-    }
-
-    /**
      * 部门新增
      */
     @Override
@@ -133,12 +121,4 @@ public class ASysDeptController extends BSysDeptController {
         return super.batchRemove(idList);
     }
 
-    /**
-     * 获取部门选择框列表
-     */
-    @Override
-    @GetMapping("/option")
-    public AjaxResult option() {
-        return super.option();
-    }
 }

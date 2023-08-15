@@ -57,7 +57,7 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import { IconEnum } from '@/enums/basic';
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
-  import { SourceAuth } from '/@/auth/tenant';
+  import { SourceAuth } from '/@/auth/tenant/source';
   import { columns, searchFormSchema } from './source.data';
   import { SourceDetailGo } from '@/enums/tenant/source';
   import SourceModal from './SourceModal.vue';

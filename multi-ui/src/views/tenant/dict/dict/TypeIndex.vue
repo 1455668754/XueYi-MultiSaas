@@ -66,7 +66,7 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import { IconEnum } from '@/enums/basic';
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
-  import { DictTypeAuth } from '/@/auth/tenant';
+  import { DictTypeAuth } from '/@/auth/tenant/dict';
   import DictTypeModal from './DictTypeModal.vue';
   import { typeColumns, typeSearchFormSchema } from './dict.data';
   import { listTenantApi } from '@/api/tenant/tenant/tenant.api';

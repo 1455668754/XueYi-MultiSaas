@@ -3,7 +3,6 @@ import { MenuIM, MenuLM, MenuPM } from '@/model/system/authority';
 
 enum Api {
   LIST_MENU = '/system/admin/menu/list',
-  LIST_MENU_BY_TYPE = '/system/admin/menu/routeList',
   GET_MENU = '/system/admin/menu/',
   ADD_MENU = '/system/admin/menu',
   EDIT_MENU = '/system/admin/menu',

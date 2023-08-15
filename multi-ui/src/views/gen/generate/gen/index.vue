@@ -68,7 +68,7 @@
   import { columns, searchFormSchema } from './gen.data';
   import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { GenAuth } from '/@/auth/gen';
+  import { GenAuth } from '/@/auth/gen/generate';
   import {
     delForceGenApi,
     downloadGenApi,

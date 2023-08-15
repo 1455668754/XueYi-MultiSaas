@@ -124,13 +124,4 @@ public class ASysMenuController extends BSysMenuController {
         return super.batchRemove(idList);
     }
 
-    /**
-     * 获取菜单选择框列表
-     */
-    @Override
-    @GetMapping("/option")
-    public AjaxResult option() {
-        return super.option();
-    }
-
 }

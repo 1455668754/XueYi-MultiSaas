@@ -66,7 +66,7 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import { IconEnum } from '@/enums/basic';
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
-  import { ConfigAuth } from '/@/auth/tenant';
+  import { ConfigAuth } from '/@/auth/tenant/dict';
   import { columns, searchFormSchema } from './config.data';
   import { ConfigDetailGo } from '@/enums/tenant/dict';
   import ConfigModal from './ConfigModal.vue';

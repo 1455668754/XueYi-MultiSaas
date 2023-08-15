@@ -12,8 +12,4 @@ export enum StrategyAuth {
   EDIT_STATUS = 'tenant:strategy:es',
   // 删除数据源策略
   DELETE = 'tenant:strategy:delete',
-  // 数据源策略导入
-  IMPORT = 'tenant:strategy:import',
-  // 数据源策略导出
-  EXPORT = 'tenant:strategy:export',
 }

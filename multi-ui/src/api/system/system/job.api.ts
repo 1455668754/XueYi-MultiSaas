@@ -3,7 +3,6 @@ import { defHttp } from '/@/utils/http/axios';
 
 enum Api {
   LIST_JOB = '/schedule/job/list',
-  OPTION_JOB = '/schedule/job/option',
   GET_JOB = '/schedule/job/',
   ADD_JOB = '/schedule/job',
   EDIT_JOB = '/schedule/job',
@@ -14,9 +13,6 @@ enum Api {
 
 /** 查询调度任务列表 */
 export const listJobApi = (params?: JobPPM) => defHttp.get<JobLRM>({ url: Api.LIST_JOB, params });
-
-/** 查询调度任务选择框列表 */
-export const optionJobApi = () => defHttp.get<JobLRM>({ url: Api.OPTION_JOB });
 
 /** 查询调度任务详细 */
 export const getJobApi = (id: string) => defHttp.get<JobIM>({ url: Api.GET_JOB, params: id });

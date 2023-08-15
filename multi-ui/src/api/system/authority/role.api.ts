@@ -3,7 +3,6 @@ import { defHttp } from '/@/utils/http/axios';
 
 enum Api {
   LIST_ROLE = '/system/admin/role/list',
-  OPTION_ROLE = '/system/admin/role/option',
   GET_ROLE = '/system/admin/role/',
   GET_AUTH_ROLE = '/system/admin/role/auth/',
   GET_ORGANIZE_ROLE = '/system/admin/role/organize/',
@@ -18,9 +17,6 @@ enum Api {
 /** 查询角色列表 */
 export const listRoleApi = (params?: RolePPM) =>
   defHttp.get<RoleLRM>({ url: Api.LIST_ROLE, params });
-
-/** 查询角色选择框列表 */
-export const optionRoleApi = () => defHttp.get<RoleLRM>({ url: Api.OPTION_ROLE });
 
 /** 查询角色详细 */
 export const getRoleApi = (id: string) => defHttp.get<RoleIM>({ url: Api.GET_ROLE, params: id });

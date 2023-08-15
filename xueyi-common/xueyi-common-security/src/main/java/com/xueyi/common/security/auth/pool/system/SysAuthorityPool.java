@@ -19,10 +19,6 @@ public interface SysAuthorityPool {
     String SYS_MODULE_ES = "authority:module:es";
     /** 系统服务 | 权限模块 | 模块管理 | 删除 */
     String SYS_MODULE_DEL = "authority:module:delete";
-    /** 系统服务 | 权限模块 | 模块管理 | 导入 */
-    String SYS_MODULE_IMPORT = "authority:module:import";
-    /** 系统服务 | 权限模块 | 模块管理 | 导出 */
-    String SYS_MODULE_EXPORT = "authority:module:export";
 
     /** 系统服务 | 权限模块 | 菜单管理 | 列表 */
     String SYS_MENU_LIST = "authority:menu:list";
@@ -36,10 +32,6 @@ public interface SysAuthorityPool {
     String SYS_MENU_ES = "authority:menu:es";
     /** 系统服务 | 权限模块 | 菜单管理 | 删除 */
     String SYS_MENU_DEL = "authority:menu:delete";
-    /** 系统服务 | 权限模块 | 菜单管理 | 导入 */
-    String SYS_MENU_IMPORT = "authority:menu:import";
-    /** 系统服务 | 权限模块 | 菜单管理 | 导出 */
-    String SYS_MENU_EXPORT = "authority:menu:export";
 
     /** 系统服务 | 权限模块 | 角色管理 | 列表 */
     String SYS_ROLE_LIST = "authority:role:list";
@@ -55,8 +47,4 @@ public interface SysAuthorityPool {
     String SYS_ROLE_ES = "authority:role:es";
     /** 系统服务 | 权限模块 | 角色管理 | 删除 */
     String SYS_ROLE_DEL = "authority:role:delete";
-    /** 系统服务 | 权限模块 | 角色管理 | 导入 */
-    String SYS_ROLE_IMPORT = "authority:role:import";
-    /** 系统服务 | 权限模块 | 角色管理 | 导出 */
-    String SYS_ROLE_EXPORT = "authority:role:export";
 }

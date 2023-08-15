@@ -12,8 +12,4 @@ export enum MenuAuth {
   EDIT_STATUS = 'authority:menu:es',
   // 删除菜单
   DELETE = 'authority:menu:delete',
-  // 菜单导入
-  IMPORT = 'authority:menu:import',
-  // 菜单导出
-  EXPORT = 'authority:menu:export',
 }

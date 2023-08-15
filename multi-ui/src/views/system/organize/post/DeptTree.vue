@@ -17,15 +17,16 @@
 <script setup lang="ts">
   import { onMounted, ref } from 'vue';
   import { BasicTree, TreeItem } from '/@/components/Tree';
-  import { optionDeptApi } from '@/api/system/organize/dept.api';
+  import { listDeptApi } from '@/api/system/organize/dept.api';
   import { ScrollContainer } from '/@/components/Container';
+  import { DicStatusEnum } from '@/enums';
 
   const emit = defineEmits(['select']);
 
   const treeData = ref<TreeItem[]>([]);
 
   async function fetch() {
-    treeData.value = (await optionDeptApi()) as unknown as TreeItem[];
+    treeData.value = (await listDeptApi({ status: DicStatusEnum.NORMAL })) as unknown as TreeItem[];
   }
 
   function handleSelect(keys) {

@@ -38,7 +38,7 @@
   import { PageWrapper } from '/@/components/Page';
   import { GenTableIM } from '@/model/gen/generate';
   import { GenIndexGo } from '@/enums/gen/generate';
-  import { GenAuth } from '/@/auth/gen';
+  import { GenAuth } from '/@/auth/gen/generate';
   import { useUserStore } from '/@/store/modules/user';
 
   export default defineComponent({

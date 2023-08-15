@@ -19,10 +19,6 @@ public interface TeSourcePool {
     String TE_SOURCE_ES = "tenant:source:es";
     /** 租户服务 | 策略模块 | 数据源管理 | 删除 */
     String TE_SOURCE_DEL = "tenant:source:delete";
-    /** 租户服务 | 策略模块 | 数据源管理 | 导入 */
-    String TE_SOURCE_IMPORT = "tenant:source:import";
-    /** 租户服务 | 策略模块 | 数据源管理 | 导出 */
-    String TE_SOURCE_EXPORT = "tenant:source:export";
 
     /** 租户服务 | 策略模块 | 数据源策略管理 | 列表 */
     String TE_STRATEGY_LIST = "tenant:strategy:list";
@@ -36,9 +32,5 @@ public interface TeSourcePool {
     String TE_STRATEGY_ES = "tenant:strategy:es";
     /** 租户服务 | 策略模块 | 数据源策略管理 | 删除 */
     String TE_STRATEGY_DEL = "tenant:strategy:delete";
-    /** 租户服务 | 策略模块 | 数据源策略管理 | 导入 */
-    String TE_STRATEGY_IMPORT = "tenant:strategy:import";
-    /** 租户服务 | 策略模块 | 数据源策略管理 | 导出 */
-    String TE_STRATEGY_EXPORT = "tenant:strategy:export";
 
 }

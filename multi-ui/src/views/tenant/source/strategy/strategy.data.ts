@@ -6,7 +6,7 @@ import { dictConversion } from '/@/utils/xueyi';
 import { ColorEnum, DicCodeEnum, DicSortEnum, DicStatusEnum } from '@/enums/basic';
 import { StrategyIM } from '@/model/tenant/source';
 import { TenantIM } from '@/model/tenant/tenant';
-import { optionSourceApi } from '@/api/tenant/source/source.api';
+import { listSourceApi } from '@/api/tenant/source/source.api';
 import { h } from 'vue';
 import { Tag } from 'ant-design-vue';
 
@@ -78,7 +78,8 @@ export const searchFormSchema: FormSchema[] = [
     field: 'sourceId',
     component: 'ApiSelect',
     componentProps: {
-      api: optionSourceApi,
+      api: listSourceApi,
+      params: { status: DicStatusEnum.NORMAL },
       showSearch: true,
       optionFilterProp: 'label',
       resultField: 'items',
@@ -121,7 +122,8 @@ export const formSchema: FormSchema[] = [
     field: 'sourceId',
     component: 'ApiSelect',
     componentProps: {
-      api: optionSourceApi,
+      api: listSourceApi,
+      params: { status: DicStatusEnum.NORMAL },
       showSearch: true,
       optionFilterProp: 'label',
       resultField: 'items',

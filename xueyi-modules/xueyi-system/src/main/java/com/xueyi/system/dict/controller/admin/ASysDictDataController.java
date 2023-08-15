@@ -11,7 +11,6 @@ import com.xueyi.common.security.utils.SecurityUserUtils;
 import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
 import com.xueyi.system.api.dict.domain.query.SysDictDataQuery;
 import com.xueyi.system.dict.controller.base.BSysDictDataController;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -60,17 +59,6 @@ public class ASysDictDataController extends BSysDictDataController {
             SecurityContextHolder.setTenantIgnore();
         }
         return super.getInfo(id);
-    }
-
-    /**
-     * 字典数据导出
-     */
-    @Override
-    @PostMapping("/export")
-    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_DICT_DICT)")
-    @Log(title = "字典数据管理", businessType = BusinessType.EXPORT)
-    public void export(HttpServletResponse response, SysDictDataQuery dictData) {
-        super.export(response, dictData);
     }
 
     /**

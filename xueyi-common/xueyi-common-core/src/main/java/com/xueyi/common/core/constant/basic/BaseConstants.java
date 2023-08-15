@@ -27,25 +27,21 @@ public class BaseConstants {
     public enum Operate {
 
         ADD("add", "新增"),
-        ADD_FORCE("add", "强制新增"),
         EDIT("edit", "修改"),
-        EDIT_FORCE("edit", "强制修改"),
         EDIT_STATUS("editStatus", "修改状态"),
-        EDIT_STATUS_FORCE("editStatus", "强制修改状态"),
-        DELETE("delete", "删除"),
-        DELETE_FORCE("delete", "强制删除");
+        DELETE("delete", "删除");
 
         private final String code;
         private final String info;
 
         /** 是否为新增 | 强制新增 */
         public boolean isAdd() {
-            return StrUtil.equalsAny(name(), Operate.ADD.name(), Operate.ADD_FORCE.name());
+            return StrUtil.equalsAny(name(), Operate.ADD.name());
         }
 
         /** 是否为修改 | 强制修改 */
         public boolean isEdit() {
-            return StrUtil.equalsAny(name(), Operate.EDIT.name(), Operate.EDIT_FORCE.name());
+            return StrUtil.equalsAny(name(), Operate.EDIT.name());
         }
 
         /** 是否为修改状态 */
@@ -53,19 +49,9 @@ public class BaseConstants {
             return StrUtil.equals(name(), Operate.EDIT_STATUS.name());
         }
 
-        /** 是否为强制修改状态 */
-        public boolean isESForce() {
-            return StrUtil.equals(name(), Operate.EDIT_STATUS_FORCE.name());
-        }
-
         /** 是否为删除 */
         public boolean isDelete() {
             return StrUtil.equals(name(), Operate.DELETE.name());
-        }
-
-        /** 是否为强制删除 */
-        public boolean isDelForce() {
-            return StrUtil.equals(name(), Operate.DELETE_FORCE.name());
         }
     }
 

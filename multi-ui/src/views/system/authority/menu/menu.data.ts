@@ -12,7 +12,7 @@ import {
   DicYesNoEnum,
 } from '@/enums/basic';
 import { MenuIM } from '@/model/system/authority';
-import { optionModuleApi } from '@/api/system/authority/module.api';
+import { listModuleApi } from '@/api/system/authority/module.api';
 import { getMenuRouteListApi } from '@/api/system/authority/menu.api';
 import { COMMON_MENU, COMMON_MODULE, FrameTypeEnum, MenuTypeEnum } from '@/enums/system/authority';
 import { h } from 'vue';
@@ -177,7 +177,8 @@ export const searchFormSchema: FormSchema[] = [
     field: 'moduleId',
     component: 'ApiSelect',
     componentProps: {
-      api: optionModuleApi,
+      api: listModuleApi,
+      params: { status: DicStatusEnum.NORMAL },
       showSearch: true,
       optionFilterProp: 'label',
       resultField: 'items',
@@ -243,7 +244,8 @@ export const formSchema: FormSchema[] = [
     defaultValue: COMMON_MODULE,
     componentProps: ({ formModel, formActionType }) => {
       return {
-        api: optionModuleApi,
+        api: listModuleApi,
+        params: { status: DicStatusEnum.NORMAL },
         showSearch: true,
         optionFilterProp: 'label',
         resultField: 'items',

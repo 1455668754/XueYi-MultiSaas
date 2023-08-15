@@ -85,7 +85,7 @@
   import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
-  import { UserAuth } from '/@/auth/system';
+  import { UserAuth } from '/@/auth/system/organize';
   import { columns, searchFormSchema } from './user.data';
   import { UserDetailGo } from '@/enums/system/organize';
   import UserModal from './UserModal.vue';

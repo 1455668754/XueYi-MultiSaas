@@ -3,7 +3,7 @@ import { BasicColumn, FormSchema } from '@/components/Table';
 import { DictDataIM, DictTypeIM } from '@/model/tenant/dict';
 import { dictConversion } from '@/utils/xueyi';
 import { COMMON_TENANT_ID, DicCodeEnum, DicSortEnum, DicStatusEnum, DicYesNoEnum } from '@/enums';
-import { optionDictTypeApi } from '@/api/tenant/dict/dictType.api';
+import { listDictTypeApi } from '@/api/tenant/dict/dictType.api';
 import { DicCacheTypeEnum, DicCodeDictEnum, DicDataTypeEnum } from '@/enums/tenant/dict';
 import { isNotEmpty } from '@/utils/is';
 import { DescItem } from '@/components/Description';
@@ -317,7 +317,8 @@ export const dataFormSchema: FormSchema[] = [
     field: 'code',
     component: 'ApiSelect',
     componentProps: {
-      api: optionDictTypeApi,
+      api: listDictTypeApi,
+      params: { status: DicStatusEnum.NORMAL },
       resultField: 'items',
       labelField: 'name',
       valueField: 'code',

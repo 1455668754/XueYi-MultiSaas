@@ -14,8 +14,4 @@ export enum RoleAuth {
   AUTH = 'authority:role:auth',
   // 删除角色
   DELETE = 'authority:role:delete',
-  // 角色导入
-  IMPORT = 'authority:role:import',
-  // 角色导出
-  EXPORT = 'authority:role:export',
 }

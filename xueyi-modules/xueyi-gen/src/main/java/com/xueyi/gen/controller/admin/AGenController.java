@@ -163,7 +163,7 @@ public class AGenController extends BGenController {
     @DeleteMapping("/batch/force/{idList}")
     @PreAuthorize("@ss.hasAuthority(@Auth.GEN_GENERATE_DEL)")
     @Log(title = "代码生成管理", businessType = BusinessType.DELETE)
-    public AjaxResult batchRemoveForce(@PathVariable List<Long> idList) {
-        return super.batchRemoveForce(idList);
+    public AjaxResult batchRemove(@PathVariable List<Long> idList) {
+        return super.batchRemove(idList);
     }
 }

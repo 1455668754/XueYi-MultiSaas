@@ -19,8 +19,5 @@ public interface JobPool {
     String SCHEDULE_JOB_ES = "schedule:job:es";
     /** 定时任务 - 调度任务管理 - 删除 */
     String SCHEDULE_JOB_DEL = "schedule:job:delete";
-    /** 定时任务 - 调度任务管理 - 导入 */
-    String SCHEDULE_JOB_IMPORT = "schedule:job:import";
-    /** 定时任务 - 调度任务管理 - 导出 */
-    String SCHEDULE_JOB_EXPORT = "schedule:job:export";
+
 }

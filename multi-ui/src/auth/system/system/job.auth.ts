@@ -12,8 +12,4 @@ export enum JobAuth {
   EDIT_STATUS = 'schedule:job:es',
   // 删除调度任务
   DELETE = 'schedule:job:delete',
-  // 调度任务导入
-  IMPORT = 'schedule:job:import',
-  // 调度任务导出
-  EXPORT = 'schedule:job:export',
 }

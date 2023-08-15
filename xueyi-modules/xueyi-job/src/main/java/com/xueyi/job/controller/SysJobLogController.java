@@ -9,7 +9,6 @@ import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.job.api.domain.dto.SysJobLogDto;
 import com.xueyi.job.api.domain.query.SysJobLogQuery;
 import com.xueyi.job.service.ISysJobLogService;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,17 +62,6 @@ public class SysJobLogController extends BaseController<SysJobLogQuery, SysJobLo
     @PreAuthorize("@ss.hasAuthority(@Auth.SCHEDULE_JOB_SINGLE)")
     public AjaxResult getInfoExtra(@PathVariable Serializable id) {
         return super.getInfo(id);
-    }
-
-    /**
-     * 调度日志导出
-     */
-    @Override
-    @PostMapping("/export")
-    @PreAuthorize("@ss.hasAuthority(@Auth.SCHEDULE_JOB_EXPORT)")
-    @Log(title = "调度日志管理", businessType = BusinessType.EXPORT)
-    public void export(HttpServletResponse response, SysJobLogQuery jobLog) {
-        super.export(response, jobLog);
     }
 
     /**

@@ -66,7 +66,7 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import { IconEnum } from '@/enums/basic';
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
-  import { DeptAuth } from '/@/auth/system';
+  import { DeptAuth } from '/@/auth/system/organize';
   import { columns, searchFormSchema } from './dept.data';
   import { DeptDetailGo } from '@/enums/system/organize';
   import DeptModal from './DeptModal.vue';

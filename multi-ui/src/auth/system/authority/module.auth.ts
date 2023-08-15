@@ -12,8 +12,4 @@ export enum ModuleAuth {
   EDIT_STATUS = 'authority:module:es',
   // 删除模块
   DELETE = 'authority:module:delete',
-  // 模块导入
-  IMPORT = 'authority:module:import',
-  // 模块导出
-  EXPORT = 'authority:module:export',
 }

@@ -12,10 +12,6 @@ export enum DictTypeAuth {
   EDIT_STATUS = 'dict:dict:es',
   // 删除字典类型
   DELETE = 'dict:dict:delete',
-  // 字典类型导入
-  IMPORT = 'dict:dict:import',
-  // 字典类型导出
-  EXPORT = 'dict:dict:export',
   // 字典数据
   DICT = 'dict:dict:dict',
 }

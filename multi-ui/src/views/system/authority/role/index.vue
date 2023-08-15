@@ -72,7 +72,7 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import { IconEnum } from '@/enums/basic';
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
-  import { RoleAuth } from '/@/auth/system';
+  import { RoleAuth } from '/@/auth/system/authority';
   import { columns, searchFormSchema } from './role.data';
   import { RoleDetailGo } from '@/enums/system/authority';
   import RoleModal from './RoleModal.vue';

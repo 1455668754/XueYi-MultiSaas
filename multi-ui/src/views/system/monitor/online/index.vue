@@ -35,7 +35,7 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import { IconEnum } from '@/enums/basic';
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
-  import { OnlineAuth } from '/@/auth/system';
+  import { OnlineAuth } from '/@/auth/system/monitor';
   import { columns, searchFormSchema } from './online.data';
 
   const { createMessage, createConfirm } = useMessage();

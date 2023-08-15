@@ -14,8 +14,4 @@ export enum DeptAuth {
   AUTH = 'organize:dept:auth',
   // 删除部门
   DELETE = 'organize:dept:delete',
-  // 部门导入
-  IMPORT = 'organize:dept:import',
-  // 部门导出
-  EXPORT = 'organize:dept:export',
 }

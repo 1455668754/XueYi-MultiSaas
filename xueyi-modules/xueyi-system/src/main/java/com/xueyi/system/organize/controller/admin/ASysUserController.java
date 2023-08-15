@@ -173,14 +173,4 @@ public class ASysUserController extends BSysUserController {
         adminValidated(user.getId());
         return toAjax(baseService.resetUserPassword(user.getId(), SecurityUserUtils.encryptPassword(user.getPassword())));
     }
-
-    /**
-     * 获取用户选择框列表
-     */
-    @Override
-    @GetMapping("/option")
-    public AjaxResult option() {
-        return super.option();
-    }
-
 }

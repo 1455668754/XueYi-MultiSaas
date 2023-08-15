@@ -69,7 +69,7 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import { useGo } from '/@/hooks/web/usePage';
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
-  import { TenantAuth } from '/@/auth/tenant';
+  import { TenantAuth } from '/@/auth/tenant/tenant';
   import { columns, searchFormSchema } from './tenant.data';
   import { TenantDetailGo } from '@/enums/tenant/tenant';
   import TenantModal from './TenantModal.vue';

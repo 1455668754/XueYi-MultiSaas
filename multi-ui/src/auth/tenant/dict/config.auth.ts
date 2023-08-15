@@ -12,8 +12,4 @@ export enum ConfigAuth {
   EDIT_STATUS = 'dict:config:es',
   // 删除参数
   DELETE = 'dict:config:delete',
-  // 参数导入
-  IMPORT = 'dict:config:import',
-  // 参数导出
-  EXPORT = 'dict:config:export',
 }

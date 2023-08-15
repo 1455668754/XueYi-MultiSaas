@@ -57,7 +57,7 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import { IconEnum } from '@/enums/basic';
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
-  import { NoticeAuth } from '/@/auth/system';
+  import { NoticeAuth } from '/@/auth/system/notice';
   import { columns, searchFormSchema } from './notice.data';
   import { NoticeDetailGo } from '@/enums/system/notice';
   import NoticeModal from './NoticeModal.vue';

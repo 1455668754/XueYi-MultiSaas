@@ -10,7 +10,6 @@ import com.xueyi.common.security.annotation.AdminAuth;
 import com.xueyi.system.notice.controller.base.BSysNoticeController;
 import com.xueyi.system.notice.domain.dto.SysNoticeDto;
 import com.xueyi.system.notice.domain.query.SysNoticeQuery;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -56,17 +55,6 @@ public class ASysNoticeController extends BSysNoticeController {
     }
 
     /**
-     * 通知公告导出
-     */
-    @Override
-    @PostMapping("/export")
-    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_NOTICE_EXPORT)")
-    @Log(title = "通知公告管理", businessType = BusinessType.EXPORT)
-    public void export(HttpServletResponse response, SysNoticeQuery notice) {
-        super.export(response, notice);
-    }
-
-    /**
      * 通知公告新增
      */
     @Override
@@ -89,17 +77,6 @@ public class ASysNoticeController extends BSysNoticeController {
     }
 
     /**
-     * 通知公告修改状态
-     */
-    @Override
-    @PutMapping("/status")
-    @PreAuthorize("@ss.hasAnyAuthority(@Auth.SYS_NOTICE_EDIT, @Auth.SYS_NOTICE_ES)")
-    @Log(title = "通知公告管理", businessType = BusinessType.UPDATE_STATUS)
-    public AjaxResult editStatus(@RequestBody SysNoticeDto notice) {
-        return super.editStatus(notice);
-    }
-
-    /**
      * 通知公告批量删除
      */
     @Override
@@ -108,15 +85,6 @@ public class ASysNoticeController extends BSysNoticeController {
     @Log(title = "通知公告管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);
-    }
-
-    /**
-     * 获取通知公告选择框列表
-     */
-    @Override
-    @GetMapping("/option")
-    public AjaxResult option() {
-        return super.option();
     }
 
 }

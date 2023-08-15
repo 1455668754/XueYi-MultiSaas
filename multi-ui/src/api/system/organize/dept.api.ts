@@ -3,7 +3,6 @@ import { defHttp } from '/@/utils/http/axios';
 
 enum Api {
   LIST_DEPT = '/system/admin/dept/list',
-  OPTION_DEPT = '/system/admin/dept/option',
   GET_DEPT = '/system/admin/dept/',
   GET_AUTH_DEPT = '/system/admin/dept/auth/',
   ADD_DEPT = '/system/admin/dept',
@@ -15,9 +14,6 @@ enum Api {
 
 /** 查询部门列表 */
 export const listDeptApi = (params?: DeptPM) => defHttp.get<DeptLM>({ url: Api.LIST_DEPT, params });
-
-/** 查询部门选择框列表 */
-export const optionDeptApi = () => defHttp.get<DeptLM>({ url: Api.OPTION_DEPT });
 
 /** 查询部门详细 */
 export const getDeptApi = (id: string) => defHttp.get<DeptIM>({ url: Api.GET_DEPT, params: id });

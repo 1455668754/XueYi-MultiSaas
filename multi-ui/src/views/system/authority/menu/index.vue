@@ -61,7 +61,7 @@
   import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
-  import { MenuAuth } from '/@/auth/system';
+  import { MenuAuth } from '/@/auth/system/authority';
   import { columns, searchFormSchema } from './menu.data';
   import { COMMON_MENU, MenuDetailGo } from '@/enums/system/authority';
   import MenuModal from './MenuModal.vue';

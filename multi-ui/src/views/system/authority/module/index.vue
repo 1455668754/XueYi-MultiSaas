@@ -62,7 +62,7 @@
   import { IconEnum } from '@/enums/basic';
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
   import { Image } from 'ant-design-vue';
-  import { ModuleAuth } from '/@/auth/system';
+  import { ModuleAuth } from '/@/auth/system/authority';
   import { columns, searchFormSchema } from './module.data';
   import { ModuleDetailGo } from '@/enums/system/authority';
   import ModuleModal from './ModuleModal.vue';

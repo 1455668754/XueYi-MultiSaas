@@ -57,7 +57,7 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import { IconEnum } from '@/enums/basic';
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
-  import { StrategyAuth } from '/@/auth/tenant';
+  import { StrategyAuth } from '/@/auth/tenant/source';
   import { columns, searchFormSchema } from './strategy.data';
   import { StrategyDetailGo } from '@/enums/tenant/source';
   import StrategyModal from './StrategyModal.vue';

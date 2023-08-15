@@ -5,7 +5,7 @@ import { dicDictList } from '@/api/sys/dict.api';
 import { dictConversion } from '/@/utils/xueyi';
 import { ColorEnum, DicCodeEnum, DicSortEnum, DicStatusEnum, DicYesNoEnum } from '@/enums/basic';
 import { TenantIM } from '@/model/tenant/tenant';
-import { optionStrategyApi } from '@/api/tenant/source/strategy.api';
+import { listStrategyApi } from '@/api/tenant/source/strategy.api';
 import { h } from 'vue';
 import { Tag } from 'ant-design-vue';
 
@@ -108,7 +108,8 @@ export const searchFormSchema: FormSchema[] = [
     field: 'strategyId',
     component: 'ApiSelect',
     componentProps: {
-      api: optionStrategyApi,
+      api: listStrategyApi,
+      params: { status: DicStatusEnum.NORMAL },
       showSearch: true,
       optionFilterProp: 'label',
       resultField: 'items',
@@ -177,7 +178,8 @@ export const strategyFormSchema: FormSchema[] = [
     field: 'tenant.strategyId',
     component: 'ApiSelect',
     componentProps: {
-      api: optionStrategyApi,
+      api: listStrategyApi,
+      params: { status: DicStatusEnum.NORMAL },
       showSearch: true,
       optionFilterProp: 'label',
       resultField: 'items',
@@ -374,7 +376,8 @@ export const formSchema: FormSchema[] = [
     field: 'strategyId',
     component: 'ApiSelect',
     componentProps: {
-      api: optionStrategyApi,
+      api: listStrategyApi,
+      params: { status: DicStatusEnum.NORMAL },
       showSearch: true,
       optionFilterProp: 'label',
       resultField: 'items',

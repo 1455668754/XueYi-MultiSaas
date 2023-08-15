@@ -137,13 +137,4 @@ public class ASysDictTypeController extends BSysDictTypeController {
         baseService.clearCache();
         return AjaxResult.success();
     }
-
-    /**
-     * 获取字典类型选择框列表
-     */
-    @Override
-    @GetMapping("/option")
-    public AjaxResult option() {
-        return super.option();
-    }
 }

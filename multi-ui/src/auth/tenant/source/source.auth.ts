@@ -12,8 +12,4 @@ export enum SourceAuth {
   EDIT_STATUS = 'tenant:source:es',
   // 删除数据源
   DELETE = 'tenant:source:delete',
-  // 数据源导入
-  IMPORT = 'tenant:source:import',
-  // 数据源导出
-  EXPORT = 'tenant:source:export',
 }

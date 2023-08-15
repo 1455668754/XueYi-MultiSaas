@@ -122,24 +122,6 @@ public abstract class BaseController<Q extends BaseEntity, D extends BaseEntity,
     }
 
     /**
-     * 强制批量删除
-     *
-     * @see #RHandleEmpty (List)  基类 空校验
-     */
-    public AjaxResult batchRemoveForce(List<Long> idList) {
-        RHandleEmpty(idList);
-        RHandle(BaseConstants.Operate.DELETE_FORCE, idList);
-        return toAjax(baseService.deleteByIds(idList));
-    }
-
-    /**
-     * 获取选择框列表
-     */
-    public AjaxResult option() {
-        return option(DictConstants.DicYesNo.YES);
-    }
-
-    /**
      * 获取选择框列表
      *
      * @param operateType 操作类型 | 仅正常数据

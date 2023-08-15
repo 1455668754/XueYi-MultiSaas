@@ -13,7 +13,6 @@ import com.xueyi.system.authority.controller.base.BSysRoleController;
 import com.xueyi.system.authority.domain.vo.SysAuthTree;
 import com.xueyi.system.authority.service.ISysAuthService;
 import com.xueyi.system.organize.service.ISysOrganizeService;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -50,7 +49,7 @@ public class ASysRoleController extends BSysRoleController {
      */
     @Override
     @GetMapping("/list")
-    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_ROLE_LIST)")
+    @PreAuthorize("@ss.hasAnyAuthority(@Auth.SYS_ROLE_LIST, @Auth.SYS_DEPT_LIST, @Auth.SYS_POST_LIST, @Auth.SYS_USER_LIST)")
     public AjaxResult list(SysRoleQuery role) {
         return super.list(role);
     }
@@ -82,17 +81,6 @@ public class ASysRoleController extends BSysRoleController {
     @PreAuthorize("@ss.hasAuthority(@Auth.SYS_ROLE_AUTH)")
     public AjaxResult getRoleOrganize(@PathVariable Long id) {
         return success(organizeService.selectRoleOrganizeMerge(id));
-    }
-
-    /**
-     * 角色导出
-     */
-    @Override
-    @PostMapping("/export")
-    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_ROLE_EXPORT)")
-    @Log(title = "角色管理", businessType = BusinessType.EXPORT)
-    public void export(HttpServletResponse response, SysRoleQuery role) {
-        super.export(response, role);
     }
 
     /**
@@ -158,15 +146,6 @@ public class ASysRoleController extends BSysRoleController {
     @Log(title = "角色管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);
-    }
-
-    /**
-     * 获取角色选择框列表
-     */
-    @Override
-    @GetMapping("/option")
-    public AjaxResult option() {
-        return super.option();
     }
 
 }

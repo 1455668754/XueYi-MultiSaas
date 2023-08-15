@@ -7,9 +7,7 @@ export interface RoleIM extends BaseEntity {
   name: string;
   roleKey: string;
   dataScope: string;
-  sort: number;
   status: string;
-  remark: string;
   authIds: string[];
   organizeIds: string[];
 }
@@ -24,7 +22,6 @@ export interface RolePM extends BaseEntity {
   name?: string;
   roleKey?: string;
   dataScope?: string;
-  sort?: number;
   status?: string;
   remark?: string;
   authIds?: string[];

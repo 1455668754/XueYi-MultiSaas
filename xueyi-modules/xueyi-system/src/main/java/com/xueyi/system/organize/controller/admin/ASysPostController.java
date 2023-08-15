@@ -9,7 +9,6 @@ import com.xueyi.common.security.annotation.AdminAuth;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 import com.xueyi.system.api.organize.domain.query.SysPostQuery;
 import com.xueyi.system.organize.controller.base.BSysPostController;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -64,17 +63,6 @@ public class ASysPostController extends BSysPostController {
     }
 
     /**
-     * 岗位导出
-     */
-    @Override
-    @PostMapping("/export")
-    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_POST_EXPORT)")
-    @Log(title = "岗位管理", businessType = BusinessType.EXPORT)
-    public void export(HttpServletResponse response, SysPostQuery post) {
-        super.export(response, post);
-    }
-
-    /**
      * 岗位新增
      */
     @Override
@@ -126,15 +114,6 @@ public class ASysPostController extends BSysPostController {
     @Log(title = "岗位管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);
-    }
-
-    /**
-     * 获取岗位选择框列表
-     */
-    @Override
-    @GetMapping("/option")
-    public AjaxResult option() {
-        return super.option();
     }
 
 }

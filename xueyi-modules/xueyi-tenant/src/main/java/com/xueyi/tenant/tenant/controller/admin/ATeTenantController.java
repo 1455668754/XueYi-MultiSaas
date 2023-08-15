@@ -10,7 +10,6 @@ import com.xueyi.tenant.api.tenant.domain.dto.TeTenantDto;
 import com.xueyi.tenant.api.tenant.domain.query.TeTenantQuery;
 import com.xueyi.tenant.tenant.controller.base.BTeTenantController;
 import com.xueyi.tenant.tenant.domain.dto.TeTenantRegister;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -62,16 +61,6 @@ public class ATeTenantController extends BTeTenantController {
     @PreAuthorize("@ss.hasAuthority(@Auth.TE_TENANT_AUTH)")
     public AjaxResult getAuth(@PathVariable Long id) {
         return success(baseService.selectAuth(id));
-    }
-
-    /**
-     * 租户导出
-     */
-    @Override
-    @PostMapping("/export")
-    @PreAuthorize("@ss.hasAuthority(@Auth.TE_TENANT_EXPORT)")
-    public void export(HttpServletResponse response, TeTenantQuery tenant) {
-        super.export(response, tenant);
     }
 
     /**

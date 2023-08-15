@@ -1,7 +1,6 @@
 package com.xueyi.job.controller;
 
 import com.xueyi.common.core.constant.basic.BaseConstants;
-import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.constant.basic.HttpConstants;
 import com.xueyi.common.core.constant.job.ScheduleConstants;
 import com.xueyi.common.core.utils.core.CollUtil;
@@ -17,7 +16,6 @@ import com.xueyi.job.api.domain.query.SysJobQuery;
 import com.xueyi.job.api.utils.CronUtils;
 import com.xueyi.job.service.ISysJobService;
 import com.xueyi.job.util.ScheduleUtil;
-import jakarta.servlet.http.HttpServletResponse;
 import org.quartz.SchedulerException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -65,16 +63,6 @@ public class SysJobController extends BaseController<SysJobQuery, SysJobDto, ISy
     @PreAuthorize("@ss.hasAuthority(@Auth.SCHEDULE_JOB_SINGLE)")
     public AjaxResult getInfo(@PathVariable Serializable id) {
         return super.getInfo(id);
-    }
-
-    /**
-     * 调度任务导出
-     */
-    @Override
-    @PostMapping("/export")
-    @PreAuthorize("@ss.hasAuthority(@Auth.SCHEDULE_JOB_EXPORT)")
-    public void export(HttpServletResponse response, SysJobQuery job) {
-        super.export(response, job);
     }
 
     /**
@@ -130,15 +118,6 @@ public class SysJobController extends BaseController<SysJobQuery, SysJobDto, ISy
         if (CollUtil.isEmpty(idList))
             warn(StrUtil.format("无待删除{}！", getNodeName()));
         return toAjax(baseService.deleteByIds(idList));
-    }
-
-    /**
-     * 获取调度任务选择框列表
-     */
-    @Override
-    @GetMapping("/option")
-    public AjaxResult option() {
-        return super.option(DictConstants.DicYesNo.NO);
     }
 
     /**

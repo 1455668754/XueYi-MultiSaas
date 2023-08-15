@@ -1,7 +1,7 @@
 import { dicDictList } from '@/api/sys/dict.api';
-import { optionModuleApi } from '@/api/system/authority/module.api';
+import { listModuleApi } from '@/api/system/authority/module.api';
 import { getMenuRouteListApi } from '@/api/system/authority/menu.api';
-import { optionDictTypeApi } from '@/api/tenant/dict/dictType.api';
+import { listDictTypeApi } from '@/api/tenant/dict/dictType.api';
 import { FormSchema } from '/@/components/Form';
 import {
   DicCodeGenEnum,
@@ -16,7 +16,7 @@ import { BasicColumn } from '/@/components/Table';
 import { GenTableColumnIM, GenTableColumnLM, GenTableLM } from '@/model/gen/generate';
 import { Component, h } from 'vue';
 import { Input, Select, Switch } from 'ant-design-vue';
-import { DicCodeEnum, DicYesNoEnum } from '@/enums';
+import { DicCodeEnum, DicStatusEnum, DicYesNoEnum } from '@/enums';
 
 /** 字典查询 */
 export const dictMap = await dicDictList([
@@ -38,7 +38,7 @@ export const dict: any = {
   DicGenerationMode: dictMap[DicCodeGenEnum.GEN_GENERATION_MODE],
   DicYesNoOptions: dictMap[DicCodeEnum.SYS_YES_NO],
   DicSourceMode: dictMap[DicCodeGenEnum.GEN_SOURCE_MODE],
-  DicDictTypeOption: await optionDictTypeApi().then((res) => {
+  DicDictTypeOption: await listDictTypeApi({ status: DicStatusEnum.NORMAL }).then((res) => {
     return res.items.map((item) => {
       return { label: item.name, value: item.code };
     });
@@ -544,7 +544,8 @@ export const generateBaseSchema: FormSchema[] = [
     component: 'ApiSelect',
     componentProps: ({ formModel, formActionType }) => {
       return {
-        api: optionModuleApi,
+        api: listModuleApi,
+        params: { status: DicStatusEnum.NORMAL },
         showSearch: true,
         optionFilterProp: 'label',
         resultField: 'items',

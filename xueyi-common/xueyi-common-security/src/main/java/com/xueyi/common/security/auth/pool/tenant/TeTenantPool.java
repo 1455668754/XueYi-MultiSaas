@@ -21,9 +21,5 @@ public interface TeTenantPool {
     String TE_TENANT_ES = "tenant:tenant:es";
     /** 租户服务 | 租户模块 | 租户管理 | 删除 */
     String TE_TENANT_DEL = "tenant:tenant:delete";
-    /** 租户服务 | 租户模块 | 租户管理 | 导入 */
-    String TE_TENANT_IMPORT = "tenant:tenant:import";
-    /** 租户服务 | 租户模块 | 租户管理 | 导出 */
-    String TE_TENANT_EXPORT = "tenant:tenant:export";
 
 }

@@ -3,7 +3,6 @@ import { DictTypeIM, DictTypeLRM, DictTypePPM } from '@/model/tenant/dict';
 
 enum Api {
   LIST_DICT_TYPE = '/system/admin/dict/type/list',
-  OPTION_DICT_TYPE = '/system/admin/dict/type/option',
   GET_DICT_TYPE = '/system/admin/dict/type/',
   ADD_DICT_TYPE = '/system/admin/dict/type',
   EDIT_DICT_TYPE = '/system/admin/dict/type',
@@ -15,9 +14,6 @@ enum Api {
 /** 查询字典类型列表 */
 export const listDictTypeApi = (params?: DictTypePPM) =>
   defHttp.get<DictTypeLRM>({ url: Api.LIST_DICT_TYPE, params });
-
-/** 查询字典类型选择框列表 */
-export const optionDictTypeApi = () => defHttp.get<DictTypeLRM>({ url: Api.OPTION_DICT_TYPE });
 
 /** 查询字典类型详细 */
 export const getDictTypeApi = (id: string) =>

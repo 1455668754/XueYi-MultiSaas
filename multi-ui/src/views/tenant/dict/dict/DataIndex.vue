@@ -53,7 +53,7 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import { IconEnum } from '@/enums/basic';
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
-  import { DictTypeAuth } from '/@/auth/tenant';
+  import { DictTypeAuth } from '/@/auth/tenant/dict';
   import DictDataModal from './DictDataModal.vue';
   import { dataColumns, dataSearchFormSchema } from './dict.data';
   import { DictTypeIM } from '@/model/tenant/dict';

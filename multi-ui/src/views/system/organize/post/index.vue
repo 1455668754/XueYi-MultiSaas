@@ -65,7 +65,7 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import { IconEnum } from '@/enums/basic';
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
-  import { PostAuth } from '/@/auth/system';
+  import { PostAuth } from '/@/auth/system/organize';
   import { columns, searchFormSchema } from './post.data';
   import { PostDetailGo } from '@/enums/system/organize';
   import PostModal from './PostModal.vue';

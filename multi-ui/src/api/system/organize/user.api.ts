@@ -5,7 +5,6 @@ import dayjs from 'dayjs';
 
 enum Api {
   LIST_USER = '/system/admin/user/list',
-  OPTION_USER = '/system/admin/user/option',
   GET_USER = '/system/admin/user/',
   GET_AUTH_USER = '/system/admin/user/auth/',
   ADD_USER = '/system/admin/user',
@@ -20,9 +19,6 @@ enum Api {
 /** 查询用户列表 */
 export const listUserApi = (params?: UserPPM) =>
   defHttp.get<UserLRM>({ url: Api.LIST_USER, params });
-
-/** 查询用户选择框列表 */
-export const optionUserApi = () => defHttp.get<UserLRM>({ url: Api.OPTION_USER });
 
 /** 查询用户详细 */
 export const getUserApi = (id: string) => defHttp.get<UserIM>({ url: Api.GET_USER, params: id });

@@ -9,7 +9,6 @@ export interface DeptIM extends TreeEntity<DeptIM> {
   leader: string;
   phone: string;
   email: string;
-  sort: number;
   status: string;
   roleIds: string[];
   roles: RoleLM;

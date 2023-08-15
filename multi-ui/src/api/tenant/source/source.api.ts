@@ -3,7 +3,6 @@ import { defHttp } from '/@/utils/http/axios';
 
 enum Api {
   LIST_SOURCE = '/tenant/admin/source/list',
-  OPTION_SOURCE = '/tenant/admin/source/option',
   GET_SOURCE = '/tenant/admin/source/',
   CONNECTION = '/tenant/admin/source/connection',
   ADD_SOURCE = '/tenant/admin/source',
@@ -15,9 +14,6 @@ enum Api {
 /** 查询数据源列表 */
 export const listSourceApi = (params?: SourcePPM) =>
   defHttp.get<SourceLRM>({ url: Api.LIST_SOURCE, params });
-
-/** 查询数据源选择框列表 */
-export const optionSourceApi = () => defHttp.get<SourceLRM>({ url: Api.OPTION_SOURCE });
 
 /** 查询数据源详细 */
 export const getSourceApi = (id: string) =>

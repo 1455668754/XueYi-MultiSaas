@@ -22,11 +22,12 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
-  import { optionRoleApi } from '@/api/system/authority/role.api';
+  import { listRoleApi } from '@/api/system/authority/role.api';
   import { DeptIM } from '@/model/system/organize';
   import { RoleIM, RoleLM } from '@/model/system/authority';
   import { roleFormSchema } from './dept.data';
   import { editAuthDeptScopeApi, getAuthDeptApi } from '@/api/system/organize/dept.api';
+  import { DicStatusEnum } from '@/enums';
 
   const emit = defineEmits(['success', 'register']);
 
@@ -46,7 +47,9 @@
     const record = data.record as DeptIM;
     record.roleIds = await getAuthDeptApi(record.id);
     if (unref(roleList).length === 0) {
-      roleList.value = await optionRoleApi().then((item) => item.items);
+      roleList.value = await listRoleApi({ status: DicStatusEnum.NORMAL }).then(
+        (item) => item.items,
+      );
     }
     setFieldsValue({
       ...record,

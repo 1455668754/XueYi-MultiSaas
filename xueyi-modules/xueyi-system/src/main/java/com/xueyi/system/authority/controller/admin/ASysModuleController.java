@@ -12,7 +12,6 @@ import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
 import com.xueyi.system.api.authority.domain.query.SysModuleQuery;
 import com.xueyi.system.api.model.DataScope;
 import com.xueyi.system.authority.controller.base.BSysModuleController;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -60,7 +59,7 @@ public class ASysModuleController extends BSysModuleController {
      */
     @Override
     @GetMapping("/list")
-    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_MODULE_LIST)")
+    @PreAuthorize("@ss.hasAnyAuthority(@Auth.SYS_MODULE_LIST, @Auth.GEN_GENERATE_LIST, @Auth.SYS_MENU_LIST)")
     public AjaxResult list(SysModuleQuery module) {
         return super.list(module);
     }
@@ -73,17 +72,6 @@ public class ASysModuleController extends BSysModuleController {
     @PreAuthorize("@ss.hasAuthority(@Auth.SYS_MODULE_SINGLE)")
     public AjaxResult getInfo(@PathVariable Serializable id) {
         return super.getInfo(id);
-    }
-
-    /**
-     * 模块导出
-     */
-    @Override
-    @PostMapping("/export")
-    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_MODULE_EXPORT)")
-    @Log(title = "模块管理", businessType = BusinessType.EXPORT)
-    public void export(HttpServletResponse response, SysModuleQuery module) {
-        super.export(response, module);
     }
 
     /**
@@ -128,15 +116,6 @@ public class ASysModuleController extends BSysModuleController {
     @Log(title = "模块管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);
-    }
-
-    /**
-     * 获取模块选择框列表
-     */
-    @Override
-    @GetMapping("/option")
-    public AjaxResult option() {
-        return super.option();
     }
 
 }

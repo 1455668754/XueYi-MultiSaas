@@ -3,7 +3,6 @@ import { defHttp } from '/@/utils/http/axios';
 
 enum Api {
   LIST_POST = '/system/admin/post/list',
-  OPTION_POST = '/system/admin/post/option',
   GET_POST = '/system/admin/post/',
   GET_AUTH_POST = '/system/admin/post/auth/',
   ADD_POST = '/system/admin/post',
@@ -16,9 +15,6 @@ enum Api {
 /** 查询岗位列表 */
 export const listPostApi = (params?: PostPPM) =>
   defHttp.get<PostLRM>({ url: Api.LIST_POST, params });
-
-/** 查询岗位选择框列表 */
-export const optionPostApi = () => defHttp.get<PostLRM>({ url: Api.OPTION_POST });
 
 /** 查询岗位详细 */
 export const getPostApi = (id: string) => defHttp.get<PostIM>({ url: Api.GET_POST, params: id });

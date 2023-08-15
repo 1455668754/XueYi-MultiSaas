@@ -14,8 +14,4 @@ export enum TenantAuth {
   AUTH = 'tenant:tenant:auth',
   // 删除租户
   DELETE = 'tenant:tenant:delete',
-  // 租户导入
-  IMPORT = 'tenant:tenant:import',
-  // 租户导出
-  EXPORT = 'tenant:tenant:export',
 }
