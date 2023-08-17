@@ -389,8 +389,8 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
                 setTreeTable(table, optionsObj);
             case BASE:
                 setBaseTable(table, optionsObj);
+                setMenuOptions(table, optionsObj);
         }
-        setMenuOptions(table, optionsObj);
         return table;
     }
 

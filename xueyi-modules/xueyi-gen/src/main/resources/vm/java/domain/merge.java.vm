@@ -1,4 +1,4 @@
-package ${packageName}.domain.po;
+package ${packageName}.domain.merge;
 
 #set($Entity="BasisEntity")
 #set($entityUrl="entity")
@@ -37,7 +37,7 @@ import java.io.Serial;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @TableName("${tableName}")
-public class ${ClassName}Merge extends ${Entity} {
+public class ${ClassName} extends ${Entity} {
 
     @Serial
     private static final long serialVersionUID = 1L;
