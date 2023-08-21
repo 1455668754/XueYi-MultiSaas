@@ -170,39 +170,39 @@ public class A${ClassName}Controller extends B${ClassName}Controller {
 
     interface Auth {
 #if($api.list)
-        /** 系统 - ${functionName}管理 - 列表 */
+        /** ${functionName}管理 - 列表 */
         String ${ClASS_NAME}_LIST = "${authorityName}:${businessName}:list";
 #end
 #if($api.getInfo)
-        /** 系统 - ${functionName}管理 - 详情 */
+        /** ${functionName}管理 - 详情 */
         String ${ClASS_NAME}_SINGLE = "${authorityName}:${businessName}:single";
 #end
 #if($api.add)
-        /** 系统 - ${functionName}管理 - 新增 */
+        /** ${functionName}管理 - 新增 */
         String ${ClASS_NAME}_ADD = "${authorityName}:${businessName}:add";
 #end
 #if($api.edit)
-        /** 系统 - ${functionName}管理 - 修改 */
+        /** ${functionName}管理 - 修改 */
         String ${ClASS_NAME}_EDIT = "${authorityName}:${businessName}:edit";
 #end
 #if($api.editStatus)
-        /** 系统 - ${functionName}管理 - 修改状态 */
+        /** ${functionName}管理 - 修改状态 */
         String ${ClASS_NAME}_ES = "${authorityName}:${businessName}:es";
 #end
 #if($api.batchRemove)
-        /** 系统 - ${functionName}管理 - 删除 */
+        /** ${functionName}管理 - 删除 */
         String ${ClASS_NAME}_DEL = "${authorityName}:${businessName}:delete";
 #end
 #if($api.import)
-        /** 系统 - ${functionName}管理 - 导入 */
+        /** ${functionName}管理 - 导入 */
         String ${ClASS_NAME}_IMPORT = "${authorityName}:${businessName}:import";
 #end
 #if($api.export)
-        /** 系统 - ${functionName}管理 - 导出 */
+        /** ${functionName}管理 - 导出 */
         String ${ClASS_NAME}_EXPORT = "${authorityName}:${businessName}:export";
 #end
 #if($api.cache)
-        /** 系统 - ${functionName}管理 - 缓存 */
+        /** ${functionName}管理 - 缓存 */
         String ${ClASS_NAME}_CACHE = "${authorityName}:${businessName}:cache";
 #end
     }
