@@ -49,6 +49,19 @@ public final class Indirect<D extends BaseEntity, M extends BasisEntity, S exten
     /**
      * 构建间接关联映射
      *
+     * @param mergeMapper  中间关联Mapper接口
+     * @param mergeMainFun 中间关联主键
+     * @param mainIdFun    关联主键
+     */
+    public Indirect(CorrelateConstants.SubOperate operateType, Class<? extends BasicMapper<M>> mergeMapper, SFunction<M, ?> mergeMainFun, SFunction<M, ?> mergeSlaveFun, SFunction<D, ?> mainIdFun, SFunction<D, ?> subKeyFun) {
+        initIndirect(operateType, mergeMapper, mergeMainFun, mainIdFun);
+        this.orm.setMergeSlaveField(CorrelateUtil.getField(mergeSlaveFun));
+        setSubKeyFun(subKeyFun);
+    }
+
+    /**
+     * 构建间接关联映射
+     *
      * @param slaveService  关联Service接口
      * @param mergeMapper   中间关联Mapper接口
      * @param mergeMainFun  中间关联主键

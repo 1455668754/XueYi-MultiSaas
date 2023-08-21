@@ -100,24 +100,8 @@ public final class CorrelateIndirectHandle extends CorrelateBaseHandle {
         Set<Object> delKeys = new HashSet<>();
         // 1.组装操作数据
         updateIndirectBuild(originDto, newDto, ormIndirect, insertList, delKeys);
-        int rows = NumberUtil.Zero;
-        // 2.判断是否执行新增
-        if (CollUtil.isNotEmpty(insertList)) {
-            rows += SpringUtil.getBean(ormIndirect.getMergeMapper()).insertBatch(insertList);
-        }
-        // 3.判断是否执行删除
-        if (CollUtil.isNotEmpty(delKeys)) {
-            Object delMainKey = getFieldObj(newDto, ormIndirect.getMainKeyField());
-            SqlField sqlMainField = new SqlField(SqlConstants.OperateType.EQ, ormIndirect.getMergeMainSqlName(), delMainKey);
-            SqlField sqlArrField = new SqlField(SqlConstants.OperateType.IN, ormIndirect.getMergeSlaveSqlName(), delKeys);
-            List<M> mergeList = (List<M>) SpringUtil.getBean(ormIndirect.getMergeMapper()).selectListByField(sqlMainField, sqlArrField);
-            if (CollUtil.isNotEmpty(mergeList)) {
-                Set<Object> mergeIds = mergeList.stream().map(BasisEntity::getId).collect(Collectors.toSet());
-                rows += SpringUtil.getBean(ormIndirect.getMergeMapper()).deleteBatchIds(mergeIds);
-            }
-        }
-        // 4.返回操作结果
-        return rows;
+        // 2.返回操作结果
+        return refreshIndirectList(insertList, delKeys, newDto, null, ormIndirect);
     }
 
     /**
@@ -143,24 +127,8 @@ public final class CorrelateIndirectHandle extends CorrelateBaseHandle {
                 updateIndirectBuild(originDto, newDto, ormIndirect, insertList, delKeys);
             });
         }
-        int rows = NumberUtil.Zero;
-        // 2.判断是否执行新增
-        if (CollUtil.isNotEmpty(insertList)) {
-            rows += SpringUtil.getBean(ormIndirect.getMergeMapper()).insertBatch(insertList);
-        }
-        // 3.判断是否执行删除
-        if (CollUtil.isNotEmpty(delKeys)) {
-            Set<Object> delMainKeys = newList.stream().map(item -> getFieldObj(item, ormIndirect.getMainKeyField())).collect(Collectors.toSet());
-            SqlField sqlMainField = new SqlField(SqlConstants.OperateType.IN, ormIndirect.getMergeMainSqlName(), delMainKeys);
-            SqlField sqlArrField = new SqlField(SqlConstants.OperateType.IN, ormIndirect.getMergeSlaveSqlName(), delKeys);
-            List<M> mergeList = (List<M>) SpringUtil.getBean(ormIndirect.getMergeMapper()).selectListByField(sqlMainField, sqlArrField);
-            if (CollUtil.isNotEmpty(mergeList)) {
-                Set<Object> mergeIds = mergeList.stream().map(BasisEntity::getId).collect(Collectors.toSet());
-                rows += SpringUtil.getBean(ormIndirect.getMergeMapper()).deleteBatchIds(mergeIds);
-            }
-        }
-        // 4.返回操作结果
-        return rows;
+        // 返回操作结果
+        return refreshIndirectList(insertList, delKeys, null, newList, ormIndirect);
     }
 
     /**
@@ -226,20 +194,22 @@ public final class CorrelateIndirectHandle extends CorrelateBaseHandle {
         }
 
         // select sub relation list
-        Set<Object> subFindInSet = getFieldKeys(mergeList, ormIndirect, ormIndirect.getMergeSlaveField());
-        if (CollUtil.isEmpty(subFindInSet)) {
-            return;
-        }
-        SqlField subSqlField = new SqlField(SqlConstants.OperateType.IN, ormIndirect.getSlaveKeySqlName(), subFindInSet);
-        // 子查询进行数据关联操作
-        CorrelateUtil.startCorrelates(indirect.getRelations());
-        List<S> subList = (List<S>) SpringUtil.getBean(ormIndirect.getSlaveService()).selectListByField(subSqlField);
+        if (ObjectUtil.isNotNull(ormIndirect.getSlaveService())) {
+            Set<Object> subFindInSet = getFieldKeys(mergeList, ormIndirect, ormIndirect.getMergeSlaveField());
+            if (CollUtil.isEmpty(subFindInSet)) {
+                return;
+            }
+            SqlField subSqlField = new SqlField(SqlConstants.OperateType.IN, ormIndirect.getSlaveKeySqlName(), subFindInSet);
+            // 子查询进行数据关联操作
+            CorrelateUtil.startCorrelates(indirect.getRelations());
+            List<S> subList = (List<S>) SpringUtil.getBean(ormIndirect.getSlaveService()).selectListByField(subSqlField);
 
-        CorrelateConstants.MergeType subType = ObjectUtil.equals(CorrelateConstants.DataRow.SINGLE.getCode(), ormIndirect.getSubDataRow()) ? CorrelateConstants.MergeType.DIRECT : CorrelateConstants.MergeType.INDIRECT;
-        if (ObjectUtil.isNotNull(dto)) {
-            setSubField(dto, subList, ormIndirect.getSubDataRow(), subType, ormIndirect.getSubKeyField(), ormIndirect.getSlaveKeyField(), ormIndirect.getSubInfoField());
-        } else if (CollUtil.isNotEmpty(dtoList)) {
-            setSubField(dtoList, subList, ormIndirect.getSubDataRow(), subType, ormIndirect.getSubKeyField(), ormIndirect.getSlaveKeyField(), ormIndirect.getSubInfoField());
+            CorrelateConstants.MergeType subType = ObjectUtil.equals(CorrelateConstants.DataRow.SINGLE.getCode(), ormIndirect.getSubDataRow()) ? CorrelateConstants.MergeType.DIRECT : CorrelateConstants.MergeType.INDIRECT;
+            if (ObjectUtil.isNotNull(dto)) {
+                setSubField(dto, subList, ormIndirect.getSubDataRow(), subType, ormIndirect.getSubKeyField(), ormIndirect.getSlaveKeyField(), ormIndirect.getSubInfoField());
+            } else if (CollUtil.isNotEmpty(dtoList)) {
+                setSubField(dtoList, subList, ormIndirect.getSubDataRow(), subType, ormIndirect.getSubKeyField(), ormIndirect.getSlaveKeyField(), ormIndirect.getSubInfoField());
+            }
         }
     }
 
@@ -342,14 +312,51 @@ public final class CorrelateIndirectHandle extends CorrelateBaseHandle {
             AtomicInteger index = new AtomicInteger(NumberUtil.Zero);
             List<M> addList = insertSet.stream().map(slaveKey -> {
                 M mergePo = (M) createObj(ormIndirect.getMergeInfoClazz());
-                setField(mergePo, ormIndirect.getMergeMainField(), mainKey);
                 setField(mergePo, ormIndirect.getMergeSlaveField(), slaveKey);
+                setField(mergePo, ormIndirect.getMergeMainField(), mainKey);
                 mergePo.setSort(index.getAndIncrement());
                 return mergePo;
             }).toList();
             if (CollUtil.isNotEmpty(addList))
                 insertList.addAll(addList);
         }
+    }
+
+    /**
+     * 修改关联数据 | 数据更新 | 间接关联
+     *
+     * @param insertList  待更新数据集合
+     * @param delKeys     待删除数据集合
+     * @param newDto      新数据对象
+     * @param newList     新数据集合
+     * @param ormIndirect 间接关联映射ORM对象
+     * @return 结果
+     */
+    private static <D extends BaseEntity, M extends BasisEntity, Coll extends Collection<D>> int refreshIndirectList(List<M> insertList, Set<Object> delKeys, D newDto, Coll newList, Indirect.ORM ormIndirect) {
+        int rows = NumberUtil.Zero;
+        // 1.判断是否执行删除
+        if (CollUtil.isNotEmpty(delKeys)) {
+            SqlField sqlMainField;
+            SqlField sqlArrField = new SqlField(SqlConstants.OperateType.IN, ormIndirect.getMergeSlaveSqlName(), delKeys);
+            if (ObjectUtil.isNotNull(newDto)) {
+                Object delMainKey = getFieldObj(newDto, ormIndirect.getMainKeyField());
+                sqlMainField = new SqlField(SqlConstants.OperateType.EQ, ormIndirect.getMergeMainSqlName(), delMainKey);
+            } else {
+                Set<Object> delMainKeys = newList.stream().map(item -> getFieldObj(item, ormIndirect.getMainKeyField())).collect(Collectors.toSet());
+                sqlMainField = new SqlField(SqlConstants.OperateType.IN, ormIndirect.getMergeMainSqlName(), delMainKeys);
+            }
+            List<M> mergeList = (List<M>) SpringUtil.getBean(ormIndirect.getMergeMapper()).selectListByField(sqlMainField, sqlArrField);
+            if (CollUtil.isNotEmpty(mergeList)) {
+                Set<Object> mergeIds = mergeList.stream().map(BasisEntity::getId).collect(Collectors.toSet());
+                rows += SpringUtil.getBean(ormIndirect.getMergeMapper()).deleteBatchIds(mergeIds);
+            }
+        }
+        // 2.判断是否执行新增
+        if (CollUtil.isNotEmpty(insertList)) {
+            rows += SpringUtil.getBean(ormIndirect.getMergeMapper()).insertBatch(insertList);
+        }
+        // 3.返回操作结果
+        return rows;
     }
 
     /**
@@ -362,8 +369,11 @@ public final class CorrelateIndirectHandle extends CorrelateBaseHandle {
 
         if (ObjectUtil.isNull(ormIndirect.getSlaveService())) {
             switch (indirect.getOperateType()) {
-                case SELECT, ADD, EDIT ->
+                case SELECT, ADD, EDIT -> {
+                    if (ObjectUtil.isNull(ormIndirect.getSubKeyField())) {
                         logReturn(StrUtil.format("groupName: {}, slaveService can not be null", indirect.getGroupName()));
+                    }
+                }
                 case DELETE -> {
                 }
             }
