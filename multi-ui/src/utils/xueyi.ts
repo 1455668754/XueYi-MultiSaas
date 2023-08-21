@@ -63,13 +63,14 @@ export function dictConversion(dictOptions: DictLM, val?: string) {
 /**
  * 数据替换
  *
- *  @param: source 主数据
- *  @param: newData 更替数据
+ *  @param source 主数据
+ *  @param newData 更替数据
  */
-export function sourceCopy(source, data) {
-  for (const key in data) {
+export function sourceCopy(source: any, newData: any) {
+  for (const key in newData) {
+    // eslint-disable-next-line no-prototype-builtins
     if (source.hasOwnProperty(key)) {
-      source[key] = data[key];
+      source[key] = newData[key];
     }
   }
 }
@@ -77,8 +78,8 @@ export function sourceCopy(source, data) {
 /**
  * 数据赋值
  *
- *  @param: source 主数据
- *  @param: data 赋值数据
+ *  @param source 主数据
+ *  @param target 赋值数据
  */
 export function sourceAssign(source: any, ...target: any) {
   let res: any = cloneDeep(source);
@@ -105,8 +106,8 @@ export function sourceAssign(source: any, ...target: any) {
 /**
  * 日期格式化
  *
- *  @param: time 时间
- *  @param: pattern 日期格式
+ *  @param time 时间
+ *  @param pattern 日期格式
  */
 export function parseTime(time: number | string, pattern?: string) {
   if (arguments.length === 0 || !time) {

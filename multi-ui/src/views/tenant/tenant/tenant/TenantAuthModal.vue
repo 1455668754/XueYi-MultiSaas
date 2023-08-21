@@ -65,16 +65,11 @@
     try {
       const values = (await validate()) as TenantIM;
       setModalProps({ confirmLoading: true });
-      if (authKeys.value.length === 0 && values.authIds.length !== 0) {
+      values.authIds = authKeys.value.concat(authHalfKeys.value);
+      await editAuthTenantApi(values).then(() => {
         closeModal();
-        createMessage.success('角色功能权限修改成功！');
-      } else {
-        values.authIds = authKeys.value.concat(authHalfKeys.value);
-        await editAuthTenantApi(values).then(() => {
-          closeModal();
-          createMessage.success('租户权限分配成功！');
-        });
-      }
+        createMessage.success('租户权限分配成功！');
+      });
       emit('success');
     } finally {
       setModalProps({ confirmLoading: false });
@@ -88,7 +83,7 @@
   }
 
   /** 获取权限Id */
-  function authCheck(checkedKeys: string[], e) {
+  function authCheck(checkedKeys: string[], e: any) {
     authKeys.value = checkedKeys;
     authHalfKeys.value = e.halfCheckedKeys as string[];
   }

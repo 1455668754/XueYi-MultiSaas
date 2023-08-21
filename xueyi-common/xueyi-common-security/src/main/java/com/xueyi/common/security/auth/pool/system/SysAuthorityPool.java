@@ -47,4 +47,17 @@ public interface SysAuthorityPool {
     String SYS_ROLE_ES = "authority:role:es";
     /** 系统服务 | 权限模块 | 角色管理 | 删除 */
     String SYS_ROLE_DEL = "authority:role:delete";
+
+    /** 系统服务 | 权限模块 | 租户权限组管理 - 列表 */
+    String SYS_AUTH_GROUP_LIST = "authority:authGroup:list";
+    /** 系统服务 | 权限模块 | 租户权限组管理 - 详情 */
+    String SYS_AUTH_GROUP_SINGLE = "authority:authGroup:single";
+    /** 系统服务 | 权限模块 | 租户权限组管理 - 新增 */
+    String SYS_AUTH_GROUP_ADD = "authority:authGroup:add";
+    /** 系统服务 | 权限模块 | 租户权限组管理 - 修改 */
+    String SYS_AUTH_GROUP_EDIT = "authority:authGroup:edit";
+    /** 系统服务 | 权限模块 | 租户权限组管理 - 修改状态 */
+    String SYS_AUTH_GROUP_ES = "authority:authGroup:es";
+    /** 系统服务 | 权限模块 | 租户权限组管理 - 删除 */
+    String SYS_AUTH_GROUP_DEL = "authority:authGroup:delete";
 }

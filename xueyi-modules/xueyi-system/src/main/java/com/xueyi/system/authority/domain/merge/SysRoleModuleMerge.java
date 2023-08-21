@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- * 角色-模块关联 持久化对象
+ * 系统服务 | 权限模块 | 角色-模块关联 持久化对象
  *
  * @author xueyi
  */

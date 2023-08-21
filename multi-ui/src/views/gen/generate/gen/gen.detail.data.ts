@@ -1,7 +1,7 @@
 import { dicDictList } from '@/api/sys/dict.api';
 import { listModuleApi } from '@/api/system/authority/module.api';
 import { getMenuRouteListApi } from '@/api/system/authority/menu.api';
-import { listDictTypeApi } from '@/api/tenant/dict/dictType.api';
+import { listDictTypeApi } from '@/api/system/dict/dictType.api';
 import { FormSchema } from '/@/components/Form';
 import {
   DicCodeGenEnum,

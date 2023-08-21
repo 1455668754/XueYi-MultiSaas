@@ -111,7 +111,7 @@ window.addEventListener('beforeunload', function () {
 });
 
 function storageChange(e: any) {
-  const {key, newValue, oldValue} = e;
+  const { key, newValue, oldValue } = e;
 
   if (!key) {
     Persistent.clearAll();

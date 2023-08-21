@@ -5,7 +5,7 @@ import com.xueyi.common.web.entity.mapper.BasicMapper;
 import com.xueyi.system.authority.domain.merge.SysTenantModuleMerge;
 
 /**
- * 租户-模块关联 数据层
+ * 系统服务 | 权限模块 | 租户-模块关联 数据层
  *
  * @author xueyi
  */

@@ -197,25 +197,13 @@ values (13000000, 0, '4be0456e05a7422d9f1c82fb7bf19377', '组织管理', 1, '0',
                (13030800, 13030000, 'abc1c9ec3a73477184384bbfc37cf8a6', '用户导出', 3, '0,13000000,13030000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'organize:user:export', null, 8, '按钮:用户导出', '0', 'Y', 1, 0),
                (13030900, 13030000, 'a79774cd4205485c9e5ea9c36be41573', '用户密码重置', 3, '0,13000000,13030000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'organize:user:rp', null, 5, '按钮:用户密码修改', '0', 'Y', 1, 0),
        (14000000, 0, '61ac2678fa5a4cd7977c118114ff1828', '权限管理', 1, '0', 'authority', null, '', null, null, 'N', 'N', 'N', 'N', '0', 'M', '0', '0', '0', '0', '0', 1, null, '', 'ant-design:safety-certificate-outlined', 2, '目录:权限管理', '0', 'Y', 1, 0),
-           (14010000, 14000000, '7fdc19cde2494105b5b1ee951a560904', '模块管理', 2, '0,14000000', 'module', null, 'system/authority/module/index', null, null, 'N', 'N', 'N', 'N', '0', 'C', '0', '0', '0', '0', '0', 1, null, 'authority:module:list', 'ant-design:appstore-add-outlined', 1, '菜单:模块管理', '0', 'Y', 1, 0),
-               (14010100, 14010000, 'b6aeef72800e4082ace3673e454a66b6', '模块详情', 3, '0,14000000,14010000', 'moduleDetail/:id', null, 'system/authority/module/ModuleDetail', null, null, 'N', 'Y', 'N', 'N', '0', 'X', '0', '1', '0', '0', '0', 5, null, 'authority:module:single', null, 1, '详情:模块详情', '0', 'Y', 1, 0),
-               (14010200, 14010000, '96047ce6aead414bab788070a65abab9', '模块新增', 3, '0,14000000,14010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'authority:module:add', null, 2, '按钮:模块新增', '0', 'Y', 1, 0),
-               (14010300, 14010000, 'ec5c9fc0b5ba4c9794f5b87b031c3104', '模块修改', 3, '0,14000000,14010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'authority:module:edit', null, 3, '按钮:模块修改', '0', 'Y', 1, 0),
-               (14010400, 14010000, 'ca53bb0ac4524d58baf1e647e0d0da68', '模块修改状态', 3, '0,14000000,14010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'authority:module:es', null, 4, '按钮:模块修改状态', '0', 'Y', 1, 0),
-               (14010500, 14010000, '37a9b9cc2bcf4e7a98ea535526b3a597', '模块删除', 3, '0,14000000,14010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'authority:module:delete', null, 5, '按钮:模块删除', '0', 'Y', 1, 0),
-           (14020000, 14000000, 'bba8d25857ec45f38a8946c8c74182c2', '菜单管理', 2, '0,14000000', 'menu', null, 'system/authority/menu/index', null, null, 'N', 'N', 'N', 'N', '0', 'C', '0', '0', '0', '0', '0', 1, null, 'authority:menu:list', 'ant-design:bars-outlined', 2, '菜单:菜单管理', '0', 'Y', 1, 0),
-               (14020100, 14020000, '5e4b17aeae124b91b7bad8f4dd11b7b4', '菜单详情', 3, '0,14000000,14020000', 'menuDetail/:id', null, 'system/authority/menu/MenuDetail', null, null, 'N', 'Y', 'N', 'N', '0', 'X', '0', '1', '0', '0', '0', 5, null, 'authority:menu:single', null, 1, '详情:菜单详情', '0', 'Y', 1, 0),
-               (14020200, 14020000, 'a1ea4b626a104a5380a6a2ba3eddcd2e', '菜单新增', 3, '0,14000000,14020000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'authority:menu:add', null, 2, '按钮:菜单新增', '0', 'Y', 1, 0),
-               (14020300, 14020000, 'af5e2c3864eb4ef3a602f3d5619a53d4', '菜单修改', 3, '0,14000000,14020000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'authority:menu:edit', null, 3, '按钮:菜单修改', '0', 'Y', 1, 0),
-               (14020400, 14020000, '69ebe38822d54e81b828c36a8dfdb479', '菜单修改状态', 3, '0,14000000,14020000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'authority:menu:es', null, 4, '按钮:菜单修改状态', '0', 'Y', 1, 0),
-               (14020500, 14020000, 'ed7bdf2e22244a72b3963e9750d2df98', '菜单删除', 3, '0,14000000,14020000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'authority:menu:delete', null, 5, '按钮:菜单删除', '0', 'Y', 1, 0),
-           (14030000, 14000000, '88c136711d98441699a6013ef27a356a', '角色管理', 2, '0,14000000', 'role', null, 'system/authority/role/index', null, null, 'N', 'N', 'N', 'N', '0', 'C', '0', '0', '0', '0', '0', 1, null, 'authority:role:list', 'ant-design:team-outlined', 3, '菜单:角色管理', '0', 'Y', 1, 0),
-               (14030100, 14030000, '458c8e2ae43e47059b978504dd363a94', '角色详情', 3, '0,14000000,14030000', 'roleDetail/:id', null, 'system/authority/role/RoleDetail', null, null, 'N', 'Y', 'N', 'N', '0', 'X', '0', '1', '0', '0', '0', 5, null, 'authority:role:single', null, 1, '详情:角色详情', '0', 'Y', 1, 0),
-               (14030200, 14030000, '949497ca68724eb18f43b550c4c4bf5d', '角色新增', 3, '0,14000000,14030000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'authority:role:add', null, 2, '按钮:角色新增', '0', 'Y', 1, 0),
-               (14030300, 14030000, '77604dc9a47b4cc296e9f41cb76f81f5', '角色修改', 3, '0,14000000,14030000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'authority:role:edit', null, 3, '按钮:角色修改', '0', 'Y', 1, 0),
-               (14030400, 14030000, 'ed3d7dfa06424f1abe271058aa3abbd9', '角色修改状态', 3, '0,14000000,14030000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'authority:role:es', null, 4, '按钮:角色修改状态', '0', 'Y', 1, 0),
-               (14030500, 14030000, '8bd13d9c71624e60a288d424a6a96670', '角色权限分配', 3, '0,14000000,14030000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'authority:role:auth', null, 5, '按钮:角色权限分配', '0', 'Y', 1, 0),
-               (14030600, 14030000, '54dc750a6076494ebc40e62b5d775db7', '角色删除', 3, '0,14000000,14030000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'authority:role:delete', null, 6, '按钮:角色删除', '0', 'Y', 1, 0),
+           (14010000, 14000000, '88c136711d98441699a6013ef27a356a', '角色管理', 2, '0,14000000', 'role', null, 'system/authority/role/index', null, null, 'N', 'N', 'N', 'N', '0', 'C', '0', '0', '0', '0', '0', 1, null, 'authority:role:list', 'ant-design:team-outlined', 3, '菜单:角色管理', '0', 'Y', 1, 0),
+               (14010100, 14010000, '458c8e2ae43e47059b978504dd363a94', '角色详情', 3, '0,14000000,14010000', 'roleDetail/:id', null, 'system/authority/role/RoleDetail', null, null, 'N', 'Y', 'N', 'N', '0', 'X', '0', '1', '0', '0', '0', 5, null, 'authority:role:single', null, 1, '详情:角色详情', '0', 'Y', 1, 0),
+               (14010200, 14010000, '949497ca68724eb18f43b550c4c4bf5d', '角色新增', 3, '0,14000000,14010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'authority:role:add', null, 2, '按钮:角色新增', '0', 'Y', 1, 0),
+               (14010300, 14010000, '77604dc9a47b4cc296e9f41cb76f81f5', '角色修改', 3, '0,14000000,14010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'authority:role:edit', null, 3, '按钮:角色修改', '0', 'Y', 1, 0),
+               (14010400, 14010000, 'ed3d7dfa06424f1abe271058aa3abbd9', '角色修改状态', 3, '0,14000000,14010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'authority:role:es', null, 4, '按钮:角色修改状态', '0', 'Y', 1, 0),
+               (14010500, 14010000, '8bd13d9c71624e60a288d424a6a96670', '角色权限分配', 3, '0,14000000,14010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'authority:role:auth', null, 5, '按钮:角色权限分配', '0', 'Y', 1, 0),
+               (14010600, 14010000, '54dc750a6076494ebc40e62b5d775db7', '角色删除', 3, '0,14000000,14010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'authority:role:delete', null, 6, '按钮:角色删除', '0', 'Y', 1, 0),
        (15000000, 0, 'de6e93785ba944e1bde5538e92bd7b91', '公告管理', 1, '0', 'notice', null, '', null, null, 'N', 'N', 'N', 'N', '0', 'M', '0', '0', '0', '0', '0', 1, null, '', 'ant-design:schedule-outlined', 3, '目录:公告管理', '0', 'Y', 1, 0),
            (15010000, 15000000, 'b7214522d55c4f1ebd381859dc6774bb', '通知公告', 2, '0,15000000', 'notice', null, 'system/notice/notice/index', null, null, 'N', 'N', 'N', 'N', '0', 'C', '0', '0', '0', '0', '0', 1, null, 'system:notice:list', 'ant-design:notification-outlined', 1, '菜单:通知公告管理', '0', 'Y', 1, 0),
                (15010100, 15010000, '3b77bf3ae1264e5a960262cd898a9279', '通知公告详情', 3, '0,15000000,15010000', 'noticeDetail/:id', null, 'system/notice/notice/NoticeDetail', null, null, 'N', 'Y', 'N', 'N', '0', 'X', '0', '1', '0', '0', '0', 5, null, 'system:notice:single', null, 1, '详情:通知公告详情', '0', 'Y', 1, 0),
@@ -241,15 +229,15 @@ values (13000000, 0, '4be0456e05a7422d9f1c82fb7bf19377', '组织管理', 1, '0',
                    (17020201, 17020000, '8b4266f509f748baac4f86739d7bb8c9', '操作日志详情', 4, '0,17000000,17020000,17020200', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'monitor:operateLog:add', null, 1, '按钮:操作日志详情', '0', 'Y', 1, 0),
                    (17020202, 17020000, '8340af3b5dcc44e2837ef92e7de4da9d', '操作日志删除', 4, '0,17000000,17020000,17020200', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'monitor:operateLog:delete', null, 2, '按钮:操作日志删除', '0', 'Y', 1, 0),
                    (17020203, 17020000, '05598058a8794251b454025d863c6daa', '操作日志导出', 4, '0,17000000,17020000,17020200', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'monitor:operateLog:export', null, 3, '按钮:操作日志导出', '0', 'Y', 1, 0),
-       (23000000, 0, 'fbaad9604c74427592126a9a0e756067', '系统工具', 1, '0', 'generate', null, '', null, null, 'N', 'N', 'N', 'N', '0', 'M', '0', '0', '0', '0', '0', 1, null, '', 'ant-design:setting-outlined', 6, '目录:系统工具', '0', 'Y', 2, 0),
-           (23010000, 23000000, 'ebd46c2fd3c3429896de95a82bcf1d8b', '代码生成', 2, '0,23000000', 'gen', null, 'gen/generate/gen/index', null, null, 'N', 'N', 'N', 'N', '0', 'C', '0', '0', '0', '0', '0', 1, null, 'generate:gen:list', 'ant-design:experiment-outlined', 1, '菜单:代码生成', '0', 'Y', 2, 0),
-               (23010100, 23010000, 'b489b7b0e645471eb42ed8b1f0365d32', '代码生成配置', 3, '0,23000000,23010000', 'generateDetail/:id', null, 'gen/generate/gen/GenDetail', null, null, 'N', 'Y', 'N', 'N', '0', 'X', '0', '1', '0', '0', '0', 5, null, 'generate:gen:edit', null, 1, '详情:代码生成配置', '0', 'Y', 2, 0),
-               (23010200, 23010000, 'c49d2b1d7d6640e7bd331aa494b05e58', '代码生成预览', 3, '0,23000000,23010000', 'codeDetail/:id', null, 'gen/generate/gen/CodeDetail', null, null, 'N', 'Y', 'N', 'N', '0', 'X', '0', '1', '0', '0', '0', 5, null, 'generate:gen:preview', null, 2, '详情:代码生成预览', '0', 'Y', 2, 0),
-               (23010300, 23010000, 'f264257d3d4948bd9204ee5ba39b1661', '代码生成导入', 3, '0,23000000,23010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'generate:gen:import', null, 3, '按钮:代码生成导入', '0', 'Y', 2, 0),
-               (23010400, 23010000, '828aa317e06b48a2adc9d783ee968d99', '代码生成下载', 3, '0,23000000,23010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'generate:gen:code', null, 4, '按钮:代码生成下载', '0', 'Y', 2, 0),
-               (23010500, 23010000, '29db55acc054471f8b68411f99be1dee', '代码生成删除', 3, '0,23000000,23010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'generate:gen:delete', null, 5, '按钮:代码生成删除', '0', 'Y', 2, 0),
-           (23020000, 23000000, '8fa8a4e494594496a865ab028483d28b', '系统接口', 2, '0,23000000', 'swagger', 'http://localhost:8080/webjars/swagger-ui/index.html', null, null, null, 'N', 'N', 'N', 'N', '1', 'C', '0', '0', '0', '0', '0', 1, null, 'monitor:swagger:list', 'ant-design:api-twotone', 2, '菜单:系统接口', '0', 'Y', 2, 0),
-       (21000000, 0, '65a261f21077447fa28db33268f5ae82', '租户管理', 1, '0', 'tenant', null, '', null, null, 'N', 'N', 'N', 'N', '0', 'M', '0', '0', '0', '0', '0', 1, null, '', 'ant-design:bank-outlined', 7, '目录:租户管理', '0', 'Y', 2, 0),
+       (25000000, 0, 'fbaad9604c74427592126a9a0e756067', '系统工具', 1, '0', 'generate', null, '', null, null, 'N', 'N', 'N', 'N', '0', 'M', '0', '0', '0', '0', '0', 1, null, '', 'ant-design:setting-outlined', 1, '目录:系统工具', '0', 'Y', 2, 0),
+           (25010000, 25000000, 'ebd46c2fd3c3429896de95a82bcf1d8b', '代码生成', 2, '0,25000000', 'gen', null, 'gen/generate/gen/index', null, null, 'N', 'N', 'N', 'N', '0', 'C', '0', '0', '0', '0', '0', 1, null, 'generate:gen:list', 'ant-design:experiment-outlined', 1, '菜单:代码生成', '0', 'Y', 2, 0),
+               (25010100, 25010000, 'b489b7b0e645471eb42ed8b1f0365d32', '代码生成配置', 3, '0,25000000,25010000', 'generateDetail/:id', null, 'gen/generate/gen/GenDetail', null, null, 'N', 'Y', 'N', 'N', '0', 'X', '0', '1', '0', '0', '0', 5, null, 'generate:gen:edit', null, 1, '详情:代码生成配置', '0', 'Y', 2, 0),
+               (25010200, 25010000, 'c49d2b1d7d6640e7bd331aa494b05e58', '代码生成预览', 3, '0,25000000,25010000', 'codeDetail/:id', null, 'gen/generate/gen/CodeDetail', null, null, 'N', 'Y', 'N', 'N', '0', 'X', '0', '1', '0', '0', '0', 5, null, 'generate:gen:preview', null, 2, '详情:代码生成预览', '0', 'Y', 2, 0),
+               (25010300, 25010000, 'f264257d3d4948bd9204ee5ba39b1661', '代码生成导入', 3, '0,25000000,25010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'generate:gen:import', null, 3, '按钮:代码生成导入', '0', 'Y', 2, 0),
+               (25010400, 25010000, '828aa317e06b48a2adc9d783ee968d99', '代码生成下载', 3, '0,25000000,25010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'generate:gen:code', null, 4, '按钮:代码生成下载', '0', 'Y', 2, 0),
+               (25010500, 25010000, '29db55acc054471f8b68411f99be1dee', '代码生成删除', 3, '0,25000000,25010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'generate:gen:delete', null, 5, '按钮:代码生成删除', '0', 'Y', 2, 0),
+           (25020000, 25000000, '8fa8a4e494594496a865ab028483d28b', '系统接口', 2, '0,25000000', 'swagger', 'http://localhost:8080/webjars/swagger-ui/index.html', null, null, null, 'N', 'N', 'N', 'N', '1', 'C', '0', '0', '0', '0', '0', 1, null, 'monitor:swagger:list', 'ant-design:api-twotone', 2, '菜单:系统接口', '0', 'Y', 2, 0),
+       (21000000, 0, '65a261f21077447fa28db33268f5ae82', '租户管理', 1, '0', 'tenant', null, '', null, null, 'N', 'N', 'N', 'N', '0', 'M', '0', '0', '0', '0', '0', 1, null, '', 'ant-design:bank-outlined', 2, '目录:租户管理', '0', 'Y', 2, 0),
            (21010000, 21000000, '0109cdb290144529a5153737dc5e93d6', '租户管理', 2, '0,21000000', 'tenant', null, 'tenant/tenant/tenant/index', null, null, 'N', 'N', 'N', 'N', '0', 'C', '0', '0', '0', '0', '0', 1, null, 'tenant:tenant:list', 'ant-design:shop-twotone', 1, '菜单:租户管理', '0', 'Y', 2, 0),
                (21010100, 21010000, 'a535eb84b07049f685005bb1c83a0981', '租户详情', 3, '0,21000000,21010000', 'tenantDetail/:id', null, 'tenant/tenant/tenant/TenantDetail', null, null, 'N', 'Y', 'N', 'N', '0', 'X', '0', '1', '0', '0', '0', 5, null, 'tenant:tenant:single', null, 1, '详情:租户详情', '0', 'Y', 2, 0),
                (21010200, 21010000, '942dfd9e742c4392beae3e5618769d5d', '租户新增', 3, '0,21000000,21010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'tenant:tenant:add', null, 2, '按钮:租户新增', '0', 'Y', 2, 0),
@@ -269,23 +257,104 @@ values (13000000, 0, '4be0456e05a7422d9f1c82fb7bf19377', '组织管理', 1, '0',
                (21030300, 21030000, '558308f42a1e4a269fa9fa33b294d730', '数据源修改', 3, '0,21000000,21030000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'tenant:source:edit', null, 3, '按钮:数据源修改', '0', 'Y', 2, 0),
                (21030400, 21030000, '7a4d22dd4a1a4a51818408d516ca6b04', '数据源修改状态', 3, '0,21000000,21030000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'tenant:source:es', null, 4, '按钮:数据源修改状态', '0', 'Y', 2, 0),
                (21030500, 21030000, '6d55a92a567c423cb6efc7dcba120821', '数据源删除', 3, '0,21000000,21030000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'tenant:source:delete', null, 5, '按钮:数据源删除', '0', 'Y', 2, 0),
-       (22000000, 0, 'fe8bad86fdf34ed7ab584887e1e0f786', '系统管理', 1, '0', 'system', null, '', null, null, 'N', 'N', 'N', 'N', '0', 'M', '0', '0', '0', '0', '0', 1, null, '', 'ant-design:key-outlined', 8, '目录:系统管理', '0', 'Y', 2, 0),
-           (22010000, 22000000, 'b08569b9c6044608913cae26f427f842', '字典管理', 2, '0,22000000', 'dict', null, 'tenant/dict/dict/index', null, null, 'N', 'N', 'N', 'N', '0', 'C', '0', '0', '0', '0', '0', 1, null, 'dict:dict:list', 'ant-design:file-text-outlined', 1, '菜单:字典管理', '0', 'Y', 2, 0),
-               (22010100, 22010000, 'bf7ca66a708f4ee88d5e58df65b558fb', '字典详情', 3, '0,22000000,22010000', 'dictDetail/:id', null, 'tenant/dict/dict/DictDetail', null, null, 'N', 'Y', 'N', 'N', '0', 'X', '0', '1', '0', '0', '0', 5, null, 'dict:dict:single', null, 1, '详情:字典详情', '0', 'Y', 2, 0),
-               (22010200, 22010000, '71b7dcc4d4a74f5fb78b1d4457c6829e', '字典新增', 3, '0,22000000,22010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'dict:dict:add', null, 2, '按钮:字典新增', '0', 'Y', 2, 0),
-               (22010300, 22010000, '72f4012cdc744c048367c50de2bf603b', '字典数据', 3, '0,22000000,22010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'dict:dict:dict', null, 3, '按钮:字典数据', '0', 'Y', 2, 0),
-               (22010400, 22010000, '2df41ed5aed44909ab4ea3f66ea5f4d4', '字典修改', 3, '0,22000000,22010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'dict:dict:edit', null, 4, '按钮:字典修改', '0', 'Y', 2, 0),
-               (22010500, 22010000, 'bfa0a7b8d5be4189acf8933b4dd9bf94', '字典修改状态', 3, '0,22000000,22010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'dict:dict:es', null, 5, '按钮:字典修改状态', '0', 'Y', 2, 0),
-               (22010600, 22010000, '8808bad6108546439e560ead38715aba', '字典删除', 3, '0,22000000,22010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'dict:dict:delete', null, 6, '按钮:字典删除', '0', 'Y', 2, 0),
-           (22020000, 22000000, '71c9c40055b44052a27c5b3775c42054', '参数管理', 2, '0,22000000', 'config', null, 'tenant/dict/config/index', null, null, 'N', 'N', 'N', 'N', '0', 'C', '0', '0', '0', '0', '0', 1, null, 'dict:config:list', 'ant-design:function-outlined', 2, '菜单:参数管理', '0', 'Y', 2, 0),
-               (22020100, 22020000, '9fdfef2871974adcb8dcd546af0f4aa2', '参数详情', 3, '0,22000000,22020000', 'configDetail/:id', null, 'tenant/dict/config/ConfigDetail', null, null, 'N', 'Y', 'N', 'N', '0', 'X', '0', '1', '0', '0', '0', 5, null, 'dict:config:single', null, 1, '详情:参数详情', '0', 'Y', 2, 0),
-               (22020200, 22020000, '504ce298004f4a7fa93794ea974500cf', '参数新增', 3, '0,22000000,22020000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'dict:config:add', null, 2, '按钮:参数新增', '0', 'Y', 2, 0),
-               (22020300, 22020000, 'aa46bd42a43b4921afa392107b062749', '参数修改', 3, '0,22000000,22020000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'dict:config:edit', null, 3, '按钮:参数修改', '0', 'Y', 2, 0),
-               (22020400, 22020000, '25c63be4b66e4b05b40c7393ac773fd3', '参数删除', 3, '0,22000000,22020000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'dict:config:delete', null, 4, '按钮:参数删除', '0', 'Y', 2, 0),
-       (24000000, 0, 'e24afc855afc485d96135999811', '系统监控', 1, '0', 'monitor', null, '', null, null, 'N', 'N', 'N', 'N', '0', 'M', '0', '0', '0', '0', '0', 1, null, '', 'ant-design:eye-outlined', 9, '目录:系统监控', '0', 'Y', 2, 0),
+       (22000000, 0, '0d7114083f3e4c169e29bb7c4c2394d1', '权限管理', 1, '0', 'authority', null, '', null, null, 'N', 'N', 'N', 'N', '0', 'M', '0', '0', '0', '0', '0', 1, null, '', 'ant-design:safety-certificate-outlined', 3, '目录:权限管理', '0', 'Y', 2, 0),
+           (22010000, 22000000, '7fdc19cde2494105b5b1ee951a560904', '模块管理', 2, '0,22000000', 'module', null, 'system/authority/module/index', null, null, 'N', 'N', 'N', 'N', '0', 'C', '0', '0', '0', '0', '0', 1, null, 'authority:module:list', 'ant-design:appstore-add-outlined', 1, '菜单:模块管理', '0', 'Y', 2, 0),
+               (22010100, 22010000, 'b6aeef72800e4082ace3673e454a66b6', '模块详情', 3, '0,22000000,22010000', 'moduleDetail/:id', null, 'system/authority/module/ModuleDetail', null, null, 'N', 'Y', 'N', 'N', '0', 'X', '0', '1', '0', '0', '0', 5, null, 'authority:module:single', null, 1, '详情:模块详情', '0', 'Y', 2, 0),
+               (22010200, 22010000, '96047ce6aead414bab788070a65abab9', '模块新增', 3, '0,22000000,22010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'authority:module:add', null, 2, '按钮:模块新增', '0', 'Y', 2, 0),
+               (22010300, 22010000, 'ec5c9fc0b5ba4c9794f5b87b031c3104', '模块修改', 3, '0,22000000,22010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'authority:module:edit', null, 3, '按钮:模块修改', '0', 'Y', 2, 0),
+               (22010400, 22010000, 'ca53bb0ac4524d58baf1e647e0d0da68', '模块修改状态', 3, '0,22000000,22010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'authority:module:es', null, 4, '按钮:模块修改状态', '0', 'Y', 2, 0),
+               (22010500, 22010000, '37a9b9cc2bcf4e7a98ea535526b3a597', '模块删除', 3, '0,22000000,22010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'authority:module:delete', null, 5, '按钮:模块删除', '0', 'Y', 2, 0),
+           (22020000, 22000000, 'bba8d25857ec45f38a8946c8c74182c2', '菜单管理', 2, '0,22000000', 'menu', null, 'system/authority/menu/index', null, null, 'N', 'N', 'N', 'N', '0', 'C', '0', '0', '0', '0', '0', 1, null, 'authority:menu:list', 'ant-design:bars-outlined', 2, '菜单:菜单管理', '0', 'Y', 2, 0),
+               (22020100, 22020000, '5e4b17aeae124b91b7bad8f4dd11b7b4', '菜单详情', 3, '0,22000000,22020000', 'menuDetail/:id', null, 'system/authority/menu/MenuDetail', null, null, 'N', 'Y', 'N', 'N', '0', 'X', '0', '1', '0', '0', '0', 5, null, 'authority:menu:single', null, 1, '详情:菜单详情', '0', 'Y', 2, 0),
+               (22020200, 22020000, 'a1ea4b626a104a5380a6a2ba3eddcd2e', '菜单新增', 3, '0,22000000,22020000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'authority:menu:add', null, 2, '按钮:菜单新增', '0', 'Y', 2, 0),
+               (22020300, 22020000, 'af5e2c3864eb4ef3a602f3d5619a53d4', '菜单修改', 3, '0,22000000,22020000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'authority:menu:edit', null, 3, '按钮:菜单修改', '0', 'Y', 2, 0),
+               (22020400, 22020000, '69ebe38822d54e81b828c36a8dfdb479', '菜单修改状态', 3, '0,22000000,22020000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'authority:menu:es', null, 4, '按钮:菜单修改状态', '0', 'Y', 2, 0),
+               (22020500, 22020000, 'ed7bdf2e22244a72b3963e9750d2df98', '菜单删除', 3, '0,22000000,22020000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'authority:menu:delete', null, 5, '按钮:菜单删除', '0', 'Y', 2, 0),
+           (22030000, 22000000, '1915bdb53937486a82d9ce9d380d41b1', '权限组管理', 2, '0,22000000', 'authGroup', null, 'system/authority/authGroup/index', null, null, 'N', 'N', 'N', 'N', '0', 'C', '0', '0', '0', '0', '0', 1, null, 'authority:authGroup:list', 'xy_organization', 1, '菜单:权限组管理', '0', 'Y', 2, 0),
+               (22030100, 22030000, '8630a790fd5c40c4b21f4236d60f7e75', '权限组详情', 3, '0,22000000,22030000', 'authGroupDetail/:id', null, 'system/authority/authGroup/AuthGroupDetail', null, null, 'N', 'Y', 'N', 'N', '0', 'X', '0', '1', '0', '0', '0', 5, null, 'authority:authGroup:single', null, 2, '详情:权限组详情', '0', 'Y', 2, 0),
+               (22030200, 22030000, 'a681492a05154ac1b066d6bce0ef4dd1', '权限组新增', 3, '0,22000000,22030000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'authority:authGroup:add', null, 3, '按钮:权限组新增', '0', 'Y', 2, 0),
+               (22030300, 22030000, '127e52a2169443bbaffddbbf409ef322', '权限组修改', 3, '0,22000000,22030000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'authority:authGroup:edit', null, 4, '按钮:权限组修改', '0', 'Y', 2, 0),
+               (22030400, 22030000, '77a7e74eb44a4c2fb1fd27e6d2dab94c', '权限组修改状态', 3, '0,22000000,22030000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'authority:authGroup:es', null, 5, '按钮:权限组修改状态', '0', 'Y', 2, 0),
+               (22030500, 22030000, '78f27eab2bf240cdbbb6dc33a11e9730', '权限组删除', 3, '0,22000000,22030000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'authority:authGroup:delete', null, 6, '按钮:权限组删除', '0', 'Y', 2, 0),
+       (23000000, 0, 'fe8bad86fdf34ed7ab584887e1e0f786', '系统管理', 1, '0', 'system', null, '', null, null, 'N', 'N', 'N', 'N', '0', 'M', '0', '0', '0', '0', '0', 1, null, '', 'ant-design:key-outlined', 4, '目录:系统管理', '0', 'Y', 2, 0),
+           (23010000, 23000000, 'b08569b9c6044608913cae26f427f842', '字典管理', 2, '0,23000000', 'dict', null, 'system/dict/dict/index', null, null, 'N', 'N', 'N', 'N', '0', 'C', '0', '0', '0', '0', '0', 1, null, 'dict:dict:list', 'ant-design:file-text-outlined', 1, '菜单:字典管理', '0', 'Y', 2, 0),
+               (23010100, 23010000, 'bf7ca66a708f4ee88d5e58df65b558fb', '字典详情', 3, '0,23000000,23010000', 'dictDetail/:id', null, 'system/dict/dict/DictDetail', null, null, 'N', 'Y', 'N', 'N', '0', 'X', '0', '1', '0', '0', '0', 5, null, 'dict:dict:single', null, 1, '详情:字典详情', '0', 'Y', 2, 0),
+               (23010200, 23010000, '71b7dcc4d4a74f5fb78b1d4457c6829e', '字典新增', 3, '0,23000000,23010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'dict:dict:add', null, 2, '按钮:字典新增', '0', 'Y', 2, 0),
+               (23010300, 23010000, '72f4012cdc744c048367c50de2bf603b', '字典数据', 3, '0,23000000,23010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'dict:dict:dict', null, 3, '按钮:字典数据', '0', 'Y', 2, 0),
+               (23010400, 23010000, '2df41ed5aed44909ab4ea3f66ea5f4d4', '字典修改', 3, '0,23000000,23010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'dict:dict:edit', null, 4, '按钮:字典修改', '0', 'Y', 2, 0),
+               (23010500, 23010000, 'bfa0a7b8d5be4189acf8933b4dd9bf94', '字典修改状态', 3, '0,23000000,23010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'dict:dict:es', null, 5, '按钮:字典修改状态', '0', 'Y', 2, 0),
+               (23010600, 23010000, '8808bad6108546439e560ead38715aba', '字典删除', 3, '0,23000000,23010000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'dict:dict:delete', null, 6, '按钮:字典删除', '0', 'Y', 2, 0),
+           (23020000, 23000000, '71c9c40055b44052a27c5b3775c42054', '参数管理', 2, '0,23000000', 'config', null, 'system/dict/config/index', null, null, 'N', 'N', 'N', 'N', '0', 'C', '0', '0', '0', '0', '0', 1, null, 'dict:config:list', 'ant-design:function-outlined', 2, '菜单:参数管理', '0', 'Y', 2, 0),
+               (23020100, 23020000, '9fdfef2871974adcb8dcd546af0f4aa2', '参数详情', 3, '0,23000000,23020000', 'configDetail/:id', null, 'system/dict/config/ConfigDetail', null, null, 'N', 'Y', 'N', 'N', '0', 'X', '0', '1', '0', '0', '0', 5, null, 'dict:config:single', null, 1, '详情:参数详情', '0', 'Y', 2, 0),
+               (23020200, 23020000, '504ce298004f4a7fa93794ea974500cf', '参数新增', 3, '0,23000000,23020000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'dict:config:add', null, 2, '按钮:参数新增', '0', 'Y', 2, 0),
+               (23020300, 23020000, 'aa46bd42a43b4921afa392107b062749', '参数修改', 3, '0,23000000,23020000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'dict:config:edit', null, 3, '按钮:参数修改', '0', 'Y', 2, 0),
+               (23020400, 23020000, '25c63be4b66e4b05b40c7393ac773fd3', '参数删除', 3, '0,23000000,23020000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'dict:config:delete', null, 4, '按钮:参数删除', '0', 'Y', 2, 0),
+       (24000000, 0, 'e24afc855afc485d96135999811', '系统监控', 1, '0', 'monitor', null, '', null, null, 'N', 'N', 'N', 'N', '0', 'M', '0', '0', '0', '0', '0', 1, null, '', 'ant-design:eye-outlined', 5, '目录:系统监控', '0', 'Y', 2, 0),
            (24010000, 24000000, '8fa8a4e494594496a89635028483d28b', '流量监控', 2, '0,24000000', 'sentinel', 'http://localhost:8718', null, null, null, 'N', 'N', 'N', 'N', '1', 'C', '0', '0', '0', '0', '0', 1, null, 'monitor:sentinel:list', 'ant-design:fund-projection-screen-outlined', 1, '菜单:流量监控', '0', 'Y', 2, 0),
            (24020000, 24000000, '8fa8a4e494594496a865a6428483d28b', '服务治理', 2, '0,24000000', 'nacos', 'http://nacos-0.nacos:8848/nacos', null, null, null, 'N', 'N', 'N', 'N', '1', 'C', '0', '0', '0', '0', '0', 1, null, 'monitor:nacos:list', 'ant-design:control-outlined', 2, '菜单:服务治理', '0', 'Y', 2, 0),
            (24030000, 24000000, '8fa8a4e494594496a32586534583d28b', '服务监控', 2, '0,24000000', 'server', 'http://localhost:9100/login', null, null, null, 'N', 'N', 'N', 'N', '1', 'C', '0', '0', '0', '0', '0', 1, null, 'monitor:server:list', 'ant-design:radar-chart-outlined', 3, '菜单:服务监控', '0', 'Y', 2, 0);
+
+-- ----------------------------
+-- 5、租户权限组信息表
+-- ----------------------------
+drop table if exists sys_auth_group;
+create table sys_auth_group (
+  id                        bigint	            not null                                comment '权限组Id',
+  code                      varchar(64)         default null                            comment '权限组编码',
+  name                      varchar(30)         not null                                comment '权限组名称',
+  auth_key                  varchar(100)        default null                            comment '权限组权限字符串',
+  sort                      int unsigned        not null default 0                      comment '显示顺序',
+  status                    char(1)             not null default '0'                    comment '状态（0正常 1停用）',
+  remark                    varchar(200)        default null                            comment '备注',
+  create_by                 bigint              default null                            comment '创建者',
+  create_time               datetime            default current_timestamp               comment '创建时间',
+  update_by                 bigint              default null                            comment '更新者',
+  update_time               datetime            on update current_timestamp             comment '更新时间',
+  del_flag		            tinyint             not null default 0                      comment '删除标志（0正常 1删除）',
+  primary key (id)
+) engine = innodb comment = '租户权限组信息表';
+
+-- ----------------------------
+-- 初始化-租户权限组信息表数据
+-- ----------------------------
+insert into sys_auth_group (id, code, name, auth_key, remark)
+values (1, '001', '默认权限组', 'A', '默认权限组');
+
+-- ----------------------------
+-- 7、租户和租户权限组关联表
+-- ----------------------------
+drop table if exists sys_tenant_auth_group_merge;
+create table sys_tenant_auth_group_merge (
+  id                        bigint              not null                                comment 'id',
+  auth_group_id          bigint              not null                                comment '租户权限组Id',
+  tenant_id		            bigint	            not null                                comment '租户Id',
+  primary key (id),
+  unique (auth_group_id, tenant_id)
+) engine = innodb comment = '租户和租户权限组关联表';
+
+-- ----------------------------
+-- 6、租户权限组和模块关联表
+-- ----------------------------
+drop table if exists sys_auth_group_module_merge;
+create table sys_auth_group_module_merge (
+  id                        bigint              not null                                comment 'id',
+  module_id                 bigint              not null                                comment '模块Id',
+  auth_group_id		        bigint	            not null                                comment '租户权限组Id',
+  primary key (id),
+  unique (module_id, auth_group_id)
+) engine = innodb comment = '租户权限组和模块关联表';
+
+-- ----------------------------
+-- 7、租户权限组和菜单关联表
+-- ----------------------------
+drop table if exists sys_auth_group_menu_merge;
+create table sys_auth_group_menu_merge (
+  id                        bigint              not null                                comment 'id',
+  menu_id                   bigint              not null                                comment '菜单Id',
+  auth_group_id		        bigint	            not null                                comment '租户权限组Id',
+  primary key (id),
+  unique (menu_id, auth_group_id)
+) engine = innodb comment = '租户权限组和菜单关联表';
 
 -- ----------------------------
 -- 8、字典类型表
