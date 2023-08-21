@@ -95,6 +95,7 @@ public abstract class BaseCorrelateHandle<D extends BaseEntity, C extends Enum<?
      */
     @SafeVarargs
     protected final int editCorrelates(D originDto, D newDto, C... correlates) {
+        subCorrelates(originDto, correlates);
         startCorrelates(correlates);
         return CorrelateUtil.editCorrelates(originDto, newDto);
     }
@@ -108,6 +109,7 @@ public abstract class BaseCorrelateHandle<D extends BaseEntity, C extends Enum<?
      */
     @SafeVarargs
     protected final <Coll extends Collection<D>> int editCorrelates(Coll originList, Coll newList, C... correlates) {
+        subCorrelates(originList, correlates);
         startCorrelates(correlates);
         return CorrelateUtil.editCorrelates(originList, newList);
     }
