@@ -7,6 +7,7 @@ import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.utils.servlet.ServletUtil;
 import com.xueyi.common.security.annotation.AdminAuth;
+import com.xueyi.common.security.annotation.ApiAuth;
 import com.xueyi.common.security.annotation.InnerAuth;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
@@ -75,6 +76,17 @@ public class AuthAspect implements Ordered {
             log.warn("请求地址'{}'，没有管理端访问权限", request.getRequestURI());
             throw new InnerAuthException("没有管理端访问权限，不允许访问");
         }
+        return point.proceed();
+    }
+
+    /**
+     * Api端认证校验
+     */
+    @SneakyThrows
+    @Around("@within(apiAuth) || @annotation(apiAuth)")
+    public Object innerAround(ProceedingJoinPoint point, ApiAuth apiAuth) {
+        HttpServletRequest request = ServletUtil.getRequest();
+        Assert.notNull(request, "request cannot be null");
         return point.proceed();
     }
 

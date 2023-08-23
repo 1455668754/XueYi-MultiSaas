@@ -4,6 +4,7 @@ import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.ReUtil;
 import com.xueyi.common.core.utils.core.SpringUtil;
+import com.xueyi.common.security.annotation.ApiAuth;
 import com.xueyi.common.security.annotation.InnerAuth;
 import lombok.Getter;
 import lombok.Setter;
@@ -61,25 +62,38 @@ public class PermitAllUrlProperties implements InitializingBean {
             // 获取类上边的注解
             InnerAuth controller = AnnotationUtils.findAnnotation(handlerMethod.getBeanType(), InnerAuth.class);
             initialize(controller, info);
-
             // 获取方法上边的注解
             InnerAuth method = AnnotationUtils.findAnnotation(handlerMethod.getMethod(), InnerAuth.class);
             initialize(method, info);
+
+            // 获取类上边的注解
+            ApiAuth apiController = AnnotationUtils.findAnnotation(handlerMethod.getBeanType(), ApiAuth.class);
+            initialize(apiController, info);
+            // 获取方法上边的注解
+            ApiAuth apiMethod = AnnotationUtils.findAnnotation(handlerMethod.getMethod(), ApiAuth.class);
+            initialize(apiMethod, info);
         });
     }
 
     private void initialize(InnerAuth innerAuth, RequestMappingInfo info) {
         Optional.ofNullable(innerAuth).filter(ObjectUtil::isNotNull).filter(InnerAuth::isAnonymous)
-                .ifPresent(inner -> {
-                            List<String> urls = Objects.requireNonNull(info.getPatternsCondition()).getPatterns().stream().map(url -> ReUtil.replaceAll(url, PATTERN, "*")).toList();
-                            if (CollUtil.isEmpty(urls))
-                                return;
-                            Set<RequestMethod> methods = Objects.requireNonNull(info.getMethodsCondition()).getMethods();
-                            if (CollUtil.isNotEmpty(methods))
-                                methods.forEach(method -> custom.addAll(method, urls));
-                            else
-                                routine.addAll(urls);
-                        }
-                );
+                .ifPresent(inner -> anonymousFilter(info));
+    }
+
+    private void initialize(ApiAuth apiAuth, RequestMappingInfo info) {
+        Optional.ofNullable(apiAuth).filter(ObjectUtil::isNotNull).filter(ApiAuth::isAnonymous)
+                .ifPresent(api -> anonymousFilter(info));
+    }
+
+    private void anonymousFilter(RequestMappingInfo info) {
+        List<String> urls = Objects.requireNonNull(info.getPatternsCondition()).getPatterns().stream().map(url -> ReUtil.replaceAll(url, PATTERN, "*")).toList();
+        if (CollUtil.isEmpty(urls))
+            return;
+        Set<RequestMethod> methods = Objects.requireNonNull(info.getMethodsCondition()).getMethods();
+        if (CollUtil.isNotEmpty(methods)) {
+            methods.forEach(method -> custom.addAll(method, urls));
+        } else {
+            routine.addAll(urls);
+        }
     }
 }
