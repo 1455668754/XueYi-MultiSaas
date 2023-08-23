@@ -89,6 +89,18 @@ public abstract class BaseCorrelateHandle<D extends BaseEntity, C extends Enum<?
     /**
      * 数据映射关联 | 修改
      *
+     * @param newDto 新数据对象
+     * @return 结果
+     */
+    @SafeVarargs
+    protected final int editCorrelates(D newDto, C... correlates) {
+        startCorrelates(correlates);
+        return CorrelateUtil.editCorrelates(newDto);
+    }
+
+    /**
+     * 数据映射关联 | 修改
+     *
      * @param originDto 源数据对象
      * @param newDto    新数据对象
      * @return 结果
@@ -98,6 +110,18 @@ public abstract class BaseCorrelateHandle<D extends BaseEntity, C extends Enum<?
         subCorrelates(originDto, correlates);
         startCorrelates(correlates);
         return CorrelateUtil.editCorrelates(originDto, newDto);
+    }
+
+    /**
+     * 数据映射关联 | 修改（批量）
+     *
+     * @param newList 新数据对象集合
+     * @return 结果
+     */
+    @SafeVarargs
+    protected final <Coll extends Collection<D>> int editCorrelates(Coll newList, C... correlates) {
+        startCorrelates(correlates);
+        return CorrelateUtil.editCorrelates(newList);
     }
 
     /**

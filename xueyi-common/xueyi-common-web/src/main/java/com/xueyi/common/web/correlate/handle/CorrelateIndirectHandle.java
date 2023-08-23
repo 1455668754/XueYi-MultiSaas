@@ -89,6 +89,22 @@ public final class CorrelateIndirectHandle extends CorrelateBaseHandle {
     /**
      * 修改关联数据 | 间接关联
      *
+     * @param newDto   新数据对象
+     * @param indirect 间接关联映射对象
+     * @return 结果
+     */
+    public static <D extends BaseEntity, M extends BasisEntity, S extends BaseEntity> int updateIndirectObj(D newDto, Indirect<D, M, S> indirect) {
+        Indirect.ORM ormIndirect = indirect.getOrm();
+        List<M> insertList = new ArrayList<>();
+        // 1.组装操作数据
+        updateIndirectBuild(null, newDto, ormIndirect, insertList, null);
+        // 2.处理并返回操作结果
+        return refreshIndirectList(insertList, null, newDto, null, ormIndirect);
+    }
+
+    /**
+     * 修改关联数据 | 间接关联
+     *
      * @param originDto 源数据对象
      * @param newDto    新数据对象
      * @param indirect  间接关联映射对象
@@ -100,8 +116,26 @@ public final class CorrelateIndirectHandle extends CorrelateBaseHandle {
         Set<Object> delKeys = new HashSet<>();
         // 1.组装操作数据
         updateIndirectBuild(originDto, newDto, ormIndirect, insertList, delKeys);
-        // 2.返回操作结果
+        // 2.处理并返回操作结果
         return refreshIndirectList(insertList, delKeys, newDto, null, ormIndirect);
+    }
+
+    /**
+     * 修改关联数据 | 间接关联
+     *
+     * @param newList  新数据对象集合
+     * @param indirect 间接关联映射对象
+     * @return 结果
+     */
+    public static <D extends BaseEntity, M extends BasisEntity, S extends BaseEntity, Coll extends Collection<D>> int updateIndirectList(Coll newList, Indirect<D, M, S> indirect) {
+        Indirect.ORM ormIndirect = indirect.getOrm();
+        List<M> insertList = new ArrayList<>();
+        // 1.组装操作数据
+        if (CollUtil.isNotEmpty(newList)) {
+            newList.forEach(newDto -> updateIndirectBuild(null, newDto, ormIndirect, insertList, null));
+        }
+        // 2.处理并返回操作结果
+        return refreshIndirectList(insertList, null, null, newList, ormIndirect);
     }
 
     /**
@@ -127,7 +161,7 @@ public final class CorrelateIndirectHandle extends CorrelateBaseHandle {
                 updateIndirectBuild(originDto, newDto, ormIndirect, insertList, delKeys);
             });
         }
-        // 返回操作结果
+        // 2.处理并返回操作结果
         return refreshIndirectList(insertList, delKeys, null, newList, ormIndirect);
     }
 
@@ -261,64 +295,91 @@ public final class CorrelateIndirectHandle extends CorrelateBaseHandle {
      * @param delKeys     待删除键值集合
      */
     private static <D extends BaseEntity, M extends BasisEntity> void updateIndirectBuild(D originDto, D newDto, Indirect.ORM ormIndirect, List<M> insertList, Set<Object> delKeys) {
-        Set<Object> originSet = new HashSet<>();
-        Set<Object> newSet = new HashSet<>();
-        Object originKey = getFieldObj(originDto, ormIndirect.getSubKeyField());
-        Object newKey = getFieldObj(newDto, ormIndirect.getSubKeyField());
-        switch (ormIndirect.getSubDataRow()) {
-            case SINGLE -> {
-                if (ObjectUtil.isNotNull(originKey)) {
-                    originSet.add(originKey);
+        Set<Object> insertSet;
+        if (ObjectUtil.isNotNull(originDto)) {
+            Set<Object> originSet = new HashSet<>();
+            Set<Object> newSet = new HashSet<>();
+            Object originKey = getFieldObj(originDto, ormIndirect.getSubKeyField());
+            Object newKey = getFieldObj(newDto, ormIndirect.getSubKeyField());
+            switch (ormIndirect.getSubDataRow()) {
+                case SINGLE -> {
+                    if (ObjectUtil.isNotNull(originKey)) {
+                        originSet.add(originKey);
+                    }
+                    if (ObjectUtil.isNotNull(newKey)) {
+                        newSet.add(newKey);
+                    }
                 }
-                if (ObjectUtil.isNotNull(newKey)) {
-                    newSet.add(newKey);
+                case LIST -> {
+                    if (ormIndirect.getIsArray()) {
+                        Object[] originKeys = (Object[]) originKey;
+                        if (ArrayUtil.isNotEmpty(originKeys)) {
+                            originSet.addAll(Arrays.stream(originKeys).collect(Collectors.toSet()));
+                        }
+                        Object[] newKeys = (Object[]) newKey;
+                        if (ArrayUtil.isNotEmpty(newKeys)) {
+                            newSet.addAll(Arrays.stream(newKeys).collect(Collectors.toSet()));
+                        }
+                    } else {
+                        Collection<Object> originKeys = (Collection<Object>) originKey;
+                        if (CollUtil.isNotEmpty(originKeys)) {
+                            originSet.addAll(originKeys);
+                        }
+                        Collection<Object> newKeys = (Collection<Object>) newKey;
+                        if (CollUtil.isNotEmpty(newKeys)) {
+                            newSet.addAll(newKeys);
+                        }
+                    }
                 }
             }
-            case LIST -> {
-                if (ormIndirect.getIsArray()) {
-                    Object[] originKeys = (Object[]) originKey;
-                    if (ArrayUtil.isNotEmpty(originKeys)) {
-                        originSet.addAll(Arrays.stream(originKeys).collect(Collectors.toSet()));
-                    }
-                    Object[] newKeys = (Object[]) newKey;
-                    if (ArrayUtil.isNotEmpty(newKeys)) {
-                        newSet.addAll(Arrays.stream(newKeys).collect(Collectors.toSet()));
-                    }
-                } else {
-                    Collection<Object> originKeys = (Collection<Object>) originKey;
-                    if (CollUtil.isNotEmpty(originKeys)) {
-                        originSet.addAll(originKeys);
-                    }
-                    Collection<Object> newKeys = (Collection<Object>) newKey;
-                    if (CollUtil.isNotEmpty(newKeys)) {
-                        newSet.addAll(newKeys);
-                    }
-                }
-            }
-        }
 
-        // 1.获取待删除从数据键值
-        Set<Object> delSet = new HashSet<>(originSet);
-        delSet.removeAll(newSet);
-        if (CollUtil.isNotEmpty(delSet)) {
-            delKeys.addAll(delSet);
+            // 1.获取待删除从数据键值
+            Set<Object> delSet = new HashSet<>(originSet);
+            delSet.removeAll(newSet);
+            if (CollUtil.isNotEmpty(delSet)) {
+                delKeys.addAll(delSet);
+            }
+            // 2.获取待新增从数据键值
+            insertSet = new HashSet<>(newSet);
+            insertSet.removeAll(originSet);
+        } else {
+            insertSet = new HashSet<>();
+            Object newKey = getFieldObj(newDto, ormIndirect.getSubKeyField());
+            switch (ormIndirect.getSubDataRow()) {
+                case SINGLE -> {
+                    if (ObjectUtil.isNotNull(newKey)) {
+                        insertSet.add(newKey);
+                    }
+                }
+                case LIST -> {
+                    if (ormIndirect.getIsArray()) {
+                        Object[] newKeys = (Object[]) newKey;
+                        if (ArrayUtil.isNotEmpty(newKeys)) {
+                            insertSet.addAll(Arrays.stream(newKeys).collect(Collectors.toSet()));
+                        }
+                    } else {
+                        Collection<Object> newKeys = (Collection<Object>) newKey;
+                        if (CollUtil.isNotEmpty(newKeys)) {
+                            insertSet.addAll(newKeys);
+                        }
+                    }
+                }
+            }
         }
-        // 2.获取待新增从数据键值
-        Set<Object> insertSet = new HashSet<>(newSet);
-        insertSet.removeAll(originSet);
         // 3.组装待新增从数据对象
         if (CollUtil.isNotEmpty(insertSet)) {
             Object mainKey = getFieldObj(newDto, ormIndirect.getMainKeyField());
             AtomicInteger index = new AtomicInteger(NumberUtil.Zero);
-            List<M> addList = insertSet.stream().map(slaveKey -> {
+            List<M> addList = insertSet.stream().filter(ObjectUtil::isNotNull).map(slaveKey -> {
                 M mergePo = (M) createObj(ormIndirect.getMergeInfoClazz());
                 setField(mergePo, ormIndirect.getMergeSlaveField(), slaveKey);
                 setField(mergePo, ormIndirect.getMergeMainField(), mainKey);
                 mergePo.setSort(index.getAndIncrement());
                 return mergePo;
             }).toList();
-            if (CollUtil.isNotEmpty(addList))
+            if (CollUtil.isNotEmpty(addList)) {
                 insertList.addAll(addList);
+            }
         }
     }
 
@@ -334,10 +395,9 @@ public final class CorrelateIndirectHandle extends CorrelateBaseHandle {
      */
     private static <D extends BaseEntity, M extends BasisEntity, Coll extends Collection<D>> int refreshIndirectList(List<M> insertList, Set<Object> delKeys, D newDto, Coll newList, Indirect.ORM ormIndirect) {
         int rows = NumberUtil.Zero;
-        // 1.判断是否执行删除
-        if (CollUtil.isNotEmpty(delKeys)) {
+        // 判别需要全量先删 or 指定删除
+        if (ObjectUtil.isNull(delKeys) || CollUtil.isNotEmpty(delKeys)) {
             SqlField sqlMainField;
-            SqlField sqlArrField = new SqlField(SqlConstants.OperateType.IN, ormIndirect.getMergeSlaveSqlName(), delKeys);
             if (ObjectUtil.isNotNull(newDto)) {
                 Object delMainKey = getFieldObj(newDto, ormIndirect.getMainKeyField());
                 sqlMainField = new SqlField(SqlConstants.OperateType.EQ, ormIndirect.getMergeMainSqlName(), delMainKey);
@@ -345,7 +405,14 @@ public final class CorrelateIndirectHandle extends CorrelateBaseHandle {
                 Set<Object> delMainKeys = newList.stream().map(item -> getFieldObj(item, ormIndirect.getMainKeyField())).collect(Collectors.toSet());
                 sqlMainField = new SqlField(SqlConstants.OperateType.IN, ormIndirect.getMergeMainSqlName(), delMainKeys);
             }
-            List<M> mergeList = (List<M>) SpringUtil.getBean(ormIndirect.getMergeMapper()).selectListByField(sqlMainField, sqlArrField);
+            List<M> mergeList;
+            // 1.判断删除为指定删除 or 全量删除
+            if (CollUtil.isNotEmpty(delKeys)) {
+                SqlField sqlArrField = new SqlField(SqlConstants.OperateType.IN, ormIndirect.getMergeSlaveSqlName(), delKeys);
+                mergeList = (List<M>) SpringUtil.getBean(ormIndirect.getMergeMapper()).selectListByField(sqlMainField, sqlArrField);
+            } else {
+                mergeList = (List<M>) SpringUtil.getBean(ormIndirect.getMergeMapper()).selectListByField(sqlMainField);
+            }
             if (CollUtil.isNotEmpty(mergeList)) {
                 Set<Object> mergeIds = mergeList.stream().map(BasisEntity::getId).collect(Collectors.toSet());
                 rows += SpringUtil.getBean(ormIndirect.getMergeMapper()).deleteBatchIds(mergeIds);

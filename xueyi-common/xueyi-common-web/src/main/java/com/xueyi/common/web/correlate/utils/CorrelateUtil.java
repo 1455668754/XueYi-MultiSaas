@@ -107,6 +107,17 @@ public final class CorrelateUtil {
     /**
      * 子数据映射关联 | 修改
      *
+     * @param newDto 新数据对象
+     * @return 结果
+     */
+    public static <D extends BaseEntity> int editCorrelates(D newDto) {
+        return getCorrelates().stream().filter(relation -> ObjectUtil.equals(CorrelateConstants.SubOperate.EDIT, relation.getOperateType()))
+                .map(relation -> editCorrelates(newDto, relation)).reduce(Integer::sum).orElse(NumberUtil.Zero);
+    }
+
+    /**
+     * 子数据映射关联 | 修改
+     *
      * @param originDto 源数据对象
      * @param newDto    新数据对象
      * @return 结果
@@ -114,6 +125,17 @@ public final class CorrelateUtil {
     public static <D extends BaseEntity> int editCorrelates(D originDto, D newDto) {
         return getCorrelates().stream().filter(relation -> ObjectUtil.equals(CorrelateConstants.SubOperate.EDIT, relation.getOperateType()))
                 .map(relation -> editCorrelates(originDto, newDto, relation)).reduce(Integer::sum).orElse(NumberUtil.Zero);
+    }
+
+    /**
+     * 子数据映射关联 | 修改（批量）
+     *
+     * @param newList 新数据对象集合
+     * @return 结果
+     */
+    public static <D extends BaseEntity, Coll extends Collection<D>> int editCorrelates(Coll newList) {
+        return getCorrelates().stream().filter(relation -> ObjectUtil.equals(CorrelateConstants.SubOperate.EDIT, relation.getOperateType()))
+                .map(relation -> editCorrelates(newList, relation)).reduce(Integer::sum).orElse(NumberUtil.Zero);
     }
 
     /**
@@ -237,6 +259,25 @@ public final class CorrelateUtil {
     /**
      * 子数据映射关联 | 修改
      *
+     * @param newDto   新数据对象
+     * @param relation 从属关联关系定义对象
+     */
+    private static <D extends BaseEntity, Correlate extends BaseCorrelate> int editCorrelates(D newDto, Correlate relation) {
+        if (proofCorrelation(null, newDto, null, null, relation, CorrelateConstants.SubOperate.EDIT)) {
+            if (relation instanceof Direct direct) {
+                return CorrelateDirectHandle.updateDirectObj(newDto, direct);
+            } else if (relation instanceof Indirect indirect) {
+                return CorrelateIndirectHandle.updateIndirectObj(newDto, indirect);
+            } else {
+                throw new UtilException("select method is not found");
+            }
+        }
+        return NumberUtil.Zero;
+    }
+
+    /**
+     * 子数据映射关联 | 修改
+     *
      * @param originDto 源数据对象
      * @param newDto    新数据对象
      * @param relation  从属关联关系定义对象
@@ -247,6 +288,25 @@ public final class CorrelateUtil {
                 return CorrelateDirectHandle.updateDirectObj(originDto, newDto, direct);
             } else if (relation instanceof Indirect indirect) {
                 return CorrelateIndirectHandle.updateIndirectObj(originDto, newDto, indirect);
+            } else {
+                throw new UtilException("select method is not found");
+            }
+        }
+        return NumberUtil.Zero;
+    }
+
+    /**
+     * 子数据映射关联 | 修改（批量）
+     *
+     * @param newList  新数据对象集合
+     * @param relation 从属关联关系定义对象
+     */
+    private static <D extends BaseEntity, Correlate extends BaseCorrelate, Coll extends Collection<D>> int editCorrelates(Coll newList, Correlate relation) {
+        if (proofCorrelation(null, null, null, newList, relation, CorrelateConstants.SubOperate.EDIT)) {
+            if (relation instanceof Direct direct) {
+                return CorrelateDirectHandle.updateDirectList(newList, direct);
+            } else if (relation instanceof Indirect indirect) {
+                return CorrelateIndirectHandle.updateIndirectList(newList, indirect);
             } else {
                 throw new UtilException("select method is not found");
             }
@@ -366,20 +426,21 @@ public final class CorrelateUtil {
                 }
             }
             case EDIT -> {
-                if (ObjectUtil.isNull(originDto) && ObjectUtil.isNull(newDto) && CollUtil.isEmpty(originList) && CollUtil.isEmpty(newList)) {
+                if (ObjectUtil.isNull(newDto) && CollUtil.isEmpty(newList)) {
                     return Boolean.FALSE;
                 }
-                if ((ObjectUtil.isNull(originDto) && ObjectUtil.isNotNull(newDto)) || (ObjectUtil.isNotNull(originDto) && ObjectUtil.isNull(newDto))) {
-                    throw new UtilException("update must be originDto and newDto all exist");
-                }
-                if ((CollUtil.isEmpty(originList) && CollUtil.isNotEmpty(newList)) || (CollUtil.isNotEmpty(originList) && CollUtil.isEmpty(newList))) {
-                    throw new UtilException("update must be originList and newList all exist");
-                } else if (CollUtil.isNotEmpty(originList) && CollUtil.isNotEmpty(newList) && ObjectUtil.notEqual(originList.size(), newList.size())) {
-                    throw new UtilException("update must be originList and newList all exist and size be equal");
+                if ((ObjectUtil.isAllNotNull(originDto, newDto) || ObjectUtil.isAllNotNull(originList, newList))) {
+                    if ((ObjectUtil.isNull(originDto) && ObjectUtil.isNotNull(newDto)) || (ObjectUtil.isNotNull(originDto) && ObjectUtil.isNull(newDto))) {
+                        throw new UtilException("update must be originDto and newDto all exist");
+                    }
+                    if ((CollUtil.isEmpty(originList) && CollUtil.isNotEmpty(newList)) || (CollUtil.isNotEmpty(originList) && CollUtil.isEmpty(newList))) {
+                        throw new UtilException("update must be originList and newList all exist");
+                    } else if (CollUtil.isNotEmpty(originList) && CollUtil.isNotEmpty(newList) && ObjectUtil.notEqual(originList.size(), newList.size())) {
+                        throw new UtilException("update must be originList and newList all exist and size be equal");
+                    }
                 }
             }
         }
-
         return Boolean.TRUE;
     }
 
