@@ -20,6 +20,8 @@
         <module>xueyi-common-datascope</module>
         <module>xueyi-common-datasource</module>
         <module>xueyi-common-dependency</module>
+        <module>xueyi-common-sms</module>
+        <module>xueyi-common-mail</module>
     </modules>
 
     <artifactId>xueyi-common</artifactId>
