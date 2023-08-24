@@ -1,9 +1,8 @@
 package com.xueyi.system.authority.service.impl;
 
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
-import com.xueyi.common.core.constant.basic.BaseConstants;
+import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
-import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.web.correlate.contant.CorrelateConstants;
@@ -12,7 +11,6 @@ import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
 import com.xueyi.system.api.authority.domain.query.SysRoleQuery;
 import com.xueyi.system.authority.domain.correlate.SysRoleCorrelate;
 import com.xueyi.system.authority.manager.ISysRoleManager;
-import com.xueyi.system.authority.service.ISysAuthService;
 import com.xueyi.system.authority.service.ISysRoleService;
 import com.xueyi.system.organize.service.ISysOrganizeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.xueyi.common.core.constant.basic.SecurityConstants.CREATE_BY;
 
@@ -33,9 +32,6 @@ import static com.xueyi.common.core.constant.basic.SecurityConstants.CREATE_BY;
 public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleQuery, SysRoleDto, SysRoleCorrelate, ISysRoleManager> implements ISysRoleService {
 
     @Autowired
-    private ISysAuthService authService;
-
-    @Autowired
     private ISysOrganizeService organizeService;
 
     /**
@@ -43,7 +39,8 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleQuery, SysRoleDto
      */
     @Override
     protected Map<CorrelateConstants.ServiceType, SysRoleCorrelate> defaultCorrelate() {
-        return new HashMap<>(){{
+        return new HashMap<>() {{
+            put(CorrelateConstants.ServiceType.ADD, SysRoleCorrelate.BASE_ADD);
             put(CorrelateConstants.ServiceType.DELETE, SysRoleCorrelate.BASE_DEL);
         }};
     }
@@ -61,23 +58,25 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleQuery, SysRoleDto
     }
 
     /**
-     * 新增角色对象
+     * 根据Id查询角色信息对象 | 含权限
+     *
+     * @param id Id
+     * @return 角色信息对象
+     */
+    @Override
+    public SysRoleDto selectAuthById(Long id) {
+        return subCorrelates(selectById(id), SysRoleCorrelate.AUTH_SEL);
+    }
+
+    /**
+     * 修改角色功能权限
      *
      * @param role 角色对象
      * @return 结果
      */
     @Override
-    @DSTransactional
-    public int insert(SysRoleDto role) {
-        int row = baseManager.insert(role);
-        if (row > 0) {
-            authService.addRoleAuth(role.getId(), role.getAuthIds());
-            organizeService.addRoleOrganizeMerge(role.getId(),
-                    StrUtil.equals(role.getDataScope(), AuthorityConstants.DataScope.CUSTOM.getCode())
-                            ? role.getOrganizeIds()
-                            : new Long[]{});
-        }
-        return row;
+    public int editRoleAuth(SysRoleDto role) {
+        return editCorrelates(role, SysRoleCorrelate.AUTH_EDIT);
     }
 
     /**
@@ -100,27 +99,22 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleQuery, SysRoleDto
     }
 
     /**
-     * 校验角色编码是否唯一
+     * 单条操作 - 结束处理
      *
-     * @param Id   角色Id
-     * @param code 角色编码
-     * @return 结果 | true/false 唯一/不唯一
+     * @param operate   服务层 - 操作类型
+     * @param row       操作数据条数
+     * @param originDto 源数据对象（新增时不存在）
+     * @param newDto    新数据对象（删除时不存在）
      */
-    @Override
-    public boolean checkRoleCodeUnique(Long Id, String code) {
-        return ObjectUtil.isNotNull(baseManager.checkRoleCodeUnique(ObjectUtil.isNull(Id) ? BaseConstants.NONE_ID : Id, code));
+    protected void endHandle(OperateConstants.ServiceType operate, int row, SysRoleDto originDto, SysRoleDto newDto) {
+        super.endHandle(operate, row, originDto, newDto);
+        if (row > 0) {
+            if (Objects.requireNonNull(operate) == OperateConstants.ServiceType.ADD) {
+                organizeService.addRoleOrganizeMerge(newDto.getId(),
+                        StrUtil.equals(newDto.getDataScope(), AuthorityConstants.DataScope.CUSTOM.getCode())
+                                ? newDto.getOrganizeIds()
+                                : new Long[]{});
+            }
+        }
     }
-
-    /**
-     * 校验角色权限是否唯一
-     *
-     * @param Id      角色Id
-     * @param roleKey 角色权限
-     * @return 结果 | true/false 唯一/不唯一
-     */
-    @Override
-    public boolean checkRoleKeyUnique(Long Id, String roleKey) {
-        return ObjectUtil.isNotNull(baseManager.checkRoleKeyUnique(ObjectUtil.isNull(Id) ? BaseConstants.NONE_ID : Id, roleKey));
-    }
-
 }

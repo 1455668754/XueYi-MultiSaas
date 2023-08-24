@@ -18,4 +18,6 @@ public class SysEnterpriseDto extends SysEnterprisePo {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    /** 企业权限组Ids */
+    private Long[] authGroupIds;
 }

@@ -10,13 +10,4 @@ import com.xueyi.system.api.organize.domain.query.SysDeptQuery;
  * @author xueyi
  */
 public interface ISysDeptManager extends ITreeManager<SysDeptQuery, SysDeptDto> {
-
-    /**
-     * 校验部门编码是否唯一
-     *
-     * @param Id   部门Id
-     * @param code 部门编码
-     * @return 部门对象
-     */
-    SysDeptDto checkDeptCodeUnique(Long Id, String code);
 }

@@ -1,4 +1,5 @@
 import { BaseEntity, BasicFetchResult, BasicPageParams } from '@/model/basic';
+import { DicStatusEnum } from '@/enums';
 
 /** role info model */
 export interface RoleIM extends BaseEntity {
@@ -7,8 +8,15 @@ export interface RoleIM extends BaseEntity {
   name: string;
   roleKey: string;
   dataScope: string;
-  status: string;
+  /** 状态（0正常 1停用） */
+  status: DicStatusEnum;
+  /** 权限Ids */
   authIds: string[];
+  /** 模块Ids */
+  moduleIds: string[];
+  /** 菜单Ids */
+  menuIds: string[];
+  /** 组织Ids */
   organizeIds: string[];
 }
 
@@ -22,10 +30,7 @@ export interface RolePM extends BaseEntity {
   name?: string;
   roleKey?: string;
   dataScope?: string;
-  status?: string;
-  remark?: string;
-  authIds?: string[];
-  organizeIds?: string[];
+  status?: DicStatusEnum;
 }
 
 /** role page param model */

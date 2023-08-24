@@ -232,22 +232,6 @@ public class SysUserManagerImpl extends BaseManagerImpl<SysUserQuery, SysUserDto
     }
 
     /**
-     * 校验用户编码是否唯一
-     *
-     * @param id   用户Id
-     * @param code 用户编码
-     * @return 用户对象
-     */
-    @Override
-    public SysUserDto checkUserCodeUnique(Long id, String code) {
-        return mapperDto(baseMapper.selectOne(
-                Wrappers.<SysUserPo>query().lambda()
-                        .ne(SysUserPo::getId, id)
-                        .eq(SysUserPo::getCode, code)
-                        .last(SqlConstants.LIMIT_ONE)));
-    }
-
-    /**
      * 校验用户账号是否唯一
      *
      * @param id       Id

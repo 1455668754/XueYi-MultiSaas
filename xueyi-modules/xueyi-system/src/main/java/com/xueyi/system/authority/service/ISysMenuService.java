@@ -4,8 +4,8 @@ import com.xueyi.common.web.entity.service.ITreeService;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.authority.domain.query.SysMenuQuery;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -16,63 +16,23 @@ import java.util.Set;
 public interface ISysMenuService extends ITreeService<SysMenuQuery, SysMenuDto> {
 
     /**
-     * 登录校验 | 获取租户全部菜单权限标识集合
-     *
-     * @return 菜单权限集合
-     */
-    Set<String> loginPermission();
-
-    /**
-     * 登录校验 | 获取菜单权限标识集合
-     *
-     * @param roleIds 角色Id集合
-     * @return 菜单权限集合
-     */
-    Set<String> loginPermission(Set<Long> roleIds);
-
-    /**
-     * 登录校验 | 获取全部路由路径集合
-     *
-     * @return 路径集合
-     */
-    Map<String, String> getLessorRouteMap();
-
-    /**
-     * 登录校验 | 获取租户全部路由路径集合
-     *
-     * @return 路径集合
-     */
-    Map<String, String> getRouteMap();
-
-    /**
-     * 登录校验 | 获取路由路径集合
-     *
-     * @param roleIds 角色Id集合
-     * @return 路径集合
-     */
-    Map<String, String> getRouteMap(Set<Long> roleIds);
-
-    /**
      * 根据模块Id查询菜单路由
      *
      * @param moduleId 模块Id
+     * @param menuIds  菜单Ids
      * @return 菜单列表
      */
-    List<SysMenuDto> getRoutes(Long moduleId);
+    List<SysMenuDto> getRoutes(Long moduleId, Collection<Long> menuIds);
+
 
     /**
-     * 校验菜单是否存在租户
+     * 获取企业有权限且状态正常的菜单
      *
-     * @param id 菜单Id
-     * @return 结果 | true/false 有/无
+     * @param authGroupIds 企业权限组Id集合
+     * @param roleIds      角色Id集合
+     * @param isLessor     租户标识
+     * @param userType     用户标识
+     * @return 菜单对象集合
      */
-    boolean checkMenuExistTenant(Long id);
-
-    /**
-     * 校验菜单是否存在角色
-     *
-     * @param id 菜单Id
-     * @return 结果 | true/false 有/无
-     */
-    boolean checkMenuExistRole(Long id);
+    List<SysMenuDto> selectEnterpriseList(Set<Long> authGroupIds, Set<Long> roleIds, String isLessor, String userType);
 }

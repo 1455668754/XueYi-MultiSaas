@@ -6,13 +6,14 @@ export interface EnterpriseIM extends BaseEntity {
   name: string;
   status: string;
   type: string;
-  sort: number;
   nameFrequency: string;
   nick: string;
   systemName: string;
   isLessor: string;
   logo: string;
   isDefault: string;
+  /** 企业权限组Ids */
+  authGroupIds: string[];
 }
 
 /** enterprise list model */

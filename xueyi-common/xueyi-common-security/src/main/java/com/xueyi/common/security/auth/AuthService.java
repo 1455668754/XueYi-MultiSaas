@@ -28,11 +28,14 @@ public class AuthService {
         if (ArrayUtil.isEmpty(authorities))
             return false;
         LoginUser loginUser = SecurityUserUtils.getLoginUser();
-        if (ObjectUtil.hasNull(loginUser, loginUser.getDataScope()) || CollUtil.isEmpty(loginUser.getDataScope().getPermissions()))
+        if (ObjectUtil.hasNull(loginUser, loginUser.getDataScope()) || CollUtil.isEmpty(loginUser.getDataScope().getPermissions())) {
             return false;
-        for (String authority : authorities)
-            if (!hasAuthorities(loginUser.getDataScope().getPermissions(), authority))
+        }
+        for (String authority : authorities) {
+            if (!hasAuthorities(loginUser.getDataScope().getPermissions(), authority)) {
                 return false;
+            }
+        }
         return true;
     }
 
@@ -56,11 +59,14 @@ public class AuthService {
         if (ArrayUtil.isEmpty(authorities))
             return false;
         LoginUser loginUser = SecurityUserUtils.getLoginUser();
-        if (ObjectUtil.hasNull(loginUser, loginUser.getDataScope()) || CollUtil.isEmpty(loginUser.getDataScope().getPermissions()))
+        if (ObjectUtil.hasNull(loginUser, loginUser.getDataScope()) || CollUtil.isEmpty(loginUser.getDataScope().getPermissions())) {
             return false;
-        for (String authority : authorities)
-            if (hasAuthorities(loginUser.getDataScope().getPermissions(), authority))
+        }
+        for (String authority : authorities) {
+            if (hasAuthorities(loginUser.getDataScope().getPermissions(), authority)) {
                 return true;
+            }
+        }
         return false;
     }
 
@@ -74,11 +80,14 @@ public class AuthService {
         if (ArrayUtil.isEmpty(roles))
             return false;
         LoginUser loginUser = SecurityUserUtils.getLoginUser();
-        if (ObjectUtil.hasNull(loginUser, loginUser.getDataScope()) || CollUtil.isEmpty(loginUser.getDataScope().getRoles()))
+        if (ObjectUtil.hasNull(loginUser, loginUser.getDataScope()) || CollUtil.isEmpty(loginUser.getDataScope().getRoles())) {
             return false;
-        for (String role : roles)
-            if (!hasRoles(loginUser.getDataScope().getRoles(), role))
+        }
+        for (String role : roles) {
+            if (!hasRoles(loginUser.getDataScope().getRoles(), role)) {
                 return false;
+            }
+        }
         return true;
     }
 
@@ -102,11 +111,14 @@ public class AuthService {
         if (ArrayUtil.isEmpty(roles))
             return false;
         LoginUser loginUser = SecurityUserUtils.getLoginUser();
-        if (ObjectUtil.hasNull(loginUser, loginUser.getDataScope()) || CollUtil.isEmpty(loginUser.getDataScope().getRoles()))
+        if (ObjectUtil.hasNull(loginUser, loginUser.getDataScope()) || CollUtil.isEmpty(loginUser.getDataScope().getRoles())) {
             return false;
-        for (String role : roles)
-            if (hasRoles(loginUser.getDataScope().getRoles(), role))
+        }
+        for (String role : roles) {
+            if (hasRoles(loginUser.getDataScope().getRoles(), role)) {
                 return true;
+            }
+        }
         return false;
     }
 
@@ -131,5 +143,4 @@ public class AuthService {
     private boolean hasRoles(Set<String> roles, String role) {
         return CollUtil.contains(roles, StrUtil.trim(role));
     }
-
 }

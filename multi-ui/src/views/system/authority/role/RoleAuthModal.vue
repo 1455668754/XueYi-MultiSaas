@@ -17,22 +17,32 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, ref, unref } from 'vue';
+  import { computed, reactive, ref, unref } from 'vue';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicTree, TreeItem } from '/@/components/Tree';
   import { BasicForm, useForm } from '/@/components/Form';
   import { editAuthScopeApi, getAuthRoleApi } from '@/api/system/authority/role.api';
   import { authScopeEnterpriseApi } from '@/api/system/authority/auth.api';
-  import { RoleIM } from '@/model/system/authority';
   import { authFormSchema } from './role.data';
+  import { concat, difference, intersection } from 'lodash-es';
+  import { getTreeNodes } from '@/utils/core/treeUtil';
 
   const emit = defineEmits(['success', 'register']);
 
   const { createMessage } = useMessage();
   const authTree = ref<TreeItem[]>([]);
-  const authKeys = ref<string[]>([]);
-  const authHalfKeys = ref<string[]>([]);
+  const state = reactive<{
+    treeLastLeaf: string[];
+    moduleLeafs: string[];
+    authKeys: string[];
+    authHalfKeys: string[];
+  }>({
+    treeLastLeaf: [],
+    moduleLeafs: [],
+    authKeys: [],
+    authHalfKeys: [],
+  });
 
   const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
     labelWidth: 100,
@@ -44,13 +54,22 @@
     authReset();
     resetFields();
     setModalProps({ confirmLoading: false });
-    const record = data.record as RoleIM;
-    record.authIds = await getAuthRoleApi(record.id);
+    const role = await getAuthRoleApi(data.record.id);
+
     if (unref(authTree).length === 0) {
       authTree.value = (await authScopeEnterpriseApi()) as any as TreeItem[];
+      state.treeLastLeaf = getTreeNodes(authTree.value, 'id', 'children');
+      state.moduleLeafs = authTree.value.map((item) => item.id);
     }
+
+    // 初始化权限树回显
+    role.authIds = concat(
+      intersection(role.moduleIds, state.treeLastLeaf),
+      intersection(role.menuIds, state.treeLastLeaf),
+    );
+    state.authKeys = concat(role.moduleIds, role.menuIds);
     setFieldsValue({
-      ...record,
+      ...role,
     });
   });
 
@@ -62,7 +81,11 @@
     try {
       const values = await validate();
       setModalProps({ confirmLoading: true });
-      await editAuthScopeApi(values.id, authKeys.value.concat(authHalfKeys.value)).then(() => {
+      const { moduleIds, menuIds } = getAuthNodes();
+      values.authIds = undefined;
+      values.moduleIds = moduleIds;
+      values.menuIds = menuIds;
+      await editAuthScopeApi(values).then(() => {
         closeModal();
         createMessage.success('角色功能权限修改成功！');
       });
@@ -74,13 +97,22 @@
 
   /** 权限Id重置 */
   function authReset() {
-    authKeys.value = [];
-    authHalfKeys.value = [];
+    state.authKeys = [];
+    state.authHalfKeys = [];
   }
 
   /** 获取权限Id */
-  function authCheck(checkedKeys: string[], e) {
-    authKeys.value = checkedKeys;
-    authHalfKeys.value = e.halfCheckedKeys as string[];
+  function authCheck(checkedKeys: string[], e: any) {
+    state.authKeys = checkedKeys;
+    state.authHalfKeys = e.halfCheckedKeys as string[];
+  }
+
+  /** 拆解权限Id */
+  function getAuthNodes() {
+    const authIds = concat(state.authKeys, state.authHalfKeys);
+    return {
+      moduleIds: intersection(authIds, state.moduleLeafs),
+      menuIds: difference(authIds, state.moduleLeafs),
+    };
   }
 </script>

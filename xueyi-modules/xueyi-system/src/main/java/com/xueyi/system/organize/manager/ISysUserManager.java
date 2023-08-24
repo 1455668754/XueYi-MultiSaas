@@ -79,15 +79,6 @@ public interface ISysUserManager extends IBaseManager<SysUserQuery, SysUserDto> 
      int resetUserPassword(Long id, String password);
 
     /**
-     * 校验用户编码是否唯一
-     *
-     * @param id   用户Id
-     * @param code 用户编码
-     * @return 用户对象
-     */
-     SysUserDto checkUserCodeUnique(Long id, String code);
-
-    /**
      * 校验用户账号是否唯一
      *
      * @param id       Id

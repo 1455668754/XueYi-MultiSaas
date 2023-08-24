@@ -29,7 +29,7 @@ public class SysAuthGroupModuleMerge extends BasisEntity {
     /** 模块Id */
     protected Long moduleId;
 
-    /** 租户权限组Id */
+    /** 企业权限组Id */
     protected Long authGroupId;
 
 }

@@ -44,11 +44,15 @@ public class SysEnterprise extends BaseEntity {
     /** 默认企业（Y是 N否） */
     protected String isDefault;
 
-    public boolean isAdmin() {
-        return isAdmin(getIsLessor());
+    public boolean isLessor() {
+        return isLessor(getIsLessor());
     }
 
-    public static boolean isAdmin(String isLessor) {
+    public static boolean isNotLessor(String userType) {
+        return !isLessor(userType);
+    }
+
+    public static boolean isLessor(String isLessor) {
         return StrUtil.equals(AuthorityConstants.TenantType.ADMIN.getCode(), isLessor);
     }
 }

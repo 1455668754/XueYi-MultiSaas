@@ -7,7 +7,7 @@ import com.xueyi.common.web.entity.mapper.BaseMapper;
 import com.xueyi.common.datasource.annotation.Master;
 
 /**
- * 系统服务 | 权限模块 | 租户权限组管理 数据层
+ * 系统服务 | 权限模块 | 企业权限组管理 数据层
  *
  * @author xueyi
  */

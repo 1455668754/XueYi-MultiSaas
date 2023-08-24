@@ -12,6 +12,22 @@ import com.xueyi.system.api.authority.domain.query.SysRoleQuery;
 public interface ISysRoleService extends IBaseService<SysRoleQuery, SysRoleDto> {
 
     /**
+     * 根据Id查询角色信息对象 | 含权限
+     *
+     * @param id Id
+     * @return 角色信息对象
+     */
+    SysRoleDto selectAuthById(Long id);
+
+    /**
+     * 修改角色功能权限
+     *
+     * @param role 角色对象
+     * @return 结果
+     */
+    int editRoleAuth(SysRoleDto role);
+
+    /**
      * 修改角色组织权限
      *
      * @param role 角色对象
@@ -19,21 +35,4 @@ public interface ISysRoleService extends IBaseService<SysRoleQuery, SysRoleDto> 
      */
     int updateDataScope(SysRoleDto role);
 
-    /**
-     * 校验角色编码是否唯一
-     *
-     * @param Id   角色Id
-     * @param code 角色编码
-     * @return 结果 | true/false 唯一/不唯一
-     */
-    boolean checkRoleCodeUnique(Long Id, String code);
-
-    /**
-     * 校验角色权限是否唯一
-     *
-     * @param Id      角色Id
-     * @param roleKey 角色权限
-     * @return 结果 | true/false 唯一/不唯一
-     */
-    boolean checkRoleKeyUnique(Long Id, String roleKey);
 }

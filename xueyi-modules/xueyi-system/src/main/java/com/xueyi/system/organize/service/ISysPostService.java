@@ -29,14 +29,4 @@ public interface ISysPostService extends IBaseService<SysPostQuery, SysPostDto> 
      * @return 结果
      */
     int addInner(SysPostDto post);
-
-    /**
-     * 校验岗位编码是否唯一
-     *
-     * @param Id   岗位Id
-     * @param code 岗位编码
-     * @return 结果 | true/false 唯一/不唯一
-     */
-    boolean checkPostCodeUnique(Long Id, String code);
-
 }

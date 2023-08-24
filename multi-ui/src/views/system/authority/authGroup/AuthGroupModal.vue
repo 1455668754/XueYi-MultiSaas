@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, ref, unref } from 'vue';
+  import { computed, reactive, ref, unref } from 'vue';
   import { authFormSchema, formSchema } from './authGroup.data';
   import { useMessage } from '@/hooks/web/useMessage';
   import {
@@ -38,16 +38,25 @@
   import { BasicForm, useForm } from '@/components/Form';
   import { BasicTree, TreeItem } from '@/components/Tree';
   import PageWrapper from '@/components/Page/src/PageWrapper.vue';
-  import { authScopeTenantApi } from '@/api/tenant/tenant/tenant.api';
   import { getTreeNodes } from '@/utils/core/treeUtil';
   import { concat, difference, intersection } from 'lodash-es';
+  import { authScopeCommonApi } from '@/api/system/authority/auth.api';
 
   const emit = defineEmits(['success', 'register']);
   const { createMessage } = useMessage();
   const isUpdate = ref(true);
   const authTree = ref<TreeItem[]>([]);
-  const authKeys = ref<string[]>([]);
-  const authHalfKeys = ref<string[]>([]);
+  const state = reactive<{
+    treeLastLeaf: string[];
+    moduleLeafs: string[];
+    authKeys: string[];
+    authHalfKeys: string[];
+  }>({
+    treeLastLeaf: [],
+    moduleLeafs: [],
+    authKeys: [],
+    authHalfKeys: [],
+  });
 
   const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
     labelWidth: 100,
@@ -71,13 +80,21 @@
     authReset();
 
     if (unref(authTree).length === 0) {
-      authTree.value = (await authScopeTenantApi()) as any as TreeItem[];
+      authTree.value = (await authScopeCommonApi()) as any as TreeItem[];
+      state.treeLastLeaf = getTreeNodes(authTree.value, 'id', 'children');
+      state.moduleLeafs = authTree.value.map((item) => item.id);
     }
 
     if (unref(isUpdate)) {
       const authGroup = await getAuthGroupApi(data.record.id);
       setFieldsValue({ ...authGroup });
+      // 初始化权限树回显
+      authGroup.authIds = concat(
+        intersection(authGroup.moduleIds, state.treeLastLeaf),
+        intersection(authGroup.menuIds, state.treeLastLeaf),
+      );
       if (authGroup?.authIds) {
+        state.authKeys = concat(authGroup.moduleIds, authGroup.menuIds);
         authSetFieldsValue({ authIds: authGroup?.authIds });
       }
     }
@@ -90,12 +107,10 @@
   async function handleSubmit() {
     try {
       const values = await validate();
-      const { authIds, moduleIds, menuIds } = getAuthNodes();
-
-      values.authIds = authIds;
+      setModalProps({ confirmLoading: true });
+      const { moduleIds, menuIds } = getAuthNodes();
       values.moduleIds = moduleIds;
       values.menuIds = menuIds;
-      setModalProps({ confirmLoading: true });
       unref(isUpdate)
         ? await editAuthGroupApi(values).then(() => {
             closeModal();
@@ -113,29 +128,22 @@
 
   /** 权限Id重置 */
   function authReset() {
-    authKeys.value = [];
-    authHalfKeys.value = [];
+    state.authKeys = [];
+    state.authHalfKeys = [];
   }
 
   /** 获取权限Id */
   function authCheck(checkedKeys: string[], e: any) {
-    authKeys.value = checkedKeys;
-    authHalfKeys.value = e.halfCheckedKeys as string[];
+    state.authKeys = checkedKeys;
+    state.authHalfKeys = e.halfCheckedKeys as string[];
   }
 
   /** 拆解权限Id */
   function getAuthNodes() {
-    const allModuleIds = authTree.value.map((item) => item.id);
-    const authIds = getTreeNodes(authTree.value, authKeys.value, 'id', 'children');
-    const moduleIds = concat(
-      intersection(allModuleIds, authKeys.value),
-      intersection(allModuleIds, authHalfKeys.value),
-    );
-    const menuIds = difference(authIds, moduleIds);
+    const authIds = concat(state.authKeys, state.authHalfKeys);
     return {
-      authIds: authIds,
-      moduleIds: moduleIds,
-      menuIds: menuIds,
+      moduleIds: intersection(authIds, state.moduleLeafs),
+      menuIds: difference(authIds, state.moduleLeafs),
     };
   }
 </script>

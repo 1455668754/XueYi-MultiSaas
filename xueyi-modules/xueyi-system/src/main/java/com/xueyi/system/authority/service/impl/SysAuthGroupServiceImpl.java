@@ -26,7 +26,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * 系统服务 | 权限模块 | 租户权限组管理 服务层处理
+ * 系统服务 | 权限模块 | 企业权限组管理 服务层处理
  *
  * @author xueyi
  */
@@ -51,10 +51,10 @@ public class SysAuthGroupServiceImpl extends BaseServiceImpl<SysAuthGroupQuery, 
     }
 
     /**
-     * 查询系统服务 | 权限模块 | 租户权限组对象列表 | 数据权限
+     * 查询系统服务 | 权限模块 | 企业权限组对象列表 | 数据权限
      *
-     * @param authGroup 系统服务 | 权限模块 | 租户权限组对象
-     * @return 系统服务 | 权限模块 | 租户权限组对象集合
+     * @param authGroup 系统服务 | 权限模块 | 企业权限组对象
+     * @return 系统服务 | 权限模块 | 企业权限组对象集合
      */
     @Override
     //@DataScope(userAlias = "createBy", mapperScope = {"SysAuthGroupMapper"})
@@ -70,21 +70,6 @@ public class SysAuthGroupServiceImpl extends BaseServiceImpl<SysAuthGroupQuery, 
      */
     @Override
     public SysAuthGroupDto selectInfoById(Serializable id) {
-        SysAuthGroupDto info = subCorrelates(selectById(id), SysAuthGroupCorrelate.INFO_LIST);
-        Set<Long> authIds = new HashSet<>();
-        if (CollUtil.isNotEmpty(info.getMenuIds())) {
-            List<SysModuleDto> moduleList = moduleService.selectListByIds(info.getModuleIds());
-            Set<Long> moduleIds = moduleList.stream().map(SysModuleDto::getId).collect(Collectors.toSet());
-            authIds.addAll(moduleIds);
-        }
-        if (CollUtil.isNotEmpty(info.getMenuIds())) {
-            List<SysMenuDto> menuList = menuService.selectListByIds(info.getMenuIds());
-            Set<Long> moduleIds = menuList.stream().map(SysMenuPo::getModuleId).collect(Collectors.toSet());
-            Set<Long> menuIds = menuList.stream().map(SysMenuPo::getId).collect(Collectors.toSet());
-            authIds.removeAll(moduleIds);
-            authIds.addAll(menuIds);
-        }
-        info.setAuthIds(new ArrayList<>(authIds));
-        return info;
+        return subCorrelates(selectById(id), SysAuthGroupCorrelate.INFO_LIST);
     }
 }

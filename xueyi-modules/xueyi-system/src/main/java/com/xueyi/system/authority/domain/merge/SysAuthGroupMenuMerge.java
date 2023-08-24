@@ -29,7 +29,7 @@ public class SysAuthGroupMenuMerge extends BasisEntity {
     /** 菜单Id */
     protected Long menuId;
 
-    /** 租户权限组Id */
+    /** 企业权限组Id */
     protected Long authGroupId;
 
 }

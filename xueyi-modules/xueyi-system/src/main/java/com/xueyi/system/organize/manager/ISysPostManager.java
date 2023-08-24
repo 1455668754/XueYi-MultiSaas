@@ -21,13 +21,4 @@ public interface ISysPostManager extends IBaseManager<SysPostQuery, SysPostDto> 
      * @return 岗位对象集合
      */
     List<SysPostDto> selectListByDeptIds(Collection<Long> deptIds);
-
-    /**
-     * 校验岗位编码是否唯一
-     *
-     * @param Id   岗位Id
-     * @param code 岗位编码
-     * @return 岗位对象
-     */
-    SysPostDto checkPostCodeUnique(Long Id, String code);
 }

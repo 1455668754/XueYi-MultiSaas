@@ -156,18 +156,6 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserQuery, SysUserDto
     }
 
     /**
-     * 校验用户编码是否唯一
-     *
-     * @param Id       用户Id
-     * @param userCode 用户编码
-     * @return 结果 | true/false 唯一/不唯一
-     */
-    @Override
-    public boolean checkUserCodeUnique(Long Id, String userCode) {
-        return ObjectUtil.isNotNull(baseManager.checkUserCodeUnique(ObjectUtil.isNull(Id) ? BaseConstants.NONE_ID : Id, userCode));
-    }
-
-    /**
      * 校验用户账号是否唯一
      *
      * @param id       Id

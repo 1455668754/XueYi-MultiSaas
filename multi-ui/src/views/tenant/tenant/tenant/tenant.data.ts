@@ -327,17 +327,6 @@ export const organizeFormSchema: FormSchema[] = [
   },
 ];
 
-/** 表单数据 - 租户权限 */
-export const authorityFormSchema: FormSchema[] = [
-  {
-    label: ' ',
-    field: 'authIds',
-    slot: 'menu',
-    component: 'Input',
-    colProps: { span: 24 },
-  },
-];
-
 /** 表单数据 - 修改 */
 export const formSchema: FormSchema[] = [
   {
@@ -438,8 +427,8 @@ export const formSchema: FormSchema[] = [
   },
 ];
 
-/** 表单数据 - 权限 */
-export const authFormSchema: FormSchema[] = [
+/** 表单数据 - 权限组分配 */
+export const authGroupFormSchema: FormSchema[] = [
   {
     label: '租户Id',
     field: 'id',
@@ -452,14 +441,13 @@ export const authFormSchema: FormSchema[] = [
     field: 'name',
     component: 'Input',
     dynamicDisabled: true,
-    colProps: { span: 12 },
+    colProps: { span: 24 },
   },
   {
-    label: ' ',
-    field: 'authIds',
-    slot: 'menu',
+    label: '权限组分配',
+    field: 'authGroupIds',
+    slot: 'auth',
     component: 'Input',
-    colProps: { span: 24 },
   },
 ];
 

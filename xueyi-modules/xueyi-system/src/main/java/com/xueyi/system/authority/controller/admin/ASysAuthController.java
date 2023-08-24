@@ -25,16 +25,16 @@ public class ASysAuthController extends BasisController {
     private ISysAuthService authService;
 
     /**
-     * 获取公共模块|菜单权限树
+     * 获取全部公共模块 | 菜单权限树
      */
-    @GetMapping(value = "/tenant/authScope")
+    @GetMapping(value = "/common/authScope")
     @PreAuthorize("@ss.hasAnyAuthority(@Auth.TE_TENANT_ADD, @Auth.TE_TENANT_AUTH)")
     public AjaxResult getCommonAuthScope() {
         return success(TreeUtil.buildTree(authService.selectCommonAuthScope()));
     }
 
     /**
-     * 获取企业模块|菜单权限树
+     * 获取企业模块 | 菜单权限树
      */
     @GetMapping(value = "/enterprise/authScope")
     @PreAuthorize("@ss.hasAnyAuthority(@Auth.SYS_ROLE_ADD, @Auth.SYS_ROLE_AUTH)")

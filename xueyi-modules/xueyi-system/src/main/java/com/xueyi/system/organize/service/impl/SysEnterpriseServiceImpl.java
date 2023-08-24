@@ -24,6 +24,29 @@ public class SysEnterpriseServiceImpl extends BaseServiceImpl<SysEnterpriseQuery
      */
     @Override
     public SysEnterpriseDto selectByName(String name) {
-        return baseManager.selectByName(name);
+        return subCorrelates(baseManager.selectByName(name), SysEnterpriseCorrelate.AUTH_GROUP_SINGLE);
+    }
+
+    /**
+     * 查询企业的权限组Id集
+     *
+     * @param id 企业Id
+     * @return 企业信息对象
+     */
+    @Override
+    public SysEnterpriseDto selectEnterpriseGroup(Long id) {
+        SysEnterpriseDto enterprise = selectById(id);
+        return subCorrelates(enterprise, SysEnterpriseCorrelate.AUTH_GROUP_SINGLE);
+    }
+
+    /**
+     * 修改企业的权限组Id集
+     *
+     * @param enterprise 企业信息对象
+     * @return 结果
+     */
+    @Override
+    public int updateEnterpriseGroup(SysEnterpriseDto enterprise) {
+        return editCorrelates(enterprise, SysEnterpriseCorrelate.AUTH_GROUP_EDIT);
     }
 }

@@ -58,7 +58,7 @@
     </BasicTable>
     <TenantModal @register="registerModal" @success="handleSuccess" />
     <TenantInitModal @register="initRegisterModal" @success="handleSuccess" />
-    <TenantAuthModal @register="authRegisterModal" @success="handleSuccess" />
+    <TenantAuthGroupModal @register="authGroupRegisterModal" @success="handleSuccess" />
   </div>
 </template>
 
@@ -74,15 +74,15 @@
   import { TenantDetailGo } from '@/enums/tenant/tenant';
   import TenantModal from './TenantModal.vue';
   import TenantInitModal from './TenantInitModal.vue';
-  import TenantAuthModal from './TenantAuthModal.vue';
   import { IconEnum, TenantTypeEnum } from '@/enums/basic';
   import { Image } from 'ant-design-vue';
+  import TenantAuthGroupModal from './TenantAuthGroupModal.vue';
 
   const go = useGo();
   const { createMessage, createConfirm } = useMessage();
   const [registerModal, { openModal: basicOpenModal }] = useModal();
   const [initRegisterModal, { openModal: initOpenModal }] = useModal();
-  const [authRegisterModal, { openModal: authOpenModal }] = useModal();
+  const [authGroupRegisterModal, { openModal: authGroupOpenModal }] = useModal();
   const state = reactive<{
     ids: string[];
     idNames: string;
@@ -142,9 +142,9 @@
     });
   }
 
-  /** 权限分配按钮 */
+  /** 权限组分配按钮 */
   function handleAuth(record: Recordable) {
-    authOpenModal(true, {
+    authGroupOpenModal(true, {
       record,
     });
   }

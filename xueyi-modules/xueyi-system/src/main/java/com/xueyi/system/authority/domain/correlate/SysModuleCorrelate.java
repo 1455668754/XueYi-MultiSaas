@@ -6,7 +6,9 @@ import com.xueyi.common.web.correlate.domain.Indirect;
 import com.xueyi.common.web.correlate.service.CorrelateService;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
+import com.xueyi.system.authority.domain.merge.SysAuthGroupModuleMerge;
 import com.xueyi.system.authority.domain.merge.SysRoleModuleMerge;
+import com.xueyi.system.authority.mapper.merge.SysAuthGroupModuleMergeMapper;
 import com.xueyi.system.authority.mapper.merge.SysRoleModuleMergeMapper;
 import com.xueyi.system.authority.service.ISysMenuService;
 import lombok.AllArgsConstructor;
@@ -18,7 +20,7 @@ import java.util.List;
 import static com.xueyi.common.web.correlate.contant.CorrelateConstants.SubOperate.DELETE;
 
 /**
- * 模块 关联映射
+ * 系统服务 | 权限模块 | 模块 关联映射
  *
  * @author xueyi
  */
@@ -26,11 +28,13 @@ import static com.xueyi.common.web.correlate.contant.CorrelateConstants.SubOpera
 @AllArgsConstructor
 public enum SysModuleCorrelate implements CorrelateService {
 
-    BASE_DEL("默认删除|（菜单|角色-模块关联）", new ArrayList<>() {{
+    BASE_DEL("默认删除|（菜单 | 菜单|角色-模块关联 | 企业权限组-模块关联）", new ArrayList<>() {{
         // 模块 | 菜单
         add(new Direct<>(DELETE, ISysMenuService.class, SysModuleDto::getId, SysMenuDto::getModuleId));
         // 模块 | 角色-模块关联
         add(new Indirect<>(DELETE, SysRoleModuleMergeMapper.class, SysRoleModuleMerge::getModuleId, SysModuleDto::getId));
+        // 模块 | 企业权限组-模块关联
+        add(new Indirect<>(DELETE, SysAuthGroupModuleMergeMapper.class, SysAuthGroupModuleMerge::getModuleId, SysModuleDto::getId));
     }});
 
     private final String info;

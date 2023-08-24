@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
+import java.util.List;
 
 /**
  * 系统服务 | 权限模块 | 角色 数据传输对象
@@ -18,8 +19,11 @@ public class SysRoleDto extends SysRolePo {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    /** 权限Ids（菜单权限） */
-    private Long[] authIds;
+    /** 菜单权限Ids */
+    private List<Long> menuIds;
+
+    /** 模块权限Ids */
+    private List<Long> moduleIds;
 
     /** 组织Ids（数据权限） */
     private Long[] organizeIds;

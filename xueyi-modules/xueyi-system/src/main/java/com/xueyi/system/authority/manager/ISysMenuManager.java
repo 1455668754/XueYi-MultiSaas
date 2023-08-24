@@ -3,9 +3,8 @@ package com.xueyi.system.authority.manager;
 import com.xueyi.common.web.entity.manager.ITreeManager;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.authority.domain.query.SysMenuQuery;
-import com.xueyi.system.authority.domain.merge.SysRoleMenuMerge;
-import com.xueyi.system.authority.domain.merge.SysTenantMenuMerge;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -17,62 +16,29 @@ import java.util.Set;
 public interface ISysMenuManager extends ITreeManager<SysMenuQuery, SysMenuDto> {
 
     /**
-     * 登录校验 | 获取超管租户超管用户菜单集合
-     *
-     * @return 菜单集合
-     */
-    List<SysMenuDto> loginLessorMenuList();
-
-    /**
-     * 登录校验 | 获取租户全部菜单集合
-     *
-     * @return 菜单集合
-     */
-    List<SysMenuDto> loginMenuList();
-
-    /**
-     * 登录校验 | 获取菜单集合
-     *
-     * @param roleIds 角色Id集合
-     * @return 菜单集合
-     */
-    List<SysMenuDto> loginMenuList(Set<Long> roleIds);
-
-    /**
-     * 获取全部或指定范围内的状态正常公共菜单
+     * 获取全部状态正常公共菜单
      *
      * @return 菜单对象集合
      */
     List<SysMenuDto> selectCommonList();
 
     /**
-     * 获取租户有权限且状态正常的菜单
+     * 获取企业有权限且状态正常的菜单
      *
+     * @param authGroupIds 企业权限组Id集合
+     * @param roleIds      角色Id集合
+     * @param isLessor     租户标识
+     * @param userType     用户标识
      * @return 菜单对象集合
      */
-    List<SysMenuDto> selectTenantList();
+    List<SysMenuDto> selectEnterpriseList(Set<Long> authGroupIds, Set<Long> roleIds, String isLessor, String userType);
 
     /**
-     * 根据模块Id查询菜单路由 | 不查默认菜单
+     * 根据模块Id查询菜单路由
      *
      * @param moduleId 模块Id
+     * @param menuIds  菜单Ids
      * @return 菜单列表
      */
-    List<SysMenuDto> getRoutes(Long moduleId);
-
-    /**
-     * 校验菜单是否存在租户
-     *
-     * @param id 菜单Id
-     * @return 菜单对象
-     */
-    SysTenantMenuMerge checkMenuExistTenant(Long id);
-
-    /**
-     * 校验菜单是否存在角色
-     *
-     * @param id 菜单Id
-     * @return 菜单对象
-     */
-    SysRoleMenuMerge checkMenuExistRole(Long id);
+    List<SysMenuDto> getRoutes(Long moduleId, Collection<Long> menuIds);
 }

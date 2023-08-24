@@ -5,7 +5,7 @@
     :title="getTitle"
     :defaultFullscreen="true"
     :showCancelBtn="false"
-    :showOkBtn="current === 3"
+    :showOkBtn="current === 2"
     @ok="handleSubmit"
   >
     <div class="step-form-form">
@@ -17,53 +17,35 @@
         <BasicForm @register="strategyRegister" v-show="current === tenantInitList[0].current" />
         <BasicForm @register="tenantRegister" v-show="current === tenantInitList[1].current" />
         <BasicForm @register="organizeRegister" v-show="current === tenantInitList[2].current" />
-        <BasicForm @register="authorityRegister" v-show="current === tenantInitList[3].current">
-          <template #menu="{ model, field }">
-            <BasicTree
-              v-model:value="model[field]"
-              :treeData="authTree"
-              :fieldNames="{ title: 'label', key: 'id' }"
-              checkable
-              toolbar
-              @check="authCheck"
-              title="菜单分配"
-            />
-          </template>
-        </BasicForm>
       </div>
     </div>
     <template #centerFooter>
       <a-button type="default" @click="handleStepPrev" v-show="current > 0"> 上一步</a-button>
     </template>
     <template #appendFooter>
-      <a-button type="primary" @click="handleStepNext" v-show="current < 3"> 下一步</a-button>
+      <a-button type="primary" @click="handleStepNext" v-show="current < 2"> 下一步</a-button>
     </template>
   </BasicModal>
 </template>
 
 <script setup lang="ts">
-  import { computed, ref, unref } from 'vue';
+  import { computed, ref } from 'vue';
   import {
-    authorityFormSchema,
     organizeFormSchema,
     strategyFormSchema,
     tenantFormSchema,
     tenantInitList,
   } from './tenant.data';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { addTenantApi, authScopeTenantApi } from '@/api/tenant/tenant/tenant.api';
+  import { addTenantApi } from '@/api/tenant/tenant/tenant.api';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
-  import { BasicTree, TreeItem } from '/@/components/Tree';
   import { sourceAssign } from '/@/utils/xueyi';
 
   const emit = defineEmits(['success', 'register']);
 
   const { createMessage } = useMessage();
   const current = ref(0);
-  const authTree = ref<TreeItem[]>([]);
-  const authKeys = ref<string[]>([]);
-  const authHalfKeys = ref<string[]>([]);
 
   const [strategyRegister, { resetFields: strategyResetFields, validate: strategyValidate }] =
     useForm({
@@ -85,25 +67,9 @@
       showActionButtonGroup: false,
     });
 
-  const [authorityRegister, { resetFields: authorityResetFields, validate: authorityValidate }] =
-    useForm({
-      labelWidth: 100,
-      schemas: authorityFormSchema,
-      showActionButtonGroup: false,
-    });
-
   const [registerModal, { setModalProps, closeModal }] = useModalInner(async () => {
     current.value = 0;
-    Promise.all([
-      strategyResetFields(),
-      tenantResetFields(),
-      organizeResetFields(),
-      authorityResetFields(),
-    ]);
-    authReset();
-    if (unref(authTree).length === 0) {
-      authTree.value = (await authScopeTenantApi()) as any as TreeItem[];
-    }
+    Promise.all([strategyResetFields(), tenantResetFields(), organizeResetFields()]);
     setModalProps({ confirmLoading: false });
   });
 
@@ -127,9 +93,6 @@
       case 2:
         await organizeValidate();
         break;
-      case 3:
-        await authorityValidate();
-        break;
     }
     current.value++;
   }
@@ -137,15 +100,13 @@
   /** 提交按钮 */
   async function handleSubmit() {
     try {
-      const [strategy, tenant, organize, authority] = await Promise.all([
+      const [strategy, tenant, organize] = await Promise.all([
         strategyValidate(),
         tenantValidate(),
         organizeValidate(),
-        authorityValidate(),
       ]);
       setModalProps({ confirmLoading: true });
-      const data = sourceAssign({}, strategy, tenant, organize, authority);
-      data.authIds = authKeys.value.concat(authHalfKeys.value);
+      const data = sourceAssign({}, strategy, tenant, organize);
       await addTenantApi(data).then(() => {
         closeModal();
         createMessage.success('新增租户成功！');
@@ -154,18 +115,6 @@
     } finally {
       setModalProps({ confirmLoading: false });
     }
-  }
-
-  /** 权限Id重置 */
-  function authReset() {
-    authKeys.value = [];
-    authHalfKeys.value = [];
-  }
-
-  /** 获取权限Id */
-  function authCheck(checkedKeys: string[], e) {
-    authKeys.value = checkedKeys;
-    authHalfKeys.value = e.halfCheckedKeys as string[];
   }
 </script>
 

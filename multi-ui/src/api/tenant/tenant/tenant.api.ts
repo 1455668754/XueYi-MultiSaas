@@ -1,13 +1,12 @@
 import { TenantIM, TenantLRM, TenantPPM } from '@/model/tenant/tenant';
 import { defHttp } from '/@/utils/http/axios';
-import { AuthLM } from '@/model/system/authority';
+import { EnterpriseIM } from '@/model/system/organize';
 
 enum Api {
   LIST_TENANT = '/tenant/admin/tenant/list',
   GET_TENANT = '/tenant/admin/tenant/',
-  AUTH_SCOPE_TENANT = '/system/admin/auth/tenant/authScope',
-  GET_AUTH_TENANT = '/tenant/admin/tenant/auth/',
-  EDIT_AUTH_TENANT = '/tenant/admin/tenant/auth',
+  GET_AUTH_TENANT = '/system/admin/enterprise/enterpriseGroup',
+  EDIT_AUTH_TENANT = '/system/admin/enterprise/enterpriseGroup',
   ADD_TENANT = '/tenant/admin/tenant',
   EDIT_TENANT = '/tenant/admin/tenant',
   EDIT_STATUS_TENANT = '/tenant/admin/tenant/status',
@@ -22,12 +21,9 @@ export const listTenantApi = (params?: TenantPPM) =>
 export const getTenantApi = (id: string) =>
   defHttp.get<TenantIM>({ url: Api.GET_TENANT, params: id });
 
-/** 查询租户权限（叶子节点） */
-export const getAuthTenantApi = (id: string) =>
-  defHttp.get<[]>({ url: Api.GET_AUTH_TENANT, params: id });
-
-/** 查询公共权限范围树 */
-export const authScopeTenantApi = () => defHttp.get<AuthLM>({ url: Api.AUTH_SCOPE_TENANT });
+/** 查询租户权限组 */
+export const getAuthGroupTenantApi = (id: string) =>
+  defHttp.get<EnterpriseIM>({ url: Api.GET_AUTH_TENANT, params: { id: id } });
 
 /** 新增租户 */
 export const addTenantApi = (params: TenantIM) => defHttp.post({ url: Api.ADD_TENANT, params });
@@ -35,9 +31,9 @@ export const addTenantApi = (params: TenantIM) => defHttp.post({ url: Api.ADD_TE
 /** 修改租户 */
 export const editTenantApi = (params: TenantIM) => defHttp.put({ url: Api.EDIT_TENANT, params });
 
-/** 修改租户权限 */
-export const editAuthTenantApi = (params: TenantIM) =>
-  defHttp.put({ url: Api.EDIT_AUTH_TENANT, params });
+/** 修改租户权限组 */
+export const editAuthGroupTenantApi = (id: string, authGroupIds: string[]) =>
+  defHttp.put({ url: Api.EDIT_AUTH_TENANT, params: { id: id, authGroupIds: authGroupIds } });
 
 /** 修改租户状态 */
 export const editStatusTenantApi = (id: string, status: any) =>

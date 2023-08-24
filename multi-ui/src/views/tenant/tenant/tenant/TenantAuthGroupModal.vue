@@ -1,10 +1,10 @@
 <template>
   <BasicModal v-bind="$attrs" @register="registerModal" :title="getTitle" @ok="handleSubmit">
     <BasicForm @register="registerForm">
-      <template #role="{ model, field }">
+      <template #auth="{ model, field }">
         <Transfer
           v-model:target-keys="model[field]"
-          :data-source="roleList"
+          :data-source="authGroupList"
           :titles="['待选', '已选']"
           show-search
           :filter-option="filterOption"
@@ -22,52 +22,50 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
-  import { listRoleApi } from '@/api/system/authority/role.api';
-  import { UserIM } from '@/model/system/organize';
-  import { RoleLM } from '@/model/system/authority';
-  import { roleFormSchema } from './user.data';
-  import { editAuthUserScopeApi, getAuthUserApi } from '@/api/system/organize/user.api';
+  import { AuthGroupLM } from '@/model/system/authority';
   import { DicStatusEnum } from '@/enums';
   import { TransferItem } from 'ant-design-vue/lib/transfer';
+  import { editAuthGroupTenantApi, getAuthGroupTenantApi } from '@/api/tenant/tenant/tenant.api';
+  import { listAuthGroupApi } from '@/api/system/authority/authGroup.api';
+  import { authGroupFormSchema } from './tenant.data';
 
   const emit = defineEmits(['success', 'register']);
 
   const { createMessage } = useMessage();
-  const roleList = ref<RoleLM>([]);
+  const authGroupList = ref<AuthGroupLM>([]);
 
   const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
     labelWidth: 70,
-    schemas: roleFormSchema,
+    schemas: authGroupFormSchema,
     showActionButtonGroup: false,
   });
 
   const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
     resetFields();
-    roleList.value = [];
+    authGroupList.value = [];
     setModalProps({ confirmLoading: false });
-    const record = data.record as UserIM;
-    record.roleIds = await getAuthUserApi(record.id);
-    if (unref(roleList).length === 0) {
-      roleList.value = await listRoleApi({ status: DicStatusEnum.NORMAL }).then(
+    const tenantInfo = await getAuthGroupTenantApi(data.record.id);
+    if (unref(authGroupList).length === 0) {
+      authGroupList.value = await listAuthGroupApi({ status: DicStatusEnum.NORMAL }).then(
         (item) => item.items,
       );
     }
     setFieldsValue({
-      ...record,
+      ...tenantInfo,
     });
   });
 
   /** 标题初始化 */
-  const getTitle = computed(() => '角色分配');
+  const getTitle = computed(() => '权限组分配');
 
   /** 提交按钮 */
   async function handleSubmit() {
     try {
       const values = await validate();
       setModalProps({ confirmLoading: true });
-      await editAuthUserScopeApi(values.id, values.roleIds).then(() => {
+      await editAuthGroupTenantApi(values.id, values.authGroupIds).then(() => {
         closeModal();
-        createMessage.success('角色分配成功！');
+        createMessage.success('权限组分配成功！');
       });
       emit('success');
     } finally {

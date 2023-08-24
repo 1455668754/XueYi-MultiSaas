@@ -19,7 +19,7 @@ import java.util.List;
 import static com.xueyi.common.web.correlate.contant.CorrelateConstants.SubOperate.*;
 
 /**
- * 系统服务 | 权限模块 | 租户权限组 关联映射
+ * 系统服务 | 权限模块 | 企业权限组 关联映射
  */
 @Getter
 @AllArgsConstructor

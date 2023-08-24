@@ -3,7 +3,6 @@ import { defHttp } from '/@/utils/http/axios';
 
 enum Api {
   LIST_STRATEGY = '/tenant/admin/strategy/list',
-  OPTION_STRATEGY = '/tenant/admin/strategy/option',
   GET_STRATEGY = '/tenant/admin/strategy/',
   ADD_STRATEGY = '/tenant/admin/strategy',
   EDIT_STRATEGY = '/tenant/admin/strategy',

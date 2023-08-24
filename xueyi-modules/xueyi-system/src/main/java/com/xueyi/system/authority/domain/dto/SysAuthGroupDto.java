@@ -8,7 +8,7 @@ import java.io.Serial;
 import java.util.List;
 
 /**
- * 系统服务 | 权限模块 | 租户权限组 数据传输对象
+ * 系统服务 | 权限模块 | 企业权限组 数据传输对象
  *
  * @author xueyi
  */
@@ -18,9 +18,6 @@ public class SysAuthGroupDto extends SysAuthGroupPo {
 
     @Serial
     private static final long serialVersionUID = 1L;
-
-    /** 权限Ids */
-    private List<Long> authIds;
 
     /** 菜单权限Ids */
     private List<Long> menuIds;

@@ -1,7 +1,5 @@
 package com.xueyi.system.organize.service.impl;
 
-import com.xueyi.common.core.constant.basic.BaseConstants;
-import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.datasource.annotation.Isolate;
 import com.xueyi.common.web.correlate.contant.CorrelateConstants;
@@ -9,7 +7,7 @@ import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 import com.xueyi.system.api.organize.domain.query.SysPostQuery;
 import com.xueyi.system.organize.domain.correlate.SysPostCorrelate;
-import com.xueyi.system.organize.manager.impl.SysPostManagerImpl;
+import com.xueyi.system.organize.manager.ISysPostManager;
 import com.xueyi.system.organize.service.ISysPostService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -27,7 +25,7 @@ import java.util.Map;
  */
 @Service
 @Isolate
-public class SysPostServiceImpl extends BaseServiceImpl<SysPostQuery, SysPostDto, SysPostCorrelate, SysPostManagerImpl> implements ISysPostService {
+public class SysPostServiceImpl extends BaseServiceImpl<SysPostQuery, SysPostDto, SysPostCorrelate, ISysPostManager> implements ISysPostService {
 
     /**
      * 默认方法关联配置定义
@@ -73,17 +71,5 @@ public class SysPostServiceImpl extends BaseServiceImpl<SysPostQuery, SysPostDto
     public List<SysPostDto> selectListScope(SysPostQuery post) {
         List<SysPostDto> list =  super.selectListScope(post);
         return subCorrelates(list, SysPostCorrelate.BASE_LIST);
-    }
-
-    /**
-     * 校验岗位编码是否唯一
-     *
-     * @param Id   岗位Id
-     * @param code 岗位编码
-     * @return 结果 | true/false 唯一/不唯一
-     */
-    @Override
-    public boolean checkPostCodeUnique(Long Id, String code) {
-        return ObjectUtil.isNotNull(baseManager.checkPostCodeUnique(ObjectUtil.isNull(Id) ? BaseConstants.NONE_ID : Id, code));
     }
 }

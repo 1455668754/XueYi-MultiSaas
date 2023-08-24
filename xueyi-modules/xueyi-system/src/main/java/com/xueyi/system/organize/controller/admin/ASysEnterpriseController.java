@@ -3,9 +3,14 @@ package com.xueyi.system.organize.controller.admin;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.security.annotation.AdminAuth;
 import com.xueyi.common.security.utils.SecurityUserUtils;
+import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
 import com.xueyi.system.organize.controller.base.BSysEnterpriseController;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -24,6 +29,25 @@ public class ASysEnterpriseController extends BSysEnterpriseController {
     @GetMapping("/getInfo")
     public AjaxResult getInfo() {
         return success(SecurityUserUtils.getEnterprise());
+    }
+
+    /**
+     * 查询企业的权限组Id集
+     */
+    @GetMapping(value = "/enterpriseGroup")
+    @PreAuthorize("@ss.hasAuthority(@Auth.TE_TENANT_AUTH)")
+    public AjaxResult getEnterpriseGroup(@RequestParam Long id) {
+        return success(baseService.selectEnterpriseGroup(id));
+    }
+
+    /**
+     * 修改企业的权限组Id集
+     */
+    @PutMapping(value = "/enterpriseGroup")
+    @PreAuthorize("@ss.hasAuthority(@Auth.TE_TENANT_AUTH)")
+    public AjaxResult editEnterpriseGroup(@RequestBody SysEnterpriseDto enterprise) {
+        baseService.updateEnterpriseGroup(enterprise);
+        return AjaxResult.success();
     }
 
 //    /**

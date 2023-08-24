@@ -18,4 +18,20 @@ public interface ISysEnterpriseService extends IBaseService<SysEnterpriseQuery, 
      * @return 企业对象
      */
     SysEnterpriseDto selectByName(String name);
+
+    /**
+     * 查询企业的权限组Id集
+     *
+     * @param id 企业Id
+     * @return 企业信息对象
+     */
+    SysEnterpriseDto selectEnterpriseGroup(Long id);
+
+    /**
+     * 修改企业的权限组Id集
+     *
+     * @param enterprise 企业信息对象
+     * @return 结果
+     */
+    int updateEnterpriseGroup(SysEnterpriseDto enterprise);
 }

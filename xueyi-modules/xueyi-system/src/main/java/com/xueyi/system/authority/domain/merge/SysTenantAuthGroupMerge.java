@@ -26,7 +26,10 @@ public class SysTenantAuthGroupMerge extends TBasisEntity {
     @TableId
     protected Long id;
 
-    /** 租户权限组Id */
+    /** 企业权限组Id */
     protected Long authGroupId;
+
+    /** 企业Id */
+    protected Long tenantId;
 
 }

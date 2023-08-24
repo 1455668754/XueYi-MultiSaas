@@ -1,5 +1,7 @@
 package com.xueyi.system.authority.service;
 
+import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
+import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
 import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
 import com.xueyi.system.api.model.DataScope;
 import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
@@ -37,19 +39,43 @@ public interface ISysLoginService {
      * 登录校验 | 获取角色数据权限
      *
      * @param roleList 角色信息集合
+     * @param isLessor 租户标识
      * @param userType 用户标识
      * @return 角色权限信息
      */
-    Set<String> getRolePermission(List<SysRoleDto> roleList, String userType);
+    Set<String> getRolePermission(List<SysRoleDto> roleList, String isLessor, String userType);
+
+    /**
+     * 登录校验 | 获取权限模块列表
+     *
+     * @param authGroupIds 企业权限组Id集合
+     * @param roleIds      角色Id集合
+     * @param isLessor     租户标识
+     * @param userType     用户标识
+     * @return 模块信息对象集合
+     */
+    List<SysModuleDto> getModuleList(Set<Long> authGroupIds, Set<Long> roleIds, String isLessor, String userType);
+
+    /**
+     * 登录校验 | 获取权限菜单列表
+     *
+     * @param authGroupIds 企业权限组Id集合
+     * @param roleIds      角色Id集合
+     * @param isLessor     租户标识
+     * @param userType     用户标识
+     * @return 菜单信息对象集合
+     */
+    List<SysMenuDto> getMenuList(Set<Long> authGroupIds, Set<Long> roleIds, String isLessor, String userType);
 
     /**
      * 登录校验 | 获取菜单数据权限
      *
-     * @param roleIds  角色Id集合
+     * @param menuList 菜单信息对象集合
+     * @param isLessor 租户标识
      * @param userType 用户标识
-     * @return 菜单权限信息
+     * @return 菜单权限信息集合
      */
-    Set<String> getMenuPermission(Set<Long> roleIds, String userType);
+    Set<String> getMenuPermission(List<SysMenuDto> menuList, String isLessor, String userType);
 
     /**
      * 登录校验 | 获取数据数据权限
@@ -63,9 +89,8 @@ public interface ISysLoginService {
     /**
      * 登录校验 | 获取路由路径集合
      *
-     * @param roleIds  角色Id集合
-     * @param userType 用户标识
+     * @param menuList 菜单信息对象集合
      * @return 路由路径集合
      */
-    Map<String, String> getMenuRouteMap(Set<Long> roleIds, String userType);
+    Map<String, String> getMenuRouteMap(List<SysMenuDto> menuList);
 }

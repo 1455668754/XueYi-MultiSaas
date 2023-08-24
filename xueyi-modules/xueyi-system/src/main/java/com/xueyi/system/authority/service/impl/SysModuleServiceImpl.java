@@ -36,17 +36,6 @@ public class SysModuleServiceImpl extends BaseServiceImpl<SysModuleQuery, SysMod
     }
 
     /**
-     * 当前用户首页可展示的模块路由
-     *
-     * @param roleIds 角色Ids
-     * @return 模块集合
-     */
-    @Override
-    public List<SysModuleDto> getRoutes(Set<Long> roleIds) {
-        return baseManager.getRoutes(roleIds);
-    }
-
-    /**
      * 查询模块对象列表 | 数据权限 | 附加数据
      *
      * @param module 模块对象
@@ -58,4 +47,17 @@ public class SysModuleServiceImpl extends BaseServiceImpl<SysModuleQuery, SysMod
         return super.selectListScope(module);
     }
 
+    /**
+     * 获取企业有权限且状态正常的模块
+     *
+     * @param authGroupIds 企业权限组Id集合
+     * @param roleIds      角色Id集合
+     * @param isLessor     租户标识
+     * @param userType     用户标识
+     * @return 模块对象集合
+     */
+    @Override
+    public List<SysModuleDto> selectEnterpriseList(Set<Long> authGroupIds, Set<Long> roleIds, String isLessor, String userType) {
+        return baseManager.selectEnterpriseList(authGroupIds, roleIds, isLessor, userType);
+    }
 }

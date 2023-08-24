@@ -1,8 +1,11 @@
 package com.xueyi.system.authority.service.impl;
 
 import com.xueyi.common.core.constant.system.AuthorityConstants;
+import com.xueyi.common.core.utils.TreeUtil;
+import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
-import com.xueyi.common.security.utils.SecurityUserUtils;
+import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
+import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
 import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
 import com.xueyi.system.api.model.DataScope;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
@@ -11,6 +14,7 @@ import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
 import com.xueyi.system.authority.service.ISysLoginService;
 import com.xueyi.system.authority.service.ISysMenuService;
+import com.xueyi.system.authority.service.ISysModuleService;
 import com.xueyi.system.organize.service.ISysDeptService;
 import com.xueyi.system.organize.service.ISysEnterpriseService;
 import com.xueyi.system.organize.service.ISysOrganizeService;
@@ -19,6 +23,7 @@ import com.xueyi.system.organize.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +51,9 @@ public class SysLoginServiceImpl implements ISysLoginService {
 
     @Autowired
     ISysUserService userService;
+
+    @Autowired
+    ISysModuleService moduleService;
 
     @Autowired
     ISysMenuService menuService;
@@ -80,42 +88,71 @@ public class SysLoginServiceImpl implements ISysLoginService {
      * 登录校验 | 获取角色数据权限
      *
      * @param roleList 角色信息集合
+     * @param isLessor 租户标识
      * @param userType 用户标识
      * @return 角色权限信息
      */
     @Override
-    public Set<String> getRolePermission(List<SysRoleDto> roleList, String userType) {
+    public Set<String> getRolePermission(List<SysRoleDto> roleList, String isLessor, String userType) {
         Set<String> roles = new HashSet<>();
         // 租管租户拥有租管标识权限
-        if (SecurityUserUtils.isAdminTenant())
+        if (SysEnterpriseDto.isLessor(isLessor)) {
             roles.add(ROLE_ADMINISTRATOR);
+        }
         // 超管用户拥有超管标识权限
-        if (SysUserDto.isAdmin(userType))
+        if (SysUserDto.isAdmin(userType)) {
             roles.add(ROLE_ADMIN);
-        else
+        } else {
             roles.addAll(roleList.stream().map(SysRoleDto::getRoleKey).filter(StrUtil::isNotBlank).collect(Collectors.toSet()));
+        }
         return roles;
+    }
+
+    /**
+     * 登录校验 | 获取权限模块列表
+     *
+     * @param authGroupIds 企业权限组Id集合
+     * @param roleIds      角色Id集合
+     * @param isLessor     租户标识
+     * @param userType     用户标识
+     * @return 模块信息对象集合
+     */
+    @Override
+    public List<SysModuleDto> getModuleList(Set<Long> authGroupIds, Set<Long> roleIds, String isLessor, String userType) {
+        return moduleService.selectEnterpriseList(authGroupIds, roleIds, isLessor, userType);
+    }
+
+    /**
+     * 登录校验 | 获取权限菜单列表
+     *
+     * @param authGroupIds 企业权限组Id集合
+     * @param roleIds      角色Id集合
+     * @param isLessor     租户标识
+     * @param userType     用户标识
+     * @return 菜单信息对象集合
+     */
+    @Override
+    public List<SysMenuDto> getMenuList(Set<Long> authGroupIds, Set<Long> roleIds, String isLessor, String userType) {
+        return menuService.selectEnterpriseList(authGroupIds, roleIds, isLessor, userType);
     }
 
     /**
      * 登录校验 | 获取菜单数据权限
      *
-     * @param roleIds  角色Id集合
+     * @param menuList 菜单信息对象集合
+     * @param isLessor 租户标识
      * @param userType 用户标识
-     * @return 菜单权限信息
+     * @return 菜单权限信息集合
      */
     @Override
-    public Set<String> getMenuPermission(Set<Long> roleIds, String userType) {
+    public Set<String> getMenuPermission(List<SysMenuDto> menuList, String isLessor, String userType) {
         Set<String> perms = new HashSet<>();
         // 租管租户的超管用户拥有所有权限
-        if (SecurityUserUtils.isAdminTenant() && SysUserDto.isAdmin(userType))
+        if (SysEnterpriseDto.isLessor(isLessor) && SysUserDto.isAdmin(userType)) {
             perms.add(PERMISSION_ADMIN);
-        else {
-            Set<String> set = SysUserDto.isAdmin(userType)
-                    ? menuService.loginPermission()
-                    : menuService.loginPermission(roleIds);
-            // 常规租户的超管用户拥有本租户最高权限
-            perms.addAll(set.stream().filter(StrUtil::isNotBlank).collect(Collectors.toSet()));
+        } else {
+            // 菜单组合权限表示集合
+            perms.addAll(menuList.stream().map(SysMenuDto::getPerms).filter(StrUtil::isNotBlank).collect(Collectors.toSet()));
         }
         return perms;
     }
@@ -211,19 +248,60 @@ public class SysLoginServiceImpl implements ISysLoginService {
     /**
      * 登录校验 | 获取路由路径集合
      *
-     * @param roleIds  角色Id集合
-     * @param userType 用户标识
+     * @param menuList 菜单信息对象集合
      * @return 路由路径集合
      */
     @Override
-    public Map<String, String> getMenuRouteMap(Set<Long> roleIds, String userType) {
-        if (SecurityUserUtils.isAdminTenant())
-            return SysUserDto.isAdmin(userType)
-                    ? menuService.getLessorRouteMap()
-                    : menuService.getRouteMap(roleIds);
-        else
-            return SysUserDto.isAdmin(userType)
-                    ? menuService.getRouteMap()
-                    : menuService.getRouteMap(roleIds);
+    public Map<String, String> getMenuRouteMap(List<SysMenuDto> menuList) {
+        return buildRoutePath(menuList.stream().filter(menu -> (menu.isDir() || menu.isMenu() || menu.isDetails()))
+                .collect(Collectors.toList()));
+    }
+
+    /**
+     * 构建路由路径集合
+     *
+     * @param menus 菜单列表
+     * @return 路径集合
+     */
+    private Map<String, String> buildRoutePath(List<SysMenuDto> menus) {
+        Map<String, String> routeMap = new HashMap<>();
+        if (CollUtil.isEmpty(menus))
+            return new HashMap<>();
+        List<SysMenuDto> menuTree = TreeUtil.buildTree(menus);
+        SysMenuDto menu = new SysMenuDto();
+        menu.setFullPath(StrUtil.EMPTY);
+        menu.setChildren(menuTree);
+        menuTree.forEach(sonChild -> {
+            if (sonChild.isDetails())
+                routeMap.put(sonChild.getName(), StrUtil.SLASH + sonChild.getPath());
+        });
+        recursionFn(menu, routeMap);
+        return routeMap;
+    }
+
+    /**
+     * 递归菜单树
+     *
+     * @param menu     菜单对象
+     * @param routeMap 路径集合
+     */
+    private void recursionFn(SysMenuDto menu, Map<String, String> routeMap) {
+        if (CollUtil.isNotEmpty(menu.getChildren())) {
+            menu.getChildren().forEach(sonChild -> {
+                sonChild.setFullPath(menu.getFullPath() + StrUtil.SLASH + sonChild.getPath());
+                if (!sonChild.isDetails())
+                    routeMap.put(sonChild.getName(), sonChild.getFullPath());
+                if (CollUtil.isNotEmpty(sonChild.getChildren())) {
+                    sonChild.getChildren().forEach(grandsonChild -> {
+                        if (grandsonChild.isDetails()) {
+                            String detailsSuffix = grandsonChild.getDetailsSuffix();
+                            grandsonChild.setFullPath(StrUtil.isNotEmpty(detailsSuffix) ? menu.getFullPath() + StrUtil.SLASH + detailsSuffix : menu.getFullPath());
+                            routeMap.put(grandsonChild.getName(), grandsonChild.getFullPath());
+                        }
+                    });
+                    recursionFn(sonChild, routeMap);
+                }
+            });
+        }
     }
 }

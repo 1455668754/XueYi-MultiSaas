@@ -30,6 +30,15 @@ public class LoginUser extends BaseLoginUser<SysUserDto> {
     /** 账户类型 */
     private SecurityConstants.AccountType accountType = SecurityConstants.AccountType.ADMIN;
 
+    /** 初始化用户信息 */
+    public void initUser(SysUserDto user) {
+        setUser(user);
+        setUserId(user.getId());
+        setUserName(user.getUserName());
+        setUserType(user.getUserType());
+        setPassword(user.getPassword());
+    }
+    
     /** 初始化权限范围 */
     public DataScope getDataScope() {
         scope.setEnterpriseId(enterpriseId);
@@ -39,6 +48,7 @@ public class LoginUser extends BaseLoginUser<SysUserDto> {
         return scope;
     }
 
+    
     /** 初始化路由路径映射列表 */
     public void initRouteURL() {
         routeURL = null;

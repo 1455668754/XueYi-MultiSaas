@@ -1,5 +1,6 @@
 package com.xueyi.system.authority.controller.admin;
 
+import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.validate.V_A;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 系统服务 | 权限模块 | 模块管理 | 管理端 业务处理
@@ -48,7 +50,9 @@ public class ASysModuleController extends BSysModuleController {
         Object moduleRoute = tokenService.getModuleRoute();
         if (ObjectUtil.isNull(moduleRoute)) {
             DataScope dataScope = tokenService.getDataScope();
-            moduleRoute = baseService.getRoutes(dataScope.getRoleIds());
+            List<SysModuleDto> moduleList = baseService.selectListByIds(dataScope.getModuleIds());
+            moduleRoute = moduleList.stream().filter(item -> ObjectUtil.equals(DictConstants.DicShowHide.SHOW.getCode(), item.getHideModule()))
+                    .collect(Collectors.toList());
             tokenService.setModuleRoute(moduleRoute);
         }
         return success(moduleRoute);

@@ -37,8 +37,17 @@ public class DataScope implements Serializable {
     /** 角色权限列表 */
     private Set<String> roles;
 
-    /** 角色Id列表 */
+    /** 角色Ids */
     private Set<Long> roleIds;
+
+    /** 企业权限组Ids */
+    private Set<Long> authGroupIds;
+
+    /** 模块Ids */
+    private Set<Long> moduleIds;
+
+    /** 菜单Ids */
+    private Set<Long> menuIds;
 
     /** 数据范围（1全部数据权限 2自定数据权限 3本部门数据权限 4本部门及以下数据权限 5本岗位数据权限  6仅本人数据权限） */
     private String dataScope;

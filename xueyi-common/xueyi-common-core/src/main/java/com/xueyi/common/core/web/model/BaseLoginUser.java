@@ -108,6 +108,7 @@ public class BaseLoginUser<User> implements UserDetails, OAuth2AuthenticatedPrin
         return this.getUserName();
     }
 
+    /** 初始化企业信息 */
     public void initEnterprise(SysEnterprise enterprise) {
         setEnterprise(enterprise);
         setEnterpriseId(enterprise.getId());
@@ -115,6 +116,7 @@ public class BaseLoginUser<User> implements UserDetails, OAuth2AuthenticatedPrin
         setIsLessor(enterprise.getIsLessor());
     }
 
+    /** 初始化数据源信息 */
     public void initSource(SysSource source) {
         setSource(source);
         setSourceName(source.getMaster());

@@ -9,8 +9,10 @@ import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.AdminAuth;
 import com.xueyi.common.security.service.TokenUserService;
+import com.xueyi.common.security.utils.SecurityUserUtils;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.authority.domain.query.SysMenuQuery;
+import com.xueyi.system.api.model.DataScope;
 import com.xueyi.system.authority.controller.base.BSysMenuController;
 import com.xueyi.system.utils.MRouteUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +53,8 @@ public class ASysMenuController extends BSysMenuController {
         Map<String, Object> menuMap = tokenService.getMenuRoute();
         String moduleKey = moduleId.toString();
         if (ObjectUtil.isNull(menuMap) || ObjectUtil.isNull(menuMap.get(moduleKey))) {
-            List<SysMenuDto> menus = baseService.getRoutes(moduleId);
+            DataScope dataScope = SecurityUserUtils.getDataScope();
+            List<SysMenuDto> menus = baseService.getRoutes(moduleId, dataScope.getMenuIds());
             if (ObjectUtil.isNull(menuMap))
                 menuMap = new HashMap<>();
             menuMap.put(moduleKey, MRouteUtils.buildMenus(TreeUtil.buildTree(menus)));

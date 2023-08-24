@@ -18,13 +18,4 @@ public interface ISysDeptService extends ITreeService<SysDeptQuery, SysDeptDto> 
      * @return 结果
      */
     int addInner(SysDeptDto dept);
-
-    /**
-     * 校验部门编码是否唯一
-     *
-     * @param Id   部门Id
-     * @param code 部门编码
-     * @return 结果 | true/false 唯一/不唯一
-     */
-    boolean checkDeptCodeUnique(Long Id, String code);
 }

@@ -9,7 +9,6 @@ import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.security.utils.SecurityUserUtils;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
-import com.xueyi.system.api.authority.feign.RemoteAuthService;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
@@ -46,9 +45,6 @@ public class TeTenantServiceImpl extends BaseServiceImpl<TeTenantQuery, TeTenant
     ITeTenantService oneselfService;
 
     @Autowired
-    private RemoteAuthService remoteAuthService;
-
-    @Autowired
     private ITeStrategyService strategyService;
 
     @Autowired
@@ -60,50 +56,12 @@ public class TeTenantServiceImpl extends BaseServiceImpl<TeTenantQuery, TeTenant
     @Autowired
     private RemoteUserService userService;
 
-    @Autowired
-    private RemoteAuthService authService;
-
     /**
      * 缓存主键命名定义
      */
     @Override
     public CacheConstants.CacheType getCacheKey() {
         return CacheConstants.CacheType.TE_TENANT_KEY;
-    }
-
-    /**
-     * 获取租户权限
-     *
-     * @param id id
-     * @return 权限Ids
-     */
-    @Override
-    public Long[] selectAuth(Long id) {
-        TeTenantDto tenant = baseManager.selectById(id);
-        TeStrategyDto strategy = strategyService.selectById(tenant.getStrategyId());
-        R<Long[]> authR = remoteAuthService.getTenantAuthInner(tenant.getId(), strategy.getSourceSlave());
-        if (authR.isFail()) {
-            AjaxResult.warn(authR.getMsg());
-        }
-        return authR.getData();
-    }
-
-    /**
-     * 修改租户权限
-     *
-     * @param id      id
-     * @param authIds 权限Ids
-     */
-    @Override
-    public void updateAuth(Long id, Long[] authIds) {
-        TeTenantDto tenant = baseManager.selectById(id);
-        if (tenant.isNotAdmin()) {
-            TeStrategyDto strategy = strategyService.selectById(tenant.getStrategyId());
-            R<Boolean> authR = remoteAuthService.editTenantAuthInner(authIds, tenant.getId(), strategy.getSourceSlave());
-            if (authR.isFail()) {
-                AjaxResult.warn(authR.getMsg());
-            }
-        }
     }
 
     /**
@@ -121,9 +79,6 @@ public class TeTenantServiceImpl extends BaseServiceImpl<TeTenantQuery, TeTenant
             TeStrategyDto strategy = strategyService.selectById(tenantRegister.getTenant().getStrategyId());
             tenantRegister.setSourceName(strategy.getSourceSlave());
             oneselfService.organizeInit(tenantRegister);
-            if (tenantRegister.getTenant().isNotAdmin()) {
-                oneselfService.authorityInit(tenantRegister);
-            }
         }
         return rows;
     }
@@ -176,20 +131,6 @@ public class TeTenantServiceImpl extends BaseServiceImpl<TeTenantQuery, TeTenant
         tenantRegister.getUser().setPassword(SecurityUserUtils.encryptPassword(tenantRegister.getUser().getPassword()));
         R<SysUserDto> userR = userService.addInner(tenantRegister.getUser(), enterpriseId, sourceName);
         if (userR.isFail()) {
-            AjaxResult.warn("新增失败，请检查！");
-        }
-    }
-
-    /**
-     * 租户权限数据初始化
-     *
-     * @param tenantRegister 租户初始化对象
-     */
-    @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void authorityInit(TeTenantRegister tenantRegister) {
-        R<Boolean> authR = authService.addTenantAuthInner(tenantRegister.getAuthIds(), tenantRegister.getTenant().getId(), tenantRegister.getSourceName());
-        if (authR.isFail()) {
             AjaxResult.warn("新增失败，请检查！");
         }
     }

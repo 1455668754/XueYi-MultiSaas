@@ -13,22 +13,6 @@ import com.xueyi.tenant.tenant.domain.dto.TeTenantRegister;
 public interface ITeTenantService extends IBaseService<TeTenantQuery, TeTenantDto> {
 
     /**
-     * 获取租户权限
-     *
-     * @param id id
-     * @return 权限Ids
-     */
-    Long[] selectAuth(Long id);
-
-    /**
-     * 修改租户权限
-     *
-     * @param id      id
-     * @param authIds 权限Ids
-     */
-    void updateAuth(Long id, Long[] authIds);
-
-    /**
      * 新增租户 | 包含数据初始化
      *
      * @param tenantRegister 租户初始化对象
@@ -58,11 +42,4 @@ public interface ITeTenantService extends IBaseService<TeTenantQuery, TeTenantDt
      * @param tenantRegister 租户初始化对象
      */
     void organizeInit(TeTenantRegister tenantRegister);
-
-    /**
-     * 租户权限数据初始化
-     *
-     * @param tenantRegister 租户初始化对象
-     */
-    void authorityInit(TeTenantRegister tenantRegister);
 }

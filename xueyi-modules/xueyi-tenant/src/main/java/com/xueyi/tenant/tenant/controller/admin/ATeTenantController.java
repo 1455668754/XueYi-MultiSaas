@@ -55,15 +55,6 @@ public class ATeTenantController extends BTeTenantController {
     }
 
     /**
-     * 查询租户权限
-     */
-    @GetMapping("/auth/{id}")
-    @PreAuthorize("@ss.hasAuthority(@Auth.TE_TENANT_AUTH)")
-    public AjaxResult getAuth(@PathVariable Long id) {
-        return success(baseService.selectAuth(id));
-    }
-
-    /**
      * 租户新增
      */
     @PostMapping
@@ -83,17 +74,6 @@ public class ATeTenantController extends BTeTenantController {
     @Log(title = "租户管理", businessType = BusinessType.UPDATE)
     public AjaxResult edit(@Validated({V_E.class}) @RequestBody TeTenantDto tenant) {
         return super.edit(tenant);
-    }
-
-    /**
-     * 租户权限修改
-     */
-    @PutMapping("/auth")
-    @PreAuthorize("@ss.hasAuthority(@Auth.TE_TENANT_AUTH)")
-    @Log(title = "租户管理", businessType = BusinessType.AUTH)
-    public AjaxResult editAuth(@RequestBody TeTenantDto tenant) {
-        baseService.updateAuth(tenant.getId(), tenant.getAuthIds());
-        return success();
     }
 
     /**

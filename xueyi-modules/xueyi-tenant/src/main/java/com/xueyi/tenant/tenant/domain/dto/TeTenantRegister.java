@@ -34,7 +34,4 @@ public class TeTenantRegister extends BasisEntity {
     /** 用户信息 */
     private SysUserDto user;
 
-    /** 权限Ids */
-    private Long[] authIds;
-
 }

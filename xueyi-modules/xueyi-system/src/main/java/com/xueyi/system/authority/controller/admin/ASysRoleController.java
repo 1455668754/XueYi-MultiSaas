@@ -1,6 +1,5 @@
 package com.xueyi.system.authority.controller.admin;
 
-import com.xueyi.common.core.utils.TreeUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
@@ -10,8 +9,6 @@ import com.xueyi.common.security.annotation.AdminAuth;
 import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
 import com.xueyi.system.api.authority.domain.query.SysRoleQuery;
 import com.xueyi.system.authority.controller.base.BSysRoleController;
-import com.xueyi.system.authority.domain.vo.SysAuthTree;
-import com.xueyi.system.authority.service.ISysAuthService;
 import com.xueyi.system.organize.service.ISysOrganizeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.Serializable;
@@ -37,9 +35,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin/role")
 public class ASysRoleController extends BSysRoleController {
-
-    @Autowired
-    private ISysAuthService authService;
 
     @Autowired
     private ISysOrganizeService organizeService;
@@ -67,19 +62,18 @@ public class ASysRoleController extends BSysRoleController {
     /**
      * 获取角色功能权限 | 叶子节点
      */
-    @GetMapping("/auth/{id}")
+    @GetMapping("/auth")
     @PreAuthorize("@ss.hasAuthority(@Auth.SYS_ROLE_AUTH)")
-    public AjaxResult getRoleAuth(@PathVariable Long id) {
-        List<SysAuthTree> leafNodes = TreeUtil.getLeafNodes(TreeUtil.buildTree(authService.selectRoleAuth(id)));
-        return success(leafNodes.stream().map(SysAuthTree::getId).toArray(Long[]::new));
+    public AjaxResult getRoleAuth(@RequestParam Long id) {
+        return success(baseService.selectAuthById(id));
     }
 
     /**
      * 获取角色组织权限
      */
-    @GetMapping("/organize/{id}")
+    @GetMapping("/organize")
     @PreAuthorize("@ss.hasAuthority(@Auth.SYS_ROLE_AUTH)")
-    public AjaxResult getRoleOrganize(@PathVariable Long id) {
+    public AjaxResult getRoleOrganize(@RequestParam Long id) {
         return success(organizeService.selectRoleOrganizeMerge(id));
     }
 
@@ -112,7 +106,7 @@ public class ASysRoleController extends BSysRoleController {
     @PreAuthorize("@ss.hasAuthority(@Auth.SYS_ROLE_AUTH)")
     @Log(title = "角色管理", businessType = BusinessType.AUTH)
     public AjaxResult editAuth(@RequestBody SysRoleDto role) {
-        authService.editRoleAuth(role.getId(), role.getAuthIds());
+        baseService.editRoleAuth(role);
         return success();
     }
 
@@ -123,7 +117,8 @@ public class ASysRoleController extends BSysRoleController {
     @PreAuthorize("@ss.hasAuthority(@Auth.SYS_ROLE_AUTH)")
     @Log(title = "角色管理", businessType = BusinessType.AUTH)
     public AjaxResult editOrganize(@RequestBody SysRoleDto role) {
-        return success(baseService.updateDataScope(role));
+        baseService.updateDataScope(role);
+        return success();
     }
 
     /**

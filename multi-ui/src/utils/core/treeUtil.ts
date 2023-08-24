@@ -11,31 +11,32 @@ import { isEmpty, isNotEmpty } from '@/utils/is';
  */
 export function getTreeNodes(
   treeList: any[],
-  nodeKeys: string[],
   nodeName: string,
   childrenName: string,
+  nodeKeys?: string[],
   level?: number,
 ): string[] {
   // 递归函数获取指定层级的所有节点
   function getNodesAtLevel(
     treeNode: any,
-    nodeKeys: string[],
     nodeName: string,
     childrenName: string,
     allSub: boolean,
     currentLevel = 0,
+    nodeKeys?: string[],
     level?: number,
   ): string[] {
     const node = treeNode[nodeName];
-    const hasNode = isNotEmpty(node) ? nodeKeys.includes(node) : false;
+    const allKey = nodeKeys === undefined;
+    const hasNode = isNotEmpty(node) && !allKey ? nodeKeys.includes(node) : false;
     allSub = !allSub ? hasNode : allSub;
     if (isEmpty(level)) {
       if (isEmpty(treeNode[childrenName]) || treeNode[childrenName].length === 0) {
-        return allSub || hasNode ? [node] : [];
+        return allSub || hasNode || allKey ? [node] : [];
       }
     } else {
       if (currentLevel === level) {
-        return allSub || hasNode ? [node] : [];
+        return allSub || hasNode || allKey ? [node] : [];
       }
     }
 
@@ -47,11 +48,11 @@ export function getTreeNodes(
     for (const child of treeNode[childrenName]) {
       const subNodes = getNodesAtLevel(
         child,
-        nodeKeys,
         nodeName,
         childrenName,
         allSub,
         currentLevel + 1,
+        nodeKeys,
         level,
       );
       nodes = nodes.concat(subNodes);
@@ -69,7 +70,7 @@ export function getTreeNodes(
   }
   let nodes: string[] = [];
   for (const treeNode of treeList as any[]) {
-    const subNodes = getNodesAtLevel(treeNode, nodeKeys, nodeName, childrenName, false, 0, level);
+    const subNodes = getNodesAtLevel(treeNode, nodeName, childrenName, false, 0, nodeKeys, level);
     nodes = nodes.concat(subNodes);
   }
   return nodes;

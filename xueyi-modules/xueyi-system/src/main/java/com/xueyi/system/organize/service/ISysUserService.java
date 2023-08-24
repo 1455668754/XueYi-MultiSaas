@@ -87,15 +87,6 @@ public interface ISysUserService extends IBaseService<SysUserQuery, SysUserDto> 
     int resetUserPassword(Long id, String password);
 
     /**
-     * 校验用户编码是否唯一
-     *
-     * @param id       用户Id
-     * @param userCode 用户编码
-     * @return 结果 | true/false 唯一/不唯一
-     */
-    boolean checkUserCodeUnique(Long id, String userCode);
-
-    /**
      * 校验用户账号是否唯一
      *
      * @param id       Id

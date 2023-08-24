@@ -1,7 +1,5 @@
 package com.xueyi.system.organize.service.impl;
 
-import com.xueyi.common.core.constant.basic.BaseConstants;
-import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.datasource.annotation.Isolate;
 import com.xueyi.common.web.correlate.contant.CorrelateConstants;
@@ -61,17 +59,4 @@ public class SysDeptServiceImpl extends TreeServiceImpl<SysDeptQuery, SysDeptDto
     public List<SysDeptDto> selectListScope(SysDeptQuery dept) {
         return super.selectListScope(dept);
     }
-
-    /**
-     * 校验部门编码是否唯一
-     *
-     * @param Id   部门Id
-     * @param code 部门编码
-     * @return 结果 | true/false 唯一/不唯一
-     */
-    @Override
-    public boolean checkDeptCodeUnique(Long Id, String code) {
-        return ObjectUtil.isNotNull(baseManager.checkDeptCodeUnique(ObjectUtil.isNull(Id) ? BaseConstants.NONE_ID : Id, code));
-    }
-
 }

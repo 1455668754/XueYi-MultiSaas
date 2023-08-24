@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.xueyi.system.authority.controller.base.BSysAuthGroupController;
 
 /**
- * 系统服务 | 权限模块 | 租户权限组管理 | 内部调用 业务处理
+ * 系统服务 | 权限模块 | 企业权限组管理 | 内部调用 业务处理
  *
  * @author xueyi
  */
