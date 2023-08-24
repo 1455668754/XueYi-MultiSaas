@@ -40,7 +40,7 @@ public class SecurityContextHolder {
      * 记录上一次企业Id
      */
     private static void setLastEnterpriseId(Long enterpriseId) {
-        if (ObjectUtil.isNotNull(enterpriseId)) {
+        if (ObjectUtil.isNotNull(enterpriseId) && ObjectUtil.notEqual(SecurityConstants.EMPTY_TENANT_ID, enterpriseId)) {
             set(SecurityConstants.BaseSecurity.LAST_ENTERPRISE_ID.getCode(), enterpriseId.toString());
         }
     }
