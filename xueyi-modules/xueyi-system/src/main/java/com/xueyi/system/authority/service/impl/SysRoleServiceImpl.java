@@ -75,6 +75,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleQuery, SysRoleDto
      * @return 结果
      */
     @Override
+    @DSTransactional
     public int editRoleAuth(SysRoleDto role) {
         return editCorrelates(role, SysRoleCorrelate.AUTH_EDIT);
     }

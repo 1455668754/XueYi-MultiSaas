@@ -39,9 +39,9 @@ public enum SysRoleCorrelate implements CorrelateService {
     }}),
     BASE_ADD("默认新增|关联（角色）", new ArrayList<>() {{
         // 角色 | 角色-模块关联
-        add(new Indirect<>(EDIT, SysRoleModuleMergeMapper.class, SysRoleModuleMerge::getRoleId, SysRoleModuleMerge::getModuleId, SysRoleDto::getId, SysRoleDto::getModuleIds));
+        add(new Indirect<>(ADD, SysRoleModuleMergeMapper.class, SysRoleModuleMerge::getRoleId, SysRoleModuleMerge::getModuleId, SysRoleDto::getId, SysRoleDto::getModuleIds));
         // 角色 | 角色-菜单关联
-        add(new Indirect<>(EDIT, SysRoleMenuMergeMapper.class, SysRoleMenuMerge::getRoleId, SysRoleMenuMerge::getMenuId, SysRoleDto::getId, SysRoleDto::getMenuIds));
+        add(new Indirect<>(ADD, SysRoleMenuMergeMapper.class, SysRoleMenuMerge::getRoleId, SysRoleMenuMerge::getMenuId, SysRoleDto::getId, SysRoleDto::getMenuIds));
     }}),
     AUTH_EDIT("功能权限更新|关联（角色）", new ArrayList<>() {{
         // 角色 | 角色-模块关联

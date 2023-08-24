@@ -6,9 +6,7 @@ export interface StrategyIM extends BaseEntity {
   name: string;
   sourceId: string;
   sourceSlave: string;
-  sort: number;
   status: string;
-  remark: string;
   isDefault: string;
 }
 

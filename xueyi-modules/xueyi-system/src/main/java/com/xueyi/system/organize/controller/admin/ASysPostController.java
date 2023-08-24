@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.Serializable;
@@ -56,10 +57,10 @@ public class ASysPostController extends BSysPostController {
     /**
      * 查询部门关联的角色Id集
      */
-    @GetMapping(value = "/auth/{id}")
+    @GetMapping(value = "/auth")
     @PreAuthorize("@ss.hasAuthority(@Auth.SYS_POST_AUTH)")
-    public AjaxResult getRoleAuth(@PathVariable Long id) {
-        return success(organizeService.selectPostRoleMerge(id));
+    public AjaxResult getRoleAuth(@RequestParam Long id) {
+        return success(baseService.selectPostRoleById(id));
     }
 
     /**
@@ -90,7 +91,7 @@ public class ASysPostController extends BSysPostController {
     @PutMapping(value = "/auth")
     @PreAuthorize("@ss.hasAuthority(@Auth.SYS_POST_AUTH)")
     public AjaxResult editRoleAuth(@RequestBody SysPostDto post) {
-        organizeService.editPostIdRoleMerge(post.getId(), post.getRoleIds());
+        baseService.editPostRole(post);
         return success();
     }
 

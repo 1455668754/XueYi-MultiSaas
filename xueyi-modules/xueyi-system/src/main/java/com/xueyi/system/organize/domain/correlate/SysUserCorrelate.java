@@ -28,6 +28,14 @@ import static com.xueyi.common.web.correlate.contant.CorrelateConstants.SubOpera
 @AllArgsConstructor
 public enum SysUserCorrelate implements CorrelateService {
 
+    ROLE_SEL("角色组查询|关联（组织-角色）", new ArrayList<>() {{
+        // 用户 | 组织-角色
+        add(new Indirect<>(SELECT, SysOrganizeRoleMergeMapper.class, SysOrganizeRoleMerge::getUserId, SysOrganizeRoleMerge::getRoleId, SysUserDto::getId, SysUserDto::getRoleIds));
+    }}),
+    ROLE_EDIT("角色组查询|关联（组织-角色）", new ArrayList<>() {{
+        // 用户 | 组织-角色
+        add(new Indirect<>(EDIT, SysOrganizeRoleMergeMapper.class, SysOrganizeRoleMerge::getUserId, SysOrganizeRoleMerge::getRoleId, SysUserDto::getId, SysUserDto::getRoleIds));
+    }}),
     INFO_LIST("默认列表|（岗位）", new ArrayList<>() {{
         // 用户 | 岗位
         add(new Indirect<>(SELECT, ISysPostService.class, SysUserPostMergeMapper.class, SysUserPostMerge::getUserId, SysUserPostMerge::getPostId, SysUserDto::getId, SysPostDto::getId, SysUserDto::getPostIds, SysUserDto::getPosts, new ArrayList<>() {{

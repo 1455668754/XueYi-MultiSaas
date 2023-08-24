@@ -1,5 +1,6 @@
 package com.xueyi.system.organize.service.impl;
 
+import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.datasource.annotation.Isolate;
 import com.xueyi.common.web.correlate.contant.CorrelateConstants;
@@ -46,6 +47,30 @@ public class SysPostServiceImpl extends BaseServiceImpl<SysPostQuery, SysPostDto
     @Override
     public List<SysPostDto> selectListByDeptIds(Collection<Long> deptIds) {
         return baseManager.selectListByDeptIds(deptIds);
+    }
+
+
+    /**
+     * 根据Id查询岗位信息对象 | 含角色组
+     *
+     * @param id Id
+     * @return 岗位信息对象
+     */
+    @Override
+    public SysPostDto selectPostRoleById(Long id){
+        return subCorrelates(selectById(id), SysPostCorrelate.ROLE_SEL);
+    }
+
+    /**
+     * 修改岗位角色组
+     *
+     * @param post 岗位对象
+     * @return 结果
+     */
+    @Override
+    @DSTransactional
+    public int editPostRole(SysPostDto post){
+        return editCorrelates(post, SysPostCorrelate.ROLE_EDIT);
     }
 
     /**

@@ -1,29 +1,18 @@
 package com.xueyi.system.authority.service.impl;
 
-import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.web.correlate.contant.CorrelateConstants;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
-import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
-import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
-import com.xueyi.system.api.authority.domain.po.SysMenuPo;
 import com.xueyi.system.authority.domain.correlate.SysAuthGroupCorrelate;
 import com.xueyi.system.authority.domain.dto.SysAuthGroupDto;
 import com.xueyi.system.authority.domain.query.SysAuthGroupQuery;
 import com.xueyi.system.authority.manager.ISysAuthGroupManager;
 import com.xueyi.system.authority.service.ISysAuthGroupService;
-import com.xueyi.system.authority.service.ISysMenuService;
-import com.xueyi.system.authority.service.ISysModuleService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * 系统服务 | 权限模块 | 企业权限组管理 服务层处理
@@ -32,12 +21,6 @@ import java.util.stream.Collectors;
  */
 @Service
 public class SysAuthGroupServiceImpl extends BaseServiceImpl<SysAuthGroupQuery, SysAuthGroupDto, SysAuthGroupCorrelate, ISysAuthGroupManager> implements ISysAuthGroupService {
-
-    @Autowired
-    private ISysMenuService menuService;
-
-    @Autowired
-    private ISysModuleService moduleService;
 
     /**
      * 默认方法关联配置定义

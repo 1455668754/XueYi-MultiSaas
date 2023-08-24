@@ -1,5 +1,6 @@
 package com.xueyi.system.organize.service.impl;
 
+import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.utils.core.DesensitizedUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
@@ -54,6 +55,29 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserQuery, SysUserDto
     @Override
     public SysUserDto userLogin(String userName, String password) {
         return baseManager.userLogin(userName, password);
+    }
+
+    /**
+     * 根据Id查询用户信息对象 | 含角色组
+     *
+     * @param id Id
+     * @return 用户信息对象
+     */
+    @Override
+    public SysUserDto selectUserRoleById(Long id) {
+        return subCorrelates(selectById(id), SysUserCorrelate.ROLE_SEL);
+    }
+
+    /**
+     * 修改用户角色组
+     *
+     * @param user 用户对象
+     * @return 结果
+     */
+    @Override
+    @DSTransactional
+    public int editUserRole(SysUserDto user) {
+        return editCorrelates(user, SysUserCorrelate.ROLE_EDIT);
     }
 
     /**

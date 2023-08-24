@@ -10,9 +10,7 @@ export interface TenantIM extends BaseEntity {
   logo: string;
   nameFrequency: number;
   isLessor: string;
-  sort: number;
   status: string;
-  remark: string;
   isDefault: string;
   authIds: string[];
 }

@@ -28,9 +28,7 @@ export interface MenuIM extends TreeEntity<MenuIM> {
   currentActiveMenu: string;
   perms: string;
   icon: string;
-  sort: number;
   status: string;
-  remark: string;
   isCommon: string;
   isDefault: string;
 }
@@ -67,9 +65,7 @@ export interface MenuPM extends TreeEntity<MenuIM> {
   currentActiveMenu?: string;
   perms?: string;
   icon?: string;
-  sort?: number;
   status?: string;
-  remark?: string;
   isCommon?: string;
   isDefault?: string;
 }

@@ -9,8 +9,6 @@ import com.xueyi.common.security.annotation.AdminAuth;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
 import com.xueyi.system.api.organize.domain.query.SysDeptQuery;
 import com.xueyi.system.organize.controller.base.BSysDeptController;
-import com.xueyi.system.organize.service.ISysOrganizeService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.Serializable;
@@ -34,9 +33,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin/dept")
 public class ASysDeptController extends BSysDeptController {
-
-    @Autowired
-    private ISysOrganizeService organizeService;
 
     /**
      * 查询部门列表
@@ -61,10 +57,10 @@ public class ASysDeptController extends BSysDeptController {
     /**
      * 查询部门关联的角色Id集
      */
-    @GetMapping(value = "/auth/{id}")
+    @GetMapping(value = "/auth")
     @PreAuthorize("@ss.hasAuthority(@Auth.SYS_DEPT_AUTH)")
-    public AjaxResult getRoleAuth(@PathVariable Long id) {
-        return success(organizeService.selectDeptRoleMerge(id));
+    public AjaxResult getRoleAuth(@RequestParam Long id) {
+        return success(baseService.selectDeptRoleById(id));
     }
 
     /**
@@ -95,7 +91,7 @@ public class ASysDeptController extends BSysDeptController {
     @PutMapping(value = "/auth")
     @PreAuthorize("@ss.hasAuthority(@Auth.SYS_DEPT_AUTH)")
     public AjaxResult editRoleAuth(@RequestBody SysDeptDto dept) {
-        organizeService.editDeptRoleMerge(dept.getId(), dept.getRoleIds());
+        baseService.editDeptRole(dept);
         return success();
     }
 

@@ -4,7 +4,7 @@ import { defHttp } from '/@/utils/http/axios';
 enum Api {
   LIST_DEPT = '/system/admin/dept/list',
   GET_DEPT = '/system/admin/dept/',
-  GET_AUTH_DEPT = '/system/admin/dept/auth/',
+  GET_AUTH_DEPT = '/system/admin/dept/auth',
   ADD_DEPT = '/system/admin/dept',
   EDIT_DEPT = '/system/admin/dept',
   EDIT_AUTH_DEPT = '/system/admin/dept/auth',
@@ -20,9 +20,9 @@ export const getDeptApi = (id: string) => defHttp.get<DeptIM>({ url: Api.GET_DEP
 
 /** 查询部门的角色权限节点集 */
 export const getAuthDeptApi = (id: string) =>
-  defHttp.get<string[]>({
+  defHttp.get<DeptIM>({
     url: Api.GET_AUTH_DEPT,
-    params: id,
+    params: { id: id },
   });
 
 /** 新增部门 */

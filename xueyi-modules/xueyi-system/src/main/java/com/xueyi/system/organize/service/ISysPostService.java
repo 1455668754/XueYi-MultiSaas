@@ -23,6 +23,22 @@ public interface ISysPostService extends IBaseService<SysPostQuery, SysPostDto> 
     List<SysPostDto> selectListByDeptIds(Collection<Long> deptIds);
 
     /**
+     * 根据Id查询岗位信息对象 | 含角色组
+     *
+     * @param id Id
+     * @return 岗位信息对象
+     */
+    SysPostDto selectPostRoleById(Long id);
+
+    /**
+     * 修改岗位角色组
+     *
+     * @param post 岗位对象
+     * @return 结果
+     */
+    int editPostRole(SysPostDto post);
+
+    /**
      * 新增岗位 | 内部调用
      *
      * @param post 岗位对象

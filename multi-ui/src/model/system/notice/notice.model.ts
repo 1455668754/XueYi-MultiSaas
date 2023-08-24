@@ -7,7 +7,6 @@ export interface NoticeIM extends BaseEntity {
   type: string;
   content: string;
   status: string;
-  remark: string;
 }
 
 /** notice list model */
@@ -20,7 +19,6 @@ export interface NoticePM extends BaseEntity {
   type?: string;
   content?: string;
   status?: string;
-  remark?: string;
 }
 
 /** notice page param model */

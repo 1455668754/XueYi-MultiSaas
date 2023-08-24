@@ -8,7 +8,6 @@ export interface PostIM extends BaseEntity {
   deptId: string;
   code: string;
   name: string;
-  sort: number;
   status: string;
   dept: DeptIM;
   roles: RoleLM;
@@ -24,7 +23,6 @@ export interface PostPM extends BaseEntity {
   deptId?: string;
   code?: string;
   name?: string;
-  sort?: number;
   status?: string;
   roleIds?: string[];
 }

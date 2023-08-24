@@ -13,7 +13,6 @@ import com.xueyi.system.api.model.LoginUser;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
 import com.xueyi.system.api.organize.domain.query.SysUserQuery;
 import com.xueyi.system.organize.controller.base.BSysUserController;
-import com.xueyi.system.organize.service.ISysOrganizeService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.Serializable;
@@ -40,9 +40,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin/user")
 public class ASysUserController extends BSysUserController {
-
-    @Autowired
-    private ISysOrganizeService organizeService;
 
     @Autowired
     private TokenUserService tokenService;
@@ -90,12 +87,12 @@ public class ASysUserController extends BSysUserController {
     }
 
     /**
-     * 查询用户关联的角色Id集
+     * 查询用户信息 | 含角色组
      */
-    @GetMapping(value = "/auth/{id}")
+    @GetMapping(value = "/auth")
     @PreAuthorize("@ss.hasAuthority(@Auth.SYS_USER_AUTH)")
-    public AjaxResult getRoleAuth(@PathVariable Long id) {
-        return success(organizeService.selectUserRoleMerge(id));
+    public AjaxResult getRoleAuth(@RequestParam Long id) {
+        return success(baseService.selectUserRoleById(id));
     }
 
     /**
@@ -137,7 +134,7 @@ public class ASysUserController extends BSysUserController {
     @PutMapping(value = "/auth")
     @PreAuthorize("@ss.hasAuthority(@Auth.SYS_USER_AUTH)")
     public AjaxResult editRoleAuth(@RequestBody SysUserDto user) {
-        organizeService.editUserRoleMerge(user.getId(), user.getRoleIds());
+        baseService.editUserRole(user);
         return success();
     }
 

@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 enum Api {
   LIST_USER = '/system/admin/user/list',
   GET_USER = '/system/admin/user/',
-  GET_AUTH_USER = '/system/admin/user/auth/',
+  GET_AUTH_USER = '/system/admin/user/auth',
   ADD_USER = '/system/admin/user',
   EDIT_USER = '/system/admin/user',
   EDIT_AUTH_USER = '/system/admin/user/auth',
@@ -25,9 +25,9 @@ export const getUserApi = (id: string) => defHttp.get<UserIM>({ url: Api.GET_USE
 
 /** 查询用户的角色权限节点集 */
 export const getAuthUserApi = (id: string) =>
-  defHttp.get<string[]>({
+  defHttp.get<UserIM>({
     url: Api.GET_AUTH_USER,
-    params: id,
+    params: { id: id },
   });
 
 /** 新增用户 */

@@ -31,9 +31,32 @@ public class SysDeptServiceImpl extends TreeServiceImpl<SysDeptQuery, SysDeptDto
      */
     @Override
     protected Map<CorrelateConstants.ServiceType, SysDeptCorrelate> defaultCorrelate() {
-        return new HashMap<>(){{
+        return new HashMap<>() {{
             put(CorrelateConstants.ServiceType.DELETE, SysDeptCorrelate.BASE_DEL);
         }};
+    }
+
+    /**
+     * 根据Id查询部门信息对象 | 含角色组
+     *
+     * @param id Id
+     * @return 部门信息对象
+     */
+    @Override
+    public SysDeptDto selectDeptRoleById(Long id) {
+        return subCorrelates(selectById(id), SysDeptCorrelate.ROLE_SEL);
+    }
+
+    /**
+     * 修改部门角色组
+     *
+     * @param post 部门对象
+     * @return 结果
+     */
+    @Override
+    @Transactional
+    public int editDeptRole(SysDeptDto post) {
+        return editCorrelates(post, SysDeptCorrelate.ROLE_EDIT);
     }
 
     /**

@@ -23,7 +23,6 @@
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
   import { listRoleApi } from '@/api/system/authority/role.api';
-  import { PostIM } from '@/model/system/organize';
   import { RoleIM, RoleLM } from '@/model/system/authority';
   import { roleFormSchema } from './post.data';
   import { editAuthPostScopeApi, getAuthPostApi } from '@/api/system/organize/post.api';
@@ -44,8 +43,7 @@
     resetFields();
     roleList.value = [];
     setModalProps({ confirmLoading: false });
-    const record = data.record as PostIM;
-    record.roleIds = await getAuthPostApi(record.id);
+    const record = await getAuthPostApi(data.record.id);
     if (unref(roleList).length === 0) {
       roleList.value = await listRoleApi({ status: DicStatusEnum.NORMAL }).then(
         (item) => item.items,

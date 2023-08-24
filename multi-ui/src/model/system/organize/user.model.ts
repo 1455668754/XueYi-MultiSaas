@@ -12,7 +12,6 @@ export interface UserIM extends BaseEntity {
   nickName: string;
   userType: string;
   status: string;
-  sort: number;
   avatar: string;
   phone: string;
   email: string;
@@ -39,7 +38,6 @@ export interface UserPM extends BaseEntity {
   nickName?: string;
   userType?: string;
   status?: string;
-  sort?: number;
   avatar?: string;
   phone?: string;
   email?: string;

@@ -23,6 +23,22 @@ public interface ISysUserService extends IBaseService<SysUserQuery, SysUserDto> 
     SysUserDto userLogin(String userName, String password);
 
     /**
+     * 根据Id查询用户信息对象 | 含角色组
+     *
+     * @param id Id
+     * @return 用户信息对象
+     */
+    SysUserDto selectUserRoleById(Long id);
+
+    /**
+     * 修改用户角色组
+     *
+     * @param user 用户对象
+     * @return 结果
+     */
+    int editUserRole(SysUserDto user);
+
+    /**
      * 新增用户 | 内部调用
      *
      * @param user 用户对象

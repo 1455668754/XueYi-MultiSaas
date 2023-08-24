@@ -17,8 +17,7 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.xueyi.common.web.correlate.contant.CorrelateConstants.SubOperate.DELETE;
-import static com.xueyi.common.web.correlate.contant.CorrelateConstants.SubOperate.SELECT;
+import static com.xueyi.common.web.correlate.contant.CorrelateConstants.SubOperate.*;
 
 /**
  * 系统服务 | 组织模块 | 部门 关联映射
@@ -27,6 +26,14 @@ import static com.xueyi.common.web.correlate.contant.CorrelateConstants.SubOpera
 @AllArgsConstructor
 public enum SysDeptCorrelate implements CorrelateService {
 
+    ROLE_SEL("角色组查询|关联（组织-角色）", new ArrayList<>() {{
+        // 部门 | 组织-角色
+        add(new Indirect<>(SELECT, SysOrganizeRoleMergeMapper.class, SysOrganizeRoleMerge::getDeptId, SysOrganizeRoleMerge::getRoleId, SysDeptDto::getId, SysDeptDto::getRoleIds));
+    }}),
+    ROLE_EDIT("角色组查询|关联（组织-角色）", new ArrayList<>() {{
+        // 部门 | 组织-角色
+        add(new Indirect<>(EDIT, SysOrganizeRoleMergeMapper.class, SysOrganizeRoleMerge::getDeptId, SysOrganizeRoleMerge::getRoleId, SysDeptDto::getId, SysDeptDto::getRoleIds));
+    }}),
     BASE_LIST("列表|（从属岗位）", new ArrayList<>() {{
         // 部门 | 岗位
         add(new Direct<>(SELECT, ISysPostService.class, SysDeptDto::getId, SysPostDto::getDeptId, SysDeptDto::getSubList));

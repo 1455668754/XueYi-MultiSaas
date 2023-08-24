@@ -4,7 +4,7 @@ import { defHttp } from '/@/utils/http/axios';
 enum Api {
   LIST_POST = '/system/admin/post/list',
   GET_POST = '/system/admin/post/',
-  GET_AUTH_POST = '/system/admin/post/auth/',
+  GET_AUTH_POST = '/system/admin/post/auth',
   ADD_POST = '/system/admin/post',
   EDIT_POST = '/system/admin/post',
   EDIT_AUTH_POST = '/system/admin/post/auth',
@@ -21,9 +21,9 @@ export const getPostApi = (id: string) => defHttp.get<PostIM>({ url: Api.GET_POS
 
 /** 查询岗位的角色权限节点集 */
 export const getAuthPostApi = (id: string) =>
-  defHttp.get<string[]>({
+  defHttp.get<PostIM>({
     url: Api.GET_AUTH_POST,
-    params: id,
+    params: { id: id },
   });
 
 /** 新增岗位 */

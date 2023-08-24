@@ -12,6 +12,22 @@ import com.xueyi.system.api.organize.domain.query.SysDeptQuery;
 public interface ISysDeptService extends ITreeService<SysDeptQuery, SysDeptDto> {
 
     /**
+     * 根据Id查询部门信息对象 | 含角色组
+     *
+     * @param id Id
+     * @return 部门信息对象
+     */
+    SysDeptDto selectDeptRoleById(Long id);
+
+    /**
+     * 修改部门角色组
+     *
+     * @param post 部门对象
+     * @return 结果
+     */
+    int editDeptRole(SysDeptDto post);
+
+    /**
      * 新增部门 | 内部调用
      *
      * @param dept 部门对象

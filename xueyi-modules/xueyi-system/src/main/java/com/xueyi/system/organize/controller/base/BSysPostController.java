@@ -6,7 +6,6 @@ import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 import com.xueyi.system.api.organize.domain.query.SysPostQuery;
 import com.xueyi.system.organize.service.ISysDeptService;
-import com.xueyi.system.organize.service.ISysOrganizeService;
 import com.xueyi.system.organize.service.ISysPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,9 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author xueyi
  */
 public class BSysPostController extends BaseController<SysPostQuery, SysPostDto, ISysPostService> {
-
-    @Autowired
-    protected ISysOrganizeService organizeService;
 
     @Autowired
     protected ISysDeptService deptService;

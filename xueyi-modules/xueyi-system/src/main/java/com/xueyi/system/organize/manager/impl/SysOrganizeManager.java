@@ -1,12 +1,10 @@
 package com.xueyi.system.organize.manager.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.xueyi.common.core.constant.system.OrganizeConstants;
 import com.xueyi.common.core.utils.core.ArrayUtil;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
-import com.xueyi.system.organize.domain.merge.SysOrganizeRoleMerge;
 import com.xueyi.system.organize.domain.merge.SysRoleDeptMerge;
 import com.xueyi.system.organize.domain.merge.SysRolePostMerge;
 import com.xueyi.system.organize.domain.merge.SysUserPostMerge;
@@ -139,48 +137,6 @@ public class SysOrganizeManager implements ISysOrganizeManager {
     }
 
     /**
-     * 根据部门Id获取关联的角色Ids
-     *
-     * @param deptId 部门Id
-     * @return 角色Ids
-     */
-    @Override
-    public Long[] selectDeptRoleMerge(Long deptId) {
-        List<SysOrganizeRoleMerge> organizeRoleMerges = organizeRoleMergeMapper.selectList(
-                Wrappers.<SysOrganizeRoleMerge>query().lambda()
-                        .eq(SysOrganizeRoleMerge::getDeptId, deptId));
-        return organizeRoleMerges.stream().map(SysOrganizeRoleMerge::getRoleId).toList().toArray(new Long[]{});
-    }
-
-    /**
-     * 根据岗位Id获取关联的角色Ids
-     *
-     * @param postId 岗位Id
-     * @return 角色Ids
-     */
-    @Override
-    public Long[] selectPostRoleMerge(Long postId) {
-        List<SysOrganizeRoleMerge> organizeRoleMerges = organizeRoleMergeMapper.selectList(
-                Wrappers.<SysOrganizeRoleMerge>query().lambda()
-                        .eq(SysOrganizeRoleMerge::getPostId, postId));
-        return organizeRoleMerges.stream().map(SysOrganizeRoleMerge::getRoleId).toList().toArray(new Long[]{});
-    }
-
-    /**
-     * 根据用户Id获取关联的角色Ids
-     *
-     * @param userId 用户Id
-     * @return 角色Ids
-     */
-    @Override
-    public Long[] selectUserRoleMerge(Long userId) {
-        List<SysOrganizeRoleMerge> organizeRoleMerges = organizeRoleMergeMapper.selectList(
-                Wrappers.<SysOrganizeRoleMerge>query().lambda()
-                        .eq(SysOrganizeRoleMerge::getUserId, userId));
-        return organizeRoleMerges.stream().map(SysOrganizeRoleMerge::getRoleId).toList().toArray(new Long[]{});
-    }
-
-    /**
      * 新增角色组织权限
      *
      * @param roleId      角色Id
@@ -272,117 +228,6 @@ public class SysOrganizeManager implements ISysOrganizeManager {
             rolePostMergeMapper.delete(
                     Wrappers.<SysRolePostMerge>query().lambda()
                             .in(SysRolePostMerge::getRoleId, roleId));
-        }
-    }
-
-    /**
-     * 修改部门的角色关联数据
-     *
-     * @param deptId  部门Id
-     * @param roleIds 角色Ids
-     */
-    @Override
-    public void editDeptRoleMerge(Long deptId, Long[] roleIds) {
-        // 校验roleIds是否为空 ? 删除不存在的,增加新增的 : 删除所有
-        if (ArrayUtil.isNotEmpty(roleIds)) {
-            List<Long> roleIdList = new ArrayList<>(Arrays.asList(roleIds));
-            List<SysOrganizeRoleMerge> originalRoleList = organizeRoleMergeMapper.selectList(
-                    Wrappers.<SysOrganizeRoleMerge>query().lambda()
-                            .eq(SysOrganizeRoleMerge::getDeptId, deptId));
-            if (CollUtil.isNotEmpty(originalRoleList)) {
-                List<Long> originalRoleIds = originalRoleList.stream().map(SysOrganizeRoleMerge::getRoleId).toList();
-                List<Long> delRoleIds = new ArrayList<>(originalRoleIds);
-                delRoleIds.removeAll(roleIdList);
-                if (CollUtil.isNotEmpty(delRoleIds)) {
-                    organizeRoleMergeMapper.delete(
-                            Wrappers.<SysOrganizeRoleMerge>query().lambda()
-                                    .eq(SysOrganizeRoleMerge::getDeptId, deptId)
-                                    .in(SysOrganizeRoleMerge::getRoleId, delRoleIds));
-                }
-                roleIdList.removeAll(originalRoleIds);
-            }
-            if (CollUtil.isNotEmpty(roleIdList)) {
-                List<SysOrganizeRoleMerge> organizeRoleMerges = roleIdList.stream().map(roleId -> new SysOrganizeRoleMerge(deptId, roleId, OrganizeConstants.OrganizeType.DEPT)).collect(Collectors.toList());
-                organizeRoleMergeMapper.insertBatch(organizeRoleMerges);
-            }
-        } else {
-            organizeRoleMergeMapper.delete(
-                    Wrappers.<SysOrganizeRoleMerge>query().lambda()
-                            .in(SysOrganizeRoleMerge::getDeptId, deptId));
-        }
-    }
-
-    /**
-     * 修改岗位的角色关联数据
-     *
-     * @param postId  岗位Id
-     * @param roleIds 角色Ids
-     */
-    @Override
-    public void editPostIdRoleMerge(Long postId, Long[] roleIds) {
-        // 校验roleIds是否为空 ? 删除不存在的,增加新增的 : 删除所有
-        if (ArrayUtil.isNotEmpty(roleIds)) {
-            List<Long> roleIdList = new ArrayList<>(Arrays.asList(roleIds));
-            List<SysOrganizeRoleMerge> originalRoleList = organizeRoleMergeMapper.selectList(
-                    Wrappers.<SysOrganizeRoleMerge>query().lambda()
-                            .eq(SysOrganizeRoleMerge::getPostId, postId));
-            if (CollUtil.isNotEmpty(originalRoleList)) {
-                List<Long> originalRoleIds = originalRoleList.stream().map(SysOrganizeRoleMerge::getRoleId).toList();
-                List<Long> delRoleIds = new ArrayList<>(originalRoleIds);
-                delRoleIds.removeAll(roleIdList);
-                if (CollUtil.isNotEmpty(delRoleIds)) {
-                    organizeRoleMergeMapper.delete(
-                            Wrappers.<SysOrganizeRoleMerge>query().lambda()
-                                    .eq(SysOrganizeRoleMerge::getPostId, postId)
-                                    .in(SysOrganizeRoleMerge::getRoleId, delRoleIds));
-                }
-                roleIdList.removeAll(originalRoleIds);
-            }
-            if (CollUtil.isNotEmpty(roleIdList)) {
-                List<SysOrganizeRoleMerge> organizeRoleMerges = roleIdList.stream().map(roleId -> new SysOrganizeRoleMerge(postId, roleId, OrganizeConstants.OrganizeType.POST)).collect(Collectors.toList());
-                organizeRoleMergeMapper.insertBatch(organizeRoleMerges);
-            }
-        } else {
-            organizeRoleMergeMapper.delete(
-                    Wrappers.<SysOrganizeRoleMerge>query().lambda()
-                            .in(SysOrganizeRoleMerge::getPostId, postId));
-        }
-    }
-
-    /**
-     * 修改用户的角色关联数据
-     *
-     * @param userId  用户Id
-     * @param roleIds 角色Ids
-     */
-    @Override
-    public void editUserRoleMerge(Long userId, Long[] roleIds) {
-        // 校验roleIds是否为空 ? 删除不存在的,增加新增的 : 删除所有
-        if (ArrayUtil.isNotEmpty(roleIds)) {
-            List<Long> roleIdList = new ArrayList<>(Arrays.asList(roleIds));
-            List<SysOrganizeRoleMerge> originalRoleList = organizeRoleMergeMapper.selectList(
-                    Wrappers.<SysOrganizeRoleMerge>query().lambda()
-                            .eq(SysOrganizeRoleMerge::getUserId, userId));
-            if (CollUtil.isNotEmpty(originalRoleList)) {
-                List<Long> originalRoleIds = originalRoleList.stream().map(SysOrganizeRoleMerge::getRoleId).toList();
-                List<Long> delRoleIds = new ArrayList<>(originalRoleIds);
-                delRoleIds.removeAll(roleIdList);
-                if (CollUtil.isNotEmpty(delRoleIds)) {
-                    organizeRoleMergeMapper.delete(
-                            Wrappers.<SysOrganizeRoleMerge>query().lambda()
-                                    .eq(SysOrganizeRoleMerge::getUserId, userId)
-                                    .in(SysOrganizeRoleMerge::getRoleId, delRoleIds));
-                }
-                roleIdList.removeAll(originalRoleIds);
-            }
-            if (CollUtil.isNotEmpty(roleIdList)) {
-                List<SysOrganizeRoleMerge> organizeRoleMerges = roleIdList.stream().map(roleId -> new SysOrganizeRoleMerge(userId, roleId, OrganizeConstants.OrganizeType.USER)).collect(Collectors.toList());
-                organizeRoleMergeMapper.insertBatch(organizeRoleMerges);
-            }
-        } else {
-            organizeRoleMergeMapper.delete(
-                    Wrappers.<SysOrganizeRoleMerge>query().lambda()
-                            .in(SysOrganizeRoleMerge::getUserId, userId));
         }
     }
 }

@@ -10,9 +10,7 @@ export interface ModuleIM extends SubBaseEntity<MenuIM> {
   paramPath: string;
   type: string;
   hideModule: string;
-  sort: number;
   status: string;
-  remark: string;
   isCommon: string;
   isDefault: string;
 }
@@ -29,9 +27,7 @@ export interface ModulePM extends SubBaseEntity<MenuIM> {
   paramPath?: string;
   type?: string;
   hideModule?: string;
-  sort?: number;
   status?: string;
-  remark?: string;
   isCommon?: string;
   isDefault?: string;
 }
