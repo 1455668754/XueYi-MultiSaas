@@ -5,5 +5,5 @@ package com.xueyi.common.core.utils.core;
  *
  * @author xueyi
  */
-public class CharsetUtil extends cn.hutool.core.util.CharsetUtil{
+public class CharsetUtil extends cn.hutool.core.util.CharsetUtil {
 }

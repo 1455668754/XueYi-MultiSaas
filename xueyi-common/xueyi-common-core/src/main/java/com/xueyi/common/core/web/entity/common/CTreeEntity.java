@@ -28,12 +28,12 @@ public class CTreeEntity<D> extends TreeEntity<D> {
     protected String isCommon;
 
     /** 校验是否为公共数据 */
-    public boolean isCommon(){
+    public boolean isCommon() {
         return StrUtil.equals(DictConstants.DicCommonPrivate.COMMON.getCode(), getIsCommon());
     }
 
     /** 校验是否非公共数据 */
-    public boolean isNotCommon(){
+    public boolean isNotCommon() {
         return !isCommon();
     }
 }

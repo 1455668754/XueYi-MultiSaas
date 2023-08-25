@@ -16,6 +16,6 @@ public class TypeUtil extends cn.hutool.core.util.TypeUtil {
      */
     @SuppressWarnings("unchecked")
     public static <T> Class<T> getClazz(Type type, int index) {
-        return (Class<T>)TypeUtil.getTypeArgument(type, index);
+        return (Class<T>) TypeUtil.getTypeArgument(type, index);
     }
 }

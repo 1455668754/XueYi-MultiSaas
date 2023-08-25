@@ -71,13 +71,13 @@ public class TreeEntity<D> extends BaseEntity {
     /** 判定是否存在默认顶级 */
     @JsonIgnore
     public Boolean getDefaultNode() {
-        return ObjectUtil.isNotNull(this.defaultNode) ? this.defaultNode: Boolean.FALSE;
+        return ObjectUtil.isNotNull(this.defaultNode) ? this.defaultNode : Boolean.FALSE;
     }
 
     /** 判定是否移除当前及子节点 */
     @JsonIgnore
     public Boolean getExNodes() {
-        return ObjectUtil.isNotNull(this.exNodes) ? this.exNodes: Boolean.FALSE;
+        return ObjectUtil.isNotNull(this.exNodes) ? this.exNodes : Boolean.FALSE;
     }
 
     /** 获取当前节点的子节点对应的祖籍 */

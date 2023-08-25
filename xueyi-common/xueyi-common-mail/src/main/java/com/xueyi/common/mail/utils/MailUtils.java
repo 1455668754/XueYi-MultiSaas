@@ -5,7 +5,7 @@ import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.CharUtil;
 import cn.hutool.core.util.StrUtil;
-import  cn.hutool.extra.spring.SpringUtil;
+import cn.hutool.extra.spring.SpringUtil;
 import jakarta.mail.Authenticator;
 import jakarta.mail.Session;
 import lombok.AccessLevel;
@@ -20,6 +20,7 @@ import java.util.Map;
 
 /**
  * 邮件工具类
+ *
  * @author kevin
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -389,7 +390,7 @@ public class MailUtils {
         }
 
         return isSingleton ? Session.getDefaultInstance(mailAccount.getSmtpProps(), authenticator) //
-            : Session.getInstance(mailAccount.getSmtpProps(), authenticator);
+                : Session.getInstance(mailAccount.getSmtpProps(), authenticator);
     }
 
     // ------------------------------------------------------------------------------------------------------------------------ Private method start
