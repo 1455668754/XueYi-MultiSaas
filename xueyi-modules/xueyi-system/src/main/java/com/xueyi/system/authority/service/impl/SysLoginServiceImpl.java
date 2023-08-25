@@ -195,9 +195,8 @@ public class SysLoginServiceImpl implements ISysLoginService {
                 case DEPT_AND_CHILD -> {
                     if (isDeptAndChild++ == 0) {
                         Set<Long> deptIds = user.getPosts().stream().map(post -> post.getDept().getId()).collect(Collectors.toSet());
-                        List<SysDeptDto> deptList;
-                        for (Long deptId : deptIds) {
-                            deptList = deptService.selectChildListById(deptId);
+                        if (CollUtil.isNotEmpty(deptIds)) {
+                            List<SysDeptDto> deptList = deptService.selectChildListByIds(deptIds);
                             deptScope.addAll(deptList.stream().map(SysDeptDto::getId).collect(Collectors.toSet()));
                         }
                     }

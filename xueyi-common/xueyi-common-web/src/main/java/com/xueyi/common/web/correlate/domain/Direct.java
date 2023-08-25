@@ -45,7 +45,7 @@ public final class Direct<D extends BaseEntity, S extends BaseEntity> extends Ba
      * @param slaveService 关联Service接口
      * @param mainIdFun    关联主键
      * @param slaveIdFun   关联从键
-     * @param relations     子关联映射
+     * @param relations    子关联映射
      */
     public Direct(CorrelateConstants.SubOperate operateType, Class<? extends IBaseService> slaveService, SFunction<D, ?> mainIdFun, SFunction<S, ?> slaveIdFun, List<? extends BaseCorrelate> relations) {
         initDirect(operateType, slaveService, mainIdFun, slaveIdFun);
@@ -72,7 +72,7 @@ public final class Direct<D extends BaseEntity, S extends BaseEntity> extends Ba
      * @param mainIdFun    关联主键
      * @param slaveIdFun   关联从键
      * @param subInfoFun   从数据关联从对象
-     * @param relations     子关联映射
+     * @param relations    子关联映射
      */
     public Direct(CorrelateConstants.SubOperate operateType, Class<? extends IBaseService> slaveService, SFunction<D, ?> mainIdFun, SFunction<S, ?> slaveIdFun, SFunction<D, ?> subInfoFun, List<? extends BaseCorrelate> relations) {
         initDirect(operateType, slaveService, mainIdFun, slaveIdFun);

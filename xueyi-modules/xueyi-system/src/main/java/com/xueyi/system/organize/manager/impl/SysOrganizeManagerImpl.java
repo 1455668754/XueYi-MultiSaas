@@ -1,7 +1,6 @@
 package com.xueyi.system.organize.manager.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.xueyi.common.core.utils.core.ArrayUtil;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
@@ -19,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -60,7 +58,7 @@ public class SysOrganizeManagerImpl implements ISysOrganizeManager {
         if (CollUtil.isEmpty(roleIds))
             return new HashSet<>();
         List<SysRoleDeptMerge> roleDeptMerges = roleDeptMergeMapper.selectList(
-                Wrappers.<SysRoleDeptMerge>query().lambda()
+                Wrappers.<SysRoleDeptMerge>lambdaQuery()
                         .in(SysRoleDeptMerge::getRoleId, roleIds));
         return roleDeptMerges.stream().map(SysRoleDeptMerge::getDeptId).collect(Collectors.toSet());
     }
@@ -76,7 +74,7 @@ public class SysOrganizeManagerImpl implements ISysOrganizeManager {
         if (CollUtil.isEmpty(roleIds))
             return new HashSet<>();
         List<SysRolePostMerge> rolePostMerges = rolePostMergeMapper.selectList(
-                Wrappers.<SysRolePostMerge>query().lambda()
+                Wrappers.<SysRolePostMerge>lambdaQuery()
                         .in(SysRolePostMerge::getRoleId, roleIds));
         return rolePostMerges.stream().map(SysRolePostMerge::getPostId).collect(Collectors.toSet());
     }
@@ -92,7 +90,7 @@ public class SysOrganizeManagerImpl implements ISysOrganizeManager {
         if (CollUtil.isEmpty(postIds))
             return new HashSet<>();
         List<SysUserPostMerge> userPostMerges = userPostMergeMapper.selectList(
-                Wrappers.<SysUserPostMerge>query().lambda()
+                Wrappers.<SysUserPostMerge>lambdaQuery()
                         .in(SysUserPostMerge::getPostId, postIds));
         return userPostMerges.stream().map(SysUserPostMerge::getUserId).collect(Collectors.toSet());
     }
@@ -110,120 +108,5 @@ public class SysOrganizeManagerImpl implements ISysOrganizeManager {
                 postList.stream().map(SysOrganizeTree::new).collect(Collectors.toList()),
                 deptList.stream().map(SysOrganizeTree::new).collect(Collectors.toList()))
         );
-    }
-
-    /**
-     * 获取角色组织Ids
-     *
-     * @param roleId 角色Id
-     * @return 组织Ids
-     */
-    @Override
-    public Long[] selectRoleOrganizeMerge(Long roleId) {
-        List<SysRoleDeptMerge> roleDeptMerges = roleDeptMergeMapper.selectList(
-                Wrappers.<SysRoleDeptMerge>query().lambda()
-                        .eq(SysRoleDeptMerge::getRoleId, roleId));
-        List<SysRolePostMerge> rolePostMerges = rolePostMergeMapper.selectList(
-                Wrappers.<SysRolePostMerge>query().lambda()
-                        .eq(SysRolePostMerge::getRoleId, roleId));
-        return CollUtil.addAll(
-                roleDeptMerges.stream().map(SysRoleDeptMerge::getDeptId).collect(Collectors.toList()),
-                rolePostMerges.stream().map(SysRolePostMerge::getPostId).collect(Collectors.toList())
-        ).toArray(new Long[]{});
-    }
-
-    /**
-     * 新增角色组织权限
-     *
-     * @param roleId      角色Id
-     * @param organizeIds 组织Ids
-     */
-    @Override
-    public void addRoleOrganizeMerge(Long roleId, Long[] organizeIds) {
-        if (ArrayUtil.isNotEmpty(organizeIds)) {
-            List<Long> organizeIdList = new ArrayList<>(Arrays.asList(organizeIds));
-            List<SysDeptDto> deptList = deptManager.selectListByIds(organizeIdList);
-            if (CollUtil.isNotEmpty(deptList)) {
-                // 1.组织Ids中的部门Ids与岗位Ids分开
-                List<Long> deptIdList = deptList.stream().map(SysDeptDto::getId).toList();
-                organizeIdList.removeAll(deptIdList);
-                // 2.存储角色与部门的关联数据
-                List<SysRoleDeptMerge> roleDeptMerges = deptIdList.stream().map(deptId -> new SysRoleDeptMerge(roleId, deptId)).collect(Collectors.toList());
-                roleDeptMergeMapper.insertBatch(roleDeptMerges);
-            }
-            // 3.存储角色与岗位的关联数据
-            List<SysRolePostMerge> rolePostMerges = organizeIdList.stream().map(postId -> new SysRolePostMerge(roleId, postId)).collect(Collectors.toList());
-            rolePostMergeMapper.insertBatch(rolePostMerges);
-        }
-    }
-
-
-    /**
-     * 修改角色组织权限
-     *
-     * @param roleId      角色Id
-     * @param organizeIds 组织Ids
-     */
-    @Override
-    public void editRoleOrganizeMerge(Long roleId, Long[] organizeIds) {
-        // 1.校验organizeIds是否为空 ? 删除不存在的,增加新增的 : 删除所有
-        if (ArrayUtil.isNotEmpty(organizeIds)) {
-            List<Long> organizeIdList = new ArrayList<>(Arrays.asList(organizeIds));
-            // 2.查询organizeIds中的部门Id，分离deptIds与postIds
-            List<SysDeptDto> deptList = deptManager.selectListByIds(organizeIdList);
-            if (CollUtil.isNotEmpty(deptList)) {
-                List<Long> deptIdList = deptList.stream().map(SysDeptDto::getId).collect(Collectors.toList());
-                organizeIdList.removeAll(deptIdList);
-                // 3.查询原始的角色与部门关联数据,新增/删除差异关联数据
-                List<SysRoleDeptMerge> originalDeptList = roleDeptMergeMapper.selectList(
-                        Wrappers.<SysRoleDeptMerge>query().lambda()
-                                .eq(SysRoleDeptMerge::getRoleId, roleId));
-                if (CollUtil.isNotEmpty(originalDeptList)) {
-                    List<Long> originalDeptIds = originalDeptList.stream().map(SysRoleDeptMerge::getDeptId).toList();
-                    List<Long> delDeptIds = new ArrayList<>(originalDeptIds);
-                    delDeptIds.removeAll(deptIdList);
-                    if (CollUtil.isNotEmpty(delDeptIds)) {
-                        roleDeptMergeMapper.delete(
-                                Wrappers.<SysRoleDeptMerge>query().lambda()
-                                        .eq(SysRoleDeptMerge::getRoleId, roleId)
-                                        .in(SysRoleDeptMerge::getDeptId, delDeptIds));
-                    }
-                    deptIdList.removeAll(originalDeptIds);
-                }
-                if (CollUtil.isNotEmpty(deptIdList)) {
-                    List<SysRoleDeptMerge> roleDeptMerges = deptIdList.stream().map(deptId -> new SysRoleDeptMerge(roleId, deptId)).collect(Collectors.toList());
-                    roleDeptMergeMapper.insertBatch(roleDeptMerges);
-                }
-            } else {
-                roleDeptMergeMapper.delete(Wrappers.<SysRoleDeptMerge>query().lambda().eq(SysRoleDeptMerge::getRoleId, roleId));
-            }
-            // // 4.查询原始的角色与岗位关联数据,新增/删除差异关联数据
-            List<SysRolePostMerge> originalPostList = rolePostMergeMapper.selectList(
-                    Wrappers.<SysRolePostMerge>query().lambda()
-                            .eq(SysRolePostMerge::getRoleId, roleId));
-            if (CollUtil.isNotEmpty(originalPostList)) {
-                List<Long> originalPostIds = originalPostList.stream().map(SysRolePostMerge::getPostId).toList();
-                List<Long> delPostIds = new ArrayList<>(originalPostIds);
-                delPostIds.removeAll(organizeIdList);
-                if (CollUtil.isNotEmpty(delPostIds)) {
-                    rolePostMergeMapper.delete(
-                            Wrappers.<SysRolePostMerge>query().lambda()
-                                    .eq(SysRolePostMerge::getRoleId, roleId)
-                                    .in(SysRolePostMerge::getPostId, delPostIds));
-                }
-                organizeIdList.removeAll(originalPostIds);
-            }
-            if (CollUtil.isNotEmpty(organizeIdList)) {
-                List<SysRolePostMerge> rolePostMerges = organizeIdList.stream().map(postId -> new SysRolePostMerge(roleId, postId)).collect(Collectors.toList());
-                rolePostMergeMapper.insertBatch(rolePostMerges);
-            }
-        } else {
-            roleDeptMergeMapper.delete(
-                    Wrappers.<SysRoleDeptMerge>query().lambda()
-                            .eq(SysRoleDeptMerge::getRoleId, roleId));
-            rolePostMergeMapper.delete(
-                    Wrappers.<SysRolePostMerge>query().lambda()
-                            .in(SysRolePostMerge::getRoleId, roleId));
-        }
     }
 }

@@ -36,6 +36,7 @@
               :fieldNames="{ title: 'label', key: 'id' }"
               checkable
               toolbar
+              @check="dataScopeCheck"
               title="数据权限"
             />
           </template>
@@ -52,8 +53,14 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, ref, unref } from 'vue';
-  import { authFormSchema, organizeFormSchema, roleFormSchema, roleInitList } from './role.data';
+  import { computed, reactive, ref, unref } from 'vue';
+  import {
+    authFormSchema,
+    getOrgDeptIds,
+    organizeFormSchema,
+    roleFormSchema,
+    roleInitList,
+  } from './role.data';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
@@ -62,6 +69,9 @@
   import { authScopeEnterpriseApi } from '@/api/system/authority/auth.api';
   import { organizeScopeApi } from '@/api/system/organize/organize.api';
   import { sourceAssign } from '/@/utils/xueyi';
+  import { getTreeNodes } from '@/utils/core/treeUtil';
+  import { concat, difference, intersection } from 'lodash-es';
+  import { DataScopeEnum } from '@/enums/system/authority';
 
   const emit = defineEmits(['success', 'register']);
 
@@ -69,8 +79,28 @@
   const current = ref(0);
   const authTree = ref<TreeItem[]>([]);
   const organizeTree = ref<TreeItem[]>([]);
-  const authKeys = ref<string[]>([]);
-  const authHalfKeys = ref<string[]>([]);
+
+  const auth = reactive<{
+    treeLastLeaf: string[];
+    moduleLeafs: string[];
+    authKeys: string[];
+    authHalfKeys: string[];
+  }>({
+    treeLastLeaf: [],
+    moduleLeafs: [],
+    authKeys: [],
+    authHalfKeys: [],
+  });
+
+  const dataScope = reactive<{
+    treeLastLeaf: string[];
+    deptLeafs: string[];
+    authKeys: string[];
+  }>({
+    treeLastLeaf: [],
+    deptLeafs: [],
+    authKeys: [],
+  });
 
   const [roleRegister, { resetFields: roleResetFields, validate: roleValidate }] = useForm({
     labelWidth: 100,
@@ -102,15 +132,20 @@
 
   const [registerModal, { setModalProps, closeModal }] = useModalInner(async () => {
     current.value = 0;
-    Promise.all([roleResetFields(), authResetFields(), organizeResetFields()]);
     authReset();
+    Promise.all([roleResetFields(), authResetFields(), organizeResetFields()]);
+    setModalProps({ confirmLoading: false });
     if (unref(authTree).length === 0) {
-      authTree.value = (await authScopeEnterpriseApi()) as any as TreeItem[];
+      authTree.value = (await authScopeEnterpriseApi()) as unknown as TreeItem[];
+      auth.treeLastLeaf = getTreeNodes(authTree.value, 'id', 'children');
+      auth.moduleLeafs = authTree.value.map((item) => item.id);
     }
     if (unref(organizeTree).length === 0) {
-      organizeTree.value = (await organizeScopeApi()) as any as TreeItem[];
+      const orgTree = await organizeScopeApi();
+      dataScope.treeLastLeaf = getOrgDeptIds(orgTree);
+      organizeTree.value = orgTree as unknown as TreeItem[];
+      dataScope.deptLeafs = organizeTree.value.map((item) => item.id);
     }
-    setModalProps({ confirmLoading: false });
   });
 
   /** 标题初始化 */
@@ -155,7 +190,16 @@
       ]);
       setModalProps({ confirmLoading: true });
       const data = sourceAssign({}, auth, organize, role);
-      data.authIds = authKeys.value.concat(authHalfKeys.value);
+      const { moduleIds, menuIds } = getAuthNodes();
+      data.authIds = undefined;
+      data.organizeIds = undefined;
+      data.moduleIds = moduleIds;
+      data.menuIds = menuIds;
+      if (data.dataScope === DataScopeEnum.CUSTOM) {
+        const { orgDeptIds, orgPostIds } = getDataScopeNodes();
+        data.orgDeptIds = orgDeptIds;
+        data.orgPostIds = orgPostIds;
+      }
       await addRoleApi(data).then(() => {
         closeModal();
         createMessage.success('新增角色成功！');
@@ -168,14 +212,38 @@
 
   /** 权限Id重置 */
   function authReset() {
-    authKeys.value = [];
-    authHalfKeys.value = [];
+    auth.authKeys = [];
+    auth.authHalfKeys = [];
+    dataScope.authKeys = [];
   }
 
   /** 获取权限Id */
-  function authCheck(checkedKeys: string[], e) {
-    authKeys.value = checkedKeys;
-    authHalfKeys.value = e.halfCheckedKeys as string[];
+  function authCheck(checkedKeys: string[], e: any) {
+    auth.authKeys = checkedKeys;
+    auth.authHalfKeys = e.halfCheckedKeys as string[];
+  }
+
+  /** 获取组织Id */
+  function dataScopeCheck(checkedKeys: string[]) {
+    dataScope.authKeys = checkedKeys;
+  }
+
+  /** 拆解功能权限Id */
+  function getAuthNodes() {
+    const authIds = concat(auth.authKeys, auth.authHalfKeys);
+    return {
+      moduleIds: intersection(authIds, auth.moduleLeafs),
+      menuIds: difference(authIds, auth.moduleLeafs),
+    };
+  }
+
+  /** 拆解数据权限Id */
+  function getDataScopeNodes() {
+    const organizeIds = dataScope.authKeys;
+    return {
+      orgDeptIds: intersection(organizeIds, dataScope.deptLeafs),
+      orgPostIds: difference(organizeIds, dataScope.deptLeafs),
+    };
   }
 </script>
 

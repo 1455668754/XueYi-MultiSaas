@@ -1,10 +1,8 @@
 package com.xueyi.system.authority.service.impl;
 
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
-import com.xueyi.common.core.utils.TreeUtil;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.IdUtil;
-import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.web.correlate.contant.CorrelateConstants;
 import com.xueyi.common.web.entity.service.impl.TreeServiceImpl;
@@ -17,11 +15,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static com.xueyi.common.core.constant.basic.SecurityConstants.CREATE_BY;
 

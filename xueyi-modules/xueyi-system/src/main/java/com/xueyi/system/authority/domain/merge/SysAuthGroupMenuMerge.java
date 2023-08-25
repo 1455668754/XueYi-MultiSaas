@@ -1,6 +1,7 @@
 package com.xueyi.system.authority.domain.merge;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.xueyi.common.core.web.entity.base.BasisEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

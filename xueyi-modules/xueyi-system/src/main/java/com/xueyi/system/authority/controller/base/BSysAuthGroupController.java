@@ -15,6 +15,6 @@ public class BSysAuthGroupController extends BaseController<SysAuthGroupQuery, S
     /** 定义节点名称 */
     @Override
     protected String getNodeName() {
-        return "权限组" ;
+        return "权限组";
     }
 }

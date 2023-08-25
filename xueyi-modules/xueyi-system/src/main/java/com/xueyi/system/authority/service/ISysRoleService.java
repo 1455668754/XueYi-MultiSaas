@@ -12,7 +12,7 @@ import com.xueyi.system.api.authority.domain.query.SysRoleQuery;
 public interface ISysRoleService extends IBaseService<SysRoleQuery, SysRoleDto> {
 
     /**
-     * 根据Id查询角色信息对象 | 含权限
+     * 根据Id查询角色信息对象 | 含功能权限
      *
      * @param id Id
      * @return 角色信息对象
@@ -20,12 +20,20 @@ public interface ISysRoleService extends IBaseService<SysRoleQuery, SysRoleDto> 
     SysRoleDto selectAuthById(Long id);
 
     /**
+     * 根据Id查询角色信息对象 | 含数据权限
+     *
+     * @param id Id
+     * @return 角色信息对象
+     */
+    SysRoleDto selectDataById(Long id);
+
+    /**
      * 修改角色功能权限
      *
      * @param role 角色对象
      * @return 结果
      */
-    int editRoleAuth(SysRoleDto role);
+    int updateRoleAuth(SysRoleDto role);
 
     /**
      * 修改角色组织权限

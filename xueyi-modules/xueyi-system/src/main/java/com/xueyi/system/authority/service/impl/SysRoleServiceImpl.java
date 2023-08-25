@@ -1,9 +1,6 @@
 package com.xueyi.system.authority.service.impl;
 
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
-import com.xueyi.common.core.constant.basic.OperateConstants;
-import com.xueyi.common.core.constant.system.AuthorityConstants;
-import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.datascope.annotation.DataScope;
 import com.xueyi.common.web.correlate.contant.CorrelateConstants;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
@@ -19,7 +16,6 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import static com.xueyi.common.core.constant.basic.SecurityConstants.CREATE_BY;
 
@@ -58,7 +54,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleQuery, SysRoleDto
     }
 
     /**
-     * 根据Id查询角色信息对象 | 含权限
+     * 根据Id查询角色信息对象 | 含功能权限
      *
      * @param id Id
      * @return 角色信息对象
@@ -69,6 +65,17 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleQuery, SysRoleDto
     }
 
     /**
+     * 根据Id查询角色信息对象 | 含数据权限
+     *
+     * @param id Id
+     * @return 角色信息对象
+     */
+    @Override
+    public SysRoleDto selectDataById(Long id) {
+        return subCorrelates(selectById(id), SysRoleCorrelate.DATA_SEL);
+    }
+
+    /**
      * 修改角色功能权限
      *
      * @param role 角色对象
@@ -76,7 +83,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleQuery, SysRoleDto
      */
     @Override
     @DSTransactional
-    public int editRoleAuth(SysRoleDto role) {
+    public int updateRoleAuth(SysRoleDto role) {
         return editCorrelates(role, SysRoleCorrelate.AUTH_EDIT);
     }
 
@@ -91,31 +98,8 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleQuery, SysRoleDto
     public int updateDataScope(SysRoleDto role) {
         int row = baseManager.updateDataScope(role.getId(), role.getRoleKey(), role.getDataScope());
         if (row > 0) {
-            organizeService.editRoleOrganizeMerge(role.getId(),
-                    StrUtil.equals(role.getDataScope(), AuthorityConstants.DataScope.CUSTOM.getCode())
-                            ? role.getOrganizeIds()
-                            : new Long[]{});
+            editCorrelates(role, SysRoleCorrelate.DATA_EDIT);
         }
         return row;
-    }
-
-    /**
-     * 单条操作 - 结束处理
-     *
-     * @param operate   服务层 - 操作类型
-     * @param row       操作数据条数
-     * @param originDto 源数据对象（新增时不存在）
-     * @param newDto    新数据对象（删除时不存在）
-     */
-    protected void endHandle(OperateConstants.ServiceType operate, int row, SysRoleDto originDto, SysRoleDto newDto) {
-        super.endHandle(operate, row, originDto, newDto);
-        if (row > 0) {
-            if (Objects.requireNonNull(operate) == OperateConstants.ServiceType.ADD) {
-                organizeService.addRoleOrganizeMerge(newDto.getId(),
-                        StrUtil.equals(newDto.getDataScope(), AuthorityConstants.DataScope.CUSTOM.getCode())
-                                ? newDto.getOrganizeIds()
-                                : new Long[]{});
-            }
-        }
     }
 }

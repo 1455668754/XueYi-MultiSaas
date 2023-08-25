@@ -60,7 +60,7 @@ public class SysAuthTree extends BasisEntity {
      */
     public SysAuthTree(SysMenuDto menu) {
         this.id = menu.getId();
-        this.parentId = ObjectUtil.equals(menu.getParentId(), AuthorityConstants.MENU_TOP_NODE) ? menu.getModuleId(): menu.getParentId();
+        this.parentId = ObjectUtil.equals(menu.getParentId(), AuthorityConstants.MENU_TOP_NODE) ? menu.getModuleId() : menu.getParentId();
         this.label = menu.getTitle();
         this.status = menu.getStatus();
         this.type = AuthorityConstants.AuthorityType.MENU.getCode();

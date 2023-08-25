@@ -1,6 +1,5 @@
 package com.xueyi.system.authority.service.impl;
 
-import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.xueyi.system.authority.domain.vo.SysAuthTree;
 import com.xueyi.system.authority.manager.ISysAuthManager;
 import com.xueyi.system.authority.service.ISysAuthService;

@@ -15,7 +15,7 @@ import java.io.Serial;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName(value = "sys_notice",excludeProperty = {"sort"})
+@TableName(value = "sys_notice", excludeProperty = {"sort"})
 public class SysNoticePo extends TBaseEntity {
 
     @Serial

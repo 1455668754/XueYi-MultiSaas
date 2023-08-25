@@ -59,7 +59,7 @@ public class SysOrganizeServiceImpl implements ISysOrganizeService {
     }
 
     /**
-     * 获取企业部门|岗位树
+     * 获取企业部门 | 岗位树
      *
      * @return 组织对象集合
      */
@@ -69,7 +69,7 @@ public class SysOrganizeServiceImpl implements ISysOrganizeService {
     }
 
     /**
-     * 获取企业部门|岗位树 | 移除无归属岗位的部门叶子节点
+     * 获取企业部门 | 岗位树 | 移除无归属岗位的部门叶子节点
      *
      * @return 组织对象集合
      */
@@ -81,51 +81,19 @@ public class SysOrganizeServiceImpl implements ISysOrganizeService {
     }
 
     /**
-     * 获取角色组织Ids
-     *
-     * @param roleId 角色Id
-     * @return 组织Ids
-     */
-    @Override
-    public Long[] selectRoleOrganizeMerge(Long roleId) {
-        return organizeManager.selectRoleOrganizeMerge(roleId);
-    }
-
-    /**
-     * 新增角色组织权限
-     *
-     * @param roleId      角色Id
-     * @param organizeIds 组织Ids
-     */
-    @Override
-    public void addRoleOrganizeMerge(Long roleId, Long[] organizeIds) {
-        organizeManager.addRoleOrganizeMerge(roleId, organizeIds);
-    }
-
-
-    /**
-     * 修改角色组织权限
-     *
-     * @param roleId      角色Id
-     * @param organizeIds 组织Ids
-     */
-    @Override
-    public void editRoleOrganizeMerge(Long roleId, Long[] organizeIds) {
-        organizeManager.editRoleOrganizeMerge(roleId, organizeIds);
-    }
-
-    /**
      * 递归列表 | 移除无归属岗位的部门叶子节点
      */
     private void recursionDelLeaf(List<SysOrganizeTree> treeList) {
         SysOrganizeTree treeNode;
         for (int i = treeList.size() - 1; i >= 0; i--) {
             treeNode = treeList.get(i);
-            if (CollUtil.isNotEmpty(treeNode.getChildren()))
+            if (CollUtil.isNotEmpty(treeNode.getChildren())) {
                 recursionDelLeaf(treeNode.getChildren());
+            }
             if (StrUtil.equals(treeNode.getType(), OrganizeConstants.OrganizeType.DEPT.getCode())
-                    && CollUtil.isEmpty(treeNode.getChildren()))
+                    && CollUtil.isEmpty(treeNode.getChildren())) {
                 treeList.remove(i);
+            }
         }
     }
 }

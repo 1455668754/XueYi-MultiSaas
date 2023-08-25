@@ -8,6 +8,7 @@
           :fieldNames="{ title: 'label', key: 'id' }"
           checkable
           toolbar
+          @check="dataScopeCheck"
           title="数据权限"
         />
       </template>
@@ -16,22 +17,31 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, ref, unref } from 'vue';
+  import { computed, reactive, ref, unref } from 'vue';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicTree, TreeItem } from '/@/components/Tree';
   import { BasicForm, useForm } from '/@/components/Form';
-  import { organizeFormSchema } from './role.data';
+  import { getOrgDeptIds, organizeFormSchema } from './role.data';
   import { editDataScopeApi, getOrganizeRoleApi } from '@/api/system/authority/role.api';
   import { RoleIM } from '@/model/system/authority';
   import { DataScopeEnum } from '@/enums/system/authority';
   import { organizeScopeApi } from '@/api/system/organize/organize.api';
-  import { isEqual } from 'lodash-es';
+  import { concat, difference, intersection, isEqual } from 'lodash-es';
 
   const emit = defineEmits(['success', 'register']);
 
   const { createMessage } = useMessage();
   const organizeTree = ref<TreeItem[]>([]);
+  const dataScope = reactive<{
+    treeLastLeaf: string[];
+    deptLeafs: string[];
+    authKeys: string[];
+  }>({
+    treeLastLeaf: [],
+    deptLeafs: [],
+    authKeys: [],
+  });
 
   const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
     labelWidth: 100,
@@ -40,17 +50,25 @@
   });
 
   const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
+    authReset();
     resetFields();
     setModalProps({ confirmLoading: false });
-    const record = data.record as RoleIM;
-    if (isEqual(record.dataScope, DataScopeEnum.CUSTOM)) {
-      record.organizeIds = await getOrganizeRoleApi(record.id);
-    }
+    const role = await getOrganizeRoleApi(data.record.id);
+
     if (unref(organizeTree).length === 0) {
-      organizeTree.value = (await organizeScopeApi()) as any as TreeItem[];
+      const orgTree = await organizeScopeApi();
+      dataScope.treeLastLeaf = getOrgDeptIds(orgTree);
+      organizeTree.value = orgTree as unknown as TreeItem[];
+      dataScope.deptLeafs = organizeTree.value.map((item) => item.id);
+    }
+
+    if (isEqual(role.dataScope, DataScopeEnum.CUSTOM)) {
+      // 初始化权限树回显
+      role.organizeIds = concat(role.orgDeptIds, role.orgPostIds);
+      dataScope.authKeys = role.organizeIds;
     }
     setFieldsValue({
-      ...record,
+      ...role,
     });
   });
 
@@ -62,6 +80,16 @@
     try {
       const values = (await validate()) as RoleIM;
       setModalProps({ confirmLoading: true });
+      values.organizeIds = undefined;
+      console.error('values', values);
+      if (values.dataScope === DataScopeEnum.CUSTOM) {
+        const { orgDeptIds, orgPostIds } = getDataScopeNodes();
+
+        console.error('orgDeptIds', orgDeptIds);
+        console.error('orgPostIds', orgPostIds);
+        values.orgDeptIds = orgDeptIds;
+        values.orgPostIds = orgPostIds;
+      }
       await editDataScopeApi(values).then(() => {
         closeModal();
         createMessage.success('角色数据权限修改成功！');
@@ -70,5 +98,25 @@
     } finally {
       setModalProps({ confirmLoading: false });
     }
+  }
+
+  /** 权限Id重置 */
+  function authReset() {
+    dataScope.authKeys = [];
+  }
+
+  /** 获取组织Id */
+  function dataScopeCheck(checkedKeys: string[]) {
+    dataScope.authKeys = checkedKeys;
+  }
+
+  /** 拆解数据权限Id */
+  function getDataScopeNodes() {
+    const organizeIds = dataScope.authKeys;
+    console.error('organizeIds', organizeIds);
+    return {
+      orgDeptIds: intersection(organizeIds, dataScope.deptLeafs),
+      orgPostIds: difference(organizeIds, dataScope.deptLeafs),
+    };
   }
 </script>

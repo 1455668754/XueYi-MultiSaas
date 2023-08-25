@@ -37,12 +37,6 @@ public enum SysRoleCorrelate implements CorrelateService {
         // 角色 | 角色-菜单关联
         add(new Indirect<>(SELECT, SysRoleMenuMergeMapper.class, SysRoleMenuMerge::getRoleId, SysRoleMenuMerge::getMenuId, SysRoleDto::getId, SysRoleDto::getMenuIds));
     }}),
-    BASE_ADD("默认新增|关联（角色）", new ArrayList<>() {{
-        // 角色 | 角色-模块关联
-        add(new Indirect<>(ADD, SysRoleModuleMergeMapper.class, SysRoleModuleMerge::getRoleId, SysRoleModuleMerge::getModuleId, SysRoleDto::getId, SysRoleDto::getModuleIds));
-        // 角色 | 角色-菜单关联
-        add(new Indirect<>(ADD, SysRoleMenuMergeMapper.class, SysRoleMenuMerge::getRoleId, SysRoleMenuMerge::getMenuId, SysRoleDto::getId, SysRoleDto::getMenuIds));
-    }}),
     AUTH_EDIT("功能权限更新|关联（角色）", new ArrayList<>() {{
         // 角色 | 角色-模块关联
         add(new Indirect<>(EDIT, SysRoleModuleMergeMapper.class, SysRoleModuleMerge::getRoleId, SysRoleModuleMerge::getModuleId, SysRoleDto::getId, SysRoleDto::getModuleIds));
@@ -50,6 +44,29 @@ public enum SysRoleCorrelate implements CorrelateService {
         add(new Indirect<>(EDIT, SysRoleMenuMergeMapper.class, SysRoleMenuMerge::getRoleId, SysRoleMenuMerge::getMenuId, SysRoleDto::getId, SysRoleDto::getMenuIds));
     }}),
 
+    DATA_SEL("数据权限查询|关联（角色）", new ArrayList<>() {{
+        // 角色 | 角色-部门关联（权限范围）
+        add(new Indirect<>(SELECT, SysRoleDeptMergeMapper.class, SysRoleDeptMerge::getRoleId, SysRoleDeptMerge::getDeptId, SysRoleDto::getId, SysRoleDto::getOrgDeptIds));
+        // 角色 | 角色-岗位关联（权限范围）
+        add(new Indirect<>(SELECT, SysRolePostMergeMapper.class, SysRolePostMerge::getRoleId, SysRolePostMerge::getPostId, SysRoleDto::getId, SysRoleDto::getOrgPostIds));
+    }}),
+    DATA_EDIT("数据权限更新|关联（角色）", new ArrayList<>() {{
+        // 角色 | 角色-部门关联（权限范围）
+        add(new Indirect<>(EDIT, SysRoleDeptMergeMapper.class, SysRoleDeptMerge::getRoleId, SysRoleDeptMerge::getDeptId, SysRoleDto::getId, SysRoleDto::getOrgDeptIds));
+        // 角色 | 角色-岗位关联（权限范围）
+        add(new Indirect<>(EDIT, SysRolePostMergeMapper.class, SysRolePostMerge::getRoleId, SysRolePostMerge::getPostId, SysRoleDto::getId, SysRoleDto::getOrgPostIds));
+    }}),
+
+    BASE_ADD("默认新增|关联（角色）", new ArrayList<>() {{
+        // 角色 | 角色-模块关联
+        add(new Indirect<>(ADD, SysRoleModuleMergeMapper.class, SysRoleModuleMerge::getRoleId, SysRoleModuleMerge::getModuleId, SysRoleDto::getId, SysRoleDto::getModuleIds));
+        // 角色 | 角色-菜单关联
+        add(new Indirect<>(ADD, SysRoleMenuMergeMapper.class, SysRoleMenuMerge::getRoleId, SysRoleMenuMerge::getMenuId, SysRoleDto::getId, SysRoleDto::getMenuIds));
+        // 角色 | 角色-部门关联（权限范围）
+        add(new Indirect<>(ADD, SysRoleDeptMergeMapper.class, SysRoleDeptMerge::getRoleId, SysRoleDeptMerge::getDeptId, SysRoleDto::getId, SysRoleDto::getOrgDeptIds));
+        // 角色 | 角色-岗位关联（权限范围）
+        add(new Indirect<>(ADD, SysRolePostMergeMapper.class, SysRolePostMerge::getRoleId, SysRolePostMerge::getPostId, SysRoleDto::getId, SysRoleDto::getOrgPostIds));
+    }}),
     BASE_DEL("默认删除|关联（角色）", new ArrayList<>() {{
         // 角色 | 角色-模块关联
         add(new Indirect<>(DELETE, SysRoleModuleMergeMapper.class, SysRoleModuleMerge::getRoleId, SysRoleDto::getId));

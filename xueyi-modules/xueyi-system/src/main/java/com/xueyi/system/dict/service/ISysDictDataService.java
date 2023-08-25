@@ -4,9 +4,6 @@ import com.xueyi.common.web.entity.service.IBaseService;
 import com.xueyi.system.api.dict.domain.dto.SysDictDataDto;
 import com.xueyi.system.api.dict.domain.query.SysDictDataQuery;
 
-import java.io.Serializable;
-import java.util.Collection;
-
 /**
  * 系统服务 | 字典模块 | 字典数据管理 服务层
  *

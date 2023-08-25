@@ -52,5 +52,5 @@ public interface BaseCacheHandle<D extends BaseEntity> {
      * @param dto          数据对象
      * @param dtoList      数据对象集合
      */
-     void refreshCache(OperateConstants.ServiceType operate, RedisConstants.OperateType operateCache, D dto, Collection<D> dtoList);
+    void refreshCache(OperateConstants.ServiceType operate, RedisConstants.OperateType operateCache, D dto, Collection<D> dtoList);
 }

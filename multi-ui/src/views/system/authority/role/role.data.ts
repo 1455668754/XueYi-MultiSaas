@@ -2,19 +2,24 @@ import { FormSchema } from '/@/components/Form';
 import { BasicColumn } from '/@/components/Table';
 import { DescItem } from '/@/components/Description';
 import { dicDictList } from '@/api/sys/dict.api';
-import { DicSortEnum, DicStatusEnum } from '@/enums/basic';
+import { DicCodeEnum, DicSortEnum, DicStatusEnum } from '@/enums/basic';
 import { RoleIM } from '@/model/system/authority';
 import { dictConversion } from '/@/utils/xueyi';
-import { DataScopeEnum } from '@/enums/system/authority';
-import { isNotEmpty } from '@/utils/is';
+import { DataScopeEnum, DicCodeRoleEnum } from '@/enums/system/authority';
+import { isEmpty, isNotEmpty } from '@/utils/is';
+import { OrganizeIM, OrganizeLM } from '@/model/system/organize';
+import { OrganizeTypeEnum } from '@/enums/system/organize';
 
 /** 字典查询 */
-export const dictMap = await dicDictList(['sys_normal_disable', 'auth_data_scope']);
+export const dictMap = await dicDictList([
+  DicCodeEnum.SYS_NORMAL_DISABLE,
+  DicCodeRoleEnum.AUTH_DATA_SCOPE,
+]);
 
 /** 字典表 */
 export const dict: any = {
-  DicNormalDisableOptions: dictMap['sys_normal_disable'],
-  DicAuthDataScopeOptions: dictMap['auth_data_scope'],
+  DicNormalDisableOptions: dictMap[DicCodeEnum.SYS_NORMAL_DISABLE],
+  DicAuthDataScopeOptions: dictMap[DicCodeRoleEnum.AUTH_DATA_SCOPE],
 };
 
 /** 角色新增分页数据 */
@@ -23,6 +28,31 @@ export const roleInitList = [
   { key: 'auth', title: '功能权限', current: 1 },
   { key: 'organize', title: '数据权限', current: 2 },
 ];
+
+/** 获取组织树中部门节点Ids */
+export function getOrgDeptIds(orgTree: OrganizeLM) {
+  // 递归函数获取指定层级的所有节点
+  function getDeptNodes(treeNode: OrganizeIM): string[] {
+    let nodes: string[] = treeNode?.type === OrganizeTypeEnum.DEPT ? [treeNode?.id] : [];
+    if (treeNode?.children && treeNode?.children.length > 0) {
+      for (const child of treeNode.children) {
+        const subNodes = getDeptNodes(child);
+        nodes = nodes.concat(subNodes);
+      }
+    }
+    return nodes;
+  }
+
+  if (isEmpty(orgTree) || (orgTree as any[]).length === 0) {
+    return [];
+  }
+  let nodes: string[] = [];
+  for (const treeNode of orgTree as any[]) {
+    const subNodes = getDeptNodes(treeNode);
+    nodes = nodes.concat(subNodes);
+  }
+  return nodes;
+}
 
 /** 表格数据 */
 export const columns: BasicColumn[] = [

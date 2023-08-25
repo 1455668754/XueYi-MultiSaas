@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 public enum SysNoticeCorrelate implements CorrelateService {
 
-   ;
+    ;
 
     private final String info;
     private final List<? extends BaseCorrelate<?>> correlates;

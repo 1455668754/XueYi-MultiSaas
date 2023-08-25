@@ -30,7 +30,7 @@ export const getAuthRoleApi = (id: string) =>
 
 /** 查询角色数据权限 */
 export const getOrganizeRoleApi = (id: string) =>
-  defHttp.get<string[]>({
+  defHttp.get<RoleIM>({
     url: Api.GET_ORGANIZE_ROLE,
     params: { id: id },
   });

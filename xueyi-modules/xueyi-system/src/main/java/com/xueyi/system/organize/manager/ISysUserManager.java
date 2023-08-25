@@ -31,7 +31,7 @@ public interface ISysUserManager extends IBaseManager<SysUserQuery, SysUserDto> 
      * @param profile  个人简介
      * @return 结果
      */
-     int updateUserProfile(Long id, String nickName, String sex, String profile);
+    int updateUserProfile(Long id, String nickName, String sex, String profile);
 
     /**
      * 更新用户账号
@@ -40,7 +40,7 @@ public interface ISysUserManager extends IBaseManager<SysUserQuery, SysUserDto> 
      * @param userName 用户账号
      * @return 结果
      */
-     int updateUserName(Long id, String userName);
+    int updateUserName(Long id, String userName);
 
     /**
      * 更新用户邮箱
@@ -49,7 +49,7 @@ public interface ISysUserManager extends IBaseManager<SysUserQuery, SysUserDto> 
      * @param email 邮箱
      * @return 结果
      */
-     int updateEmail(Long id, String email);
+    int updateEmail(Long id, String email);
 
     /**
      * 更新用户手机号
@@ -58,7 +58,7 @@ public interface ISysUserManager extends IBaseManager<SysUserQuery, SysUserDto> 
      * @param phone 手机号
      * @return 结果
      */
-     int updatePhone(Long id, String phone);
+    int updatePhone(Long id, String phone);
 
     /**
      * 修改用户头像
@@ -67,7 +67,7 @@ public interface ISysUserManager extends IBaseManager<SysUserQuery, SysUserDto> 
      * @param avatar 头像地址
      * @return 结果
      */
-     int updateUserAvatar(Long id, String avatar);
+    int updateUserAvatar(Long id, String avatar);
 
     /**
      * 重置用户密码
@@ -76,7 +76,7 @@ public interface ISysUserManager extends IBaseManager<SysUserQuery, SysUserDto> 
      * @param password 密码
      * @return 结果
      */
-     int resetUserPassword(Long id, String password);
+    int resetUserPassword(Long id, String password);
 
     /**
      * 校验用户账号是否唯一
@@ -85,7 +85,7 @@ public interface ISysUserManager extends IBaseManager<SysUserQuery, SysUserDto> 
      * @param userName 用户账号
      * @return 结果 | true/false 唯一/不唯一
      */
-     SysUserDto checkUserNameUnique(Serializable id, String userName);
+    SysUserDto checkUserNameUnique(Serializable id, String userName);
 
     /**
      * 校验手机号码是否唯一
@@ -94,7 +94,7 @@ public interface ISysUserManager extends IBaseManager<SysUserQuery, SysUserDto> 
      * @param phone 手机号码
      * @return 用户对象
      */
-     SysUserDto checkPhoneUnique(Long id, String phone);
+    SysUserDto checkPhoneUnique(Long id, String phone);
 
     /**
      * 校验email是否唯一
@@ -103,5 +103,5 @@ public interface ISysUserManager extends IBaseManager<SysUserQuery, SysUserDto> 
      * @param email email
      * @return 用户对象
      */
-     SysUserDto checkEmailUnique(Long id, String email);
+    SysUserDto checkEmailUnique(Long id, String email);
 }

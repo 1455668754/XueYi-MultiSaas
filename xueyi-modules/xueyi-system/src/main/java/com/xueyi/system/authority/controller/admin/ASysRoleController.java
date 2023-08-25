@@ -9,8 +9,6 @@ import com.xueyi.common.security.annotation.AdminAuth;
 import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
 import com.xueyi.system.api.authority.domain.query.SysRoleQuery;
 import com.xueyi.system.authority.controller.base.BSysRoleController;
-import com.xueyi.system.organize.service.ISysOrganizeService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,9 +33,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin/role")
 public class ASysRoleController extends BSysRoleController {
-
-    @Autowired
-    private ISysOrganizeService organizeService;
 
     /**
      * 查询角色列表
@@ -74,7 +69,7 @@ public class ASysRoleController extends BSysRoleController {
     @GetMapping("/organize")
     @PreAuthorize("@ss.hasAuthority(@Auth.SYS_ROLE_AUTH)")
     public AjaxResult getRoleOrganize(@RequestParam Long id) {
-        return success(organizeService.selectRoleOrganizeMerge(id));
+        return success(baseService.selectDataById(id));
     }
 
     /**
@@ -106,7 +101,7 @@ public class ASysRoleController extends BSysRoleController {
     @PreAuthorize("@ss.hasAuthority(@Auth.SYS_ROLE_AUTH)")
     @Log(title = "角色管理", businessType = BusinessType.AUTH)
     public AjaxResult editAuth(@RequestBody SysRoleDto role) {
-        baseService.editRoleAuth(role);
+        baseService.updateRoleAuth(role);
         return success();
     }
 

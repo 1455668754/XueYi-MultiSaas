@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
-import java.util.List;
 
 /**
  * 系统服务 | 权限模块 | 企业权限组 数据传输对象
@@ -20,8 +19,8 @@ public class SysAuthGroupDto extends SysAuthGroupPo {
     private static final long serialVersionUID = 1L;
 
     /** 菜单权限Ids */
-    private List<Long> menuIds;
+    private Long[] menuIds;
 
     /** 模块权限Ids */
-    private List<Long> moduleIds;
+    private Long[] moduleIds;
 }

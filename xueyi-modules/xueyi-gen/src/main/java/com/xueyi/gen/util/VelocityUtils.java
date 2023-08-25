@@ -282,8 +282,8 @@ public class VelocityUtils {
             realGenPath = StrUtil.EMPTY;
             realUiPath = StrUtil.EMPTY;
         } else if (StrUtil.equals(GenConstants.GenType.DEFAULT.getCode(), table.getGenType()) || StrUtil.isBlank(table.getGenPath())) {
-            realGenPath = System.getProperty("user.dir") + File.separator+ "genFile" + File.separator + "src" + File.separator;
-            realUiPath = System.getProperty("user.dir") + File.separator+ "genFile" + File.separator;
+            realGenPath = System.getProperty("user.dir") + File.separator + "genFile" + File.separator + "src" + File.separator;
+            realUiPath = System.getProperty("user.dir") + File.separator + "genFile" + File.separator;
         } else {
             realGenPath = table.getGenPath();
             realUiPath = table.getUiPath();

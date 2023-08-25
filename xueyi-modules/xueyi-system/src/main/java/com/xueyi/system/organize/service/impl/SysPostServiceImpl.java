@@ -33,7 +33,7 @@ public class SysPostServiceImpl extends BaseServiceImpl<SysPostQuery, SysPostDto
      */
     @Override
     protected Map<CorrelateConstants.ServiceType, SysPostCorrelate> defaultCorrelate() {
-        return new HashMap<>(){{
+        return new HashMap<>() {{
             put(CorrelateConstants.ServiceType.DELETE, SysPostCorrelate.BASE_DEL);
         }};
     }
@@ -57,7 +57,7 @@ public class SysPostServiceImpl extends BaseServiceImpl<SysPostQuery, SysPostDto
      * @return 岗位信息对象
      */
     @Override
-    public SysPostDto selectPostRoleById(Long id){
+    public SysPostDto selectPostRoleById(Long id) {
         return subCorrelates(selectById(id), SysPostCorrelate.ROLE_SEL);
     }
 
@@ -69,7 +69,7 @@ public class SysPostServiceImpl extends BaseServiceImpl<SysPostQuery, SysPostDto
      */
     @Override
     @DSTransactional
-    public int editPostRole(SysPostDto post){
+    public int editPostRole(SysPostDto post) {
         return editCorrelates(post, SysPostCorrelate.ROLE_EDIT);
     }
 
@@ -94,7 +94,7 @@ public class SysPostServiceImpl extends BaseServiceImpl<SysPostQuery, SysPostDto
     @Override
     @DataScope(postAlias = "id", mapperScope = {"SysPostMapper"})
     public List<SysPostDto> selectListScope(SysPostQuery post) {
-        List<SysPostDto> list =  super.selectListScope(post);
+        List<SysPostDto> list = super.selectListScope(post);
         return subCorrelates(list, SysPostCorrelate.BASE_LIST);
     }
 }

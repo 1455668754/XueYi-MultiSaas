@@ -27,10 +27,10 @@ public class SysOrganizeTree {
     /** 名称 */
     private String label;
 
-    /** 状态 */
+    /** 状态（0正常 1停用） */
     private String status;
 
-    /** 类型（0 部门 1 岗位） */
+    /** 类型（0企业 1部门 2岗位 3用户） */
     private String type;
 
     /** 子部门/岗位 */
@@ -58,5 +58,4 @@ public class SysOrganizeTree {
         this.status = post.getStatus();
         this.type = OrganizeConstants.OrganizeType.POST.getCode();
     }
-
 }

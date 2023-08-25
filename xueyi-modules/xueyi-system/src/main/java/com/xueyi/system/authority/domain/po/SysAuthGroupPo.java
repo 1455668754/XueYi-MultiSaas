@@ -1,9 +1,8 @@
 package com.xueyi.system.authority.domain.po;
 
-import com.xueyi.common.core.web.entity.base.BaseEntity;
-import com.xueyi.system.authority.domain.dto.SysAuthGroupDto;
-import com.xueyi.common.core.annotation.Excel;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.xueyi.common.core.annotation.Excel;
+import com.xueyi.common.core.web.entity.base.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

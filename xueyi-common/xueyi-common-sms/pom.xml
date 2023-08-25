@@ -15,7 +15,7 @@
         xueyi-common-sms 短信模块
     </description>
 
-	<dependencies>
+    <dependencies>
 
         <dependency>
             <groupId>org.dromara.sms4j</groupId>
