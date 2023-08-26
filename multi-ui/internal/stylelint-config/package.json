@@ -1,6 +1,6 @@
 {
   "name": "@xueyi/stylelint-config",
-  "version": "3.0.0-Alpha4",
+  "version": "3.0.0-RC",
   "private": true,
   "exports": {
     ".": {
