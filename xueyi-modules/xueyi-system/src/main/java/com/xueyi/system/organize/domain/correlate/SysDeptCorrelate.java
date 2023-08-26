@@ -17,7 +17,9 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.xueyi.common.web.correlate.contant.CorrelateConstants.SubOperate.*;
+import static com.xueyi.common.web.correlate.contant.CorrelateConstants.SubOperate.DELETE;
+import static com.xueyi.common.web.correlate.contant.CorrelateConstants.SubOperate.EDIT;
+import static com.xueyi.common.web.correlate.contant.CorrelateConstants.SubOperate.SELECT;
 
 /**
  * 系统服务 | 组织模块 | 部门 关联映射

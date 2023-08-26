@@ -30,7 +30,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.xueyi.common.core.constant.basic.SecurityConstants.*;
+import static com.xueyi.common.core.constant.basic.SecurityConstants.PERMISSION_ADMIN;
+import static com.xueyi.common.core.constant.basic.SecurityConstants.ROLE_ADMIN;
+import static com.xueyi.common.core.constant.basic.SecurityConstants.ROLE_ADMINISTRATOR;
 
 /**
  * 登录管理 服务层处理

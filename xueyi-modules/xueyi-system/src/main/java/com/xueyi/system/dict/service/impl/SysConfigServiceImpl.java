@@ -1,6 +1,5 @@
 package com.xueyi.system.dict.service.impl;
 
-import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.xueyi.common.cache.constant.CacheConstants;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.DictConstants;
@@ -63,8 +62,7 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigQuery, SysCon
      */
     @Override
     public List<SysConfigDto> selectListScope(SysConfigQuery query) {
-        SysConfigCorrelate correlate = SysConfigCorrelate.EN_INFO_SELECT;
-        return subCorrelates(selectList(query), correlate);
+        return subCorrelates(selectList(query), SysConfigCorrelate.EN_INFO_SELECT);
     }
 
     /**
@@ -76,8 +74,7 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigQuery, SysCon
     @Override
     public SysConfigDto selectById(Serializable id) {
         SysConfigDto dto = baseManager.selectById(id);
-        SysConfigCorrelate correlate = SysConfigCorrelate.EN_INFO_SELECT;
-        return subCorrelates(dto, correlate);
+        return subCorrelates(dto, SysConfigCorrelate.EN_INFO_SELECT);
     }
 
     /**
@@ -94,24 +91,6 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigQuery, SysCon
             config = baseManager.selectConfigByCode(code);
         }
         return config;
-    }
-
-    /**
-     * 修改数据对象
-     *
-     * @param dto 数据对象
-     * @return 结果
-     */
-    @Override
-    @DSTransactional
-    public int update(SysConfigDto dto) {
-        SecurityContextHolder.setTenantIgnore();
-        SysConfigDto originDto = selectById(dto.getId());
-        SecurityContextHolder.clearTenantIgnore();
-        startHandle(OperateConstants.ServiceType.EDIT, originDto, dto);
-        int row = baseManager.update(dto);
-        endHandle(OperateConstants.ServiceType.EDIT, row, originDto, dto);
-        return row;
     }
 
     /**
@@ -169,11 +148,16 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigQuery, SysCon
     /**
      * 单条操作 - 开始处理
      *
-     * @param operate   服务层 - 操作类型
-     * @param originDto 源数据对象（新增时不存在）
-     * @param newDto    新数据对象（删除时不存在）
+     * @param operate 服务层 - 操作类型
+     * @param newDto  新数据对象（删除时不存在）
+     * @param id      Id集合（非删除时不存在）
      */
-    protected void startHandle(OperateConstants.ServiceType operate, SysConfigDto originDto, SysConfigDto newDto) {
+    @Override
+    protected SysConfigDto startHandle(OperateConstants.ServiceType operate, SysConfigDto newDto, Serializable id) {
+        SecurityContextHolder.setTenantIgnore();
+        SysConfigDto originDto = super.startHandle(operate, newDto, id);
+        subCorrelates(originDto, SysConfigCorrelate.EN_INFO_SELECT);
+        SecurityContextHolder.clearTenantIgnore();
         switch (operate) {
             case ADD -> {
                 if (StrUtil.equals(DictConstants.DicCacheType.TENANT.getCode(), newDto.getCacheType()) || StrUtil.equals(DictConstants.DicCacheType.OVERALL.getCode(), newDto.getCacheType())) {
@@ -197,6 +181,7 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigQuery, SysCon
                 }
             }
         }
+        return originDto;
     }
 
     /**

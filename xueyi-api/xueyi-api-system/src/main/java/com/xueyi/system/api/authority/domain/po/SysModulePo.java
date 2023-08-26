@@ -3,6 +3,7 @@ package com.xueyi.system.api.authority.domain.po;
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.xueyi.common.core.web.tenant.common.TCBaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -40,5 +41,10 @@ public class SysModulePo extends TCBaseEntity {
     /** 默认模块（Y是 N否） */
     @TableField(updateStrategy = FieldStrategy.NEVER)
     protected String isDefault;
+
+    /** 租户Id */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @TableField(insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER)
+    protected Long tenantId;
 
 }

@@ -1,6 +1,5 @@
 package com.xueyi.system.dict.service.impl;
 
-import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.xueyi.common.cache.constant.CacheConstants;
 import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.context.SecurityContextHolder;
@@ -23,6 +22,7 @@ import com.xueyi.system.dict.service.ISysDictDataService;
 import com.xueyi.system.dict.service.ISysDictTypeService;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -46,31 +46,17 @@ public class SysDictDataServiceImpl extends BaseServiceImpl<SysDictDataQuery, Sy
     }
 
     /**
-     * 修改数据对象
-     *
-     * @param dto 数据对象
-     * @return 结果
-     */
-    @Override
-    @DSTransactional
-    public int update(SysDictDataDto dto) {
-        SecurityContextHolder.setTenantIgnore();
-        SysDictDataDto originDto = selectById(dto.getId());
-        SecurityContextHolder.clearTenantIgnore();
-        startHandle(OperateConstants.ServiceType.EDIT, originDto, dto);
-        int row = baseManager.update(dto);
-        endHandle(OperateConstants.ServiceType.EDIT, row, originDto, dto);
-        return row;
-    }
-
-    /**
      * 单条操作 - 开始处理
      *
-     * @param operate   服务层 - 操作类型
-     * @param originDto 源数据对象（新增时不存在）
-     * @param newDto    新数据对象（删除时不存在）
+     * @param operate 服务层 - 操作类型
+     * @param newDto  新数据对象（删除时不存在）
+     * @param id      Id集合（非删除时不存在）
      */
-    protected void startHandle(OperateConstants.ServiceType operate, SysDictDataDto originDto, SysDictDataDto newDto) {
+    @Override
+    protected SysDictDataDto startHandle(OperateConstants.ServiceType operate, SysDictDataDto newDto, Serializable id) {
+        SecurityContextHolder.setTenantIgnore();
+        SysDictDataDto originDto = super.startHandle(operate, newDto, id);
+        SecurityContextHolder.clearTenantIgnore();
         switch (operate) {
             case ADD, EDIT, EDIT_STATUS -> {
                 if (ObjectUtil.isNotNull(newDto.getDictTypeId())) {
@@ -100,6 +86,7 @@ public class SysDictDataServiceImpl extends BaseServiceImpl<SysDictDataQuery, Sy
                 }
             }
         }
+        return originDto;
     }
 
     /**

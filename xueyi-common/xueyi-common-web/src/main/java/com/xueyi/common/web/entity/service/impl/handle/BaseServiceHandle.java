@@ -10,7 +10,10 @@ import com.xueyi.common.web.correlate.service.CorrelateService;
 import com.xueyi.common.web.entity.manager.IBaseManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -76,11 +79,16 @@ public class BaseServiceHandle<Q extends BaseEntity, D extends BaseEntity, C ext
     /**
      * 单条操作 - 开始处理
      *
-     * @param operate   服务层 - 操作类型
-     * @param originDto 源数据对象（新增时不存在）
-     * @param newDto    新数据对象（删除时不存在）
+     * @param operate 服务层 - 操作类型
+     * @param newDto  新数据对象（删除时不存在）
+     * @param id      Id集合（非删除时不存在）
      */
-    protected void startHandle(OperateConstants.ServiceType operate, D originDto, D newDto) {
+    protected D startHandle(OperateConstants.ServiceType operate, D newDto, Serializable id) {
+        return switch (operate) {
+            case EDIT, EDIT_STATUS -> baseManager.selectById(newDto.getId());
+            case DELETE -> baseManager.selectById(id);
+            default -> null;
+        };
     }
 
     /**
@@ -121,11 +129,16 @@ public class BaseServiceHandle<Q extends BaseEntity, D extends BaseEntity, C ext
     /**
      * 批量操作 - 开始处理
      *
-     * @param operate    服务层 - 操作类型
-     * @param originList 源数据对象集合（新增时不存在）
-     * @param newList    新数据对象集合（删除时不存在）
+     * @param operate 服务层 - 操作类型
+     * @param newList 新数据对象集合（删除时不存在）
+     * @param idList  Id集合（非删除时不存在）
      */
-    protected void startBatchHandle(OperateConstants.ServiceType operate, Collection<D> originList, Collection<D> newList) {
+    protected List<D> startBatchHandle(OperateConstants.ServiceType operate, Collection<D> newList, Collection<? extends Serializable> idList) {
+        return switch (operate) {
+            case BATCH_EDIT -> baseManager.selectListByIds(newList.stream().map(D::getId).collect(Collectors.toList()));
+            case BATCH_DELETE -> baseManager.selectListByIds(idList);
+            default -> new ArrayList<>();
+        };
     }
 
     /**

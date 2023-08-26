@@ -23,6 +23,7 @@ import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -151,16 +152,18 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobQuery, SysJobDto, S
     /**
      * 单条操作 - 开始处理
      *
-     * @param operate   服务层 - 操作类型
-     * @param originDto 源数据对象（新增时不存在）
-     * @param newDto    新数据对象（删除时不存在）
+     * @param operate 服务层 - 操作类型
+     * @param newDto  新数据对象（删除时不存在）
+     * @param id      Id集合（非删除时不存在）
      */
     @Override
-    protected void startHandle(OperateConstants.ServiceType operate, SysJobDto originDto, SysJobDto newDto) {
+    protected SysJobDto startHandle(OperateConstants.ServiceType operate, SysJobDto newDto, Serializable id) {
+        SysJobDto originDto = super.startHandle(operate, newDto, id);
         if (Objects.requireNonNull(operate) == OperateConstants.ServiceType.ADD) {
             newDto.setStatus(ScheduleConstants.Status.PAUSE.getCode());
             initInvokeTenant(newDto);
         }
+        return originDto;
     }
 
     /**

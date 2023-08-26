@@ -14,6 +14,7 @@ import com.xueyi.common.web.correlate.service.CorrelateService;
 import com.xueyi.common.web.entity.manager.ITreeManager;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -36,12 +37,13 @@ public class TreeServiceHandle<Q extends TreeEntity<D>, D extends TreeEntity<D>,
     /**
      * 单条操作 - 开始处理
      *
-     * @param operate   服务层 - 操作类型
-     * @param originDto 源数据对象（新增时不存在）
-     * @param newDto    新数据对象（删除时不存在）
+     * @param operate 服务层 - 操作类型
+     * @param newDto  新数据对象（删除时不存在）
+     * @param id      Id集合（非删除时不存在）
      */
     @Override
-    protected void startHandle(OperateConstants.ServiceType operate, D originDto, D newDto) {
+    protected D startHandle(OperateConstants.ServiceType operate, D newDto, Serializable id) {
+        D originDto = super.startHandle(operate, newDto, id);
         switch (operate) {
             case EDIT:
                 newDto.setOldAncestors(originDto.getAncestors());
@@ -57,6 +59,7 @@ public class TreeServiceHandle<Q extends TreeEntity<D>, D extends TreeEntity<D>,
                 }
                 break;
         }
+        return originDto;
     }
 
     /**
@@ -116,12 +119,13 @@ public class TreeServiceHandle<Q extends TreeEntity<D>, D extends TreeEntity<D>,
     /**
      * 批量操作 - 开始处理
      *
-     * @param operate    服务层 - 操作类型
-     * @param originList 源数据对象集合（新增时不存在）
-     * @param newList    新数据对象集合（删除时不存在）
+     * @param operate 服务层 - 操作类型
+     * @param newList 新数据对象集合（删除时不存在）
+     * @param idList  Id集合（非删除时不存在）
      */
     @Override
-    protected void startBatchHandle(OperateConstants.ServiceType operate, Collection<D> originList, Collection<D> newList) {
+    protected List<D> startBatchHandle(OperateConstants.ServiceType operate, Collection<D> newList, Collection<? extends Serializable> idList) {
+        List<D> originList = super.startBatchHandle(operate, newList, idList);
         switch (operate) {
             case BATCH_EDIT:
                 Map<Long, D> originMap = CollUtil.isNotEmpty(originList)
@@ -154,6 +158,7 @@ public class TreeServiceHandle<Q extends TreeEntity<D>, D extends TreeEntity<D>,
                 }
                 break;
         }
+        return originList;
     }
 
     /**

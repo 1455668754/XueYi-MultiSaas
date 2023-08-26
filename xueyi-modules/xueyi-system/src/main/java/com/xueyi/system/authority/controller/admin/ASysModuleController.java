@@ -121,5 +121,4 @@ public class ASysModuleController extends BSysModuleController {
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
         return super.batchRemove(idList);
     }
-
 }

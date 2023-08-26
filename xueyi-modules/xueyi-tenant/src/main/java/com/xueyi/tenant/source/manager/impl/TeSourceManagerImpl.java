@@ -1,6 +1,5 @@
 package com.xueyi.tenant.source.manager.impl;
 
-import com.xueyi.common.core.utils.core.IdUtil;
 import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.tenant.api.source.domain.dto.TeSourceDto;
 import com.xueyi.tenant.api.source.domain.po.TeSourcePo;
@@ -17,16 +16,4 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class TeSourceManagerImpl extends BaseManagerImpl<TeSourceQuery, TeSourceDto, TeSourcePo, TeSourceMapper, TeSourceConverter> implements ITeSourceManager {
-
-    /**
-     * 新增数据源对象
-     *
-     * @param source 数据源对象
-     * @return 结果
-     */
-    @Override
-    public int insert(TeSourceDto source) {
-        source.setSlave(IdUtil.simpleUUID());
-        return baseMapper.insert(source);
-    }
 }

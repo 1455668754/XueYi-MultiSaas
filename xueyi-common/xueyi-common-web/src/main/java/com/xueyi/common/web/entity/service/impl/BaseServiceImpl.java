@@ -17,7 +17,6 @@ import com.xueyi.common.web.entity.service.impl.handle.BaseServiceHandle;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 服务层 基类实现通用数据处理
@@ -98,7 +97,7 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, C exten
     @Override
     @DSTransactional
     public int insert(D dto) {
-        startHandle(OperateConstants.ServiceType.ADD, null, dto);
+        startHandle(OperateConstants.ServiceType.ADD, dto, null);
         int row = baseManager.insert(dto);
         endHandle(OperateConstants.ServiceType.ADD, row, null, dto);
         return row;
@@ -112,7 +111,7 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, C exten
     @Override
     @DSTransactional
     public int insertBatch(Collection<D> dtoList) {
-        startBatchHandle(OperateConstants.ServiceType.BATCH_ADD, null, dtoList);
+        startBatchHandle(OperateConstants.ServiceType.BATCH_ADD, dtoList, null);
         int rows = baseManager.insertBatch(dtoList);
         endBatchHandle(OperateConstants.ServiceType.BATCH_ADD, rows, null, dtoList);
         return rows;
@@ -127,8 +126,7 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, C exten
     @Override
     @DSTransactional
     public int update(D dto) {
-        D originDto = selectById(dto.getId());
-        startHandle(OperateConstants.ServiceType.EDIT, originDto, dto);
+        D originDto = startHandle(OperateConstants.ServiceType.EDIT, dto, null);
         int row = baseManager.update(dto);
         endHandle(OperateConstants.ServiceType.EDIT, row, originDto, dto);
         return row;
@@ -142,8 +140,7 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, C exten
     @Override
     @DSTransactional
     public int updateBatch(Collection<D> dtoList) {
-        List<D> originList = selectListByIds(dtoList.stream().map(D::getId).collect(Collectors.toList()));
-        startBatchHandle(OperateConstants.ServiceType.BATCH_EDIT, originList, dtoList);
+        List<D> originList = startBatchHandle(OperateConstants.ServiceType.BATCH_EDIT, dtoList, null);
         int rows = baseManager.updateBatch(dtoList);
         endBatchHandle(OperateConstants.ServiceType.BATCH_EDIT, rows, originList, dtoList);
         return rows;
@@ -158,8 +155,7 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, C exten
     @Override
     @DSTransactional
     public int updateStatus(D dto) {
-        D originDto = selectById(dto.getId());
-        startHandle(OperateConstants.ServiceType.EDIT_STATUS, originDto, dto);
+        D originDto = startHandle(OperateConstants.ServiceType.EDIT_STATUS, dto, null);
         int row = baseManager.updateStatus(dto);
         endHandle(OperateConstants.ServiceType.EDIT_STATUS, row, originDto, dto);
         return row;
@@ -174,8 +170,7 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, C exten
     @Override
     @DSTransactional
     public int deleteById(Serializable id) {
-        D originDto = selectById(id);
-        startHandle(OperateConstants.ServiceType.DELETE, originDto, null);
+        D originDto = startHandle(OperateConstants.ServiceType.DELETE, null, id);
         int row = baseManager.deleteById(id);
         endHandle(OperateConstants.ServiceType.DELETE, row, originDto, null);
         return row;
@@ -190,8 +185,7 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, C exten
     @Override
     @DSTransactional
     public int deleteByIds(Collection<? extends Serializable> idList) {
-        List<D> originList = selectListByIds(idList);
-        startBatchHandle(OperateConstants.ServiceType.BATCH_DELETE, originList, null);
+        List<D> originList = startBatchHandle(OperateConstants.ServiceType.BATCH_DELETE, null, idList);
         int rows = baseManager.deleteByIds(idList);
         endBatchHandle(OperateConstants.ServiceType.BATCH_DELETE, rows, originList, null);
         return rows;

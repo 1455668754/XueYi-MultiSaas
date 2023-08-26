@@ -1,6 +1,5 @@
 package com.xueyi.system.dict.service.impl;
 
-import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.xueyi.common.cache.constant.CacheConstants;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.DictConstants;
@@ -113,24 +112,6 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeQuery, Sy
     }
 
     /**
-     * 修改数据对象
-     *
-     * @param dto 数据对象
-     * @return 结果
-     */
-    @Override
-    @DSTransactional
-    public int update(SysDictTypeDto dto) {
-        SecurityContextHolder.setTenantIgnore();
-        SysDictTypeDto originDto = selectById(dto.getId());
-        SecurityContextHolder.clearTenantIgnore();
-        startHandle(OperateConstants.ServiceType.EDIT, originDto, dto);
-        int row = baseManager.update(dto);
-        endHandle(OperateConstants.ServiceType.EDIT, row, originDto, dto);
-        return row;
-    }
-
-    /**
      * 更新缓存数据
      */
     @Override
@@ -198,15 +179,19 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeQuery, Sy
         return ObjectUtil.isNotNull(baseManager.checkDictCodeUnique(ObjectUtil.isNull(Id) ? BaseConstants.NONE_ID : Id, dictCode));
     }
 
-
     /**
      * 单条操作 - 开始处理
      *
-     * @param operate   服务层 - 操作类型
-     * @param originDto 源数据对象（新增时不存在）
-     * @param newDto    新数据对象（删除时不存在）
+     * @param operate 服务层 - 操作类型
+     * @param newDto  新数据对象（删除时不存在）
+     * @param id      Id集合（非删除时不存在）
      */
-    protected void startHandle(OperateConstants.ServiceType operate, SysDictTypeDto originDto, SysDictTypeDto newDto) {
+    @Override
+    protected SysDictTypeDto startHandle(OperateConstants.ServiceType operate, SysDictTypeDto newDto, Serializable id) {
+        SecurityContextHolder.setTenantIgnore();
+        SysDictTypeDto originDto = super.startHandle(operate, newDto, id);
+        subCorrelates(originDto, SysDictTypeCorrelate.EN_INFO_SELECT);
+        SecurityContextHolder.clearTenantIgnore();
         switch (operate) {
             case ADD -> {
                 if (StrUtil.equals(DictConstants.DicCacheType.TENANT.getCode(), newDto.getCacheType()) || StrUtil.equals(DictConstants.DicCacheType.OVERALL.getCode(), newDto.getCacheType())) {
@@ -230,6 +215,7 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeQuery, Sy
                 }
             }
         }
+        return originDto;
     }
 
     /**

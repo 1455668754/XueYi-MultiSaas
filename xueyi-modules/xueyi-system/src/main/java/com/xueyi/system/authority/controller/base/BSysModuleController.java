@@ -39,6 +39,7 @@ public class BSysModuleController extends BaseController<SysModuleQuery, SysModu
 
         switch (operate) {
             case ADD -> {
+
             }
             case EDIT -> {
                 SysModuleDto original = baseService.selectById(module.getId());
@@ -46,9 +47,12 @@ public class BSysModuleController extends BaseController<SysModuleQuery, SysModu
                     warn("数据不存在！");
                 }
                 module.setIsCommon(original.getIsCommon());
+                module.setTenantId(original.getTenantId());
             }
         }
-
+        if (module.isNotCommon() && SecurityUserUtils.isNotAdminTenant() && ObjectUtil.notEqual(SecurityUserUtils.getEnterpriseId(), module.getTenantId())) {
+            warn(StrUtil.format("{}{}{}失败，仅允许新增本企业私有菜单！", operate.getInfo(), getNodeName(), module.getName()));
+        }
         if (module.isCommon() && SecurityUserUtils.isNotAdminTenant()) {
             warn(StrUtil.format("{}{}{}失败，无操作权限！", operate.getInfo(), getNodeName(), module.getName()));
         }

@@ -1,5 +1,6 @@
 package com.xueyi.tenant.source.service.impl;
 
+import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.xueyi.common.cache.constant.CacheConstants;
 import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.constant.basic.OperateConstants;
@@ -49,12 +50,26 @@ public class TeSourceServiceImpl extends BaseServiceImpl<TeSourceQuery, TeSource
     }
 
     /**
+     * 新增数据源对象
+     *
+     * @param source 数据源对象
+     * @return 结果
+     */
+    @Override
+    @DSTransactional
+    public int insert(TeSourceDto source) {
+        source.setSlave(IdUtil.simpleUUID());
+        return super.insert(source);
+    }
+
+    /**
      * 新增数据源对象（批量）
      *
      * @param sourceList 数据源对象集合
      * @return 结果
      */
     @Override
+    @DSTransactional
     public int insertBatch(Collection<TeSourceDto> sourceList) {
         if (CollUtil.isNotEmpty(sourceList)) {
             sourceList.forEach(source -> source.setSlave(IdUtil.simpleUUID()));
