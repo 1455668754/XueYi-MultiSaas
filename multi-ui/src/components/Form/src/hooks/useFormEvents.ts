@@ -87,9 +87,14 @@ export function useFormEvents({
 
     Object.keys(formModel).forEach((key) => {
       const schema = unref(getSchema).find((item) => item.field === key);
-      const isInput = schema?.component && defaultValueComponents.includes(schema.component);
-      const defaultValue = cloneDeep(defaultValueRef.value[key]);
-      formModel[key] = isInput ? defaultValue || '' : defaultValue;
+      const defaultValueObj = schema?.defaultValueObj;
+      const fieldKeys = Object.keys(defaultValueObj || {});
+      if (fieldKeys.length) {
+        fieldKeys.map((field) => {
+          formModel[field] = defaultValueObj![field];
+        });
+      }
+      formModel[key] = getDefaultValue(schema, defaultValueRef, key);
     });
     nextTick(() => clearValidate());
 
@@ -97,13 +102,18 @@ export function useFormEvents({
     submitOnReset && handleSubmit();
   }
 
+  // 获取表单fields
+  const getAllFields = () =>
+    unref(getSchema)
+      .map((item) => [...(item.fields || []), item.field])
+      .flat(1)
+      .filter(Boolean);
+
   /**
    * @description: Set form value
    */
   async function setFieldsValue(values: Recordable): Promise<void> {
-    const fields = unref(getSchema)
-      .map((item) => item.field)
-      .filter(Boolean);
+    const fields = getAllFields();
 
     // key 支持 a.b.c 的嵌套写法
     const delimiter = '.';
@@ -221,16 +231,11 @@ export function useFormEvents({
     const _schemaList = isObject(schema) ? [schema as FormSchema] : (schema as FormSchema[]);
     if (!prefixField || index === -1 || first) {
       first ? schemaList.unshift(..._schemaList) : schemaList.push(..._schemaList);
-      schemaRef.value = schemaList;
-      _setDefaultValue(schema);
-      return;
-    }
-    if (index !== -1) {
+    } else if (index !== -1) {
       schemaList.splice(index + 1, 0, ..._schemaList);
     }
-    _setDefaultValue(schema);
-
     schemaRef.value = schemaList;
+    _setDefaultValue(schema);
   }
 
   async function resetSchema(data: Partial<FormSchema> | Partial<FormSchema>[]) {
@@ -340,9 +345,14 @@ export function useFormEvents({
     return unref(formElRef)?.validateFields(nameList);
   }
 
-  async function validate(nameList?: NamePath[] | undefined) {
-    const values = await unref(formElRef)?.validate(nameList);
-    return handleFormValues(values);
+  async function validate(nameList?: NamePath[] | false | undefined) {
+    let _nameList: any;
+    if (nameList === undefined) {
+      _nameList = getAllFields();
+    } else {
+      _nameList = nameList === Array.isArray(nameList) ? nameList : undefined;
+    }
+    return await unref(formElRef)?.validate(_nameList);
   }
 
   async function clearValidate(name?: string | string[]) {
@@ -367,13 +377,40 @@ export function useFormEvents({
     if (!formEl) return;
     try {
       const values = await validate();
-      emit('submit', values);
+      const res = handleFormValues(values);
+      emit('submit', res);
     } catch (error: any) {
       if (error?.outOfDate === false && error?.errorFields) {
         return;
       }
       throw new Error(error);
     }
+  }
+
+  function getDefaultValue(
+    schema: FormSchema | undefined,
+    defaultValueRef: UseFormActionContext['defaultValueRef'],
+    key: string,
+  ) {
+    let defaultValue = cloneDeep(defaultValueRef.value[key]);
+    const isInput = checkIsInput(schema);
+    if (isInput) {
+      return defaultValue || '';
+    }
+    if (!defaultValue && schema && checkIsRangeSlider(schema)) {
+      defaultValue = [0, 0];
+    }
+    return defaultValue;
+  }
+
+  function checkIsRangeSlider(schema: FormSchema) {
+    if (schema.component === 'Slider' && schema.componentProps && schema.componentProps.range) {
+      return true;
+    }
+  }
+
+  function checkIsInput(schema?: FormSchema) {
+    return schema?.component && defaultValueComponents.includes(schema.component);
   }
 
   return {
