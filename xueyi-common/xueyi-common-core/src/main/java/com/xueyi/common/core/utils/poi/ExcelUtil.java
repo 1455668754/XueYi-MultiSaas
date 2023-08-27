@@ -354,7 +354,8 @@ public class ExcelUtil<T> {
                         String propertyName = field.getName();
                         if (StrUtil.isNotEmpty(attr.targetAttr())) {
                             propertyName = field.getName() + "." + attr.targetAttr();
-                        } else if (StrUtil.isNotEmpty(attr.readConverterExp())) {
+                        }
+                        if (StrUtil.isNotEmpty(attr.readConverterExp())) {
                             val = reverseByExp(ConvertUtil.toStr(val), attr.readConverterExp(), attr.separator());
                         } else if (!attr.handler().equals(ExcelHandlerAdapter.class)) {
                             val = dataFormatHandlerAdapter(val, attr, null);
