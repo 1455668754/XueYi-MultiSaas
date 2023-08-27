@@ -18,25 +18,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.RegExUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
-import org.apache.poi.ss.usermodel.BorderStyle;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.ClientAnchor;
-import org.apache.poi.ss.usermodel.DataValidation;
-import org.apache.poi.ss.usermodel.DataValidationConstraint;
-import org.apache.poi.ss.usermodel.DataValidationHelper;
-import org.apache.poi.ss.usermodel.Drawing;
-import org.apache.poi.ss.usermodel.FillPatternType;
-import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.apache.poi.ss.usermodel.IndexedColors;
-import org.apache.poi.ss.usermodel.Name;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.VerticalAlignment;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellRangeAddressList;
 import org.apache.poi.util.IOUtils;
@@ -365,7 +347,7 @@ public class ExcelUtil<T> {
                         } else if (StrUtil.isNotEmpty(attr.readConverterExp())) {
                             val = reverseByExp(ConvertUtil.toStr(val), attr.readConverterExp(), attr.separator());
                         } else if (!attr.handler().equals(ExcelHandlerAdapter.class)) {
-                            val = dataFormatHandlerAdapter(val, attr);
+                            val = dataFormatHandlerAdapter(val, attr, null);
                         }
                         ReflectUtil.setFieldValue(entity, propertyName, val);
                     }
@@ -775,7 +757,7 @@ public class ExcelUtil<T> {
                 } else if (value instanceof BigDecimal && -1 != attr.scale()) {
                     cell.setCellValue((((BigDecimal) value).setScale(attr.scale(), attr.roundingMode())).doubleValue());
                 } else if (!attr.handler().equals(ExcelHandlerAdapter.class)) {
-                    cell.setCellValue(dataFormatHandlerAdapter(value, attr));
+                    cell.setCellValue(dataFormatHandlerAdapter(value, attr, cell));
                 } else {
                     // 设置列类型
                     setCellVo(value, attr, cell);
@@ -885,13 +867,13 @@ public class ExcelUtil<T> {
      * @param excel 数据注解
      * @return
      */
-    public String dataFormatHandlerAdapter(Object value, Excel excel) {
+    public String dataFormatHandlerAdapter(Object value, Excel excel, Cell cell) {
         try {
-            Object instance = excel.handler().newInstance();
-            Method formatMethod = excel.handler().getMethod("format", new Class[]{Object.class, String[].class});
-            value = formatMethod.invoke(instance, value, excel.args());
+            Object instance = excel.handler().getDeclaredConstructor().newInstance();
+            Method formatMethod = excel.handler().getMethod("format", Object.class, String[].class, Cell.class, Workbook.class);
+            value = formatMethod.invoke(instance, value, excel.args(), cell, this.wb);
         } catch (Exception e) {
-            log.error("不能格式化数据 " + excel.handler(), e.getMessage());
+            log.error("不能格式化数据{}{} ", excel.handler(), e.getMessage());
         }
         return ConvertUtil.toStr(value);
     }
