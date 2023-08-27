@@ -10,7 +10,7 @@ import type { BeforeMiniState } from '/#/store';
 import { defineStore } from 'pinia';
 import { store } from '/@/store';
 
-import { APP_DARK_MODE_KEY_, PROJ_CFG_KEY, ThemeEnum } from '@/enums/basic';
+import { APP_DARK_MODE_KEY, PROJ_CFG_KEY, ThemeEnum } from '@/enums/basic';
 import { Persistent } from '/@/utils/cache/persistent';
 import { darkMode } from '/@/settings/designSetting';
 import { resetRouter } from '/@/router';
@@ -40,7 +40,7 @@ export const useAppStore = defineStore({
       return state.pageLoading;
     },
     getDarkMode(state): 'light' | 'dark' | string {
-      return state.darkMode || localStorage.getItem(APP_DARK_MODE_KEY_) || darkMode;
+      return state.darkMode || localStorage.getItem(APP_DARK_MODE_KEY) || darkMode;
     },
 
     getBeforeMiniInfo(state): BeforeMiniState {
@@ -71,7 +71,7 @@ export const useAppStore = defineStore({
 
     setDarkMode(mode: ThemeEnum): void {
       this.darkMode = mode;
-      localStorage.setItem(APP_DARK_MODE_KEY_, mode);
+      localStorage.setItem(APP_DARK_MODE_KEY, mode);
     },
 
     setBeforeMiniInfo(state: BeforeMiniState): void {
@@ -79,12 +79,11 @@ export const useAppStore = defineStore({
     },
 
     setProjectConfig(config: DeepPartial<ProjectConfig>): void {
-      this.projectConfig = deepMerge(this.projectConfig || {}, config);
+      this.projectConfig = deepMerge(this.projectConfig || {}, config) as ProjectConfig;
       Persistent.setLocal(PROJ_CFG_KEY, this.projectConfig);
     },
-
     setMenuSetting(setting: Partial<MenuSetting>): void {
-      this.projectConfig.menuSetting = deepMerge(this.projectConfig.menuSetting, setting);
+      this.projectConfig!.menuSetting = deepMerge(this.projectConfig!.menuSetting, setting);
       Persistent.setLocal(PROJ_CFG_KEY, this.projectConfig);
     },
 
