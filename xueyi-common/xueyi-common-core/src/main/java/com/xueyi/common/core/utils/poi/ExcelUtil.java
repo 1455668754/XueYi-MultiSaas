@@ -4,6 +4,7 @@ import com.xueyi.common.core.annotation.Excel;
 import com.xueyi.common.core.annotation.Excel.ColumnType;
 import com.xueyi.common.core.annotation.Excel.Type;
 import com.xueyi.common.core.annotation.Excels;
+import com.xueyi.common.core.exception.UtilException;
 import com.xueyi.common.core.utils.DateUtil;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.ConvertUtil;
@@ -231,8 +232,17 @@ public class ExcelUtil<T> {
      * @param is 输入流
      * @return 转换后集合
      */
-    public List<T> importExcel(InputStream is) throws Exception {
-        return importExcel(is, 0);
+    public List<T> importExcel(InputStream is) {
+        List<T> list;
+        try {
+            list = importExcel(is, 0);
+        } catch (Exception e) {
+            log.error("导入Excel异常{}", e.getMessage());
+            throw new UtilException(e.getMessage());
+        } finally {
+            IOUtils.closeQuietly(is);
+        }
+        return list;
     }
 
     /**
