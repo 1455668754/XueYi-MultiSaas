@@ -10,22 +10,27 @@
         :pagination="paginationProp"
       >
         <template #header>
-          <div class="flex justify-end space-x-2"
-            ><slot name="header"></slot>
+          <div class="flex justify-end space-x-2">
+            <slot name="header"></slot>
             <Tooltip>
               <template #title>
-                <div class="w-50">每行显示数量</div
-                ><Slider
+                <div class="w-50">每行显示数量 </div>
+                <Slider
                   id="slider"
                   v-bind="sliderProp"
                   v-model:value="grid"
                   @change="sliderChange"
-              /></template>
-              <Button><TableOutlined /></Button>
+                />
+              </template>
+              <Button>
+                <TableOutlined />
+              </Button>
             </Tooltip>
             <Tooltip @click="fetch">
               <template #title>刷新</template>
-              <Button><RedoOutlined /></Button>
+              <Button>
+                <RedoOutlined />
+              </Button>
             </Tooltip>
           </div>
         </template>
@@ -61,7 +66,7 @@
 
               <CardMeta>
                 <template #title>
-                  <TypographyText :content="item.name" :ellipsis="{ tooltip: item.address }" />
+                  <TypographyParagraph :content="item.name" :ellipsis="{ tooltip: item.address }" />
                 </template>
                 <template #avatar>
                   <Avatar :src="item.avatar" />
@@ -93,7 +98,7 @@
 
   const ListItem = List.Item;
   const CardMeta = Card.Meta;
-  const TypographyText = Typography.Text;
+  const TypographyParagraph = Typography.Paragraph;
   // 获取slider属性
   const sliderProp = computed(() => useSlider(4));
   // 组件接收参数
@@ -123,11 +128,13 @@
     autoSubmitOnEnter: true,
     submitFunc: handleSubmit,
   });
+
   //表单提交
   async function handleSubmit() {
     const data = await validate();
     await fetch(data);
   }
+
   function sliderChange(n) {
     pageSize.value = n * 4;
     fetch();
@@ -147,6 +154,7 @@
       total.value = res.total;
     }
   }
+
   //分页相关
   const page = ref(1);
   const pageSize = ref(36);
@@ -167,6 +175,7 @@
     pageSize.value = pz;
     fetch();
   }
+
   function pageSizeChange(_current, size) {
     pageSize.value = size;
     fetch();
