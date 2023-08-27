@@ -27,8 +27,8 @@ async function createAppConfigPlugin({
   return {
     name: PLUGIN_NAME,
     async configResolved(_config) {
-      let appTitle = _config?.env?.VITE_GLOB_APP_TITLE ?? '';
-      appTitle = appTitle.replace(/\s/g, '_').replace(/-/g, '_');
+      const appTitle = _config?.env?.VITE_GLOB_APP_TITLE ?? '';
+      // appTitle = appTitle.replace(/\s/g, '_').replace(/-/g, '_');
       publicPath = _config.base;
       source = await getConfigSource(appTitle);
     },
@@ -71,7 +71,7 @@ async function createAppConfigPlugin({
 
 /**
  * Get the configuration file variable name
- * @param env
+ * @param title
  */
 const getVariableName = (title: string) => {
   function strToHex(str: string) {
