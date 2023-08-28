@@ -18,7 +18,7 @@ function useAttrs(options: UseAttrsOptions = {}): Recordable<any> {
   const instance = getCurrentInstance();
   if (!instance) return {};
 
-  const {excludeListeners = false, excludeKeys = [], excludeDefaultKeys = true} = options;
+  const { excludeListeners = false, excludeKeys = [], excludeDefaultKeys = true } = options;
   const attrs = shallowRef({});
   const allExcludeKeys = excludeKeys.concat(excludeDefaultKeys ? DEFAULT_EXCLUDE_KEYS : []);
 
@@ -40,4 +40,4 @@ function useAttrs(options: UseAttrsOptions = {}): Recordable<any> {
   return attrs;
 }
 
-export {useAttrs, type UseAttrsOptions};
+export { useAttrs, type UseAttrsOptions };

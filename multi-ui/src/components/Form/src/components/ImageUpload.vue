@@ -7,6 +7,7 @@
       :max-count="maxCount"
       :customRequest="handleCustomRequest"
       :before-upload="handleBeforeUpload"
+      @change="handleChange"
       @preview="handlePreview"
     >
       <div v-if="fileList.length < maxCount">
@@ -36,7 +37,7 @@
 
   type ImageUploadType = 'text' | 'picture' | 'picture-card';
 
-  const emit = defineEmits(['update:value']);
+  const emit = defineEmits(['change', 'update:value']);
   const props = defineProps({
     value: [Array, String],
     api: {
@@ -73,32 +74,34 @@
     },
   });
 
-  // Embedded in the form, just use the hook binding to perform form verification
-  const [state] = useRuleFormItem(props);
-
   const AUpload = Upload;
   const AModal = Modal;
   const { t } = useI18n();
   const previewVisible = ref(false);
   const previewImage = ref('');
+  const emitData = ref<any[]>([]);
   const fileList = ref<UploadFile[]>([]);
+
+  // Embedded in the form, just use the hook binding to perform form verification
+  const [state] = useRuleFormItem(props, 'value', 'change', emitData);
 
   const fileState = reactive<{
     newList: any[];
     newStr: string;
     oldStr: string;
     isLoad: boolean;
+    isInner: boolean;
   }>({
     newList: [],
     newStr: '',
     oldStr: '',
     isLoad: false,
+    isInner: false,
   });
 
   watch(
     () => fileList.value,
     (v) => {
-      console.error(fileList.value);
       fileState.newList = v
         .filter((item) => {
           return item?.url && item.status === 'done' && isUrl(item?.url);
@@ -108,6 +111,7 @@
       // 不相等代表数据变更
       if (fileState.newStr !== fileState.oldStr) {
         fileState.oldStr = fileState.newStr;
+        fileState.isInner = true;
         if (!fileState.isLoad) {
           if (props.multiple) {
             state.value = fileState.newList;
@@ -128,42 +132,47 @@
     () => state.value,
     (v) => {
       if (!fileState.isLoad) {
-        const stateStr = props.multiple ? join((v as any[]) || []) : v || '';
-        if (stateStr !== fileState.oldStr) {
-          fileState.isLoad = true;
-          fileList.value = [];
-          let list: string[] = [];
-          if (props.multiple) {
-            if (isNotEmpty(v)) {
-              if (isArray(v)) {
-                list = v as string[];
-              } else {
-                list.push(v as string);
-              }
-            }
-          } else {
-            if (isNotEmpty(v)) {
-              list.push(v as string);
-            }
-          }
-          fileList.value = list.map((item) => {
-            const uuid = buildShortUUID();
-            return {
-              uid: uuid,
-              name: uuid,
-              status: 'done',
-              url: item,
-            };
-          });
-        } else {
-          emit('update:value', v);
-        }
+        changeFileValue(v);
+      } else {
+        emit('update:value', v);
       }
     },
     {
       immediate: true,
     },
   );
+
+  function handleChange(e: any) {}
+
+  function changeFileValue(value: any) {
+    const stateStr = props.multiple ? join((value as string[]) || []) : value || '';
+    if (stateStr !== fileState.oldStr) {
+      fileState.isLoad = true;
+      let list: string[] = [];
+      if (props.multiple) {
+        if (isNotEmpty(value)) {
+          if (isArray(value)) {
+            list = value as string[];
+          } else {
+            list.push(value as string);
+          }
+        }
+      } else {
+        if (isNotEmpty(value)) {
+          list.push(value as string);
+        }
+      }
+      fileList.value = list.map((item) => {
+        const uuid = buildShortUUID();
+        return {
+          uid: uuid,
+          name: uuid,
+          status: 'done',
+          url: item,
+        };
+      });
+    }
+  }
 
   /** 关闭查看 */
   const handleCancel = () => {
