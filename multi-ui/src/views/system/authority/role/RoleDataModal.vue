@@ -81,12 +81,8 @@
       const values = (await validate()) as RoleIM;
       setModalProps({ confirmLoading: true });
       values.organizeIds = undefined;
-      console.error('values', values);
       if (values.dataScope === DataScopeEnum.CUSTOM) {
         const { orgDeptIds, orgPostIds } = getDataScopeNodes();
-
-        console.error('orgDeptIds', orgDeptIds);
-        console.error('orgPostIds', orgPostIds);
         values.orgDeptIds = orgDeptIds;
         values.orgPostIds = orgPostIds;
       }
@@ -113,7 +109,6 @@
   /** 拆解数据权限Id */
   function getDataScopeNodes() {
     const organizeIds = dataScope.authKeys;
-    console.error('organizeIds', organizeIds);
     return {
       orgDeptIds: intersection(organizeIds, dataScope.deptLeafs),
       orgPostIds: difference(organizeIds, dataScope.deptLeafs),
