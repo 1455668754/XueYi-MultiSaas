@@ -84,4 +84,5 @@ export const NO_AUTO_LINK_COMPONENTS: ComponentType[] = [
   'ApiCascader',
   'AutoComplete',
   'RadioButtonGroup',
+  'ImageUpload',
 ];

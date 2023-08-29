@@ -6,7 +6,6 @@ import { DicCommonPrivateEnum, DicShowHideEnum, DicSortEnum, DicStatusEnum } fro
 import { ModuleIM } from '@/model/system/authority';
 import { useUserStore } from '/@/store/modules/user';
 import { FrameTypeEnum } from '@/enums/system/authority';
-import { fileUploadApi } from '@/api/sys/upload.api';
 import { dictConversion } from '/@/utils/xueyi';
 import { isNotEmpty } from '@/utils/is';
 
@@ -165,9 +164,6 @@ export const formSchema: FormSchema[] = [
     label: 'logo',
     field: 'logo',
     component: 'ImageUpload',
-    componentProps: {
-      api: fileUploadApi,
-    },
     required: true,
     colProps: { span: 24 },
   },
