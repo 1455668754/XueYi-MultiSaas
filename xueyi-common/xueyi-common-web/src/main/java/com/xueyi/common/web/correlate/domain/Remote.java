@@ -13,7 +13,7 @@ import java.util.List;
 
 
 /**
- * 直接关联映射对象
+ * 远程关联映射对象
  *
  * @author xueyi
  */

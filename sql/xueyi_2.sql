@@ -10,7 +10,7 @@
 SET NAMES utf8mb4;
 
 -- ----------------------------
--- 1、部门表
+-- 1、部门信息表
 -- ----------------------------
 drop table if exists sys_dept;
 create table sys_dept (

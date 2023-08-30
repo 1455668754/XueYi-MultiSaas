@@ -333,7 +333,7 @@ values (1, '001', '默认权限组', 'A', '默认权限组');
 drop table if exists sys_tenant_auth_group_merge;
 create table sys_tenant_auth_group_merge (
   id                        bigint              not null                                comment 'id',
-  auth_group_id          bigint              not null                                comment '租户权限组Id',
+  auth_group_id             bigint              not null                                comment '租户权限组Id',
   tenant_id		            bigint	            not null                                comment '租户Id',
   primary key (id),
   unique (auth_group_id, tenant_id)

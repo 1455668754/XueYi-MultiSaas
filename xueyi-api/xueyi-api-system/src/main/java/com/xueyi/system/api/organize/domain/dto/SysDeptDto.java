@@ -26,7 +26,7 @@ public class SysDeptDto extends SysDeptPo {
     /** 角色组 */
     private Long[] roleIds;
 
-    /** 部门数据 */
+    /** 岗位数据集合 */
     private List<SysPostDto> subList;
 
 }
