@@ -116,7 +116,7 @@ public interface IBaseService<Q extends BaseEntity, D extends BaseEntity> {
      *
      * @param id   Id
      * @param name 名称
-     * @return 结果 | true/false 唯一/不唯一
+     * @return 结果 | true/false 不唯一/唯一
      */
     boolean checkNameUnique(Serializable id, String name);
 

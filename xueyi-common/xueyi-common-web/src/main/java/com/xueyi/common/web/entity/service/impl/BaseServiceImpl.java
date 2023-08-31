@@ -196,7 +196,7 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, C exten
      *
      * @param id   Id
      * @param name 名称
-     * @return 结果 | true/false 唯一/不唯一
+     * @return 结果 | true/false 不唯一/唯一
      */
     @Override
     public boolean checkNameUnique(Serializable id, String name) {
