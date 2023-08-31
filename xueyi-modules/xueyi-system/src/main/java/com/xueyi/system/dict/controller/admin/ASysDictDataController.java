@@ -102,9 +102,6 @@ public class ASysDictDataController extends BSysDictDataController {
     @PreAuthorize("@ss.hasAuthority(@Auth.SYS_DICT_DICT)")
     @Log(title = "字典数据管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
-        if (SecurityUserUtils.isAdminTenant()) {
-            SecurityContextHolder.setTenantIgnore();
-        }
         return super.batchRemove(idList);
     }
 }

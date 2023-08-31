@@ -85,6 +85,11 @@ public class SysDictDataServiceImpl extends BaseServiceImpl<SysDictDataQuery, Sy
                     }
                 }
             }
+            case DELETE -> {
+                if (SecurityUserUtils.isAdminTenant()) {
+                    SecurityContextHolder.setTenantIgnore();
+                }
+            }
         }
         return originDto;
     }
@@ -97,9 +102,53 @@ public class SysDictDataServiceImpl extends BaseServiceImpl<SysDictDataQuery, Sy
      * @param originDto 源数据对象（新增时不存在）
      * @param newDto    新数据对象（删除时不存在）
      */
+    @Override
     protected void endHandle(OperateConstants.ServiceType operate, int row, SysDictDataDto originDto, SysDictDataDto newDto) {
+        switch (operate) {
+            case DELETE -> {
+                if (SecurityUserUtils.isAdminTenant()) {
+                    SecurityContextHolder.clearTenantIgnore();
+                }
+            }
+            case ADD, EDIT, EDIT_STATUS -> SecurityContextHolder.rollLastEnterpriseId();
+        }
         super.endHandle(operate, row, originDto, newDto);
-        SecurityContextHolder.rollLastEnterpriseId();
+    }
+
+    /**
+     * 批量操作 - 开始处理
+     *
+     * @param operate 服务层 - 操作类型
+     * @param newList 新数据对象集合（删除时不存在）
+     * @param idList  Id集合（非删除时不存在）
+     */
+    @Override
+    protected List<SysDictDataDto> startBatchHandle(OperateConstants.ServiceType operate, Collection<SysDictDataDto> newList, Collection<? extends Serializable> idList) {
+        List<SysDictDataDto> originList = super.startBatchHandle(operate, newList, idList);
+        if (operate == OperateConstants.ServiceType.BATCH_DELETE) {
+            if (SecurityUserUtils.isAdminTenant()) {
+                SecurityContextHolder.setTenantIgnore();
+            }
+        }
+        return originList;
+    }
+
+    /**
+     * 批量操作 - 结束处理
+     *
+     * @param operate    服务层 - 操作类型
+     * @param rows       操作数据条数
+     * @param originList 源数据对象集合（新增时不存在）
+     * @param newList    新数据对象集合（删除时不存在）
+     */
+    @Override
+    protected void endBatchHandle(OperateConstants.ServiceType operate, int rows, Collection<SysDictDataDto> originList, Collection<SysDictDataDto> newList) {
+        if (operate == OperateConstants.ServiceType.BATCH_DELETE) {
+            if (SecurityUserUtils.isAdminTenant()) {
+                SecurityContextHolder.clearTenantIgnore();
+            }
+        }
+        super.endBatchHandle(operate, rows, originList, newList);
     }
 
     /**

@@ -30,6 +30,7 @@
 
     if (unref(isUpdate)) {
       const module = await getModuleApi(data.record.id);
+      module.tenantId = module?.enterpriseInfo?.id;
       setFieldsValue({
         ...module,
       });

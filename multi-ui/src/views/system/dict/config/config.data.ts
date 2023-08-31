@@ -229,6 +229,8 @@ export const formSchema: FormSchema[] = [
       showSearch: true,
       optionFilterProp: 'label',
     },
+    dynamicDisabled: ({ values }) => isNotEmpty(values.tenantId),
+    required: true,
     colProps: { span: 24 },
   },
   {

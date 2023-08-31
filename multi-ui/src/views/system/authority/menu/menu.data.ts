@@ -11,7 +11,7 @@ import {
   DicStatusEnum,
   DicYesNoEnum,
 } from '@/enums/basic';
-import { MenuIM } from '@/model/system/authority';
+import { MenuIM, ModuleIM } from '@/model/system/authority';
 import { listModuleApi } from '@/api/system/authority/module.api';
 import { getMenuRouteListApi } from '@/api/system/authority/menu.api';
 import { COMMON_MENU, COMMON_MODULE, FrameTypeEnum, MenuTypeEnum } from '@/enums/system/authority';
@@ -21,6 +21,7 @@ import { Tag } from 'ant-design-vue';
 import { useUserStore } from '/@/store/modules/user';
 import { dictConversion } from '/@/utils/xueyi';
 import { isNotEmpty } from '@/utils/is';
+import { listTenantApi } from '@/api/tenant/tenant/tenant.api';
 
 /** 字典查询 */
 export const dictMap = await dicDictList([
@@ -166,6 +167,17 @@ export const columns: BasicColumn[] = [
     customRender: ({ record }) => {
       const data = record as MenuIM;
       return dictConversion(dict.DicCommonPrivateOptions, data.isCommon);
+    },
+  },
+  {
+    title: '归属企业',
+    dataIndex: 'enterpriseInfo.nick',
+    width: 120,
+    customRender: ({ record }) => {
+      const data = record as ModuleIM;
+      return data.isCommon === DicCommonPrivateEnum.PRIVATE
+        ? data?.enterpriseInfo?.nick || '-'
+        : '公共';
     },
   },
 ];
@@ -338,7 +350,25 @@ export const formSchema: FormSchema[] = [
     dynamicDisabled: ({ values }) => isNotEmpty(values.id),
     required: () => useUserStore().isLessor,
     ifShow: () => useUserStore().isLessor,
-    colProps: { span: 12 },
+    colProps: { span: 13 },
+  },
+  {
+    label: '租户名称',
+    field: 'tenantId',
+    component: 'ApiSelect',
+    componentProps: {
+      api: listTenantApi,
+      params: { status: DicStatusEnum.NORMAL },
+      showSearch: true,
+      optionFilterProp: 'label',
+      resultField: 'items',
+      labelField: 'nick',
+      valueField: 'id',
+    },
+    dynamicDisabled: ({ values }) => isNotEmpty(values.id),
+    ifShow: ({ values }) => values.isCommon === DicCommonPrivateEnum.PRIVATE,
+    required: ({ values }) => values.isCommon === DicCommonPrivateEnum.PRIVATE,
+    colProps: { span: 11 },
   },
   {
     label: '状态',

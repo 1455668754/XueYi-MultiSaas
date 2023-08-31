@@ -62,7 +62,6 @@ public abstract class BaseHandleController<Q extends BaseEntity, D extends BaseE
      *
      * @param idList 待删除Id集合
      * @see com.xueyi.common.web.entity.controller.BaseController#batchRemove(List)
-     * @see com.xueyi.common.web.entity.controller.BaseController#batchRemoveForce(List)
      */
     protected void RHandleEmpty(List<Long> idList) {
         if (CollUtil.isEmpty(idList)) {

@@ -1,6 +1,7 @@
 package com.xueyi.system.api.authority.domain.dto;
 
 import com.xueyi.system.api.authority.domain.po.SysModulePo;
+import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -18,6 +19,9 @@ public class SysModuleDto extends SysModulePo {
 
     @Serial
     private static final long serialVersionUID = 1L;
+
+    /** 企业信息 */
+    private SysEnterpriseDto enterpriseInfo;
 
     /** 菜单数据 */
     private List<SysMenuDto> subList;

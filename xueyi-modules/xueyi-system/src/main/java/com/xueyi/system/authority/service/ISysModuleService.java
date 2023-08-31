@@ -4,6 +4,7 @@ import com.xueyi.common.web.entity.service.IBaseService;
 import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
 import com.xueyi.system.api.authority.domain.query.SysModuleQuery;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
@@ -13,6 +14,14 @@ import java.util.Set;
  * @author xueyi
  */
 public interface ISysModuleService extends IBaseService<SysModuleQuery, SysModuleDto> {
+
+    /**
+     * 根据Id查询模块信息
+     *
+     * @param id Id
+     * @return 模块数据对象
+     */
+    SysModuleDto selectInfoById(Serializable id);
 
     /**
      * 获取企业有权限且状态正常的模块

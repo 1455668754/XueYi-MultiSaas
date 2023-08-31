@@ -125,9 +125,6 @@ public class ASysConfigController extends BSysConfigController {
     @PreAuthorize("@ss.hasAuthority(@Auth.SYS_CONFIG_DEL)")
     @Log(title = "参数管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
-        if (SecurityUserUtils.isAdminTenant()) {
-            SecurityContextHolder.setTenantIgnore();
-        }
         return super.batchRemove(idList);
     }
 

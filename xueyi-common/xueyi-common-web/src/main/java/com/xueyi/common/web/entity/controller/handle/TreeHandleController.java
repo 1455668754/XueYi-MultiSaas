@@ -98,8 +98,8 @@ public abstract class TreeHandleController<Q extends TreeEntity<D>, D extends Tr
             D dto = getDClass().getDeclaredConstructor().newInstance();
             dto.setName(StrUtil.isNotEmpty(query.getTopNodeName()) ? query.getTopNodeName() : "顶级" + getNodeName());
             dto.setLevel(NumberUtil.Zero);
-            dto.setId((long) NumberUtil.Zero);
-            dto.setParentId((long) NumberUtil.Zero);
+            dto.setId(BaseConstants.TOP_ID);
+            dto.setParentId(BaseConstants.TOP_ID);
             return dto;
         } catch (Exception e) {
             throw new UtilException(e);

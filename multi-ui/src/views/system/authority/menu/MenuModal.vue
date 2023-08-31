@@ -36,6 +36,7 @@
 
     if (unref(isUpdate)) {
       const menu = await getMenuApi(data.record.id);
+      menu.tenantId = menu?.enterpriseInfo?.id;
       setMenuTree(menu.id, menu.moduleId);
       setFieldsValue({
         ...menu,

@@ -3,6 +3,7 @@ package com.xueyi.system.api.authority.domain.dto;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.system.api.authority.domain.po.SysMenuPo;
+import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -28,6 +29,9 @@ public class SysMenuDto extends SysMenuPo {
 
     /** 模块信息 */
     private SysModuleDto module;
+
+    /** 企业信息 */
+    private SysEnterpriseDto enterpriseInfo;
 
     /**
      * 校验菜单类型是否为目录

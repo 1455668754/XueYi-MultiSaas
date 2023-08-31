@@ -120,9 +120,6 @@ public class ASysDictTypeController extends BSysDictTypeController {
     @PreAuthorize("@ss.hasAuthority(@Auth.SYS_DICT_DEL)")
     @Log(title = "字典类型管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
-        if (SecurityUserUtils.isAdminTenant()) {
-            SecurityContextHolder.setTenantIgnore();
-        }
         return super.batchRemove(idList);
     }
 

@@ -80,7 +80,7 @@ public class ASysMenuController extends BSysMenuController {
     @GetMapping(value = "/{id}")
     @PreAuthorize("@ss.hasAuthority(@Auth.SYS_MENU_SINGLE)")
     public AjaxResult getInfo(@PathVariable Serializable id) {
-        return super.getInfo(id);
+        return success(baseService.selectInfoById(id));
     }
 
     /**

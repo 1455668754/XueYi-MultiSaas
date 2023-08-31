@@ -6,11 +6,13 @@ import com.xueyi.common.web.correlate.domain.Indirect;
 import com.xueyi.common.web.correlate.service.CorrelateService;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
+import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
 import com.xueyi.system.authority.domain.merge.SysAuthGroupMenuMerge;
 import com.xueyi.system.authority.domain.merge.SysRoleMenuMerge;
 import com.xueyi.system.authority.mapper.merge.SysAuthGroupMenuMergeMapper;
 import com.xueyi.system.authority.mapper.merge.SysRoleMenuMergeMapper;
 import com.xueyi.system.authority.service.ISysModuleService;
+import com.xueyi.system.organize.service.ISysEnterpriseService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -29,6 +31,10 @@ import static com.xueyi.common.web.correlate.contant.CorrelateConstants.SubOpera
 @AllArgsConstructor
 public enum SysMenuCorrelate implements CorrelateService {
 
+    EN_INFO_SELECT("企业查询|（企业信息）", new ArrayList<>() {{
+        // 菜单 | 企业信息
+        add(new Direct<>(SELECT, ISysEnterpriseService.class, SysMenuDto::getTenantId, SysEnterpriseDto::getId, SysMenuDto::getEnterpriseInfo));
+    }}),
     INFO_LIST("默认列表|（模块）", new ArrayList<>() {{
         // 菜单 | 模块
         add(new Direct<>(SELECT, ISysModuleService.class, SysMenuDto::getModuleId, SysModuleDto::getId, SysMenuDto::getModule));
