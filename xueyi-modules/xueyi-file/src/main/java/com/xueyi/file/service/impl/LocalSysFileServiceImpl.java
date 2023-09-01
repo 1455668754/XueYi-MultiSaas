@@ -1,5 +1,6 @@
-package com.xueyi.file.service;
+package com.xueyi.file.service.impl;
 
+import com.xueyi.file.service.ISysFileService;
 import com.xueyi.file.utils.FileUploadUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;

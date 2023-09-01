@@ -1,7 +1,8 @@
-package com.xueyi.file.service;
+package com.xueyi.file.service.impl;
 
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.file.config.MinioConfig;
+import com.xueyi.file.service.ISysFileService;
 import com.xueyi.file.utils.FileUploadUtils;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;

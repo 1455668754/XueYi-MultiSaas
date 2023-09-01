@@ -1,10 +1,11 @@
-package com.xueyi.file.service;
+package com.xueyi.file.service.impl;
 
 import com.alibaba.nacos.common.utils.IoUtils;
 import com.github.tobato.fastdfs.domain.fdfs.StorePath;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.utils.file.FileTypeUtil;
+import com.xueyi.file.service.ISysFileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
