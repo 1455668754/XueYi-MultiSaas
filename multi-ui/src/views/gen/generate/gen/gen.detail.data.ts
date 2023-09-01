@@ -17,6 +17,7 @@ import { GenTableColumnIM, GenTableColumnLM, GenTableLM } from '@/model/gen/gene
 import { Component, h } from 'vue';
 import { Input, Select, Switch } from 'ant-design-vue';
 import { DicCodeEnum, DicStatusEnum, DicYesNoEnum } from '@/enums';
+import { hasTreeNode } from '@/utils/core/treeUtil';
 
 /** 字典查询 */
 export const dictMap = await dicDictList([
@@ -560,14 +561,18 @@ export const generateBaseSchema: FormSchema[] = [
                   menuTypeLimit: MenuTypeEnum.DIR,
                   defaultNode: true,
                 });
-          if (formModel.parentMenuId !== COMMON_MENU) {
-            formModel.parentMenuId = undefined;
+          if (formModel.parentMenuId !== undefined && formModel.parentMenuId !== COMMON_MENU) {
+            if (!hasTreeNode(treeData, 'id', 'children', formModel.parentMenuId)) {
+              formModel.parentMenuId = undefined;
+            }
           }
-          const { updateSchema } = formActionType;
-          updateSchema({
-            field: 'parentMenuId',
-            componentProps: { treeData },
-          });
+          if (formActionType !== undefined) {
+            const { updateSchema } = formActionType;
+            updateSchema({
+              field: 'parentMenuId',
+              componentProps: { treeData },
+            });
+          }
         },
       };
     },
