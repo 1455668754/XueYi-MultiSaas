@@ -1,5 +1,7 @@
 package com.xueyi.file.service.impl;
 
+import com.xueyi.common.core.utils.file.FileUtil;
+import com.xueyi.file.api.domain.SysFile;
 import com.xueyi.file.service.ISysFileService;
 import com.xueyi.file.utils.FileUploadUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,9 +39,15 @@ public class LocalSysFileServiceImpl implements ISysFileService {
      * @return 访问地址
      */
     @Override
-    public String uploadFile(MultipartFile file) throws Exception {
+    public SysFile uploadFile(MultipartFile file) throws Exception {
         String name = FileUploadUtils.upload(localFilePath, file);
-        return domain + localFilePrefix + name;
+        SysFile sysFile = new SysFile();
+        sysFile.setUrl(domain + localFilePrefix + name);
+        sysFile.setPath(name);
+        sysFile.setSize(file.getSize());
+        sysFile.setName(FileUtil.getName(sysFile.getUrl()));
+        sysFile.setNick(sysFile.getName());
+        return sysFile;
     }
 
     /**

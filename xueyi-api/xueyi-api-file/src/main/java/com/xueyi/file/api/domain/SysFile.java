@@ -28,6 +28,9 @@ public class SysFile implements Serializable {
     /** 文件地址 */
     protected String url;
 
+    /** 存储路径 */
+    protected String path;
+
     /** 文件大小 */
     protected Long size;
 

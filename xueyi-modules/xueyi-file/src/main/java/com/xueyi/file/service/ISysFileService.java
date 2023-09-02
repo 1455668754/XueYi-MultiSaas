@@ -1,5 +1,6 @@
 package com.xueyi.file.service;
 
+import com.xueyi.file.api.domain.SysFile;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -15,7 +16,7 @@ public interface ISysFileService {
      * @param file 上传的文件
      * @return 访问地址
      */
-    String uploadFile(MultipartFile file) throws Exception;
+    SysFile uploadFile(MultipartFile file) throws Exception;
 
     /**
      * 文件删除接口

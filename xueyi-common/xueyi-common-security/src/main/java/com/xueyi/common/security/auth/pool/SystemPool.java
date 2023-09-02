@@ -3,6 +3,7 @@ package com.xueyi.common.security.auth.pool;
 import com.xueyi.common.security.auth.pool.system.SysApplicationPool;
 import com.xueyi.common.security.auth.pool.system.SysAuthorityPool;
 import com.xueyi.common.security.auth.pool.system.SysDictPool;
+import com.xueyi.common.security.auth.pool.system.SysFilePool;
 import com.xueyi.common.security.auth.pool.system.SysMonitorPool;
 import com.xueyi.common.security.auth.pool.system.SysNoticePool;
 import com.xueyi.common.security.auth.pool.system.SysOrganizePool;
@@ -12,5 +13,5 @@ import com.xueyi.common.security.auth.pool.system.SysOrganizePool;
  *
  * @author xueyi
  */
-public interface SystemPool extends SysApplicationPool, SysAuthorityPool, SysDictPool, SysMonitorPool, SysNoticePool, SysOrganizePool {
+public interface SystemPool extends SysApplicationPool, SysAuthorityPool, SysDictPool, SysFilePool, SysMonitorPool, SysNoticePool, SysOrganizePool {
 }

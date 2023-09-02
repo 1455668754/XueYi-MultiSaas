@@ -1,6 +1,6 @@
 package com.xueyi.file.controller.base;
 
-import com.xueyi.common.core.utils.file.FileUtil;
+import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.web.result.R;
 import com.xueyi.file.api.domain.SysFile;
 import com.xueyi.file.api.feign.RemoteFileManageService;
@@ -32,12 +32,8 @@ public class BSysFileController {
     protected R<SysFile> uploadFile(MultipartFile file) {
         try {
             // 上传并返回访问地址
-            String url = fileService.uploadFile(file);
-            SysFile sysFile = new SysFile();
-            sysFile.setUrl(url);
-            sysFile.setSize(file.getSize());
-            sysFile.setName(FileUtil.getName(url));
-            sysFile.setNick(sysFile.getName());
+            SysFile sysFile = fileService.uploadFile(file);
+            sysFile.setFolderId(BaseConstants.TOP_ID);
             remoteFileManageService.saveFile(sysFile);
             return R.ok(sysFile);
         } catch (Exception e) {

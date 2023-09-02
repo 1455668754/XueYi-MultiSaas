@@ -1,6 +1,8 @@
 package com.xueyi.file.service.impl;
 
 import com.xueyi.common.core.utils.core.StrUtil;
+import com.xueyi.common.core.utils.file.FileUtil;
+import com.xueyi.file.api.domain.SysFile;
 import com.xueyi.file.config.MinioConfig;
 import com.xueyi.file.service.ISysFileService;
 import com.xueyi.file.utils.FileUploadUtils;
@@ -33,7 +35,7 @@ public class MinioSysFileServiceImpl implements ISysFileService {
      * @return 访问地址
      */
     @Override
-    public String uploadFile(MultipartFile file) throws Exception {
+    public SysFile uploadFile(MultipartFile file) throws Exception {
         String fileName = FileUploadUtils.extractFilename(file);
         InputStream inputStream = file.getInputStream();
         PutObjectArgs args = PutObjectArgs.builder()
@@ -44,7 +46,13 @@ public class MinioSysFileServiceImpl implements ISysFileService {
                 .build();
         client.putObject(args);
         inputStream.close();
-        return minioConfig.getUrl() + StrUtil.SLASH + minioConfig.getBucketName() + StrUtil.SLASH + fileName;
+        SysFile sysFile = new SysFile();
+        sysFile.setUrl(minioConfig.getUrl() + StrUtil.SLASH + minioConfig.getBucketName() + StrUtil.SLASH + fileName);
+        sysFile.setPath(minioConfig.getBucketName() + StrUtil.SLASH + fileName);
+        sysFile.setSize(file.getSize());
+        sysFile.setName(FileUtil.getName(sysFile.getUrl()));
+        sysFile.setNick(sysFile.getName());
+        return sysFile;
     }
 
     /**

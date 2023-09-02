@@ -9,6 +9,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * 文件管理服务
@@ -34,5 +35,5 @@ public interface RemoteFileManageService {
      * @return 结果
      */
     @DeleteMapping(headers = SecurityConstants.FROM_SOURCE_INNER)
-    R<Boolean> delFile(String url);
+    R<Boolean> delFile(@RequestParam("url") String url);
 }
