@@ -115,12 +115,21 @@ export function useFormValues({
 
       const [startTimeFormat, endTimeFormat] = Array.isArray(format) ? format : [format, format];
 
-      set(values, startTimeKey, dateUtil(startTime).format(startTimeFormat));
-      set(values, endTimeKey, dateUtil(endTime).format(endTimeFormat));
+      set(values, startTimeKey, formatTime(startTime, startTimeFormat));
+      set(values, endTimeKey, formatTime(endTime, endTimeFormat));
       unset(values, field);
     }
 
     return values;
+  }
+
+  function formatTime(time: string, format: string) {
+    if (format === 'timestamp') {
+      return dateUtil(time).unix();
+    } else if (format === 'timestampStartDay') {
+      return dateUtil(time).startOf('day').unix();
+    }
+    return dateUtil(time).format(format);
   }
 
   function initDefault() {
