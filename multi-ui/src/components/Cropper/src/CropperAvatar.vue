@@ -47,6 +47,7 @@
   import { useI18n } from '/@/hooks/web/useI18n';
   import type { ButtonProps } from '/@/components/Button';
   import Icon from '@/components/Icon/Icon.vue';
+  import { UploadFileParams } from '#/axios';
 
   const props = {
     width: { type: [String, Number], default: '200px' },
@@ -54,7 +55,9 @@
     showBtn: { type: Boolean, default: true },
     btnProps: { type: Object as PropType<ButtonProps> },
     btnText: { type: String, default: '' },
-    uploadApi: { type: Function as PropType<({ file: Blob, name: string }) => Promise<void>> },
+    uploadApi: {
+      type: Function as PropType<(params: UploadFileParams) => Promise<void>>,
+    },
     size: { type: Number, default: 5 },
   };
 

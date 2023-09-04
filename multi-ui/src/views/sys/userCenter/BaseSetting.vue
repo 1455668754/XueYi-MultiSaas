@@ -22,9 +22,9 @@
   </CollapseContainer>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
   import { Button, Col, Row } from 'ant-design-vue';
-  import { computed, defineComponent, onMounted } from 'vue';
+  import { computed, onMounted } from 'vue';
   import { BasicForm, useForm } from '/@/components/Form';
   import { CollapseContainer } from '/@/components/Container';
   import { CropperAvatar } from '/@/components/Cropper';
@@ -34,68 +34,51 @@
   import { useUserStore } from '/@/store/modules/user';
   import { editAvatarApi, editUserProfileApi, getUserProfileApi } from '@/api/sys/user.api';
 
-  export default defineComponent({
-    components: {
-      BasicForm,
-      CollapseContainer,
-      Button,
-      ARow: Row,
-      ACol: Col,
-      CropperAvatar,
-    },
-    setup() {
-      const { createMessage } = useMessage();
-      const userStore = useUserStore();
+  const ARow = Row;
+  const ACol = Col;
 
-      const [register, { setFieldsValue, validate }] = useForm({
-        labelWidth: 120,
-        schemas: baseSettingSchemas,
-        showActionButtonGroup: false,
-      });
+  const { createMessage } = useMessage();
+  const userStore = useUserStore();
 
-      onMounted(async () => {
-        const data = await getUserProfileApi();
-        setFieldsValue(data);
-      });
-
-      const avatar = computed(() => {
-        const { avatar } = userStore.getUserInfo;
-        return avatar || headerImg;
-      });
-
-      /** 更换头像 */
-      function updateAvatar({ src, data }) {
-        const userinfo = userStore.getUserInfo;
-        userinfo.avatar = src;
-        userStore.setUserInfo(userinfo);
-        console.log('data', data);
-      }
-
-      /** 提交按钮 */
-      async function handleSubmit() {
-        try {
-          const values = await validate();
-          await editUserProfileApi(values).then(() => {
-            const userinfo = userStore.getUserInfo;
-            userinfo.nickName = values.nickName;
-            userinfo.sex = values.sex;
-            userinfo.profile = values.profile;
-            userStore.setUserInfo(userinfo);
-            createMessage.success('更新成功！');
-          });
-        } finally {
-        }
-      }
-
-      return {
-        avatar,
-        register,
-        editAvatarApi,
-        updateAvatar,
-        handleSubmit,
-      };
-    },
+  const [register, { setFieldsValue, validate }] = useForm({
+    labelWidth: 120,
+    schemas: baseSettingSchemas,
+    showActionButtonGroup: false,
   });
+
+  onMounted(async () => {
+    const data = await getUserProfileApi();
+    setFieldsValue(data);
+  });
+
+  const avatar = computed(() => {
+    const { avatar } = userStore.getUserInfo;
+    return avatar || headerImg;
+  });
+
+  /** 更换头像 */
+  function updateAvatar({ data }) {
+    const userinfo = userStore.getUserInfo;
+    userinfo.avatar = data;
+    userStore.setUserInfo(userinfo);
+  }
+
+  /** 提交按钮 */
+  async function handleSubmit() {
+    try {
+      const values = await validate();
+      await editUserProfileApi(values).then(() => {
+        const userinfo = userStore.getUserInfo;
+        userinfo.nickName = values.nickName;
+        userinfo.sex = values.sex;
+        userinfo.profile = values.profile;
+        userStore.setUserInfo(userinfo);
+        createMessage.success('更新成功！');
+      });
+    } finally {
+      /* empty */
+    }
+  }
 </script>
 
 <style lang="less" scoped>

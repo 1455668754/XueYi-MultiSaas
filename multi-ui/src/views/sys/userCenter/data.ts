@@ -2,7 +2,7 @@ import { FormSchema } from '/@/components/Form';
 import { dicDictList } from '@/api/sys/dict.api';
 import { SexEnum } from '@/enums/system/organize';
 
-export interface ListItem {
+export interface ListItemIM {
   key: string;
   code: string;
   title: string;
@@ -93,7 +93,7 @@ export const baseSettingSchemas: FormSchema[] = [
 ];
 
 /** 表单数据 - 安全设置 */
-export const secureSettingList: ListItem[] = [
+export const secureSettingList: ListItemIM[] = [
   {
     key: '1',
     code: SecureEnum.USER_NAME,
@@ -121,7 +121,7 @@ export const secureSettingList: ListItem[] = [
 ];
 
 /** 表单数据 - 账号绑定 */
-export const accountBindList: ListItem[] = [
+export const accountBindList: ListItemIM[] = [
   {
     key: '1',
     code: 'word',
@@ -152,7 +152,7 @@ export const accountBindList: ListItem[] = [
 ];
 
 /** 表单数据 - 新消息通知 */
-export const msgNotifyList: ListItem[] = [
+export const msgNotifyList: ListItemIM[] = [
   {
     key: '1',
     code: 'word',

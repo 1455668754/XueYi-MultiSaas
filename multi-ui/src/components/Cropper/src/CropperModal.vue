@@ -121,13 +121,12 @@
   import { dataURLtoBlob } from '/@/utils/file/base64Conver';
   import { isFunction } from '/@/utils/is';
   import { useI18n } from '/@/hooks/web/useI18n';
-
-  type apiFunParams = { file: Blob; name: string; filename: string };
+  import { UploadFileParams } from '#/axios';
 
   const props = {
     circled: { type: Boolean, default: true },
     uploadApi: {
-      type: Function as PropType<(params: apiFunParams) => Promise<any>>,
+      type: Function as PropType<(params: UploadFileParams) => Promise<any>>,
     },
     src: { type: String },
     size: { type: Number },
@@ -192,7 +191,7 @@
           try {
             setModalProps({ confirmLoading: true });
             const result = await uploadApi({ name: 'file', file: blob, filename });
-            emit('uploadSuccess', { source: previewSource.value, data: result.url });
+            emit('uploadSuccess', { source: previewSource.value, data: result?.data?.url });
             closeModal();
           } finally {
             setModalProps({ confirmLoading: false });
@@ -252,7 +251,9 @@
           transparent 75%,
           rgb(0 0 0 / 25%) 0
         );
-      background-position: 0 0, 12px 12px;
+      background-position:
+        0 0,
+        12px 12px;
       background-size: 24px 24px;
     }
 

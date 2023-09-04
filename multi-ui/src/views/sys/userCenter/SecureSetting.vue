@@ -2,7 +2,7 @@
   <div>
     <CollapseContainer title="安全设置" :canExpan="false">
       <List>
-        <template v-for="item in list" :key="item.key">
+        <template v-for="item in secureSettingList" :key="item.key">
           <ListItem>
             <ListItemMeta>
               <template #title>
@@ -25,79 +25,60 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
   import { List } from 'ant-design-vue';
-  import { computed, defineComponent } from 'vue';
+  import { computed } from 'vue';
   import { CollapseContainer } from '/@/components/Container';
-  import { ListItem, SecureEnum, secureSettingList } from './data';
+  import { ListItemIM, SecureEnum, secureSettingList } from './data';
   import { useUserStore } from '/@/store/modules/user';
   import { useModal } from '/@/components/Modal';
   import SecureSettingModal from './SecureSettingModal.vue';
   import { isEmpty } from '/@/utils/is';
 
-  export default defineComponent({
-    name: 'SecureSetting',
-    components: {
-      SecureSettingModal,
-      CollapseContainer,
-      List,
-      ListItem: List.Item,
-      ListItemMeta: List.Item.Meta,
-    },
-    setup() {
-      const userStore = useUserStore();
+  const ListItem = List.Item;
+  const ListItemMeta = List.Item.Meta;
 
-      const [setRegisterModal, { openModal: setOpenModal }] = useModal();
+  const userStore = useUserStore();
 
-      const userName = computed(() => {
-        const { userName } = userStore.getUserInfo;
-        return userName;
-      });
+  const [setRegisterModal, { openModal: setOpenModal }] = useModal();
 
-      const phone = computed(() => {
-        const { phone } = userStore.getUserInfo;
-        return phone.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2');
-      });
-
-      const email = computed(() => {
-        const { email } = userStore.getUserInfo;
-        return email;
-      });
-
-      /** 显示 */
-      function getDescription(record: ListItem) {
-        switch (record.code) {
-          case SecureEnum.USER_NAME:
-            return '当前账户账号：' + userName.value;
-          case SecureEnum.PASSWORD:
-            return '当前密码强度：强';
-          case SecureEnum.PHONE:
-            return isEmpty(phone.value) ? '未绑定' : '已绑定手机：' + phone.value;
-          case SecureEnum.EMAIL:
-            return isEmpty(email.value) ? '未绑定' : '已绑定邮箱：' + email.value;
-          default:
-            return '';
-        }
-      }
-
-      /** 修改按钮 */
-      function handleEdit(record: ListItem) {
-        setOpenModal(true, {
-          record,
-        });
-      }
-
-      return {
-        list: secureSettingList,
-        userName,
-        phone,
-        email,
-        getDescription,
-        handleEdit,
-        setRegisterModal,
-      };
-    },
+  const userName = computed(() => {
+    const { userName } = userStore.getUserInfo;
+    return userName;
   });
+
+  const phone = computed(() => {
+    const { phone } = userStore.getUserInfo;
+    return phone.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2');
+  });
+
+  const email = computed(() => {
+    const { email } = userStore.getUserInfo;
+    return email;
+  });
+
+  /** 显示 */
+  function getDescription(record: ListItemIM) {
+    switch (record.code) {
+      case SecureEnum.USER_NAME:
+        return '当前账户账号：' + userName.value;
+      case SecureEnum.PASSWORD:
+        return '当前密码强度：强';
+      case SecureEnum.PHONE:
+        return isEmpty(phone.value) ? '未绑定' : '已绑定手机：' + phone.value;
+      case SecureEnum.EMAIL:
+        return isEmpty(email.value) ? '未绑定' : '已绑定邮箱：' + email.value;
+      default:
+        return '';
+    }
+  }
+
+  /** 修改按钮 */
+  function handleEdit(record: ListItemIM) {
+    setOpenModal(true, {
+      record,
+    });
+  }
 </script>
 
 <style lang="less" scoped>
