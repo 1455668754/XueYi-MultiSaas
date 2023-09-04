@@ -1,4 +1,9 @@
-import { defineAsyncComponent } from 'vue';
+import {
+  AsyncComponentLoader,
+  Component,
+  ComponentPublicInstance,
+  defineAsyncComponent,
+} from 'vue';
 import { Spin } from 'ant-design-vue';
 import { noop } from '/@/utils';
 
@@ -24,7 +29,11 @@ interface Options {
   retry?: boolean;
 }
 
-export function createAsyncComponent(loader: Fn, options: Options = {}) {
+export function createAsyncComponent<
+  T extends Component = {
+    new (): ComponentPublicInstance;
+  },
+>(loader: AsyncComponentLoader<T>, options: Options = {}) {
   const { size = 'small', delay = 100, timeout = 30000, loading = false, retry = true } = options;
   return defineAsyncComponent({
     loader,
