@@ -48,7 +48,7 @@ public abstract class BaseHandleController<Q extends BaseEntity, D extends BaseE
     }
 
     /**
-     * 前置校验 （强制）删除
+     * 前置校验 删除
      * 必须满足内容
      *
      * @param operate 操作类型

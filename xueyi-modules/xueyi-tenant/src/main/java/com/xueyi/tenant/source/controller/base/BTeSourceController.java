@@ -30,7 +30,7 @@ public class BTeSourceController extends BaseController<TeSourceQuery, TeSourceD
     }
 
     /**
-     * 前置校验 （强制）增加/修改
+     * 前置校验 增加/修改
      */
     @Override
     protected void AEHandle(BaseConstants.Operate operate, TeSourceDto source) {
@@ -41,7 +41,7 @@ public class BTeSourceController extends BaseController<TeSourceQuery, TeSourceD
     }
 
     /**
-     * 前置校验 （强制）删除
+     * 前置校验 删除
      */
     @Override
     protected void RHandle(BaseConstants.Operate operate, List<Long> idList) {

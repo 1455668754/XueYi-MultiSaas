@@ -42,7 +42,7 @@ public class BGenController extends BaseController<GenTableQuery, GenTableDto, I
     }
 
     /**
-     * 前置校验 （强制）增加/修改
+     * 前置校验 增加/修改
      */
     @Override
     protected void AEHandle(BaseConstants.Operate operate, GenTableDto table) {

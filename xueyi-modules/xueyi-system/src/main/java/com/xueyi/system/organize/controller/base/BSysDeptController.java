@@ -21,7 +21,7 @@ public class BSysDeptController extends TreeController<SysDeptQuery, SysDeptDto,
     }
 
     /**
-     * 前置校验 （强制）增加/修改
+     * 前置校验 增加/修改
      */
     @Override
     protected void AEHandle(BaseConstants.Operate operate, SysDeptDto dept) {
