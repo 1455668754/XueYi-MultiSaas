@@ -3,7 +3,6 @@ package com.xueyi.job.util;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.LocalDateTimeUtil;
 import com.xueyi.common.core.constant.basic.DictConstants;
-import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.job.ScheduleConstants;
 import com.xueyi.common.core.utils.ExceptionUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
@@ -93,7 +92,7 @@ public abstract class AbstractQuartzJob implements Job {
         String sourceNameStr = StrUtil.trimToEmpty(methodParams[2]);
         String sourceName = StrUtil.sub(sourceNameStr, 1, sourceNameStr.length() - 1);
         // 写入数据库当中
-        SpringUtil.getBean(RemoteJobLogService.class).saveJobLog(jobLog, enterpriseId, isLessor, sourceName, SecurityConstants.INNER);
+        SpringUtil.getBean(RemoteJobLogService.class).saveJobLog(jobLog, enterpriseId, isLessor, sourceName);
     }
 
     /**

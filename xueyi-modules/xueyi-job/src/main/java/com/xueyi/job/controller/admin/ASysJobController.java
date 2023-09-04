@@ -1,21 +1,14 @@
-package com.xueyi.job.controller;
+package com.xueyi.job.controller.admin;
 
-import com.xueyi.common.core.constant.basic.BaseConstants;
-import com.xueyi.common.core.constant.basic.HttpConstants;
-import com.xueyi.common.core.constant.job.ScheduleConstants;
-import com.xueyi.common.core.utils.core.CollUtil;
-import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
-import com.xueyi.common.web.entity.controller.BaseController;
+import com.xueyi.common.security.annotation.AdminAuth;
 import com.xueyi.job.api.domain.dto.SysJobDto;
 import com.xueyi.job.api.domain.query.SysJobQuery;
-import com.xueyi.job.api.utils.CronUtils;
-import com.xueyi.job.service.ISysJobService;
-import com.xueyi.job.util.ScheduleUtil;
+import com.xueyi.job.controller.base.BSysJobController;
 import org.quartz.SchedulerException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -32,18 +25,14 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 调度任务管理 业务处理
+ * 定时任务 | 调度任务管理 | 管理端 业务处理
  *
  * @author xueyi
  */
+@AdminAuth
 @RestController
-@RequestMapping("/job")
-public class SysJobController extends BaseController<SysJobQuery, SysJobDto, ISysJobService> {
-
-    /** 定义节点名称 */
-    protected String getNodeName() {
-        return "调度任务";
-    }
+@RequestMapping("/admin/job")
+public class ASysJobController extends BSysJobController {
 
     /**
      * 查询定时任务列表
@@ -111,30 +100,11 @@ public class SysJobController extends BaseController<SysJobQuery, SysJobDto, ISy
     /**
      * 调度任务批量删除
      */
+    @Override
     @DeleteMapping("/batch/{idList}")
     @PreAuthorize("@ss.hasAuthority(@Auth.SCHEDULE_JOB_DEL)")
     @Log(title = "调度任务管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
-        if (CollUtil.isEmpty(idList))
-            warn(StrUtil.format("无待删除{}！", getNodeName()));
-        return toAjax(baseService.deleteByIds(idList));
-    }
-
-    /**
-     * 前置校验 （强制）增加/修改
-     */
-    protected void AEHandle(BaseConstants.Operate operate, SysJobDto job) {
-        if (!CronUtils.isValid(job.getCronExpression()))
-            warn(StrUtil.format("{}{}{}失败，Cron表达式不正确", operate.getInfo(), getNodeName(), job.getName()));
-        else if (StrUtil.containsIgnoreCase(job.getInvokeTarget(), HttpConstants.Type.LOOKUP_RMI.getCode()))
-            warn(StrUtil.format("{}{}{}失败，目标字符串不允许'rmi'调用", operate.getInfo(), getNodeName(), job.getName()));
-        else if (StrUtil.containsAnyIgnoreCase(job.getInvokeTarget(), new String[]{HttpConstants.Type.LOOKUP_LDAP.getCode(), HttpConstants.Type.LOOKUP_LDAPS.getCode()}))
-            warn(StrUtil.format("{}{}{}失败，目标字符串不允许'ldap(s)'调用", operate.getInfo(), getNodeName(), job.getName()));
-        else if (StrUtil.containsAnyIgnoreCase(job.getInvokeTarget(), new String[]{HttpConstants.Type.HTTP.getCode(), HttpConstants.Type.HTTPS.getCode()}))
-            warn(StrUtil.format("{}{}{}失败，目标字符串不允许'http(s)'调用", operate.getInfo(), getNodeName(), job.getName()));
-        else if (StrUtil.containsAnyIgnoreCase(job.getInvokeTarget(), ScheduleConstants.JOB_ERROR_STR))
-            warn(StrUtil.format("{}{}{}失败，目标字符串存在违规", operate.getInfo(), getNodeName(), job.getName()));
-        else if (!ScheduleUtil.whiteList(job.getInvokeTarget()))
-            warn(StrUtil.format("{}{}{}失败，目标字符串不在白名单内", operate.getInfo(), getNodeName(), job.getName()));
+        return super.batchRemove(idList);
     }
 }

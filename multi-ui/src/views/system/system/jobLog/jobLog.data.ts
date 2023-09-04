@@ -5,7 +5,6 @@ import { dicDictList } from '@/api/sys/dict.api';
 import { dictConversion } from '/@/utils/xueyi';
 import { JobLogIM } from '@/model/system/system';
 import { listJobApi } from '@/api/system/system/job.api';
-import { DicStatusEnum } from '@/enums';
 
 /** 字典查询 */
 export const dictMap = await dicDictList(['sys_job_group', 'sys_message_status']);
@@ -66,7 +65,6 @@ export const searchFormSchema: FormSchema[] = [
     component: 'ApiSelect',
     componentProps: {
       api: listJobApi,
-      params: { status: DicStatusEnum.NORMAL },
       showSearch: true,
       optionFilterProp: 'label',
       resultField: 'items',

@@ -15,8 +15,8 @@
   import { formSchema } from './job.data';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { addJobApi, editJobApi, getJobApi } from '@/api/system/system/job.api';
-  import { useModalInner } from '/@/components/Modal';
-  import { useForm } from '/@/components/Form';
+  import { BasicForm, useForm } from '/@/components/Form';
+  import { BasicModal, useModalInner } from '/@/components/Modal';
 
   const emit = defineEmits(['success', 'register']);
   const { createMessage } = useMessage();

@@ -2,13 +2,13 @@ import { JobIM, JobLRM, JobPPM } from '@/model/system/system';
 import { defHttp } from '/@/utils/http/axios';
 
 enum Api {
-  LIST_JOB = '/schedule/job/list',
-  GET_JOB = '/schedule/job/',
-  ADD_JOB = '/schedule/job',
-  EDIT_JOB = '/schedule/job',
-  RUN_JOB = '/schedule/job/run/',
-  EDIT_STATUS_JOB = '/schedule/job/status',
-  DEL_BATCH_JOB = '/schedule/job/batch/',
+  LIST_JOB = '/schedule/admin/job/list',
+  GET_JOB = '/schedule/admin/job/',
+  ADD_JOB = '/schedule/admin/job',
+  EDIT_JOB = '/schedule/admin/job',
+  RUN_JOB = '/schedule/admin/job/run/',
+  EDIT_STATUS_JOB = '/schedule/admin/job/status',
+  DEL_BATCH_JOB = '/schedule/admin/job/batch/',
 }
 
 /** 查询调度任务列表 */

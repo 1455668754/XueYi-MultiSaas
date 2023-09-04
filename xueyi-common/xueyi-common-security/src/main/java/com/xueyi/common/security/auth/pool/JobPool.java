@@ -7,17 +7,17 @@ package com.xueyi.common.security.auth.pool;
  */
 public interface JobPool {
 
-    /** 定时任务 - 调度任务管理 - 列表 */
+    /** 定时任务 | 调度任务管理 | 列表 */
     String SCHEDULE_JOB_LIST = "schedule:job:list";
-    /** 定时任务 - 调度任务管理 - 详情 */
+    /** 定时任务 | 调度任务管理 | 详情 */
     String SCHEDULE_JOB_SINGLE = "schedule:job:single";
-    /** 定时任务 - 调度任务管理 - 新增 */
+    /** 定时任务 | 调度任务管理 | 新增 */
     String SCHEDULE_JOB_ADD = "schedule:job:add";
-    /** 定时任务 - 调度任务管理 - 修改 */
+    /** 定时任务 | 调度任务管理 | 修改 */
     String SCHEDULE_JOB_EDIT = "schedule:job:edit";
-    /** 定时任务 - 调度任务管理 - 修改状态 */
+    /** 定时任务 | 调度任务管理 | 修改状态 */
     String SCHEDULE_JOB_ES = "schedule:job:es";
-    /** 定时任务 - 调度任务管理 - 删除 */
+    /** 定时任务 | 调度任务管理 | 删除 */
     String SCHEDULE_JOB_DEL = "schedule:job:delete";
 
 }

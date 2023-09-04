@@ -2,9 +2,9 @@ import { JobLogIM, JobLogLRM, JobLogPPM } from '@/model/system/system';
 import { defHttp } from '/@/utils/http/axios';
 
 enum Api {
-  LIST_LOG = '/schedule/job/log/list',
-  GET_JOB_LOG = '/schedule/job/log/',
-  CLEAN_LOG = '/schedule/job/log/clean',
+  LIST_LOG = '/schedule/admin/job/log/list',
+  GET_JOB_LOG = '/schedule/admin/job/log/',
+  CLEAN_LOG = '/schedule/admin/job/log/clean',
 }
 
 /** 查询调度日志列表 */

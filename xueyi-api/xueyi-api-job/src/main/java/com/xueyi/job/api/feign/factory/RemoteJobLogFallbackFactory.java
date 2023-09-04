@@ -21,8 +21,8 @@ public class RemoteJobLogFallbackFactory implements FallbackFactory<RemoteJobLog
         log.error("调度日志服务调用失败:{}", throwable.getMessage());
         return new RemoteJobLogService() {
             @Override
-            public R<Boolean> saveJobLog(SysJobLogDto jobLog, Long enterpriseId, String isLessor, String sourceName, String source) {
-                return null;
+            public R<Boolean> saveJobLog(SysJobLogDto jobLog, Long enterpriseId, String isLessor, String sourceName) {
+                return R.fail("调度日志保存失败");
             }
         };
     }
