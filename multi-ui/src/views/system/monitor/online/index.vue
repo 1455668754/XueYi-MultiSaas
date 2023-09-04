@@ -100,8 +100,4 @@
       });
     }
   }
-
-  function handleSuccess() {
-    reload();
-  }
 </script>

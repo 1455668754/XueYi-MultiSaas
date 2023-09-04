@@ -134,17 +134,20 @@ public class MRouteUtils {
         }
         meta.setIgnoreKeepAlive(StrUtil.equals(DictConstants.DicYesNo.YES.getCode(), menu.getIsCache()));
         meta.setAffix(StrUtil.equals(DictConstants.DicYesNo.YES.getCode(), menu.getIsAffix()));
-        if (menu.isEmbedded())
+        if (menu.isEmbedded()) {
             meta.setFrameSrc(menu.getFrameSrc());
+        }
         meta.setTransitionName(menu.getTransitionName());
         meta.setHideBreadcrumb(StrUtil.equals(DictConstants.DicShowHide.HIDE.getCode(), menu.getHideBreadcrumb()));
-        if (StrUtil.isNotEmpty(menu.getParamPath()))
+        if (StrUtil.isNotEmpty(menu.getParamPath())) {
             meta.setCarryParam(true);
+        }
         meta.setHideTab(StrUtil.equals(DictConstants.DicShowHide.HIDE.getCode(), menu.getHideTab()));
         meta.setHideMenu(StrUtil.equals(DictConstants.DicShowHide.HIDE.getCode(), menu.getHideMenu()));
         meta.setHideChildrenInMenu(StrUtil.equals(DictConstants.DicShowHide.HIDE.getCode(), menu.getHideChildren()));
-        if (menu.isExternalLinks())
+        if (menu.isExternalLinks()) {
             meta.setIsLink(true);
+        }
         meta.setOrderNo(menu.getSort());
         meta.setIgnoreRoute(StrUtil.equals(DictConstants.DicYesNo.YES.getCode(), menu.getIgnoreRoute()));
         meta.setHidePathForChildren(StrUtil.equals(DictConstants.DicShowHide.HIDE.getCode(), menu.getHidePathForChildren()));
@@ -159,11 +162,13 @@ public class MRouteUtils {
      */
     private static String getRouterPath(SysMenuDto menu) {
         // 外链方式
-        if (StrUtil.equals(AuthorityConstants.FrameType.EXTERNAL_LINKS.getCode(), menu.getFrameType()))
+        if (StrUtil.equals(AuthorityConstants.FrameType.EXTERNAL_LINKS.getCode(), menu.getFrameType())) {
             return menu.getFrameSrc();
+        }
         // 一级目录
-        if (ObjectUtil.equals(AuthorityConstants.MENU_TOP_NODE, menu.getParentId()))
+        else if (ObjectUtil.equals(AuthorityConstants.MENU_TOP_NODE, menu.getParentId())) {
             return StrUtil.SLASH + menu.getPath();
+        }
         return menu.getPath();
     }
 
@@ -186,7 +191,7 @@ public class MRouteUtils {
     private enum ComponentType {
 
         LAYOUT("LAYOUT"),
-        IFRAME("IFrame");
+        IFRAME("IFRAME");
 
         private final String code;
 

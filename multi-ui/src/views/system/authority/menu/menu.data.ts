@@ -11,7 +11,7 @@ import {
   DicStatusEnum,
   DicYesNoEnum,
 } from '@/enums/basic';
-import { MenuIM, ModuleIM } from '@/model/system/authority';
+import { MenuIM } from '@/model/system/authority';
 import { listModuleApi } from '@/api/system/authority/module.api';
 import { getMenuRouteListApi } from '@/api/system/authority/menu.api';
 import { COMMON_MENU, COMMON_MODULE, FrameTypeEnum, MenuTypeEnum } from '@/enums/system/authority';
@@ -122,7 +122,7 @@ export const columns: BasicColumn[] = [
   {
     title: '菜单图标',
     dataIndex: 'icon',
-    width: 220,
+    width: 100,
     customRender: ({ record }) => {
       const data = record as MenuIM;
       return h(Icon, { icon: data.icon });
@@ -131,39 +131,39 @@ export const columns: BasicColumn[] = [
   {
     title: '显示顺序',
     dataIndex: 'sort',
-    width: 220,
+    width: 100,
   },
   {
     title: '菜单类型',
     dataIndex: 'menuType',
-    width: 220,
+    width: 120,
     customRender: ({ record }) => {
       const data = record as MenuIM;
       return dictConversion(dict.DicAuthMenuTypeOptions, data.menuType);
     },
   },
   {
-    title: '权限标识',
-    dataIndex: 'perms',
-    width: 220,
-    customRender: ({ record }) => {
-      const data = record as MenuIM;
-      return !data.perms ? data.perms : h(Tag, { color: ColorEnum.ORANGE }, () => data.perms);
-    },
-  },
-  {
     title: '状态',
     dataIndex: 'status',
-    width: 220,
+    width: 120,
     customRender: ({ record }) => {
       const data = record as MenuIM;
       return dictConversion(dict.DicNormalDisableOptions, data.status);
     },
   },
   {
+    title: '归属模块',
+    dataIndex: 'enterpriseInfo.nick',
+    width: 220,
+    customRender: ({ record }) => {
+      const data = record as MenuIM;
+      return h(Tag, { color: ColorEnum.GREEN }, () => data?.module?.name);
+    },
+  },
+  {
     title: '公共菜单',
     dataIndex: 'isCommon',
-    width: 220,
+    width: 120,
     customRender: ({ record }) => {
       const data = record as MenuIM;
       return dictConversion(dict.DicCommonPrivateOptions, data.isCommon);
@@ -172,12 +172,12 @@ export const columns: BasicColumn[] = [
   {
     title: '归属企业',
     dataIndex: 'enterpriseInfo.nick',
-    width: 120,
+    width: 220,
     customRender: ({ record }) => {
-      const data = record as ModuleIM;
+      const data = record as MenuIM;
       return data.isCommon === DicCommonPrivateEnum.PRIVATE
-        ? data?.enterpriseInfo?.nick || '-'
-        : '公共';
+        ? h(Tag, { color: ColorEnum.ORANGE }, () => data?.enterpriseInfo?.nick || '-')
+        : h(Tag, { color: ColorEnum.BLUE }, () => '公共');
     },
   },
 ];

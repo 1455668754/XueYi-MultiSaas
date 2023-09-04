@@ -3,6 +3,7 @@ import { BasicColumn } from '/@/components/Table';
 import { DescItem } from '/@/components/Description';
 import { dicDictList } from '@/api/sys/dict.api';
 import {
+  ColorEnum,
   COMMON_TENANT_ID,
   DicCodeEnum,
   DicSortEnum,
@@ -14,6 +15,8 @@ import { dictConversion } from '/@/utils/xueyi';
 import { DicCacheTypeEnum, DicCodeDictEnum, DicDataTypeEnum } from '@/enums/system/dict';
 import { isNotEmpty } from '@/utils/is';
 import { listTenantApi } from '@/api/tenant/tenant/tenant.api';
+import { h } from 'vue';
+import { Tag } from 'ant-design-vue';
 
 /** 字典查询 */
 export const dictMap = await dicDictList([
@@ -49,7 +52,7 @@ export const columns: BasicColumn[] = [
   {
     title: '数据类型',
     dataIndex: 'dataType',
-    width: 120,
+    width: 100,
     customRender: ({ record }) => {
       const data = record as ConfigIM;
       return dictConversion(dict.DicDictDataTypeOptions, data?.dataType);
@@ -58,7 +61,7 @@ export const columns: BasicColumn[] = [
   {
     title: '缓存类型',
     dataIndex: 'cacheType',
-    width: 120,
+    width: 100,
     customRender: ({ record }) => {
       const data = record as ConfigIM;
       return dictConversion(dict.DicDictCacheTypeOptions, data?.cacheType);
@@ -67,12 +70,16 @@ export const columns: BasicColumn[] = [
   {
     title: '租户',
     dataIndex: 'enterpriseInfo.nick',
-    width: 120,
+    width: 140,
     customRender: ({ record }) => {
       const data = record as ConfigIM;
       return data.cacheType === DicCacheTypeEnum.TENANT
-        ? data?.enterpriseInfo?.nick || '通用'
-        : '公共';
+        ? h(
+            Tag,
+            { color: data?.enterpriseInfo?.nick ? ColorEnum.PURPLE : ColorEnum.ORANGE },
+            () => data?.enterpriseInfo?.nick || '通用',
+          )
+        : h(Tag, { color: ColorEnum.BLUE }, () => '公共');
     },
   },
   {

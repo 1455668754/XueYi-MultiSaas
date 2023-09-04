@@ -2,13 +2,21 @@ import { FormSchema } from '/@/components/Form';
 import { BasicColumn } from '/@/components/Table';
 import { DescItem } from '/@/components/Description';
 import { dicDictList } from '@/api/sys/dict.api';
-import { DicCommonPrivateEnum, DicShowHideEnum, DicSortEnum, DicStatusEnum } from '@/enums/basic';
+import {
+  ColorEnum,
+  DicCommonPrivateEnum,
+  DicShowHideEnum,
+  DicSortEnum,
+  DicStatusEnum,
+} from '@/enums/basic';
 import { ModuleIM } from '@/model/system/authority';
 import { useUserStore } from '/@/store/modules/user';
 import { FrameTypeEnum } from '@/enums/system/authority';
 import { dictConversion } from '/@/utils/xueyi';
 import { isNotEmpty } from '@/utils/is';
 import { listTenantApi } from '@/api/tenant/tenant/tenant.api';
+import { h } from 'vue';
+import { Tag } from 'ant-design-vue';
 
 /** 字典查询 */
 export const dictMap = await dicDictList([
@@ -82,8 +90,8 @@ export const columns: BasicColumn[] = [
     customRender: ({ record }) => {
       const data = record as ModuleIM;
       return data.isCommon === DicCommonPrivateEnum.PRIVATE
-        ? data?.enterpriseInfo?.nick || '-'
-        : '公共';
+        ? h(Tag, { color: ColorEnum.ORANGE }, () => data?.enterpriseInfo?.nick || '-')
+        : h(Tag, { color: ColorEnum.BLUE }, () => '公共');
     },
   },
 ];
