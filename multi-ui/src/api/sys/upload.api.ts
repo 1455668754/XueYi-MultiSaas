@@ -7,7 +7,7 @@ import { AxiosProgressEvent } from 'axios';
 const { uploadUrl = '' } = useGlobSetting();
 
 enum Api {
-  UPLOAD_FILE = '/file/upload',
+  UPLOAD_FILE = '/file/admin/upload',
 }
 
 /** 文件上传 */
