@@ -5,6 +5,7 @@ import com.xueyi.common.core.context.SecurityContextHolder;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.annotation.TenantIgnore;
+import com.xueyi.common.web.config.properties.TenantProperties;
 import com.xueyi.common.web.handler.basic.BasicLineHandler;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.LongValue;
@@ -71,7 +72,9 @@ public class TenantLineHandler implements BasicLineHandler {
      */
     @Override
     public boolean ignoreTable(String tableName) {
-        if (isTenantTable(tableName)) {
+        if (ObjectUtil.equals(Boolean.TRUE, TenantProperties.getIgnoreTenant())) {
+            return Boolean.TRUE;
+        } else if (isTenantTable(tableName)) {
             if (SecurityContextHolder.getTenantIgnore()) {
                 return Boolean.TRUE;
             } else {

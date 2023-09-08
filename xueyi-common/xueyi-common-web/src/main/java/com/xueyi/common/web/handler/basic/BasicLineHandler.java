@@ -87,7 +87,7 @@ public interface BasicLineHandler {
      * @return 结果
      */
     default boolean ignoreTable(String tableName) {
-        return isTenantTable(tableName);
+        return ObjectUtil.equals(Boolean.TRUE, TenantProperties.getIgnoreTenant()) || !isTenantTable(tableName);
     }
 
     /**

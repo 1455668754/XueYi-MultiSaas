@@ -151,8 +151,9 @@ public class SecurityUtils {
     public static String getToken(HttpServletRequest request) {
         // 从header获取token标识 | 优先识别补充Token
         String token = request.getHeader(TokenConstants.SUPPLY_AUTHORIZATION);
-        if (StrUtil.isBlank(token))
+        if (StrUtil.isBlank(token)) {
             token = request.getHeader(TokenConstants.AUTHENTICATION);
+        }
         return replaceTokenPrefix(token);
     }
 
@@ -189,8 +190,9 @@ public class SecurityUtils {
         Optional<ITokenService> optional = tokenServiceMap.values().stream()
                 .filter(service -> service.support(accountType))
                 .max(Comparator.comparingInt(Ordered::getOrder));
-        if (optional.isEmpty())
+        if (optional.isEmpty()) {
             throw new NullPointerException("tokenService error , non-existent");
+        }
         return optional.get();
     }
 
@@ -202,10 +204,12 @@ public class SecurityUtils {
     public static boolean hasLogin() {
         try {
             String accountType = getAccountTypeStr();
-            if (StrUtil.isBlank(accountType))
+            if (StrUtil.isBlank(accountType)) {
                 accountType = ServletUtil.getHeader(Objects.requireNonNull(ServletUtil.getRequest()), SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode());
-            if (StrUtil.isBlank(accountType))
+            }
+            if (StrUtil.isBlank(accountType)) {
                 return false;
+            }
             return getTokenService(accountType).hasLogin();
         } catch (Exception e) {
             return false;

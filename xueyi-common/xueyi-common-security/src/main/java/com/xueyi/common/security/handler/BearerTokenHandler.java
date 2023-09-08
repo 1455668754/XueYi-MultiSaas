@@ -47,12 +47,13 @@ public class BearerTokenHandler implements BearerTokenResolver {
         AtomicBoolean match = new AtomicBoolean(urlProperties.getRoutine().stream().anyMatch(url ->
                 pathMatcher.match(url, request.getRequestURI())));
 
-        if (!match.get())
+        if (!match.get()) {
             Optional.ofNullable(urlProperties.getCustom().get(RequestMethod.valueOf(request.getMethod())))
                     .ifPresent(list -> match.set(list.stream().anyMatch(url -> pathMatcher.match(url, request.getRequestURI()))));
-
-        if (match.get())
+        }
+        if (match.get()) {
             return null;
+        }
 
         final String authorizationHeaderToken = resolveFromAuthorizationHeader(request);
         final String parameterToken = isParameterTokenSupportedForRequest(request) ? resolveFromRequestParameters(request) : null;
@@ -105,5 +106,4 @@ public class BearerTokenHandler implements BearerTokenResolver {
                 && MediaType.APPLICATION_FORM_URLENCODED_VALUE.equals(request.getContentType()))
                 || (this.allowUriQueryParameter && "GET".equals(request.getMethod())));
     }
-
 }

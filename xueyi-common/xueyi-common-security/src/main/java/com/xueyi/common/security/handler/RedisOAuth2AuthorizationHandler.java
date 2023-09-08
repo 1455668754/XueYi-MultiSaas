@@ -95,7 +95,7 @@ public class RedisOAuth2AuthorizationHandler implements OAuth2AuthorizationServi
     public OAuth2Authorization findByToken(String token, @Nullable OAuth2TokenType tokenType) {
         Assert.hasText(token, "token cannot be empty");
         Assert.notNull(tokenType, "tokenType cannot be empty");
-        return redisService.getJavaCacheObject(token);
+        return ObjectUtil.equals(OAuth2TokenType.ACCESS_TOKEN, tokenType) ? redisService.getJavaCacheObject(token) : ObjectUtil.equals(OAuth2TokenType.REFRESH_TOKEN, tokenType) ?  redisService.getCacheObject(token) : null;
     }
 
     private static boolean isState(OAuth2Authorization authorization) {
