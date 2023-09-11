@@ -127,26 +127,4 @@ public class CorrelateConstants {
         private final String code;
         private final String info;
     }
-
-    /** 主子关联 - 操作类型限制 */
-    @Getter
-    @AllArgsConstructor
-    public enum SubOperateLimit {
-
-        ONLY_SEL("only select", "仅 查询"),
-        ONLY_LIST_SEL("only list select", "仅 列表查询"),
-        ONLY_SINGLE_SEL("only single select", "仅 单个查询"),
-        EX_SEL("exclude select", "排除 查询"),
-        EX_LIST_SEL("exclude list select", "排除 列表查询"),
-        EX_SINGLE_SEL("exclude single select", "排除 单个查询"),
-        EX_ADD("exclude insert", "排除 新增"),
-        EX_EDIT("exclude update", "排除 修改"),
-        EX_DEL("exclude delete", "排除 删除"),
-        EX_SEL_OR_EDIT("exclude select or update", "排除 查询 and 修改"),
-        EX_ADD_OR_EDIT("exclude insert or update", "排除 新增 and 修改"),
-        ONLY_DEL("exclude select or insert or update", "仅 删除");
-
-        private final String code;
-        private final String info;
-    }
 }
