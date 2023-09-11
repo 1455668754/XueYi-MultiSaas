@@ -4,8 +4,8 @@
     placement="left"
     :class="prefixCls"
     :width="getMenuWidth"
-    :getContainer="null"
-    :visible="!getCollapsed"
+    :getContainer="false"
+    :open="!getCollapsed"
     @close="handleClose"
   >
     <Sider />
