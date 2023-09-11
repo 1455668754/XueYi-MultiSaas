@@ -11,16 +11,7 @@
 
 <script lang="ts">
   import { type Recordable } from '@xueyi/types';
-  import {
-    computed,
-    defineComponent,
-    onMounted,
-    type PropType,
-    ref,
-    unref,
-    watch,
-    watchEffect,
-  } from 'vue';
+  import { computed, defineComponent, onMounted, type PropType, ref, unref, watch } from 'vue';
   import { TreeSelect } from 'ant-design-vue';
   import { isArray, isFunction } from '/@/utils/is';
   import { get } from 'lodash-es';
@@ -60,10 +51,6 @@
         emit('change', ...args);
       }
 
-      watchEffect(() => {
-        props.immediate && fetch();
-      });
-
       watch(
         () => props.params,
         () => {
@@ -85,7 +72,7 @@
 
       async function fetch() {
         const { api } = props;
-        if (!api || !isFunction(api)) return;
+        if (!api || !isFunction(api) || loading.value) return;
         loading.value = true;
         treeData.value = [];
         let result;
