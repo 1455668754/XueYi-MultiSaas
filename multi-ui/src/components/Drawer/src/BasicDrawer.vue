@@ -52,7 +52,7 @@
   import { ScrollContainer } from '/@/components/Container';
   import { basicProps } from './props';
   import { useDesign } from '/@/hooks/web/useDesign';
-  import { useAttrs } from '@vben/hooks';
+  import { useAttrs } from '@xueyi/hooks';
 
   export default defineComponent({
     components: { Drawer, ScrollContainer, DrawerFooter, DrawerHeader },
