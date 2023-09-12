@@ -15,7 +15,6 @@ import com.xueyi.common.core.utils.servlet.ServletUtil;
 import com.xueyi.common.core.web.result.R;
 import com.xueyi.system.api.authority.feign.RemoteAdminLoginService;
 import com.xueyi.system.api.model.LoginUser;
-import com.xueyi.system.api.organize.domain.dto.SysUserDto;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -151,13 +150,8 @@ public class AdminDetailsPasswordProvider implements IUserDetailsService {
             throw new UsernameNotFoundException("企业账号/员工账号/密码错误，请检查！");
         }
         LoginUser loginUser = loginInfoResult.getData();
-        Long enterpriseId = loginUser.getEnterpriseId();
-        String sourceName = loginUser.getSourceName();
-        SysUserDto user = loginUser.getUser();
-        Long userId = user.getId();
-        String userNick = user.getNickName();
         if (BaseConstants.Status.DISABLE.getCode().equals(loginUser.getUser().getStatus())) {
-            logService.recordLoginInfo(sourceName, enterpriseId, enterpriseName, userId, userName, userNick, Constants.LOGIN_FAIL, "用户已停用，请联系管理员");
+            logService.recordLoginInfo(loginUser, Constants.LOGIN_FAIL, "用户已停用，请联系管理员");
             throw new UsernameNotFoundException("对不起，您的账号：" + userName + " 已停用！");
         }
         loginUser.setPassword(SecurityConstants.BCRYPT + loginUser.getPassword());

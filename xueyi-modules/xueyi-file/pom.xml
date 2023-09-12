@@ -41,12 +41,11 @@
             <artifactId>xueyi-api-file</artifactId>
         </dependency>
 
-        <!-- XueYi Api File -->
+        <!-- XueYi Api Security -->
         <dependency>
             <groupId>com.xueyi</groupId>
             <artifactId>xueyi-common-security</artifactId>
         </dependency>
-
 
         <!-- XueYi Common Swagger -->
         <dependency>

@@ -3,7 +3,7 @@ import { h } from 'vue';
 import { Tag } from 'ant-design-vue';
 import { isArray } from './is';
 import { deepMerge } from '@/utils/index';
-import { cloneDeep, includes, isNil } from 'lodash-es';
+import { cloneDeep, includes, isNil, merge } from 'lodash-es';
 
 /** 字典转换 */
 export function dictConvert(dictOptions: DictLM, val: string): string {
@@ -101,6 +101,27 @@ export function sourceAssign(source: any, ...target: any) {
     });
   }
   return res;
+}
+
+/**
+ * 设置对象指定字段值 | 考虑.
+ *
+ * @param info 主数据
+ * @param value 赋值数据
+ * @param field 赋值字段
+ */
+export function sourceAssignField(info: any, field?: string, value?: any) {
+  if (info !== undefined && field !== undefined) {
+    if (field.indexOf('.') !== -1) {
+      const data = field
+        .split('.')
+        .reverse()
+        .reduce((p, c) => ({ [c]: p }), value);
+      merge(info, data);
+    } else {
+      info[field] = value;
+    }
+  }
 }
 
 /**

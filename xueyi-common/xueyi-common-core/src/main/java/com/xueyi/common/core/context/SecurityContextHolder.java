@@ -111,7 +111,6 @@ public class SecurityContextHolder {
         set(SecurityConstants.BaseSecurity.USER_NAME.getCode(), userName);
     }
 
-
     /**
      * 获取用户昵称
      */

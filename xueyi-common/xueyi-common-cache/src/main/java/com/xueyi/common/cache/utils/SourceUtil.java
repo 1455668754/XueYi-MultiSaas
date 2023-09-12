@@ -22,8 +22,9 @@ public class SourceUtil {
      */
     public static SysSource getSourceCache(Long id) {
         TeStrategyDto strategy = getTeStrategyCache(id);
-        if (ObjectUtil.isNull(strategy))
+        if (ObjectUtil.isNull(strategy)) {
             return null;
+        }
         SysSource source = new SysSource();
         source.setId(strategy.getId());
         source.setSourceId(strategy.getSourceId());

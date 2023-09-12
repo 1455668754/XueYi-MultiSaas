@@ -78,6 +78,10 @@ public class AuthFilter implements WebFilter {
         String enterpriseName = JwtUtil.getEnterpriseName(claims);
         String isLessor = JwtUtil.getIsLessor(claims);
         String sourceName = JwtUtil.getSourceName(claims);
+        String userId = JwtUtil.getUserId(claims);
+        String userName = JwtUtil.getUserName(claims);
+        String nickName = JwtUtil.getNickName(claims);
+        String userType = JwtUtil.getUserType(claims);
 
         if (StrUtil.hasBlank(enterpriseId, enterpriseName, isLessor, sourceName)) {
             return unauthorizedResponse(exchange, chain, isWhites, "令牌验证失败");
@@ -85,41 +89,9 @@ public class AuthFilter implements WebFilter {
 
         switch (accountType) {
             case ADMIN -> {
-                String userId = JwtUtil.getUserId(claims);
-                String userName = JwtUtil.getUserName(claims);
-                String nickName = JwtUtil.getNickName(claims);
-                String userType = JwtUtil.getUserType(claims);
-
                 if (StrUtil.hasBlank(userId, userName, userType)) {
                     return unauthorizedResponse(exchange, chain, isWhites, "令牌验证失败");
                 }
-
-                ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.USER_ID.getCode(), userId);
-                ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.USER_NAME.getCode(), userName);
-                ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.NICK_NAME.getCode(), nickName);
-                ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.USER_TYPE.getCode(), userType);
-            }
-            case MEMBER -> {
-                String userId = JwtUtil.getUserId(claims);
-                String userName = JwtUtil.getUserName(claims);
-                String nickName = JwtUtil.getNickName(claims);
-
-                if (StrUtil.hasBlank(userId, userName)) {
-                    return unauthorizedResponse(exchange, chain, isWhites, "令牌验证失败");
-                }
-
-                ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.USER_ID.getCode(), userId);
-                ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.USER_NAME.getCode(), userName);
-                ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.NICK_NAME.getCode(), nickName);
-            }
-            case PLATFORM -> {
-                String appId = JwtUtil.getAppId(claims);
-
-                if (StrUtil.hasBlank(appId)) {
-                    return unauthorizedResponse(exchange, chain, isWhites, "令牌验证失败");
-                }
-
-                ServletUtil.addHeader(mutate, SecurityConstants.PlatformSecurity.APP_ID.getCode(), appId);
             }
             default -> {
                 return unauthorizedResponse(exchange, chain, isWhites, "令牌验证失败");
@@ -135,10 +107,14 @@ public class AuthFilter implements WebFilter {
         ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.ACCESS_TOKEN.getCode(), accessTokenPrefix);
         ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.REFRESH_TOKEN.getCode(), userKey);
         ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.USER_KEY.getCode(), userKey);
+        ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.USER_ID.getCode(), userId);
+        ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.USER_NAME.getCode(), userName);
+        ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.NICK_NAME.getCode(), nickName);
+        ServletUtil.addHeader(mutate, SecurityConstants.BaseSecurity.USER_TYPE.getCode(), userType);
 
         // 内部请求来源参数清除
         ServletUtil.removeHeader(mutate, SecurityConstants.BaseSecurity.FROM_SOURCE.getCode());
-        if(!isWhites)
+        if (!isWhites)
             ServletUtil.removeHeader(mutate, TokenConstants.SUPPLY_AUTHORIZATION);
         return chain.filter(exchange);
     }

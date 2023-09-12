@@ -38,7 +38,7 @@ public class LoginUser extends BaseLoginUser<SysUserDto> {
         setUserType(user.getUserType());
         setPassword(user.getPassword());
     }
-    
+
     /** 初始化权限范围 */
     public DataScope getDataScope() {
         scope.setEnterpriseId(enterpriseId);
@@ -48,7 +48,6 @@ public class LoginUser extends BaseLoginUser<SysUserDto> {
         return scope;
     }
 
-    
     /** 初始化路由路径映射列表 */
     public void initRouteURL() {
         routeURL = null;

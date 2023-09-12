@@ -378,7 +378,7 @@ public class ServletUtil {
      */
     public static void webResponseWriter(HttpServletResponse response, String contentType, Object value) {
         response.setContentType(contentType);
-        response.setCharacterEncoding("utf-8");
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         Writer writer = null;
         try {
             writer = response.getWriter();

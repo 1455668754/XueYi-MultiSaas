@@ -16,6 +16,9 @@ public class SqlConstants {
     /** sql 限制只查一条 */
     public static final String LIMIT_ONE = " limit 1 ";
 
+    /** sql 限制只查n条 */
+    public static final String LIMIT_N = " limit {} ";
+
     /** sql 恒等查询 */
     public static final String ALWAYS_FIND = " 1 = 1 ";
 

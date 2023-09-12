@@ -123,22 +123,22 @@ public class SecurityConstants {
         }
 
         /** 管理端用户 */
+        public boolean isAdmin() {
+            return isAdmin(code);
+        }
+
+        /** 管理端用户 */
         public static boolean isAdmin(String code) {
             return StrUtil.equals(code, ADMIN.code);
         }
 
-        /** 管理端用户 */
-        public boolean isAdmin() {
-            return StrUtil.equals(code, ADMIN.code);
+        /** 会员端用户 */
+        public boolean isMember() {
+            return isMember(code);
         }
 
         /** 会员端用户 */
         public static boolean isMember(String code) {
-            return StrUtil.equals(code, MEMBER.code);
-        }
-
-        /** 会员端用户 */
-        public boolean isMember() {
             return StrUtil.equals(code, MEMBER.code);
         }
     }
@@ -191,17 +191,17 @@ public class SecurityConstants {
     @Getter
     @AllArgsConstructor
     public enum BaseSecurity {
-        AUTHORIZATION_HEADER("authorization", "授权信息"),
+        AUTHORIZATION_HEADER(SecurityConstants.AUTHORIZATION_HEADER, "授权信息"),
         SUPPLY_AUTHORIZATION_HEADER("supply-authorization", "补充授权信息"),
         CLIENT_ID("clientId", "客户端ID"),
-        FROM_SOURCE("from-source", "请求来源"),
+        FROM_SOURCE(SecurityConstants.FROM_SOURCE, "请求来源"),
         ALLOW_LIST("allow-list", "白名单标识"),
         BLOCK_LIST("block-list", "黑名单标识"),
         TOKEN("token", "用户唯一标识"),
         ACCESS_TOKEN("access_token", "用户唯一标识 - 访问令牌"),
         REFRESH_TOKEN("refresh_token", "用户唯一标识 - 刷新令牌"),
         ENTERPRISE("enterprise", "企业信息"),
-        ENTERPRISE_ID("enterprise_id", "企业Id"),
+        ENTERPRISE_ID(SecurityConstants.ENTERPRISE_ID, "企业Id"),
         LAST_ENTERPRISE_ID("last_enterprise_id", "上一次变更企业Id"),
         ENTERPRISE_NAME("enterprise_name", "企业账号"),
         PASSWORD("password", "用户密码"),
@@ -209,11 +209,11 @@ public class SecurityConstants {
         USER_ID("user_id", "用户Id"),
         USER_NAME("user_name", "用户账号"),
         NICK_NAME("nick_name", "用户昵称"),
-        IS_LESSOR("is_lessor", "企业类型"),
+        IS_LESSOR(SecurityConstants.IS_LESSOR, "企业类型"),
         USER_TYPE("user_type", "用户类型"),
         USER_KEY("user_key", "用户标识"),
         SOURCE("source", "租户策略源"),
-        SOURCE_NAME("source_name", "租户策略源名称"),
+        SOURCE_NAME(SecurityConstants.SOURCE_NAME, "租户策略源名称"),
         LAST_SOURCE_NAME("last_source_name", "上一次租户策略源名称"),
         USER_INFO("user_info", "登录用户"),
         ACCOUNT_TYPE("account_type", "账户类型"),

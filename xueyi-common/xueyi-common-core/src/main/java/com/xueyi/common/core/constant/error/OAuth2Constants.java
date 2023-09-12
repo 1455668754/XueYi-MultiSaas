@@ -32,5 +32,4 @@ public class OAuth2Constants {
         private final String msg;
 
     }
-
 }

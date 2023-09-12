@@ -8,6 +8,9 @@ export interface DictDataIM extends BaseEntity {
   code: string;
   value: string;
   label: string;
+  additionalA: string;
+  additionalB: string;
+  additionalC: string;
   isDefault: DicYesNoEnum;
   cssClass: string;
   listClass: string;

@@ -87,13 +87,7 @@ public class FormEventHandlerImpl implements ApplicationListener<LogoutSuccessEv
                     tokenService.removeTokenCache(loginUser);
                     logService.recordLoginInfo(loginUser, Constants.LOGOUT, "退出成功");
                 } else {
-                    String sourceName = JwtUtil.getSourceName(token);
-                    Long enterpriseId = Long.valueOf(JwtUtil.getEnterpriseId(token));
-                    String enterpriseName = JwtUtil.getEnterpriseName(token);
-                    Long userId = Long.valueOf(JwtUtil.getUserId(token));
-                    String userName = JwtUtil.getUserName(token);
-                    String nickName = JwtUtil.getNickName(token);
-                    logService.recordLoginInfo(sourceName, enterpriseId, enterpriseName, userId, userName, nickName, Constants.LOGOUT, "退出成功");
+                    logService.recordLoginInfo(JwtUtil.parseToken(token), Constants.LOGOUT, "退出成功");
                 }
             }
         }

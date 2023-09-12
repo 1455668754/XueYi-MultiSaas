@@ -124,10 +124,10 @@ public class AuthServerConfig {
         AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
         OAuth2AuthorizationService authorizationService = http.getSharedObject(OAuth2AuthorizationService.class);
 
+        http.authenticationProvider(new AuthenticationProvider());
+
         // 密码模式
         AuthenticationPasswordProvider authenticationPasswordProvider = new AuthenticationPasswordProvider(authenticationManager, authorizationService, oAuth2TokenGenerator());
-
-        http.authenticationProvider(new AuthenticationProvider());
         http.authenticationProvider(authenticationPasswordProvider);
     }
 }
