@@ -33,6 +33,7 @@ public class SecurityConfig {
                 // 网关鉴权
                 .addFilterAfter(new AuthFilter(redisService, ignoreWhite), SecurityWebFiltersOrder.FIRST)
                 .cors(ServerHttpSecurity.CorsSpec::disable)
+                .headers(headerSpec -> headerSpec.frameOptions(ServerHttpSecurity.HeaderSpec.FrameOptionsSpec::disable))
                 // CSRF禁用，因为不使用session
                 .csrf(ServerHttpSecurity.CsrfSpec::disable);
         return http.build();
