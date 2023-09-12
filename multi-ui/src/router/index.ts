@@ -1,7 +1,7 @@
-import type {RouteRecordRaw} from 'vue-router';
-import {createRouter, createWebHashHistory} from 'vue-router';
-import type {App} from 'vue';
-import {basicRoutes} from './routes';
+import type { RouteRecordRaw } from 'vue-router';
+import { createRouter, createWebHashHistory } from 'vue-router';
+import type { App } from 'vue';
+import { basicRoutes } from './routes';
 
 // 白名单应该包含基本静态路由
 const WHITE_NAME_LIST: string[] = [];

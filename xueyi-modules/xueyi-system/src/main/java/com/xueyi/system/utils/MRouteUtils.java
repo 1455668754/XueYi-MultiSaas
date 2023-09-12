@@ -191,7 +191,7 @@ public class MRouteUtils {
     private enum ComponentType {
 
         LAYOUT("LAYOUT"),
-        IFRAME("IFRAME");
+        IFRAME("IFrame");
 
         private final String code;
 

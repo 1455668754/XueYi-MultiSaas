@@ -62,10 +62,10 @@
 ~~~
 com.xueyi     
 ├── multi-ui              // vue3前端 [3000]
-├── xueyi-ui              // vue2前端 [80]
 ├── xueyi-gateway         // 网关模块 [8080]
 ├── xueyi-auth            // 认证中心 [9200]
 ├── xueyi-api             // 接口模块
+│       ├── xueyi-api-file                            // 文件接口
 │       ├── xueyi-api-system                          // 系统接口
 │       ├── xueyi-api-tenant                          // 租户接口
 │       └── xueyi-api-job                             // 调度接口
@@ -74,11 +74,15 @@ com.xueyi
 │       ├── xueyi-common-core                         // 核心模块
 │       ├── xueyi-common-datascope                    // 权限范围
 │       ├── xueyi-common-datasource                   // 多数据源
+│       ├── xueyi-common-dependency                   // 基础依赖
 │       ├── xueyi-common-log                          // 日志记录
 │       ├── xueyi-common-redis                        // 缓存服务
+│       ├── xueyi-common-mail                         // 邮件模块
+│       ├── xueyi-common-seata                        // 事务模块
+│       ├── xueyi-common-sms                          // 短信模块
 │       ├── xueyi-common-security                     // 安全模块
 │       ├── xueyi-common-swagger                      // 系统接口
-│       └── xueyi-common-web                          // 租户核心
+│       └── xueyi-common-web                          // 租户模块
 ├── xueyi-modules         // 业务模块
 │       ├── xueyi-file                                // 文件服务 [9300]
 │       ├── xueyi-gen                                 // 代码生成 [9400]
@@ -86,7 +90,7 @@ com.xueyi
 │       ├── xueyi-system                              // 系统模块 [9600]
 │               ├── authority                         // 权限模块
 │               ├── dict                              // 参数字典
-│               ├── material                          // 素材模块
+│               ├── file                              // 文件模块
 │               ├── monitor                           // 监控模块
 │               ├── notice                            // 公告模块
 │               └── organize                          // 组织模块

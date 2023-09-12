@@ -19,9 +19,6 @@ public class TenantConstants {
     /** 公共租户Id */
     public static final Long COMMON_TENANT_ID = BaseConstants.COMMON_ID;
 
-    /** 注册租户默认策略Id */
-    public static final Long REGISTER_TENANT_STRATEGY_ID = BaseConstants.COMMON_ID;
-
     /** 子库必须数据表 */
     public static final String[] SLAVE_TABLE = {"sys_dept", "sys_login_log", "sys_notice", "sys_job_log", "sys_notice_log", "sys_operate_log", "sys_organize_role_merge", "sys_post", "sys_role",
             "sys_role_menu_merge", "sys_role_module_merge", "sys_tenant_menu_merge", "sys_tenant_module_merge", "sys_role_dept_merge", "sys_role_post_merge", "sys_user", "sys_user_post_merge", "xy_material", "xy_material_folder"};

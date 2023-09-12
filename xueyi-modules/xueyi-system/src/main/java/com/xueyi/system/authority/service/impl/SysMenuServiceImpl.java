@@ -3,6 +3,7 @@ package com.xueyi.system.authority.service.impl;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.OperateConstants;
+import com.xueyi.common.core.constant.basic.TenantConstants;
 import com.xueyi.common.core.context.SecurityContextHolder;
 import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.core.CollUtil;
@@ -163,6 +164,9 @@ public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuQuery, SysMenuDto
 
         switch (operate) {
             case ADD -> {
+                if (newDto.isCommon()) {
+                    newDto.setTenantId(TenantConstants.COMMON_TENANT_ID);
+                }
             }
             case EDIT -> {
                 if (ObjectUtil.isNull(originDto)) {
@@ -172,8 +176,6 @@ public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuQuery, SysMenuDto
                 }
                 newDto.setIsCommon(originDto.getIsCommon());
                 newDto.setTenantId(originDto.getTenantId());
-
-
             }
             case EDIT_STATUS -> {
                 newDto.setIsCommon(originDto.getIsCommon());
@@ -199,7 +201,7 @@ public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuQuery, SysMenuDto
                         throw new ServiceException(StrUtil.format("{}菜单{}失败，公共菜单必须挂载在公共模块下！", operate.getInfo(), newDto.getTitle()));
                     }
 
-                    if (ObjectUtil.notEqual(BaseConstants.TOP_ID, newDto.getTenantId())) {
+                    if (ObjectUtil.notEqual(BaseConstants.TOP_ID, newDto.getParentId())) {
                         SecurityContextHolder.setTenantIgnore();
                         SysMenuDto parentMenu = baseManager.selectById(newDto.getParentId());
                         SecurityContextHolder.clearTenantIgnore();

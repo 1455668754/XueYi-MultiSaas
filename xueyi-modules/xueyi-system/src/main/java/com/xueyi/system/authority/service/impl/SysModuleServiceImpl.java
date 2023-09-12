@@ -1,6 +1,7 @@
 package com.xueyi.system.authority.service.impl;
 
 import com.xueyi.common.core.constant.basic.OperateConstants;
+import com.xueyi.common.core.constant.basic.TenantConstants;
 import com.xueyi.common.core.context.SecurityContextHolder;
 import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.core.CollUtil;
@@ -110,6 +111,9 @@ public class SysModuleServiceImpl extends BaseServiceImpl<SysModuleQuery, SysMod
 
         switch (operate) {
             case ADD -> {
+                if (newDto.isCommon()) {
+                    newDto.setTenantId(TenantConstants.COMMON_TENANT_ID);
+                }
             }
             case EDIT -> {
                 if (ObjectUtil.isNull(originDto)) {

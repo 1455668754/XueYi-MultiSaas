@@ -32,5 +32,4 @@ public class SysLoginServiceImpl implements ISysLoginService {
         // 注册逻辑补充完整后再增加日志
 //        logService.recordLoginInfo(TenantConstants.Source.SLAVE.getCode(), SecurityConstants.EMPTY_TENANT_ID, registerBody.getTenant().getName(), SecurityConstants.EMPTY_USER_ID, registerBody.getUser().getUserName(), Constants.REGISTER, "注册成功");
     }
-
 }

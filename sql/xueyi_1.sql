@@ -298,8 +298,8 @@ values (13000000, 0, '4be0456e05a7422d9f1c82fb7bf19377', '组织管理', 1, '0',
                (23020400, 23020000, '25c63be4b66e4b05b40c7393ac773fd3', '参数删除', 3, '0,23000000,23020000', null, null, null, null, null, 'N', 'N', 'N', 'N', '0', 'F', '0', '0', '0', '0', '0', 1, null, 'dict:config:delete', null, 4, '按钮:参数删除', '0', 'Y', 2, 0),
        (24000000, 0, 'e24afc855afc485d96135999811', '系统监控', 1, '0', 'monitor', null, '', null, null, 'N', 'N', 'N', 'N', '0', 'M', '0', '0', '0', '0', '0', 1, null, '', 'ant-design:eye-outlined', 5, '目录:系统监控', '0', 'Y', 2, 0),
            (24010000, 24000000, '8fa8a4e494594496a89635028483d28b', '流量监控', 2, '0,24000000', 'sentinel', 'http://localhost:8718', null, null, null, 'N', 'N', 'N', 'N', '1', 'C', '0', '0', '0', '0', '0', 1, null, 'monitor:sentinel:list', 'ant-design:fund-projection-screen-outlined', 1, '菜单:流量监控', '0', 'Y', 2, 0),
-           (24020000, 24000000, '8fa8a4e494594496a865a6428483d28b', '服务治理', 2, '0,24000000', 'nacos', 'http://localhost:8848/nacos', null, null, null, 'N', 'N', 'N', 'N', '1', 'C', '0', '0', '0', '0', '0', 1, null, 'monitor:nacos:list', 'ant-design:control-outlined', 2, '菜单:服务治理', '0', 'Y', 2, 0),
-           (24030000, 24000000, '8fa8a4e494594496a32586534583d28b', '服务监控', 2, '0,24000000', 'server', 'http://localhost:9100/login', null, null, null, 'N', 'N', 'N', 'N', '1', 'C', '0', '0', '0', '0', '0', 1, null, 'monitor:server:list', 'ant-design:radar-chart-outlined', 3, '菜单:服务监控', '0', 'Y', 2, 0);
+           (24020000, 24000000, '8fa8a4e494594496a865a6428483d28b', '服务治理', 2, '0,24000000', 'nacos', 'http://localhost:8848/nacos/#/', null, null, null, 'N', 'N', 'N', 'N', '1', 'C', '0', '0', '0', '0', '0', 1, null, 'monitor:nacos:list', 'ant-design:control-outlined', 2, '菜单:服务治理', '0', 'Y', 2, 0),
+           (24030000, 24000000, '8fa8a4e494594496a32586534583d28b', '服务监控', 2, '0,24000000', 'server', 'http://localhost:9100/applications', null, null, null, 'N', 'N', 'N', 'N', '1', 'C', '0', '0', '0', '0', '0', 1, null, 'monitor:server:list', 'ant-design:radar-chart-outlined', 3, '菜单:服务监控', '0', 'Y', 2, 0);
 
 -- ----------------------------
 -- 5、租户权限组信息表
