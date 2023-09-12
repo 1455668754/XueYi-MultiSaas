@@ -1,6 +1,6 @@
 {
   "name": "@xueyi/eslint-config",
-  "version": "3.0.0-RC",
+  "version": "3.0.1",
   "private": true,
   "exports": {
     ".": {
