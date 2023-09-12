@@ -95,7 +95,7 @@ public class BaseLoginUser<User> implements UserDetails, OAuth2AuthenticatedPrin
 
     @Override
     public String getUsername() {
-        return this.getUserName();
+        return userName;
     }
 
     @Override
@@ -105,7 +105,7 @@ public class BaseLoginUser<User> implements UserDetails, OAuth2AuthenticatedPrin
 
     @Override
     public String getName() {
-        return this.getUserName();
+        return userName;
     }
 
     /** 初始化企业信息 */

@@ -23,6 +23,9 @@ public class CacheConstants {
     /** 缓存有效期，默认720（分钟） */
     public final static long EXPIRATION = 720;
 
+    /** 缓存有效期，默认360（分钟） */
+    public final static long ACCESS_TIME = 360;
+
     /** 缓存刷新时间，默认120（分钟） */
     public final static long REFRESH_TIME = 120;
 

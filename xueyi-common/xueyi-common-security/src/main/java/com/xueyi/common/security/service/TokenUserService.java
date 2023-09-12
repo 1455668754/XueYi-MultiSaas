@@ -23,10 +23,10 @@ import java.util.Map;
  *
  * @author xueyi
  */
+@Getter
 @Component
 public class TokenUserService implements ITokenService<SysUserDto, LoginUser> {
 
-    @Getter
     @Autowired
     private RedisService redisService;
 

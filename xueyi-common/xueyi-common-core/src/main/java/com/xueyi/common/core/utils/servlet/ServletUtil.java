@@ -34,6 +34,7 @@ import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -243,7 +244,7 @@ public class ServletUtil {
         try {
             response.setStatus(HttpConstants.Status.SUCCESS.getCode());
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            response.setCharacterEncoding("utf-8");
+            response.setCharacterEncoding(StandardCharsets.UTF_8.name());
             response.getWriter().print(string);
         } catch (IOException e) {
             e.printStackTrace();
@@ -365,7 +366,7 @@ public class ServletUtil {
      * @param value    响应内容
      */
     public static void webResponseWriter(HttpServletResponse response, Object value) {
-        webResponseWriter(response, MediaType.APPLICATION_JSON_UTF8_VALUE, value);
+        webResponseWriter(response, MediaType.APPLICATION_JSON_VALUE, value);
     }
 
     /**
@@ -377,6 +378,7 @@ public class ServletUtil {
      */
     public static void webResponseWriter(HttpServletResponse response, String contentType, Object value) {
         response.setContentType(contentType);
+        response.setCharacterEncoding("utf-8");
         Writer writer = null;
         try {
             writer = response.getWriter();

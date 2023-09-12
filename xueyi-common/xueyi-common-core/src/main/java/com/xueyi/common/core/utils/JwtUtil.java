@@ -249,8 +249,9 @@ public class JwtUtil {
      */
     public static String getUserKey(Claims claims) {
         String accessToken = getValue(claims, SecurityConstants.BaseSecurity.REFRESH_TOKEN.getCode());
-        if (StrUtil.isNotEmpty(accessToken) && StrUtil.startWith(accessToken, TokenConstants.PREFIX))
+        if (StrUtil.isNotEmpty(accessToken) && StrUtil.startWith(accessToken, TokenConstants.PREFIX)) {
             return StrUtil.replaceFirst(accessToken, TokenConstants.PREFIX, StrUtil.EMPTY);
+        }
         return null;
     }
 
