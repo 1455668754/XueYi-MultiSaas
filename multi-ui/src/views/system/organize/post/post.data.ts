@@ -89,11 +89,8 @@ export const formSchema: FormSchema[] = [
       showSearch: true,
       api: listDeptApi,
       treeNodeFilterProp: 'name',
-      fieldNames: {
-        label: 'name',
-        key: 'id',
-        value: 'id',
-      },
+      labelField: 'name',
+      valueField: 'id',
       getPopupContainer: () => document.body,
     },
     required: true,
