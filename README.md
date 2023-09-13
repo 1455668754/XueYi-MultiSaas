@@ -14,7 +14,7 @@
 
 ## 简介
 
-基于SpringBoot | Spring Cloud & Alibaba | Mybatis-Plus | Vue3 | vite2 | TypeScript | Ant-Design-Vue UI
+基于SpringBoot | Spring Cloud & Alibaba | Mybatis-Plus | Vue3 | vite4 | TypeScript | Ant-Design-Vue UI
 的微服务多租户SaaS开发框架，为企业级多租户Saas及集团化应用提供快速开发解决方案。
 
 ## 特性

@@ -82,12 +82,26 @@ public interface BasicLineHandler {
     }
 
     /**
-     * 忽略租户控制
+     * 根据表名判断是否忽略拼接多租户条件
+     * <p>
+     * 默认都要进行解析并拼接多租户条件
      *
-     * @return 结果
+     * @param tableName 表名
+     * @return 是否忽略, true:表示忽略，false:需要解析并拼接多租户条件
      */
     default boolean ignoreTable(String tableName) {
         return ObjectUtil.equals(Boolean.TRUE, TenantProperties.getIgnoreTenant()) || !isTenantTable(tableName);
+    }
+
+    /**
+     * 忽略插入租户字段逻辑
+     *
+     * @param columns        插入字段
+     * @param tenantIdColumn 租户 ID 字段
+     * @return 结果
+     */
+    default boolean ignoreInsert(List<Column> columns, String tenantIdColumn) {
+        return columns.stream().map(Column::getColumnName).anyMatch(i -> i.equalsIgnoreCase(tenantIdColumn));
     }
 
     /**
