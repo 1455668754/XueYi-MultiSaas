@@ -36,7 +36,9 @@ const Ellipsis: ObjectDirective = {
     }
   },
 };
+
 export function setupEllipsisDirective(app: App) {
   app.directive('ellipsis', Ellipsis);
 }
+
 export default Ellipsis;
