@@ -157,10 +157,10 @@ public class AGenController extends BGenController {
     }
 
     /**
-     * 代码生成强制批量删除
+     * 代码生成批量删除
      */
     @Override
-    @DeleteMapping("/batch/force/{idList}")
+    @DeleteMapping("/batch/{idList}")
     @PreAuthorize("@ss.hasAuthority(@Auth.GEN_GENERATE_DEL)")
     @Log(title = "代码生成管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
