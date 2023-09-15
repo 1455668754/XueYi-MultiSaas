@@ -23,7 +23,7 @@ create table sys_dept (
   leader                    varchar(20)         default ''                              comment '负责人',
   phone                     varchar(11)         default ''                              comment '联系电话',
   email                     varchar(50)         default ''                              comment '邮箱',
-  sort                      int unsigned        not null default 0                      comment '显示顺序',
+  sort                      int unsigned        default 0                               comment '显示顺序',
   status                    char(1)             not null default '0'                    comment '状态（0正常 1停用）',
   remark                    varchar(200)        default null                            comment '备注',
   create_by                 bigint              default null                            comment '创建者',
@@ -60,7 +60,7 @@ create table sys_post (
   dept_id		            bigint	            not null                                comment '部门Id',
   code                      varchar(64)         default null                            comment '岗位编码',
   name                      varchar(50)         not null                                comment '岗位名称',
-  sort                      int unsigned        not null default 0                      comment '显示顺序',
+  sort                      int unsigned        default 0                               comment '显示顺序',
   status                    char(1)             not null default '0'                    comment '状态（0正常 1停用）',
   remark                    varchar(200)        default null                            comment '备注',
   create_by                 bigint              default null                            comment '创建者',
@@ -100,7 +100,7 @@ create table sys_user (
   password                  varchar(100)        default ''                              comment '密码',
   login_ip                  varchar(128)        default ''                              comment '最后登录IP',
   login_date                datetime                                                    comment '最后登录时间',
-  sort                      int unsigned        not null default 0                      comment '显示顺序',
+  sort                      int unsigned        default 0                               comment '显示顺序',
   status                    char(1)             not null default '0'                    comment '状态（0正常 1停用）',
   remark                    varchar(200)        default null                            comment '备注',
   create_by                 bigint              default null                            comment '创建者',
@@ -151,7 +151,7 @@ create table sys_role (
   name                      varchar(30)         not null                                comment '角色名称',
   role_key                  varchar(100)        default null                            comment '角色权限字符串',
   data_scope                char(1)             default '1'                             comment '数据范围（1全部数据权限 2自定数据权限 3本部门数据权限 4本部门及以下数据权限 5本岗位数据权限  6仅本人数据权限）',
-  sort                      int unsigned        not null default 0                      comment '显示顺序',
+  sort                      int unsigned        default 0                               comment '显示顺序',
   status                    char(1)             not null default '0'                    comment '状态（0正常 1停用）',
   remark                    varchar(200)        default null                            comment '备注',
   create_by                 bigint              default null                            comment '创建者',
@@ -171,7 +171,7 @@ values (1, 1, '001', '超级管理员', 'admin', '超级管理员'),
        (2, 1, '002', '管理员', 'common', '普通角色');
 
 -- ----------------------------
--- 8、角色和模块关联表
+-- 6、角色和模块关联表
 -- ----------------------------
 drop table if exists sys_role_module_merge;
 create table sys_role_module_merge (
@@ -184,7 +184,7 @@ create table sys_role_module_merge (
 ) engine = innodb comment = '角色和模块关联表';
 
 -- ----------------------------
--- 9、角色和菜单关联表
+-- 7、角色和菜单关联表
 -- ----------------------------
 drop table if exists sys_role_menu_merge;
 create table sys_role_menu_merge (
@@ -197,7 +197,7 @@ create table sys_role_menu_merge (
 ) engine = innodb comment = '角色和菜单关联表';
 
 -- ----------------------------
--- 10、角色和部门关联表（权限范围）
+-- 8、角色和部门关联表（权限范围）
 -- ----------------------------
 drop table if exists sys_role_dept_merge;
 create table sys_role_dept_merge (
@@ -210,7 +210,7 @@ create table sys_role_dept_merge (
 ) engine = innodb comment = '角色和部门-岗位关联表';
 
 -- ----------------------------
--- 11、角色和岗位关联表（权限范围）
+-- 9、角色和岗位关联表（权限范围）
 -- ----------------------------
 drop table if exists sys_role_post_merge;
 create table sys_role_post_merge (
@@ -223,7 +223,7 @@ create table sys_role_post_merge (
 ) engine = innodb comment = '角色和部门-岗位关联表';
 
 -- ----------------------------
--- 12、组织和角色关联表（角色绑定）
+-- 10、组织和角色关联表（角色绑定）
 -- ----------------------------
 drop table if exists sys_organize_role_merge;
 create table sys_organize_role_merge (
@@ -238,7 +238,7 @@ create table sys_organize_role_merge (
 ) engine = innodb auto_increment=1 comment = '组织和角色关联表';
 
 -- ----------------------------
--- 15、操作日志记录
+-- 11、操作日志记录
 -- ----------------------------
 drop table if exists sys_operate_log;
 create table sys_operate_log (
@@ -270,7 +270,7 @@ create table sys_operate_log (
 ) engine = innodb auto_increment=100 comment = '操作日志记录';
 
 -- ----------------------------
--- 16、系统访问记录
+-- 12、系统访问记录
 -- ----------------------------
 drop table if exists sys_login_log;
 create table sys_login_log (
@@ -292,7 +292,7 @@ create table sys_login_log (
 ) engine = innodb auto_increment=100 comment = '系统访问记录';
 
 -- ----------------------------
--- 17、通知公告表
+-- 13、通知公告表
 -- ----------------------------
 drop table if exists sys_notice;
 create table sys_notice (
@@ -312,7 +312,7 @@ create table sys_notice (
 ) engine = innodb comment = '通知公告表';
 
 -- ----------------------------
--- 18、通知公告记录表
+-- 14、通知公告记录表
 -- ----------------------------
 drop table if exists sys_notice_log;
 create table sys_notice_log (
@@ -329,7 +329,7 @@ create table sys_notice_log (
 ) engine = innodb comment = '通知公告记录表';
 
 -- ----------------------------
--- 19、定时任务调度日志表
+-- 15、定时任务调度日志表
 -- ----------------------------
 drop table if exists sys_job_log;
 create table sys_job_log (
@@ -350,7 +350,7 @@ create table sys_job_log (
 ) engine = innodb comment = '定时任务调度日志表';
 
 -- ----------------------------
--- 20、文件信息表
+-- 16、文件信息表
 -- ----------------------------
 drop table if exists sys_file;
 create table sys_file (
@@ -362,7 +362,7 @@ create table sys_file (
   path		                varchar(500)	    not null 	                            comment '存储路径',
   size		                bigint	            not null default 0	                    comment '文件大小',
   type		                char(1)	            not null default '0'	                comment '文件类型（0默认 1系统）',
-  sort                      int unsigned        not null default 0                      comment '显示顺序',
+  sort                      int unsigned        default 0                               comment '显示顺序',
   status                    char(1)             not null default '0'                    comment '状态（0正常 1停用）',
   create_by                 bigint              default null                            comment '创建者',
   create_time               datetime            default current_timestamp               comment '创建时间',
@@ -374,7 +374,7 @@ create table sys_file (
 ) engine = innodb comment = '文件信息表';
 
 -- ----------------------------
--- 21、文件分类信息表
+-- 17、文件分类信息表
 -- ----------------------------
 drop table if exists sys_file_folder;
 create table sys_file_folder (
@@ -384,7 +384,7 @@ create table sys_file_folder (
   level                     int                 not null                                comment '树层级',
   ancestors                 varchar(500)        default ''                              comment '祖级列表',
   type		                char(1)	            not null default '0'	                comment '分类类型（0默认文件夹 1系统文件夹）',
-  sort                      int unsigned        not null default 0                      comment '显示顺序',
+  sort                      int unsigned        default 0                               comment '显示顺序',
   status                    char(1)             not null default '0'                    comment '状态（0正常 1停用）',
   create_by                 bigint              default null                            comment '创建者',
   create_time               datetime            default current_timestamp               comment '创建时间',

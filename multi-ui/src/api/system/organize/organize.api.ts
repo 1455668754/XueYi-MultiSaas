@@ -1,9 +1,11 @@
 import { OrganizeLM } from '@/model/system/organize';
 import { defHttp } from '/@/utils/http/axios';
 
+const basicApi = '/system/admin/organize';
+
 enum Api {
-  ORGANIZE_SCOPE = '/system/admin/organize/organizeScope',
-  ORGANIZE_OPTION = '/system/admin/organize/option',
+  ORGANIZE_SCOPE = basicApi + '/organizeScope',
+  ORGANIZE_OPTION = basicApi + '/option',
 }
 
 /** 获取企业部门|岗位树 */

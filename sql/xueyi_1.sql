@@ -20,7 +20,7 @@ create table te_tenant (
   logo		                varchar(200)	    default ''	                            comment '租户logo',
   name_frequency            tinyint             default 0                               comment '账号修改次数',
   is_lessor                 char(1)             not null default 'N'	                comment '超管租户（Y是 N否）',
-  sort                      int unsigned        not null default 0                      comment '显示顺序',
+  sort                      int unsigned        default 0                               comment '显示顺序',
   status                    char(1)             not null default '0'                    comment '状态（0正常 1停用）',
   remark                    varchar(200)        default null                            comment '备注',
   create_by                 bigint              default null                            comment '创建者',
@@ -48,7 +48,7 @@ create table te_strategy (
   name                      varchar(100)	    not null default ''	                    comment '策略名称',
   source_id                 bigint	            not null	                            comment '数据源Id',
   source_slave              varchar(200)	    not null	                            comment '数据源编码',
-  sort                      int unsigned        not null default 0                      comment '显示顺序',
+  sort                      int unsigned        default 0                               comment '显示顺序',
   status                    char(1)             not null default '0'                    comment '状态（0正常 1停用）',
   remark                    varchar(200)        default null                            comment '备注',
   create_by                 bigint              default null                            comment '创建者',
@@ -67,7 +67,7 @@ insert into te_strategy(id, name, is_default, source_id, source_slave, sort)
 values (1, '默认注册策略', 'Y', 1, 'slave', 1);
 
 -- ----------------------------
--- 4、数据源表|管理系统数据源信息 | 主库有且只能有一个，用途：主要用于存储公共数据，具体看后续文档或视频
+-- 3、数据源信息表|管理系统数据源信息 | 主库有且只能有一个，用途：主要用于存储公共数据，具体看后续文档或视频
 -- ----------------------------
 drop table if exists te_source;
 create table te_source (
@@ -79,7 +79,7 @@ create table te_source (
   url_append	            varchar(200)	    not null default ''	                    comment '连接参数',
   user_name	                varchar(100) 	    not null	                            comment '用户名',
   password	                varchar(100) 	    not null default ''	                    comment '密码',
-  sort                      int unsigned        not null default 0                      comment '显示顺序',
+  sort                      int unsigned        default 0                               comment '显示顺序',
   status                    char(1)             not null default '0'                    comment '状态（0正常 1停用）',
   remark                    varchar(200)        default null                            comment '备注',
   create_by                 bigint              default null                            comment '创建者',
@@ -89,16 +89,16 @@ create table te_source (
   is_default                char(1)             not null default 'N'	                comment '默认数据源（Y是 N否）',
   del_flag		            tinyint             not null default 0                      comment '删除标志（0正常 1删除）',
   primary key (id)
-) engine = innodb comment = '数据源表';
+) engine = innodb comment = '数据源信息表';
 
 -- ----------------------------
--- 初始化-数据源表数据 | 这条数据为我的基础库，实际使用时调整成自己的库即可
+-- 初始化-数据源信息表数据 | 这条数据为我的基础库，实际使用时调整成自己的库即可
 -- ----------------------------
 insert into te_source(id, name, is_default, slave, driver_class_name, url_prepend, url_append, user_name, password)
 values (1, '注册数据源', 'Y', 'slave', 'com.mysql.cj.jdbc.Driver', 'jdbc:mysql://localhost:3306/xy-cloud1', '?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&allowMultiQueries=true&serverTimezone=GMT%2B8', 'root', 'password');
 
 -- ----------------------------
--- 6、模块信息表
+-- 4、模块信息表
 -- ----------------------------
 drop table if exists sys_module;
 create table sys_module (
@@ -109,7 +109,7 @@ create table sys_module (
   param_path                varchar(255)        default null                            comment '路由参数',
   type		                char(1)	            not null default '0'	                comment '模块类型（0常规 1内嵌 2外链）',
   hide_module		        char(1)	            not null default '0'	                comment '模块显隐状态（0显示 1隐藏）',
-  sort                      int unsigned        not null default 0                      comment '显示顺序',
+  sort                      int unsigned        default 0                               comment '显示顺序',
   status                    char(1)             not null default '0'                    comment '状态（0正常 1停用）',
   remark                    varchar(200)        default null                            comment '备注',
   create_by                 bigint              default null                            comment '创建者',
@@ -131,7 +131,7 @@ values (1, '基础平台' ,    '0', '', '', 'Y', '0', 'https://images.gitee.com/
        (2, '开发者平台' , '0', '', '', 'Y', '0', 'https://images.gitee.com/uploads/images/2021/1101/141601_d68e92a4_7382127.jpeg', '开发者平台', '0', 0);
 
 -- ----------------------------
--- 7、菜单权限表
+-- 5、菜单权限表
 -- ----------------------------
 drop table if exists sys_menu;
 create table sys_menu (
@@ -302,7 +302,7 @@ values (13000000, 0, '4be0456e05a7422d9f1c82fb7bf19377', '组织管理', 1, '0',
            (24030000, 24000000, '8fa8a4e494594496a32586534583d28b', '服务监控', 2, '0,24000000', 'server', 'http://localhost:9100/applications', null, null, null, 'N', 'N', 'N', 'N', '1', 'C', '0', '0', '0', '0', '0', 1, null, 'monitor:server:list', 'ant-design:radar-chart-outlined', 3, '菜单:服务监控', '0', 'Y', 2, 0);
 
 -- ----------------------------
--- 5、租户权限组信息表
+-- 6、租户权限组信息表
 -- ----------------------------
 drop table if exists sys_auth_group;
 create table sys_auth_group (
@@ -310,7 +310,7 @@ create table sys_auth_group (
   code                      varchar(64)         default null                            comment '权限组编码',
   name                      varchar(30)         not null                                comment '权限组名称',
   auth_key                  varchar(100)        default null                            comment '权限组权限字符串',
-  sort                      int unsigned        not null default 0                      comment '显示顺序',
+  sort                      int unsigned        default 0                               comment '显示顺序',
   status                    char(1)             not null default '0'                    comment '状态（0正常 1停用）',
   remark                    varchar(200)        default null                            comment '备注',
   create_by                 bigint              default null                            comment '创建者',
@@ -340,7 +340,7 @@ create table sys_tenant_auth_group_merge (
 ) engine = innodb comment = '租户和租户权限组关联表';
 
 -- ----------------------------
--- 6、租户权限组和模块关联表
+-- 8、租户权限组和模块关联表
 -- ----------------------------
 drop table if exists sys_auth_group_module_merge;
 create table sys_auth_group_module_merge (
@@ -352,7 +352,7 @@ create table sys_auth_group_module_merge (
 ) engine = innodb comment = '租户权限组和模块关联表';
 
 -- ----------------------------
--- 7、租户权限组和菜单关联表
+-- 9、租户权限组和菜单关联表
 -- ----------------------------
 drop table if exists sys_auth_group_menu_merge;
 create table sys_auth_group_menu_merge (
@@ -364,7 +364,7 @@ create table sys_auth_group_menu_merge (
 ) engine = innodb comment = '租户权限组和菜单关联表';
 
 -- ----------------------------
--- 8、字典类型表
+-- 10、字典类型表
 -- ----------------------------
 drop table if exists sys_dict_type;
 create table sys_dict_type (
@@ -373,7 +373,7 @@ create table sys_dict_type (
   code                      varchar(100)        default ''                              comment '字典类型',
   data_type		            char(1)	            not null	                            comment '数据类型（0默认 1只增 2只减 3只读）',
   cache_type		        char(1)	            not null	                            comment '缓存类型（0租户 1全局）',
-  sort                      int unsigned        not null default 0                      comment '显示顺序',
+  sort                      int unsigned        default 0                               comment '显示顺序',
   status                    char(1)             not null default '0'                    comment '状态（0正常 1停用）',
   remark                    varchar(200)        default null                            comment '备注',
   create_by                 bigint              default null                            comment '创建者',
@@ -419,7 +419,7 @@ values (10001, '用户性别', 'sys_user_sex', '用户性别列表', '0', '1', 0
        (10031, '字典管理：缓存类型', 'sys_dict_cache_type', '字典管理：缓存类型列表', '0', '1', 0);
 
 -- ----------------------------
--- 9、字典数据表
+-- 11、字典数据表
 -- ----------------------------
 drop table if exists sys_dict_data;
 create table sys_dict_data (
@@ -430,7 +430,7 @@ create table sys_dict_data (
   additional_a              varchar(100)        default null                            comment '附加数据1',
   additional_b              varchar(100)        default null                            comment '附加数据2',
   additional_c              varchar(100)        default null                            comment '附加数据3',
-  sort                      int unsigned        not null default 0                      comment '显示顺序',
+  sort                      int unsigned        default 0                               comment '显示顺序',
   is_default                char(1)             default 'N'                             comment '是否默认（Y是 N否）',
   css_class                 varchar(100)        default null                            comment '样式属性（其他样式扩展）',
   list_class                varchar(100)        default null                            comment '表格回显样式',
@@ -580,7 +580,7 @@ values (1000101, 1, '男', '0', 'sys_user_sex', '', '', 'Y', '性别男', 0),
        (1003102, 2, '全局', '1', 'sys_dict_cache_type', '', 'blue', 'N', '字典管理-缓存类型：全局', 0);
 
 -- ----------------------------
--- 10、参数配置表
+-- 12、参数配置表
 -- ----------------------------
 drop table if exists sys_config;
 create table sys_config (
@@ -591,7 +591,7 @@ create table sys_config (
   data_type		            char(1)	            not null	                            comment '数据类型（0默认 1只读）',
   cache_type		        char(1)	            not null	                            comment '缓存类型（0租户 1全局）',
   type                      char(1)             default 'N'                             comment '系统内置（Y是 N否）',
-  sort                      int unsigned        not null default 0                      comment '显示顺序',
+  sort                      int unsigned        default 0                               comment '显示顺序',
   remark                    varchar(200)        default null                            comment '备注',
   create_by                 bigint              default null                            comment '创建者',
   create_time               datetime            default current_timestamp               comment '创建时间',
@@ -609,7 +609,7 @@ values (1, '主框架页-默认皮肤样式名称',           'sys.index.skinNam
        (4, '账号自助-是否开启租户注册功能',        'sys.account.registerTenant',    'false',        'Y',  '0',  '0',    '是否开启注册租户功能（true开启，false关闭）', 0);
 
 -- ----------------------------
--- 11、定时任务调度表
+-- 13、定时任务调度表
 -- ----------------------------
 drop table if exists sys_job;
 create table sys_job (
@@ -638,7 +638,7 @@ values (1, '系统默认（无参）', 'DEFAULT', 'ryTask.ryNoParams',   '1L, \'
        (3, '系统默认（多参）', 'DEFAULT', 'ryTask.ryMultipleParams(\'ry\', true, 2000L, 316.50D, 100)',   '1L, \'Y\', \'slave\'',  '0/20 * * * * ?', '3', '1', '1', 1);
 
 -- ----------------------------
--- 12、定时任务调度日志表
+-- 14、定时任务调度日志表
 -- ----------------------------
 drop table if exists sys_job_log;
 create table sys_job_log (
@@ -715,7 +715,7 @@ create table gen_table_column (
   query_type                varchar(200)        default 'EQ'                            comment '查询方式（等于、不等于、大于、小于、范围）',
   html_type                 varchar(200)                                                comment '显示类型（文本框、文本域、下拉框、复选框、单选框、日期控件）',
   dict_type                 varchar(200)        default ''                              comment '字典类型',
-  sort                      int unsigned        not null default 0                      comment '显示顺序',
+  sort                      int unsigned        default 0                               comment '显示顺序',
   create_by                 bigint              default null                            comment '创建者',
   create_time               datetime            default current_timestamp               comment '创建时间',
   update_by                 bigint              default null                            comment '更新者',
@@ -740,7 +740,7 @@ create table sys_oauth_client (
   refresh_token_validity    int                 default null                            comment '刷新令牌有效期',
   additional_information    varchar(4096)       default null                            comment '令牌扩展字段JSON',
   auto_approve              varchar(256)        default null                            comment '是否自动放行',
-  sort                      int unsigned        not null default 0                      comment '显示顺序',
+  sort                      int unsigned        default 0                               comment '显示顺序',
   status                    char(1)             not null default '0'                    comment '状态（0正常 1停用）',
   remark                    varchar(200)        default null                            comment '备注',
   create_by                 bigint              default null                            comment '创建者',

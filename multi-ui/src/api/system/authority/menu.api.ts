@@ -1,41 +1,43 @@
 import { defHttp } from '/@/utils/http/axios';
 import { MenuIM, MenuLM, MenuPM } from '@/model/system/authority';
 
+const basicApi = '/system/admin/menu';
+
 enum Api {
-  LIST_MENU = '/system/admin/menu/list',
-  GET_MENU = '/system/admin/menu/',
-  ADD_MENU = '/system/admin/menu',
-  EDIT_MENU = '/system/admin/menu',
-  EDIT_STATUS_MENU = '/system/admin/menu/status',
-  DEL_BATCH_MENU = '/system/admin/menu/batch/',
+  LIST = basicApi + '/list',
+  GET = basicApi + '/',
+  ADD = basicApi,
+  EDIT = basicApi,
+  EDIT_STATUS = basicApi + '/status',
+  DEL_BATCH = basicApi + '/batch/',
 }
 
 /** 查询菜单列表 */
-export const listMenuApi = (params?: MenuPM) => defHttp.get<MenuLM>({ url: Api.LIST_MENU, params });
+export const listMenuApi = (params?: MenuPM) => defHttp.get<MenuLM>({ url: Api.LIST, params });
 
 /** 根据菜单类型获取指定模块的可配菜单集 */
 export const getMenuRouteListApi = (params?: MenuPM) =>
   defHttp.get<MenuLM>({
-    url: Api.LIST_MENU,
+    url: Api.LIST,
     params,
   });
 
 /** 查询菜单详细 */
-export const getMenuApi = (id: string) => defHttp.get<MenuIM>({ url: Api.GET_MENU, params: id });
+export const getMenuApi = (id: string) => defHttp.get<MenuIM>({ url: Api.GET, params: id });
 
 /** 新增菜单 */
-export const addMenuApi = (params: MenuIM) => defHttp.post({ url: Api.ADD_MENU, params });
+export const addMenuApi = (params: MenuIM) => defHttp.post({ url: Api.ADD, params });
 
 /** 修改菜单 */
-export const editMenuApi = (params: MenuIM) => defHttp.put({ url: Api.EDIT_MENU, params });
+export const editMenuApi = (params: MenuIM) => defHttp.put({ url: Api.EDIT, params });
 
 /** 修改菜单状态 */
 export const editStatusMenuApi = (id: string, status: any) =>
   defHttp.put({
-    url: Api.EDIT_STATUS_MENU,
+    url: Api.EDIT_STATUS,
     params: { id: id, status: status },
   });
 
 /** 删除菜单 */
 export const delMenuApi = (ids: string | string[]) =>
-  defHttp.delete({ url: Api.DEL_BATCH_MENU, params: ids.toString() });
+  defHttp.delete({ url: Api.DEL_BATCH, params: ids.toString() });

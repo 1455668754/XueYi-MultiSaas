@@ -1,9 +1,11 @@
 import { AuthLM } from '@/model/system/authority';
 import { defHttp } from '/@/utils/http/axios';
 
+const basicApi = '/system/admin/auth';
+
 enum Api {
-  AUTH_SCOPE_COMMON = '/system/admin/auth/common/authScope',
-  AUTH_SCOPE_ENTERPRISE = '/system/admin/auth/enterprise/authScope',
+  AUTH_SCOPE_COMMON = basicApi + '/common/authScope',
+  AUTH_SCOPE_ENTERPRISE = basicApi + '/enterprise/authScope',
 }
 
 /** 查询公共权限范围树 */

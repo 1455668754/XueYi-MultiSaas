@@ -7,28 +7,29 @@ import { AxiosProgressEvent } from 'axios';
 
 const { uploadUrl = '' } = useGlobSetting();
 
+const basicApi = '/system/admin/user/profile';
+
 enum Api {
-  GET_USER_PROFILE = '/system/admin/user/profile',
-  UPDATE_USER_PROFILE = '/system/admin/user/profile',
-  RESET_USER_NAME = '/system/admin/user/profile/userName',
-  RESET_USER_PWD = '/system/admin/user/profile/password',
-  RESET_USER_PHONE = '/system/admin/user/profile/phone',
-  RESET_USER_EMAIL = '/system/admin/user/profile/email',
-  RESET_USER_AVATAR = '/system/admin/user/profile/avatar',
+  GET = basicApi,
+  UPDATE = basicApi,
+  RESET_NAME = basicApi + '/userName',
+  RESET_PWD = basicApi + '/password',
+  RESET_PHONE = basicApi + '/phone',
+  RESET_EMAIL = basicApi + '/email',
+  RESET_AVATAR = basicApi + '/avatar',
 }
 
 /** 查询用户个人信息 */
-export const getUserProfileApi = () => defHttp.get<UserIM>({ url: Api.GET_USER_PROFILE });
+export const getUserProfileApi = () => defHttp.get<UserIM>({ url: Api.GET });
 
 /** 修改用户个人信息 */
-export const editUserProfileApi = (params: UserIM) =>
-  defHttp.put({ url: Api.UPDATE_USER_PROFILE, params });
+export const editUserProfileApi = (params: UserIM) => defHttp.put({ url: Api.UPDATE, params });
 
 /** 用户账号修改 */
 export const resetUserNameApi = (userName: string) =>
   defHttp.put(
     {
-      url: Api.RESET_USER_NAME,
+      url: Api.RESET_NAME,
       params: { userName },
     },
     { joinParamsToUrl: true },
@@ -38,7 +39,7 @@ export const resetUserNameApi = (userName: string) =>
 export const resetUserPhoneApi = (phone: string) =>
   defHttp.put(
     {
-      url: Api.RESET_USER_PHONE,
+      url: Api.RESET_PHONE,
       params: { phone },
     },
     { joinParamsToUrl: true },
@@ -48,7 +49,7 @@ export const resetUserPhoneApi = (phone: string) =>
 export const resetUserEmailApi = (email: string) =>
   defHttp.put(
     {
-      url: Api.RESET_USER_EMAIL,
+      url: Api.RESET_EMAIL,
       params: { email },
     },
     { joinParamsToUrl: true },
@@ -58,7 +59,7 @@ export const resetUserEmailApi = (email: string) =>
 export const resetUserPwdApi = (oldPassword: string, newPassword: string) =>
   defHttp.put(
     {
-      url: Api.RESET_USER_PWD,
+      url: Api.RESET_PWD,
       params: { oldPassword, newPassword },
     },
     { joinParamsToUrl: true },
@@ -71,7 +72,7 @@ export const editAvatarApi = (
 ) =>
   defHttp.uploadFile<UploadIM>(
     {
-      url: uploadUrl + Api.RESET_USER_AVATAR,
+      url: uploadUrl + Api.RESET_AVATAR,
       onUploadProgress,
     },
     params,

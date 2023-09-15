@@ -5,30 +5,32 @@ import { formatToDateTime } from '@/utils/dateUtil';
 import dayjs from 'dayjs';
 #end
 
+const basicApi = '/${moduleName}/admin/${businessName}';
+
 enum Api {
 #if($api.list)
-  LIST_${BUSINESSName} = '/${moduleName}/admin/${businessName}/list',
+  LIST = basicApi + '/list',
 #end
 #if($api.getInfo)
-  GET_${BUSINESSName} = '/${moduleName}/admin/${businessName}/',
+  GET = basicApi + '/',
 #end
 #if($api.add)
-  ADD_${BUSINESSName} = '/${moduleName}/admin/${businessName}',
+  ADD = basicApi,
 #end
 #if($api.edit)
-  EDIT_${BUSINESSName} = '/${moduleName}/admin/${businessName}',
+  EDIT = basicApi,
 #end
 #if($api.editStatus)
-  EDIT_STATUS_${BUSINESSName} = '/${moduleName}/admin/${businessName}/status',
+  EDIT_STATUS = basicApi + '/status',
 #end
 #if($api.batchRemove)
-  DEL_BATCH_${BUSINESSName} = '/${moduleName}/admin/${businessName}/batch/',
+  DEL_BATCH = basicApi + '/batch/',
 #end
 #if($api.export)
-  EXPORT_${BUSINESSName} = '/${moduleName}/admin/${businessName}/export',
+  EXPORT = basicApi + '/export',
 #end
 #if($api.cache)
-  REFRESH_${BUSINESSName} = '/${moduleName}/admin/${businessName}/refresh',
+  REFRESH = basicApi + '/refresh',
 #end
 }
 #set($IdName = $pkColumn.javaField)
@@ -43,25 +45,25 @@ enum Api {
 
 /** 查询${functionName}列表 */
 export const list${BusinessName}Api = (params?: #if($table.tree)${BusinessName}PM#else${BusinessName}PPM#end) =>
-  defHttp.get<#if($table.tree)${BusinessName}LM#else${BusinessName}LRM#end>({ url: Api.LIST_${BUSINESSName}, params });
+  defHttp.get<#if($table.tree)${BusinessName}LM#else${BusinessName}LRM#end>({ url: Api.LIST, params });
 #end
 #if($api.getInfo)
 
 /** 查询${functionName}详细 */
 export const get${BusinessName}Api = (${IdName}: ${IdType}) =>
-  defHttp.get<${BusinessName}IM>({ url: Api.GET_${BUSINESSName}, params: ${IdName} });
+  defHttp.get<${BusinessName}IM>({ url: Api.GET, params: ${IdName} });
 #end
 #if($api.add)
 
 /** 新增${functionName} */
 export const add${BusinessName}Api = (params: ${BusinessName}IM) =>
-  defHttp.post({ url: Api.ADD_${BUSINESSName}, params });
+  defHttp.post({ url: Api.ADD, params });
 #end
 #if($api.edit)
 
 /** 修改${functionName} */
 export const edit${BusinessName}Api = (params: ${BusinessName}IM) =>
-  defHttp.put({ url: Api.EDIT_${BUSINESSName}, params });
+  defHttp.put({ url: Api.EDIT, params });
 #end
 #if($api.editStatus)
 #set($StatusName = $statusColumn.javaField)
@@ -76,7 +78,7 @@ export const edit${BusinessName}Api = (params: ${BusinessName}IM) =>
 /** 修改${functionName}状态 */
 export const editStatus${BusinessName}Api = (${IdName}: ${IdType}, ${StatusName}: ${StatusType}) =>
   defHttp.put({
-    url: Api.EDIT_STATUS_${BUSINESSName},
+    url: Api.EDIT_STATUS,
     params: { ${IdName}: ${IdName}, ${StatusName}: ${StatusName} },
   });
 #end
@@ -84,19 +86,19 @@ export const editStatus${BusinessName}Api = (${IdName}: ${IdType}, ${StatusName}
 
 /** 删除${functionName} */
 export const del${BusinessName}Api = (${IdName}s: ${IdType} | ${IdType}[]) =>
-  defHttp.delete({ url: Api.DEL_BATCH_${BUSINESSName}, params: ${IdName}s.toString() });
+  defHttp.delete({ url: Api.DEL_BATCH, params: ${IdName}s.toString() });
 #end
 #if($api.export)
 
 /** 导出${functionName} */
 export const export${BusinessName}Api = async (params?: ${BusinessName}PM) =>
   defHttp.export<any>(
-    { url: Api.EXPORT_${BUSINESSName}, params: params },
+    { url: Api.EXPORT, params: params },
     '${functionName}_' + formatToDateTime(dayjs()) + '.xlsx',
   );
 #end
 #if($api.cache)
 
 /** 刷新${functionName}缓存 */
-export const refresh${BusinessName}Api = () => defHttp.get({ url: Api.REFRESH_${BUSINESSName} });
+export const refresh${BusinessName}Api = () => defHttp.get({ url: Api.REFRESH });
 #end
