@@ -15,8 +15,7 @@ function handleItem(item: BasicColumn, ellipsis: boolean) {
   item.align = item.align || DEFAULT_ALIGN;
   if (ellipsis) {
     if (!key) {
-      // @ts-ignore
-      item.key = dataIndex;
+      item.key = typeof dataIndex == 'object' ? dataIndex.join('-') : dataIndex;
     }
     if (!isBoolean(item.ellipsis)) {
       Object.assign(item, {
