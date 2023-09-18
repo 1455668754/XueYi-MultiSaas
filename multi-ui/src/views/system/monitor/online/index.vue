@@ -71,7 +71,7 @@
     },
     rowSelection: {
       onChange: (selectedRowKeys, selectRows) => {
-        state.ids = selectedRowKeys;
+        state.ids = selectedRowKeys as string[];
         state.idNames = selectRows
           .map((item) => {
             return item.userNick;

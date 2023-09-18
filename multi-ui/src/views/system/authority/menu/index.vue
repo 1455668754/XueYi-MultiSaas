@@ -104,8 +104,8 @@
       slots: { customRender: 'action' },
     },
     rowSelection: {
-      onChange: (selectedRowKeys: string[], selectRows: string[]) => {
-        state.ids = selectedRowKeys;
+      onChange: (selectedRowKeys, selectRows) => {
+        state.ids = selectedRowKeys as string[];
         state.idNames = selectRows
           .map((item) => {
             return item.title;
