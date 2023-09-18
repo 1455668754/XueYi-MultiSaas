@@ -38,7 +38,7 @@ export class VAxios {
   }
 
   private getTransform() {
-    const {transform} = this.options;
+    const { transform } = this.options;
     return transform;
   }
 
@@ -73,7 +73,7 @@ export class VAxios {
     // const transform = this.getTransform();
     const {
       axiosInstance,
-      options: {transform},
+      options: { transform },
     } = this;
     if (!transform) {
       return;
@@ -90,7 +90,8 @@ export class VAxios {
     // Request interceptor configuration processing
     this.axiosInstance.interceptors.request.use((config: InternalAxiosRequestConfig) => {
       // If cancel repeat request is turned on, then cancel repeat request is prohibited
-      const {requestOptions} = this.options;
+      const requestOptions =
+        (config as unknown as any).requestOptions ?? this.options.requestOptions;
       const ignoreCancelToken = requestOptions?.ignoreCancelToken ?? true;
 
       !ignoreCancelToken && axiosCanceler.addPending(config);
@@ -103,8 +104,8 @@ export class VAxios {
 
     // Request interceptor error capture
     requestInterceptorsCatch &&
-    isFunction(requestInterceptorsCatch) &&
-    this.axiosInstance.interceptors.request.use(undefined, requestInterceptorsCatch);
+      isFunction(requestInterceptorsCatch) &&
+      this.axiosInstance.interceptors.request.use(undefined, requestInterceptorsCatch);
 
     // Response result interceptor processing
     this.axiosInstance.interceptors.response.use((res: AxiosResponse<any>) => {
@@ -117,10 +118,10 @@ export class VAxios {
 
     // Response result interceptor error capture
     responseInterceptorsCatch &&
-    isFunction(responseInterceptorsCatch) &&
-    this.axiosInstance.interceptors.response.use(undefined, (error) => {
-      return responseInterceptorsCatch(axiosInstance, error);
-    });
+      isFunction(responseInterceptorsCatch) &&
+      this.axiosInstance.interceptors.response.use(undefined, (error) => {
+        return responseInterceptorsCatch(axiosInstance, error);
+      });
   }
 
   /**
@@ -177,24 +178,24 @@ export class VAxios {
 
     return {
       ...config,
-      data: qs.stringify(config.data, {arrayFormat: 'brackets'}),
+      data: qs.stringify(config.data, { arrayFormat: 'brackets' }),
     };
   }
 
   get<T = any>(config: AxiosRequestConfig, options?: RequestOptions): Promise<T> {
-    return this.request({...config, method: 'GET'}, options);
+    return this.request({ ...config, method: 'GET' }, options);
   }
 
   post<T = any>(config: AxiosRequestConfig, options?: RequestOptions): Promise<T> {
-    return this.request({...config, method: 'POST'}, options);
+    return this.request({ ...config, method: 'POST' }, options);
   }
 
   put<T = any>(config: AxiosRequestConfig, options?: RequestOptions): Promise<T> {
-    return this.request({...config, method: 'PUT'}, options);
+    return this.request({ ...config, method: 'PUT' }, options);
   }
 
   delete<T = any>(config: AxiosRequestConfig, options?: RequestOptions): Promise<T> {
-    return this.request({...config, method: 'DELETE'}, options);
+    return this.request({ ...config, method: 'DELETE' }, options);
   }
 
   download<T = any>(
@@ -213,13 +214,17 @@ export class VAxios {
       conf.cancelToken = config.cancelToken;
     }
 
+    if (config.signal) {
+      conf.signal = config.signal;
+    }
+
     const transform = this.getTransform();
 
-    const {requestOptions} = this.options;
+    const { requestOptions } = this.options;
 
     const opt: RequestOptions = Object.assign({}, requestOptions, options);
 
-    const {beforeRequestHook, requestCatchHook} = transform || {};
+    const { beforeRequestHook, requestCatchHook } = transform || {};
     if (beforeRequestHook && isFunction(beforeRequestHook)) {
       conf = beforeRequestHook(conf, opt);
     }
@@ -264,11 +269,11 @@ export class VAxios {
 
     const transform = this.getTransform();
 
-    const {requestOptions} = this.options;
+    const { requestOptions } = this.options;
 
     const opt: RequestOptions = Object.assign({}, requestOptions, options);
 
-    const {beforeRequestHook, requestCatchHook} = transform || {};
+    const { beforeRequestHook, requestCatchHook } = transform || {};
     if (beforeRequestHook && isFunction(beforeRequestHook)) {
       conf = beforeRequestHook(conf, opt);
     }
@@ -308,11 +313,11 @@ export class VAxios {
 
     const transform = this.getTransform();
 
-    const {requestOptions} = this.options;
+    const { requestOptions } = this.options;
 
     const opt: RequestOptions = Object.assign({}, requestOptions, options);
 
-    const {beforeRequestHook, requestCatchHook, transformResponseHook} = transform || {};
+    const { beforeRequestHook, requestCatchHook, transformResponseHook } = transform || {};
     if (beforeRequestHook && isFunction(beforeRequestHook)) {
       conf = beforeRequestHook(conf, opt);
     }
