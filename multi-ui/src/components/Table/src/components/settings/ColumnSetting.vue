@@ -6,7 +6,7 @@
     <Popover
       placement="bottomLeft"
       trigger="click"
-      @visible-change="handleVisibleChange"
+      @open-change="handleVisibleChange"
       :overlayClassName="`${prefixCls}__cloumn-list`"
       :getPopupContainer="getPopupContainer"
     >
@@ -293,6 +293,7 @@
 
       let sortable: Sortable;
       let sortableOrder: string[] = [];
+
       // reset columns
       function reset() {
         setColumns(cachePlainOptions.value);
