@@ -5,9 +5,9 @@
 <script setup lang="ts">
   import { reactive } from 'vue';
   import { basicFormSchema, genList } from './gen.detail.data';
-  import { BasicForm, useForm } from '/@/components/Form';
+  import { BasicForm, useForm } from '@/components/Form';
   import { GenTableIM } from '@/model/gen/generate';
-  import { sourceCopy } from '/@/utils/xueyi';
+  import { sourceCopy } from '@/utils/xueyi';
 
   const emit = defineEmits(['submit']);
   defineExpose({ initialize, submit });

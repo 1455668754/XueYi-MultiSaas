@@ -6,7 +6,7 @@
 
 <script lang="ts">
   import { defineComponent, nextTick, ref, unref } from 'vue';
-  import { Scrollbar, ScrollbarType } from '/@/components/Scrollbar';
+  import { Scrollbar, ScrollbarType } from '@/components/Scrollbar';
   import { useScrollTo } from '@xueyi/hooks';
   import { type Nullable } from '@xueyi/types';
 

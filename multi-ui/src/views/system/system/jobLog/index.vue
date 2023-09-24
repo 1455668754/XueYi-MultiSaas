@@ -31,15 +31,15 @@
 
 <script setup lang="ts">
   import { ref } from 'vue';
-  import { useModal } from '/@/components/Modal';
-  import { IconEnum } from '@/enums/basic';
-  import { BasicTable, TableAction, useTable } from '/@/components/Table';
-  import { JobAuth } from '/@/auth/system/system';
+  import { useModal } from '@/components/Modal';
+  import { IconEnum } from '@/enums';
+  import { BasicTable, TableAction, useTable } from '@/components/Table';
+  import { JobAuth } from '@/auth/system/system';
   import { columns, searchFormSchema } from './jobLog.data';
   import JobLogModal from './JobLogModal.vue';
   import { cleanJobLogApi, listJobLogApi } from '@/api/system/system/jobLog.api';
   import { useRoute } from 'vue-router';
-  import { useMessage } from '/@/hooks/web/useMessage';
+  import { useMessage } from '@/hooks/web/useMessage';
   import { isEmpty } from 'lodash-es';
 
   const route = useRoute();

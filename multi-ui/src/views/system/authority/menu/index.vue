@@ -58,15 +58,15 @@
 <script setup lang="ts">
   import { reactive } from 'vue';
   import { delMenuApi, listMenuApi } from '@/api/system/authority/menu.api';
-  import { useModal } from '/@/components/Modal';
-  import { useMessage } from '/@/hooks/web/useMessage';
-  import { BasicTable, TableAction, useTable } from '/@/components/Table';
-  import { MenuAuth } from '/@/auth/system/authority';
+  import { useModal } from '@/components/Modal';
+  import { useMessage } from '@/hooks/web/useMessage';
+  import { BasicTable, TableAction, useTable } from '@/components/Table';
+  import { MenuAuth } from '@/auth/system/authority';
   import { columns, searchFormSchema } from './menu.data';
   import { COMMON_MENU, MenuDetailGo } from '@/enums/system/authority';
   import MenuModal from './MenuModal.vue';
-  import { useUserStore } from '/@/store/modules/user';
-  import { IconEnum } from '@/enums/basic';
+  import { useUserStore } from '@/store/modules/user';
+  import { IconEnum } from '@/enums';
 
   const { createMessage, createConfirm } = useMessage();
   const [registerModal, { openModal }] = useModal();

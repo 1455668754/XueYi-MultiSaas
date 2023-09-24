@@ -1,6 +1,6 @@
 import { computed, ComputedRef, ref, unref } from 'vue';
-import { useEventListener } from '/@/hooks/event/useEventListener';
-import { ScreenEnum, screenMap, ScreenSizeEnum } from '@/enums/basic';
+import { useEventListener } from '@/hooks/event/useEventListener';
+import { ScreenEnum, screenMap, ScreenSizeEnum } from '@/enums';
 
 // 可以用这个替换，优化项
 // import { Grid } from 'ant-design-vue';

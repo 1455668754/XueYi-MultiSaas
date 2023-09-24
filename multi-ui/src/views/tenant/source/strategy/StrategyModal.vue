@@ -7,14 +7,14 @@
 <script setup lang="ts">
   import { computed, ref, unref } from 'vue';
   import { formSchema } from './strategy.data';
-  import { useMessage } from '/@/hooks/web/useMessage';
+  import { useMessage } from '@/hooks/web/useMessage';
   import {
     addStrategyApi,
     editStrategyApi,
     getStrategyApi,
   } from '@/api/tenant/source/strategy.api';
-  import { BasicModal, useModalInner } from '/@/components/Modal';
-  import { BasicForm, useForm } from '/@/components/Form';
+  import { BasicModal, useModalInner } from '@/components/Modal';
+  import { BasicForm, useForm } from '@/components/Form';
 
   const emit = defineEmits(['success', 'register']);
 

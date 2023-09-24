@@ -1,6 +1,6 @@
 import type { PropType } from 'vue';
 import { defineComponent, Transition, TransitionGroup } from 'vue';
-import { getSlot } from '/@/utils/helper/tsxHelper';
+import { getSlot } from '@/utils/helper/tsxHelper';
 
 type Mode = 'in-out' | 'out-in' | 'default' | undefined;
 

@@ -8,11 +8,11 @@
 
 <script setup lang="ts">
   import { ref } from 'vue';
-  import { BasicModal, useModalInner } from '/@/components/Modal';
-  import { BasicForm, useForm } from '/@/components/Form';
+  import { BasicModal, useModalInner } from '@/components/Modal';
+  import { BasicForm, useForm } from '@/components/Form';
   import { ListItemIM, SecureEnum, secureFormSchema, secureSettingList } from './data';
-  import { useMessage } from '/@/hooks/web/useMessage';
-  import { useUserStore } from '/@/store/modules/user';
+  import { useMessage } from '@/hooks/web/useMessage';
+  import { useUserStore } from '@/store/modules/user';
   import {
     resetUserEmailApi,
     resetUserNameApi,

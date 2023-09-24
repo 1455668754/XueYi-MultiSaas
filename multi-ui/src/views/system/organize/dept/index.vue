@@ -62,16 +62,16 @@
 <script setup lang="ts">
   import { reactive } from 'vue';
   import { delDeptApi, listDeptApi } from '@/api/system/organize/dept.api';
-  import { useModal } from '/@/components/Modal';
-  import { useMessage } from '/@/hooks/web/useMessage';
-  import { IconEnum } from '@/enums/basic';
-  import { BasicTable, TableAction, useTable } from '/@/components/Table';
-  import { DeptAuth } from '/@/auth/system/organize';
+  import { useModal } from '@/components/Modal';
+  import { useMessage } from '@/hooks/web/useMessage';
+  import { IconEnum } from '@/enums';
+  import { BasicTable, TableAction, useTable } from '@/components/Table';
+  import { DeptAuth } from '@/auth/system/organize';
   import { columns, searchFormSchema } from './dept.data';
   import { DeptDetailGo } from '@/enums/system/organize';
   import DeptModal from './DeptModal.vue';
   import DeptRoleModal from './DeptRoleModal.vue';
-  import { useUserStore } from '/@/store/modules/user';
+  import { useUserStore } from '@/store/modules/user';
 
   const { createMessage, createConfirm } = useMessage();
   const [registerModal, { openModal }] = useModal();

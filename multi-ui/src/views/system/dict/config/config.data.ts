@@ -1,6 +1,6 @@
-import { FormSchema } from '/@/components/Form';
-import { BasicColumn } from '/@/components/Table';
-import { DescItem } from '/@/components/Description';
+import { FormSchema } from '@/components/Form';
+import { BasicColumn } from '@/components/Table';
+import { DescItem } from '@/components/Description';
 import { dicDictList } from '@/api/sys/dict.api';
 import {
   ColorEnum,
@@ -9,9 +9,9 @@ import {
   DicSortEnum,
   DicStatusEnum,
   DicYesNoEnum,
-} from '@/enums/basic';
+} from '@/enums';
 import { ConfigIM } from '@/model/system/dict';
-import { dictConversion } from '/@/utils/xueyi';
+import { dictConversion } from '@/utils/xueyi';
 import { DicCacheTypeEnum, DicCodeDictEnum, DicDataTypeEnum } from '@/enums/system/dict';
 import { isNotEmpty } from '@/utils/is';
 import { listTenantApi } from '@/api/tenant/tenant/tenant.api';

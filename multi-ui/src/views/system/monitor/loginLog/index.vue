@@ -45,10 +45,10 @@
     delLoginLogApi,
     listLoginLogApi,
   } from '@/api/system/monitor/loginLog.api';
-  import { useMessage } from '/@/hooks/web/useMessage';
-  import { IconEnum } from '@/enums/basic';
-  import { BasicTable, TableAction, useTable } from '/@/components/Table';
-  import { LoginLogAuth } from '/@/auth/system/monitor';
+  import { useMessage } from '@/hooks/web/useMessage';
+  import { IconEnum } from '@/enums';
+  import { BasicTable, TableAction, useTable } from '@/components/Table';
+  import { LoginLogAuth } from '@/auth/system/monitor';
   import { columns, searchFormSchema } from './loginLog.data';
 
   const { createMessage, createConfirm } = useMessage();

@@ -1,8 +1,8 @@
-import type { AppRouteRecordRaw, Menu, MenuModule } from '/@/router/types';
-import { AppRouteModule } from '/@/router/types';
-import { findPath, treeMap } from '/@/utils/helper/treeHelper';
+import type { AppRouteRecordRaw, Menu, MenuModule } from '@/router/types';
+import { AppRouteModule } from '@/router/types';
+import { findPath, treeMap } from '@/utils/helper/treeHelper';
 import { cloneDeep } from 'lodash-es';
-import { isUrl } from '/@/utils/is';
+import { isUrl } from '@/utils/is';
 import { RouteParams } from 'vue-router';
 import { toRaw } from 'vue';
 

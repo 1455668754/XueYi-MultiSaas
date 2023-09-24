@@ -62,15 +62,15 @@
 <script setup lang="ts">
   import { onMounted, reactive } from 'vue';
   import { delConfigApi, listConfigApi, refreshConfigApi } from '@/api/system/dict/config.api';
-  import { useModal } from '/@/components/Modal';
-  import { useMessage } from '/@/hooks/web/useMessage';
-  import { IconEnum } from '@/enums/basic';
-  import { BasicTable, TableAction, useTable } from '/@/components/Table';
+  import { useModal } from '@/components/Modal';
+  import { useMessage } from '@/hooks/web/useMessage';
+  import { IconEnum } from '@/enums';
+  import { BasicTable, TableAction, useTable } from '@/components/Table';
   import { ConfigAuth } from '@/auth/system/dict';
   import { columns, searchFormSchema } from './config.data';
   import { ConfigDetailGo } from '@/enums/system/dict';
   import ConfigModal from './ConfigModal.vue';
-  import { useUserStore } from '/@/store/modules/user';
+  import { useUserStore } from '@/store/modules/user';
   import { listTenantApi } from '@/api/tenant/tenant/tenant.api';
   import { TenantIM } from '@/model/tenant/tenant';
 

@@ -29,7 +29,7 @@
   import { Divider } from 'ant-design-vue';
   import TableSettingComponent from './settings/index.vue';
   import TableTitle from './TableTitle.vue';
-  import { useDesign } from '/@/hooks/web/useDesign';
+  import { useDesign } from '@/hooks/web/useDesign';
 
   export default defineComponent({
     name: 'BasicTableHeader',
@@ -56,9 +56,11 @@
     emits: ['columns-change'],
     setup(_, { emit }) {
       const { prefixCls } = useDesign('basic-table-header');
+
       function handleColumnChange(data: ColumnChangeParam[]) {
         emit('columns-change', data);
       }
+
       return { prefixCls, handleColumnChange };
     },
   });

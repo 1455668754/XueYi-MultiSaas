@@ -18,13 +18,13 @@
   import type { PropType } from 'vue';
   import { computed, defineComponent, unref } from 'vue';
   import type { RouteLocationNormalized } from 'vue-router';
-  import { Dropdown } from '/@/components/Dropdown';
+  import { Dropdown } from '@/components/Dropdown';
   import Icon from '@/components/Icon/Icon.vue';
 
   import { TabContentProps } from '../types';
 
-  import { useDesign } from '/@/hooks/web/useDesign';
-  import { useI18n } from '/@/hooks/web/useI18n';
+  import { useDesign } from '@/hooks/web/useDesign';
+  import { useI18n } from '@/hooks/web/useI18n';
   import { useTabDropdown } from '../useTabDropdown';
 
   export default defineComponent({

@@ -16,10 +16,10 @@
 <script setup lang="ts">
   import { reactive } from 'vue';
   import { modelColumns, searchModelFormSchema } from './gen.data';
-  import { BasicModal, useModalInner } from '/@/components/Modal';
+  import { BasicModal, useModalInner } from '@/components/Modal';
   import { importDBGenApi, listDBGenApi } from '@/api/gen/generate/gen.api';
-  import { useMessage } from '/@/hooks/web/useMessage';
-  import { BasicTable, useTable } from '/@/components/Table';
+  import { useMessage } from '@/hooks/web/useMessage';
+  import { BasicTable, useTable } from '@/components/Table';
 
   const emit = defineEmits(['success', 'register']);
 

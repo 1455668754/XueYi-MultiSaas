@@ -25,13 +25,13 @@
 <script lang="ts">
   import { defineComponent, onMounted, ref } from 'vue';
   import { Card, Tag } from 'ant-design-vue';
-  import { useMessage } from '/@/hooks/web/useMessage';
-  import { usePermission } from '/@/hooks/web/usePermission';
+  import { useMessage } from '@/hooks/web/useMessage';
+  import { usePermission } from '@/hooks/web/usePermission';
   import { MODULE_CACHE } from '@/enums/system/authority';
   import { ModuleIM, ModuleLM } from '@/model/system/authority';
   import { getModuleList } from '@/api/sys/menu.api';
   import { isEqual } from 'lodash-es';
-  import { usePermissionStore } from '/@/store/modules/permission';
+  import { usePermissionStore } from '@/store/modules/permission';
   import Icon from '@/components/Icon/Icon.vue';
 
   export default defineComponent({

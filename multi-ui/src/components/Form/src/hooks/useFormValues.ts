@@ -1,5 +1,5 @@
-import { isArray, isFunction, isNullOrUnDef, isObject, isString } from '/@/utils/is';
-import { dateUtil } from '/@/utils/dateUtil';
+import { isArray, isFunction, isNullOrUnDef, isObject, isString } from '@/utils/is';
+import { dateUtil } from '@/utils/dateUtil';
 import type { ComputedRef, Ref } from 'vue';
 import { unref } from 'vue';
 import type { FormProps, FormSchema } from '../types/form';

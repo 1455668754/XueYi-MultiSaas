@@ -6,10 +6,10 @@
 
 <script setup lang="ts">
   import { resPwdFormSchema } from './user.data';
-  import { useMessage } from '/@/hooks/web/useMessage';
+  import { useMessage } from '@/hooks/web/useMessage';
   import { resetUserPwdApi } from '@/api/system/organize/user.api';
-  import { BasicModal, useModalInner } from '/@/components/Modal';
-  import { BasicForm, useForm } from '/@/components/Form';
+  import { BasicModal, useModalInner } from '@/components/Modal';
+  import { BasicForm, useForm } from '@/components/Form';
 
   const { createMessage } = useMessage();
 

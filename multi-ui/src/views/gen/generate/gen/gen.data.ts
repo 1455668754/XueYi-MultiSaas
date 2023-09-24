@@ -1,5 +1,5 @@
-import { FormSchema } from '/@/components/Form';
-import { BasicColumn } from '/@/components/Table';
+import { FormSchema } from '@/components/Form';
+import { BasicColumn } from '@/components/Table';
 import { listSourceApi } from '@/api/tenant/source/source.api';
 import { DicStatusEnum } from '@/enums';
 import { SourceIM } from '@/model/tenant/source';

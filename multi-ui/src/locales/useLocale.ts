@@ -4,7 +4,7 @@
 import type { LocaleType } from '/#/config';
 
 import { i18n } from './setupI18n';
-import { useLocaleStoreWithOut } from '/@/store/modules/locale';
+import { useLocaleStoreWithOut } from '@/store/modules/locale';
 import { computed, unref } from 'vue';
 import { loadLocalePool, setHtmlPageLang } from './helper';
 
@@ -22,7 +22,7 @@ function setI18nLanguage(locale: LocaleType) {
   } else {
     (i18n.global.locale as any).value = locale;
   }
-  localeStore.setLocaleInfo({locale});
+  localeStore.setLocaleInfo({ locale });
   setHtmlPageLang(locale);
 }
 
@@ -52,7 +52,7 @@ export function useLocale() {
     const langModule = ((await import(`./lang/${locale}.ts`)) as any).default as LangModule;
     if (!langModule) return;
 
-    const {message} = langModule;
+    const { message } = langModule;
 
     globalI18n.setLocaleMessage(locale, message);
     loadLocalePool.push(locale);

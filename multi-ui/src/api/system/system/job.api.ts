@@ -1,5 +1,5 @@
 import { JobIM, JobLRM, JobPPM } from '@/model/system/system';
-import { defHttp } from '/@/utils/http/axios';
+import { defHttp } from '@/utils/http/axios';
 
 const basicApi = '/schedule/admin/job';
 

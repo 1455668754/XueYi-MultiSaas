@@ -33,13 +33,13 @@
   import GenerateForm from './GenerateForm.vue';
   import { genList } from './gen.detail.data';
   import { editGenApi, getSubGenApi } from '@/api/gen/generate/gen.api';
-  import { useMessage } from '/@/hooks/web/useMessage';
-  import { useTabs } from '/@/hooks/web/useTabs';
-  import { PageWrapper } from '/@/components/Page';
+  import { useMessage } from '@/hooks/web/useMessage';
+  import { useTabs } from '@/hooks/web/useTabs';
+  import { PageWrapper } from '@/components/Page';
   import { GenTableIM } from '@/model/gen/generate';
   import { GenIndexGo } from '@/enums/gen/generate';
-  import { GenAuth } from '/@/auth/gen/generate';
-  import { useUserStore } from '/@/store/modules/user';
+  import { GenAuth } from '@/auth/gen/generate';
+  import { useUserStore } from '@/store/modules/user';
 
   export default defineComponent({
     name: 'GenDetail',

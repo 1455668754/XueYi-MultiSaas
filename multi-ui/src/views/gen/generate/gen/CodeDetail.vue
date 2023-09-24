@@ -19,12 +19,12 @@
   import { Modal, Tabs } from 'ant-design-vue';
   import { GenCodeLM } from '@/model/gen/generate';
   import { useRoute } from 'vue-router';
-  import { CodeEditor, JsonPreview, MODE } from '/@/components/CodeEditor';
-  import { useTabs } from '/@/hooks/web/useTabs';
+  import { CodeEditor, JsonPreview, MODE } from '@/components/CodeEditor';
+  import { useTabs } from '@/hooks/web/useTabs';
   import { getGenApi, previewGenApi } from '@/api/gen/generate/gen.api';
-  import { PageWrapper } from '/@/components/Page';
+  import { PageWrapper } from '@/components/Page';
   import { GenIndexGo } from '@/enums/gen/generate';
-  import { useUserStore } from '/@/store/modules/user';
+  import { useUserStore } from '@/store/modules/user';
 
   const ATabs = Tabs;
   const ATabPane = Tabs.TabPane;

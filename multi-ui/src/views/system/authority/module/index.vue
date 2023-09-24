@@ -56,13 +56,13 @@
 <script setup lang="ts">
   import { reactive } from 'vue';
   import { delModuleApi, listModuleApi } from '@/api/system/authority/module.api';
-  import { useModal } from '/@/components/Modal';
-  import { useMessage } from '/@/hooks/web/useMessage';
-  import { useUserStore } from '/@/store/modules/user';
-  import { IconEnum } from '@/enums/basic';
-  import { BasicTable, TableAction, useTable } from '/@/components/Table';
+  import { useModal } from '@/components/Modal';
+  import { useMessage } from '@/hooks/web/useMessage';
+  import { useUserStore } from '@/store/modules/user';
+  import { IconEnum } from '@/enums';
+  import { BasicTable, TableAction, useTable } from '@/components/Table';
   import { Image } from 'ant-design-vue';
-  import { ModuleAuth } from '/@/auth/system/authority';
+  import { ModuleAuth } from '@/auth/system/authority';
   import { columns, searchFormSchema } from './module.data';
   import { ModuleDetailGo } from '@/enums/system/authority';
   import ModuleModal from './ModuleModal.vue';

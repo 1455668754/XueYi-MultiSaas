@@ -53,15 +53,15 @@
 <script setup lang="ts">
   import { reactive } from 'vue';
   import { delSourceApi, listSourceApi } from '@/api/tenant/source/source.api';
-  import { useModal } from '/@/components/Modal';
-  import { useMessage } from '/@/hooks/web/useMessage';
-  import { IconEnum } from '@/enums/basic';
-  import { BasicTable, TableAction, useTable } from '/@/components/Table';
-  import { SourceAuth } from '/@/auth/tenant/source';
+  import { useModal } from '@/components/Modal';
+  import { useMessage } from '@/hooks/web/useMessage';
+  import { IconEnum } from '@/enums';
+  import { BasicTable, TableAction, useTable } from '@/components/Table';
+  import { SourceAuth } from '@/auth/tenant/source';
   import { columns, searchFormSchema } from './source.data';
   import { SourceDetailGo } from '@/enums/tenant/source';
   import SourceModal from './SourceModal.vue';
-  import { useUserStore } from '/@/store/modules/user';
+  import { useUserStore } from '@/store/modules/user';
 
   const { createMessage, createConfirm } = useMessage();
   const [registerModal, { openModal }] = useModal();

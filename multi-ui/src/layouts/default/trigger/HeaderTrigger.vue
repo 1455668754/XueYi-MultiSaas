@@ -6,9 +6,9 @@
 
 <script lang="ts" setup>
   import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons-vue';
-  import { useMenuSetting } from '/@/hooks/setting/useMenuSetting';
-  import { useDesign } from '/@/hooks/web/useDesign';
-  import { propTypes } from '/@/utils/propTypes';
+  import { useMenuSetting } from '@/hooks/setting/useMenuSetting';
+  import { useDesign } from '@/hooks/web/useDesign';
+  import { propTypes } from '@/utils/propTypes';
 
   defineProps({
     theme: propTypes.oneOf(['light', 'dark']),

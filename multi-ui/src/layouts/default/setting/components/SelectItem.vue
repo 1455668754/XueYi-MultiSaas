@@ -15,7 +15,7 @@
   import { computed, defineComponent, PropType } from 'vue';
 
   import { Select } from 'ant-design-vue';
-  import { useDesign } from '/@/hooks/web/useDesign';
+  import { useDesign } from '@/hooks/web/useDesign';
   import { baseHandler } from '../handler';
   import { HandlerEnum } from '../enum';
 
@@ -52,6 +52,7 @@
       function handleChange(e: ChangeEvent) {
         props.event && baseHandler(props.event, e);
       }
+
       return {
         prefixCls,
         handleChange,

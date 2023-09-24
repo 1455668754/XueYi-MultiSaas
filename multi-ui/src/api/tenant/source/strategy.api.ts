@@ -1,5 +1,5 @@
 import { StrategyIM, StrategyLRM, StrategyPPM } from '@/model/tenant/source';
-import { defHttp } from '/@/utils/http/axios';
+import { defHttp } from '@/utils/http/axios';
 
 const basicApi = '/tenant/admin/strategy';
 

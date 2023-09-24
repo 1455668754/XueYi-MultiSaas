@@ -19,9 +19,9 @@
 <script setup lang="ts">
   import { computed, ref, unref } from 'vue';
   import { Transfer } from 'ant-design-vue';
-  import { useMessage } from '/@/hooks/web/useMessage';
-  import { BasicModal, useModalInner } from '/@/components/Modal';
-  import { BasicForm, useForm } from '/@/components/Form';
+  import { useMessage } from '@/hooks/web/useMessage';
+  import { BasicModal, useModalInner } from '@/components/Modal';
+  import { BasicForm, useForm } from '@/components/Form';
   import { AuthGroupLM } from '@/model/system/authority';
   import { DicStatusEnum } from '@/enums';
   import { TransferItem } from 'ant-design-vue/lib/transfer';

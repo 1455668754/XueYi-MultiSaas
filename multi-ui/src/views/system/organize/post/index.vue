@@ -61,17 +61,17 @@
 <script setup lang="ts">
   import { reactive } from 'vue';
   import { delPostApi, listPostApi } from '@/api/system/organize/post.api';
-  import { useModal } from '/@/components/Modal';
-  import { useMessage } from '/@/hooks/web/useMessage';
-  import { IconEnum } from '@/enums/basic';
-  import { BasicTable, TableAction, useTable } from '/@/components/Table';
-  import { PostAuth } from '/@/auth/system/organize';
+  import { useModal } from '@/components/Modal';
+  import { useMessage } from '@/hooks/web/useMessage';
+  import { IconEnum } from '@/enums';
+  import { BasicTable, TableAction, useTable } from '@/components/Table';
+  import { PostAuth } from '@/auth/system/organize';
   import { columns, searchFormSchema } from './post.data';
   import { PostDetailGo } from '@/enums/system/organize';
   import PostModal from './PostModal.vue';
   import PostRoleModal from './PostRoleModal.vue';
-  import { useUserStore } from '/@/store/modules/user';
-  import PageWrapper from '/@/components/Page/src/PageWrapper.vue';
+  import { useUserStore } from '@/store/modules/user';
+  import PageWrapper from '@/components/Page/src/PageWrapper.vue';
   import DeptTree from './DeptTree.vue';
 
   const searchInfo = reactive<Recordable>({});

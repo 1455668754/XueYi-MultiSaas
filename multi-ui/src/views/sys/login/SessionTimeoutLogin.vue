@@ -9,9 +9,9 @@
 <script lang="ts" setup>
   import { onBeforeUnmount, onMounted, ref } from 'vue';
   import Login from './Login.vue';
-  import { useDesign } from '/@/hooks/web/useDesign';
-  import { useUserStore } from '/@/store/modules/user';
-  import { usePermissionStore } from '/@/store/modules/permission';
+  import { useDesign } from '@/hooks/web/useDesign';
+  import { useUserStore } from '@/store/modules/user';
+  import { usePermissionStore } from '@/store/modules/permission';
   import { type Nullable } from '@xueyi/types';
 
   const { prefixCls } = useDesign('st-login');

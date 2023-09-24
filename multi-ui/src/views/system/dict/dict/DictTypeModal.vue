@@ -6,10 +6,10 @@
 
 <script setup lang="ts">
   import { computed, ref, unref } from 'vue';
-  import { useMessage } from '/@/hooks/web/useMessage';
+  import { useMessage } from '@/hooks/web/useMessage';
   import { addDictTypeApi, editDictTypeApi, getDictTypeApi } from '@/api/system/dict/dictType.api';
-  import { BasicModal, useModalInner } from '/@/components/Modal';
-  import { BasicForm, useForm } from '/@/components/Form';
+  import { BasicModal, useModalInner } from '@/components/Modal';
+  import { BasicForm, useForm } from '@/components/Form';
   import { typeFormSchema } from './dict.data';
 
   const emit = defineEmits(['success', 'register']);

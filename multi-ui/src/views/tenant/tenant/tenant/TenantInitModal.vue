@@ -36,11 +36,11 @@
     tenantFormSchema,
     tenantInitList,
   } from './tenant.data';
-  import { useMessage } from '/@/hooks/web/useMessage';
+  import { useMessage } from '@/hooks/web/useMessage';
   import { addTenantApi } from '@/api/tenant/tenant/tenant.api';
-  import { BasicModal, useModalInner } from '/@/components/Modal';
-  import { BasicForm, useForm } from '/@/components/Form';
-  import { sourceAssign } from '/@/utils/xueyi';
+  import { BasicModal, useModalInner } from '@/components/Modal';
+  import { BasicForm, useForm } from '@/components/Form';
+  import { sourceAssign } from '@/utils/xueyi';
 
   const emit = defineEmits(['success', 'register']);
 

@@ -7,14 +7,14 @@
 <script setup lang="ts">
   import { onMounted, ref } from 'vue';
   import { getUserApi } from '@/api/system/organize/user.api';
-  import { Description, useDescription } from '/@/components/Description';
+  import { Description, useDescription } from '@/components/Description';
   import { detailSchema } from './user.data';
   import { useRoute } from 'vue-router';
   import { UserIndexGo } from '@/enums/system/organize';
-  import { useTabs } from '/@/hooks/web/useTabs';
-  import { PageWrapper } from '/@/components/Page';
-  import { useUserStore } from '/@/store/modules/user';
-  import { DescItemSizeEnum } from '@/enums/basic';
+  import { useTabs } from '@/hooks/web/useTabs';
+  import { PageWrapper } from '@/components/Page';
+  import { useUserStore } from '@/store/modules/user';
+  import { DescItemSizeEnum } from '@/enums';
 
   const route = useRoute();
   const { setTitle } = useTabs();

@@ -68,15 +68,15 @@
 <script setup lang="ts">
   import { reactive } from 'vue';
   import { delRoleApi, listRoleApi } from '@/api/system/authority/role.api';
-  import { useModal } from '/@/components/Modal';
-  import { useMessage } from '/@/hooks/web/useMessage';
-  import { IconEnum } from '@/enums/basic';
-  import { BasicTable, TableAction, useTable } from '/@/components/Table';
-  import { RoleAuth } from '/@/auth/system/authority';
+  import { useModal } from '@/components/Modal';
+  import { useMessage } from '@/hooks/web/useMessage';
+  import { IconEnum } from '@/enums';
+  import { BasicTable, TableAction, useTable } from '@/components/Table';
+  import { RoleAuth } from '@/auth/system/authority';
   import { columns, searchFormSchema } from './role.data';
   import { RoleDetailGo } from '@/enums/system/authority';
   import RoleModal from './RoleModal.vue';
-  import { useUserStore } from '/@/store/modules/user';
+  import { useUserStore } from '@/store/modules/user';
   import RoleInitModal from './RoleInitModal.vue';
   import RoleAuthModal from './RoleAuthModal.vue';
   import RoleDataModal from './RoleDataModal.vue';

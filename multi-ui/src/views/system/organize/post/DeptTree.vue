@@ -16,9 +16,9 @@
 
 <script setup lang="ts">
   import { onMounted, ref } from 'vue';
-  import { BasicTree, TreeItem } from '/@/components/Tree';
+  import { BasicTree, TreeItem } from '@/components/Tree';
   import { listDeptApi } from '@/api/system/organize/dept.api';
-  import { ScrollContainer } from '/@/components/Container';
+  import { ScrollContainer } from '@/components/Container';
   import { DicStatusEnum } from '@/enums';
 
   const emit = defineEmits(['select']);

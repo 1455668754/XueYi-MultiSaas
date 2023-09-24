@@ -7,14 +7,14 @@
 <script setup lang="ts">
   import { onMounted, ref } from 'vue';
   import { getJobApi } from '@/api/system/system/job.api';
-  import { Description, useDescription } from '/@/components/Description';
+  import { Description, useDescription } from '@/components/Description';
   import { detailSchema } from './job.data';
   import { useRoute } from 'vue-router';
   import { JobIndexGo } from '@/enums/system/system';
-  import { useTabs } from '/@/hooks/web/useTabs';
-  import { PageWrapper } from '/@/components/Page';
-  import { useUserStore } from '/@/store/modules/user';
-  import { DescItemSizeEnum } from '@/enums/basic';
+  import { useTabs } from '@/hooks/web/useTabs';
+  import { PageWrapper } from '@/components/Page';
+  import { useUserStore } from '@/store/modules/user';
+  import { DescItemSizeEnum } from '@/enums';
 
   const route = useRoute();
   const { setTitle } = useTabs();

@@ -7,10 +7,10 @@
 <script setup lang="ts">
   import { computed, ref, unref } from 'vue';
   import { formSchema } from './dept.data';
-  import { useMessage } from '/@/hooks/web/useMessage';
+  import { useMessage } from '@/hooks/web/useMessage';
   import { addDeptApi, editDeptApi, getDeptApi, listDeptApi } from '@/api/system/organize/dept.api';
-  import { BasicModal, useModalInner } from '/@/components/Modal';
-  import { BasicForm, useForm } from '/@/components/Form';
+  import { BasicModal, useModalInner } from '@/components/Modal';
+  import { BasicForm, useForm } from '@/components/Form';
 
   const emit = defineEmits(['success', 'register']);
 

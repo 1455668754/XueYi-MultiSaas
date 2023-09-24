@@ -66,13 +66,13 @@
   } from 'vue';
   import ImgUpload from './ImgUpload.vue';
   import { plugins, toolbar } from './tinymce';
-  import { buildShortUUID } from '/@/utils/uuid';
+  import { buildShortUUID } from '@/utils/uuid';
   import { bindHandlers } from './helper';
   import { onMountedOrActivated } from '@xueyi/hooks';
-  import { useDesign } from '/@/hooks/web/useDesign';
-  import { isNumber } from '/@/utils/is';
-  import { useLocale } from '/@/locales/useLocale';
-  import { useAppStore } from '/@/store/modules/app';
+  import { useDesign } from '@/hooks/web/useDesign';
+  import { isNumber } from '@/utils/is';
+  import { useLocale } from '@/locales/useLocale';
+  import { useAppStore } from '@/store/modules/app';
 
   const tinymceProps = {
     options: {

@@ -2,7 +2,7 @@ import type { TransitionSetting } from '/#/config';
 
 import { computed } from 'vue';
 
-import { useAppStore } from '/@/store/modules/app';
+import { useAppStore } from '@/store/modules/app';
 
 export function useTransitionSetting() {
   const appStore = useAppStore();
@@ -20,6 +20,7 @@ export function useTransitionSetting() {
   function setTransitionSetting(transitionSetting: Partial<TransitionSetting>) {
     appStore.setProjectConfig({ transitionSetting });
   }
+
   return {
     setTransitionSetting,
 

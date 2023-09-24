@@ -51,8 +51,8 @@
 
   import { computed, defineComponent, inject, ref, toRaw, unref, watchEffect } from 'vue';
   import { Table } from 'ant-design-vue';
-  import { BasicForm, useForm } from '/@/components/Form/index';
-  import { PageWrapperFixedHeightKey } from '@/enums/basic';
+  import { BasicForm, useForm } from '@/components/Form/index';
+  import { PageWrapperFixedHeightKey } from '@/enums';
   import HeaderCell from './components/HeaderCell.vue';
 
   import { usePagination } from './hooks/usePagination';
@@ -69,12 +69,12 @@
   import { createTableContext } from './hooks/useTableContext';
   import { useTableFooter } from './hooks/useTableFooter';
   import { useTableForm } from './hooks/useTableForm';
-  import { useDesign } from '/@/hooks/web/useDesign';
+  import { useDesign } from '@/hooks/web/useDesign';
 
   import { omit } from 'lodash-es';
   import { basicProps } from './props';
-  import { isFunction } from '/@/utils/is';
-  import { warn } from '/@/utils/log';
+  import { isFunction } from '@/utils/is';
+  import { warn } from '@/utils/log';
 
   const events = [
     'fetch-success',

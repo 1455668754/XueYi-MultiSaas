@@ -1,13 +1,13 @@
-import { FormSchema } from '/@/components/Form';
-import { BasicColumn } from '/@/components/Table';
-import { DescItem } from '/@/components/Description';
+import { FormSchema } from '@/components/Form';
+import { BasicColumn } from '@/components/Table';
+import { DescItem } from '@/components/Description';
 import { dicDictList } from '@/api/sys/dict.api';
-import { DicSortEnum, DicStatusEnum } from '@/enums/basic';
+import { DicSortEnum, DicStatusEnum } from '@/enums';
 import { UserIM } from '@/model/system/organize';
 import { DefaultPassword, OrganizeTypeEnum, SexEnum } from '@/enums/system/organize';
 import { organizeOptionApi } from '@/api/system/organize/organize.api';
 import { isEmpty, isEqual, pull } from 'lodash-es';
-import { dictConversion } from '/@/utils/xueyi';
+import { dictConversion } from '@/utils/xueyi';
 import { isNotEmpty } from '@/utils/is';
 
 /** 字典查询 */

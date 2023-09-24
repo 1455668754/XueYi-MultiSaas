@@ -30,7 +30,7 @@
   import { Layout } from 'ant-design-vue';
   import { computed, CSSProperties, h, ref, unref } from 'vue';
 
-  import { MenuModeEnum, MenuSplitTyeEnum } from '@/enums/basic';
+  import { MenuModeEnum, MenuSplitTyeEnum } from '@/enums';
   import { useMenuSetting } from '@/hooks/setting/useMenuSetting';
   import { useAppInject } from '@/hooks/web/useAppInject';
   import { useDesign } from '@/hooks/web/useDesign';

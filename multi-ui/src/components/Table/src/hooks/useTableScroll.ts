@@ -1,9 +1,9 @@
 import type { BasicColumn, BasicTableProps, TableRowSelection } from '../types/table';
 import { computed, ComputedRef, nextTick, Ref, ref, unref, watch } from 'vue';
-import { getViewportOffset } from '/@/utils/domUtils';
-import { isBoolean } from '/@/utils/is';
+import { getViewportOffset } from '@/utils/domUtils';
+import { isBoolean } from '@/utils/is';
 import { onMountedOrActivated, useWindowSizeFn } from '@xueyi/hooks';
-import { useModalContext } from '/@/components/Modal';
+import { useModalContext } from '@/components/Modal';
 import { useDebounceFn } from '@vueuse/core';
 
 export function useTableScroll(

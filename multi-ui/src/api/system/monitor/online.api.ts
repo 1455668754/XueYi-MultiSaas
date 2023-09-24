@@ -1,5 +1,5 @@
 import { OnlineLRM, OnlinePPM } from '@/model/system/monitor';
-import { defHttp } from '/@/utils/http/axios';
+import { defHttp } from '@/utils/http/axios';
 
 const basicApi = '/system/admin/online';
 
