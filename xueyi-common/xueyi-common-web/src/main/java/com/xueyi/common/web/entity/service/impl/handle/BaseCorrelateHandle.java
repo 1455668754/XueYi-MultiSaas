@@ -1,15 +1,18 @@
 package com.xueyi.common.web.entity.service.impl.handle;
 
 import com.xueyi.common.core.utils.core.ArrayUtil;
+import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.web.correlate.contant.CorrelateConstants;
+import com.xueyi.common.web.correlate.domain.BaseCorrelate;
 import com.xueyi.common.web.correlate.service.CorrelateService;
 import com.xueyi.common.web.correlate.utils.CorrelateUtil;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -106,9 +109,16 @@ public abstract class BaseCorrelateHandle<D extends BaseEntity, C extends Enum<?
      * @return 结果
      */
     @SafeVarargs
-    protected final int editCorrelates(D originDto, D newDto, C... correlates) {
-        subCorrelates(originDto, correlates);
-        startCorrelates(correlates);
+    protected final <Correlate extends BaseCorrelate> int editCorrelates(D originDto, D newDto, C... correlates) {
+        List<Correlate> upCorrelates = CorrelateUtil.getCorrelates();
+        if(CollUtil.isNotEmpty(upCorrelates)) {
+            CorrelateUtil.startCorrelates(upCorrelates);
+            CorrelateUtil.subCorrelates(originDto);
+            CorrelateUtil.startCorrelates(upCorrelates);
+        } else {
+            subCorrelates(originDto, correlates);
+            startCorrelates(correlates);
+        }
         return CorrelateUtil.editCorrelates(originDto, newDto);
     }
 
@@ -132,9 +142,16 @@ public abstract class BaseCorrelateHandle<D extends BaseEntity, C extends Enum<?
      * @return 结果
      */
     @SafeVarargs
-    protected final <Coll extends Collection<D>> int editCorrelates(Coll originList, Coll newList, C... correlates) {
-        subCorrelates(originList, correlates);
-        startCorrelates(correlates);
+    protected final <Correlate extends BaseCorrelate, Coll extends Collection<D>> int editCorrelates(Coll originList, Coll newList, C... correlates) {
+        List<Correlate> upCorrelates = CorrelateUtil.getCorrelates();
+        if(CollUtil.isNotEmpty(upCorrelates)) {
+            CorrelateUtil.startCorrelates(upCorrelates);
+            CorrelateUtil.subCorrelates(originList);
+            CorrelateUtil.startCorrelates(upCorrelates);
+        } else {
+            subCorrelates(originList, correlates);
+            startCorrelates(correlates);
+        }
         return CorrelateUtil.editCorrelates(originList, newList);
     }
 
