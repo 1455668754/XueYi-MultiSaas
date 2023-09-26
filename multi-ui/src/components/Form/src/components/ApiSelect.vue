@@ -139,11 +139,8 @@
         }
       }
 
-      function emitChange() {
-        emit('options-change', unref(getOptions));
-      }
-
       function handleChange(_, ...args) {
+        emit('change', args[0] ? args[0].value : undefined);
         emitData.value = args;
       }
 
