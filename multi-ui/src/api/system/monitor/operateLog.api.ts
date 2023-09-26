@@ -1,5 +1,5 @@
 import { OperateLogIM, OperateLogLRM, OperateLogPPM } from '@/model/system/monitor';
-import { defHttp } from '/@/utils/http/axios';
+import { defHttp } from '@/utils/http/axios';
 
 const basicApi = '/system/admin/operateLog';
 

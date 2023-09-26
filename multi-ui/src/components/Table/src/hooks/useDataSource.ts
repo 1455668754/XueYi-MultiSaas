@@ -12,8 +12,8 @@ import {
   watchEffect,
 } from 'vue';
 import { useTimeoutFn } from '@xueyi/hooks';
-import { buildUUID } from '/@/utils/uuid';
-import { isBoolean, isFunction, isObject } from '/@/utils/is';
+import { buildUUID } from '@/utils/uuid';
+import { isBoolean, isFunction, isObject } from '@/utils/is';
 import { cloneDeep, get, merge } from 'lodash-es';
 import { FETCH_SETTING, PAGE_SIZE, ROW_KEY } from '../const';
 

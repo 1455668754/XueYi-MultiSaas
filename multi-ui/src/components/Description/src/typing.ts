@@ -1,5 +1,5 @@
 import type { CSSProperties, VNode } from 'vue';
-import type { CollapseContainerOptions } from '/@/components/Container/index';
+import type { CollapseContainerOptions } from '@/components/Container/index';
 import type { DescriptionsProps } from 'ant-design-vue/es/descriptions/index';
 
 export interface DescItem {

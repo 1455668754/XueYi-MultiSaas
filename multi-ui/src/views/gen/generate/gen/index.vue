@@ -66,19 +66,19 @@
   import { reactive } from 'vue';
   import GenModal from './GenModal.vue';
   import { columns, searchFormSchema } from './gen.data';
-  import { useModal } from '/@/components/Modal';
-  import { useMessage } from '/@/hooks/web/useMessage';
-  import { GenAuth } from '/@/auth/gen/generate';
+  import { useModal } from '@/components/Modal';
+  import { useMessage } from '@/hooks/web/useMessage';
+  import { GenAuth } from '@/auth/gen/generate';
   import {
     delForceGenApi,
     downloadGenApi,
     generateGenApi,
     listGenApi,
   } from '@/api/gen/generate/gen.api';
-  import { BasicTable, TableAction, useTable } from '/@/components/Table';
+  import { BasicTable, TableAction, useTable } from '@/components/Table';
   import { GenCodeDetailGo, GenGenerateDetailGo } from '@/enums/gen/generate';
-  import { useUserStore } from '/@/store/modules/user';
-  import { IconEnum } from '@/enums/basic';
+  import { useUserStore } from '@/store/modules/user';
+  import { IconEnum } from '@/enums';
 
   const state = reactive<{
     ids: string[];

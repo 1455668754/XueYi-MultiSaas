@@ -1,6 +1,6 @@
-import type { AppRouteModule } from '/@/router/types';
-import { LAYOUT } from '/@/router/constant';
-import { t } from '/@/hooks/web/useI18n';
+import type { AppRouteModule } from '@/router/types';
+import { LAYOUT } from '@/router/constant';
+import { t } from '@/hooks/web/useI18n';
 
 const userCenter: AppRouteModule = {
   path: '/userCenter',
@@ -18,7 +18,7 @@ const userCenter: AppRouteModule = {
     {
       path: 'index',
       name: 'AboutPage',
-      component: () => import('/@/views/sys/userCenter/index.vue'),
+      component: () => import('@/views/sys/userCenter/index.vue'),
       meta: {
         title: t('layout.header.userCenter'),
         icon: 'simple-icons:about-dot-me',

@@ -19,8 +19,8 @@
   import { computed, unref } from 'vue';
   import LoginFormTitle from './LoginFormTitle.vue';
   import { Button, Divider } from 'ant-design-vue';
-  import { QrCode } from '/@/components/Qrcode';
-  import { useI18n } from '/@/hooks/web/useI18n';
+  import { QrCode } from '@/components/Qrcode';
+  import { useI18n } from '@/hooks/web/useI18n';
   import { LoginStateEnum, useLoginState } from './useLogin';
 
   const qrCodeUrl = 'https://vvbin.cn/next/login';

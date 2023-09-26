@@ -1,17 +1,18 @@
 import { nextTick, ref, toRaw } from 'vue';
 import type { RouteLocationNormalized } from 'vue-router';
 import { useRouter } from 'vue-router';
-import { useDesign } from '/@/hooks/web/useDesign';
-import { useSortable } from '/@/hooks/web/useSortable';
-import { useMultipleTabStore } from '/@/store/modules/multipleTab';
-import { isNullAndUnDef } from '/@/utils/is';
-import projectSetting from '/@/settings/projectSetting';
+import { useDesign } from '@/hooks/web/useDesign';
+import { useSortable } from '@/hooks/web/useSortable';
+import { useMultipleTabStore } from '@/store/modules/multipleTab';
+import { isNullAndUnDef } from '@/utils/is';
+import projectSetting from '@/settings/projectSetting';
 
 export function initAffixTabs(): string[] {
   const affixList = ref<RouteLocationNormalized[]>([]);
 
   const tabStore = useMultipleTabStore();
   const router = useRouter();
+
   /**
    * @description: Filter all fixed routes
    */

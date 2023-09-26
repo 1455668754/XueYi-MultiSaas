@@ -1,6 +1,6 @@
-import { FormSchema } from '/@/components/Form';
-import { BasicColumn } from '/@/components/Table';
-import { DescItem } from '/@/components/Description';
+import { FormSchema } from '@/components/Form';
+import { BasicColumn } from '@/components/Table';
+import { DescItem } from '@/components/Description';
 import { dicDictList } from '@/api/sys/dict.api';
 import {
   ColorEnum,
@@ -8,11 +8,11 @@ import {
   DicShowHideEnum,
   DicSortEnum,
   DicStatusEnum,
-} from '@/enums/basic';
+} from '@/enums';
 import { ModuleIM } from '@/model/system/authority';
-import { useUserStore } from '/@/store/modules/user';
+import { useUserStore } from '@/store/modules/user';
 import { FrameTypeEnum } from '@/enums/system/authority';
-import { dictConversion } from '/@/utils/xueyi';
+import { dictConversion } from '@/utils/xueyi';
 import { isNotEmpty } from '@/utils/is';
 import { listTenantApi } from '@/api/tenant/tenant/tenant.api';
 import { h } from 'vue';

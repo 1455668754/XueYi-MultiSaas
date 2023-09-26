@@ -1,6 +1,7 @@
-import { FormSchema } from '/@/components/Form';
+import { FormSchema } from '@/components/Form';
 
 type InputType = 'InputTextArea' | 'InputNumber' | 'Input';
+
 export interface PromptProps {
   title: string;
   label?: string;

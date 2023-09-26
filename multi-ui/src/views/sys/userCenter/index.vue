@@ -15,7 +15,7 @@
 <script setup lang="ts">
   import { Tabs } from 'ant-design-vue';
 
-  import { ScrollContainer } from '/@/components/Container';
+  import { ScrollContainer } from '@/components/Container';
   import { settingList } from './data';
   import { shallowReactive } from 'vue';
   import MsgNotify from './MsgNotify.vue';

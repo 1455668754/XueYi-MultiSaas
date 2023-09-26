@@ -1,6 +1,6 @@
-import { FormSchema } from '/@/components/Form';
-import { BasicColumn } from '/@/components/Table';
-import { DescItem } from '/@/components/Description';
+import { FormSchema } from '@/components/Form';
+import { BasicColumn } from '@/components/Table';
+import { DescItem } from '@/components/Description';
 import { dicDictList } from '@/api/sys/dict.api';
 import {
   ColorEnum,
@@ -10,7 +10,7 @@ import {
   DicSortEnum,
   DicStatusEnum,
   DicYesNoEnum,
-} from '@/enums/basic';
+} from '@/enums';
 import { MenuIM } from '@/model/system/authority';
 import { listModuleApi } from '@/api/system/authority/module.api';
 import { getMenuRouteListApi } from '@/api/system/authority/menu.api';
@@ -18,8 +18,8 @@ import { COMMON_MENU, COMMON_MODULE, FrameTypeEnum, MenuTypeEnum } from '@/enums
 import { h } from 'vue';
 import Icon from '@/components/Icon/Icon.vue';
 import { Tag } from 'ant-design-vue';
-import { useUserStore } from '/@/store/modules/user';
-import { dictConversion } from '/@/utils/xueyi';
+import { useUserStore } from '@/store/modules/user';
+import { dictConversion } from '@/utils/xueyi';
 import { isNotEmpty } from '@/utils/is';
 import { listTenantApi } from '@/api/tenant/tenant/tenant.api';
 

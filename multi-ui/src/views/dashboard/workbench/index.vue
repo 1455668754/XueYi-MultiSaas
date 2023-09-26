@@ -1,6 +1,8 @@
 <template>
   <PageWrapper>
-    <template #headerContent> <WorkbenchHeader /> </template>
+    <template #headerContent>
+      <WorkbenchHeader />
+    </template>
     <div class="lg:flex">
       <div class="lg:w-7/10 w-full !mr-4 enter-y">
         <ModuleCard :loading="loading" class="enter-y" />
@@ -21,7 +23,7 @@
 <script lang="ts" setup>
   import { ref } from 'vue';
   import { Card } from 'ant-design-vue';
-  import { PageWrapper } from '/@/components/Page';
+  import { PageWrapper } from '@/components/Page';
   import WorkbenchHeader from './components/WorkbenchHeader.vue';
   import ModuleCard from './components/ModuleCard.vue';
   import QuickNav from './components/QuickNav.vue';

@@ -28,12 +28,12 @@
 <script setup lang="ts">
   import { List } from 'ant-design-vue';
   import { computed } from 'vue';
-  import { CollapseContainer } from '/@/components/Container';
+  import { CollapseContainer } from '@/components/Container';
   import { ListItemIM, SecureEnum, secureSettingList } from './data';
-  import { useUserStore } from '/@/store/modules/user';
-  import { useModal } from '/@/components/Modal';
+  import { useUserStore } from '@/store/modules/user';
+  import { useModal } from '@/components/Modal';
   import SecureSettingModal from './SecureSettingModal.vue';
-  import { isEmpty } from '/@/utils/is';
+  import { isEmpty } from '@/utils/is';
 
   const ListItem = List.Item;
   const ListItemMeta = List.Item.Meta;

@@ -3,11 +3,11 @@ import type { PaginationProps } from '../types/pagination';
 import type { ComputedRef } from 'vue';
 import { computed, reactive, ref, Ref, toRaw, unref, watch } from 'vue';
 import { renderEditCell } from '../components/editable';
-import { usePermission } from '/@/hooks/web/usePermission';
-import { useI18n } from '/@/hooks/web/useI18n';
-import { isArray, isBoolean, isFunction, isMap, isString } from '/@/utils/is';
+import { usePermission } from '@/hooks/web/usePermission';
+import { useI18n } from '@/hooks/web/useI18n';
+import { isArray, isBoolean, isFunction, isMap, isString } from '@/utils/is';
 import { cloneDeep, isEqual } from 'lodash-es';
-import { formatToDate } from '/@/utils/dateUtil';
+import { formatToDate } from '@/utils/dateUtil';
 import { ACTION_COLUMN_FLAG, DEFAULT_ALIGN, INDEX_COLUMN_FLAG, PAGE_SIZE } from '../const';
 
 function handleItem(item: BasicColumn, ellipsis: boolean) {
@@ -269,11 +269,19 @@ export function useColumns(
     cacheColumns = columns.filter((item) => !item.flag);
   }
 
+  /**
+   * 拖拽列宽修改列的宽度
+   */
+  function setColumnWidth(w: number, col: BasicColumn) {
+    col.width = w;
+  }
+
   return {
     getColumnsRef,
     getCacheColumns,
     getColumns,
     setColumns,
+    setColumnWidth,
     getViewColumns,
     setCacheColumnsByField,
     setCacheColumns,

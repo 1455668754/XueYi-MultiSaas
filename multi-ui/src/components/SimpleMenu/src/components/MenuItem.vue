@@ -18,8 +18,8 @@
 
 <script lang="ts">
   import { computed, defineComponent, getCurrentInstance, PropType, ref, unref, watch } from 'vue';
-  import { useDesign } from '/@/hooks/web/useDesign';
-  import { propTypes } from '/@/utils/propTypes';
+  import { useDesign } from '@/hooks/web/useDesign';
+  import { propTypes } from '@/utils/propTypes';
   import { useMenuItem } from './useMenu';
   import { Tooltip } from 'ant-design-vue';
   import { useSimpleRootMenuContext } from './useSimpleMenuContext';

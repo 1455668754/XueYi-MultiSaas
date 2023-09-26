@@ -7,8 +7,8 @@
   import { computed, defineComponent, ref, unref, watchEffect } from 'vue';
   import { Button } from 'ant-design-vue';
   import { useCountdown } from './useCountdown';
-  import { isFunction } from '/@/utils/is';
-  import { useI18n } from '/@/hooks/web/useI18n';
+  import { isFunction } from '@/utils/is';
+  import { useI18n } from '@/hooks/web/useI18n';
 
   const props = {
     value: { type: [Object, Number, String, Array] },
@@ -56,6 +56,7 @@
           start();
         }
       }
+
       return { handleStart, currentCount, loading, getButtonText, isStart };
     },
   });

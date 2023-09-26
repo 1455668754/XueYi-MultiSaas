@@ -25,7 +25,7 @@
 
 <script setup lang="ts">
   import { List, Switch } from 'ant-design-vue';
-  import { CollapseContainer } from '/@/components/Container';
+  import { CollapseContainer } from '@/components/Container';
   import { msgNotifyList } from './data';
 
   const ListItem = List.Item;

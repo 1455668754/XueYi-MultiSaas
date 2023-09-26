@@ -23,15 +23,15 @@
   import TreeHeader from './components/TreeHeader.vue';
   import { Empty, Spin, Tree } from 'ant-design-vue';
   import { TreeIcon } from './TreeIcon';
-  import { ScrollContainer } from '/@/components/Container';
+  import { ScrollContainer } from '@/components/Container';
   import { cloneDeep, difference, get, omit } from 'lodash-es';
-  import { isArray, isBoolean, isEmpty, isFunction } from '/@/utils/is';
-  import { extendSlots, getSlot } from '/@/utils/helper/tsxHelper';
-  import { eachTree, filter, treeToList } from '/@/utils/helper/treeHelper';
+  import { isArray, isBoolean, isEmpty, isFunction } from '@/utils/is';
+  import { extendSlots, getSlot } from '@/utils/helper/tsxHelper';
+  import { eachTree, filter, treeToList } from '@/utils/helper/treeHelper';
   import { useTree } from './hooks/useTree';
-  import { useContextMenu } from '/@/hooks/web/useContextMenu';
-  import { CreateContextOptions } from '/@/components/ContextMenu';
-  import { createBEM } from '/@/utils/bem';
+  import { useContextMenu } from '@/hooks/web/useContextMenu';
+  import { CreateContextOptions } from '@/components/ContextMenu';
+  import { createBEM } from '@/utils/bem';
 
   export default defineComponent({
     name: 'BasicTree',

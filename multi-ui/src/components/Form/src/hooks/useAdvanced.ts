@@ -2,8 +2,8 @@ import type { ColEx } from '../types';
 import type { AdvanceState } from '../types/hooks';
 import { computed, ComputedRef, getCurrentInstance, Ref, shallowReactive, unref, watch } from 'vue';
 import type { FormProps, FormSchema } from '../types/form';
-import { isBoolean, isFunction, isNumber, isObject } from '/@/utils/is';
-import { useBreakpoint } from '/@/hooks/event/useBreakpoint';
+import { isBoolean, isFunction, isNumber, isObject } from '@/utils/is';
+import { useBreakpoint } from '@/hooks/event/useBreakpoint';
 import { useDebounceFn } from '@vueuse/core';
 
 const BASIC_COL_LEN = 24;

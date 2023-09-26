@@ -14,10 +14,10 @@
 <script lang="ts">
   import { computed, defineComponent, PropType, ref, unref, watch, watchEffect } from 'vue';
   import { Transfer } from 'ant-design-vue';
-  import { isFunction } from '/@/utils/is';
+  import { isFunction } from '@/utils/is';
   import { get, omit } from 'lodash-es';
-  import { propTypes } from '/@/utils/propTypes';
-  import { useI18n } from '/@/hooks/web/useI18n';
+  import { propTypes } from '@/utils/propTypes';
+  import { useI18n } from '@/hooks/web/useI18n';
   import { TransferDirection, TransferItem } from 'ant-design-vue/lib/transfer';
 
   export default defineComponent({
@@ -128,9 +128,11 @@
           console.warn(error);
         }
       }
+
       function emitChange() {
         emit('options-change', unref(getdataSource));
       }
+
       return { getTargetKeys, getdataSource, t, getAttrs, handleChange };
     },
   });

@@ -25,13 +25,13 @@
 <script setup lang="ts">
   import { Button, Col, Row } from 'ant-design-vue';
   import { computed, onMounted } from 'vue';
-  import { BasicForm, useForm } from '/@/components/Form';
-  import { CollapseContainer } from '/@/components/Container';
-  import { CropperAvatar } from '/@/components/Cropper';
-  import { useMessage } from '/@/hooks/web/useMessage';
-  import headerImg from '/@/assets/images/header.jpg';
+  import { BasicForm, useForm } from '@/components/Form';
+  import { CollapseContainer } from '@/components/Container';
+  import { CropperAvatar } from '@/components/Cropper';
+  import { useMessage } from '@/hooks/web/useMessage';
+  import headerImg from '@/assets/images/header.jpg';
   import { baseSettingSchemas } from './data';
-  import { useUserStore } from '/@/store/modules/user';
+  import { useUserStore } from '@/store/modules/user';
   import { editAvatarApi, editUserProfileApi, getUserProfileApi } from '@/api/sys/user.api';
 
   const ARow = Row;

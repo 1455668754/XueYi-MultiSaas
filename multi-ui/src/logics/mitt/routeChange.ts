@@ -3,9 +3,9 @@
  */
 
 // @ts-ignore
-import {mitt} from '/@/utils/mitt';
-import type {RouteLocationNormalized} from 'vue-router';
-import {getRawRoute} from '/@/utils';
+import { mitt } from '@/utils/mitt';
+import type { RouteLocationNormalized } from 'vue-router';
+import { getRawRoute } from '@/utils';
 
 const emitter = mitt();
 

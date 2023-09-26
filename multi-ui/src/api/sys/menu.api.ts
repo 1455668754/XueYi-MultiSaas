@@ -1,4 +1,4 @@
-import { defHttp } from '/@/utils/http/axios';
+import { defHttp } from '@/utils/http/axios';
 import { GetMenuLM } from '@/model/sys';
 import { ModuleLM } from '@/model/system/authority';
 

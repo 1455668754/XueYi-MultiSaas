@@ -13,15 +13,15 @@
 <script setup lang="ts">
   import { computed, ref, unref } from 'vue';
   import { formSchema, initialize } from './menu.data';
-  import { useMessage } from '/@/hooks/web/useMessage';
+  import { useMessage } from '@/hooks/web/useMessage';
   import {
     addMenuApi,
     editMenuApi,
     getMenuApi,
     getMenuRouteListApi,
   } from '@/api/system/authority/menu.api';
-  import { BasicModal, useModalInner } from '/@/components/Modal';
-  import { BasicForm, useForm } from '/@/components/Form';
+  import { BasicModal, useModalInner } from '@/components/Modal';
+  import { BasicForm, useForm } from '@/components/Form';
   import { COMMON_MODULE, MenuTypeEnum } from '@/enums/system/authority';
 
   const emit = defineEmits(['success', 'register']);

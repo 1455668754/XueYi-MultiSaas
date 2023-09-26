@@ -61,14 +61,14 @@
     roleFormSchema,
     roleInitList,
   } from './role.data';
-  import { useMessage } from '/@/hooks/web/useMessage';
-  import { BasicModal, useModalInner } from '/@/components/Modal';
-  import { BasicForm, useForm } from '/@/components/Form';
-  import { BasicTree, TreeItem } from '/@/components/Tree';
+  import { useMessage } from '@/hooks/web/useMessage';
+  import { BasicModal, useModalInner } from '@/components/Modal';
+  import { BasicForm, useForm } from '@/components/Form';
+  import { BasicTree, TreeItem } from '@/components/Tree';
   import { addRoleApi } from '@/api/system/authority/role.api';
   import { authScopeEnterpriseApi } from '@/api/system/authority/auth.api';
   import { organizeScopeApi } from '@/api/system/organize/organize.api';
-  import { sourceAssign } from '/@/utils/xueyi';
+  import { sourceAssign } from '@/utils/xueyi';
   import { getTreeNodes } from '@/utils/core/treeUtil';
   import { concat, difference, intersection } from 'lodash-es';
   import { DataScopeEnum } from '@/enums/system/authority';

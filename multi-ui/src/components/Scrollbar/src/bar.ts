@@ -8,7 +8,7 @@ import {
   ref,
   Ref,
 } from 'vue';
-import { off, on } from '/@/utils/domUtils';
+import { off, on } from '@/utils/domUtils';
 
 import { BAR_MAP, renderThumbStyle } from './util';
 

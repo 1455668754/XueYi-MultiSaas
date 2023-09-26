@@ -21,6 +21,7 @@
       :rowClassName="getRowClassName"
       v-show="getEmptyDataIsShowTable"
       @change="handleTableChange"
+      @resizeColumn="setColumnWidth"
     >
       <template #[item]="data" v-for="item in Object.keys($slots)" :key="item">
         <slot :name="item" v-bind="data || {}"></slot>
@@ -51,8 +52,8 @@
 
   import { computed, defineComponent, inject, ref, toRaw, unref, watchEffect } from 'vue';
   import { Table } from 'ant-design-vue';
-  import { BasicForm, useForm } from '/@/components/Form/index';
-  import { PageWrapperFixedHeightKey } from '@/enums/basic';
+  import { BasicForm, useForm } from '@/components/Form/index';
+  import { PageWrapperFixedHeightKey } from '@/enums';
   import HeaderCell from './components/HeaderCell.vue';
 
   import { usePagination } from './hooks/usePagination';
@@ -69,12 +70,12 @@
   import { createTableContext } from './hooks/useTableContext';
   import { useTableFooter } from './hooks/useTableFooter';
   import { useTableForm } from './hooks/useTableForm';
-  import { useDesign } from '/@/hooks/web/useDesign';
+  import { useDesign } from '@/hooks/web/useDesign';
 
   import { omit } from 'lodash-es';
   import { basicProps } from './props';
-  import { isFunction } from '/@/utils/is';
-  import { warn } from '/@/utils/log';
+  import { isFunction } from '@/utils/is';
+  import { warn } from '@/utils/log';
 
   const events = [
     'fetch-success',
@@ -189,6 +190,7 @@
         getColumns,
         setCacheColumnsByField,
         setCacheColumns,
+        setColumnWidth,
         setColumns,
         getColumnsRef,
         getCacheColumns,
@@ -345,6 +347,7 @@
         handleSearchInfoChange,
         getEmptyDataIsShowTable,
         handleTableChange,
+        setColumnWidth,
         getRowClassName,
         wrapRef,
         tableAction,

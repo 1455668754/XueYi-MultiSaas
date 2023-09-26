@@ -1,11 +1,11 @@
 import type { LocaleSetting, LocaleType } from '/#/config';
 
 import { defineStore } from 'pinia';
-import { store } from '/@/store';
+import { store } from '@/store';
 
-import { LOCALE_KEY } from '@/enums/basic';
-import { createLocalStorage } from '/@/utils/cache';
-import { localeSetting } from '/@/settings/localeSetting';
+import { LOCALE_KEY } from '@/enums';
+import { createLocalStorage } from '@/utils/cache';
+import { localeSetting } from '@/settings/localeSetting';
 
 const ls = createLocalStorage();
 
@@ -34,7 +34,7 @@ export const useLocaleStore = defineStore({
      * @param info multilingual info
      */
     setLocaleInfo(info: Partial<LocaleSetting>) {
-      this.localInfo = {...this.localInfo, ...info};
+      this.localInfo = { ...this.localInfo, ...info };
       ls.set(LOCALE_KEY, this.localInfo);
     },
     /**

@@ -1,4 +1,4 @@
-import { defHttp } from '/@/utils/http/axios';
+import { defHttp } from '@/utils/http/axios';
 import { MenuIM, MenuLM, MenuPM } from '@/model/system/authority';
 
 const basicApi = '/system/admin/menu';

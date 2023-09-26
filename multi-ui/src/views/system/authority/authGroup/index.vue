@@ -61,7 +61,7 @@
   import { useModal } from '@/components/Modal';
   import AuthGroupModal from './AuthGroupModal.vue';
   import { useMessage } from '@/hooks/web/useMessage';
-  import { IconEnum } from '@/enums/basic';
+  import { IconEnum } from '@/enums';
   import { BasicTable, TableAction, useTable } from '@/components/Table';
   import { AuthGroupAuth } from '@/auth/system/authority';
   import { columns, searchFormSchema } from './authGroup.data';

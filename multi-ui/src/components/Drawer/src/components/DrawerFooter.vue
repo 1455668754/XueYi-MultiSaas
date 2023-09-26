@@ -27,7 +27,7 @@
 <script lang="ts">
   import type { CSSProperties } from 'vue';
   import { computed, defineComponent } from 'vue';
-  import { useDesign } from '/@/hooks/web/useDesign';
+  import { useDesign } from '@/hooks/web/useDesign';
 
   import { footerProps } from '../props';
 
@@ -59,6 +59,7 @@
       function handleClose() {
         emit('close');
       }
+
       return { handleOk, prefixCls, handleClose, getStyle };
     },
   });

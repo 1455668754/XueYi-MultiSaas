@@ -82,21 +82,21 @@
 <script setup lang="ts">
   import { reactive } from 'vue';
   import { delUserApi, exportUserApi, listUserApi } from '@/api/system/organize/user.api';
-  import { useModal } from '/@/components/Modal';
-  import { useMessage } from '/@/hooks/web/useMessage';
-  import { BasicTable, TableAction, useTable } from '/@/components/Table';
-  import { UserAuth } from '/@/auth/system/organize';
+  import { useModal } from '@/components/Modal';
+  import { useMessage } from '@/hooks/web/useMessage';
+  import { BasicTable, TableAction, useTable } from '@/components/Table';
+  import { UserAuth } from '@/auth/system/organize';
   import { columns, searchFormSchema } from './user.data';
   import { UserDetailGo } from '@/enums/system/organize';
   import UserModal from './UserModal.vue';
   import UserRoleModal from './UserRoleModal.vue';
-  import { useUserStore } from '/@/store/modules/user';
-  import PageWrapper from '/@/components/Page/src/PageWrapper.vue';
+  import { useUserStore } from '@/store/modules/user';
+  import PageWrapper from '@/components/Page/src/PageWrapper.vue';
   import OrganizeTree from './OrganizeTree.vue';
   import { UserPM } from '@/model/system/organize';
   import UserResPwdModal from './UserResPwdModal.vue';
   import { isEqual } from 'lodash-es';
-  import { IconEnum, UserTypeEnum } from '@/enums/basic';
+  import { IconEnum, UserTypeEnum } from '@/enums';
 
   const searchInfo = reactive<Recordable>({});
   const { createMessage, createConfirm } = useMessage();

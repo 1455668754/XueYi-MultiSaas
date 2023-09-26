@@ -15,9 +15,9 @@
   import { computed, ref, unref } from 'vue';
   import { Spin } from 'ant-design-vue';
   import { useWindowSizeFn } from '@xueyi/hooks';
-  import { propTypes } from '/@/utils/propTypes';
-  import { useDesign } from '/@/hooks/web/useDesign';
-  import { useLayoutHeight } from '/@/layouts/default/content/useContentViewHeight';
+  import { propTypes } from '@/utils/propTypes';
+  import { useDesign } from '@/hooks/web/useDesign';
+  import { useLayoutHeight } from '@/layouts/default/content/useContentViewHeight';
 
   defineProps({
     frameSrc: propTypes.string.def(''),

@@ -14,7 +14,7 @@
             <slot name="header"></slot>
             <Tooltip>
               <template #title>
-                <div class="w-50">每行显示数量 </div>
+                <div class="w-50">每行显示数量</div>
                 <Slider
                   id="slider"
                   v-bind="sliderProp"
@@ -89,11 +89,11 @@
     TableOutlined,
   } from '@ant-design/icons-vue';
   import { Avatar, Card, Image, List, Slider, Tooltip, Typography } from 'ant-design-vue';
-  import { Dropdown } from '/@/components/Dropdown';
-  import { BasicForm, useForm } from '/@/components/Form';
-  import { propTypes } from '/@/utils/propTypes';
-  import { Button } from '/@/components/Button';
-  import { isFunction } from '/@/utils/is';
+  import { Dropdown } from '@/components/Dropdown';
+  import { BasicForm, useForm } from '@/components/Form';
+  import { propTypes } from '@/utils/propTypes';
+  import { Button } from '@/components/Button';
+  import { isFunction } from '@/utils/is';
   import { grid, useSlider } from './data';
 
   const ListItem = List.Item;

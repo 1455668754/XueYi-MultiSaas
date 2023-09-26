@@ -19,9 +19,9 @@
 <script setup lang="ts">
   import { computed, ref, unref } from 'vue';
   import { Transfer } from 'ant-design-vue';
-  import { useMessage } from '/@/hooks/web/useMessage';
-  import { BasicModal, useModalInner } from '/@/components/Modal';
-  import { BasicForm, useForm } from '/@/components/Form';
+  import { useMessage } from '@/hooks/web/useMessage';
+  import { BasicModal, useModalInner } from '@/components/Modal';
+  import { BasicForm, useForm } from '@/components/Form';
   import { listRoleApi } from '@/api/system/authority/role.api';
   import { RoleIM, RoleLM } from '@/model/system/authority';
   import { roleFormSchema } from './dept.data';

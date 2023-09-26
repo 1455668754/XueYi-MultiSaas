@@ -1,7 +1,7 @@
 import type { ComputedRef } from 'vue';
 import { unref } from 'vue';
 import type { BasicTableProps, TableCustomRecord } from '../types/table';
-import { isFunction } from '/@/utils/is';
+import { isFunction } from '@/utils/is';
 
 export function useTableStyle(propsRef: ComputedRef<BasicTableProps>, prefixCls: string) {
   function getRowClassName(record: TableCustomRecord, index: number) {

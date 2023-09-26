@@ -45,22 +45,22 @@
 <script lang="ts">
   import { computed, defineComponent, PropType, reactive, ref, toRefs, unref } from 'vue';
   import { Alert, Upload } from 'ant-design-vue';
-  import { BasicModal, useModalInner } from '/@/components/Modal';
-  //   import { BasicTable, useTable } from '/@/components/Table';
+  import { BasicModal, useModalInner } from '@/components/Modal';
+  //   import { BasicTable, useTable } from '@/components/Table';
   // hooks
   import { useUploadType } from './useUpload';
-  import { useMessage } from '/@/hooks/web/useMessage';
+  import { useMessage } from '@/hooks/web/useMessage';
   //   types
   import { FileItem, UploadResultStatus } from './typing';
   import { basicProps } from './props';
   import { createActionColumn, createTableColumns } from './data';
   // utils
   import { checkImgType, getBase64WithFile } from './helper';
-  import { buildUUID } from '/@/utils/uuid';
-  import { isFunction } from '/@/utils/is';
-  import { warn } from '/@/utils/log';
+  import { buildUUID } from '@/utils/uuid';
+  import { isFunction } from '@/utils/is';
+  import { warn } from '@/utils/log';
   import FileList from './FileList.vue';
-  import { useI18n } from '/@/hooks/web/useI18n';
+  import { useI18n } from '@/hooks/web/useI18n';
 
   export default defineComponent({
     components: { BasicModal, Upload, Alert, FileList },

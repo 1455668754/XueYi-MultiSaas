@@ -53,15 +53,15 @@
 <script setup lang="ts">
   import { reactive } from 'vue';
   import { delStrategyApi, listStrategyApi } from '@/api/tenant/source/strategy.api';
-  import { useModal } from '/@/components/Modal';
-  import { useMessage } from '/@/hooks/web/useMessage';
-  import { IconEnum } from '@/enums/basic';
-  import { BasicTable, TableAction, useTable } from '/@/components/Table';
-  import { StrategyAuth } from '/@/auth/tenant/source';
+  import { useModal } from '@/components/Modal';
+  import { useMessage } from '@/hooks/web/useMessage';
+  import { IconEnum } from '@/enums';
+  import { BasicTable, TableAction, useTable } from '@/components/Table';
+  import { StrategyAuth } from '@/auth/tenant/source';
   import { columns, searchFormSchema } from './strategy.data';
   import { StrategyDetailGo } from '@/enums/tenant/source';
   import StrategyModal from './StrategyModal.vue';
-  import { useUserStore } from '/@/store/modules/user';
+  import { useUserStore } from '@/store/modules/user';
 
   const { createMessage, createConfirm } = useMessage();
   const [registerModal, { openModal }] = useModal();

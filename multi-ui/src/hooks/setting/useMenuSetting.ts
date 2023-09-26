@@ -2,7 +2,7 @@ import type { MenuSetting } from '/#/config';
 
 import { computed, ref, unref } from 'vue';
 
-import { useAppStore } from '/@/store/modules/app';
+import { useAppStore } from '@/store/modules/app';
 
 import {
   MenuModeEnum,
@@ -10,13 +10,13 @@ import {
   SIDE_BAR_MINI_WIDTH,
   SIDE_BAR_SHOW_TIT_MINI_WIDTH,
   TriggerEnum,
-} from '@/enums/basic';
-import { useFullContent } from '/@/hooks/web/useFullContent';
+} from '@/enums';
+import { useFullContent } from '@/hooks/web/useFullContent';
 
 const mixSideHasChildren = ref(false);
 
 export function useMenuSetting() {
-  const {getFullContent: fullContent} = useFullContent();
+  const { getFullContent: fullContent } = useFullContent();
   const appStore = useAppStore();
 
   const getShowSidebar = computed(() => {
@@ -106,12 +106,12 @@ export function useMenuSetting() {
   });
 
   const getMiniWidthNumber = computed(() => {
-    const {collapsedShowTitle, siderHidden} = appStore.getMenuSetting;
+    const { collapsedShowTitle, siderHidden } = appStore.getMenuSetting;
     return siderHidden
       ? 0
       : collapsedShowTitle
-        ? SIDE_BAR_SHOW_TIT_MINI_WIDTH
-        : SIDE_BAR_MINI_WIDTH;
+      ? SIDE_BAR_SHOW_TIT_MINI_WIDTH
+      : SIDE_BAR_MINI_WIDTH;
   });
 
   const getCalcContentWidth = computed(() => {
@@ -119,9 +119,9 @@ export function useMenuSetting() {
       unref(getIsTopMenu) || !unref(getShowMenu) || (unref(getSplit) && unref(getMenuHidden))
         ? 0
         : unref(getIsMixSidebar)
-          ? (unref(getCollapsed) ? SIDE_BAR_MINI_WIDTH : SIDE_BAR_SHOW_TIT_MINI_WIDTH) +
+        ? (unref(getCollapsed) ? SIDE_BAR_MINI_WIDTH : SIDE_BAR_SHOW_TIT_MINI_WIDTH) +
           (unref(getMixSideFixed) && unref(mixSideHasChildren) ? unref(getRealWidth) : 0)
-          : unref(getRealWidth);
+        : unref(getRealWidth);
 
     return `calc(100% - ${unref(width)}px)`;
   });

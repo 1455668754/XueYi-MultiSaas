@@ -10,15 +10,15 @@
 <script setup lang="ts">
   import { computed, ref, unref } from 'vue';
   import { formSchema } from './source.data';
-  import { useMessage } from '/@/hooks/web/useMessage';
+  import { useMessage } from '@/hooks/web/useMessage';
   import {
     addSourceApi,
     connectionSourceApi,
     editSourceApi,
     getSourceApi,
   } from '@/api/tenant/source/source.api';
-  import { BasicModal, useModalInner } from '/@/components/Modal';
-  import { BasicForm, useForm } from '/@/components/Form';
+  import { BasicModal, useModalInner } from '@/components/Modal';
+  import { BasicForm, useForm } from '@/components/Form';
 
   const emit = defineEmits(['success', 'register']);
 

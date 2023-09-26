@@ -1,9 +1,9 @@
-import { FormSchema } from '/@/components/Form';
-import { BasicColumn } from '/@/components/Table';
-import { DescItem } from '/@/components/Description';
+import { FormSchema } from '@/components/Form';
+import { BasicColumn } from '@/components/Table';
+import { DescItem } from '@/components/Description';
 import { dicDictList } from '@/api/sys/dict.api';
-import { dictConversion } from '/@/utils/xueyi';
-import { ColorEnum, DicCodeEnum, DicSortEnum, DicStatusEnum, DicYesNoEnum } from '@/enums/basic';
+import { dictConversion } from '@/utils/xueyi';
+import { ColorEnum, DicCodeEnum, DicSortEnum, DicStatusEnum, DicYesNoEnum } from '@/enums';
 import { TenantIM } from '@/model/tenant/tenant';
 import { listStrategyApi } from '@/api/tenant/source/strategy.api';
 import { h } from 'vue';

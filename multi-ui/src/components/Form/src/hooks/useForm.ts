@@ -2,9 +2,9 @@ import type { FormActionType, FormProps, FormSchema, UseFormReturnType } from '.
 import type { NamePath } from 'ant-design-vue/lib/form/interface';
 import type { DynamicProps } from '/#/utils';
 import { nextTick, onUnmounted, ref, unref, watch } from 'vue';
-import { isProdMode } from '/@/utils/env';
-import { error } from '/@/utils/log';
-import { getDynamicProps } from '/@/utils';
+import { isProdMode } from '@/utils/env';
+import { error } from '@/utils/log';
+import { getDynamicProps } from '@/utils';
 
 export declare type ValidateFields = (nameList?: NamePath[]) => Promise<Recordable>;
 

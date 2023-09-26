@@ -7,13 +7,13 @@
 <script setup lang="ts">
   import { onMounted, ref } from 'vue';
   import { getDictTypeApi } from '@/api/system/dict/dictType.api';
-  import { Description, useDescription } from '/@/components/Description';
+  import { Description, useDescription } from '@/components/Description';
   import { useRoute } from 'vue-router';
   import { DictTypeIndexGo } from '@/enums/system/dict';
-  import { useTabs } from '/@/hooks/web/useTabs';
-  import { PageWrapper } from '/@/components/Page';
-  import { useUserStore } from '/@/store/modules/user';
-  import { DescItemSizeEnum } from '@/enums/basic';
+  import { useTabs } from '@/hooks/web/useTabs';
+  import { PageWrapper } from '@/components/Page';
+  import { useUserStore } from '@/store/modules/user';
+  import { DescItemSizeEnum } from '@/enums';
   import { typeDetailSchema } from './dict.data';
 
   const route = useRoute();

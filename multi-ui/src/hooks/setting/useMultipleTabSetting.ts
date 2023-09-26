@@ -2,7 +2,7 @@ import type { MultiTabsSetting } from '/#/config';
 
 import { computed } from 'vue';
 
-import { useAppStore } from '/@/store/modules/app';
+import { useAppStore } from '@/store/modules/app';
 
 export function useMultipleTabSetting() {
   const appStore = useAppStore();
@@ -18,6 +18,7 @@ export function useMultipleTabSetting() {
   function setMultipleTabSetting(multiTabsSetting: Partial<MultiTabsSetting>) {
     appStore.setProjectConfig({ multiTabsSetting });
   }
+
   return {
     setMultipleTabSetting,
     getShowMultipleTab,

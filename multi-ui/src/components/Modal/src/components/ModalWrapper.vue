@@ -20,7 +20,7 @@
   } from 'vue';
   import { useWindowSizeFn } from '@xueyi/hooks';
   import { type AnyFunction } from '@xueyi/types';
-  import { ScrollContainer } from '/@/components/Container';
+  import { ScrollContainer } from '@/components/Container';
   import { createModalContext } from '../hooks/useModalContext';
   import { useMutationObserver } from '@vueuse/core';
 

@@ -3,7 +3,7 @@ import { BasicColumn } from '@/components/Table';
 import { DescItem } from '@/components/Description';
 import { dicDictList } from '@/api/sys/dict.api';
 import { dictConversion } from '@/utils/xueyi';
-import { DicCodeEnum, DicSortEnum, DicStatusEnum } from '@/enums/basic';
+import { DicCodeEnum, DicSortEnum, DicStatusEnum } from '@/enums';
 import { AuthGroupIM } from '@/model/system/authority';
 
 /** 字典查询 */

@@ -1,7 +1,7 @@
-import type { Menu, MenuModule } from '/@/router/types';
+import type { Menu, MenuModule } from '@/router/types';
 
-import { usePermissionStore } from '/@/store/modules/permission';
-import { getAllParentPath, transformMenuModule } from '/@/router/helper/menuHelper';
+import { usePermissionStore } from '@/store/modules/permission';
+import { getAllParentPath, transformMenuModule } from '@/router/helper/menuHelper';
 
 const modules = import.meta.glob('./modules/**/*.ts', { eager: true });
 

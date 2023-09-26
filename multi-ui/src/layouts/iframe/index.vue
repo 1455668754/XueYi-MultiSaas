@@ -11,7 +11,7 @@
 </template>
 <script lang="ts">
   import { computed, defineComponent, unref } from 'vue';
-  import FramePage from '/@/views/sys/iframe/index.vue';
+  import FramePage from '@/views/sys/iframe/index.vue';
 
   import { useFrameKeepAlive } from './useFrameKeepAlive';
 

@@ -26,7 +26,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { CountTo } from '/@/components/CountTo/index';
+  import { CountTo } from '@/components/CountTo';
   import Icon from '@/components/Icon/Icon.vue';
   import { Card, Tag } from 'ant-design-vue';
   import { growCardList } from '../data';

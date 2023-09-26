@@ -18,10 +18,10 @@
 
 <script setup lang="ts">
   import { computed, reactive, ref, unref } from 'vue';
-  import { useMessage } from '/@/hooks/web/useMessage';
-  import { BasicModal, useModalInner } from '/@/components/Modal';
-  import { BasicTree, TreeItem } from '/@/components/Tree';
-  import { BasicForm, useForm } from '/@/components/Form';
+  import { useMessage } from '@/hooks/web/useMessage';
+  import { BasicModal, useModalInner } from '@/components/Modal';
+  import { BasicTree, TreeItem } from '@/components/Tree';
+  import { BasicForm, useForm } from '@/components/Form';
   import { getOrgDeptIds, organizeFormSchema } from './role.data';
   import { editDataScopeApi, getOrganizeRoleApi } from '@/api/system/authority/role.api';
   import { RoleIM } from '@/model/system/authority';

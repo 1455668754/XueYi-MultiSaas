@@ -65,16 +65,16 @@
 <script setup lang="ts">
   import { reactive } from 'vue';
   import { delTenantApi, listTenantApi } from '@/api/tenant/tenant/tenant.api';
-  import { useModal } from '/@/components/Modal';
-  import { useMessage } from '/@/hooks/web/useMessage';
-  import { useGo } from '/@/hooks/web/usePage';
-  import { BasicTable, TableAction, useTable } from '/@/components/Table';
-  import { TenantAuth } from '/@/auth/tenant/tenant';
+  import { useModal } from '@/components/Modal';
+  import { useMessage } from '@/hooks/web/useMessage';
+  import { useGo } from '@/hooks/web/usePage';
+  import { BasicTable, TableAction, useTable } from '@/components/Table';
+  import { TenantAuth } from '@/auth/tenant/tenant';
   import { columns, searchFormSchema } from './tenant.data';
   import { TenantDetailGo } from '@/enums/tenant/tenant';
   import TenantModal from './TenantModal.vue';
   import TenantInitModal from './TenantInitModal.vue';
-  import { IconEnum, TenantTypeEnum } from '@/enums/basic';
+  import { IconEnum, TenantTypeEnum } from '@/enums';
   import { Image } from 'ant-design-vue';
   import TenantAuthGroupModal from './TenantAuthGroupModal.vue';
 

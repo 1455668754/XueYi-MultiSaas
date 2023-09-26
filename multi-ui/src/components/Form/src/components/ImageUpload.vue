@@ -28,7 +28,7 @@
   import { defineComponent, PropType, reactive, ref, watch } from 'vue';
   import { message, Modal, Upload, UploadProps } from 'ant-design-vue';
   import { UploadFile } from 'ant-design-vue/lib/upload/interface';
-  import { useI18n } from '/@/hooks/web/useI18n';
+  import { useI18n } from '@/hooks/web/useI18n';
   import { join } from 'lodash-es';
   import { buildShortUUID } from '@/utils/uuid';
   import { isArray, isNotEmpty, isUrl } from '@/utils/is';

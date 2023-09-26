@@ -49,10 +49,10 @@
 <script setup lang="ts">
   import { reactive } from 'vue';
   import { delDictDataApi, listDictDataApi } from '@/api/system/dict/dictData.api';
-  import { useModal } from '/@/components/Modal';
-  import { useMessage } from '/@/hooks/web/useMessage';
-  import { IconEnum } from '@/enums/basic';
-  import { BasicTable, TableAction, useTable } from '/@/components/Table';
+  import { useModal } from '@/components/Modal';
+  import { useMessage } from '@/hooks/web/useMessage';
+  import { IconEnum } from '@/enums';
+  import { BasicTable, TableAction, useTable } from '@/components/Table';
   import { DictTypeAuth } from '@/auth/system/dict';
   import DictDataModal from './DictDataModal.vue';
   import { dataColumns, dataSearchFormSchema } from './dict.data';

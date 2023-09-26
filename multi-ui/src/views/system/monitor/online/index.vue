@@ -32,10 +32,10 @@
 <script setup lang="ts">
   import { reactive } from 'vue';
   import { delOnlineApi, listOnlineApi } from '@/api/system/monitor/online.api';
-  import { useMessage } from '/@/hooks/web/useMessage';
-  import { IconEnum } from '@/enums/basic';
-  import { BasicTable, TableAction, useTable } from '/@/components/Table';
-  import { OnlineAuth } from '/@/auth/system/monitor';
+  import { useMessage } from '@/hooks/web/useMessage';
+  import { IconEnum } from '@/enums';
+  import { BasicTable, TableAction, useTable } from '@/components/Table';
+  import { OnlineAuth } from '@/auth/system/monitor';
   import { columns, searchFormSchema } from './online.data';
 
   const { createMessage, createConfirm } = useMessage();

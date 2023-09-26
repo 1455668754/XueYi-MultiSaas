@@ -6,7 +6,7 @@
 <script lang="ts">
   import { computed, defineComponent, onMounted, ref, unref, watch, watchEffect } from 'vue';
   import { TransitionPresets, useTransition } from '@vueuse/core';
-  import { isNumber } from '/@/utils/is';
+  import { isNumber } from '@/utils/is';
 
   const props = {
     startVal: { type: Number, default: 0 },

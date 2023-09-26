@@ -60,15 +60,15 @@
 <script setup lang="ts">
   import { reactive } from 'vue';
   import { delJobApi, listJobApi, runJobApi } from '@/api/system/system/job.api';
-  import { useModal } from '/@/components/Modal';
-  import { useMessage } from '/@/hooks/web/useMessage';
-  import { IconEnum } from '@/enums/basic';
-  import { BasicTable, TableAction, useTable } from '/@/components/Table';
-  import { JobAuth } from '/@/auth/system/system';
+  import { useModal } from '@/components/Modal';
+  import { useMessage } from '@/hooks/web/useMessage';
+  import { IconEnum } from '@/enums';
+  import { BasicTable, TableAction, useTable } from '@/components/Table';
+  import { JobAuth } from '@/auth/system/system';
   import { columns, searchFormSchema } from './job.data';
   import { JobDetailGo, JobLogIndexGo } from '@/enums/system/system';
   import JobModal from './JobModal.vue';
-  import { useUserStore } from '/@/store/modules/user';
+  import { useUserStore } from '@/store/modules/user';
 
   const { createMessage, createConfirm } = useMessage();
   const [registerModal, { openModal }] = useModal();

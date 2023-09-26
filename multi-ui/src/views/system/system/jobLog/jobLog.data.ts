@@ -1,8 +1,8 @@
-import { FormSchema } from '/@/components/Form';
-import { BasicColumn } from '/@/components/Table';
-import { DescItem } from '/@/components/Description';
+import { FormSchema } from '@/components/Form';
+import { BasicColumn } from '@/components/Table';
+import { DescItem } from '@/components/Description';
 import { dicDictList } from '@/api/sys/dict.api';
-import { dictConversion } from '/@/utils/xueyi';
+import { dictConversion } from '@/utils/xueyi';
 import { JobLogIM } from '@/model/system/system';
 import { listJobApi } from '@/api/system/system/job.api';
 

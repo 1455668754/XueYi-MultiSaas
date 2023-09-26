@@ -11,7 +11,7 @@ import {
   TimePicker,
 } from 'ant-design-vue';
 import type { ComponentType } from './types/componentType';
-import { ApiRadioGroup, ApiSelect, ApiTreeSelect, RadioButtonGroup } from '/@/components/Form';
+import { ApiRadioGroup, ApiSelect, ApiTreeSelect, RadioButtonGroup } from '@/components/Form';
 
 const componentMap = new Map<ComponentType, Component>();
 

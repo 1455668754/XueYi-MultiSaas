@@ -13,9 +13,9 @@
   import { type Recordable } from '@xueyi/types';
   import { computed, defineComponent, onMounted, type PropType, ref, unref, watch } from 'vue';
   import { TreeSelect } from 'ant-design-vue';
-  import { isArray, isFunction } from '/@/utils/is';
+  import { isArray, isFunction } from '@/utils/is';
   import { get } from 'lodash-es';
-  import { propTypes } from '/@/utils/propTypes';
+  import { propTypes } from '@/utils/propTypes';
   import { LoadingOutlined } from '@ant-design/icons-vue';
 
   export default defineComponent({

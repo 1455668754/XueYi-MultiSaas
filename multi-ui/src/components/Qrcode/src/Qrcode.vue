@@ -7,7 +7,7 @@
   import { defineComponent, onMounted, PropType, ref, unref, watch } from 'vue';
   import { LogoType, QRCodeRenderersOptions, toCanvas } from './qrcodePlus';
   import { toDataURL } from 'qrcode';
-  import { downloadByUrl } from '/@/utils/file/download';
+  import { downloadByUrl } from '@/utils/file/download';
   import { QrcodeDoneEventParams } from './typing';
 
   export default defineComponent({
@@ -42,6 +42,7 @@
     emits: { done: (data: QrcodeDoneEventParams) => !!data, error: (error: any) => !!error },
     setup(props, { emit }) {
       const wrapRef = ref<HTMLCanvasElement | HTMLImageElement | null>(null);
+
       async function createQrcode() {
         try {
           const { tag, value, options = {}, width, logo } = props;
@@ -75,6 +76,7 @@
           emit('error', error);
         }
       }
+
       /**
        * file download
        */

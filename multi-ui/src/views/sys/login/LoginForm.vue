@@ -117,17 +117,17 @@
   } from '@ant-design/icons-vue';
   import LoginFormTitle from './LoginFormTitle.vue';
   import { onKeyStroke } from '@vueuse/core';
-  import { useMessage } from '/@/hooks/web/useMessage';
-  import { useUserStore } from '/@/store/modules/user';
+  import { useMessage } from '@/hooks/web/useMessage';
+  import { useUserStore } from '@/store/modules/user';
   import { LoginStateEnum, useFormRules, useFormValid, useLoginState } from './useLogin';
-  import { useDesign } from '/@/hooks/web/useDesign';
-  import { useI18n } from '/@/hooks/web/useI18n';
+  import { useDesign } from '@/hooks/web/useDesign';
+  import { useI18n } from '@/hooks/web/useI18n';
   import {
     ENTERPRISE_NAME_SESSION_CACHE_KEY,
     PASSWORD_SESSION_CACHE_KEY,
     REMEMBER_ME_SESSION_CACHE_KEY,
     USER_NAME_SESSION_CACHE_KEY,
-  } from '@/enums/basic';
+  } from '@/enums';
 
   const ACol = Col;
   const ARow = Row;

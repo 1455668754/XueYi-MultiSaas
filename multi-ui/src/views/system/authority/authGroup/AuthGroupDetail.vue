@@ -14,7 +14,7 @@
   import { useTabs } from '@/hooks/web/useTabs';
   import { PageWrapper } from '@/components/Page';
   import { useUserStore } from '@/store/modules/user';
-  import { DescItemSizeEnum } from '@/enums/basic';
+  import { DescItemSizeEnum } from '@/enums';
 
   const route = useRoute();
   const { setTitle } = useTabs();

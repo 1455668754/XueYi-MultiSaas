@@ -12,15 +12,15 @@
 </template>
 <script lang="ts">
   import { defineComponent, ref, watch } from 'vue';
-  //   import { BasicTable, useTable } from '/@/components/Table';
+  //   import { BasicTable, useTable } from '@/components/Table';
   import FileList from './FileList.vue';
-  import { BasicModal, useModalInner } from '/@/components/Modal';
+  import { BasicModal, useModalInner } from '@/components/Modal';
   import { previewProps } from './props';
   import { PreviewFileItem } from './typing';
-  import { downloadByUrl } from '/@/utils/file/download';
+  import { downloadByUrl } from '@/utils/file/download';
   import { createPreviewActionColumn, createPreviewColumns } from './data';
-  import { useI18n } from '/@/hooks/web/useI18n';
-  import { isArray } from '/@/utils/is';
+  import { useI18n } from '@/hooks/web/useI18n';
+  import { isArray } from '@/utils/is';
 
   export default defineComponent({
     components: { BasicModal, FileList },

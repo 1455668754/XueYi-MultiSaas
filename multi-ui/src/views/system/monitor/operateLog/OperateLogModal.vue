@@ -14,10 +14,10 @@
 <script setup lang="ts">
   import { computed } from 'vue';
   import { detailSchema } from './operateLog.data';
-  import { Description, useDescription } from '/@/components/Description';
+  import { Description, useDescription } from '@/components/Description';
   import { getOperateLogApi } from '@/api/system/monitor/operateLog.api';
-  import { BasicModal, useModalInner } from '/@/components/Modal';
-  import { DescItemSizeEnum } from '@/enums/basic';
+  import { BasicModal, useModalInner } from '@/components/Modal';
+  import { DescItemSizeEnum } from '@/enums';
 
   const [register, { setDescProps }] = useDescription({
     schema: detailSchema,

@@ -2,7 +2,7 @@ import type { ComputedRef, Ref } from 'vue';
 import { computed, h, nextTick, unref, watchEffect } from 'vue';
 import type { BasicTableProps } from '../types/table';
 import TableFooter from '../components/TableFooter.vue';
-import { useEventListener } from '/@/hooks/event/useEventListener';
+import { useEventListener } from '@/hooks/event/useEventListener';
 
 export function useTableFooter(
   propsRef: ComputedRef<BasicTableProps>,
@@ -52,5 +52,6 @@ export function useTableFooter(
       });
     });
   }
+
   return { getFooterProps };
 }

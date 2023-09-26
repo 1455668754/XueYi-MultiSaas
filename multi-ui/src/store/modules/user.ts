@@ -1,6 +1,6 @@
 import type { ErrorMessageMode } from '/#/axios';
 import { defineStore } from 'pinia';
-import { store } from '/@/store';
+import { store } from '@/store';
 import {
   PageEnum,
   ROLES_KEY,
@@ -8,19 +8,19 @@ import {
   TOKEN_KEY,
   USER_INFO_KEY,
   UserTypeEnum,
-} from '@/enums/basic';
-import { getAuthCache, setAuthCache } from '/@/utils/auth';
-import { useI18n } from '/@/hooks/web/useI18n';
-import { useMessage } from '/@/hooks/web/useMessage';
-import { router } from '/@/router';
-import { usePermissionStore } from '/@/store/modules/permission';
+  DicCommonPrivateEnum,
+} from '@/enums';
+import { getAuthCache, setAuthCache } from '@/utils/auth';
+import { useI18n } from '@/hooks/web/useI18n';
+import { useMessage } from '@/hooks/web/useMessage';
+import { router } from '@/router';
+import { usePermissionStore } from '@/store/modules/permission';
 import { RouteRecordRaw } from 'vue-router';
-import { PAGE_NOT_FOUND_ROUTE } from '/@/router/routes/basic';
-import { isArray } from '/@/utils/is';
+import { PAGE_NOT_FOUND_ROUTE } from '@/router/routes/basic';
+import { isArray } from '@/utils/is';
 import { h } from 'vue';
 import { doLogout, getCodeImg, getUserInfo, oauthLoginApi } from '@/api/sys/login.api';
 import { EnterpriseIM, UserIM } from '@/model/system/organize';
-import { DicCommonPrivateEnum } from '/@/enums';
 import { GetUserIM, LoginPM } from '@/model/sys';
 import { isMap } from '@vue/shared';
 import { MODULE_CACHE } from '@/enums/system/authority';

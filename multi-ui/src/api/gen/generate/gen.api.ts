@@ -5,7 +5,7 @@ import {
   GenTableLRM,
   GenTablePPM,
 } from '@/model/gen/generate';
-import { defHttp } from '/@/utils/http/axios';
+import { defHttp } from '@/utils/http/axios';
 
 const basicApi = '/code/admin/gen';
 

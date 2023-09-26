@@ -1,5 +1,5 @@
 import { computed, ref, unref } from 'vue';
-import { createPageContext } from '/@/hooks/component/usePageContext';
+import { createPageContext } from '@/hooks/component/usePageContext';
 import { useWindowSizeFn } from '@xueyi/hooks';
 
 const headerHeightRef = ref(0);
@@ -14,7 +14,7 @@ export function useLayoutHeight() {
     footerHeightRef.value = val;
   }
 
-  return {headerHeightRef, footerHeightRef, setHeaderHeight, setFooterHeight};
+  return { headerHeightRef, footerHeightRef, setHeaderHeight, setFooterHeight };
 }
 
 export function useContentViewHeight() {
@@ -28,7 +28,7 @@ export function useContentViewHeight() {
     () => {
       contentHeight.value = window.innerHeight;
     },
-    {wait: 100, immediate: true},
+    { wait: 100, immediate: true },
   );
 
   async function setPageHeight(height: number) {

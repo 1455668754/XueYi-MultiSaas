@@ -1,5 +1,5 @@
 import { OrganizeLM } from '@/model/system/organize';
-import { defHttp } from '/@/utils/http/axios';
+import { defHttp } from '@/utils/http/axios';
 
 const basicApi = '/system/admin/organize';
 

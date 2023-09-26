@@ -1,5 +1,5 @@
 import { TenantIM, TenantLRM, TenantPPM } from '@/model/tenant/tenant';
-import { defHttp } from '/@/utils/http/axios';
+import { defHttp } from '@/utils/http/axios';
 import { EnterpriseIM } from '@/model/system/organize';
 
 const basicApi = '/tenant/admin/tenant';

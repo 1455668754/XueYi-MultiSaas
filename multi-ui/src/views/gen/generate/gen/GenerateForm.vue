@@ -21,8 +21,8 @@
 </template>
 
 <script setup lang="ts">
-  import { CollapseContainer } from '/@/components/Container';
-  import { BasicForm, useForm } from '/@/components/Form';
+  import { CollapseContainer } from '@/components/Container';
+  import { BasicForm, useForm } from '@/components/Form';
   import { TemplateTypeEnum } from '@/enums/gen/generate';
   import { GenTableIM, OptionIM } from '@/model/gen/generate';
   import { reactive, ref } from 'vue';
@@ -40,7 +40,7 @@
   } from './gen.detail.data';
   import { getMenuRouteListApi } from '@/api/system/authority/menu.api';
   import { MenuTypeEnum } from '@/enums/system/authority';
-  import { sourceAssign } from '/@/utils/xueyi';
+  import { sourceAssign } from '@/utils/xueyi';
 
   const emit = defineEmits(['submit']);
   defineExpose({ initialize, submit });

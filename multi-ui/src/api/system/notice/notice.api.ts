@@ -1,5 +1,5 @@
 import { NoticeIM, NoticeLRM, NoticePPM } from '@/model/system/notice';
-import { defHttp } from '/@/utils/http/axios';
+import { defHttp } from '@/utils/http/axios';
 
 const basicApi = '/system/admin/notice';
 

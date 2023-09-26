@@ -1,4 +1,4 @@
-import { FormSchema } from '/@/components/Form';
+import { FormSchema } from '@/components/Form';
 import { dicDictList } from '@/api/sys/dict.api';
 import { SexEnum } from '@/enums/system/organize';
 

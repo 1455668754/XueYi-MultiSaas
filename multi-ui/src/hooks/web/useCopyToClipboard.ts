@@ -1,10 +1,11 @@
 import { ref, watch } from 'vue';
 
-import { isDef } from '/@/utils/is';
+import { isDef } from '@/utils/is';
 
 interface Options {
   target?: HTMLElement;
 }
+
 export function useCopyToClipboard(initial?: string) {
   const clipboardRef = ref(initial || '');
   const isSuccessRef = ref(false);

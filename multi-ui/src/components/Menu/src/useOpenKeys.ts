@@ -1,11 +1,11 @@
-import { MenuModeEnum } from '@/enums/basic';
-import type { Menu as MenuType } from '/@/router/types';
+import { MenuModeEnum } from '@/enums';
+import type { Menu as MenuType } from '@/router/types';
 import type { MenuState } from './types';
 import { computed, Ref, toRaw, unref } from 'vue';
 import { useTimeoutFn } from '@xueyi/hooks';
 import { uniq } from 'lodash-es';
-import { useMenuSetting } from '/@/hooks/setting/useMenuSetting';
-import { getAllParentPath } from '/@/router/helper/menuHelper';
+import { useMenuSetting } from '@/hooks/setting/useMenuSetting';
+import { getAllParentPath } from '@/router/helper/menuHelper';
 
 export function useOpenKeys(
   menuState: MenuState,

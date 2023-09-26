@@ -8,13 +8,13 @@ import type {
 import type { BeforeMiniState } from '/#/store';
 
 import { defineStore } from 'pinia';
-import { store } from '/@/store';
+import { store } from '@/store';
 
-import { APP_DARK_MODE_KEY, PROJ_CFG_KEY, ThemeEnum } from '@/enums/basic';
-import { Persistent } from '/@/utils/cache/persistent';
-import { darkMode } from '/@/settings/designSetting';
-import { resetRouter } from '/@/router';
-import { deepMerge } from '/@/utils';
+import { APP_DARK_MODE_KEY, PROJ_CFG_KEY, ThemeEnum } from '@/enums';
+import { Persistent } from '@/utils/cache/persistent';
+import { darkMode } from '@/settings/designSetting';
+import { resetRouter } from '@/router';
+import { deepMerge } from '@/utils';
 
 interface AppState {
   darkMode?: ThemeEnum;

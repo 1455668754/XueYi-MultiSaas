@@ -18,8 +18,8 @@
   import { computed, defineComponent } from 'vue';
 
   import { Upload } from 'ant-design-vue';
-  import { useDesign } from '/@/hooks/web/useDesign';
-  import { useI18n } from '/@/hooks/web/useI18n';
+  import { useDesign } from '@/hooks/web/useDesign';
+  import { useI18n } from '@/hooks/web/useI18n';
   import { fileUploadApi } from '@/api/sys/upload.api';
   import { AxiosProgressEvent } from 'axios';
 

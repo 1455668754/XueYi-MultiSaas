@@ -4,7 +4,7 @@ import { unref } from 'vue';
 import type { TreeDataItem } from 'ant-design-vue/es/tree/Tree';
 
 import { cloneDeep } from 'lodash-es';
-import { forEach } from '/@/utils/helper/treeHelper';
+import { forEach } from '@/utils/helper/treeHelper';
 
 export function useTree(treeDataRef: Ref<TreeDataItem[]>, getFieldNames: ComputedRef<FieldNames>) {
   function getAllKeys(list?: TreeDataItem[]) {
@@ -129,6 +129,7 @@ export function useTree(treeDataRef: Ref<TreeDataItem[]>, getFieldNames: Compute
     });
     treeDataRef.value = treeData;
   }
+
   /**
    * 批量添加节点
    */
@@ -159,6 +160,7 @@ export function useTree(treeDataRef: Ref<TreeDataItem[]>, getFieldNames: Compute
       });
     }
   }
+
   // Delete node
   function deleteNodeByKey(key: string, list?: TreeDataItem[]) {
     if (!key) return;
@@ -197,6 +199,7 @@ export function useTree(treeDataRef: Ref<TreeDataItem[]>, getFieldNames: Compute
     });
     return selectedNode || null;
   }
+
   return {
     deleteNodeByKey,
     insertNodeByKey,

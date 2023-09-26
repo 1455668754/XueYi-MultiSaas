@@ -1,5 +1,5 @@
 import { AuthLM } from '@/model/system/authority';
-import { defHttp } from '/@/utils/http/axios';
+import { defHttp } from '@/utils/http/axios';
 
 const basicApi = '/system/admin/auth';
 

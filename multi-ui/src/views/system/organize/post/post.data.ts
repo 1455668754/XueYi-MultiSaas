@@ -1,9 +1,9 @@
-import { FormSchema } from '/@/components/Form';
-import { BasicColumn } from '/@/components/Table';
-import { DescItem } from '/@/components/Description';
+import { FormSchema } from '@/components/Form';
+import { BasicColumn } from '@/components/Table';
+import { DescItem } from '@/components/Description';
 import { dicDictList } from '@/api/sys/dict.api';
-import { dictConversion } from '/@/utils/xueyi';
-import { DicSortEnum, DicStatusEnum } from '@/enums/basic';
+import { dictConversion } from '@/utils/xueyi';
+import { DicSortEnum, DicStatusEnum } from '@/enums';
 import { PostIM } from '@/model/system/organize';
 import { listDeptApi } from '@/api/system/organize/dept.api';
 

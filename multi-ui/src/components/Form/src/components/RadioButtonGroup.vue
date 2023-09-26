@@ -13,8 +13,8 @@
 <script lang="ts">
   import { computed, defineComponent, PropType, ref } from 'vue';
   import { Radio } from 'ant-design-vue';
-  import { isString } from '/@/utils/is';
-  import { useRuleFormItem } from '/@/hooks/component/useFormItem';
+  import { isString } from '@/utils/is';
+  import { useRuleFormItem } from '@/hooks/component/useFormItem';
   import { useAttrs } from '@xueyi/hooks';
 
   type OptionsItem = { label: string; value: string | number | boolean; disabled?: boolean };

@@ -1,10 +1,10 @@
-import { FormSchema } from '/@/components/Form';
-import { BasicColumn } from '/@/components/Table';
-import { DescItem } from '/@/components/Description';
+import { FormSchema } from '@/components/Form';
+import { BasicColumn } from '@/components/Table';
+import { DescItem } from '@/components/Description';
 import { dicDictList } from '@/api/sys/dict.api';
-import { DicCodeEnum, DicSortEnum, DicStatusEnum } from '@/enums/basic';
+import { DicCodeEnum, DicSortEnum, DicStatusEnum } from '@/enums';
 import { RoleIM } from '@/model/system/authority';
-import { dictConversion } from '/@/utils/xueyi';
+import { dictConversion } from '@/utils/xueyi';
 import { DataScopeEnum, DicCodeRoleEnum } from '@/enums/system/authority';
 import { isEmpty, isNotEmpty } from '@/utils/is';
 import { OrganizeIM, OrganizeLM } from '@/model/system/organize';

@@ -13,10 +13,10 @@
 <script setup lang="ts">
   import { computed, ref, unref } from 'vue';
   import { formSchema } from './notice.data';
-  import { useMessage } from '/@/hooks/web/useMessage';
+  import { useMessage } from '@/hooks/web/useMessage';
   import { addNoticeApi, editNoticeApi, getNoticeApi } from '@/api/system/notice/notice.api';
-  import { BasicModal, useModalInner } from '/@/components/Modal';
-  import { BasicForm, useForm } from '/@/components/Form';
+  import { BasicModal, useModalInner } from '@/components/Modal';
+  import { BasicForm, useForm } from '@/components/Form';
 
   const emit = defineEmits(['success', 'register']);
   const { createMessage } = useMessage();

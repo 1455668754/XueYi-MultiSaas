@@ -2,7 +2,7 @@ import { dicDictList } from '@/api/sys/dict.api';
 import { listModuleApi } from '@/api/system/authority/module.api';
 import { getMenuRouteListApi } from '@/api/system/authority/menu.api';
 import { listDictTypeApi } from '@/api/system/dict/dictType.api';
-import { FormSchema } from '/@/components/Form';
+import { FormSchema } from '@/components/Form';
 import {
   DicCodeGenEnum,
   GenModeEnum,
@@ -12,7 +12,7 @@ import {
   TemplateTypeEnum,
 } from '@/enums/gen/generate';
 import { COMMON_MENU, MenuTypeEnum } from '@/enums/system/authority';
-import { BasicColumn } from '/@/components/Table';
+import { BasicColumn } from '@/components/Table';
 import { GenTableColumnIM, GenTableColumnLM, GenTableLM } from '@/model/gen/generate';
 import { Component, h } from 'vue';
 import { Input, Select, Switch } from 'ant-design-vue';

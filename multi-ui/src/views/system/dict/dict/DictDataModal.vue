@@ -7,10 +7,10 @@
 <script setup lang="ts">
   import { computed, ref, unref } from 'vue';
   import { dataFormSchema } from './dict.data';
-  import { useMessage } from '/@/hooks/web/useMessage';
+  import { useMessage } from '@/hooks/web/useMessage';
   import { addDictDataApi, editDictDataApi, getDictDataApi } from '@/api/system/dict/dictData.api';
-  import { BasicModal, useModalInner } from '/@/components/Modal';
-  import { BasicForm, useForm } from '/@/components/Form';
+  import { BasicModal, useModalInner } from '@/components/Modal';
+  import { BasicForm, useForm } from '@/components/Form';
   import { DictTypeIM } from '@/model/system/dict';
 
   const emit = defineEmits(['success', 'register']);

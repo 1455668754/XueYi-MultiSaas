@@ -116,11 +116,11 @@
   import { defineComponent, PropType, ref } from 'vue';
   import CropperImage from './Cropper.vue';
   import { Avatar, Space, Tooltip, Upload } from 'ant-design-vue';
-  import { useDesign } from '/@/hooks/web/useDesign';
-  import { BasicModal, useModalInner } from '/@/components/Modal';
-  import { dataURLtoBlob } from '/@/utils/file/base64Conver';
-  import { isFunction } from '/@/utils/is';
-  import { useI18n } from '/@/hooks/web/useI18n';
+  import { useDesign } from '@/hooks/web/useDesign';
+  import { BasicModal, useModalInner } from '@/components/Modal';
+  import { dataURLtoBlob } from '@/utils/file/base64Conver';
+  import { isFunction } from '@/utils/is';
+  import { useI18n } from '@/hooks/web/useI18n';
   import { UploadFileParams } from '#/axios';
 
   const props = {

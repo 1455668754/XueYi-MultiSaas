@@ -13,10 +13,10 @@
 <script setup lang="ts">
   import { computed, ref, unref } from 'vue';
   import { formSchema } from './job.data';
-  import { useMessage } from '/@/hooks/web/useMessage';
+  import { useMessage } from '@/hooks/web/useMessage';
   import { addJobApi, editJobApi, getJobApi } from '@/api/system/system/job.api';
-  import { BasicForm, useForm } from '/@/components/Form';
-  import { BasicModal, useModalInner } from '/@/components/Modal';
+  import { BasicForm, useForm } from '@/components/Form';
+  import { BasicModal, useModalInner } from '@/components/Modal';
 
   const emit = defineEmits(['success', 'register']);
   const { createMessage } = useMessage();

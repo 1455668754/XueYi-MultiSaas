@@ -60,7 +60,7 @@
   import { computed, unref } from 'vue';
 
   import { AppLocalePicker, AppLogo, AppSearch } from '@/components/Application';
-  import { MenuModeEnum, MenuSplitTyeEnum, SettingButtonPositionEnum } from '@/enums/basic';
+  import { MenuModeEnum, MenuSplitTyeEnum, SettingButtonPositionEnum } from '@/enums';
   import { useHeaderSetting } from '@/hooks/setting/useHeaderSetting';
   import { useMenuSetting } from '@/hooks/setting/useMenuSetting';
   import { useRootSetting } from '@/hooks/setting/useRootSetting';

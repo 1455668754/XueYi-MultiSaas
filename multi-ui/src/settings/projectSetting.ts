@@ -10,7 +10,7 @@ import {
   SettingButtonPositionEnum,
   ThemeEnum,
   TriggerEnum,
-} from '@/enums/basic';
+} from '@/enums';
 import { HEADER_PRESET_BG_COLOR_LIST, SIDE_BAR_BG_COLOR_LIST } from './designSetting';
 
 const primaryColor = '#0960bd';

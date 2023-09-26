@@ -53,15 +53,15 @@
 <script setup lang="ts">
   import { reactive } from 'vue';
   import { delNoticeApi, listNoticeApi } from '@/api/system/notice/notice.api';
-  import { useModal } from '/@/components/Modal';
-  import { useMessage } from '/@/hooks/web/useMessage';
-  import { IconEnum } from '@/enums/basic';
-  import { BasicTable, TableAction, useTable } from '/@/components/Table';
-  import { NoticeAuth } from '/@/auth/system/notice';
+  import { useModal } from '@/components/Modal';
+  import { useMessage } from '@/hooks/web/useMessage';
+  import { IconEnum } from '@/enums';
+  import { BasicTable, TableAction, useTable } from '@/components/Table';
+  import { NoticeAuth } from '@/auth/system/notice';
   import { columns, searchFormSchema } from './notice.data';
   import { NoticeDetailGo } from '@/enums/system/notice';
   import NoticeModal from './NoticeModal.vue';
-  import { useUserStore } from '/@/store/modules/user';
+  import { useUserStore } from '@/store/modules/user';
 
   const { createMessage, createConfirm } = useMessage();
   const [registerModal, { openModal }] = useModal();
