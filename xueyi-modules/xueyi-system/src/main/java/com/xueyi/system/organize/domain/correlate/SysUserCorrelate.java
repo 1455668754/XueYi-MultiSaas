@@ -19,10 +19,7 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.xueyi.common.web.correlate.contant.CorrelateConstants.SubOperate.ADD;
-import static com.xueyi.common.web.correlate.contant.CorrelateConstants.SubOperate.DELETE;
-import static com.xueyi.common.web.correlate.contant.CorrelateConstants.SubOperate.EDIT;
-import static com.xueyi.common.web.correlate.contant.CorrelateConstants.SubOperate.SELECT;
+import static com.xueyi.common.web.correlate.contant.CorrelateConstants.SubOperate.*;
 
 /**
  * 系统服务 | 组织模块 | 用户 关联映射
@@ -51,6 +48,8 @@ public enum SysUserCorrelate implements CorrelateService {
         add(new Indirect<>(ADD, ISysPostService.class, SysUserPostMergeMapper.class, SysUserPostMerge::getUserId, SysUserPostMerge::getPostId, SysUserDto::getId, SysPostDto::getId, SysUserDto::getPostIds, SysUserDto::getPosts));
     }}),
     BASE_EDIT("默认修改|（用户-岗位）", new ArrayList<>() {{
+        // 用户 | 岗位
+        add(new Indirect<>(SELECT, SysUserPostMergeMapper.class, SysUserPostMerge::getUserId, SysUserPostMerge::getPostId, SysUserDto::getId, SysUserDto::getPostIds));
         // 用户 | 岗位
         add(new Indirect<>(EDIT, ISysPostService.class, SysUserPostMergeMapper.class, SysUserPostMerge::getUserId, SysUserPostMerge::getPostId, SysUserDto::getId, SysPostDto::getId, SysUserDto::getPostIds, SysUserDto::getPosts));
     }}),
