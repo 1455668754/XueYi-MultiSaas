@@ -4,6 +4,10 @@ export enum DicCodeEnum {
   SYS_NORMAL_DISABLE = 'sys_normal_disable',
   // 是否
   SYS_YES_NO = 'sys_yes_no',
+  // 功能状态
+  SYS_FUNCTION_STATUS = 'sys_function_status',
+  // 公共私有
+  SYS_COMMON_PRIVATE = 'sys_common_private',
 }
 
 /** 字典：状态（0正常 1停用） */
@@ -12,8 +16,6 @@ export enum DicStatusEnum {
   NORMAL = '0',
   // 停用
   DISABLE = '1',
-  // 异常
-  EXCEPTION = '1',
 }
 
 /** 字典：序号 */
