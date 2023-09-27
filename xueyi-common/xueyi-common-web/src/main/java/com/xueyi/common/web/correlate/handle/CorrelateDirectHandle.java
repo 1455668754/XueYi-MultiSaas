@@ -269,6 +269,8 @@ public final class CorrelateDirectHandle extends CorrelateBaseHandle {
                 subList.addAll(addList);
             }
         }
+        // 初始化复制值
+        copyFieldInfo(dto, subList, ormDirect.getCopyFields());
         return subList;
     }
 
@@ -286,6 +288,10 @@ public final class CorrelateDirectHandle extends CorrelateBaseHandle {
         Object newSub = getFieldObj(newDto, ormDirect.getSubInfoField());
         Object mainKey = getFieldObj(newDto, ormDirect.getMainKeyField());
 
+        List<S> insertStepList = new ArrayList<>();
+        List<S> updateStepList = new ArrayList<>();
+        Set<Object> delStepKeys = new HashSet<>();
+
         if (ObjectUtil.isNotNull(originDto)) {
             Object originSub = getFieldObj(originDto, ormDirect.getSubInfoField());
             switch (ormDirect.getSubDataRow()) {
@@ -295,18 +301,18 @@ public final class CorrelateDirectHandle extends CorrelateBaseHandle {
                     if (ObjectUtil.isNotNull(newSubObj)) {
                         if (ObjectUtil.isNotNull(originSubObj)) {
                             if (ObjectUtil.equals(originSubObj.getId(), newSubObj.getId())) {
-                                updateList.add(newSubObj);
+                                updateStepList.add(newSubObj);
                             } else {
-                                delKeys.add(originSubObj.getId());
+                                delStepKeys.add(originSubObj.getId());
                                 setField(newSubObj, ormDirect.getSlaveKeyField(), mainKey);
-                                insertList.add(newSubObj);
+                                insertStepList.add(newSubObj);
                             }
                         } else {
                             setField(newSubObj, ormDirect.getSlaveKeyField(), mainKey);
-                            insertList.add(newSubObj);
+                            insertStepList.add(newSubObj);
                         }
                     } else if (ObjectUtil.isNotNull(originSubObj)) {
-                        delKeys.add(originSubObj.getId());
+                        delStepKeys.add(originSubObj.getId());
                     }
                 }
                 case LIST -> {
@@ -323,10 +329,10 @@ public final class CorrelateDirectHandle extends CorrelateBaseHandle {
                             : newSubColl.stream().filter(ObjectUtil::isNotNull)
                             .map(item -> {
                                 if (originSubMap.containsKey(item.getId())) {
-                                    updateList.add(item);
+                                    updateStepList.add(item);
                                 } else {
                                     setField(item, ormDirect.getSlaveKeyField(), mainKey);
-                                    insertList.add(item);
+                                    insertStepList.add(item);
                                 }
                                 return item.getId();
                             }).filter(ObjectUtil::isNotNull)
@@ -334,7 +340,7 @@ public final class CorrelateDirectHandle extends CorrelateBaseHandle {
                     if (CollUtil.isNotEmpty(originSubColl)) {
                         Set<Object> keys = originSubColl.stream().filter(ObjectUtil::isNotNull).map(S::getId)
                                 .filter(slaveId -> !newSubMap.containsKey(slaveId)).collect(Collectors.toSet());
-                        delKeys.addAll(keys);
+                        delStepKeys.addAll(keys);
                     }
                 }
             }
@@ -344,7 +350,7 @@ public final class CorrelateDirectHandle extends CorrelateBaseHandle {
                     S newSubObj = (S) newSub;
                     if (ObjectUtil.isNotNull(newSubObj)) {
                         setField(newSubObj, ormDirect.getSlaveKeyField(), mainKey);
-                        insertList.add(newSubObj);
+                        insertStepList.add(newSubObj);
                     }
                 }
                 case LIST -> {
@@ -352,11 +358,41 @@ public final class CorrelateDirectHandle extends CorrelateBaseHandle {
                     if (CollUtil.isEmpty(newSubColl)) {
                         newSubColl.stream().filter(ObjectUtil::isNotNull).forEach(item -> {
                             setField(item, ormDirect.getSlaveKeyField(), mainKey);
-                            insertList.add(item);
+                            insertStepList.add(item);
                         });
                     }
                 }
             }
+        }
+
+        if (CollUtil.isNotEmpty(insertStepList)) {
+            // 初始化复制值
+            copyFieldInfo(newDto, insertStepList, ormDirect.getCopyFields());
+            insertList.addAll(insertStepList);
+        }
+
+        if (CollUtil.isNotEmpty(updateStepList)) {
+            // 初始化复制值
+            copyFieldInfo(newDto, updateStepList, ormDirect.getCopyFields());
+            updateList.addAll(updateStepList);
+        }
+
+        if (CollUtil.isNotEmpty(delStepKeys)) {
+            delKeys.addAll(delStepKeys);
+        }
+    }
+
+
+    /**
+     * 初始化复制值
+     *
+     * @param dto        数据对象
+     * @param subList    子数据集合
+     * @param copyFields 数据复制对象集合
+     */
+    private static <D extends BaseEntity, S extends BaseEntity> void copyFieldInfo(D dto, List<S> subList, List<Direct.ORM.CopyField> copyFields) {
+        if (CollUtil.isNotEmpty(subList) && CollUtil.isNotEmpty(copyFields)) {
+            subList.forEach(subInfo -> copyFields.forEach(copyField -> setField(subInfo, copyField.getTargetField(), getFieldObj(dto, copyField.getSourceField()))));
         }
     }
 
