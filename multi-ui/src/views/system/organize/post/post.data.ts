@@ -3,16 +3,17 @@ import { BasicColumn } from '@/components/Table';
 import { DescItem } from '@/components/Description';
 import { dicDictList } from '@/api/sys/dict.api';
 import { dictConversion } from '@/utils/xueyi';
-import { DicSortEnum, DicStatusEnum } from '@/enums';
+import { DicCodeEnum, DicSortEnum, DicStatusEnum } from '@/enums';
 import { PostIM } from '@/model/system/organize';
 import { listDeptApi } from '@/api/system/organize/dept.api';
+import { listRoleApi } from '@/api/system/authority/role.api';
 
 /** 字典查询 */
-export const dictMap = await dicDictList(['sys_normal_disable']);
+export const dictMap = await dicDictList([DicCodeEnum.SYS_NORMAL_DISABLE]);
 
 /** 字典表 */
 export const dict: any = {
-  DicNormalDisableOptions: dictMap['sys_normal_disable'],
+  DicNormalDisableOptions: dictMap[DicCodeEnum.SYS_NORMAL_DISABLE],
 };
 
 /** 表格数据 */
@@ -153,8 +154,16 @@ export const roleFormSchema: FormSchema[] = [
   {
     label: '角色分配',
     field: 'roleIds',
-    slot: 'role',
-    component: 'Input',
+    component: 'ApiTransfer',
+    componentProps: {
+      api: listRoleApi,
+      params: { status: DicStatusEnum.NORMAL },
+      titles: ['待选', '已选'],
+      showSearch: true,
+      resultField: 'items',
+      labelField: 'name',
+      valueField: 'id',
+    },
   },
 ];
 

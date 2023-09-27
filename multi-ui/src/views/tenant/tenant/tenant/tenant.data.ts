@@ -8,14 +8,15 @@ import { TenantIM } from '@/model/tenant/tenant';
 import { listStrategyApi } from '@/api/tenant/source/strategy.api';
 import { h } from 'vue';
 import { Tag } from 'ant-design-vue';
+import { listAuthGroupApi } from '@/api/system/authority/authGroup.api';
 
 /** 字典查询 */
-export const dictMap = await dicDictList([DicCodeEnum.SYS_YES_NO, 'sys_normal_disable']);
+export const dictMap = await dicDictList([DicCodeEnum.SYS_YES_NO, DicCodeEnum.SYS_NORMAL_DISABLE]);
 
 /** 字典表 */
 export const dict: any = {
   DicYesNoOptions: dictMap[DicCodeEnum.SYS_YES_NO],
-  DicNormalDisableOptions: dictMap['sys_normal_disable'],
+  DicNormalDisableOptions: dictMap[DicCodeEnum.SYS_NORMAL_DISABLE],
 };
 
 /** 租户新增分页数据 */
@@ -446,8 +447,16 @@ export const authGroupFormSchema: FormSchema[] = [
   {
     label: '权限组分配',
     field: 'authGroupIds',
-    slot: 'auth',
-    component: 'Input',
+    component: 'ApiTransfer',
+    componentProps: {
+      api: listAuthGroupApi,
+      params: { status: DicStatusEnum.NORMAL },
+      titles: ['待选', '已选'],
+      showSearch: true,
+      resultField: 'items',
+      labelField: 'name',
+      valueField: 'id',
+    },
   },
 ];
 

@@ -1,38 +1,26 @@
 <template>
-  <BasicModal v-bind="$attrs" @register="registerModal" :title="getTitle" @ok="handleSubmit">
-    <BasicForm @register="registerForm">
-      <template #role="{ model, field }">
-        <Transfer
-          v-model:target-keys="model[field]"
-          :data-source="roleList"
-          :titles="['待选', '已选']"
-          show-search
-          :filter-option="filterOption"
-          :render="(item) => item.name"
-          :rowKey="(item) => item.id"
-        />
-      </template>
-    </BasicForm>
+  <BasicModal
+    v-bind="$attrs"
+    :destroyOnClose="true"
+    @register="registerModal"
+    :title="getTitle"
+    @ok="handleSubmit"
+  >
+    <BasicForm @register="registerForm" />
   </BasicModal>
 </template>
 
 <script setup lang="ts">
-  import { computed, ref, unref } from 'vue';
-  import { Transfer } from 'ant-design-vue';
+  import { computed } from 'vue';
   import { useMessage } from '@/hooks/web/useMessage';
   import { BasicModal, useModalInner } from '@/components/Modal';
   import { BasicForm, useForm } from '@/components/Form';
-  import { listRoleApi } from '@/api/system/authority/role.api';
-  import { RoleLM } from '@/model/system/authority';
   import { roleFormSchema } from './user.data';
   import { editAuthUserScopeApi, getAuthUserApi } from '@/api/system/organize/user.api';
-  import { DicStatusEnum } from '@/enums';
-  import { TransferItem } from 'ant-design-vue/lib/transfer';
 
   const emit = defineEmits(['success', 'register']);
 
   const { createMessage } = useMessage();
-  const roleList = ref<RoleLM>([]);
 
   const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
     labelWidth: 70,
@@ -42,14 +30,8 @@
 
   const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
     resetFields();
-    roleList.value = [];
     setModalProps({ confirmLoading: false });
     const record = await getAuthUserApi(data.record.id);
-    if (unref(roleList).length === 0) {
-      roleList.value = await listRoleApi({ status: DicStatusEnum.NORMAL }).then(
-        (item) => item.items,
-      );
-    }
     setFieldsValue({
       ...record,
     });
@@ -72,8 +54,4 @@
       setModalProps({ confirmLoading: false });
     }
   }
-
-  const filterOption = (inputValue: string, option: TransferItem) => {
-    return option?.name.indexOf(inputValue) > -1;
-  };
 </script>

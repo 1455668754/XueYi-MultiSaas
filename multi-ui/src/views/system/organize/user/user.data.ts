@@ -2,20 +2,21 @@ import { FormSchema } from '@/components/Form';
 import { BasicColumn } from '@/components/Table';
 import { DescItem } from '@/components/Description';
 import { dicDictList } from '@/api/sys/dict.api';
-import { DicSortEnum, DicStatusEnum } from '@/enums';
+import { DicCodeEnum, DicSortEnum, DicStatusEnum } from '@/enums';
 import { UserIM } from '@/model/system/organize';
 import { DefaultPassword, OrganizeTypeEnum, SexEnum } from '@/enums/system/organize';
 import { organizeOptionApi } from '@/api/system/organize/organize.api';
 import { isEmpty, isEqual, pull } from 'lodash-es';
 import { dictConversion } from '@/utils/xueyi';
 import { isNotEmpty } from '@/utils/is';
+import { listRoleApi } from '@/api/system/authority/role.api';
 
 /** 字典查询 */
-export const dictMap = await dicDictList(['sys_normal_disable', 'sys_user_sex']);
+export const dictMap = await dicDictList([DicCodeEnum.SYS_NORMAL_DISABLE, 'sys_user_sex']);
 
 /** 字典表 */
 export const dict: any = {
-  DicNormalDisableOptions: dictMap['sys_normal_disable'],
+  DicNormalDisableOptions: dictMap[DicCodeEnum.SYS_NORMAL_DISABLE],
   DicUserSexOptions: dictMap['sys_user_sex'],
 };
 
@@ -257,8 +258,16 @@ export const roleFormSchema: FormSchema[] = [
   {
     label: '角色分配',
     field: 'roleIds',
-    slot: 'role',
-    component: 'Input',
+    component: 'ApiTransfer',
+    componentProps: {
+      api: listRoleApi,
+      params: { status: DicStatusEnum.NORMAL },
+      titles: ['待选', '已选'],
+      showSearch: true,
+      resultField: 'items',
+      labelField: 'name',
+      valueField: 'id',
+    },
   },
 ];
 
