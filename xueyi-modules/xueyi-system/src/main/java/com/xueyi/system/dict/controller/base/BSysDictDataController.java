@@ -17,5 +17,4 @@ public class BSysDictDataController extends BaseController<SysDictDataQuery, Sys
     protected String getNodeName() {
         return "字典数据";
     }
-
 }

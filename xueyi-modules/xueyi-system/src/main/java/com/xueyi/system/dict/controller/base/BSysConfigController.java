@@ -12,7 +12,9 @@ import com.xueyi.system.api.dict.domain.dto.SysConfigDto;
 import com.xueyi.system.api.dict.domain.query.SysConfigQuery;
 import com.xueyi.system.dict.service.ISysConfigService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 系统服务 | 字典模块 | 参数管理 | 通用 业务处理
@@ -25,6 +27,30 @@ public class BSysConfigController extends BaseController<SysConfigQuery, SysConf
     @Override
     protected String getNodeName() {
         return "参数";
+    }
+
+    /**
+     * 根据参数类型查询参数数据信息
+     */
+    public AjaxResult getDictByCode(String code) {
+        if (StrUtil.isEmpty(code)) {
+            warn("请传入编码后再查询字典");
+        }
+        Map<String, Object> configMap = new HashMap<>();
+        configMap.put(code, DictUtil.getConfigCache(CacheConstants.ConfigType.getByCode(code)));
+        return AjaxResult.success(configMap);
+    }
+
+    /**
+     * 根据参数类型查询参数数据信息
+     */
+    public AjaxResult getDictListByCodeList(List<String> codeList) {
+        if (cn.hutool.core.collection.CollUtil.isEmpty(codeList)) {
+            warn("请传入编码后再查询字典");
+        }
+        Map<String, Object> configMap = new HashMap<>();
+        codeList.forEach(code -> configMap.put(code, DictUtil.getConfigCache(CacheConstants.ConfigType.getByCode(code))));
+        return AjaxResult.success(configMap);
     }
 
     /**
