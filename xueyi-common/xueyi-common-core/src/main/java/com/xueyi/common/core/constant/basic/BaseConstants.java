@@ -99,12 +99,14 @@ public class BaseConstants {
     public enum Status {
 
         NORMAL("0", "正常"),
-        DISABLE("1", "停用"),
-        EXCEPTION("1", "异常");
+        DISABLE("1", "停用");
 
         private final String code;
         private final String info;
 
+        public static boolean isNormal(String code) {
+            return StrUtil.equals(BaseConstants.Status.NORMAL.getCode(), code);
+        }
     }
 
     /** 系统默认值 */
