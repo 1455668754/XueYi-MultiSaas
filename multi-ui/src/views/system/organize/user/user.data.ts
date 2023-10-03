@@ -1,8 +1,8 @@
 import { FormSchema } from '@/components/Form';
 import { BasicColumn } from '@/components/Table';
 import { DescItem } from '@/components/Description';
-import { dicDictList } from '@/api/sys/dict.api';
-import { DicCodeEnum, DicSortEnum, DicStatusEnum } from '@/enums';
+import { dicConfigList, dicDictList } from '@/api/sys/dict.api';
+import { ConfigCodeEnum, DicCodeEnum, DicSortEnum, DicStatusEnum, DicYesNoEnum } from '@/enums';
 import { UserIM } from '@/model/system/organize';
 import { DefaultPassword, OrganizeTypeEnum, SexEnum } from '@/enums/system/organize';
 import { organizeOptionApi } from '@/api/system/organize/organize.api';
@@ -20,11 +20,24 @@ export const dict: any = {
   DicUserSexOptions: dictMap['sys_user_sex'],
 };
 
+/** 参数查询 */
+export const configMap = await dicConfigList([
+  ConfigCodeEnum.SYS_CODE_SHOW,
+  ConfigCodeEnum.SYS_CODE_MUST,
+]);
+
+/** 参数表 */
+export const config: any = {
+  ConfigCodeShow: configMap[ConfigCodeEnum.SYS_CODE_SHOW],
+  ConfigCodeMust: configMap[ConfigCodeEnum.SYS_CODE_MUST],
+};
+
 /** 表格数据 */
 export const columns: BasicColumn[] = [
   {
     title: '用户编码',
     dataIndex: 'code',
+    ifShow: () => DicYesNoEnum.YES === config.ConfigCodeShow,
     width: 220,
   },
   {
@@ -68,6 +81,7 @@ export const searchFormSchema: FormSchema[] = [
     label: '用户编码',
     field: 'code',
     component: 'Input',
+    ifShow: () => DicYesNoEnum.YES === config.ConfigCodeShow,
     colProps: { span: 6 },
   },
   {
@@ -156,6 +170,9 @@ export const formSchema: FormSchema[] = [
     label: '用户编码',
     field: 'code',
     component: 'Input',
+    ifShow: () => DicYesNoEnum.YES === config.ConfigCodeShow,
+    required: () =>
+      DicYesNoEnum.YES === config.ConfigCodeShow && DicYesNoEnum.YES === config.ConfigCodeMust,
     colProps: { span: 12 },
   },
   {
@@ -291,6 +308,9 @@ export const resPwdFormSchema: FormSchema[] = [
     label: '用户编码',
     field: 'code',
     component: 'Input',
+    ifShow: () => DicYesNoEnum.YES === config.ConfigCodeShow,
+    required: () =>
+      DicYesNoEnum.YES === config.ConfigCodeShow && DicYesNoEnum.YES === config.ConfigCodeMust,
     dynamicDisabled: true,
     colProps: { span: 12 },
   },
@@ -315,6 +335,7 @@ export const detailSchema: DescItem[] = [
   {
     label: '用户编码',
     field: 'code',
+    show: () => DicYesNoEnum.YES === config.ConfigCodeShow,
     span: 8,
   },
   {

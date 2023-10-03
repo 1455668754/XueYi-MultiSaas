@@ -609,7 +609,9 @@ insert into sys_config (id, name, code, value, type, data_type, cache_type, rema
 values (1, '主框架页-默认皮肤样式名称',           'sys.index.skinName',          'skin-blue',      'Y',  '0',  '0',    '蓝色 skin-blue、绿色 skin-green、紫色 skin-purple、红色 skin-red、黄色 skin-yellow', 0),
        (2, '用户管理-账号初始密码',              'sys.user.initPassword',         '123456',       'Y',  '0',  '0',    '初始化密码 123456', 0),
        (3, '主框架页-侧边栏主题',                'sys.index.sideTheme',           'theme-dark',   'Y',  '0',  '0',    '深色主题theme-dark，浅色主题theme-light', 0),
-       (4, '账号自助-是否开启租户注册功能',        'sys.account.registerTenant',    'false',        'Y',  '0',  '0',    '是否开启注册租户功能（true开启，false关闭）', 0);
+       (4, '账号自助-是否开启租户注册功能',        'sys.account.registerTenant',    'false',        'Y',  '0',  '0',    '是否开启注册租户功能（true开启，false关闭）', 0),
+       (10001, '系统模块:数据编码配置:功能开关',   'sys.code.show', 'Y', 'Y', '0', '0', '系统模块:数据编码配置:功能开关（Y启用 N禁用）', 0),
+       (10002, '系统模块:数据编码配置:必须字段',   'sys.code.must', 'N', 'Y', '0', '0', '系统模块:数据编码配置:必须字段（Y是 N否）', 0);
 
 -- ----------------------------
 -- 13、定时任务调度表
