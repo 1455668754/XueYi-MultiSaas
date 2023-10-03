@@ -3,7 +3,7 @@
     v-bind="$attrs"
     @register="registerModal"
     :title="getTitle"
-    :defaultFullscreen="true"
+    :width="900"
     :showCancelBtn="false"
     :showOkBtn="current === 2"
     @ok="handleSubmit"
