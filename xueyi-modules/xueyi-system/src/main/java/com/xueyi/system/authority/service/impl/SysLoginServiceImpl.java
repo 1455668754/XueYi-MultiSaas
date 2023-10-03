@@ -1,5 +1,6 @@
 package com.xueyi.system.authority.service.impl;
 
+import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.core.utils.TreeUtil;
 import com.xueyi.common.core.utils.core.CollUtil;
@@ -105,7 +106,7 @@ public class SysLoginServiceImpl implements ISysLoginService {
         if (SysUserDto.isAdmin(userType)) {
             roles.add(ROLE_ADMIN);
         } else {
-            roles.addAll(roleList.stream().map(SysRoleDto::getRoleKey).filter(StrUtil::isNotBlank).collect(Collectors.toSet()));
+            roles.addAll(roleList.stream().filter(item -> BaseConstants.Status.isNormal(item.getStatus())).map(SysRoleDto::getRoleKey).filter(StrUtil::isNotBlank).collect(Collectors.toSet()));
         }
         return roles;
     }
@@ -154,7 +155,7 @@ public class SysLoginServiceImpl implements ISysLoginService {
             perms.add(PERMISSION_ADMIN);
         } else {
             // 菜单组合权限表示集合
-            perms.addAll(menuList.stream().map(SysMenuDto::getPerms).filter(StrUtil::isNotBlank).collect(Collectors.toSet()));
+            perms.addAll(menuList.stream().filter(item -> BaseConstants.Status.isNormal(item.getStatus())).map(SysMenuDto::getPerms).filter(StrUtil::isNotBlank).collect(Collectors.toSet()));
         }
         return perms;
     }
