@@ -72,6 +72,10 @@
   import { getTreeNodes } from '@/utils/core/treeUtil';
   import { concat, difference, intersection } from 'lodash-es';
   import { DataScopeEnum } from '@/enums/system/authority';
+  import { Steps } from 'ant-design-vue';
+
+  const ASteps = Steps;
+  const AStep = Steps.Step;
 
   const emit = defineEmits(['success', 'register']);
 

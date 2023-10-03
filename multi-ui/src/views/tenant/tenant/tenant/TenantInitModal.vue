@@ -3,7 +3,7 @@
     v-bind="$attrs"
     @register="registerModal"
     :title="getTitle"
-    :width="900"
+    :defaultFullscreen="true"
     :showCancelBtn="false"
     :showOkBtn="current === 2"
     @ok="handleSubmit"
@@ -41,6 +41,10 @@
   import { BasicModal, useModalInner } from '@/components/Modal';
   import { BasicForm, useForm } from '@/components/Form';
   import { sourceAssign } from '@/utils/xueyi';
+  import { Steps } from 'ant-design-vue';
+
+  const ASteps = Steps;
+  const AStep = Steps.Step;
 
   const emit = defineEmits(['success', 'register']);
 
