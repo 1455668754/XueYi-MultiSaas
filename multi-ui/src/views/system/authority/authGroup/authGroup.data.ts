@@ -1,9 +1,9 @@
 import { FormSchema } from '@/components/Form';
 import { BasicColumn } from '@/components/Table';
 import { DescItem } from '@/components/Description';
-import { dicDictList } from '@/api/sys/dict.api';
+import { dicConfigList, dicDictList } from '@/api/sys/dict.api';
 import { dictConversion } from '@/utils/xueyi';
-import { DicCodeEnum, DicSortEnum, DicStatusEnum } from '@/enums';
+import { ConfigCodeEnum, DicCodeEnum, DicSortEnum, DicStatusEnum, DicYesNoEnum } from '@/enums';
 import { AuthGroupIM } from '@/model/system/authority';
 
 /** 字典查询 */
@@ -14,11 +14,24 @@ export const dict: any = {
   DicNormalDisableOptions: dictMap[DicCodeEnum.SYS_NORMAL_DISABLE],
 };
 
+/** 参数查询 */
+export const configMap = await dicConfigList([
+  ConfigCodeEnum.SYS_CODE_SHOW,
+  ConfigCodeEnum.SYS_CODE_MUST,
+]);
+
+/** 参数表 */
+export const config: any = {
+  ConfigCodeShow: configMap[ConfigCodeEnum.SYS_CODE_SHOW],
+  ConfigCodeMust: configMap[ConfigCodeEnum.SYS_CODE_MUST],
+};
+
 /** 表格数据 */
 export const columns: BasicColumn[] = [
   {
     title: '权限组编码',
     dataIndex: 'code',
+    ifShow: () => DicYesNoEnum.YES === config.ConfigCodeShow,
     width: 220,
   },
   {
@@ -53,6 +66,7 @@ export const searchFormSchema: FormSchema[] = [
     label: '权限组编码',
     field: 'code',
     component: 'Input',
+    ifShow: () => DicYesNoEnum.YES === config.ConfigCodeShow,
     colProps: { span: 6 },
   },
   {
@@ -93,6 +107,9 @@ export const formSchema: FormSchema[] = [
     label: '权限组编码',
     field: 'code',
     component: 'Input',
+    ifShow: () => DicYesNoEnum.YES === config.ConfigCodeShow,
+    required: () =>
+      DicYesNoEnum.YES === config.ConfigCodeShow && DicYesNoEnum.YES === config.ConfigCodeMust,
     colProps: { span: 12 },
   },
   {
@@ -150,6 +167,7 @@ export const detailSchema: DescItem[] = [
   {
     label: '权限组编码',
     field: 'code',
+    show: () => DicYesNoEnum.YES === config.ConfigCodeShow,
     span: 8,
   },
   {
