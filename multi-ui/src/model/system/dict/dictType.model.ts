@@ -1,4 +1,4 @@
-import { BasicFetchResult, BasicPageParams, SubBaseEntity } from '@/model/basic';
+import { BasicFetchResult, BasicPageParams, SubBaseEntity } from '@/model';
 import { DictDataIM } from '@/model/system/dict/index';
 import { DicCacheTypeEnum, DicDataTypeEnum } from '@/enums/system/dict';
 import { DicStatusEnum } from '@/enums';

@@ -1,4 +1,4 @@
-import { BasicFetchResult, BasicPageParams, TreeEntity } from '@/model/basic';
+import { BasicFetchResult, BasicPageParams, TreeEntity } from '@/model';
 import { OrganizeTypeEnum } from '@/enums/system/organize';
 import { DicStatusEnum } from '@/enums';
 
