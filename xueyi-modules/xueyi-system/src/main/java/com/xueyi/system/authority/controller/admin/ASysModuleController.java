@@ -1,6 +1,7 @@
 package com.xueyi.system.authority.controller.admin;
 
 import com.xueyi.common.core.constant.basic.DictConstants;
+import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.validate.V_A;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,9 +52,13 @@ public class ASysModuleController extends BSysModuleController {
         Object moduleRoute = tokenService.getModuleRoute();
         if (ObjectUtil.isNull(moduleRoute)) {
             DataScope dataScope = tokenService.getDataScope();
-            List<SysModuleDto> moduleList = baseService.selectListByIds(dataScope.getModuleIds());
-            moduleRoute = moduleList.stream().filter(item -> ObjectUtil.equals(DictConstants.DicShowHide.SHOW.getCode(), item.getHideModule()))
-                    .collect(Collectors.toList());
+            if (CollUtil.isNotEmpty(dataScope.getModuleIds())) {
+                List<SysModuleDto> moduleList = baseService.selectListByIds(dataScope.getModuleIds());
+                moduleRoute = moduleList.stream().filter(item -> ObjectUtil.equals(DictConstants.DicShowHide.SHOW.getCode(), item.getHideModule()))
+                        .collect(Collectors.toList());
+            } else {
+                moduleRoute = new ArrayList<>();
+            }
             tokenService.setModuleRoute(moduleRoute);
         }
         return success(moduleRoute);
