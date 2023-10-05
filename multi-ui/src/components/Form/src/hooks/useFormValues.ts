@@ -1,4 +1,4 @@
-import { isArray, isFunction, isNullOrUnDef, isObject, isString } from '@/utils/is';
+import { isArray, isFunction, isNotEmpty, isNullOrUnDef, isObject, isString } from '@/utils/is';
 import { dateUtil } from '@/utils/dateUtil';
 import type { ComputedRef, Ref } from 'vue';
 import { unref } from 'vue';
@@ -115,8 +115,12 @@ export function useFormValues({
 
       const [startTimeFormat, endTimeFormat] = Array.isArray(format) ? format : [format, format];
 
-      set(values, startTimeKey, formatTime(startTime, startTimeFormat));
-      set(values, endTimeKey, formatTime(endTime, endTimeFormat));
+      if (isNotEmpty(startTime)) {
+        set(values, startTimeKey, formatTime(startTime, startTimeFormat));
+      }
+      if (isNotEmpty(endTime)) {
+        set(values, endTimeKey, formatTime(endTime, endTimeFormat));
+      }
       unset(values, field);
     }
 
