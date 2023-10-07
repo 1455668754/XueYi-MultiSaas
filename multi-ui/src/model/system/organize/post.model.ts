@@ -1,4 +1,4 @@
-import { BaseEntity, BasicFetchResult, BasicPageParams } from '@/model/basic';
+import { BaseEntity, BasicFetchResult, BasicPageParams } from '@/model';
 import { RoleLM } from '../authority';
 import { DeptIM } from './dept.model';
 import { DicStatusEnum } from '@/enums';

@@ -1,5 +1,6 @@
 package com.xueyi.common.cache.constant;
 
+import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.utils.core.EnumUtil;
 import com.xueyi.common.core.utils.core.SpringUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
@@ -39,7 +40,9 @@ public class CacheConstants {
     @AllArgsConstructor
     public enum ConfigType {
 
-        USER_INIT_PASSWORD("sys.user.initPassword", "用户管理-账号初始密码", String.class, StrUtil.EMPTY);
+        USER_INIT_PASSWORD("sys.user.initPassword", "用户管理-账号初始密码", String.class, StrUtil.EMPTY),
+        SYS_CODE_SHOW("sys.code.show", "系统模块:数据编码配置:功能开关（Y启用 N禁用）", String.class, DictConstants.DicYesNo.NO.getCode()),
+        SYS_CODE_MUST("sys.code.must", "系统模块:数据编码配置:必须字段（Y是 N否）", String.class, DictConstants.DicYesNo.NO.getCode());
 
         private final String code;
         private final String info;

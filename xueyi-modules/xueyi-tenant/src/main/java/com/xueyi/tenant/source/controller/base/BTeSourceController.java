@@ -2,15 +2,18 @@ package com.xueyi.tenant.source.controller.base;
 
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.utils.core.CollUtil;
+import com.xueyi.common.core.utils.core.SpringUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.datasource.utils.DSUtil;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.tenant.api.source.domain.dto.TeSourceDto;
 import com.xueyi.tenant.api.source.domain.query.TeSourceQuery;
+import com.xueyi.tenant.source.config.SourceProperties;
 import com.xueyi.tenant.source.service.ITeSourceService;
 import com.xueyi.tenant.source.service.ITeStrategyService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -34,7 +37,7 @@ public class BTeSourceController extends BaseController<TeSourceQuery, TeSourceD
      */
     @Override
     protected void AEHandle(BaseConstants.Operate operate, TeSourceDto source) {
-        DSUtil.testSlaveDs(source);
+        testSlaveDs(source);
         if (baseService.checkNameUnique(source.getId(), source.getName())) {
             warn(StrUtil.format("{}{}{}失败，{}名称已存在", operate.getInfo(), getNodeName(), source.getName(), getNodeName()));
         }
@@ -59,5 +62,15 @@ public class BTeSourceController extends BaseController<TeSourceQuery, TeSourceD
             baseService.deleteByIds(idList);
             warn(StrUtil.format("默认{}及已被使用的{}不允许删除，其余{}删除成功！", getNodeName(), getNodeName(), getNodeName()));
         }
+    }
+
+    /**
+     * 测试数据源是否为可连接子库
+     *
+     * @param source 数据源对象
+     */
+    public static void testSlaveDs(TeSourceDto source) {
+        String[] slaveTables = SpringUtil.getBean(SourceProperties.class).getSlaveTable();
+        DSUtil.testSlaveDs(source, Arrays.stream(slaveTables).toList());
     }
 }

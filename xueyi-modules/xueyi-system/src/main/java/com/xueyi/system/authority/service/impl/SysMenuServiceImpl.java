@@ -166,6 +166,8 @@ public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuQuery, SysMenuDto
             case ADD -> {
                 if (newDto.isCommon()) {
                     newDto.setTenantId(TenantConstants.COMMON_TENANT_ID);
+                } else if (ObjectUtil.isNull(newDto.getTenantId())) {
+                    newDto.setTenantId(SecurityUserUtils.getEnterpriseId());
                 }
             }
             case EDIT -> {
@@ -221,7 +223,7 @@ public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuQuery, SysMenuDto
                 if (newDto.isNotCommon() && SecurityUserUtils.isNotAdminTenant() && ObjectUtil.notEqual(SecurityUserUtils.getEnterpriseId(), newDto.getTenantId())) {
                     throw new ServiceException(StrUtil.format("{}菜单{}失败，仅允许配置本企业私有菜单！", operate.getInfo(), newDto.getName()));
                 }
-                if (SecurityUserUtils.isAdminTenant() && newDto.isCommon()) {
+                if (SecurityUserUtils.isAdminTenant()) {
                     SecurityContextHolder.setEnterpriseId(newDto.getTenantId().toString());
                 }
             }
@@ -251,7 +253,7 @@ public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuQuery, SysMenuDto
                 }
             }
             case ADD, EDIT, EDIT_STATUS -> {
-                if (SecurityUserUtils.isAdminTenant() && newDto.isCommon()) {
+                if (SecurityUserUtils.isAdminTenant()) {
                     SecurityContextHolder.rollLastEnterpriseId();
                 }
             }

@@ -5,7 +5,6 @@ import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.exception.UtilException;
 import com.xueyi.common.core.utils.core.ObjectUtil;
-import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.redis.constant.RedisConstants;
 import com.xueyi.common.web.correlate.contant.CorrelateConstants;
@@ -17,6 +16,7 @@ import com.xueyi.common.web.entity.service.impl.handle.BaseServiceHandle;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 服务层 基类实现通用数据处理
@@ -211,12 +211,9 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, C exten
      */
     @Override
     public BaseConstants.Status checkStatus(Serializable id) {
-        D info = ObjectUtil.isNotNull(id) ? baseManager.selectById(id) : null;
-        return ObjectUtil.isNull(info)
-                ? BaseConstants.Status.EXCEPTION
-                : StrUtil.equals(BaseConstants.Status.NORMAL.getCode(), info.getStatus())
-                ? BaseConstants.Status.NORMAL
-                : BaseConstants.Status.DISABLE;
+        return Optional.ofNullable(id).map(item -> baseManager.selectById(id)).map(D::getStatus)
+                .filter(BaseConstants.Status::isNormal).map(item -> BaseConstants.Status.NORMAL)
+                .orElse(BaseConstants.Status.DISABLE);
     }
 
     /**

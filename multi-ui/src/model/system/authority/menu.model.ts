@@ -1,4 +1,4 @@
-import { BasicFetchResult, BasicPageParams, TreeEntity } from '@/model/basic';
+import { BasicFetchResult, BasicPageParams, TreeEntity } from '@/model';
 import { FrameTypeEnum, MenuTypeEnum } from '@/enums/system/authority';
 import { DicCommonPrivateEnum, DicShowHideEnum, DicStatusEnum, DicYesNoEnum } from '@/enums';
 import { EnterpriseIM } from '@/model/system/organize';

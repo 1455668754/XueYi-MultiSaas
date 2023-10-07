@@ -1,4 +1,4 @@
-import { BaseEntity, BasicFetchResult, BasicPageParams } from '@/model/basic';
+import { BaseEntity, BasicFetchResult, BasicPageParams } from '@/model';
 
 /** loginLog info model */
 export interface LoginLogIM extends BaseEntity {

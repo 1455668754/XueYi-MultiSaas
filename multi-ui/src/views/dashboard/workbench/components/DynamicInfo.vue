@@ -11,7 +11,7 @@
               {{ item.date }}
             </template>
             <!-- eslint-disable-next-line -->
-            <template #title> {{ item.name }} <span v-html="item.desc"> </span> </template>
+            <template #title> {{ item.name }} <span v-html="item.desc"> </span></template>
             <template #avatar>
               <Icon :icon="item.avatar" :size="30" />
             </template>

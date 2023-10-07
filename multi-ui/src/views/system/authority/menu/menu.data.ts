@@ -70,6 +70,7 @@ export function initialize(data: MenuIM) {
   menu.sort = data.sort;
   menu.isCommon = data.isCommon;
   menu.status = data.status;
+  menu.tenantId = data.tenantId;
   switch (data.menuType) {
     case MenuTypeEnum.DIR:
       menu.path = data.path;

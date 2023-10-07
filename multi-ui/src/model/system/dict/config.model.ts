@@ -1,4 +1,4 @@
-import { BaseEntity, BasicFetchResult, BasicPageParams } from '@/model/basic';
+import { BaseEntity, BasicFetchResult, BasicPageParams } from '@/model';
 import { DicStatusEnum, DicYesNoEnum } from '@/enums';
 import { DicCacheTypeEnum, DicDataTypeEnum } from '@/enums/system/dict';
 import { EnterpriseIM } from '@/model/system/organize';

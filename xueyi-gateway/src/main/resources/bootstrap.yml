@@ -2,6 +2,14 @@
 server:
   port: 8080
 
+# nacos info
+nacos:
+  host: @nacos.host@
+  port: @nacos.port@
+  namespace: @nacos.namespace@
+  username: @nacos.username@
+  password: @nacos.password@
+
 # Spring
 spring:
   application:
@@ -9,15 +17,15 @@ spring:
     name: xueyi-gateway
   profiles:
     # 环境配置
-    active: dev
+    active: @profiles.active@
   cloud:
     nacos:
       discovery:
         # 服务注册地址
-        server-addr: ${NACOS_HOST:localhost}:${NACOS_PORT:8848}
-        namespace: ${NACOS_NAMESPACE:}
-        username: ${NACOS_USERNAME:}
-        password: ${NACOS_PASSWORD:}
+        server-addr: ${NACOS_HOST:${nacos.host}}:${NACOS_PORT:${nacos.port}}
+        namespace: ${NACOS_NAMESPACE:${nacos.namespace}}
+        username: ${NACOS_USERNAME:${nacos.username}}
+        password: ${NACOS_PASSWORD:${nacos.password}}
       config:
         # 配置中心地址
         server-addr: ${spring.cloud.nacos.discovery.server-addr}

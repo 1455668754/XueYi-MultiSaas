@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.Serializable;
@@ -34,6 +35,22 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin/config")
 public class ASysConfigController extends BSysConfigController {
+
+    /**
+     * 根据参数类型查询参数数据信息
+     */
+    @GetMapping(value = "config")
+    public AjaxResult listByCode(@RequestParam String code) {
+        return getDictByCode(code);
+    }
+
+    /**
+     * 根据参数类型查询参数数据信息
+     */
+    @GetMapping(value = "/configs")
+    public AjaxResult listByCodeList(@RequestParam List<String> codeList) {
+        return getDictListByCodeList(codeList);
+    }
 
     /**
      * 查询参数对象

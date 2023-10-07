@@ -1,6 +1,7 @@
 package com.xueyi.system.authority.controller.inner;
 
 import com.xueyi.common.cache.utils.SourceUtil;
+import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.context.SecurityContextHolder;
 import com.xueyi.common.core.utils.core.ArrayUtil;
 import com.xueyi.common.core.utils.core.CollUtil;
@@ -16,6 +17,8 @@ import com.xueyi.system.api.model.DataScope;
 import com.xueyi.system.api.model.LoginUser;
 import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
+import com.xueyi.system.authority.domain.dto.SysAuthGroupDto;
+import com.xueyi.system.authority.service.ISysAuthGroupService;
 import com.xueyi.system.authority.service.ISysLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -41,6 +45,9 @@ public class ISysAdminLoginController extends BasisController {
 
     @Autowired
     private ISysLoginService loginService;
+
+    @Autowired
+    private ISysAuthGroupService authGroupService;
 
     /**
      * 获取登录信息
@@ -71,11 +78,13 @@ public class ISysAdminLoginController extends BasisController {
         Set<String> roles = loginService.getRolePermission(user.getRoles(), enterprise.getIsLessor(), user.getUserType());
         // 角色Id集合
         Set<Long> roleIds = CollUtil.isNotEmpty(user.getRoles())
-                ? user.getRoles().stream().map(SysRoleDto::getId).collect(Collectors.toSet())
+                ? user.getRoles().stream().filter(item -> BaseConstants.Status.isNormal(item.getStatus())).map(SysRoleDto::getId).collect(Collectors.toSet())
                 : new HashSet<>();
+
         // 企业权限组Id集合
-        Set<Long> authGroupIds = ArrayUtil.isNotEmpty(enterprise.getAuthGroupIds())
-                ? Arrays.stream(enterprise.getAuthGroupIds()).collect(Collectors.toSet())
+        List<SysAuthGroupDto> authGroups = ArrayUtil.isNotEmpty(enterprise.getAuthGroupIds()) ? authGroupService.selectListByIds(Arrays.stream(enterprise.getAuthGroupIds()).collect(Collectors.toSet())) : new ArrayList<>();
+        Set<Long> authGroupIds = CollUtil.isNotEmpty(authGroups)
+                ? authGroups.stream().filter(item -> BaseConstants.Status.isNormal(item.getStatus())).map(SysAuthGroupDto::getId).collect(Collectors.toSet())
                 : new HashSet<>();
 
         // 权限范围

@@ -113,6 +113,8 @@ public class SysModuleServiceImpl extends BaseServiceImpl<SysModuleQuery, SysMod
             case ADD -> {
                 if (newDto.isCommon()) {
                     newDto.setTenantId(TenantConstants.COMMON_TENANT_ID);
+                } else if (ObjectUtil.isNull(newDto.getTenantId())) {
+                    newDto.setTenantId(SecurityUserUtils.getEnterpriseId());
                 }
             }
             case EDIT -> {
@@ -123,7 +125,6 @@ public class SysModuleServiceImpl extends BaseServiceImpl<SysModuleQuery, SysMod
                 }
                 newDto.setIsCommon(originDto.getIsCommon());
                 newDto.setTenantId(originDto.getTenantId());
-
             }
             case EDIT_STATUS -> {
                 newDto.setIsCommon(originDto.getIsCommon());
@@ -140,7 +141,7 @@ public class SysModuleServiceImpl extends BaseServiceImpl<SysModuleQuery, SysMod
                 if (newDto.isNotCommon() && SecurityUserUtils.isNotAdminTenant() && ObjectUtil.notEqual(SecurityUserUtils.getEnterpriseId(), newDto.getTenantId())) {
                     throw new ServiceException(StrUtil.format("{}模块{}失败，仅允许配置本企业私有模块！", operate.getInfo(), newDto.getName()));
                 }
-                if (SecurityUserUtils.isAdminTenant() && newDto.isCommon()) {
+                if (SecurityUserUtils.isAdminTenant()) {
                     SecurityContextHolder.setEnterpriseId(newDto.getTenantId().toString());
                 }
             }
@@ -165,7 +166,7 @@ public class SysModuleServiceImpl extends BaseServiceImpl<SysModuleQuery, SysMod
     protected void endHandle(OperateConstants.ServiceType operate, int row, SysModuleDto originDto, SysModuleDto newDto) {
         switch (operate) {
             case ADD, EDIT, EDIT_STATUS -> {
-                if (SecurityUserUtils.isAdminTenant() && newDto.isCommon()) {
+                if (SecurityUserUtils.isAdminTenant()) {
                     SecurityContextHolder.rollLastEnterpriseId();
                 }
             }

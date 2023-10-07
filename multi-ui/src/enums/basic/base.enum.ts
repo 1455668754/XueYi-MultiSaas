@@ -1,3 +1,11 @@
+/** 参数字典编码：基础 */
+export enum ConfigCodeEnum {
+  // 系统模块:数据编码配置:功能开关
+  SYS_CODE_SHOW = 'sys.code.show',
+  // 系统模块:数据编码配置:必须字段
+  SYS_CODE_MUST = 'sys.code.must',
+}
+
 /** 字典编码：基础 */
 export enum DicCodeEnum {
   // 系统开关

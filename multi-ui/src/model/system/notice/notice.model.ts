@@ -1,4 +1,4 @@
-import { BaseEntity, BasicFetchResult, BasicPageParams } from '@/model/basic';
+import { BaseEntity, BasicFetchResult, BasicPageParams } from '@/model';
 
 /** notice info model */
 export interface NoticeIM extends BaseEntity {

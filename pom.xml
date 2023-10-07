@@ -43,6 +43,25 @@
         <sms4j.version>2.2.0</sms4j.version>
     </properties>
 
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <!-- 环境标识，需要与配置文件的名称相对应 -->
+                <profiles.active>dev</profiles.active>
+                <nacos.host>localhost</nacos.host>
+                <nacos.port>8848</nacos.port>
+                <nacos.namespace/>
+                <nacos.username/>
+                <nacos.password/>
+            </properties>
+            <activation>
+                <!-- 默认环境 -->
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+    </profiles>
+
     <!-- 依赖声明 -->
     <dependencyManagement>
         <dependencies>
@@ -373,6 +392,12 @@
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

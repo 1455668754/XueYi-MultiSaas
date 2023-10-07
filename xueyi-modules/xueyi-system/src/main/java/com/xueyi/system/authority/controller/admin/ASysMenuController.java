@@ -1,6 +1,7 @@
 package com.xueyi.system.authority.controller.admin;
 
 import com.xueyi.common.core.utils.TreeUtil;
+import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.validate.V_A;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,10 +56,15 @@ public class ASysMenuController extends BSysMenuController {
         String moduleKey = moduleId.toString();
         if (ObjectUtil.isNull(menuMap) || ObjectUtil.isNull(menuMap.get(moduleKey))) {
             DataScope dataScope = SecurityUserUtils.getDataScope();
-            List<SysMenuDto> menus = baseService.getRoutes(moduleId, dataScope.getMenuIds());
-            if (ObjectUtil.isNull(menuMap))
+            if (ObjectUtil.isNull(menuMap)) {
                 menuMap = new HashMap<>();
-            menuMap.put(moduleKey, MRouteUtils.buildMenus(TreeUtil.buildTree(menus)));
+            }
+            if (CollUtil.isNotEmpty(dataScope.getMenuIds())) {
+                List<SysMenuDto> menus = baseService.getRoutes(moduleId, dataScope.getMenuIds());
+                menuMap.put(moduleKey, MRouteUtils.buildMenus(TreeUtil.buildTree(menus)));
+            } else {
+                menuMap.put(moduleKey, new ArrayList<>());
+            }
             tokenService.setMenuRoute(menuMap);
         }
         return success(menuMap.get(moduleKey));

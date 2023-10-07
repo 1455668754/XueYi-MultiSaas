@@ -5,7 +5,6 @@ import com.baomidou.dynamic.datasource.creator.DataSourceProperty;
 import com.baomidou.dynamic.datasource.creator.DefaultDataSourceCreator;
 import com.baomidou.dynamic.datasource.toolkit.DynamicDataSourceContextHolder;
 import com.xueyi.common.cache.utils.SourceUtil;
-import com.xueyi.common.core.constant.basic.TenantConstants;
 import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.exception.UtilException;
 import com.xueyi.common.core.utils.core.CollUtil;
@@ -13,21 +12,23 @@ import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.SpringUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.tenant.api.source.domain.dto.TeSourceDto;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 源管理工具类
  *
  * @author xueyi
  */
+@Slf4j
 public class DSUtil {
 
     /**
@@ -36,13 +37,15 @@ public class DSUtil {
      * @param sourceName 数据源编码
      */
     public static String loadDs(String sourceName) {
-        if (StrUtil.isEmpty(sourceName))
+        if (StrUtil.isEmpty(sourceName)) {
             throw new UtilException("数据源不存在！");
-        else if (checkHasDs(sourceName))
+        } else if (checkHasDs(sourceName)) {
             return sourceName;
+        }
         TeSourceDto source = SourceUtil.getTeSourceCache(sourceName);
-        if (ObjectUtil.isNull(source))
+        if (ObjectUtil.isNull(source)) {
             throw new UtilException("数据源缓存不存在！");
+        }
         addDs(source);
         return sourceName;
     }
@@ -65,7 +68,7 @@ public class DSUtil {
             dataSource = dataSourceCreator.createDataSource(dataSourceProperty);
             ds.addDataSource(source.getSlave(), dataSource);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
             throw new UtilException("数据源添加失败!");
         }
     }
@@ -80,7 +83,7 @@ public class DSUtil {
             DynamicRoutingDataSource ds = (DynamicRoutingDataSource) SpringUtil.getBean(DataSource.class);
             ds.removeDataSource(slave);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
             throw new UtilException("数据源删除失败!");
         }
     }
@@ -117,14 +120,14 @@ public class DSUtil {
         try {
             Class.forName(source.getDriverClassName());
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
             throw new UtilException("数据源驱动加载失败，请检查驱动信息！");
         }
         try {
             Connection dbConn = DriverManager.getConnection(source.getUrlPrepend() + source.getUrlAppend(), source.getUserName(), source.getPassword());
             dbConn.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
             throw new UtilException("数据源连接失败，请检查连接信息！");
         }
     }
@@ -134,31 +137,30 @@ public class DSUtil {
      *
      * @param source 数据源对象
      */
-    public static void testSlaveDs(TeSourceDto source) {
-        String error = "数据源连接失败，请检查连接信息！";
+    public static void testSlaveDs(TeSourceDto source, List<String> needTable) {
         try {
             Class.forName(source.getDriverClassName());
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
             throw new ServiceException("数据源驱动加载失败");
         }
         try {
             Connection dbConn = DriverManager.getConnection(source.getUrlPrepend() + source.getUrlAppend(), source.getUserName(), source.getPassword());
             PreparedStatement statement = dbConn.prepareStatement("select table_name from information_schema.tables where table_schema = (select database())");
             ResultSet resultSet = statement.executeQuery();
-            List<String> tableNameList = new ArrayList<>();
-            while (resultSet.next())
+            Set<String> tableNameList = new HashSet<>();
+            while (resultSet.next()) {
                 tableNameList.add(resultSet.getString("table_name"));
-            List<String> slaveTable = new ArrayList<>(Arrays.asList(TenantConstants.SLAVE_TABLE));
-            slaveTable.removeAll(tableNameList);
-            if (CollUtil.isNotEmpty(slaveTable)) {
-                error = "请连接包含子库数据表信息的数据源！";
-                throw new ServiceException(error);
+            }
+            Set<String> slaveTables = new HashSet<>(needTable);
+            slaveTables.removeAll(tableNameList);
+            if (CollUtil.isNotEmpty(slaveTables)) {
+                throw new ServiceException("请连接包含子库数据表信息的数据源！");
             }
             dbConn.close();
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new ServiceException(error);
+            log.error(e.getMessage());
+            throw new ServiceException("数据源连接失败，请检查连接信息！");
         }
     }
 }

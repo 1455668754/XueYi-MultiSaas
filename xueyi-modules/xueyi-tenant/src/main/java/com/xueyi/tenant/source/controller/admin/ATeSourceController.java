@@ -3,7 +3,6 @@ package com.xueyi.tenant.source.controller.admin;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.validate.V_A;
 import com.xueyi.common.core.web.validate.V_E;
-import com.xueyi.common.datasource.utils.DSUtil;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import com.xueyi.common.security.annotation.AdminAuth;
@@ -70,7 +69,7 @@ public class ATeSourceController extends BTeSourceController {
      */
     @PostMapping("/connection")
     public AjaxResult connection(@Validated @RequestBody TeSourceDto source) {
-        DSUtil.testSlaveDs(source);
+        testSlaveDs(source);
         return success();
     }
 

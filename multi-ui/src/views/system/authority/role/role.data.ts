@@ -1,12 +1,12 @@
 import { FormSchema } from '@/components/Form';
 import { BasicColumn } from '@/components/Table';
 import { DescItem } from '@/components/Description';
-import { dicDictList } from '@/api/sys/dict.api';
-import { DicCodeEnum, DicSortEnum, DicStatusEnum } from '@/enums';
+import { dicConfigList, dicDictList } from '@/api/sys/dict.api';
+import { ConfigCodeEnum, DicCodeEnum, DicSortEnum, DicStatusEnum, DicYesNoEnum } from '@/enums';
 import { RoleIM } from '@/model/system/authority';
 import { dictConversion } from '@/utils/xueyi';
 import { DataScopeEnum, DicCodeRoleEnum } from '@/enums/system/authority';
-import { isEmpty, isNotEmpty } from '@/utils/is';
+import { isEmpty } from '@/utils/is';
 import { OrganizeIM, OrganizeLM } from '@/model/system/organize';
 import { OrganizeTypeEnum } from '@/enums/system/organize';
 
@@ -20,6 +20,18 @@ export const dictMap = await dicDictList([
 export const dict: any = {
   DicNormalDisableOptions: dictMap[DicCodeEnum.SYS_NORMAL_DISABLE],
   DicAuthDataScopeOptions: dictMap[DicCodeRoleEnum.AUTH_DATA_SCOPE],
+};
+
+/** 参数查询 */
+export const configMap = await dicConfigList([
+  ConfigCodeEnum.SYS_CODE_SHOW,
+  ConfigCodeEnum.SYS_CODE_MUST,
+]);
+
+/** 参数表 */
+export const config: any = {
+  ConfigCodeShow: configMap[ConfigCodeEnum.SYS_CODE_SHOW],
+  ConfigCodeMust: configMap[ConfigCodeEnum.SYS_CODE_MUST],
 };
 
 /** 角色新增分页数据 */
@@ -59,6 +71,7 @@ export const columns: BasicColumn[] = [
   {
     title: '角色编码',
     dataIndex: 'code',
+    ifShow: () => DicYesNoEnum.YES === config.ConfigCodeShow,
     width: 220,
   },
   {
@@ -92,6 +105,7 @@ export const searchFormSchema: FormSchema[] = [
     label: '角色编码',
     field: 'code',
     component: 'Input',
+    ifShow: () => DicYesNoEnum.YES === config.ConfigCodeShow,
     colProps: { span: 6 },
   },
   {
@@ -137,6 +151,9 @@ export const roleFormSchema: FormSchema[] = [
     label: '角色编码',
     field: 'code',
     component: 'Input',
+    ifShow: () => DicYesNoEnum.YES === config.ConfigCodeShow,
+    required: () =>
+      DicYesNoEnum.YES === config.ConfigCodeShow && DicYesNoEnum.YES === config.ConfigCodeMust,
     colProps: { span: 12 },
   },
   {
@@ -191,8 +208,10 @@ export const authFormSchema: FormSchema[] = [
     label: '角色编码',
     field: 'code',
     component: 'Input',
+    ifShow: () => DicYesNoEnum.YES === config.ConfigCodeShow,
+    required: () =>
+      DicYesNoEnum.YES === config.ConfigCodeShow && DicYesNoEnum.YES === config.ConfigCodeMust,
     dynamicDisabled: true,
-    ifShow: ({ values }) => isNotEmpty(values.id),
     colProps: { span: 12 },
   },
   {
@@ -200,7 +219,6 @@ export const authFormSchema: FormSchema[] = [
     field: 'name',
     component: 'Input',
     dynamicDisabled: true,
-    ifShow: ({ values }) => isNotEmpty(values.id),
     colProps: { span: 12 },
   },
   {
@@ -225,8 +243,10 @@ export const organizeFormSchema: FormSchema[] = [
     label: '角色编码',
     field: 'code',
     component: 'Input',
+    ifShow: () => DicYesNoEnum.YES === config.ConfigCodeShow,
+    required: () =>
+      DicYesNoEnum.YES === config.ConfigCodeShow && DicYesNoEnum.YES === config.ConfigCodeMust,
     dynamicDisabled: true,
-    ifShow: ({ values }) => isNotEmpty(values.id),
     colProps: { span: 12 },
   },
   {
@@ -234,7 +254,6 @@ export const organizeFormSchema: FormSchema[] = [
     field: 'name',
     component: 'Input',
     dynamicDisabled: true,
-    ifShow: ({ values }) => isNotEmpty(values.id),
     colProps: { span: 12 },
   },
   {
@@ -264,6 +283,7 @@ export const detailSchema: DescItem[] = [
   {
     label: '角色编码',
     field: 'code',
+    show: () => DicYesNoEnum.YES === config.ConfigCodeShow,
     span: 8,
   },
   {

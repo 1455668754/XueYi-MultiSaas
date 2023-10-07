@@ -1,4 +1,4 @@
-import { BasicFetchResult, BasicPageParams, SubBaseEntity } from '@/model/basic';
+import { BasicFetchResult, BasicPageParams, SubBaseEntity } from '@/model';
 import { MenuIM } from './menu.model';
 import { DicCommonPrivateEnum, DicShowHideEnum, DicStatusEnum, DicYesNoEnum } from '@/enums';
 import { EnterpriseIM } from '@/model/system/organize';
