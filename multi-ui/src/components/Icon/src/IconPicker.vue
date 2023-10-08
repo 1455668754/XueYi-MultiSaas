@@ -67,7 +67,7 @@
   </a-input>
 </template>
 <script lang="ts" setup>
-  import { ref, unref, watch, watchEffect } from 'vue';
+  import { ref, watch, watchEffect } from 'vue';
   import { useDesign } from '@/hooks/web/useDesign';
   import { ScrollContainer } from '@/components/Container';
   import { Empty, Input, Pagination, Popover } from 'ant-design-vue';
@@ -79,9 +79,8 @@
   import { usePagination } from '@/hooks/web/usePagination';
   import { useDebounceFn } from '@vueuse/core';
   import { useI18n } from '@/hooks/web/useI18n';
-  import { useCopyToClipboard } from '@/hooks/web/useCopyToClipboard';
-  import { useMessage } from '@/hooks/web/useMessage';
   import svgIcons from 'virtual:svg-icons-names';
+  import { copyText } from '@/utils/copyTextToClipboard';
 
   // 没有使用别名引入，是因为WebStorm当前版本还不能正确识别，会报unused警告
   const AInput = Input;
@@ -109,7 +108,7 @@
     value: propTypes.string,
     width: propTypes.string.def('100%'),
     pageSize: propTypes.number.def(140),
-    copy: propTypes.bool.def(false),
+    copy: propTypes.bool.def(true),
     mode: propTypes.oneOf<('svg' | 'iconify')[]>(['svg', 'iconify']).def('iconify'),
   });
 
@@ -126,17 +125,6 @@
   const { prefixCls } = useDesign('icon-picker');
 
   const debounceHandleSearchChange = useDebounceFn(handleSearchChange, 100);
-
-  let clipboardRef;
-  let isSuccessRef;
-
-  if (props.copy) {
-    const clipboard = useCopyToClipboard(props.value);
-    clipboardRef = clipboard?.clipboardRef;
-    isSuccessRef = clipboard?.isSuccessRef;
-  }
-
-  const { createMessage } = useMessage();
 
   const { getPaginationList, getTotal, setCurrentPage } = usePagination(
     currentList,
@@ -162,10 +150,7 @@
   function handleClick(icon: string) {
     currentSelect.value = icon;
     if (props.copy) {
-      clipboardRef.value = icon;
-      if (unref(isSuccessRef)) {
-        createMessage.success(t('component.icon.copy'));
-      }
+      copyText(icon, t('component.icon.copy'));
     }
   }
 
