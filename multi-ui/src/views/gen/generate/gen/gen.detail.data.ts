@@ -14,10 +14,12 @@ import {
 import { COMMON_MENU, MenuTypeEnum } from '@/enums/system/authority';
 import { BasicColumn } from '@/components/Table';
 import { GenTableColumnIM, GenTableColumnLM, GenTableLM } from '@/model/gen/generate';
-import { Component, h } from 'vue';
+import { h } from 'vue';
 import { Input, Select, Switch } from 'ant-design-vue';
 import { DicCodeEnum, DicStatusEnum, DicYesNoEnum } from '@/enums';
 import { hasTreeNode } from '@/utils/core/treeUtil';
+
+type CheckedType = boolean | string | number;
 
 /** 字典查询 */
 export const dictMap = await dicDictList([
@@ -193,12 +195,12 @@ export const fieldColumns: BasicColumn[] = [
     dataIndex: 'isHide',
     customRender: ({ record }) => {
       const data = record as GenTableColumnIM;
-      return h(Switch as Component, {
+      return h(Switch, {
         checked: data.isHide,
         checkedChildren: IsTickEnum.YES,
         unCheckedChildren: IsTickEnum.NO,
-        onChange(checked: boolean) {
-          data.isHide = checked;
+        onChange(checked: CheckedType) {
+          data.isHide = checked as boolean;
           if (checked) {
             data.isInsert = !checked;
             data.isEdit = !checked;
@@ -219,12 +221,12 @@ export const fieldColumns: BasicColumn[] = [
     dataIndex: 'isInsert',
     customRender: ({ record }) => {
       const data = record as GenTableColumnIM;
-      return h(Switch as Component, {
+      return h(Switch, {
         checked: data.isInsert,
         checkedChildren: IsTickEnum.YES,
         unCheckedChildren: IsTickEnum.NO,
-        onChange(checked: boolean) {
-          data.isInsert = checked;
+        onChange(checked: CheckedType) {
+          data.isInsert = checked as boolean;
         },
       });
     },
@@ -235,12 +237,12 @@ export const fieldColumns: BasicColumn[] = [
     dataIndex: 'isEdit',
     customRender: ({ record }) => {
       const data = record as GenTableColumnIM;
-      return h(Switch as Component, {
+      return h(Switch, {
         checked: data.isEdit,
         checkedChildren: IsTickEnum.YES,
         unCheckedChildren: IsTickEnum.NO,
-        onChange(checked: boolean) {
-          data.isEdit = checked;
+        onChange(checked: CheckedType) {
+          data.isEdit = checked as boolean;
         },
       });
     },
@@ -251,12 +253,12 @@ export const fieldColumns: BasicColumn[] = [
     dataIndex: 'isView',
     customRender: ({ record }) => {
       const data = record as GenTableColumnIM;
-      return h(Switch as Component, {
+      return h(Switch, {
         checked: data.isView,
         checkedChildren: IsTickEnum.YES,
         unCheckedChildren: IsTickEnum.NO,
-        onChange(checked: boolean) {
-          data.isView = checked;
+        onChange(checked: CheckedType) {
+          data.isView = checked as boolean;
         },
       });
     },
@@ -267,12 +269,12 @@ export const fieldColumns: BasicColumn[] = [
     dataIndex: 'isImport',
     customRender: ({ record }) => {
       const data = record as GenTableColumnIM;
-      return h(Switch as Component, {
+      return h(Switch, {
         checked: data.isImport,
         checkedChildren: IsTickEnum.YES,
         unCheckedChildren: IsTickEnum.NO,
-        onChange(checked: boolean) {
-          data.isImport = checked;
+        onChange(checked: CheckedType) {
+          data.isImport = checked as boolean;
         },
       });
     },
@@ -283,12 +285,12 @@ export const fieldColumns: BasicColumn[] = [
     dataIndex: 'isExport',
     customRender: ({ record }) => {
       const data = record as GenTableColumnIM;
-      return h(Switch as Component, {
+      return h(Switch, {
         checked: data.isExport,
         checkedChildren: IsTickEnum.YES,
         unCheckedChildren: IsTickEnum.NO,
-        onChange(checked: boolean) {
-          data.isExport = checked;
+        onChange(checked: CheckedType) {
+          data.isExport = checked as boolean;
         },
       });
     },
@@ -299,12 +301,12 @@ export const fieldColumns: BasicColumn[] = [
     dataIndex: 'isUnique',
     customRender: ({ record }) => {
       const data = record as GenTableColumnIM;
-      return h(Switch as Component, {
+      return h(Switch, {
         checked: data.isUnique,
         checkedChildren: IsTickEnum.YES,
         unCheckedChildren: IsTickEnum.NO,
-        onChange(checked: boolean) {
-          data.isUnique = checked;
+        onChange(checked: CheckedType) {
+          data.isUnique = checked as boolean;
         },
       });
     },
@@ -315,12 +317,12 @@ export const fieldColumns: BasicColumn[] = [
     dataIndex: 'isRequired',
     customRender: ({ record }) => {
       const data = record as GenTableColumnIM;
-      return h(Switch as Component, {
+      return h(Switch, {
         checked: data.isRequired,
         checkedChildren: IsTickEnum.YES,
         unCheckedChildren: IsTickEnum.NO,
-        onChange(checked: boolean) {
-          data.isRequired = checked;
+        onChange(checked: CheckedType) {
+          data.isRequired = checked as boolean;
         },
       });
     },
@@ -331,12 +333,12 @@ export const fieldColumns: BasicColumn[] = [
     dataIndex: 'isList',
     customRender: ({ record }) => {
       const data = record as GenTableColumnIM;
-      return h(Switch as Component, {
+      return h(Switch, {
         checked: data.isList,
         checkedChildren: IsTickEnum.YES,
         unCheckedChildren: IsTickEnum.NO,
-        onChange(checked: boolean) {
-          data.isList = checked;
+        onChange(checked: CheckedType) {
+          data.isList = checked as boolean;
         },
       });
     },
@@ -347,12 +349,12 @@ export const fieldColumns: BasicColumn[] = [
     dataIndex: 'isQuery',
     customRender: ({ record }) => {
       const data = record as GenTableColumnIM;
-      return h(Switch as Component, {
+      return h(Switch, {
         checked: data.isQuery,
         checkedChildren: IsTickEnum.YES,
         unCheckedChildren: IsTickEnum.NO,
-        onChange(checked: boolean) {
-          data.isQuery = checked;
+        onChange(checked: CheckedType) {
+          data.isQuery = checked as boolean;
         },
       });
     },
