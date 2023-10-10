@@ -1,5 +1,9 @@
 import type { FormInstance } from 'ant-design-vue/lib/form/Form';
-import type { NamePath, Rule, RuleObject } from 'ant-design-vue/lib/form/interface';
+import type {
+  NamePath,
+  Rule as ValidationRule,
+  RuleObject,
+} from 'ant-design-vue/lib/form/interface';
 import { computed, ref, Ref, unref } from 'vue';
 import { useI18n } from '@/hooks/web/useI18n';
 
@@ -70,7 +74,7 @@ export function useFormRules(formData?: Recordable) {
     };
   };
 
-  const getFormRules = computed((): { [k: string]: Rule | Rule[] } => {
+  const getFormRules = computed((): { [k: string]: ValidationRule | ValidationRule[] } => {
     const enterpriseNameFormRule = unref(getEnterpriseNameFormRule);
     const userNameFormRule = unref(getUserNameFormRule);
     const passwordFormRule = unref(getPasswordFormRule);
@@ -119,7 +123,7 @@ export function useFormRules(formData?: Recordable) {
   return { getFormRules };
 }
 
-function createRule(message: string) {
+function createRule(message: string): ValidationRule[] {
   return [
     {
       required: true,

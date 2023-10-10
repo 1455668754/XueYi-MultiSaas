@@ -73,6 +73,7 @@ export function removeClass(el: Element, cls: string) {
     el.className = trim(curClass);
   }
 }
+
 /**
  * Get the left and top offset of the current element
  * left: the distance between the leftmost element and the left side of the document
@@ -158,7 +159,7 @@ export function off(
 export function once(el: HTMLElement, event: string, fn: EventListener): void {
   const listener = function (this: any, ...args: unknown[]) {
     if (fn) {
-      fn.apply(this, args);
+      fn.apply(this, args as [evt: Event]);
     }
     off(el, event, listener);
   };
