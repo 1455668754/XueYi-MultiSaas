@@ -397,7 +397,11 @@ export function useFormEvents({
   }
 
   function checkIsRangeSlider(schema: FormSchema) {
-    if (schema.component === 'Slider' && schema.componentProps && schema.componentProps.range) {
+    if (
+      schema.component === 'Slider' &&
+      schema.componentProps &&
+      'range' in schema.componentProps
+    ) {
       return true;
     }
   }
