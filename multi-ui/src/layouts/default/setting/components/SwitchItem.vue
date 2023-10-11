@@ -13,7 +13,7 @@
 <script lang="ts">
   import { computed, defineComponent, PropType } from 'vue';
 
-  import { Switch } from 'ant-design-vue';
+  import { Switch, type SwitchProps } from 'ant-design-vue';
   import { useDesign } from '@/hooks/web/useDesign';
   import { useI18n } from '@/hooks/web/useI18n';
   import { baseHandler } from '../handler';
@@ -44,9 +44,9 @@
         return props.def ? { checked: props.def } : {};
       });
 
-      function handleChange(e: ChangeEvent) {
-        props.event && baseHandler(props.event, e);
-      }
+      const handleChange: SwitchProps['onChange'] = (val) => {
+        props.event && baseHandler(props.event, val);
+      };
 
       return {
         prefixCls,

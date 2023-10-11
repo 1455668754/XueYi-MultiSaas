@@ -42,7 +42,7 @@
   import type { AdvanceState } from './types/hooks';
   import type { Ref } from 'vue';
   import { computed, defineComponent, nextTick, onMounted, reactive, ref, unref, watch } from 'vue';
-  import { Form, Row } from 'ant-design-vue';
+  import { Form, type FormProps as AntFormProps, Row } from 'ant-design-vue';
   import FormItem from './components/FormItem.vue';
   import FormAction from './components/FormAction.vue';
 
@@ -111,7 +111,9 @@
         };
       });
 
-      const getBindValue = computed(() => ({ ...attrs, ...props, ...unref(getProps) }));
+      const getBindValue = computed(
+        () => ({ ...attrs, ...props, ...unref(getProps) }) as AntFormProps,
+      );
 
       const getSchema = computed((): FormSchema[] => {
         const schemas: FormSchema[] = unref(schemaRef) || (unref(getProps).schemas as any);
@@ -302,7 +304,10 @@
         formActionType: formActionType as any,
         setFormModel,
         getFormClass,
-        getFormActionBindProps: computed(() => ({ ...getProps.value, ...advanceState })),
+        getFormActionBindProps: computed(
+          () =>
+            ({ ...getProps.value, ...advanceState }) as InstanceType<typeof FormAction>['$props'],
+        ),
         fieldsIsAdvancedMap,
         ...formActionType,
       };
