@@ -26,6 +26,12 @@ spring:
         namespace: ${NACOS_NAMESPACE:${nacos.namespace}}
         username: ${NACOS_USERNAME:${nacos.username}}
         password: ${NACOS_PASSWORD:${nacos.password}}
+      config:
+        # 配置中心地址
+        server-addr: ${spring.cloud.nacos.discovery.server-addr}
+        namespace: ${spring.cloud.nacos.discovery.namespace}
+        username: ${spring.cloud.nacos.discovery.username}
+        password: ${spring.cloud.nacos.discovery.password}
         # 配置文件格式
         file-extension: yml
         # 共享配置
