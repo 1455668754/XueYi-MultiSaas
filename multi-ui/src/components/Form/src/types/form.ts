@@ -1,10 +1,10 @@
-import type { NamePath, RuleObject } from 'ant-design-vue/lib/form/interface';
-import type { CSSProperties, VNode } from 'vue';
-import type { ButtonProps as AntdButtonProps } from '@/components/Button';
-import type { FormItem } from './formItem';
-import type { ColEx, ComponentType } from './index';
-import type { TableActionType } from '@/components/Table/src/types/table';
-import type { RowProps } from 'ant-design-vue/lib/grid/Row';
+import type {NamePath, RuleObject} from 'ant-design-vue/lib/form/interface';
+import type {CSSProperties, VNode} from 'vue';
+import type {ButtonProps as AntdButtonProps} from '@/components/Button';
+import type {FormItem} from './formItem';
+import type {ColEx, ComponentType} from './index';
+import type {TableActionType} from '@/components/Table/src/types/table';
+import type {RowProps} from 'ant-design-vue/lib/grid/Row';
 
 export type FieldMapToTime = [string, [string, string], (string | [string, string])?][];
 
@@ -39,7 +39,7 @@ export interface FormActionType {
     first?: boolean | undefined,
   ) => Promise<void>;
   validateFields: (nameList?: NamePath[]) => Promise<any>;
-  validate: <T = any>(nameList?: NamePath[] | false) => Promise<T>;
+  validate: <T = Recordable>(nameList?: NamePath[] | false) => Promise<T>;
   scrollToField: (name: NamePath, options?: ScrollOptions) => Promise<void>;
 }
 
@@ -158,11 +158,11 @@ export interface FormSchema {
   // Component parameters
   componentProps?:
     | ((opt: {
-        schema: FormSchema;
-        tableAction: TableActionType;
-        formActionType: FormActionType;
-        formModel: Recordable;
-      }) => Recordable)
+    schema: FormSchema;
+    tableAction: TableActionType;
+    formActionType: FormActionType;
+    formModel: Recordable;
+  }) => Recordable)
     | object;
   // Required
   required?: boolean | ((renderCallbackParams: RenderCallbackParams) => boolean);
