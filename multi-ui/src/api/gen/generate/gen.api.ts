@@ -20,7 +20,7 @@ enum Api {
   GET_SUB = basicApi + '/sub/',
   IMPORT_DB = basicApi + '/importTable',
   EDIT = basicApi + '',
-  DEL_BATCH = basicApi + '/batch/force/',
+  DEL_BATCH = basicApi + '/batch/',
 }
 
 /** 查询业务表列表 */
