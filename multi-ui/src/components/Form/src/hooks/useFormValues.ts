@@ -2,7 +2,7 @@ import { isArray, isFunction, isNotEmpty, isNullOrUnDef, isObject, isString } fr
 import { dateUtil } from '@/utils/dateUtil';
 import type { ComputedRef, Ref } from 'vue';
 import { unref } from 'vue';
-import type { FormProps, FormSchema } from '../types/form';
+import type { FormProps, FormSchemaInner as FormSchema } from '../types/form';
 import { cloneDeep, get, set, unset } from 'lodash-es';
 
 interface UseFormValuesContext {

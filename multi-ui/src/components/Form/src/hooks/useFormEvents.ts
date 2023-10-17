@@ -1,6 +1,6 @@
 import type { ComputedRef, Ref } from 'vue';
 import { nextTick, toRaw, unref } from 'vue';
-import type { FormActionType, FormProps, FormSchema } from '../types/form';
+import type { FormActionType, FormProps, FormSchemaInner as FormSchema } from '../types/form';
 import type { NamePath } from 'ant-design-vue/lib/form/interface';
 import { isArray, isDef, isEmpty, isFunction, isNullOrUnDef, isObject, isString } from '@/utils/is';
 import { deepMerge } from '@/utils';
@@ -329,7 +329,7 @@ export function useFormEvents({
    */
   function itemIsDateType(key: string) {
     return unref(getSchema).some((item) => {
-      return item.field === key ? dateItemType.includes(item.component) : false;
+      return item.field === key && item.component ? dateItemType.includes(item.component) : false;
     });
   }
 

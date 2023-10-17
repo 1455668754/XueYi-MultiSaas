@@ -1,10 +1,15 @@
-import type {FormActionType, FormProps, FormSchema, UseFormReturnType} from '../types/form';
-import type {NamePath} from 'ant-design-vue/lib/form/interface';
-import type {DynamicProps} from '/#/utils';
-import {nextTick, onUnmounted, ref, unref, watch} from 'vue';
-import {isProdMode} from '@/utils/env';
-import {error} from '@/utils/log';
-import {getDynamicProps} from '@/utils';
+import type {
+  FormActionType,
+  FormProps,
+  FormSchemaInner as FormSchema,
+  UseFormReturnType,
+} from '../types/form';
+import type { NamePath } from 'ant-design-vue/lib/form/interface';
+import type { DynamicProps } from '/#/utils';
+import { nextTick, onUnmounted, ref, unref, watch } from 'vue';
+import { isProdMode } from '@/utils/env';
+import { error } from '@/utils/log';
+import { getDynamicProps } from '@/utils';
 
 export declare type ValidateFields = (nameList?: NamePath[]) => Promise<Recordable>;
 
@@ -27,10 +32,10 @@ export function useForm(props?: Props): UseFormReturnType {
 
   function register(instance: FormActionType) {
     isProdMode() &&
-    onUnmounted(() => {
-      formRef.value = null;
-      loadedRef.value = null;
-    });
+      onUnmounted(() => {
+        formRef.value = null;
+        loadedRef.value = null;
+      });
     if (unref(loadedRef) && isProdMode() && instance === unref(formRef)) return;
 
     formRef.value = instance;
