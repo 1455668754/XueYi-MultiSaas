@@ -19,6 +19,8 @@ declare module 'vue-router' {
     affix?: boolean;
     // icon on tab
     icon?: string;
+    // img on tab
+    img?: string;
     frameSrc?: string;
     // current page transition
     transitionName?: string;
