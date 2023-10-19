@@ -44,8 +44,7 @@
                 </div>
               </template>
               <template #actions>
-                <!--              <SettingOutlined key="setting" />-->
-                <EditOutlined key="edit" />
+                <EditOutlined />
                 <Dropdown
                   :trigger="['hover']"
                   :dropMenuList="[
@@ -60,7 +59,7 @@
                   ]"
                   popconfirm
                 >
-                  <EllipsisOutlined key="ellipsis" />
+                  <EllipsisOutlined />
                 </Dropdown>
               </template>
 
@@ -80,6 +79,7 @@
     </div>
   </div>
 </template>
+
 <script lang="ts" setup>
   import { computed, onMounted, ref } from 'vue';
   import {

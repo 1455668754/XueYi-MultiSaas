@@ -5,6 +5,7 @@ import { MenuModeEnum, MenuTypeEnum, ThemeEnum } from '@/enums';
 import { propTypes } from '@/utils/propTypes';
 import type { MenuTheme } from 'ant-design-vue';
 import type { MenuMode } from 'ant-design-vue/lib/menu/src/interface';
+import { Key } from 'ant-design-vue/lib/table/interface';
 
 export const basicProps = {
   items: {
@@ -34,7 +35,7 @@ export const basicProps = {
   isHorizontal: propTypes.bool,
   accordion: propTypes.bool.def(true),
   beforeClickFn: {
-    type: Function as PropType<(key: string) => Promise<boolean>>,
+    type: Function as PropType<(key: Key) => Promise<boolean>>,
   },
 };
 
