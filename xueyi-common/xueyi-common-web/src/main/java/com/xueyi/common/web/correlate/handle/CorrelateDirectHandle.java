@@ -234,7 +234,12 @@ public final class CorrelateDirectHandle extends CorrelateBaseHandle {
         if (CollUtil.isEmpty(findInSet)) {
             return;
         }
-        SqlField sqlField = new SqlField(SqlConstants.OperateType.IN, ormDirect.getSlaveKeySqlName(), findInSet);
+        // 重新清洗一次数据
+        Set<Object> distinctSet = findInSet.stream().filter(ObjectUtil::isNotNull).collect(Collectors.toSet());
+        if (CollUtil.isEmpty(distinctSet)) {
+            return;
+        }
+        SqlField sqlField = new SqlField(SqlConstants.OperateType.IN, ormDirect.getSlaveKeySqlName(), distinctSet);
         // 子查询进行数据关联操作
         CorrelateUtil.startCorrelates(direct.getRelations());
         List<S> subList = (List<S>) SpringUtil.getBean(ormDirect.getSlaveService()).selectListByField(sqlField);
