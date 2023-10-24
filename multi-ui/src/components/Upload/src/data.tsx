@@ -1,5 +1,5 @@
 import type { ActionItem, BasicColumn } from '@/components/Table';
-import { FileItem, PreviewFileItem, UploadResultStatus } from './typing';
+import { FileBasicColumn, FileItem, PreviewFileItem, UploadResultStatus } from './typing';
 import { isImgTypeByName } from './helper';
 import { Progress, Tag } from 'ant-design-vue';
 import TableAction from '@/components/Table/src/components/TableAction.vue';
@@ -9,7 +9,7 @@ import { useI18n } from '@/hooks/web/useI18n';
 const { t } = useI18n();
 
 // 文件上传列表
-export function createTableColumns(): BasicColumn[] {
+export function createTableColumns(): FileBasicColumn[] {
   return [
     {
       dataIndex: 'thumbUrl',
@@ -35,12 +35,12 @@ export function createTableColumns(): BasicColumn[] {
           status = 'success';
         }
         return (
-          <span>
-            <p class="truncate mb-1" title={text}>
+          <div>
+            <p class="truncate mb-1 max-w-[280px]" title={text}>
               {text}
             </p>
             <Progress percent={percent} size="small" status={status} />
-          </span>
+          </div>
         );
       },
     },
@@ -52,11 +52,6 @@ export function createTableColumns(): BasicColumn[] {
         return text && (text / 1024).toFixed(2) + 'KB';
       },
     },
-    // {
-    //   dataIndex: 'type',
-    //   title: '文件类型',
-    //   width: 100,
-    // },
     {
       dataIndex: 'status',
       title: t('component.upload.fileStatue'),
@@ -70,7 +65,7 @@ export function createTableColumns(): BasicColumn[] {
           return <Tag color="blue">{() => t('component.upload.uploading')}</Tag>;
         }
 
-        return text;
+        return text || t('component.upload.pending');
       },
     },
   ];
@@ -90,12 +85,6 @@ export function createActionColumn(handleRemove: Function): BasicColumn {
           onClick: handleRemove.bind(null, record),
         },
       ];
-      // if (checkImgType(record)) {
-      //   actions.unshift({
-      //     label: t('component.upload.preview'),
-      //     onClick: handlePreview.bind(null, record),
-      //   });
-      // }
       return <TableAction actions={actions} outside={true} />;
     },
   };

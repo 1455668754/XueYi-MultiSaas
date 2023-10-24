@@ -116,6 +116,7 @@ export default {
     fileSize: '文件大小',
     fileStatue: '状态',
 
+    pending: '待上传',
     startUpload: '开始上传',
     uploadSuccess: '上传成功',
     uploadError: '上传失败',

@@ -113,6 +113,7 @@ export default {
     fileSize: 'File size',
     fileStatue: 'File status',
 
+    pending: 'Pendig',
     startUpload: 'Start upload',
     uploadSuccess: 'Upload successfully',
     uploadError: 'Upload failed',
