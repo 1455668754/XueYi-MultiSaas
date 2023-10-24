@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 主从关联数据处理 | 远程关联
@@ -58,6 +59,11 @@ public final class CorrelateRemoteHandle extends CorrelateBaseHandle {
                 ? getFieldKeys(dto, ormRemote, ormRemote.getMainKeyField())
                 : getFieldKeys(dtoList, ormRemote, ormRemote.getMainKeyField());
         if (CollUtil.isEmpty(findInSet)) {
+            return;
+        }
+        // 重新清洗一次数据
+        Set<Object> distinctSet = findInSet.stream().filter(ObjectUtil::isNotNull).collect(Collectors.toSet());
+        if (CollUtil.isEmpty(distinctSet)) {
             return;
         }
         // 子查询进行数据关联操作
