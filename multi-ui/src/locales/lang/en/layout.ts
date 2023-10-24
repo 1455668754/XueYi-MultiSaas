@@ -2,6 +2,7 @@ export default {
   footer: { onlinePreview: 'Preview', onlineDocument: 'Document' },
   header: {
     // user dropdown
+    dropdownChangeApi: 'Change Api',
     userCenter: 'Personal Center',
     enterpriseCenter: 'Enterprise Center',
     dropdownItemDoc: 'Document',

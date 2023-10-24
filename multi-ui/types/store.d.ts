@@ -1,4 +1,4 @@
-import {ErrorTypeEnum, MenuModeEnum, MenuTypeEnum} from '@/enums/basic';
+import { ErrorTypeEnum, MenuModeEnum, MenuTypeEnum } from '@/enums/basic';
 
 // Lock screen information
 export interface LockInfo {
@@ -6,6 +6,11 @@ export interface LockInfo {
   pwd?: string | undefined;
   // Is it locked?
   isLock?: boolean;
+}
+
+export interface ApiAddress {
+  key: string;
+  val: string;
 }
 
 // Error-log information

@@ -5,12 +5,12 @@ import type {
   ProjectConfig,
   TransitionSetting,
 } from '/#/config';
-import type { BeforeMiniState } from '/#/store';
+import type { ApiAddress, BeforeMiniState } from '/#/store';
 
 import { defineStore } from 'pinia';
 import { store } from '@/store';
 
-import { APP_DARK_MODE_KEY, PROJ_CFG_KEY, ThemeEnum } from '@/enums';
+import { API_ADDRESS, APP_DARK_MODE_KEY, PROJ_CFG_KEY, ThemeEnum } from '@/enums';
 import { Persistent } from '@/utils/cache/persistent';
 import { darkMode } from '@/settings/designSetting';
 import { resetRouter } from '@/router';
@@ -63,6 +63,9 @@ export const useAppStore = defineStore({
     getMultiTabsSetting(): MultiTabsSetting {
       return this.getProjectConfig.multiTabsSetting;
     },
+    getApiAddress() {
+      return JSON.parse(localStorage.getItem(API_ADDRESS) || '{}');
+    },
   },
   actions: {
     setPageLoading(loading: boolean): void {
@@ -85,6 +88,9 @@ export const useAppStore = defineStore({
     setMenuSetting(setting: Partial<MenuSetting>): void {
       this.projectConfig!.menuSetting = deepMerge(this.projectConfig!.menuSetting, setting);
       Persistent.setLocal(PROJ_CFG_KEY, this.projectConfig);
+    },
+    setApiAddress(config: ApiAddress): void {
+      localStorage.setItem(API_ADDRESS, JSON.stringify(config));
     },
 
     async resetAllState() {

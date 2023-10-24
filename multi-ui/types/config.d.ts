@@ -62,6 +62,7 @@ export interface HeaderSetting {
   // Show message center button
   showNotice: boolean;
   showSearch: boolean;
+  showApi: boolean;
 }
 
 export interface LocaleSetting {

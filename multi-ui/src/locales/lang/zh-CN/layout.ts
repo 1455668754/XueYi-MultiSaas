@@ -2,6 +2,7 @@ export default {
   footer: { onlinePreview: '在线预览', onlineDocument: '在线文档' },
   header: {
     // user dropdown
+    dropdownChangeApi: '切换API',
     userCenter: '个人中心',
     enterpriseCenter: '企业中心',
     dropdownItemDoc: '文档',
