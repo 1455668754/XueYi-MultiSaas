@@ -338,6 +338,24 @@ public sealed class CorrelateBaseHandle permits CorrelateDirectHandle, Correlate
     }
 
     /**
+     * 空判断/存空集合判空
+     *
+     * @param findInSet 集合
+     * @return 结果
+     */
+    protected static Boolean isEmpty(Set<Object> findInSet) {
+        if (CollUtil.isEmpty(findInSet)) {
+            return Boolean.TRUE;
+        }
+        // 重新清洗一次数据
+        Set<Object> distinctSet = findInSet.stream().filter(ObjectUtil::isNotNull).collect(Collectors.toSet());
+        if (CollUtil.isEmpty(distinctSet)) {
+            return Boolean.TRUE;
+        }
+        return Boolean.FALSE;
+    }
+
+    /**
      * 输出错误日志
      *
      * @param msg 日志信息
