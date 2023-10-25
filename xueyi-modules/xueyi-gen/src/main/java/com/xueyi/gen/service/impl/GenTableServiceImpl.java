@@ -8,6 +8,7 @@ import com.xueyi.common.core.constant.basic.HttpConstants;
 import com.xueyi.common.core.constant.basic.TenantConstants;
 import com.xueyi.common.core.constant.gen.GenConstants.OptionField;
 import com.xueyi.common.core.constant.gen.GenConstants.TemplateType;
+import com.xueyi.common.core.context.SecurityContextHolder;
 import com.xueyi.common.core.utils.core.ArrayUtil;
 import com.xueyi.common.core.utils.core.CharsetUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
@@ -85,7 +86,10 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
      */
     @Override
     public List<GenTableDto> selectDbTableList(GenTableQuery table) {
-        return StrUtil.isNotBlank(table.getSourceName()) && StrUtil.notEquals(TenantConstants.Source.MASTER.getCode(), table.getSourceName()) ? baseManager.selectDbTableList(table, table.getSourceName()) : baseManager.selectDbTableList(table);
+        SecurityContextHolder.setSourceName(StrUtil.isNotBlank(table.getSourceName()) ? table.getSourceName() : TenantConstants.Source.MASTER.getCode());
+        List<GenTableDto> list = baseManager.selectDbTableList(table);
+        SecurityContextHolder.rollLastSourceName();
+        return list;
     }
 
     /**
@@ -97,7 +101,10 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
      */
     @Override
     public List<GenTableDto> selectDbTableListByNames(String[] tableNames, String sourceName) {
-        return StrUtil.isNotBlank(sourceName) && StrUtil.notEquals(TenantConstants.Source.MASTER.getCode(), sourceName) ? baseManager.selectDbTableListByNames(tableNames, sourceName) : baseManager.selectDbTableListByNames(tableNames);
+        SecurityContextHolder.setSourceName(StrUtil.isNotBlank(sourceName) ? sourceName : TenantConstants.Source.MASTER.getCode());
+        List<GenTableDto> list = baseManager.selectDbTableListByNames(tableNames);
+        SecurityContextHolder.rollLastSourceName();
+        return list;
     }
 
     /**
