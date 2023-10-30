@@ -231,7 +231,7 @@ public final class CorrelateDirectHandle extends CorrelateBaseHandle {
         Set<Object> findInSet = ObjectUtil.isNotNull(dto)
                 ? getFieldKeys(dto, ormDirect, ormDirect.getMainKeyField())
                 : getFieldKeys(dtoList, ormDirect, ormDirect.getMainKeyField());
-        if (CollUtil.isEmpty(findInSet)) {
+        if (isEmpty(findInSet)) {
             return;
         }
         SqlField sqlField = new SqlField(SqlConstants.OperateType.IN, ormDirect.getSlaveKeySqlName(), findInSet);

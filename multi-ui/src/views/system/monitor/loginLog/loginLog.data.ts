@@ -85,6 +85,11 @@ export const searchFormSchema: FormSchema[] = [
     label: '访问时间',
     field: 'accessTime',
     component: 'RangePicker',
+    componentProps: {
+      getPopupContainer: () => {
+        return document.querySelector('.ant-form');
+      },
+    },
     colProps: { span: 6 },
   },
 ];

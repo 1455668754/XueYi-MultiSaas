@@ -57,7 +57,7 @@ public final class CorrelateRemoteHandle extends CorrelateBaseHandle {
         Set<Object> findInSet = ObjectUtil.isNotNull(dto)
                 ? getFieldKeys(dto, ormRemote, ormRemote.getMainKeyField())
                 : getFieldKeys(dtoList, ormRemote, ormRemote.getMainKeyField());
-        if (CollUtil.isEmpty(findInSet)) {
+        if (isEmpty(findInSet)) {
             return;
         }
         // 子查询进行数据关联操作
