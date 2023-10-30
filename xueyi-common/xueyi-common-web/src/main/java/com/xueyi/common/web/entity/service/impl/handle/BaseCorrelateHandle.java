@@ -26,6 +26,8 @@ public abstract class BaseCorrelateHandle<D extends BaseEntity, C extends Enum<?
 
     /**
      * 设置请求关联映射
+     *
+     * @param correlates 关联枚举集合
      */
     @SafeVarargs
     protected final void startCorrelates(C... correlates) {
@@ -44,7 +46,8 @@ public abstract class BaseCorrelateHandle<D extends BaseEntity, C extends Enum<?
     /**
      * 数据映射关联 | 查询
      *
-     * @param dto 数据对象
+     * @param dto        数据对象
+     * @param correlates 关联枚举集合
      * @return 数据对象
      */
     @SafeVarargs
@@ -56,7 +59,8 @@ public abstract class BaseCorrelateHandle<D extends BaseEntity, C extends Enum<?
     /**
      * 数据映射关联 | 查询（批量）
      *
-     * @param dtoList 数据对象集合
+     * @param dtoList    数据对象集合
+     * @param correlates 关联枚举集合
      * @return 数据对象集合
      */
     @SafeVarargs
@@ -68,50 +72,54 @@ public abstract class BaseCorrelateHandle<D extends BaseEntity, C extends Enum<?
     /**
      * 数据映射关联 | 新增
      *
-     * @param dto 数据对象
+     * @param dto        数据对象
+     * @param correlates 关联枚举集合
      * @return 结果
      */
     @SafeVarargs
     protected final int addCorrelates(D dto, C... correlates) {
-        startCorrelates(correlates);
+        addCorrelates(correlates);
         return CorrelateUtil.addCorrelates(dto);
     }
 
     /**
      * 数据映射关联 | 新增（批量）
      *
-     * @param dtoList 数据对象集合
+     * @param dtoList    数据对象集合
+     * @param correlates 关联枚举集合
      * @return 结果
      */
     @SafeVarargs
     protected final <Coll extends Collection<D>> int addCorrelates(Coll dtoList, C... correlates) {
-        startCorrelates(correlates);
+        addCorrelates(correlates);
         return CorrelateUtil.addCorrelates(dtoList);
     }
 
     /**
      * 数据映射关联 | 修改
      *
-     * @param newDto 新数据对象
+     * @param newDto     新数据对象
+     * @param correlates 关联枚举集合
      * @return 结果
      */
     @SafeVarargs
     protected final int editCorrelates(D newDto, C... correlates) {
-        startCorrelates(correlates);
+        addCorrelates(correlates);
         return CorrelateUtil.editCorrelates(newDto);
     }
 
     /**
      * 数据映射关联 | 修改
      *
-     * @param originDto 源数据对象
-     * @param newDto    新数据对象
+     * @param originDto  源数据对象
+     * @param newDto     新数据对象
+     * @param correlates 关联枚举集合
      * @return 结果
      */
     @SafeVarargs
     protected final <Correlate extends BaseCorrelate> int editCorrelates(D originDto, D newDto, C... correlates) {
         List<Correlate> upCorrelates = CorrelateUtil.getCorrelates();
-        if(CollUtil.isNotEmpty(upCorrelates)) {
+        if (CollUtil.isNotEmpty(upCorrelates)) {
             CorrelateUtil.startCorrelates(upCorrelates);
             CorrelateUtil.subCorrelates(originDto);
             CorrelateUtil.startCorrelates(upCorrelates);
@@ -125,12 +133,13 @@ public abstract class BaseCorrelateHandle<D extends BaseEntity, C extends Enum<?
     /**
      * 数据映射关联 | 修改（批量）
      *
-     * @param newList 新数据对象集合
+     * @param newList    新数据对象集合
+     * @param correlates 关联枚举集合
      * @return 结果
      */
     @SafeVarargs
     protected final <Coll extends Collection<D>> int editCorrelates(Coll newList, C... correlates) {
-        startCorrelates(correlates);
+        addCorrelates(correlates);
         return CorrelateUtil.editCorrelates(newList);
     }
 
@@ -139,12 +148,13 @@ public abstract class BaseCorrelateHandle<D extends BaseEntity, C extends Enum<?
      *
      * @param originList 源数据对象集合
      * @param newList    新数据对象集合
+     * @param correlates 关联枚举集合
      * @return 结果
      */
     @SafeVarargs
     protected final <Correlate extends BaseCorrelate, Coll extends Collection<D>> int editCorrelates(Coll originList, Coll newList, C... correlates) {
         List<Correlate> upCorrelates = CorrelateUtil.getCorrelates();
-        if(CollUtil.isNotEmpty(upCorrelates)) {
+        if (CollUtil.isNotEmpty(upCorrelates)) {
             CorrelateUtil.startCorrelates(upCorrelates);
             CorrelateUtil.subCorrelates(originList);
             CorrelateUtil.startCorrelates(upCorrelates);
@@ -158,24 +168,26 @@ public abstract class BaseCorrelateHandle<D extends BaseEntity, C extends Enum<?
     /**
      * 数据映射关联 | 删除
      *
-     * @param dto 数据对象
+     * @param dto        数据对象
+     * @param correlates 关联枚举集合
      * @return 结果
      */
     @SafeVarargs
     protected final int delCorrelates(D dto, C... correlates) {
-        startCorrelates(correlates);
+        addCorrelates(correlates);
         return CorrelateUtil.delCorrelates(dto);
     }
 
     /**
      * 数据映射关联 | 删除（批量）
      *
-     * @param dtoList 数据对象集合
+     * @param dtoList    数据对象集合
+     * @param correlates 关联枚举集合
      * @return 结果
      */
     @SafeVarargs
     protected final <Coll extends Collection<D>> int delCorrelates(Coll dtoList, C... correlates) {
-        startCorrelates(correlates);
+        addCorrelates(correlates);
         return CorrelateUtil.delCorrelates(dtoList);
     }
 
@@ -184,6 +196,21 @@ public abstract class BaseCorrelateHandle<D extends BaseEntity, C extends Enum<?
      */
     protected Map<CorrelateConstants.ServiceType, C> defaultCorrelate() {
         return new HashMap<>();
+    }
+
+    /**
+     * 设置引用优先级
+     *
+     * @param correlates 关联枚举集合
+     */
+    @SafeVarargs
+    protected final <Correlate extends BaseCorrelate> void addCorrelates(C... correlates) {
+        List<Correlate> upCorrelates = CorrelateUtil.getCorrelates();
+        if (CollUtil.isNotEmpty(upCorrelates)) {
+            CorrelateUtil.startCorrelates(upCorrelates);
+        } else {
+            startCorrelates(correlates);
+        }
     }
 
     /**
