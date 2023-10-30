@@ -11,6 +11,7 @@ import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.core.web.entity.base.BasisEntity;
 import com.xueyi.common.web.correlate.contant.CorrelateConstants;
 import com.xueyi.common.web.correlate.domain.BaseCorrelate;
+import com.xueyi.common.web.correlate.utils.CorrelateUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
@@ -353,6 +354,55 @@ public sealed class CorrelateBaseHandle permits CorrelateDirectHandle, Correlate
             return Boolean.TRUE;
         }
         return Boolean.FALSE;
+    }
+
+    /**
+     * 记录从属关联关系
+     *
+     * @param relations 从属关联关系定义对象集合
+     */
+    protected static void startCorrelates(List<? extends BaseCorrelate> relations) {
+        startCorrelates(relations, null);
+    }
+
+    /**
+     * 记录从属关联关系
+     *
+     * @param relations   从属关联关系定义对象集合
+     * @param operateType 关联操作类型
+     */
+    protected static void startCorrelates(List<? extends BaseCorrelate> relations, CorrelateConstants.SubOperate operateType) {
+        if (ObjectUtil.isNotNull(operateType)) {
+            switch (operateType) {
+                case ADD -> {
+                    List<? extends BaseCorrelate> addRelations = convertRelations(relations, CorrelateConstants.SubOperate.ADD, Boolean.FALSE);
+                    CorrelateUtil.startCorrelates(addRelations);
+                }
+                case EDIT -> {
+                    List<? extends BaseCorrelate> addRelations = convertRelations(relations, CorrelateConstants.SubOperate.EDIT, Boolean.FALSE);
+                    CorrelateUtil.startCorrelates(addRelations);
+                }
+                case DELETE -> {
+                    List<? extends BaseCorrelate> delRelations = convertRelations(relations, CorrelateConstants.SubOperate.DELETE, Boolean.FALSE);
+                    CorrelateUtil.startCorrelates(delRelations);
+                }
+                default -> CorrelateUtil.startCorrelates(relations);
+            }
+        } else {
+            CorrelateUtil.startCorrelates(relations);
+        }
+    }
+
+    /**
+     * 转换从属关联映射
+     *
+     * @param relations   从属关联映射对象集合
+     * @param operateType 关联操作类型
+     * @param justFirst   仅操作第一层（true/false）
+     * @return 转换后从属关联映射集合
+     */
+    private static List<? extends BaseCorrelate> convertRelations(List<? extends BaseCorrelate> relations, CorrelateConstants.SubOperate operateType, Boolean justFirst) {
+        return relations;
     }
 
     /**
