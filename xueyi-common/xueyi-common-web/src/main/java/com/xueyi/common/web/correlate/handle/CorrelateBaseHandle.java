@@ -16,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -32,7 +31,7 @@ import java.util.stream.Collectors;
  * @author xueyi
  */
 @Slf4j
-@SuppressWarnings({"rawtypes", "unchecked"})
+@SuppressWarnings({"rawtypes"})
 public sealed class CorrelateBaseHandle permits CorrelateDirectHandle, CorrelateIndirectHandle, CorrelateRemoteHandle {
 
     /**
@@ -361,64 +360,10 @@ public sealed class CorrelateBaseHandle permits CorrelateDirectHandle, Correlate
     /**
      * 记录从属关联关系
      *
-     * @param relations     从属关联关系定义对象集合
-     * @param operateType   关联操作类型
-     * @param toOperateType 待转变关联操作类型
+     * @param relations 从属关联关系定义对象集合
      */
-    protected static void startCorrelates(List<? extends BaseCorrelate> relations, CorrelateConstants.SubOperate operateType, CorrelateConstants.SubOperate toOperateType) {
-        if (ObjectUtil.isAllNotNull(operateType, toOperateType) && ObjectUtil.notEqual(operateType, toOperateType)) {
-            List<? extends BaseCorrelate> list = convertRelations(relations, operateType, toOperateType, Boolean.FALSE);
-            CorrelateUtil.startCorrelates(list);
-        } else {
-            CorrelateUtil.startCorrelates(relations);
-        }
-    }
-
-    /**
-     * 转换从属关联映射
-     *
-     * @param relations     从属关联映射对象集合
-     * @param operateType   关联操作类型
-     * @param toOperateType 待转变关联操作类型
-     * @param justFirst     仅操作第一层（true/false）
-     * @return 转换后从属关联映射集合
-     */
-    private static List<? extends BaseCorrelate> convertRelations(List<? extends BaseCorrelate> relations, CorrelateConstants.SubOperate operateType, CorrelateConstants.SubOperate toOperateType, Boolean justFirst) {
-        if (CollUtil.isEmpty(relations)) {
-            return new ArrayList<>();
-        }
-        if (justFirst) {
-            return relations.stream().peek(item -> {
-                item.setRelations(new ArrayList<>());
-                if (ObjectUtil.equals(operateType, item.getOperateType())) {
-                    item.setOperateType(toOperateType);
-                }
-            }).collect(Collectors.toList());
-        }
-        return relations.stream().peek(item -> {
-            convertRelationsTree(item.getRelations(), operateType, toOperateType);
-            if (ObjectUtil.equals(operateType, item.getOperateType())) {
-                item.setOperateType(toOperateType);
-            }
-        }).collect(Collectors.toList());
-    }
-
-    /**
-     * 转换从属关联映射
-     *
-     * @param relations     从属关联映射对象集合
-     * @param operateType   关联操作类型
-     * @param toOperateType 待转变关联操作类型
-     */
-    private static void convertRelationsTree(List<? extends BaseCorrelate> relations, CorrelateConstants.SubOperate operateType, CorrelateConstants.SubOperate toOperateType) {
-        if (CollUtil.isNotEmpty(relations)) {
-            relations.forEach(item -> {
-                if (ObjectUtil.equals(operateType, item.getOperateType())) {
-                    item.setOperateType(toOperateType);
-                }
-                convertRelationsTree(item.getRelations(), operateType, toOperateType);
-            });
-        }
+    protected static void startCorrelates(List<? extends BaseCorrelate> relations) {
+        CorrelateUtil.startCorrelates(relations);
     }
 
     /**

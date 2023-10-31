@@ -89,7 +89,7 @@ public final class CorrelateUtil {
      * @return 结果
      */
     public static <D extends BaseEntity> int addCorrelates(D dto) {
-        return getCorrelates().stream().filter(relation -> ObjectUtil.equals(CorrelateConstants.SubOperate.ADD, relation.getOperateType()))
+        return getCorrelates().stream().filter(relation -> ObjectUtil.equals(CorrelateConstants.SubOperate.ADD, relation.getOperateType()) || ObjectUtil.equals(CorrelateConstants.SubOperate.EDIT, relation.getOperateType()))
                 .map(relation -> addCorrelates(dto, relation)).reduce(Integer::sum).orElse(NumberUtil.Zero);
     }
 
@@ -100,7 +100,7 @@ public final class CorrelateUtil {
      * @return 结果
      */
     public static <D extends BaseEntity, Coll extends Collection<D>> int addCorrelates(Coll dtoList) {
-        return getCorrelates().stream().filter(relation -> ObjectUtil.equals(CorrelateConstants.SubOperate.ADD, relation.getOperateType()))
+        return getCorrelates().stream().filter(relation -> ObjectUtil.equals(CorrelateConstants.SubOperate.ADD, relation.getOperateType()) || ObjectUtil.equals(CorrelateConstants.SubOperate.EDIT, relation.getOperateType()))
                 .map(relation -> addCorrelates(dtoList, relation)).reduce(Integer::sum).orElse(NumberUtil.Zero);
     }
 
@@ -157,7 +157,7 @@ public final class CorrelateUtil {
      * @return 结果
      */
     public static <D extends BaseEntity> int delCorrelates(D dto) {
-        return getCorrelates().stream().filter(relation -> ObjectUtil.equals(CorrelateConstants.SubOperate.DELETE, relation.getOperateType()))
+        return getCorrelates().stream().filter(relation -> ObjectUtil.equals(CorrelateConstants.SubOperate.DELETE, relation.getOperateType()) || ObjectUtil.equals(CorrelateConstants.SubOperate.EDIT, relation.getOperateType()))
                 .map(relation -> delCorrelates(dto, relation)).reduce(Integer::sum).orElse(NumberUtil.Zero);
     }
 
@@ -168,7 +168,7 @@ public final class CorrelateUtil {
      * @return 结果
      */
     public static <D extends BaseEntity, Coll extends Collection<D>> int delCorrelates(Coll dtoList) {
-        return getCorrelates().stream().filter(relation -> ObjectUtil.equals(CorrelateConstants.SubOperate.DELETE, relation.getOperateType()))
+        return getCorrelates().stream().filter(relation -> ObjectUtil.equals(CorrelateConstants.SubOperate.DELETE, relation.getOperateType()) || ObjectUtil.equals(CorrelateConstants.SubOperate.EDIT, relation.getOperateType()))
                 .map(relation -> delCorrelates(dtoList, relation)).reduce(Integer::sum).orElse(NumberUtil.Zero);
     }
 
@@ -573,24 +573,7 @@ public final class CorrelateUtil {
      * @return 字段对象
      */
     public static <T> Class getClass(SFunction<T, ?> fieldFun) {
-        // 从function取出序列化方法
-        Method writeReplaceMethod;
-        try {
-            writeReplaceMethod = fieldFun.getClass().getDeclaredMethod("writeReplace");
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        }
-
-        // 从序列化方法取出序列化的lambda信息
-        boolean isAccessible = writeReplaceMethod.canAccess(fieldFun);
-        writeReplaceMethod.setAccessible(true);
-        SerializedLambda serializedLambda;
-        try {
-            serializedLambda = (SerializedLambda) writeReplaceMethod.invoke(fieldFun);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(e);
-        }
-        writeReplaceMethod.setAccessible(isAccessible);
+        SerializedLambda serializedLambda = buildSerializedLambda(fieldFun);
 
         try {
             return Class.forName(serializedLambda.getImplClass().replace(StrUtil.SLASH, StrUtil.DOT));
@@ -606,6 +589,26 @@ public final class CorrelateUtil {
      * @return 字段对象
      */
     public static <T> Field getField(SFunction<T, ?> fieldFun) {
+        SerializedLambda serializedLambda = buildSerializedLambda(fieldFun);
+        // 从lambda信息取出method、field、class等
+        String fieldName = serializedLambda.getImplMethodName().substring("get".length());
+        fieldName = fieldName.replaceFirst(fieldName.charAt(0) + StrUtil.EMPTY, (fieldName.charAt(0) + StrUtil.EMPTY).toLowerCase());
+        try {
+            Field field = Class.forName(serializedLambda.getImplClass().replace(StrUtil.SLASH, StrUtil.DOT)).getDeclaredField(fieldName);
+            field.setAccessible(Boolean.TRUE);
+            return field;
+        } catch (ClassNotFoundException | NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 构建SerializedLambda
+     *
+     * @param fieldFun 字段SFunction方法
+     * @return SerializedLambda
+     */
+    private static <T> SerializedLambda buildSerializedLambda(SFunction<T, ?> fieldFun) {
         // 从function取出序列化方法
         Method writeReplaceMethod;
         try {
@@ -624,17 +627,7 @@ public final class CorrelateUtil {
             throw new RuntimeException(e);
         }
         writeReplaceMethod.setAccessible(isAccessible);
-
-        // 从lambda信息取出method、field、class等
-        String fieldName = serializedLambda.getImplMethodName().substring("get".length());
-        fieldName = fieldName.replaceFirst(fieldName.charAt(0) + StrUtil.EMPTY, (fieldName.charAt(0) + StrUtil.EMPTY).toLowerCase());
-        try {
-            Field field = Class.forName(serializedLambda.getImplClass().replace(StrUtil.SLASH, StrUtil.DOT)).getDeclaredField(fieldName);
-            field.setAccessible(Boolean.TRUE);
-            return field;
-        } catch (ClassNotFoundException | NoSuchFieldException e) {
-            throw new RuntimeException(e);
-        }
+        return serializedLambda;
     }
 
     /**

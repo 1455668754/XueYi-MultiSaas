@@ -235,7 +235,7 @@ public final class CorrelateIndirectHandle extends CorrelateBaseHandle {
             }
             SqlField subSqlField = new SqlField(SqlConstants.OperateType.IN, ormIndirect.getSlaveKeySqlName(), subFindInSet);
             // 子查询进行数据关联操作
-            startCorrelates(indirect.getRelations(), CorrelateConstants.SubOperate.SELECT, CorrelateConstants.SubOperate.SELECT);
+            startCorrelates(indirect.getRelations());
             List<S> subList = (List<S>) SpringUtil.getBean(ormIndirect.getSlaveService()).selectListByField(subSqlField);
 
             CorrelateConstants.MergeType subType = ObjectUtil.equals(CorrelateConstants.DataRow.SINGLE.getCode(), ormIndirect.getSubDataRow()) ? CorrelateConstants.MergeType.DIRECT : CorrelateConstants.MergeType.INDIRECT;
