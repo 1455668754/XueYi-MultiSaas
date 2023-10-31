@@ -67,16 +67,19 @@ public class VelocityUtils {
         velocityContext.put("tableName", genTable.getName());
         // 生成功能名
         velocityContext.put("functionName", StrUtil.isNotEmpty(functionName) ? functionName : "【请填写功能名称】");
+
         // 实体类名称(首字母大写)
         velocityContext.put("ClassName", genTable.getClassName());
         // 实体类名称(首字母小写)
         velocityContext.put("className", StrUtil.uncapitalize(genTable.getClassName()));
         // 实体类名称(全大写 | _划分)
         velocityContext.put("ClASS_NAME", (StrUtil.toUnderlineCase(genTable.getClassName())).toUpperCase());
+        //  判断genTable.getPrefix()是否为空
+         String  prefix=StrUtil.isEmpty(genTable.getPrefix())?StrUtil.EMPTY:genTable.getPrefix();
         // 实体类名称(首字母大写 | 无前缀)
-        velocityContext.put("ClassNameNoPrefix", genTable.getClassName().replaceFirst(genTable.getPrefix(), StrUtil.EMPTY));
+        velocityContext.put("ClassNameNoPrefix", genTable.getClassName().replaceFirst(prefix, StrUtil.EMPTY));
         // 实体类名称(首字母小写 | 无前缀)
-        velocityContext.put("classNameNoPrefix", StrUtil.uncapitalize(genTable.getClassName().replaceFirst(genTable.getPrefix(), StrUtil.EMPTY)));
+        velocityContext.put("classNameNoPrefix", StrUtil.uncapitalize(genTable.getClassName().replaceFirst(prefix, StrUtil.EMPTY)));
         // 生成模块名
         velocityContext.put("moduleName", genTable.getModuleName());
         // 生成模块名
