@@ -39,7 +39,7 @@ public class BaseEntity extends BasisEntity {
     protected Integer sort;
 
     /** 备注 */
-    @TableField(condition = LIKE, updateStrategy = FieldStrategy.IGNORED)
+    @TableField(condition = LIKE, updateStrategy = FieldStrategy.ALWAYS)
     protected String remark;
 
     /** 创建者Id */
