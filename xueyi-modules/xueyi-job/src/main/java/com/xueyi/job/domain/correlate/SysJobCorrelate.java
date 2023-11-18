@@ -25,7 +25,7 @@ public enum SysJobCorrelate implements CorrelateService {
 
     BASE_DEL("默认删除|（调度日志）", new ArrayList<>() {{
         // 调度任务 | 调度日志
-        add(new Direct<>(DELETE, ISysJobLogService.class, SysJobLogDto::getJobId, SysJobDto::getId));
+        add(new Direct<>(DELETE, ISysJobLogService.class, SysJobDto::getId, SysJobLogDto::getJobId));
     }});
 
     private final String info;

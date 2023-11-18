@@ -55,11 +55,14 @@
 </template>
 
 <script lang="ts">
+  import type { FunctionalComponent } from 'vue';
   import { computed, defineComponent, PropType, ref, unref, watch } from 'vue';
   import { ListItem } from './data';
   import { useDesign } from '@/hooks/web/useDesign';
   import { Avatar, List, Tag, Typography } from 'ant-design-vue';
   import { isNumber } from '@/utils/is';
+  import type { StyleValue } from '/@/utils/types';
+  import type { ParagraphProps } from 'ant-design-vue/es/typography/Paragraph';
 
   export default defineComponent({
     components: {
@@ -67,7 +70,11 @@
       [List.name]: List,
       [List.Item.name]: List.Item,
       AListItemMeta: List.Item.Meta,
-      ATypographyParagraph: Typography.Paragraph,
+      ATypographyParagraph: Typography.Paragraph as FunctionalComponent<
+        ParagraphProps & {
+          style?: StyleValue;
+        }
+      >,
       [Tag.name]: Tag,
     },
     props: {
@@ -155,7 +162,7 @@
       display: inline-block !important;
     }
 
-    &-item {
+    .list-item {
       padding: 6px;
       overflow: hidden;
       transition: all 0.3s;
@@ -175,21 +182,21 @@
             margin-right: 0;
           }
         }
+      }
 
-        .avatar {
-          margin-top: 4px;
-        }
+      .avatar {
+        margin-top: 4px;
+      }
 
-        .description {
-          font-size: 12px;
-          line-height: 18px;
-        }
+      .description {
+        font-size: 12px;
+        line-height: 18px;
+      }
 
-        .datetime {
-          margin-top: 4px;
-          font-size: 12px;
-          line-height: 18px;
-        }
+      .datetime {
+        margin-top: 4px;
+        font-size: 12px;
+        line-height: 18px;
       }
     }
   }

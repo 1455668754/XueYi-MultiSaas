@@ -379,7 +379,7 @@
 
     &-row__striped {
       td {
-        background-color: @app-content-background;
+        background-color: @app-content-background !important;
       }
     }
 
@@ -433,7 +433,7 @@
       //}
     }
 
-    .ant-pagination {
+    .ant-table-wrapper .ant-pagination {
       margin: 10px 0 0;
     }
 
