@@ -221,9 +221,13 @@ export const formSchema: FormSchema[] = [
     },
     dynamicDisabled: ({ values }) => isNotEmpty(values.id),
     ifShow: ({ values }) =>
-      values.tenantId !== COMMON_TENANT_ID && values.cacheType === DicCacheTypeEnum.TENANT,
+      isNotEmpty(values.tenantId) &&
+      values.tenantId !== COMMON_TENANT_ID &&
+      values.cacheType === DicCacheTypeEnum.TENANT,
     required: ({ values }) =>
-      values.tenantId !== COMMON_TENANT_ID && values.cacheType === DicCacheTypeEnum.TENANT,
+      isNotEmpty(values.tenantId) &&
+      values.tenantId !== COMMON_TENANT_ID &&
+      values.cacheType === DicCacheTypeEnum.TENANT,
     colProps: { span: 12 },
   },
   {
