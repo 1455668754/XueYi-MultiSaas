@@ -289,6 +289,10 @@
     () => ({ ...getProps.value, ...advanceState } as InstanceType<typeof FormAction>['$props']),
   );
 
+  defineExpose({
+    setProps,
+  });
+
   onMounted(() => {
     initDefault();
     emit('register', formActionType);
