@@ -19,6 +19,7 @@
       </template>
 
       <template #rightExtra v-if="getShowRedo || getShowQuick">
+        <SettingButton v-if="(getShowFold && getIsUnFold) || !getShowHeader" />
         <TabRedo v-if="getShowRedo" />
         <TabContent isExtra :tabItem="$route" v-if="getShowQuick" />
         <FoldButton v-if="getShowFold" />
@@ -52,6 +53,10 @@
   import { useMouse } from '@vueuse/core';
   import { multipleTabHeight } from '/@/settings/designSetting';
 
+  import SettingButton from './components/SettingButton.vue';
+  import { useHeaderSetting } from '/@/hooks/setting/useHeaderSetting';
+  import { useMenuSetting } from '/@/hooks/setting/useMenuSetting';
+
   export default defineComponent({
     name: 'MultipleTabs',
     components: {
@@ -60,6 +65,7 @@
       Tabs,
       TabPane: Tabs.TabPane,
       TabContent,
+      SettingButton,
     },
     setup() {
       const affixTextList = initAffixTabs();
@@ -81,6 +87,10 @@
       const unClose = computed(() => unref(getTabsState).length === 1);
 
       const { y: mouseY } = useMouse();
+
+      const { getShowMenu } = useMenuSetting();
+      const { getShowHeader } = useHeaderSetting();
+      const getIsUnFold = computed(() => !unref(getShowMenu) && !unref(getShowHeader));
 
       const getWrapClass = computed(() => {
         return [
@@ -141,6 +151,8 @@
         getShowQuick,
         getShowRedo,
         getShowFold,
+        getIsUnFold,
+        getShowHeader,
       };
     },
   });
