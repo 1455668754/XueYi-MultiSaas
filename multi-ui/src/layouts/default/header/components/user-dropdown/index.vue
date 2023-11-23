@@ -29,7 +29,7 @@
           icon="ion:document-text-outline"
           v-if="getShowDoc"
         />
-        <MenuDivider v-if="getShowDoc" />
+        <Menu.Divider v-if="getShowDoc" />
         <MenuItem
           v-if="getShowApi"
           key="api"
@@ -53,127 +53,103 @@
   <LockAction @register="register" />
   <ChangeApi @register="registerApi" />
 </template>
-<script lang="ts">
-  // components
+
+<script lang="ts" setup>
   import { Dropdown, Menu } from 'ant-design-vue';
   import type { MenuInfo } from 'ant-design-vue/lib/menu/src/interface';
-
-  import { computed, defineComponent } from 'vue';
-
+  import { computed } from 'vue';
   import { DOC_URL } from '@/settings/siteSetting';
-
   import { useUserStore } from '@/store/modules/user';
   import { useHeaderSetting } from '@/hooks/setting/useHeaderSetting';
   import { useI18n } from '@/hooks/web/useI18n';
   import { useDesign } from '@/hooks/web/useDesign';
   import { useModal } from '@/components/Modal';
-
   import headerImg from '@/assets/images/header.jpg';
   import { propTypes } from '@/utils/propTypes';
   import { openWindow } from '@/utils';
-
   import { createAsyncComponent } from '@/utils/factory/createAsyncComponent';
   import { useGo } from '@/hooks/web/usePage';
   import { PageEnum } from '@/enums';
 
   type MenuEvent = 'userCenter' | 'enterpriseCenter' | 'logout' | 'doc' | 'lock' | 'api';
 
-  export default defineComponent({
-    name: 'UserDropdown',
-    components: {
-      Dropdown,
-      Menu,
-      MenuItem: createAsyncComponent(() => import('./DropMenuItem.vue')),
-      MenuDivider: Menu.Divider,
-      LockAction: createAsyncComponent(() => import('../lock/LockModal.vue')),
-      ChangeApi: createAsyncComponent(() => import('../ChangeApi/index.vue')),
-    },
-    props: {
-      theme: propTypes.oneOf(['dark', 'light']),
-    },
-    setup() {
-      const { prefixCls } = useDesign('header-user-dropdown');
-      const { t } = useI18n();
-      const { getShowDoc, getShowUserCenter, getShowEnterpriseCenter, getUseLockPage, getShowApi } =
-        useHeaderSetting();
-      const go = useGo();
-      const userStore = useUserStore();
+  const MenuItem = createAsyncComponent(() => import('./DropMenuItem.vue'));
+  const LockAction = createAsyncComponent(() => import('../lock/LockModal.vue'));
+  const ChangeApi = createAsyncComponent(() => import('../ChangeApi/index.vue'));
 
-      const getUserInfo = computed(() => {
-        const { nickName = '', avatar, profile } = userStore.getUserInfo || {};
-        return { nickName, avatar: avatar || headerImg, profile };
-      });
+  defineOptions({ name: 'UserDropdown' });
 
-      const [register, { openModal }] = useModal();
-      const [registerApi, { openModal: openApiModal }] = useModal();
-
-      function handleLock() {
-        openModal(true);
-      }
-
-      function handleApi() {
-        openApiModal(true, {});
-      }
-
-      //  login out
-      function handleLoginOut() {
-        userStore.confirmLoginOut();
-      }
-
-      // open userCenter
-      function openUserCenter() {
-        go(PageEnum.USER_CENTER);
-      }
-
-      // open enterpriseCenter
-      function openEnterpriseCenter() {
-        go(PageEnum.ENTERPRISE_CENTER);
-      }
-
-      // open doc
-      function openDoc() {
-        openWindow(DOC_URL);
-      }
-
-      function handleMenuClick(e: MenuInfo) {
-        switch (e.key as MenuEvent) {
-          case 'logout':
-            handleLoginOut();
-            break;
-          case 'userCenter':
-            openUserCenter();
-            break;
-          case 'enterpriseCenter':
-            openEnterpriseCenter();
-            break;
-          case 'doc':
-            openDoc();
-            break;
-          case 'lock':
-            handleLock();
-            break;
-          case 'api':
-            handleApi();
-            break;
-        }
-      }
-
-      return {
-        prefixCls,
-        t,
-        getUserInfo,
-        handleMenuClick,
-        getShowDoc,
-        getShowApi,
-        getShowUserCenter,
-        getShowEnterpriseCenter,
-        register,
-        registerApi,
-        getUseLockPage,
-      };
-    },
+  defineProps({
+    theme: propTypes.oneOf(['dark', 'light']),
   });
+
+  const { prefixCls } = useDesign('header-user-dropdown');
+  const { t } = useI18n();
+  const { getShowDoc, getShowUserCenter, getShowEnterpriseCenter, getUseLockPage, getShowApi } =
+    useHeaderSetting();
+  const go = useGo();
+  const userStore = useUserStore();
+
+  const getUserInfo = computed(() => {
+    const { nickName = '', avatar, profile } = userStore.getUserInfo || {};
+    return { nickName, avatar: avatar || headerImg, profile };
+  });
+
+  const [register, { openModal }] = useModal();
+  const [registerApi, { openModal: openApiModal }] = useModal();
+
+  function handleLock() {
+    openModal(true);
+  }
+
+  function handleApi() {
+    openApiModal(true, {});
+  }
+
+  //  login out
+  function handleLoginOut() {
+    userStore.confirmLoginOut();
+  }
+
+  // open userCenter
+  function openUserCenter() {
+    go(PageEnum.USER_CENTER);
+  }
+
+  // open enterpriseCenter
+  function openEnterpriseCenter() {
+    go(PageEnum.ENTERPRISE_CENTER);
+  }
+
+  // open doc
+  function openDoc() {
+    openWindow(DOC_URL);
+  }
+
+  function handleMenuClick(e: MenuInfo) {
+    switch (e.key as MenuEvent) {
+      case 'logout':
+        handleLoginOut();
+        break;
+      case 'userCenter':
+        openUserCenter();
+        break;
+      case 'enterpriseCenter':
+        openEnterpriseCenter();
+        break;
+      case 'doc':
+        openDoc();
+        break;
+      case 'lock':
+        handleLock();
+        break;
+      case 'api':
+        handleApi();
+        break;
+    }
+  }
 </script>
+
 <style lang="less">
   @prefix-cls: ~'@{namespace}-header-user-dropdown';
 

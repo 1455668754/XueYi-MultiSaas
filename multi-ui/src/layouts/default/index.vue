@@ -13,8 +13,8 @@
   </Layout>
 </template>
 
-<script lang="ts">
-  import { computed, defineComponent, unref } from 'vue';
+<script lang="ts" setup>
+  import { computed, unref } from 'vue';
   import { Layout } from 'ant-design-vue';
   import { createAsyncComponent } from '@/utils/factory/createAsyncComponent';
 
@@ -29,54 +29,37 @@
   import { useLockPage } from '@/hooks/web/useLockPage';
 
   import { useAppInject } from '@/hooks/web/useAppInject';
-  import { useMultipleTabSetting } from '/@/hooks/setting/useMultipleTabSetting';
 
-  export default defineComponent({
-    name: 'DefaultLayout',
-    components: {
-      LayoutFeatures: createAsyncComponent(() => import('@/layouts/default/feature/index.vue')),
-      LayoutFooter: createAsyncComponent(() => import('@/layouts/default/footer/index.vue')),
-      LayoutHeader,
-      LayoutContent,
-      LayoutSideBar,
-      LayoutMultipleHeader,
-      Layout,
-    },
-    setup() {
-      const { prefixCls } = useDesign('default-layout');
-      const { getIsMobile } = useAppInject();
-      const { getShowFullHeaderRef } = useHeaderSetting();
-      const { getShowSidebar, getIsMixSidebar, getShowMenu } = useMenuSetting();
-      const { getAutoCollapse } = useMultipleTabSetting();
+  import { useMultipleTabSetting } from '@/hooks/setting/useMultipleTabSetting';
 
-      // Create a lock screen monitor
-      const lockEvents = useLockPage();
+  const LayoutFeatures = createAsyncComponent(() => import('@/layouts/default/feature/index.vue'));
+  const LayoutFooter = createAsyncComponent(() => import('@/layouts/default/footer/index.vue'));
 
-      const layoutClass = computed(() => {
-        let cls: string[] = ['ant-layout'];
-        if (unref(getIsMixSidebar) || unref(getShowMenu)) {
-          cls.push('ant-layout-has-sider');
-        }
+  defineOptions({ name: 'DefaultLayout' });
 
-        if (!unref(getShowMenu) && unref(getAutoCollapse)) {
-          cls.push('ant-layout-auto-collapse-tabs');
-        }
+  const { prefixCls } = useDesign('default-layout');
+  const { getIsMobile } = useAppInject();
+  const { getShowFullHeaderRef } = useHeaderSetting();
+  const { getShowSidebar, getIsMixSidebar, getShowMenu } = useMenuSetting();
+  const { getAutoCollapse } = useMultipleTabSetting();
 
-        return cls;
-      });
+  // Create a lock screen monitor
+  const lockEvents = useLockPage();
 
-      return {
-        getShowFullHeaderRef,
-        getShowSidebar,
-        prefixCls,
-        getIsMobile,
-        getIsMixSidebar,
-        layoutClass,
-        lockEvents,
-      };
-    },
+  const layoutClass = computed(() => {
+    let cls: string[] = ['ant-layout'];
+    if (unref(getIsMixSidebar) || unref(getShowMenu)) {
+      cls.push('ant-layout-has-sider');
+    }
+
+    if (!unref(getShowMenu) && unref(getAutoCollapse)) {
+      cls.push('ant-layout-auto-collapse-tabs');
+    }
+
+    return cls;
   });
 </script>
+
 <style lang="less">
   @prefix-cls: ~'@{namespace}-default-layout';
 

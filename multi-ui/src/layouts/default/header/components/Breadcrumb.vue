@@ -6,13 +6,14 @@
         <span v-if="!hasRedirect(routesMatched, route)">
           {{ t(route.name || route.meta.title) }}
         </span>
-        <router-link v-else to="" @click="handleClick(route, paths, $event)">
+        <router-link v-else to="" @click="handleClick(route, paths, $event as Event)">
           {{ t(route.name || route.meta.title) }}
         </router-link>
       </template>
     </a-breadcrumb>
   </div>
 </template>
+
 <script lang="ts">
   import type { RouteLocationMatched } from 'vue-router';
   import { useRouter } from 'vue-router';
@@ -149,6 +150,7 @@
     },
   });
 </script>
+
 <style lang="less">
   @prefix-cls: ~'@{namespace}-layout-breadcrumb';
 

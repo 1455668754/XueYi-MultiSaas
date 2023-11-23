@@ -24,76 +24,60 @@
     </div>
   </BasicModal>
 </template>
-
-<script lang="ts">
-  import { computed, defineComponent } from 'vue';
+<script lang="ts" setup>
+  import { computed } from 'vue';
   import { useI18n } from '@/hooks/web/useI18n';
   import { useDesign } from '@/hooks/web/useDesign';
-  import { BasicForm, useForm } from '@/components/Form/index';
+  import { BasicModal, useModalInner } from '@/components/Modal';
+  import { BasicForm, useForm } from '@/components/Form';
 
   import { useUserStore } from '@/store/modules/user';
   import { useLockStore } from '@/store/modules/lock';
   import headerImg from '@/assets/images/header.jpg';
-  import { BasicModal, useModalInner } from '@/components/Modal';
 
-  export default defineComponent({
-    name: 'LockModal',
-    components: { BasicModal, BasicForm },
+  defineOptions({ name: 'LockModal' });
 
-    setup() {
-      const { t } = useI18n();
-      const { prefixCls } = useDesign('header-lock-modal');
-      const userStore = useUserStore();
-      const lockStore = useLockStore();
+  const { t } = useI18n();
+  const { prefixCls } = useDesign('header-lock-modal');
+  const userStore = useUserStore();
+  const lockStore = useLockStore();
 
-      const getNickName = computed(() => userStore.getUserInfo?.nickName);
-      const [register, { closeModal }] = useModalInner();
+  const getNickName = computed(() => userStore.getUserInfo?.nickName);
+  const [register, { closeModal }] = useModalInner();
 
-      const [registerForm, { validate, resetFields }] = useForm({
-        showActionButtonGroup: false,
-        schemas: [
-          {
-            field: 'password',
-            label: t('layout.header.lockScreenPassword'),
-            colProps: {
-              span: 24,
-            },
-            component: 'InputPassword',
-            required: true,
-          },
-        ],
-      });
+  const [registerForm, { validate, resetFields }] = useForm({
+    showActionButtonGroup: false,
+    schemas: [
+      {
+        field: 'password',
+        label: t('layout.header.lockScreenPassword'),
+        colProps: {
+          span: 24,
+        },
+        component: 'InputPassword',
+        required: true,
+      },
+    ],
+  });
 
-      const handleLock = async () => {
-        const { password = '' } = await validate<{
-          password: string;
-        }>();
+  const handleLock = async () => {
+    const { password = '' } = await validate<{
+      password: string;
+    }>();
 
-        closeModal();
+    closeModal();
 
-        lockStore.setLockInfo({
-          isLock: true,
-          pwd: password,
-        });
+    lockStore.setLockInfo({
+      isLock: true,
+      pwd: password,
+    });
 
-        await resetFields();
-      };
+    await resetFields();
+  };
 
-      const avatar = computed(() => {
-        const { avatar } = userStore.getUserInfo;
-        return avatar || headerImg;
-      });
-
-      return {
-        t,
-        prefixCls,
-        getNickName,
-        register,
-        registerForm,
-        handleLock,
-        avatar,
-      };
-    },
+  const avatar = computed(() => {
+    const { avatar } = userStore.getUserInfo;
+    return avatar || headerImg;
   });
 </script>
 
