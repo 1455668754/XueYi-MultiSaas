@@ -11,9 +11,11 @@ import {
   ThemeEnum,
   TriggerEnum,
 } from '@/enums';
-import { HEADER_PRESET_BG_COLOR_LIST, SIDE_BAR_BG_COLOR_LIST } from './designSetting';
-
-const primaryColor = '#0960bd';
+import {
+  APP_PRESET_COLOR_LIST,
+  HEADER_PRESET_BG_COLOR_LIST,
+  SIDE_BAR_BG_COLOR_LIST,
+} from './designSetting';
 
 // ! You need to clear the browser cache after the change
 const setting: ProjectConfig = {
@@ -33,7 +35,7 @@ const setting: ProjectConfig = {
   sessionTimeoutProcessing: SessionTimeoutProcessingEnum.ROUTE_JUMP,
 
   // color
-  themeColor: primaryColor,
+  themeColor: APP_PRESET_COLOR_LIST[0],
 
   // Website gray mode, open for possible mourning dates
   grayMode: false,
