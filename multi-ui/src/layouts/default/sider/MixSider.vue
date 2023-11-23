@@ -402,6 +402,10 @@
             background-color: unset;
             color: @primary-color;
           }
+
+          &:not(&--active):hover {
+            background-color: rgb(0 0 0 / 6%);
+          }
         }
       }
 

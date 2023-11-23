@@ -1,7 +1,14 @@
 import { computed, defineComponent, unref } from 'vue';
-import { BasicDrawer } from '@/components/Drawer/index';
+import { BasicDrawer } from '@/components/Drawer';
 import { Divider } from 'ant-design-vue';
-import { InputNumberItem, SelectItem, SettingFooter, SwitchItem, TypePicker } from './components';
+import {
+  InputNumberItem,
+  SelectItem,
+  SettingFooter,
+  SwitchItem,
+  ThemeColorPicker,
+  TypePicker,
+} from './components';
 
 import { AppDarkModeToggle } from '@/components/Application';
 import { MenuTypeEnum, TriggerEnum } from '@/enums';
@@ -30,6 +37,7 @@ import {
 //   SIDE_BAR_BG_COLOR_LIST,
 //   APP_PRESET_COLOR_LIST,
 // } from '@/settings/designSetting';
+import { SIDE_BAR_BG_COLOR_LIST } from '@/settings/designSetting';
 
 const { t } = useI18n();
 
@@ -65,7 +73,7 @@ export default defineComponent({
       getTopMenuAlign,
       getAccordion,
       getMenuWidth,
-      // getMenuBgColor,
+      getMenuBgColor,
       getIsTopMenu,
       getSplit,
       getIsMixSidebar,
@@ -116,15 +124,15 @@ export default defineComponent({
     //   );
     // }
 
-    // function renderSiderTheme() {
-    //   return (
-    //     <ThemeColorPicker
-    //       colorList={SIDE_BAR_BG_COLOR_LIST}
-    //       def={unref(getMenuBgColor)}
-    //       event={HandlerEnum.MENU_THEME}
-    //     />
-    //   );
-    // }
+    function renderSideBarTheme() {
+      return (
+        <ThemeColorPicker
+          colorList={SIDE_BAR_BG_COLOR_LIST}
+          def={unref(getMenuBgColor)}
+          event={HandlerEnum.MENU_THEME}
+        />
+      );
+    }
 
     // function renderMainTheme() {
     //   return (
@@ -213,6 +221,12 @@ export default defineComponent({
             event={HandlerEnum.MENU_FIXED}
             def={unref(getMenuFixed)}
             disabled={!unref(getShowMenuRef) || unref(getIsMixSidebar)}
+          />
+          <SwitchItem
+            title={t('layout.setting.autoCollapseTabsInFold')}
+            event={HandlerEnum.TABS_AUTO_COLLAPSE}
+            def={unref(getAutoCollapse)}
+            disabled={!unref(getShowMultipleTab)}
           />
           <SelectItem
             title={t('layout.setting.mixSidebarTrigger')}
@@ -403,9 +417,9 @@ export default defineComponent({
         {/* <Divider>{() => t('layout.setting.sysTheme')}</Divider>
         {renderMainTheme()}
         <Divider>{() => t('layout.setting.headerTheme')}</Divider>
-        {renderHeaderTheme()}
+        {renderHeaderTheme()} */}
         <Divider>{() => t('layout.setting.sidebarTheme')}</Divider>
-        {renderSiderTheme()} */}
+        {renderSideBarTheme()}
         <Divider>{() => t('layout.setting.interfaceFunction')}</Divider>
         {renderFeatures()}
         <Divider>{() => t('layout.setting.interfaceDisplay')}</Divider>
