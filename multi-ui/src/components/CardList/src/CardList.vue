@@ -22,15 +22,15 @@
                   @change="sliderChange"
                 />
               </template>
-              <Button>
+              <a-button>
                 <TableOutlined />
-              </Button>
+              </a-button>
             </Tooltip>
             <Tooltip @click="fetch">
               <template #title>刷新</template>
-              <Button>
+              <a-button>
                 <RedoOutlined />
-              </Button>
+              </a-button>
             </Tooltip>
           </div>
         </template>
@@ -92,7 +92,6 @@
   import { Dropdown } from '@/components/Dropdown';
   import { BasicForm, useForm } from '@/components/Form';
   import { propTypes } from '@/utils/propTypes';
-  import { Button } from '@/components/Button';
   import { isFunction } from '@/utils/is';
   import { grid, useSlider } from './data';
 

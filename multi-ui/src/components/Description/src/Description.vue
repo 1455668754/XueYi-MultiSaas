@@ -1,8 +1,8 @@
 <script lang="tsx">
   import type { DescInstance, DescItem, DescriptionProps } from './typing';
-  import type { DescriptionsProps } from 'ant-design-vue/es/descriptions/index';
-  import type { CollapseContainerOptions } from '@/components/Container/index';
-  import { CollapseContainer } from '@/components/Container/index';
+  import type { DescriptionsProps } from 'ant-design-vue/es/descriptions';
+  import type { CollapseContainerOptions } from '@/components/Container';
+  import { CollapseContainer } from '@/components/Container';
   import {
     computed,
     type CSSProperties,
@@ -24,7 +24,7 @@
     title: { type: String, default: '' },
     size: {
       type: String,
-      validator: (v) => ['small', 'default', 'middle', undefined].includes(v),
+      validator: (v: string) => ['small', 'default', 'middle', undefined].includes(v),
       default: 'small',
     },
     bordered: { type: Boolean, default: true },
