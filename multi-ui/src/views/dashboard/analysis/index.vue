@@ -9,6 +9,7 @@
     </div>
   </div>
 </template>
+
 <script lang="ts" setup>
   import { ref } from 'vue';
   import GrowCard from './components/GrowCard.vue';

@@ -21,6 +21,7 @@
     </List>
   </Card>
 </template>
+
 <script lang="ts" setup>
   import { Card, List } from 'ant-design-vue';
   import { dynamicInfoItems } from './data';

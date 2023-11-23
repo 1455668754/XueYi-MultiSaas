@@ -129,6 +129,7 @@
     },
   });
 </script>
+
 <style lang="less">
   @prefix-cls: ~'@{namespace}-app-exception-page';
 

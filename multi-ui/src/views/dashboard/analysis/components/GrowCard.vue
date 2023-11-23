@@ -25,6 +25,7 @@
     </template>
   </div>
 </template>
+
 <script lang="ts" setup>
   import { CountTo } from '@/components/CountTo';
   import Icon from '@/components/Icon/Icon.vue';
