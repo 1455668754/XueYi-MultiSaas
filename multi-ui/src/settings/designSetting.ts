@@ -2,6 +2,8 @@ import { ThemeEnum } from '@/enums';
 
 export const prefixCls = 'xueyi';
 
+export const multipleTabHeight = 30;
+
 export const darkMode = ThemeEnum.LIGHT;
 
 // app theme preset color

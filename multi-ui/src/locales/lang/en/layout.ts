@@ -114,5 +114,6 @@ export default {
     triggerClick: 'Click',
 
     mixSidebarFixed: 'Fixed expanded menu',
+    autoCollapseTabsInFold: 'Auto collapse tabs in fold',
   },
 };
