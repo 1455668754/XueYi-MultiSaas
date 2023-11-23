@@ -151,5 +151,5 @@
     }
   }
 
-  defineExpose({ scrollTop });
+  defineExpose({ scrollTop, setModalHeight });
 </script>
