@@ -321,7 +321,7 @@
 
   emit('register', tableAction, formActions);
 
-  defineExpose({ tableAction });
+  defineExpose({ ...tableAction });
 </script>
 
 <style lang="less">

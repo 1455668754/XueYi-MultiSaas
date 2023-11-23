@@ -125,7 +125,10 @@ export function useFormEvents({
       const { componentProps } = schema || {};
       let _props = componentProps as any;
       if (typeof componentProps === 'function') {
-        _props = _props({ formModel: unref(formModel), formActionType: unref(formElRef) });
+        _props = _props({
+          formModel: unref(formModel),
+          formActionType,
+        });
       }
 
       const constructValue = tryConstructArray(key, values) || tryConstructObject(key, values);
@@ -340,6 +343,10 @@ export function useFormEvents({
     return handleFormValues(values);
   }
 
+  async function setProps(formProps: Partial<FormProps>): Promise<void> {
+    await unref(formElRef)?.setProps(formProps);
+  }
+
   async function validate(nameList?: NamePath[] | false | undefined) {
     let _nameList: any;
     if (nameList === undefined) {
@@ -414,6 +421,22 @@ export function useFormEvents({
   function checkIsInput(schema?: FormSchema) {
     return schema?.component && defaultValueComponents.includes(schema.component);
   }
+
+  const formActionType: Partial<FormActionType> = {
+    getFieldsValue,
+    setFieldsValue,
+    resetFields,
+    updateSchema,
+    resetSchema,
+    setProps,
+    removeSchemaByField,
+    appendSchemaByField,
+    clearValidate,
+    validateFields,
+    validate,
+    submit: handleSubmit,
+    scrollToField: scrollToField,
+  };
 
   return {
     handleSubmit,

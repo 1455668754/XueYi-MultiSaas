@@ -112,6 +112,10 @@
     }
   });
 
+  defineExpose({
+    wrap,
+  });
+
   onBeforeUnmount(() => {
     if (props.native) return;
     if (!props.noresize) {
