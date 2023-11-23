@@ -33,6 +33,7 @@
     </PreviewGroup>
   </div>
 </template>
+
 <script lang="ts">
   import type { CSSProperties } from 'vue';
   import { computed, defineComponent } from 'vue';
@@ -86,6 +87,10 @@
 
     .img-div {
       display: inline-grid;
+
+      > .ant-image:nth-of-type(n + 2) {
+        display: none;
+      }
     }
   }
 </style>
