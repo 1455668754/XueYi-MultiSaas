@@ -14,8 +14,8 @@
   import { defineComponent, ref, watch } from 'vue';
   import FileList from './FileList.vue';
   import { BasicModal, useModalInner } from '@/components/Modal';
-  import { previewProps } from './props';
-  import { PreviewFileItem } from './typing';
+  import { previewProps } from '../props';
+  import { PreviewFileItem } from '../types/typing';
   import { downloadByUrl } from '@/utils/file/download';
   import { createPreviewActionColumn, createPreviewColumns } from './data';
   import { useI18n } from '@/hooks/web/useI18n';

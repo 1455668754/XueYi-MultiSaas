@@ -1,4 +1,4 @@
-import { BasicColumn } from '../../Table';
+import { BasicColumn } from '../../../Table';
 import { UploadIM } from '@/model/sys';
 
 export enum UploadResultStatus {
@@ -15,7 +15,7 @@ export interface FileItem {
   percent: number;
   file: File;
   status?: UploadResultStatus;
-  responseData?: UploadIM;
+  response?: UploadIM;
   uuid: string;
 }
 
