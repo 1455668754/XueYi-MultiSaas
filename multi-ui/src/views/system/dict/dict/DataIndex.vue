@@ -51,7 +51,7 @@
   import { delDictDataApi, listDictDataApi } from '@/api/system/dict/dictData.api';
   import { useModal } from '@/components/Modal';
   import { useMessage } from '@/hooks/web/useMessage';
-  import { IconEnum } from '@/enums';
+  import { COMMON_TENANT_ID, IconEnum } from '@/enums';
   import { BasicTable, TableAction, useTable } from '@/components/Table';
   import { DictTypeAuth } from '@/auth/system/dict';
   import DictDataModal from './DictDataModal.vue';
@@ -103,6 +103,7 @@
     },
     beforeFetch: (info) => {
       info.code = state.dictTypeInfo?.code || 'null';
+      info.tenantId = state.dictTypeInfo?.enterpriseInfo?.id || COMMON_TENANT_ID;
       return info;
     },
     rowSelection: {
@@ -159,7 +160,7 @@
     setProps({ title: state.title });
     state.hasDict = !!dict;
     if (dict) {
-      dict.tenantId = dict?.enterpriseInfo?.id;
+      dict.tenantId = dict?.enterpriseInfo?.id || COMMON_TENANT_ID;
     }
     state.dictTypeInfo = dict;
     reload();

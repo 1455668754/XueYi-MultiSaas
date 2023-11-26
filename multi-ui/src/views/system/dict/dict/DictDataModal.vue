@@ -11,7 +11,7 @@
   import { addDictDataApi, editDictDataApi, getDictDataApi } from '@/api/system/dict/dictData.api';
   import { BasicModal, useModalInner } from '@/components/Modal';
   import { BasicForm, useForm } from '@/components/Form';
-  import { DictTypeIM } from '@/model/system/dict';
+  import { DictDataIM, DictTypeIM } from '@/model/system/dict';
 
   const emit = defineEmits(['success', 'register']);
 
@@ -30,11 +30,12 @@
     setModalProps({ confirmLoading: false });
     isUpdate.value = !!data?.isUpdate;
     dictTypeInfo.value = data?.dictTypeInfo;
+    const tenantId = dictTypeInfo.value?.enterpriseInfo?.id || 0;
     if (unref(isUpdate)) {
       const dictData = await getDictDataApi(data.record.id);
-      setFieldsValue({ ...dictData });
+      setFieldsValue({ ...dictData, tenantId: tenantId });
     } else {
-      setFieldsValue({ code: dictTypeInfo.value?.code });
+      setFieldsValue({ code: dictTypeInfo.value?.code, tenantId: tenantId });
     }
   });
 
@@ -44,7 +45,7 @@
   /** 提交按钮 */
   async function handleSubmit() {
     try {
-      const values = await validate();
+      const values: DictDataIM = await validate();
       values.tenantId = dictTypeInfo.value?.tenantId;
       values.dictTypeId = dictTypeInfo.value?.id;
       setModalProps({ confirmLoading: true });

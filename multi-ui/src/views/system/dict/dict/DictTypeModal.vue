@@ -11,6 +11,7 @@
   import { BasicModal, useModalInner } from '@/components/Modal';
   import { BasicForm, useForm } from '@/components/Form';
   import { typeFormSchema } from './dict.data';
+  import { DictTypeIM } from '@/model/system/dict';
 
   const emit = defineEmits(['success', 'register']);
 
@@ -41,7 +42,7 @@
   /** 提交按钮 */
   async function handleSubmit() {
     try {
-      const values = await validate();
+      const values: DictTypeIM = await validate();
       setModalProps({ confirmLoading: true });
       unref(isUpdate)
         ? await editDictTypeApi(values).then(() => {

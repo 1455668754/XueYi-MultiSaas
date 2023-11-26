@@ -328,6 +328,13 @@ export const dataFormSchema: FormSchema[] = [
     colProps: { span: 12 },
   },
   {
+    label: '租户Id',
+    field: 'tenantId',
+    component: 'Input',
+    show: false,
+    colProps: { span: 12 },
+  },
+  {
     label: '字典编码',
     field: 'code',
     component: 'ApiSelect',
