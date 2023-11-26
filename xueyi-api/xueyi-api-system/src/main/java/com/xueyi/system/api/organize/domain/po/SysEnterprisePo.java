@@ -23,26 +23,24 @@ import static com.baomidou.mybatisplus.annotation.SqlCondition.LIKE;
 @TableName("te_tenant")
 public class SysEnterprisePo extends SysEnterprise {
 
-    @Serial
-    private static final long serialVersionUID = 1L;
+  @Serial private static final long serialVersionUID = 1L;
 
-    /** 名称 */
-    @TableField(condition = LIKE)
-    @Xss(message = "企业账号不能包含脚本字符")
-    @NotBlank(message = "企业账号不能为空")
-    @Size(max = 30, message = "企业账号长度不能超过30个字符")
-    protected String name;
+  /** 名称 */
+  @TableField(condition = LIKE)
+  @Xss(message = "企业账号不能包含脚本字符")
+  @NotBlank(message = "企业账号不能为空")
+  @Size(max = 30, message = "企业账号长度不能超过30个字符")
+  protected String name;
 
-    /** 系统名称 */
-    @Xss(message = "系统名称不能包含脚本字符")
-    @NotBlank(message = "系统名称不能为空")
-    @Size(max = 30, message = "系统名称长度不能超过30个字符")
-    protected String systemName;
+  /** 系统名称 */
+  @Xss(message = "系统名称不能包含脚本字符")
+  @NotBlank(message = "系统名称不能为空")
+  @Size(max = 30, message = "系统名称长度不能超过30个字符")
+  protected String systemName;
 
-    /** 企业名称 */
-    @Xss(message = "企业名称不能包含脚本字符")
-    @NotBlank(message = "企业名称不能为空")
-    @Size(max = 30, message = "企业名称长度不能超过30个字符")
-    protected String nick;
-
+  /** 企业名称 */
+  @Xss(message = "企业名称不能包含脚本字符")
+  @NotBlank(message = "企业名称不能为空")
+  @Size(max = 30, message = "企业名称长度不能超过30个字符")
+  protected String nick;
 }

@@ -10,6 +10,7 @@ enum Api {
   Logout = '/auth/logout',
   GetUserInfo = '/system/admin/user/getInfo',
   GetEnterpriseInfo = '/system/admin/enterprise/getInfo',
+  GetEnterpriseName='/system/domain',
 }
 
 /**
@@ -18,6 +19,15 @@ enum Api {
 export function getCodeImg() {
   return defHttp.get<CodeImgIM>(
     { url: Api.GetCodeImg, timeout: 20000 },
+    { errorMessageMode: 'none', withToken: false },
+  );
+}
+/**
+ * @description: get Enterprise Name api
+ */
+export function getEnterpriseName(){
+  return defHttp.get<LoginPM>(
+    { url: Api.GetEnterpriseName, timeout: 20000 },
     { errorMessageMode: 'none', withToken: false },
   );
 }

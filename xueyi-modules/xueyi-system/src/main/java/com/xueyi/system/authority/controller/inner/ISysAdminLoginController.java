@@ -1,5 +1,6 @@
 package com.xueyi.system.authority.controller.inner;
 
+import com.mysql.cj.util.StringUtils;
 import com.xueyi.common.cache.utils.SourceUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.context.SecurityContextHolder;
@@ -115,4 +116,6 @@ public class ISysAdminLoginController extends BasisController {
         loginUser.setRouteURL(routeMap);
         return R.ok(loginUser);
     }
+
+
 }

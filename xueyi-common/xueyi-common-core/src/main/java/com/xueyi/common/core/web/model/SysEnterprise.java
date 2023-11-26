@@ -3,6 +3,8 @@ package com.xueyi.common.core.web.model;
 import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
+import com.xueyi.common.core.xss.Xss;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -44,12 +46,19 @@ public class SysEnterprise extends BaseEntity {
     /** 默认企业（Y是 N否） */
     protected String isDefault;
 
-    public boolean isLessor() {
-        return isLessor(getIsLessor());
-    }
+    /**
+     * 企业自定义域名
+     */
+    @Xss(message = "企业自定义域名不能包含脚本字符")
+    @Size(max = 30, message = "企业自定义域名长度不能超过30个字符")
+    protected  String doMain;
 
     public static boolean isNotLessor(String userType) {
         return !isLessor(userType);
+    }
+
+    public boolean isLessor() {
+        return isLessor(getIsLessor());
     }
 
     public static boolean isLessor(String isLessor) {

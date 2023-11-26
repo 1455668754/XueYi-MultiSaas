@@ -1,13 +1,16 @@
 <template>
   <LoginFormTitle v-show="getShow" class="enter-x" />
   <Form class="p-4 enter-x" :model="formData" :rules="getFormRules" ref="formRef" v-show="getShow">
-    <FormItem name="enterpriseName" class="enter-x">
+    <FormItem name="enterpriseName" class="enter-x"  v-if="formData.enterpriseName==''" >
       <Input
         size="large"
         v-model:value="formData.enterpriseName"
         :placeholder="t('sys.login.enterpriseName')"
         class="fix-auto-fill"
       />
+    </FormItem>
+    <FormItem name="enterpriseName" class="enter-x"  v-else>
+      <Input   type="hidden" v-model:value="formData.enterpriseName"  />
     </FormItem>
     <FormItem name="userName" class="enter-x">
       <Input
@@ -137,7 +140,7 @@
   const { notification, createErrorModal } = useMessage();
   const { prefixCls } = useDesign('login');
   const userStore = useUserStore();
-
+  
   const { setLoginState, getLoginState } = useLoginState();
   const { getFormRules } = useFormRules();
 
@@ -209,6 +212,12 @@
     }
   }
 
+  async function handleEnterpriseName() {
+    const data =await userStore.getEnterpriseName();
+    if (typeof data.enterpriseName === "string") 
+      formData.enterpriseName=data.enterpriseName;
+  }
+
   // 处理登录验证码
   async function handleCodeImage() {
     const data = await userStore.getCodeImage();
@@ -219,6 +228,7 @@
 
   onMounted(() => {
     // 初始执行一次验证码获取
+    handleEnterpriseName();
     handleCodeImage();
   });
 </script>

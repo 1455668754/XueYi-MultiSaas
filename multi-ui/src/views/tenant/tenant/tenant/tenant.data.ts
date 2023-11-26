@@ -354,6 +354,14 @@ export const formSchema: FormSchema[] = [
     colProps: { span: 12 },
   },
   {
+    label: '租户域名',
+    field: 'doMain',
+    component: 'Input',
+    helpMessage: '租户绑定顶级域名或者二级域名',
+   
+    colProps: { span: 12 },
+  },
+  {
     label: '系统名称',
     field: 'systemName',
     component: 'Input',

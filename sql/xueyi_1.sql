@@ -29,6 +29,8 @@ create table te_tenant (
   update_time               datetime            on update current_timestamp             comment '更新时间',
   is_default                char(1)             not null default 'N'	                comment '默认租户（Y是 N否）',
   del_flag		            tinyint             not null default 0                      comment '删除标志（0正常 1删除）',
+  do_main                   varchar(30)         default null                            comment '租户域名或者二级域名',
+
   primary key (id)
 ) engine = innodb comment = '租户信息表';
 
