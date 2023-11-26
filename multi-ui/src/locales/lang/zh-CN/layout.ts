@@ -114,5 +114,6 @@ export default {
     triggerClick: '点击',
 
     mixSidebarFixed: '固定展开菜单',
+    autoCollapseTabsInFold: 'fold模式下自动收起标签页',
   },
 };

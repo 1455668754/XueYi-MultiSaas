@@ -132,10 +132,16 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeQuery, Sy
                 return;
             }
             SysDictTypeDto enterpriseType = enterpriseTypeMap.get(type.getCode());
+            if (ObjectUtil.isNull(type.getSubList())) {
+                type.setSubList(new ArrayList<>());
+            }
             if (ObjectUtil.isNull(enterpriseType)) {
                 addTypeList.add(type);
                 addDataList.addAll(type.getSubList());
             } else {
+                if (ObjectUtil.isNull(enterpriseType.getSubList())) {
+                    enterpriseType.setSubList(new ArrayList<>());
+                }
                 Set<String> enterpriseValues = enterpriseType.getSubList().stream().map(SysDictDataDto::getValue).collect(Collectors.toSet());
                 Set<String> commonValues = type.getSubList().stream().map(SysDictDataDto::getValue).collect(Collectors.toSet());
                 if (StrUtil.equals(DictConstants.DicDataType.READ.getCode(), type.getDataType()) || StrUtil.equals(DictConstants.DicDataType.INCREASE.getCode(), type.getDataType())) {

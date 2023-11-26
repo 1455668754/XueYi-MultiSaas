@@ -1,5 +1,5 @@
 import type { Component } from 'vue';
-import type { ComponentType } from './types/index';
+import type { ComponentType } from './types';
 
 /**
  * Component list, register here to setting it in the form
@@ -20,7 +20,6 @@ import {
   TimePicker,
   TreeSelect,
 } from 'ant-design-vue';
-import { BasicUpload } from '@/components/Upload';
 import { StrengthMeter } from '@/components/StrengthMeter';
 import { IconPicker } from '@/components/Icon';
 import { CountdownInput } from '@/components/CountDown';
@@ -28,7 +27,7 @@ import ApiRadioGroup from './components/ApiRadioGroup.vue';
 import RadioButtonGroup from './components/RadioButtonGroup.vue';
 import ApiSelect from './components/ApiSelect.vue';
 import ApiTree from './components/ApiTree.vue';
-import ImageUpload from './components/ImageUpload.vue';
+import { BasicUpload, ImageUpload } from '/@/components/Upload';
 import ApiTreeSelect from './components/ApiTreeSelect.vue';
 import ApiCascader from './components/ApiCascader.vue';
 import ApiTransfer from './components/ApiTransfer.vue';

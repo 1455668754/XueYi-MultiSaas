@@ -22,6 +22,7 @@
     </div>
   </div>
 </template>
+
 <script lang="ts" setup>
   import { computed } from 'vue';
   import { Avatar } from 'ant-design-vue';

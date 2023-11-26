@@ -2,7 +2,7 @@ import type { ComputedRef, Ref } from 'vue';
 import { nextTick, toRaw, unref } from 'vue';
 import type { FormActionType, FormProps, FormSchemaInner as FormSchema } from '../types/form';
 import type { NamePath } from 'ant-design-vue/lib/form/interface';
-import { isArray, isDef, isEmpty, isFunction, isNullOrUnDef, isObject, isString } from '@/utils/is';
+import { isArray, isDef, isFunction, isNil, isObject, isString } from '/@/utils/is';
 import { deepMerge } from '@/utils';
 import { dateItemType, defaultValueComponents, handleInputNumberValue } from '../helper';
 import { dateUtil } from '@/utils/dateUtil';
@@ -125,7 +125,10 @@ export function useFormEvents({
       const { componentProps } = schema || {};
       let _props = componentProps as any;
       if (typeof componentProps === 'function') {
-        _props = _props({ formModel: unref(formModel) });
+        _props = _props({
+          formModel: unref(formModel),
+          formActionType,
+        });
       }
 
       const constructValue = tryConstructArray(key, values) || tryConstructObject(key, values);
@@ -311,10 +314,8 @@ export function useFormEvents({
         item.component != 'Divider' &&
         Reflect.has(item, 'field') &&
         item.field &&
-        !isNullOrUnDef(item.defaultValue) &&
-        (!(item.field in currentFieldsValue) ||
-          isNullOrUnDef(currentFieldsValue[item.field]) ||
-          isEmpty(currentFieldsValue[item.field]))
+        !isNil(item.defaultValue) &&
+        (!(item.field in currentFieldsValue) || isNil(currentFieldsValue[item.field]))
       ) {
         obj[item.field] = item.defaultValue;
       }
@@ -338,8 +339,12 @@ export function useFormEvents({
   }
 
   async function validateFields(nameList?: NamePath[] | undefined) {
-    const values = unref(formElRef)?.validateFields(nameList);
+    const values = await unref(formElRef)?.validateFields(nameList);
     return handleFormValues(values);
+  }
+
+  async function setProps(formProps: Partial<FormProps>): Promise<void> {
+    await unref(formElRef)?.setProps(formProps);
   }
 
   async function validate(nameList?: NamePath[] | false | undefined) {
@@ -416,6 +421,22 @@ export function useFormEvents({
   function checkIsInput(schema?: FormSchema) {
     return schema?.component && defaultValueComponents.includes(schema.component);
   }
+
+  const formActionType: Partial<FormActionType> = {
+    getFieldsValue,
+    setFieldsValue,
+    resetFields,
+    updateSchema,
+    resetSchema,
+    setProps,
+    removeSchemaByField,
+    appendSchemaByField,
+    clearValidate,
+    validateFields,
+    validate,
+    submit: handleSubmit,
+    scrollToField: scrollToField,
+  };
 
   return {
     handleSubmit,

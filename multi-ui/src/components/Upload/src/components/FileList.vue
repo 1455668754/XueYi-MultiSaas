@@ -1,5 +1,5 @@
 <script lang="tsx">
-  import { fileListProps } from './props';
+  import { fileListProps } from '../props';
   import { isDef, isFunction } from '@/utils/is';
   import { useSortable } from '@/hooks/web/useSortable';
   import { useModalContext } from '@/components/Modal/src/hooks/useModalContext';
