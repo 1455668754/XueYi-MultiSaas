@@ -15,6 +15,8 @@ export interface DictDataIM extends BaseEntity {
   cssClass: string;
   listClass: string;
   status: DicStatusEnum;
+  /** 企业Id */
+  tenantId?: string;
   /** 字典类型Id */
   dictTypeId?: string;
   /** 字典类型信息 */

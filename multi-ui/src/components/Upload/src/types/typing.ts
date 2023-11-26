@@ -2,6 +2,7 @@ import { BasicColumn } from '../../../Table';
 import { UploadIM } from '@/model/sys';
 
 export enum UploadResultStatus {
+  DONE = 'done',
   SUCCESS = 'success',
   ERROR = 'error',
   UPLOADING = 'uploading',
