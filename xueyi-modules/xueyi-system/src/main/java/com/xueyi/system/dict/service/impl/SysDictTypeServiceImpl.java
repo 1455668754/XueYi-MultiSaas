@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -62,20 +63,41 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeQuery, Sy
         }};
     }
 
-    /**
-     * 缓存主键命名定义
-     */
+    /** 缓存主键命名定义 */
     @Override
     public CacheConstants.CacheType getCacheKey() {
         return CacheConstants.CacheType.SYS_DICT_KEY;
     }
 
-    /**
-     * 缓存标识命名定义
-     */
+    /** 缓存标识命名定义 */
     protected CacheConstants.CacheType getCacheRouteKey() {
         return CacheConstants.CacheType.ROUTE_DICT_KEY;
     }
+
+    /** 缓存键取值逻辑定义 | Function */
+    @Override
+    public Function<? super SysDictTypeDto, String> cacheKeyFun() {
+        return SysDictTypeDto::getCode;
+    }
+
+    /** 缓存值取值逻辑定义 | Function */
+    @Override
+    public Function<? super SysDictTypeDto, Object> cacheValueFun() {
+        return SysDictTypeDto::getSubList;
+    }
+
+    /** 缓存键取值逻辑定义 | Supplier */
+    @Override
+    public Supplier<Serializable> cacheKeySupplier(SysDictTypeDto dto) {
+        return dto::getCode;
+    }
+
+    /** 缓存值取值逻辑定义 | Supplier */
+    @Override
+    public Supplier<Object> cacheValueSupplier(SysDictTypeDto dto) {
+        return dto::getSubList;
+    }
+
 
     /**
      * 查询数据对象列表 | 数据权限 | 附加数据
@@ -308,49 +330,28 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeQuery, Sy
     @Override
     public void refreshCache(OperateConstants.ServiceType operate, RedisConstants.OperateType operateCache, SysDictTypeDto dto, Collection<SysDictTypeDto> dtoList) {
         Long enterpriseId = SecurityUtils.getEnterpriseId();
-        String cacheKey = StrUtil.format(getCacheKey().getCode(), enterpriseId);
-        if (operate.isSingle()) {
-            subCorrelates(dto, getBasicCorrelate(CorrelateConstants.ServiceType.CACHE_REFRESH));
-        } else if (operate.isBatch()) {
-            subCorrelates(dtoList, getBasicCorrelate(CorrelateConstants.ServiceType.CACHE_REFRESH));
-        }
-        switch (operateCache) {
-            case REFRESH_ALL -> {
-                redisService.deleteObject(cacheKey);
-                redisService.refreshMapCache(cacheKey, dtoList, SysDictTypeDto::getCode, SysDictTypeDto::getSubList);
-                // 索引标识
-                if (ObjectUtil.equals(SecurityConstants.COMMON_TENANT_ID, enterpriseId)) {
-                    redisService.deleteObject(getCacheRouteKey().getCode());
+        super.refreshCache(operate, operateCache, dto, dtoList);
+        if (ObjectUtil.equals(SecurityConstants.COMMON_TENANT_ID, enterpriseId)) {
+            String cacheKey = getCacheRouteKey().getCacheKey();
+            switch (operateCache) {
+                case REFRESH_ALL -> {
+                    redisService.deleteObject(cacheKey);
                     List<SysDictTypeDto> dictList = dtoList.stream().peek(item -> item.setSubList(null)).toList();
-                    redisService.refreshMapCache(getCacheRouteKey().getCode(), dictList, SysDictTypeDto::getCode, Function.identity());
+                    redisService.refreshMapCache(cacheKey, dictList, SysDictTypeDto::getCode, Function.identity());
                 }
-            }
-            case REFRESH -> {
-                if (ObjectUtil.equals(SecurityConstants.COMMON_TENANT_ID, enterpriseId)) {
+                case REFRESH -> {
                     if (operate.isSingle()) {
-                        redisService.refreshMapValueCache(getCacheRouteKey().getCode(), dto::getCode, dto::getSubList);
+                        redisService.refreshMapValueCache(cacheKey, dto::getCode, dto::getSubList);
                     } else if (operate.isBatch()) {
-                        dtoList.forEach(item -> redisService.refreshMapValueCache(getCacheRouteKey().getCode(), item::getCode, item::getSubList));
+                        dtoList.forEach(item -> redisService.refreshMapValueCache(cacheKey, item::getCode, item::getSubList));
                     }
                 }
-                if (operate.isSingle()) {
-                    redisService.refreshMapValueCache(cacheKey, dto::getCode, dto::getSubList);
-                } else if (operate.isBatch()) {
-                    dtoList.forEach(item -> redisService.refreshMapValueCache(cacheKey, item::getCode, item::getSubList));
-                }
-            }
-            case REMOVE -> {
-                if (ObjectUtil.equals(SecurityConstants.COMMON_TENANT_ID, enterpriseId)) {
+                case REMOVE -> {
                     if (operate.isSingle()) {
-                        redisService.removeMapValueCache(getCacheRouteKey().getCode(), dto.getCode());
+                        redisService.removeMapValueCache(cacheKey, dto.getCode());
                     } else if (operate.isBatch()) {
-                        redisService.removeMapValueCache(getCacheRouteKey().getCode(), dtoList.stream().map(SysDictTypeDto::getCode).toArray(String[]::new));
+                        redisService.removeMapValueCache(cacheKey, dtoList.stream().map(SysDictTypeDto::getCode).toArray(String[]::new));
                     }
-                }
-                if (operate.isSingle()) {
-                    redisService.removeMapValueCache(cacheKey, dto.getCode());
-                } else if (operate.isBatch()) {
-                    redisService.removeMapValueCache(cacheKey, dtoList.stream().map(SysDictTypeDto::getCode).toArray(String[]::new));
                 }
             }
         }

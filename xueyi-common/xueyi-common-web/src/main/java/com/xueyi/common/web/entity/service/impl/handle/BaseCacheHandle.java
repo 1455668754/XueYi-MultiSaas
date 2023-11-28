@@ -39,7 +39,7 @@ public interface BaseCacheHandle<D extends BaseEntity> {
     }
 
     /** 缓存值取值逻辑定义 | Supplier */
-    default Supplier<D> cacheValueSupplier(D dto) {
+    default Supplier<Object> cacheValueSupplier(D dto) {
         return () -> dto;
     }
 
