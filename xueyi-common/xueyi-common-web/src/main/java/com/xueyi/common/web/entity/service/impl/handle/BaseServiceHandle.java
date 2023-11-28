@@ -1,10 +1,13 @@
 package com.xueyi.common.web.entity.service.impl.handle;
 
 import com.xueyi.common.core.constant.basic.OperateConstants;
+import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.core.ObjectUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.redis.constant.RedisConstants;
 import com.xueyi.common.redis.service.RedisService;
+import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.correlate.contant.CorrelateConstants;
 import com.xueyi.common.web.correlate.service.CorrelateService;
 import com.xueyi.common.web.entity.manager.IBaseManager;
@@ -15,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -49,6 +51,16 @@ public class BaseServiceHandle<Q extends BaseEntity, D extends BaseEntity, C ext
         if (ObjectUtil.isNull(getCacheKey())) {
             return;
         }
+        String cacheKey;
+        if (getCacheKey().getIsTenant()) {
+            Long enterpriseId = SecurityUtils.getEnterpriseId();
+            if (ObjectUtil.isNull(enterpriseId)) {
+                throw new ServiceException(StrUtil.format("缓存键{}为企业级缓存，企业Id不能为空", getCacheKey().getCode()));
+            }
+            cacheKey = StrUtil.format("{}:{}", getCacheKey().getCode(), enterpriseId);
+        } else {
+            cacheKey = getCacheKey().getCode();
+        }
         if (operate.isSingle()) {
             subCorrelates(dto, getBasicCorrelate(CorrelateConstants.ServiceType.CACHE_REFRESH));
         } else if (operate.isBatch()) {
@@ -56,21 +68,24 @@ public class BaseServiceHandle<Q extends BaseEntity, D extends BaseEntity, C ext
         }
         switch (operateCache) {
             case REFRESH_ALL -> {
-                redisService.deleteObject(getCacheKey().getCode());
-                redisService.refreshMapCache(getCacheKey().getCode(), dtoList, D::getIdStr, Function.identity());
+                redisService.deleteObject(cacheKey);
+                redisService.refreshMapCache(cacheKey, dtoList, cacheKeyFun(), cacheValueFun());
             }
             case REFRESH -> {
                 if (operate.isSingle()) {
-                    redisService.refreshMapValueCache(getCacheKey().getCode(), dto::getIdStr, () -> dto);
+                    redisService.refreshMapValueCache(cacheKey, cacheKeySupplier(dto), cacheValueSupplier(dto));
                 } else if (operate.isBatch()) {
-                    dtoList.forEach(item -> redisService.refreshMapValueCache(getCacheKey().getCode(), item::getIdStr, () -> item));
+                    dtoList.forEach(item -> redisService.refreshMapValueCache(cacheKey, cacheKeySupplier(item), cacheValueSupplier(item)));
                 }
             }
             case REMOVE -> {
                 if (operate.isSingle()) {
-                    redisService.removeMapValueCache(getCacheKey().getCode(), dto.getId());
+                    List<D> list = new ArrayList<>() {{
+                        add(dto);
+                    }};
+                    redisService.removeMapValueCache(cacheKey, list.stream().map(cacheKeyFun()).toArray(String[]::new));
                 } else if (operate.isBatch()) {
-                    redisService.removeMapValueCache(getCacheKey().getCode(), dtoList.stream().map(D::getIdStr).toArray(String[]::new));
+                    redisService.removeMapValueCache(cacheKey, dtoList.stream().map(cacheKeyFun()).toArray(String[]::new));
                 }
             }
         }

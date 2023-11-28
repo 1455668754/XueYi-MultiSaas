@@ -3,12 +3,10 @@ package com.xueyi.tenant.source.service.impl;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.xueyi.common.cache.constant.CacheConstants;
 import com.xueyi.common.core.constant.basic.DictConstants;
-import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.IdUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
-import com.xueyi.common.redis.constant.RedisConstants;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.tenant.api.source.domain.dto.TeSourceDto;
 import com.xueyi.tenant.api.source.domain.query.TeSourceQuery;
@@ -17,9 +15,10 @@ import com.xueyi.tenant.source.manager.impl.TeSourceManagerImpl;
 import com.xueyi.tenant.source.service.ITeSourceService;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
 import java.util.Collection;
-import java.util.List;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * 租户服务 | 策略模块 | 数据源管理 服务层处理
@@ -29,12 +28,22 @@ import java.util.function.Function;
 @Service
 public class TeSourceServiceImpl extends BaseServiceImpl<TeSourceQuery, TeSourceDto, TeSourceCorrelate, TeSourceManagerImpl> implements ITeSourceService {
 
-    /**
-     * 缓存主键命名定义
-     */
+    /** 缓存主键命名定义 */
     @Override
     public CacheConstants.CacheType getCacheKey() {
         return CacheConstants.CacheType.TE_SOURCE_KEY;
+    }
+
+    /** 缓存键取值逻辑定义 | Function */
+    @Override
+    public Function<? super TeSourceDto, String> cacheKeyFun() {
+        return TeSourceDto::getSlave;
+    }
+
+    /** 缓存键取值逻辑定义 | Supplier */
+    @Override
+    public Supplier<Serializable> cacheKeySupplier(TeSourceDto dto) {
+        return dto::getSlave;
     }
 
     /**
@@ -75,38 +84,5 @@ public class TeSourceServiceImpl extends BaseServiceImpl<TeSourceQuery, TeSource
             sourceList.forEach(source -> source.setSlave(IdUtil.simpleUUID()));
         }
         return super.insertBatch(sourceList);
-    }
-
-    /**
-     * 缓存更新
-     *
-     * @param operate      服务层 - 操作类型
-     * @param operateCache 缓存操作类型
-     * @param dto          数据对象
-     * @param dtoList      数据对象集合
-     */
-    @Override
-    public void refreshCache(OperateConstants.ServiceType operate, RedisConstants.OperateType operateCache, TeSourceDto dto, Collection<TeSourceDto> dtoList) {
-        switch (operateCache) {
-            case REFRESH_ALL -> {
-                List<TeSourceDto> allList = baseManager.selectList(null);
-                redisService.deleteObject(getCacheKey().getCode());
-                redisService.refreshMapCache(getCacheKey().getCode(), allList, TeSourceDto::getSlave, Function.identity());
-            }
-            case REFRESH -> {
-                if (operate.isSingle()) {
-                    redisService.refreshMapValueCache(getCacheKey().getCode(), dto::getSlave, () -> dto);
-                } else if (operate.isBatch()) {
-                    dtoList.forEach(item -> redisService.refreshMapValueCache(getCacheKey().getCode(), item::getSlave, () -> item));
-                }
-            }
-            case REMOVE -> {
-                if (operate.isSingle()) {
-                    redisService.removeMapValueCache(getCacheKey().getCode(), dto.getSlave());
-                } else if (operate.isBatch()) {
-                    redisService.removeMapValueCache(getCacheKey().getCode(), dtoList.stream().map(TeSourceDto::getSlave).toArray(String[]::new));
-                }
-            }
-        }
     }
 }

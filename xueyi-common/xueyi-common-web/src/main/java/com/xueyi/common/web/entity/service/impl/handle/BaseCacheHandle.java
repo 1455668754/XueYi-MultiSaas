@@ -5,7 +5,10 @@ import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.redis.constant.RedisConstants;
 
+import java.io.Serializable;
 import java.util.Collection;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * 服务层 操作方法 基类实现通用缓存处理
@@ -15,11 +18,29 @@ import java.util.Collection;
  */
 public interface BaseCacheHandle<D extends BaseEntity> {
 
-    /**
-     * 缓存主键命名定义
-     */
+    /** 缓存主键命名定义 */
     default CacheConstants.CacheType getCacheKey() {
         return null;
+    }
+
+    /** 缓存键取值逻辑定义 | Function */
+    default Function<? super D, String> cacheKeyFun() {
+        return D::getIdStr;
+    }
+
+    /** 缓存值取值逻辑定义 | Function */
+    default Function<? super D, Object> cacheValueFun() {
+        return Function.identity();
+    }
+
+    /** 缓存键取值逻辑定义 | Supplier */
+    default Supplier<Serializable> cacheKeySupplier(D dto) {
+        return dto::getIdStr;
+    }
+
+    /** 缓存值取值逻辑定义 | Supplier */
+    default Supplier<D> cacheValueSupplier(D dto) {
+        return () -> dto;
     }
 
     /**

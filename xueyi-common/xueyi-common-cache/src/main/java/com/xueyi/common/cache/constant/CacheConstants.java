@@ -59,20 +59,20 @@ public class CacheConstants {
     @AllArgsConstructor
     public enum CacheType {
 
-        ROUTE_DICT_KEY("system:dict:route", "字典路由", () -> SpringUtil.getBean(RemoteDictService.class).refreshCommonCacheInner()),
-        SYS_DICT_KEY("system:dict:tenant:{}", "租户字典", () -> SpringUtil.getBean(RemoteDictService.class).refreshCacheInner()),
-        TE_DICT_KEY("system:dict:tenant:{}", "通用字典", () -> SpringUtil.getBean(RemoteDictService.class).refreshCommonCacheInner()),
-        ROUTE_CONFIG_KEY("system:config:route", "参数路由", () -> SpringUtil.getBean(RemoteConfigService.class).refreshTeCacheInner()),
-        SYS_CONFIG_KEY("system:config:tenant:{}", "租户参数", () -> SpringUtil.getBean(RemoteConfigService.class).refreshCacheInner()),
-        TE_CONFIG_KEY("system:config:tenant:{}", "通用参数", () -> SpringUtil.getBean(RemoteDictService.class).refreshCommonCacheInner()),
-        TE_STRATEGY_KEY("system:strategy", "源策略组", () -> SpringUtil.getBean(RemoteStrategyService.class).refreshCacheInner()),
-        TE_SOURCE_KEY("system:source", "数据源", () -> SpringUtil.getBean(RemoteSourceService.class).refreshCacheInner()),
-        TE_TENANT_KEY("system:tenant", "租户", () -> SpringUtil.getBean(RemoteTenantService.class).refreshCacheInner());
+        ROUTE_DICT_KEY("system:dict:route", false, "字典路由", () -> SpringUtil.getBean(RemoteDictService.class).refreshCommonCacheInner()),
+        SYS_DICT_KEY("system:dict:tenant:{}", false, "租户字典", () -> SpringUtil.getBean(RemoteDictService.class).refreshCacheInner()),
+        TE_DICT_KEY("system:dict:tenant:{}", false, "通用字典", () -> SpringUtil.getBean(RemoteDictService.class).refreshCommonCacheInner()),
+        ROUTE_CONFIG_KEY("system:config:route", false, "参数路由", () -> SpringUtil.getBean(RemoteConfigService.class).refreshTeCacheInner()),
+        SYS_CONFIG_KEY("system:config:tenant:{}", false, "租户参数", () -> SpringUtil.getBean(RemoteConfigService.class).refreshCacheInner()),
+        TE_CONFIG_KEY("system:config:tenant:{}", false, "通用参数", () -> SpringUtil.getBean(RemoteDictService.class).refreshCommonCacheInner()),
+        TE_STRATEGY_KEY("system:strategy", false, "源策略组", () -> SpringUtil.getBean(RemoteStrategyService.class).refreshCacheInner()),
+        TE_SOURCE_KEY("system:source", false, "数据源", () -> SpringUtil.getBean(RemoteSourceService.class).refreshCacheInner()),
+        TE_TENANT_KEY("system:tenant", false, "租户", () -> SpringUtil.getBean(RemoteTenantService.class).refreshCacheInner());
 
         private final String code;
+        private final Boolean isTenant;
         private final String info;
         private final Supplier<Object> consumer;
-
     }
 
     /** 登录缓存类型 */
