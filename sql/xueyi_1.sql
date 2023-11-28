@@ -106,8 +106,8 @@ drop table if exists sys_module;
 create table sys_module (
   id		                bigint	            not null                                comment '模块Id',
   name		                varchar(50)	        not null	                            comment '模块名称',
-  logo                      varchar(200)	    default '' 	        	                comment '模块logo',
-  path                      varchar(200)        not null default ''                     comment '路由地址',
+  logo                      varchar(200)	    default null 	        	            comment '模块logo',
+  path                      varchar(200)        default null                            comment '路由地址',
   param_path                varchar(255)        default null                            comment '路由参数',
   type		                char(1)	            not null default '0'	                comment '模块类型（0常规 1内嵌 2外链）',
   hide_module		        char(1)	            not null default '0'	                comment '模块显隐状态（0显示 1隐藏）',
