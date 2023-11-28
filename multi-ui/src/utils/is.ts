@@ -1,3 +1,5 @@
+import { isNil, isString } from 'lodash-es';
+
 export {
   isArguments,
   isArrayBuffer,
@@ -33,7 +35,6 @@ export {
   isWeakMap,
   isWeakSet,
 } from 'lodash-es';
-import { isEmpty, isNil } from 'lodash-es';
 
 const toString = Object.prototype.toString;
 
@@ -51,6 +52,25 @@ export function isObject(val: any): val is Record<any, any> {
 }
 
 export function isNotEmpty(val: any): boolean {
+  function isEmpty<T = unknown>(val: T): val is T {
+    if (isNil(val)) {
+      return true;
+    }
+    if (isArray(val) || isString(val)) {
+      return val.length === 0;
+    }
+
+    if (val instanceof Map || val instanceof Set) {
+      return val.size === 0;
+    }
+
+    if (isObject(val)) {
+      return Object.keys(val).length === 0;
+    }
+
+    return false;
+  }
+
   return !isNil(val) && !isEmpty(val);
 }
 

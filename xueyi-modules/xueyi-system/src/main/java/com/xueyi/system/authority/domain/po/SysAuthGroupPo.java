@@ -30,8 +30,4 @@ public class SysAuthGroupPo extends BaseEntity {
     @Excel(name = "权限组权限字符串")
     protected String authKey;
 
-    /** 备注 */
-    @Excel(name = "备注")
-    protected String remark;
-
 }
