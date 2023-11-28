@@ -3,7 +3,6 @@ package com.xueyi.common.cache.service;
 import cn.hutool.core.map.MapUtil;
 import com.xueyi.common.cache.constant.CacheConstants;
 import com.xueyi.common.core.utils.core.ObjectUtil;
-import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.redis.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -30,10 +29,11 @@ public class CacheService {
      * @return 数据对象
      */
     public <T> T getCacheObject(CacheConstants.CacheType cacheType) {
-        T object = redisService.getCacheObject(cacheType.getCode());
+        String key = cacheType.getCacheKey();
+        T object = redisService.getCacheObject(key);
         if (ObjectUtil.isNull(object)) {
             refreshCache(cacheType);
-            return redisService.getCacheObject(cacheType.getCode());
+            return redisService.getCacheObject(key);
         }
         return object;
     }
@@ -45,10 +45,11 @@ public class CacheService {
      * @return 数据对象
      */
     public <T> Set<T> getCacheSet(CacheConstants.CacheType cacheType) {
-        Set<T> cacheSet = redisService.getCacheSet(cacheType.getCode());
+        String key = cacheType.getCacheKey();
+        Set<T> cacheSet = redisService.getCacheSet(key);
         if (ObjectUtil.isNull(cacheSet)) {
             refreshCache(cacheType);
-            return redisService.getCacheSet(cacheType.getCode());
+            return redisService.getCacheSet(key);
         }
         return cacheSet;
     }
@@ -60,10 +61,11 @@ public class CacheService {
      * @return 数据对象
      */
     public <T> List<T> getCacheList(CacheConstants.CacheType cacheType) {
-        List<T> cacheSet = redisService.getCacheList(cacheType.getCode());
+        String key = cacheType.getCacheKey();
+        List<T> cacheSet = redisService.getCacheList(key);
         if (ObjectUtil.isNull(cacheSet)) {
             refreshCache(cacheType);
-            return redisService.getCacheList(cacheType.getCode());
+            return redisService.getCacheList(key);
         }
         return cacheSet;
     }
@@ -75,10 +77,11 @@ public class CacheService {
      * @return 数据对象
      */
     public <T> Map<String, T> getCacheMap(CacheConstants.CacheType cacheType) {
-        Map<String, T> map = redisService.getCacheMap(cacheType.getCode());
+        String key = cacheType.getCacheKey();
+        Map<String, T> map = redisService.getCacheMap(key);
         if (MapUtil.isEmpty(map)) {
             refreshCache(cacheType);
-            return redisService.getCacheMap(cacheType.getCode());
+            return redisService.getCacheMap(key);
         }
         return map;
     }
@@ -91,23 +94,7 @@ public class CacheService {
      * @return 数据对象
      */
     public <T> T getCacheObject(CacheConstants.CacheType cacheType, String code) {
-        T object = redisService.getCacheMapValue(cacheType.getCode(), code);
-        if (ObjectUtil.isNull(object)) {
-            refreshCache(cacheType);
-            return redisService.getCacheMapValue(cacheType.getCode(), code);
-        }
-        return object;
-    }
-
-    /**
-     * 获取指定租户缓存数据对象
-     *
-     * @param cacheType 缓存枚举
-     * @param code      缓存编码
-     * @return 数据对象
-     */
-    public <T> T getCacheObject(CacheConstants.CacheType cacheType, Long enterpriseId, String code) {
-        String key = StrUtil.format(cacheType.getCode(), enterpriseId);
+        String key = cacheType.getCacheKey();
         T object = redisService.getCacheMapValue(key, code);
         if (ObjectUtil.isNull(object)) {
             refreshCache(cacheType);

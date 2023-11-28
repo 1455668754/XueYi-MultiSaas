@@ -1,7 +1,10 @@
 package com.xueyi.common.cache.constant;
 
 import com.xueyi.common.core.constant.basic.DictConstants;
+import com.xueyi.common.core.context.SecurityContextHolder;
+import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.core.EnumUtil;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.SpringUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.system.api.dict.feign.RemoteConfigService;
@@ -73,6 +76,34 @@ public class CacheConstants {
         private final Boolean isTenant;
         private final String info;
         private final Supplier<Object> consumer;
+
+        /**
+         * 获取缓存键值
+         *
+         * @return 缓存键值
+         */
+        public String getCacheKey() {
+            return getCacheKey(getIsTenant() ? SecurityContextHolder.getEnterpriseId() : null);
+        }
+
+        /**
+         * 获取缓存键值 | 指定企业Id
+         *
+         * @param enterpriseId 企业Id
+         * @return 缓存键值
+         */
+        public String getCacheKey(Long enterpriseId) {
+            String cacheKey;
+            if (getIsTenant()) {
+                if (ObjectUtil.isNull(enterpriseId)) {
+                    throw new ServiceException(StrUtil.format("缓存键{}为企业级缓存，企业Id不能为空", getCode()));
+                }
+                cacheKey = StrUtil.format("{}:{}", getCode(), enterpriseId);
+            } else {
+                cacheKey = getCode();
+            }
+            return cacheKey;
+        }
     }
 
     /** 登录缓存类型 */

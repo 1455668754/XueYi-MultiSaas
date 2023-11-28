@@ -44,20 +44,21 @@ public class DictUtil {
      */
     @SuppressWarnings(value = {"unchecked"})
     public static <T> T getConfigCache(CacheConstants.ConfigType type) {
-        Long enterpriseId = SecurityContextHolder.getEnterpriseId();
-        SysConfigDto config = getCacheService().getCacheObject(CacheConstants.CacheType.ROUTE_CONFIG_KEY, enterpriseId, type.getCode());
+        SysConfigDto config = getCacheService().getCacheObject(CacheConstants.CacheType.ROUTE_CONFIG_KEY, type.getCode());
         if (ObjectUtil.isNull(config)) {
             return null;
         }
         String value;
         if (StrUtil.equals(DictConstants.DicCacheType.TENANT.getCode(), config.getCacheType())) {
-            value = getCacheService().getCacheObject(CacheConstants.CacheType.SYS_CONFIG_KEY, enterpriseId, type.getCode());
+            value = getCacheService().getCacheObject(CacheConstants.CacheType.SYS_CONFIG_KEY, type.getCode());
             if (ObjectUtil.isNull(value)) {
                 SpringUtil.getBean(RemoteConfigService.class).syncCacheInner();
-                value = getCacheService().getCacheObject(CacheConstants.CacheType.SYS_CONFIG_KEY, enterpriseId, type.getCode());
+                value = getCacheService().getCacheObject(CacheConstants.CacheType.SYS_CONFIG_KEY, type.getCode());
             }
         } else {
-            value = getCacheService().getCacheObject(CacheConstants.CacheType.TE_CONFIG_KEY, SecurityConstants.COMMON_TENANT_ID, type.getCode());
+            SecurityContextHolder.setEnterpriseId(SecurityConstants.COMMON_TENANT_ID.toString());
+            value = getCacheService().getCacheObject(CacheConstants.CacheType.TE_CONFIG_KEY, type.getCode());
+            SecurityContextHolder.rollLastEnterpriseId();
         }
         return (T) ConvertUtil.convert(type.getClazz(), value, type.getDefaultValue());
     }
@@ -81,20 +82,22 @@ public class DictUtil {
      * @return 字典数据列表
      */
     public static List<SysDictDataDto> getDictCache(String code) {
-        Long enterpriseId = SecurityContextHolder.getEnterpriseId();
-        SysDictTypeDto type = getCacheService().getCacheObject(CacheConstants.CacheType.ROUTE_DICT_KEY, enterpriseId, code);
+        SysDictTypeDto type = getCacheService().getCacheObject(CacheConstants.CacheType.ROUTE_DICT_KEY, code);
         if (ObjectUtil.isNull(type)) {
             return null;
         }
+        List<SysDictDataDto> dictList;
         if (StrUtil.equals(DictConstants.DicCacheType.TENANT.getCode(), type.getCacheType())) {
-            List<SysDictDataDto> dicts = getCacheService().getCacheObject(CacheConstants.CacheType.SYS_DICT_KEY, enterpriseId, code);
-            if (ObjectUtil.isNull(dicts)) {
+            dictList = getCacheService().getCacheObject(CacheConstants.CacheType.SYS_DICT_KEY, code);
+            if (ObjectUtil.isNull(dictList)) {
                 SpringUtil.getBean(RemoteDictService.class).syncCacheInner();
-                return getCacheService().getCacheObject(CacheConstants.CacheType.SYS_DICT_KEY, enterpriseId, code);
+                dictList = getCacheService().getCacheObject(CacheConstants.CacheType.SYS_DICT_KEY, code);
             }
-            return dicts;
         } else {
-            return getCacheService().getCacheObject(CacheConstants.CacheType.TE_DICT_KEY, SecurityConstants.COMMON_TENANT_ID, code);
+            SecurityContextHolder.setEnterpriseId(SecurityConstants.COMMON_TENANT_ID.toString());
+            dictList = getCacheService().getCacheObject(CacheConstants.CacheType.TE_DICT_KEY, code);
+            SecurityContextHolder.rollLastEnterpriseId();
         }
+        return dictList;
     }
 }

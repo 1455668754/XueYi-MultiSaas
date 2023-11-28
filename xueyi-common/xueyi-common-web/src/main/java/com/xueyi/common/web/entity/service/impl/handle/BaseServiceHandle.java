@@ -1,13 +1,10 @@
 package com.xueyi.common.web.entity.service.impl.handle;
 
 import com.xueyi.common.core.constant.basic.OperateConstants;
-import com.xueyi.common.core.exception.ServiceException;
 import com.xueyi.common.core.utils.core.ObjectUtil;
-import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.redis.constant.RedisConstants;
 import com.xueyi.common.redis.service.RedisService;
-import com.xueyi.common.security.utils.SecurityUtils;
 import com.xueyi.common.web.correlate.contant.CorrelateConstants;
 import com.xueyi.common.web.correlate.service.CorrelateService;
 import com.xueyi.common.web.entity.manager.IBaseManager;
@@ -51,16 +48,7 @@ public class BaseServiceHandle<Q extends BaseEntity, D extends BaseEntity, C ext
         if (ObjectUtil.isNull(getCacheKey())) {
             return;
         }
-        String cacheKey;
-        if (getCacheKey().getIsTenant()) {
-            Long enterpriseId = SecurityUtils.getEnterpriseId();
-            if (ObjectUtil.isNull(enterpriseId)) {
-                throw new ServiceException(StrUtil.format("缓存键{}为企业级缓存，企业Id不能为空", getCacheKey().getCode()));
-            }
-            cacheKey = StrUtil.format("{}:{}", getCacheKey().getCode(), enterpriseId);
-        } else {
-            cacheKey = getCacheKey().getCode();
-        }
+        String cacheKey = getCacheKey().getCacheKey();
         if (operate.isSingle()) {
             subCorrelates(dto, getBasicCorrelate(CorrelateConstants.ServiceType.CACHE_REFRESH));
         } else if (operate.isBatch()) {
