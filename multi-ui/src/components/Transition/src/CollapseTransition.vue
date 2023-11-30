@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { addClass, removeClass } from '@/utils/domUtils';
+  import { addClass, removeClass } from '@/utils/dom/DomUtil';
 
   defineOptions({ name: 'CollapseTransition' });
 

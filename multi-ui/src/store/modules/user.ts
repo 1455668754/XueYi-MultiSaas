@@ -17,9 +17,15 @@ import { router } from '@/router';
 import { usePermissionStore } from '@/store/modules/permission';
 import { RouteRecordRaw } from 'vue-router';
 import { PAGE_NOT_FOUND_ROUTE } from '@/router/routes/basic';
-import { isArray } from '@/utils/is';
+import { isArray } from '@/utils/core/ObjectUtil';
 import { h } from 'vue';
-import { doLogout, getCodeImg, getUserInfo, oauthLoginApi,getEnterpriseName } from '@/api/sys/login.api';
+import {
+  doLogout,
+  getCodeImg,
+  getUserInfo,
+  oauthLoginApi,
+  getEnterpriseName,
+} from '@/api/sys/login.api';
 import { EnterpriseIM, UserIM } from '@/model/system/organize';
 import { GetUserIM, LoginPM } from '@/model/sys';
 import { isMap } from '@vue/shared';
@@ -63,8 +69,6 @@ export const useUserStore = defineStore({
     getEnterpriseInfo(): EnterpriseIM {
       return this.enterpriseInfo || ({} as EnterpriseIM);
     },
-
- 
 
     getUserInfo(): UserIM {
       return this.userInfo || ({} as UserIM);
@@ -245,7 +249,7 @@ export const useUserStore = defineStore({
       goLogin && router.push(PageEnum.BASE_LOGIN);
     },
 
-    async getEnterpriseName(){
+    async getEnterpriseName() {
       return await getEnterpriseName();
     },
 

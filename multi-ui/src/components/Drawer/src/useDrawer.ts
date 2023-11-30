@@ -16,10 +16,10 @@ import {
   watchEffect,
 } from 'vue';
 import { isProdMode } from '@/utils/env';
-import { isFunction } from '@/utils/is';
+import { isFunction } from '@/utils/core/ObjectUtil';
 import { tryOnUnmounted } from '@vueuse/core';
 import { isEqual } from 'lodash-es';
-import { error } from '@/utils/log';
+import { error } from '@/utils/log/LogUtil';
 
 const dataTransferRef = reactive<any>({});
 

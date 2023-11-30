@@ -92,7 +92,7 @@
   import { Dropdown } from '@/components/Dropdown';
   import { BasicForm, useForm } from '@/components/Form';
   import { propTypes } from '@/utils/propTypes';
-  import { isFunction } from '@/utils/is';
+  import { isFunction } from '@/utils/core/ObjectUtil';
   import { grid, useSlider } from './data';
 
   const ListItem = List.Item;

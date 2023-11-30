@@ -72,8 +72,8 @@
   import { useDesign } from '@/hooks/web/useDesign';
   import { omit } from 'lodash-es';
   import { basicProps } from './props';
-  import { isFunction } from '@/utils/is';
-  import { warn } from '@/utils/log';
+  import { isFunction } from '@/utils/core/ObjectUtil';
+  import { warn } from '@/utils/log/LogUtil';
 
   defineOptions({ name: 'BasicTable' });
 

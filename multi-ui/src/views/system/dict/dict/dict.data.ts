@@ -12,7 +12,7 @@ import {
 } from '@/enums';
 import { listDictTypeApi } from '@/api/system/dict/dictType.api';
 import { DicCacheTypeEnum, DicCodeDictEnum, DicDataTypeEnum } from '@/enums/system/dict';
-import { isNotEmpty } from '@/utils/is';
+import { isNotEmpty } from '@/utils/core/ObjectUtil';
 import { DescItem } from '@/components/Description';
 import { listTenantApi } from '@/api/tenant/tenant/tenant.api';
 import { h } from 'vue';

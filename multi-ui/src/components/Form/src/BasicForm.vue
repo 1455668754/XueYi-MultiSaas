@@ -47,7 +47,7 @@
   import FormItem from './components/FormItem.vue';
   import FormAction from './components/FormAction.vue';
   import { dateItemType } from './helper';
-  import { dateUtil } from '@/utils/dateUtil';
+  import { dateUtil } from '@/utils/core/DateUtil';
   import { deepMerge } from '@/utils';
   import { useFormValues } from './hooks/useFormValues';
   import useAdvanced from './hooks/useAdvanced';
@@ -115,7 +115,7 @@
     };
   });
 
-  const getBindValue = computed(() => ({ ...attrs, ...props, ...unref(getProps) } as AntFormProps));
+  const getBindValue = computed(() => ({ ...attrs, ...props, ...unref(getProps) }) as AntFormProps);
 
   const getSchema = computed((): FormSchema[] => {
     const schemas: FormSchema[] = unref(schemaRef) || (unref(getProps).schemas as any);
@@ -286,7 +286,7 @@
   };
 
   const getFormActionBindProps = computed(
-    () => ({ ...getProps.value, ...advanceState } as InstanceType<typeof FormAction>['$props']),
+    () => ({ ...getProps.value, ...advanceState }) as InstanceType<typeof FormAction>['$props'],
   );
 
   defineExpose({

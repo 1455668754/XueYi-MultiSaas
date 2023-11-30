@@ -6,7 +6,7 @@ import type { WatchStopHandle } from 'vue';
 import { onUnmounted, ref, toRaw, unref, watch } from 'vue';
 import { getDynamicProps } from '@/utils';
 import { isProdMode } from '@/utils/env';
-import { error } from '@/utils/log';
+import { error } from '@/utils/log/LogUtil';
 import { Key } from 'ant-design-vue/lib/table/interface';
 
 type Props = Partial<DynamicProps<BasicTableProps>>;

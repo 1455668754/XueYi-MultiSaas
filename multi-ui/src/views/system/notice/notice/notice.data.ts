@@ -7,7 +7,7 @@ import { Tinymce } from '@/components/Tinymce';
 import { NoticeIM } from '@/model/system/notice';
 import { NoticeTypeEnum } from '@/enums/system/notice';
 import { dictConversion } from '@/utils/xueyi';
-import { isNotEmpty } from '@/utils/is';
+import { isNotEmpty } from '@/utils/core/ObjectUtil';
 
 /** 字典查询 */
 export const dictMap = await dicDictList(['sys_notice_type', 'sys_notice_status']);

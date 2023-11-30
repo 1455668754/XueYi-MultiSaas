@@ -66,11 +66,11 @@
   } from 'vue';
   import ImgUpload from './ImgUpload.vue';
   import { plugins as defaultPlugins, toolbar as defaultToolbar } from './tinymce';
-  import { buildShortUUID } from '@/utils/uuid';
+  import { buildShortUUID } from '@/utils/core/IdUtil';
   import { bindHandlers } from './helper';
   import { onMountedOrActivated } from '@xueyi/hooks';
   import { useDesign } from '@/hooks/web/useDesign';
-  import { isNumber } from '@/utils/is';
+  import { isNumber } from '@/utils/core/ObjectUtil';
   import { useLocale } from '@/locales/useLocale';
   import { useAppStore } from '@/store/modules/app';
 

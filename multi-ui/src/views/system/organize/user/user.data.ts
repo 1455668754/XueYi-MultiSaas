@@ -8,7 +8,7 @@ import { DefaultPassword, OrganizeTypeEnum, SexEnum } from '@/enums/system/organ
 import { organizeOptionApi } from '@/api/system/organize/organize.api';
 import { isEmpty, isEqual, pull } from 'lodash-es';
 import { dictConversion } from '@/utils/xueyi';
-import { isNotEmpty } from '@/utils/is';
+import { isNotEmpty } from '@/utils/core/ObjectUtil';
 import { listRoleApi } from '@/api/system/authority/role.api';
 
 /** 字典查询 */

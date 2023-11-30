@@ -1,6 +1,6 @@
 import { UserIM, UserLRM, UserPM, UserPPM } from '@/model/system/organize';
 import { defHttp } from '@/utils/http/axios';
-import { formatToDateTime } from '@/utils/dateUtil';
+import { formatToDateTime } from '@/utils/core/DateUtil';
 import dayjs from 'dayjs';
 
 const basicApi = '/system/admin/user';

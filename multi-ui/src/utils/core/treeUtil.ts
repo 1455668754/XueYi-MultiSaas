@@ -1,4 +1,4 @@
-import { isEmpty, isNotEmpty } from '@/utils/is';
+import { isEmpty, isNotEmpty } from '@/utils/core/ObjectUtil';
 
 /**
  *

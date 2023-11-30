@@ -13,7 +13,7 @@
   import { Col, Divider, Form } from 'ant-design-vue';
   import { componentMap } from '../componentMap';
   import { BasicHelp } from '@/components/Basic';
-  import { isBoolean, isFunction, isNull } from '@/utils/is';
+  import { isBoolean, isFunction, isNull } from '@/utils/core/ObjectUtil';
   import { getSlot } from '@/utils/helper/tsxHelper';
   import {
     createPlaceholderMessage,

@@ -1,5 +1,5 @@
 import contextMenuVue from './ContextMenu.vue';
-import { isClient } from '@/utils/is';
+import { isClient } from '@/utils/core/ObjectUtil';
 import { ContextMenuProps, CreateContextOptions } from './typing';
 import { createVNode, render } from 'vue';
 

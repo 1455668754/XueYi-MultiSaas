@@ -30,7 +30,7 @@
   import { listenerRouteChange } from '@/logics/mitt/routeChange';
   import { propTypes } from '@/utils/propTypes';
   import { REDIRECT_NAME } from '@/router/constant';
-  import { isFunction, isHttpUrl } from '@/utils/is';
+  import { isFunction, isHttpUrl } from '@/utils/core/ObjectUtil';
   import { openWindow } from '@/utils';
   import { useOpenKeys } from './useOpenKeys';
 

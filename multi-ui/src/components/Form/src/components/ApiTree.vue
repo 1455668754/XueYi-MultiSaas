@@ -10,7 +10,7 @@
   import { type AnyFunction, type Recordable } from '@xueyi/types';
   import { computed, onMounted, type PropType, ref, unref, useAttrs, watch } from 'vue';
   import { Tree, TreeProps } from 'ant-design-vue';
-  import { isArray, isFunction } from '@/utils/is';
+  import { isArray, isFunction } from '@/utils/core/ObjectUtil';
   import { get } from 'lodash-es';
   import { DataNode } from 'ant-design-vue/es/tree';
   import { useRuleFormItem } from '@/hooks/component/useFormItem';

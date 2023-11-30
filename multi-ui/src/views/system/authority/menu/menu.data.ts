@@ -20,7 +20,7 @@ import Icon from '@/components/Icon/Icon.vue';
 import { Tag } from 'ant-design-vue';
 import { useUserStore } from '@/store/modules/user';
 import { dictConversion } from '@/utils/xueyi';
-import { isNotEmpty } from '@/utils/is';
+import { isNotEmpty } from '@/utils/core/ObjectUtil';
 import { listTenantApi } from '@/api/tenant/tenant/tenant.api';
 
 /** 字典查询 */

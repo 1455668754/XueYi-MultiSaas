@@ -1,7 +1,7 @@
 import { DictLM } from '@/model/sys';
 import { h } from 'vue';
 import { Tag } from 'ant-design-vue';
-import { isArray } from './is';
+import { isArray } from './core/ObjectUtil';
 import { deepMerge } from '@/utils/index';
 import { cloneDeep, includes, isNil, merge } from 'lodash-es';
 

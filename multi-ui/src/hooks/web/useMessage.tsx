@@ -3,7 +3,7 @@ import { message as Message, Modal, notification } from 'ant-design-vue';
 import { CheckCircleFilled, CloseCircleFilled, InfoCircleFilled } from '@ant-design/icons-vue';
 import { ConfigProps, NotificationArgsProps } from 'ant-design-vue/lib/notification';
 import { useI18n } from './useI18n';
-import { isString } from '@/utils/is';
+import { isString } from '@/utils/core/ObjectUtil';
 
 export interface NotifyApi {
   info(config: NotificationArgsProps): void;

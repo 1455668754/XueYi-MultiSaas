@@ -12,7 +12,7 @@
 <script lang="ts" setup>
   import { computed } from 'vue';
   import CodeMirrorEditor from './codemirror/CodeMirror.vue';
-  import { isString } from '@/utils/is';
+  import { isString } from '@/utils/core/ObjectUtil';
   import { MODE } from './typing';
 
   const props = defineProps({

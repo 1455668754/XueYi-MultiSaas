@@ -13,7 +13,7 @@ import {
 import { ConfigIM } from '@/model/system/dict';
 import { dictConversion } from '@/utils/xueyi';
 import { DicCacheTypeEnum, DicCodeDictEnum, DicDataTypeEnum } from '@/enums/system/dict';
-import { isNotEmpty } from '@/utils/is';
+import { isNotEmpty } from '@/utils/core/ObjectUtil';
 import { listTenantApi } from '@/api/tenant/tenant/tenant.api';
 import { h } from 'vue';
 import { Tag } from 'ant-design-vue';

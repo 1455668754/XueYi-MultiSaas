@@ -15,7 +15,7 @@
 <script lang="ts" setup>
   import { computed, PropType, ref, unref, watch, watchEffect } from 'vue';
   import { Transfer } from 'ant-design-vue';
-  import { isFunction } from '@/utils/is';
+  import { isFunction } from '@/utils/core/ObjectUtil';
   import { get, omit } from 'lodash-es';
   import { propTypes } from '@/utils/propTypes';
   import { TransferDirection, TransferItem } from 'ant-design-vue/lib/transfer';
@@ -67,8 +67,8 @@
   });
   const getTargetKeys = computed<string[]>(() => {
     /* if (unref(_targetKeys).length > 0) {
-        return unref(_targetKeys);
-      } */
+      return unref(_targetKeys);
+    } */
     if (Array.isArray(props.value)) {
       return props.value;
     }

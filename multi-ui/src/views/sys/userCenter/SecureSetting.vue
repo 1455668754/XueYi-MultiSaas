@@ -33,7 +33,7 @@
   import { useUserStore } from '@/store/modules/user';
   import { useModal } from '@/components/Modal';
   import SecureSettingModal from './SecureSettingModal.vue';
-  import { isEmpty } from '@/utils/is';
+  import { isEmpty } from '@/utils/core/ObjectUtil';
 
   const ListItem = List.Item;
   const ListItemMeta = List.Item.Meta;

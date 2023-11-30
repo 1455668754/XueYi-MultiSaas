@@ -17,7 +17,7 @@
   import { computed, toRaw, unref } from 'vue';
   import { Table } from 'ant-design-vue';
   import { cloneDeep } from 'lodash-es';
-  import { isFunction } from '@/utils/is';
+  import { isFunction } from '@/utils/core/ObjectUtil';
   import type { BasicColumn } from '../types/table';
   import { INDEX_COLUMN_FLAG } from '../const';
   import { propTypes } from '@/utils/propTypes';

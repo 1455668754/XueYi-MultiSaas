@@ -2,12 +2,12 @@ import type { ComputedRef, Ref } from 'vue';
 import { nextTick, toRaw, unref } from 'vue';
 import type { FormActionType, FormProps, FormSchemaInner as FormSchema } from '../types/form';
 import type { NamePath } from 'ant-design-vue/lib/form/interface';
-import { isArray, isDef, isFunction, isNil, isObject, isString } from '/@/utils/is';
+import { isArray, isDef, isFunction, isNil, isObject, isString } from '/src/utils/core/ObjectUtil';
 import { deepMerge } from '@/utils';
 import { dateItemType, defaultValueComponents, handleInputNumberValue } from '../helper';
-import { dateUtil } from '@/utils/dateUtil';
+import { dateUtil } from '@/utils/core/DateUtil';
 import { cloneDeep, get, set, uniqBy } from 'lodash-es';
-import { error } from '@/utils/log';
+import { error } from '@/utils/log/LogUtil';
 
 interface UseFormActionContext {
   emit: EmitType;

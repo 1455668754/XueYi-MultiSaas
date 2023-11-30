@@ -8,7 +8,7 @@ import { SourceIM } from '@/model/tenant/source';
 import { DRIVER_CLASSNAME, URL_APPEND, URL_PREPEND } from '@/enums/tenant/source';
 import { h } from 'vue';
 import { Tag } from 'ant-design-vue';
-import { isNotEmpty } from '@/utils/is';
+import { isNotEmpty } from '@/utils/core/ObjectUtil';
 
 /** 字典查询 */
 export const dictMap = await dicDictList([DicCodeEnum.SYS_YES_NO, 'sys_normal_disable']);

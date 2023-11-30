@@ -20,7 +20,7 @@
   import { downloadByUrl } from '@/utils/file/download';
   import { createPreviewActionColumn, createPreviewColumns } from './data';
   import { useI18n } from '@/hooks/web/useI18n';
-  import { isArray } from '@/utils/is';
+  import { isArray } from '@/utils/core/ObjectUtil';
 
   const props = defineProps(previewProps);
 

@@ -1,4 +1,4 @@
-import { colorIsDark, darken, lighten } from '@/utils/color';
+import { colorIsDark, darken, lighten } from '@/utils/core/ColorUtil';
 import { useAppStore } from '@/store/modules/app';
 import { ThemeEnum } from '@/enums';
 import { setCssVar } from './util';

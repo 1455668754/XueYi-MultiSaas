@@ -62,9 +62,9 @@
   import { createActionColumn, createTableColumns } from './data';
   // utils
   import { checkImgType, getBase64WithFile } from '../helper';
-  import { buildUUID } from '@/utils/uuid';
-  import { isFunction } from '@/utils/is';
-  import { warn } from '@/utils/log';
+  import { buildUUID } from '@/utils/core/IdUtil';
+  import { isFunction } from '@/utils/core/ObjectUtil';
+  import { warn } from '@/utils/log/LogUtil';
   import FileList from './FileList.vue';
   import { useI18n } from '@/hooks/web/useI18n';
 

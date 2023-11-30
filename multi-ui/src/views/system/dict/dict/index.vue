@@ -16,7 +16,7 @@
   import TypeIndex from './TypeIndex.vue';
   import { computed, ref } from 'vue';
   import { DictTypeIM } from '@/model/system/dict';
-  import { isArray, isNotEmpty } from '@/utils/is';
+  import { isArray, isNotEmpty } from '@/utils/core/ObjectUtil';
   import { indexOf } from 'lodash-es';
 
   const typeRef = ref();

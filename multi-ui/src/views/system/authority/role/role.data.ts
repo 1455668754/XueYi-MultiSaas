@@ -6,7 +6,7 @@ import { ConfigCodeEnum, DicCodeEnum, DicSortEnum, DicStatusEnum, DicYesNoEnum }
 import { RoleIM } from '@/model/system/authority';
 import { dictConversion } from '@/utils/xueyi';
 import { DataScopeEnum, DicCodeRoleEnum } from '@/enums/system/authority';
-import { isEmpty } from '@/utils/is';
+import { isEmpty } from '@/utils/core/ObjectUtil';
 import { OrganizeIM, OrganizeLM } from '@/model/system/organize';
 import { OrganizeTypeEnum } from '@/enums/system/organize';
 

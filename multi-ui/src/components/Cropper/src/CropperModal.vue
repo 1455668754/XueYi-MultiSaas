@@ -120,7 +120,7 @@
   import { useDesign } from '@/hooks/web/useDesign';
   import { BasicModal, useModalInner } from '@/components/Modal';
   import { dataURLtoBlob } from '@/utils/file/base64Conver';
-  import { isFunction } from '@/utils/is';
+  import { isFunction } from '@/utils/core/ObjectUtil';
   import { useI18n } from '@/hooks/web/useI18n';
 
   type apiFunParams = { file: Blob; name: string; filename: string };
@@ -236,7 +236,9 @@
           transparent 75%,
           rgb(0 0 0 / 25%) 0
         );
-      background-position: 0 0, 12px 12px;
+      background-position:
+        0 0,
+        12px 12px;
       background-size: 24px 24px;
     }
 

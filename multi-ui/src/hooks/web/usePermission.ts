@@ -3,7 +3,7 @@ import { usePermissionStore } from '@/store/modules/permission';
 import { useTabs } from './useTabs';
 import { resetRouter, router } from '@/router';
 import { intersection } from 'lodash-es';
-import { isArray } from '@/utils/is';
+import { isArray } from '@/utils/core/ObjectUtil';
 import { useMultipleTabStore } from '@/store/modules/multipleTab';
 
 // User permissions related operations

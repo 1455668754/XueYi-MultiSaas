@@ -16,7 +16,7 @@
 <script lang="ts" setup>
   import { ref, unref } from 'vue';
   import * as XLSX from 'xlsx';
-  import { dateUtil } from '@/utils/dateUtil';
+  import { dateUtil } from '@/utils/core/DateUtil';
   import type { ExcelData } from './typing';
 
   defineOptions({ name: 'ImportExcel' });

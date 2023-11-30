@@ -24,7 +24,7 @@
   import { PropType, ref, unref, watch, watchEffect } from 'vue';
   import { Cascader, CascaderProps } from 'ant-design-vue';
   import { propTypes } from '@/utils/propTypes';
-  import { isFunction } from '@/utils/is';
+  import { isFunction } from '@/utils/core/ObjectUtil';
   import { get, omit } from 'lodash-es';
   import { useRuleFormItem } from '@/hooks/component/useFormItem';
   import { LoadingOutlined } from '@ant-design/icons-vue';

@@ -3,7 +3,7 @@ import type { ErrorLogInfo } from '/#/store';
 import { defineStore } from 'pinia';
 import { store } from '@/store';
 
-import { formatToDateTime } from '@/utils/dateUtil';
+import { formatToDateTime } from '@/utils/core/DateUtil';
 import projectSetting from '@/settings/projectSetting';
 
 import { ErrorTypeEnum } from '@/enums';

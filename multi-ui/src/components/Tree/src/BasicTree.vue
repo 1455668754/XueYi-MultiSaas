@@ -25,7 +25,7 @@
   import { TreeIcon } from './TreeIcon';
   import { ScrollContainer } from '@/components/Container';
   import { cloneDeep, difference, get, omit } from 'lodash-es';
-  import { isArray, isBoolean, isEmpty, isFunction } from '@/utils/is';
+  import { isArray, isBoolean, isEmpty, isFunction } from '@/utils/core/ObjectUtil';
   import { extendSlots, getSlot } from '@/utils/helper/tsxHelper';
   import { eachTree, filter, treeToList } from '@/utils/helper/treeHelper';
   import { useTree } from './hooks/useTree';

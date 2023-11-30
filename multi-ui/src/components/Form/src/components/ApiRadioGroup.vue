@@ -22,7 +22,7 @@
 <script lang="ts" setup>
   import { computed, type PropType, ref, unref, watch, watchEffect } from 'vue';
   import { Radio } from 'ant-design-vue';
-  import { isFunction } from '@/utils/is';
+  import { isFunction } from '@/utils/core/ObjectUtil';
   import { useRuleFormItem } from '@/hooks/component/useFormItem';
   import { useAttrs } from '@xueyi/hooks';
   import { propTypes } from '@/utils/propTypes';

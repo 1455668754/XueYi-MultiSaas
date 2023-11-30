@@ -15,7 +15,7 @@
   import { get } from 'lodash-es';
   import { Descriptions } from 'ant-design-vue';
   import { useDesign } from '@/hooks/web/useDesign';
-  import { isFunction } from '@/utils/is';
+  import { isFunction } from '@/utils/core/ObjectUtil';
   import { getSlot } from '@/utils/helper/tsxHelper';
   import { useAttrs } from '@xueyi/hooks';
 

@@ -13,7 +13,7 @@ import { ModuleIM } from '@/model/system/authority';
 import { useUserStore } from '@/store/modules/user';
 import { FrameTypeEnum } from '@/enums/system/authority';
 import { dictConversion } from '@/utils/xueyi';
-import { isNotEmpty } from '@/utils/is';
+import { isNotEmpty } from '@/utils/core/ObjectUtil';
 import { listTenantApi } from '@/api/tenant/tenant/tenant.api';
 import { h } from 'vue';
 import { Tag } from 'ant-design-vue';

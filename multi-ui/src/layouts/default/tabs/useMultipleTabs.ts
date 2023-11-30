@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router';
 import { useDesign } from '@/hooks/web/useDesign';
 import { useSortable } from '@/hooks/web/useSortable';
 import { useMultipleTabStore } from '@/store/modules/multipleTab';
-import { isNil } from '@/utils/is';
+import { isNil } from '@/utils/core/ObjectUtil';
 import projectSetting from '@/settings/projectSetting';
 import { useI18n } from '/@/hooks/web/useI18n';
 

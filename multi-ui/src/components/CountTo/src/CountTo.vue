@@ -7,7 +7,7 @@
 <script lang="ts" setup>
   import { computed, onMounted, ref, unref, watch, watchEffect } from 'vue';
   import { TransitionPresets, useTransition } from '@vueuse/core';
-  import { isNumber } from '@/utils/is';
+  import { isNumber } from '@/utils/core/ObjectUtil';
 
   defineOptions({ name: 'CountTo' });
 

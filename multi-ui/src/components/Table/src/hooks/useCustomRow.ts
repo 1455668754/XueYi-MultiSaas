@@ -2,7 +2,7 @@ import type { ComputedRef } from 'vue';
 import { unref } from 'vue';
 import type { BasicTableProps } from '../types/table';
 import { ROW_KEY } from '../const';
-import { isFunction, isString } from '@/utils/is';
+import { isFunction, isString } from '@/utils/core/ObjectUtil';
 import type { Key } from 'ant-design-vue/lib/table/interface';
 
 interface Options {

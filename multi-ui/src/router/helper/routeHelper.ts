@@ -4,7 +4,7 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 
 import { EXCEPTION_COMPONENT, getParentLayout, LAYOUT } from '@/router/constant';
 import { cloneDeep, omit } from 'lodash-es';
-import { warn } from '@/utils/log';
+import { warn } from '@/utils/log/LogUtil';
 
 export type LayoutMapKey = 'LAYOUT';
 const IFRAME = () => import('@/views/sys/iframe/FrameBlank.vue');

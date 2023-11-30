@@ -114,7 +114,7 @@
   import { useTableContext } from '../../hooks/useTableContext';
   import { useDesign } from '@/hooks/web/useDesign';
   // import { useSortable } from '@/hooks/web/useSortable';
-  import { isFunction, isNil } from '@/utils/is';
+  import { isFunction, isNil } from '@/utils/core/ObjectUtil';
   import { getPopupContainer as getParentContainer } from '@/utils';
   import { cloneDeep, omit } from 'lodash-es';
   import type Sortable from 'sortablejs';

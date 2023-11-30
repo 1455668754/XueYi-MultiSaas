@@ -6,8 +6,8 @@
   import { ref, watch } from 'vue';
   import { useI18n } from '@/hooks/web/useI18n';
   import { useIntervalFn } from '@vueuse/core';
-  import { dateUtil, formatToDate, formatToDateTime } from '@/utils/dateUtil';
-  import { isNumber, isObject, isString } from '@/utils/is';
+  import { dateUtil, formatToDate, formatToDateTime } from '@/utils/core/DateUtil';
+  import { isNumber, isObject, isString } from '@/utils/core/ObjectUtil';
   import { propTypes } from '@/utils/propTypes';
 
   defineOptions({ name: 'Time' });

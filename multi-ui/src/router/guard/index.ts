@@ -4,7 +4,7 @@ import { useUserStoreWithOut } from '@/store/modules/user';
 import { useTransitionSetting } from '@/hooks/setting/useTransitionSetting';
 import { AxiosCanceler } from '@/utils/http/axios/axiosCancel';
 import { Modal, notification } from 'ant-design-vue';
-import { warn } from '@/utils/log';
+import { warn } from '@/utils/log/LogUtil';
 import { unref } from 'vue';
 import { setRouteChange } from '@/logics/mitt/routeChange';
 import { createPermissionGuard } from './permissionGuard';

@@ -10,7 +10,7 @@ import type { RequestOptions, Result, UploadFileParams } from '/#/axios';
 import type { CreateAxiosOptions } from './axiosTransform';
 import qs from 'qs';
 import { AxiosCanceler } from './axiosCancel';
-import { isFunction } from '@/utils/is';
+import { isFunction } from '@/utils/core/ObjectUtil';
 import { cloneDeep } from 'lodash-es';
 import { ContentTypeEnum, RequestEnum } from '@/enums';
 import { downloadByData } from '@/utils/file/download';

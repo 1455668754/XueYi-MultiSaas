@@ -19,7 +19,7 @@
   import { computed, CSSProperties, nextTick, onMounted, ref, unref, watch } from 'vue';
   import SvgIcon from './src/SvgIcon.vue';
   import Iconify from '@purge-icons/generated';
-  import { isString } from '@/utils/is';
+  import { isString } from '@/utils/core/ObjectUtil';
   import { propTypes } from '@/utils/propTypes';
 
   const SVG_END_WITH_FLAG = '|svg';

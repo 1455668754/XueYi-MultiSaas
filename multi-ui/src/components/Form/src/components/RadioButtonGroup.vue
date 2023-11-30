@@ -14,7 +14,7 @@
 <script lang="ts" setup>
   import { computed, PropType, ref } from 'vue';
   import { Radio } from 'ant-design-vue';
-  import { isString } from '@/utils/is';
+  import { isString } from '@/utils/core/ObjectUtil';
   import { useRuleFormItem } from '@/hooks/component/useFormItem';
   import { useAttrs } from '@xueyi/hooks';
 

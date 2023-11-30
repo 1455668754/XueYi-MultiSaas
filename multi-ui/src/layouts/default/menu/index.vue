@@ -14,7 +14,7 @@
   import { useSplitMenu } from './useLayoutMenu';
   import { openWindow } from '@/utils';
   import { propTypes } from '@/utils/propTypes';
-  import { isHttpUrl } from '@/utils/is';
+  import { isHttpUrl } from '@/utils/core/ObjectUtil';
   import { useRootSetting } from '@/hooks/setting/useRootSetting';
   import { useAppInject } from '@/hooks/web/useAppInject';
   import { useDesign } from '@/hooks/web/useDesign';
