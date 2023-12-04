@@ -24,7 +24,7 @@ public class LocalDateTimeUtil extends cn.hutool.core.date.LocalDateTimeUtil {
                     time = time.replaceAll(regex, replacement);
                     date = LocalDateTimeUtil.parseDate(time, "yyyy-MM-dd");
                 }
-                if (ObjectUtil.isNull(date)) {
+                if (ObjectUtil.isNotNull(date)) {
                     return date;
                 }
                 regex = ".*(\\d{4}/\\d{2}/\\d{2}).*";
@@ -32,7 +32,7 @@ public class LocalDateTimeUtil extends cn.hutool.core.date.LocalDateTimeUtil {
                     time = time.replaceAll(regex, replacement);
                     date = LocalDateTimeUtil.parseDate(time, "yyyy/MM/dd");
                 }
-                if (ObjectUtil.isNull(date)) {
+                if (ObjectUtil.isNotNull(date)) {
                     return date;
                 }
                 regex = ".*(\\d{4}年\\d{2}月\\d{2}日).*";
@@ -40,7 +40,7 @@ public class LocalDateTimeUtil extends cn.hutool.core.date.LocalDateTimeUtil {
                     time = time.replaceAll(regex, replacement);
                     date = LocalDateTimeUtil.parseDate(time, "yyyy年MM月dd日");
                 }
-                if (ObjectUtil.isNull(date)) {
+                if (ObjectUtil.isNotNull(date)) {
                     return date;
                 }
                 regex = ".*(\\d{4}年\\d月\\d{2}日).*";
@@ -48,7 +48,7 @@ public class LocalDateTimeUtil extends cn.hutool.core.date.LocalDateTimeUtil {
                     time = time.replaceAll(regex, replacement);
                     date = LocalDateTimeUtil.parseDate(time, "yyyy年M月dd日");
                 }
-                if (ObjectUtil.isNull(date)) {
+                if (ObjectUtil.isNotNull(date)) {
                     return date;
                 }
                 regex = ".*(\\d{4}年\\d{2}月\\d日).*";
@@ -56,7 +56,7 @@ public class LocalDateTimeUtil extends cn.hutool.core.date.LocalDateTimeUtil {
                     time = time.replaceAll(regex, replacement);
                     date = LocalDateTimeUtil.parseDate(time, "yyyy年MM月d日");
                 }
-                if (ObjectUtil.isNull(date)) {
+                if (ObjectUtil.isNotNull(date)) {
                     return date;
                 }
                 regex = ".*(\\d{4}年\\d月\\d日).*";
