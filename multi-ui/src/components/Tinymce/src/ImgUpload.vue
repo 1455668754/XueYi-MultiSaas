@@ -4,7 +4,7 @@
       name="file"
       multiple
       @change="handleChange"
-      :action="uploadUrl"
+      :customRequest="customRequest"
       :showUploadList="false"
       accept=".jpg,.jpeg,.gif,.png,.webp"
     >
@@ -19,8 +19,10 @@
   import { computed } from 'vue';
   import { Upload } from 'ant-design-vue';
   import { useDesign } from '@/hooks/web/useDesign';
-  import { useGlobSetting } from '@/hooks/setting';
   import { useI18n } from '@/hooks/web/useI18n';
+  import { fileUploadApi } from '@/api/sys/upload.api';
+  import { AxiosProgressEvent } from 'axios';
+  import { UploadRequestOption } from 'ant-design-vue/lib/vc-upload/interface';
 
   defineOptions({ name: 'TinymceImageUpload' });
 
@@ -38,7 +40,6 @@
 
   let uploading = false;
 
-  const { uploadUrl } = useGlobSetting();
   const { t } = useI18n();
   const { prefixCls } = useDesign('tinymce-img-upload');
 
@@ -66,6 +67,25 @@
     } else if (status === 'error') {
       emit('error');
       uploading = false;
+    }
+  }
+
+  async function customRequest(option: UploadRequestOption) {
+    const { file, onSuccess, onError } = option;
+    const newFile = file as unknown as any;
+    try {
+      await fileUploadApi(
+        {
+          file: newFile,
+        },
+        function onUploadProgress(progressEvent: AxiosProgressEvent) {
+          newFile.percent = ((progressEvent.loaded / (progressEvent?.total || 1)) * 100) | 0;
+        },
+      ).then((res) => {
+        onSuccess?.(res?.data);
+      });
+    } catch (e) {
+      onError?.(e);
     }
   }
 </script>
