@@ -16,7 +16,6 @@ export interface TableCurrentDataSource<T = Recordable> {
   currentDataSource: T[];
 }
 
-// @ts-ignore
 export interface TableRowSelection<T = any> extends ITableRowSelection {
   /**
    * Callback executed when selected rows change
@@ -92,8 +91,9 @@ export interface TableActionType {
   getSelectRows: <T = Recordable>() => T[];
   clearSelectedRowKeys: () => void;
   expandAll: () => void;
-  expandRows: (keys: (string | number)[]) => void;
   collapseAll: () => void;
+  expandRows: (keys: (string | number)[]) => void;
+  collapseRows: (keys: (string | number)[]) => void;
   scrollTo: (pos: string) => void; // pos: id | "top" | "bottom"
   getSelectRowKeys: () => Key[];
   deleteSelectRowByKey: (key: string) => void;
