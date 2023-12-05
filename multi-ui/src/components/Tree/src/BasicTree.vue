@@ -109,12 +109,12 @@
         return omit(propsData, 'treeData', 'class') as TreeProps;
       });
 
-      const getTreeData = computed((): TreeItem[] =>
+      const getTreeSearchData = computed((): TreeItem[] =>
         searchState.startSearch ? searchState.searchData : unref(treeDataRef),
       );
 
       const getNotFound = computed((): boolean => {
-        return !getTreeData.value || getTreeData.value.length === 0;
+        return !getTreeSearchData.value || getTreeSearchData.value.length === 0;
       });
 
       const {
@@ -155,6 +155,10 @@
         if (!contextMenuOptions.items?.length) return;
         contextMenuOptions.items = contextMenuOptions.items.filter((item) => !item.hidden);
         createContextMenu(contextMenuOptions);
+      }
+
+      function getTreeData() {
+        return unref(treeDataRef);
       }
 
       function setExpandedKeys(keys: KeyType[]) {
@@ -320,7 +324,7 @@
       });
 
       const instance: TreeActionType = {
-        getTreeData: () => treeDataRef,
+        getTreeData,
         setExpandedKeys,
         getExpandedKeys,
         setSelectedKeys,
@@ -367,7 +371,7 @@
       }
 
       const treeData = computed(() => {
-        const data = cloneDeep(getTreeData.value);
+        const data = cloneDeep(getTreeSearchData.value);
         eachTree(data, (item, _parent) => {
           const searchText = searchState.searchText;
           const { highlight } = unref(props);
