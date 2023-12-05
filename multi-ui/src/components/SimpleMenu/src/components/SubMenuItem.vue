@@ -76,7 +76,7 @@
   import { CollapseTransition } from '@/components/Transition';
   import Icon from '@/components/Icon/Icon.vue';
   import { Popover } from 'ant-design-vue';
-  import { isBoolean, isObject } from '/src/utils/core/ObjectUtil';
+  import { isBoolean, isObject } from '@/utils/core/ObjectUtil';
   import { mitt } from '@/utils/mitt';
 
   defineOptions({ name: 'SubMenu' });

@@ -1,5 +1,5 @@
 import { cacheCipher } from '@/settings/encryptionSetting';
-import { isNil } from '/src/utils/core/ObjectUtil';
+import { isNil } from '@/utils/core/ObjectUtil';
 import { Encryption, EncryptionFactory, EncryptionParams } from '@/utils/cipher';
 
 export interface CreateStorageParams extends EncryptionParams {

@@ -46,7 +46,7 @@
   import { Form, type FormProps as AntFormProps, Row } from 'ant-design-vue';
   import FormItem from './components/FormItem.vue';
   import FormAction from './components/FormAction.vue';
-  import { dateItemType } from './helper';
+  import { dateItemType, isIncludeSimpleComponents } from './helper';
   import { dateUtil } from '@/utils/core/DateUtil';
   import { deepMerge } from '@/utils';
   import { useFormValues } from './hooks/useFormValues';
@@ -159,7 +159,9 @@
       }
     }
     if (unref(getProps).showAdvancedButton) {
-      return cloneDeep(schemas.filter((schema) => schema.component !== 'Divider') as FormSchema[]);
+      return cloneDeep(
+        schemas.filter((schema) => !isIncludeSimpleComponents(schema.component)) as FormSchema[],
+      );
     } else {
       return cloneDeep(schemas as FormSchema[]);
     }

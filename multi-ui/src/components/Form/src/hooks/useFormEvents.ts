@@ -2,9 +2,14 @@ import type { ComputedRef, Ref } from 'vue';
 import { nextTick, toRaw, unref } from 'vue';
 import type { FormActionType, FormProps, FormSchemaInner as FormSchema } from '../types/form';
 import type { NamePath } from 'ant-design-vue/lib/form/interface';
-import { isArray, isDef, isFunction, isNil, isObject, isString } from '/src/utils/core/ObjectUtil';
+import { isArray, isDef, isFunction, isNil, isObject, isString } from '@/utils/core/ObjectUtil';
 import { deepMerge } from '@/utils';
-import { dateItemType, defaultValueComponents, handleInputNumberValue } from '../helper';
+import {
+  dateItemType,
+  defaultValueComponents,
+  handleInputNumberValue,
+  isIncludeSimpleComponents,
+} from '../helper';
 import { dateUtil } from '@/utils/core/DateUtil';
 import { cloneDeep, get, set, uniqBy } from 'lodash-es';
 import { error } from '@/utils/log/LogUtil';
@@ -247,7 +252,8 @@ export function useFormEvents({
     }
 
     const hasField = updateData.every(
-      (item) => item.component === 'Divider' || (Reflect.has(item, 'field') && item.field),
+      (item) =>
+        isIncludeSimpleComponents(item.component) || (Reflect.has(item, 'field') && item.field),
     );
 
     if (!hasField) {
@@ -269,7 +275,8 @@ export function useFormEvents({
     }
 
     const hasField = updateData.every(
-      (item) => item.component === 'Divider' || (Reflect.has(item, 'field') && item.field),
+      (item) =>
+        isIncludeSimpleComponents(item.component) || (Reflect.has(item, 'field') && item.field),
     );
 
     if (!hasField) {
@@ -311,7 +318,7 @@ export function useFormEvents({
     const currentFieldsValue = getFieldsValue();
     schemas.forEach((item) => {
       if (
-        item.component != 'Divider' &&
+        !isIncludeSimpleComponents(item.component) &&
         Reflect.has(item, 'field') &&
         item.field &&
         !isNil(item.defaultValue) &&
@@ -389,39 +396,6 @@ export function useFormEvents({
     }
   }
 
-  function getDefaultValue(
-    schema: FormSchema | undefined,
-    defaultValueRef: UseFormActionContext['defaultValueRef'],
-    key: string,
-  ) {
-    let defaultValue = cloneDeep(defaultValueRef.value[key]);
-    const isInput = checkIsInput(schema);
-    if (isInput) {
-      return defaultValue || '';
-    }
-    if (!defaultValue && schema && checkIsRangeSlider(schema)) {
-      defaultValue = [0, 0];
-    }
-    if (!defaultValue && schema && schema.component === 'ApiTree') {
-      defaultValue = [];
-    }
-    return defaultValue;
-  }
-
-  function checkIsRangeSlider(schema: FormSchema) {
-    if (
-      schema.component === 'Slider' &&
-      schema.componentProps &&
-      'range' in schema.componentProps
-    ) {
-      return true;
-    }
-  }
-
-  function checkIsInput(schema?: FormSchema) {
-    return schema?.component && defaultValueComponents.includes(schema.component);
-  }
-
   const formActionType: Partial<FormActionType> = {
     getFieldsValue,
     setFieldsValue,
@@ -452,4 +426,33 @@ export function useFormEvents({
     setFieldsValue,
     scrollToField,
   };
+}
+
+function getDefaultValue(
+  schema: FormSchema | undefined,
+  defaultValueRef: UseFormActionContext['defaultValueRef'],
+  key: string,
+) {
+  let defaultValue = cloneDeep(defaultValueRef.value[key]);
+  const isInput = checkIsInput(schema);
+  if (isInput) {
+    return defaultValue || '';
+  }
+  if (!defaultValue && schema && checkIsRangeSlider(schema)) {
+    defaultValue = [0, 0];
+  }
+  if (!defaultValue && schema && schema.component === 'ApiTree') {
+    defaultValue = [];
+  }
+  return defaultValue;
+}
+
+function checkIsRangeSlider(schema: FormSchema) {
+  if (schema.component === 'Slider' && schema.componentProps && 'range' in schema.componentProps) {
+    return true;
+  }
+}
+
+function checkIsInput(schema?: FormSchema) {
+  return schema?.component && defaultValueComponents.includes(schema.component);
 }
