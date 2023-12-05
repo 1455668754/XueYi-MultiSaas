@@ -1,6 +1,6 @@
 package com.xueyi.common.core.web.model;
 
-import com.xueyi.common.core.constant.system.AuthorityConstants;
+import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.core.xss.Xss;
@@ -62,6 +62,6 @@ public class SysEnterprise extends BaseEntity {
     }
 
     public static boolean isLessor(String isLessor) {
-        return StrUtil.equals(AuthorityConstants.TenantType.ADMIN.getCode(), isLessor);
+        return StrUtil.equals(SecurityConstants.TenantType.ADMIN.getCode(), isLessor);
     }
 }

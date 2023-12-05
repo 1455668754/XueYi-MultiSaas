@@ -1,4 +1,4 @@
-package com.xueyi.common.core.constant.system;
+package com.xueyi.system.notice.constant;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

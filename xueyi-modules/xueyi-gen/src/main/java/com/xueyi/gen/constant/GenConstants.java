@@ -1,4 +1,4 @@
-package com.xueyi.common.core.constant.gen;
+package com.xueyi.gen.constant;
 
 import com.xueyi.common.core.utils.core.EnumUtil;
 import lombok.AllArgsConstructor;

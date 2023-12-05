@@ -1,7 +1,7 @@
 package com.xueyi.system.api.authority.domain.dto;
 
-import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.core.utils.core.StrUtil;
+import com.xueyi.system.api.authority.constant.AuthorityConstants;
 import com.xueyi.system.api.authority.domain.po.SysMenuPo;
 import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
 import lombok.Data;

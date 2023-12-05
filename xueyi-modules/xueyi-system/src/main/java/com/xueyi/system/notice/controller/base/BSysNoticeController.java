@@ -2,8 +2,8 @@ package com.xueyi.system.notice.controller.base;
 
 
 import com.xueyi.common.core.constant.basic.BaseConstants;
-import com.xueyi.common.core.constant.system.NoticeConstants;
 import com.xueyi.common.web.entity.controller.BaseController;
+import com.xueyi.system.notice.constant.NoticeConstants;
 import com.xueyi.system.notice.domain.dto.SysNoticeDto;
 import com.xueyi.system.notice.domain.query.SysNoticeQuery;
 import com.xueyi.system.notice.service.ISysNoticeService;

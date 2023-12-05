@@ -2,12 +2,12 @@ package com.xueyi.job.controller.base;
 
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.constant.basic.HttpConstants;
-import com.xueyi.common.core.constant.job.ScheduleConstants;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.job.api.domain.dto.SysJobDto;
 import com.xueyi.job.api.domain.query.SysJobQuery;
 import com.xueyi.job.api.utils.CronUtils;
+import com.xueyi.job.constant.ScheduleConstants;
 import com.xueyi.job.service.ISysJobService;
 import com.xueyi.job.util.ScheduleUtil;
 

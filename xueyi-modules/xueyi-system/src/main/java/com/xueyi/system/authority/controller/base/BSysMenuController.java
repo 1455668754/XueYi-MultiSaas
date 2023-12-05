@@ -1,11 +1,11 @@
 package com.xueyi.system.authority.controller.base;
 
 import com.xueyi.common.core.constant.basic.BaseConstants;
-import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.core.context.SecurityContextHolder;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.security.utils.SecurityUserUtils;
 import com.xueyi.common.web.entity.controller.TreeController;
+import com.xueyi.system.api.authority.constant.AuthorityConstants;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.authority.domain.query.SysMenuQuery;
 import com.xueyi.system.authority.service.ISysMenuService;

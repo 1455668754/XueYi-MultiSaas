@@ -1,7 +1,7 @@
 package com.xueyi.system.organize.domain.vo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.xueyi.common.core.constant.system.OrganizeConstants;
+import com.xueyi.system.api.organize.constant.OrganizeConstants;
 import com.xueyi.system.api.organize.domain.dto.SysDeptDto;
 import com.xueyi.system.api.organize.domain.dto.SysPostDto;
 import lombok.Data;

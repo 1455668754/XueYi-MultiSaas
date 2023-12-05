@@ -6,8 +6,6 @@ import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.constant.basic.HttpConstants;
 import com.xueyi.common.core.constant.basic.TenantConstants;
-import com.xueyi.common.core.constant.gen.GenConstants.OptionField;
-import com.xueyi.common.core.constant.gen.GenConstants.TemplateType;
 import com.xueyi.common.core.context.SecurityContextHolder;
 import com.xueyi.common.core.utils.core.ArrayUtil;
 import com.xueyi.common.core.utils.core.CharsetUtil;
@@ -18,6 +16,8 @@ import com.xueyi.common.core.web.result.R;
 import com.xueyi.common.web.correlate.contant.CorrelateConstants;
 import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.gen.config.GenConfig;
+import com.xueyi.gen.constant.GenConstants.OptionField;
+import com.xueyi.gen.constant.GenConstants.TemplateType;
 import com.xueyi.gen.domain.correlate.GenTableCorrelate;
 import com.xueyi.gen.domain.dto.GenTableColumnDto;
 import com.xueyi.gen.domain.dto.GenTableDto;
@@ -50,7 +50,7 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import static com.xueyi.common.core.constant.system.AuthorityConstants.MENU_TOP_NODE;
+import static com.xueyi.system.api.authority.constant.AuthorityConstants.MENU_TOP_NODE;
 
 /**
  * 业务管理 业务层处理

@@ -1,6 +1,6 @@
 package com.xueyi.system.api.organize.domain.dto;
 
-import com.xueyi.common.core.constant.system.AuthorityConstants;
+import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.validate.V_A_E;
 import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
@@ -50,7 +50,7 @@ public class SysUserDto extends SysUserPo {
     }
 
     public static boolean isAdmin(String userType) {
-        return StrUtil.equals(AuthorityConstants.UserType.ADMIN.getCode(), userType);
+        return StrUtil.equals(SecurityConstants.UserType.ADMIN.getCode(), userType);
     }
 
 }

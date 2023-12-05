@@ -1,7 +1,7 @@
 package com.xueyi.system.authority.service.impl;
 
 import com.xueyi.common.core.constant.basic.BaseConstants;
-import com.xueyi.common.core.constant.system.AuthorityConstants;
+import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.utils.TreeUtil;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
@@ -17,13 +17,21 @@ import com.xueyi.system.api.organize.domain.query.SysEnterpriseQuery;
 import com.xueyi.system.authority.service.ISysLoginService;
 import com.xueyi.system.authority.service.ISysMenuService;
 import com.xueyi.system.authority.service.ISysModuleService;
-import com.xueyi.system.organize.service.*;
+import com.xueyi.system.organize.service.ISysDeptService;
+import com.xueyi.system.organize.service.ISysEnterpriseService;
+import com.xueyi.system.organize.service.ISysOrganizeService;
+import com.xueyi.system.organize.service.ISysPostService;
+import com.xueyi.system.organize.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -181,13 +189,13 @@ public class SysLoginServiceImpl implements ISysLoginService {
     DataScope scope = new DataScope();
     // 1.判断是否为超管用户
     if (user.isAdmin()) {
-      scope.setDataScope(AuthorityConstants.DataScope.ALL.getCode());
+      scope.setDataScope(SecurityConstants.DataScope.ALL.getCode());
       return scope;
     }
     // 2.判断有无全部数据权限角色
     for (SysRoleDto role : roleList) {
-      if (StrUtil.equals(role.getDataScope(), AuthorityConstants.DataScope.ALL.getCode())) {
-        scope.setDataScope(AuthorityConstants.DataScope.ALL.getCode());
+      if (StrUtil.equals(role.getDataScope(), SecurityConstants.DataScope.ALL.getCode())) {
+        scope.setDataScope(SecurityConstants.DataScope.ALL.getCode());
         return scope;
       }
     }
@@ -198,7 +206,7 @@ public class SysLoginServiceImpl implements ISysLoginService {
         customRoleId = new HashSet<>();
     int isCustom = 0, isDept = 0, isDeptAndChild = 0, isPost = 0, isSelf = 0;
     for (SysRoleDto role : roleList) {
-      switch (AuthorityConstants.DataScope.getByCode(role.getDataScope())) {
+      switch (SecurityConstants.DataScope.getByCode(role.getDataScope())) {
         case CUSTOM -> {
           isCustom++;
           customRoleId.add(role.getId());
@@ -246,22 +254,22 @@ public class SysLoginServiceImpl implements ISysLoginService {
     userScope.addAll(organizeService.selectUserSetByPostIds(postScope));
     scope.setUserScope(userScope);
     if (isCustom > 0) {
-      scope.setDataScope(AuthorityConstants.DataScope.CUSTOM.getCode());
+      scope.setDataScope(SecurityConstants.DataScope.CUSTOM.getCode());
       return scope;
     } else if (isDeptAndChild > 0) {
-      scope.setDataScope(AuthorityConstants.DataScope.DEPT_AND_CHILD.getCode());
+      scope.setDataScope(SecurityConstants.DataScope.DEPT_AND_CHILD.getCode());
       return scope;
     } else if (isDept > 0) {
-      scope.setDataScope(AuthorityConstants.DataScope.DEPT.getCode());
+      scope.setDataScope(SecurityConstants.DataScope.DEPT.getCode());
       return scope;
     } else if (isPost > 0) {
-      scope.setDataScope(AuthorityConstants.DataScope.POST.getCode());
+      scope.setDataScope(SecurityConstants.DataScope.POST.getCode());
       return scope;
     } else if (isSelf > 0) {
-      scope.setDataScope(AuthorityConstants.DataScope.SELF.getCode());
+      scope.setDataScope(SecurityConstants.DataScope.SELF.getCode());
       return scope;
     }
-    scope.setDataScope(AuthorityConstants.DataScope.NONE.getCode());
+    scope.setDataScope(SecurityConstants.DataScope.NONE.getCode());
     return scope;
   }
 

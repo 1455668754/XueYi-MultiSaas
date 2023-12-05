@@ -2,7 +2,6 @@ package com.xueyi.common.security.utils;
 
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.constant.basic.TokenConstants;
-import com.xueyi.common.core.constant.system.AuthorityConstants;
 import com.xueyi.common.core.context.SecurityContextHolder;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.SpringUtil;
@@ -242,7 +241,7 @@ public class SecurityUtils {
      * 是否为超管租户
      */
     public static boolean isAdminTenant() {
-        return StrUtil.equals(AuthorityConstants.TenantType.ADMIN.getCode(), getIsLessor());
+        return StrUtil.equals(SecurityConstants.TenantType.ADMIN.getCode(), getIsLessor());
     }
 
     /**
@@ -256,7 +255,7 @@ public class SecurityUtils {
      * 是否为超管用户
      */
     public static boolean isAdminUser() {
-        return StrUtil.equals(AuthorityConstants.UserType.ADMIN.getCode(), getUserType());
+        return StrUtil.equals(SecurityConstants.UserType.ADMIN.getCode(), getUserType());
     }
 
     /**

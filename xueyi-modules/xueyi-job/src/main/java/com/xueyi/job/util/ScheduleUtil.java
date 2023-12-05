@@ -1,6 +1,5 @@
 package com.xueyi.job.util;
 
-import com.xueyi.common.core.constant.job.ScheduleConstants;
 import com.xueyi.common.core.exception.job.TaskException;
 import com.xueyi.common.core.exception.job.TaskException.Code;
 import com.xueyi.common.core.utils.core.NumberUtil;
@@ -9,6 +8,7 @@ import com.xueyi.common.core.utils.core.SpringUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.job.api.domain.dto.SysJobDto;
 import com.xueyi.job.api.utils.CronUtils;
+import com.xueyi.job.constant.ScheduleConstants;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.CronTrigger;
 import org.quartz.Job;

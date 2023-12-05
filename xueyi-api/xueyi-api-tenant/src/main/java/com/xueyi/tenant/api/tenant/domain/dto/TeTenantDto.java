@@ -1,6 +1,6 @@
 package com.xueyi.tenant.api.tenant.domain.dto;
 
-import com.xueyi.common.core.constant.system.AuthorityConstants;
+import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.tenant.api.source.domain.dto.TeStrategyDto;
 import com.xueyi.tenant.api.tenant.domain.po.TeTenantPo;
@@ -39,7 +39,7 @@ public class TeTenantDto extends TeTenantPo {
 
     /** 校验是否为租管租户 */
     public static boolean isAdmin(String isLessor) {
-        return StrUtil.equals(AuthorityConstants.TenantType.ADMIN.getCode(), isLessor);
+        return StrUtil.equals(SecurityConstants.TenantType.ADMIN.getCode(), isLessor);
     }
 
 }

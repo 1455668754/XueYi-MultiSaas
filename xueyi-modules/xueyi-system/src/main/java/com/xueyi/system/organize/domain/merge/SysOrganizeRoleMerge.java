@@ -1,8 +1,8 @@
 package com.xueyi.system.organize.domain.merge;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.xueyi.common.core.constant.system.OrganizeConstants;
 import com.xueyi.common.core.web.tenant.base.TBasisEntity;
+import com.xueyi.system.api.organize.constant.OrganizeConstants;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;

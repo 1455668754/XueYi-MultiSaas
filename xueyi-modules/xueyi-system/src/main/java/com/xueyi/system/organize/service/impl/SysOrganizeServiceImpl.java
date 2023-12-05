@@ -1,9 +1,9 @@
 package com.xueyi.system.organize.service.impl;
 
-import com.xueyi.common.core.constant.system.OrganizeConstants;
 import com.xueyi.common.core.utils.TreeUtil;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
+import com.xueyi.system.api.organize.constant.OrganizeConstants;
 import com.xueyi.system.organize.domain.vo.SysOrganizeTree;
 import com.xueyi.system.organize.manager.ISysOrganizeManager;
 import com.xueyi.system.organize.service.ISysOrganizeService;

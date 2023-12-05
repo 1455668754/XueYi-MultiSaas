@@ -1,6 +1,6 @@
 package com.xueyi.system.api.model;
 
-import com.xueyi.common.core.constant.system.AuthorityConstants;
+import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.utils.core.StrUtil;
 import lombok.Data;
 
@@ -62,10 +62,10 @@ public class DataScope implements Serializable {
     private Set<Long> userScope;
 
     public boolean isLessor() {
-        return StrUtil.equals(AuthorityConstants.TenantType.ADMIN.getCode(), isLessor);
+        return StrUtil.equals(SecurityConstants.TenantType.ADMIN.getCode(), isLessor);
     }
 
     public boolean isAdmin() {
-        return StrUtil.equals(AuthorityConstants.UserType.ADMIN.getCode(), userType);
+        return StrUtil.equals(SecurityConstants.UserType.ADMIN.getCode(), userType);
     }
 }

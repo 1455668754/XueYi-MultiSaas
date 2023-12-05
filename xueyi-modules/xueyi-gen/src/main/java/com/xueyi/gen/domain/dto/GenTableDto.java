@@ -1,7 +1,7 @@
 package com.xueyi.gen.domain.dto;
 
-import com.xueyi.common.core.constant.gen.GenConstants;
 import com.xueyi.common.core.utils.core.StrUtil;
+import com.xueyi.gen.constant.GenConstants;
 import com.xueyi.gen.domain.po.GenTablePo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

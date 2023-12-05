@@ -1,10 +1,10 @@
 package com.xueyi.tenant.tenant.controller.base;
 
 import com.xueyi.common.core.constant.basic.BaseConstants;
-import com.xueyi.common.core.constant.system.OrganizeConstants;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.web.entity.controller.BaseController;
+import com.xueyi.system.api.organize.constant.OrganizeConstants;
 import com.xueyi.tenant.api.tenant.domain.dto.TeTenantDto;
 import com.xueyi.tenant.api.tenant.domain.query.TeTenantQuery;
 import com.xueyi.tenant.tenant.domain.dto.TeTenantRegister;

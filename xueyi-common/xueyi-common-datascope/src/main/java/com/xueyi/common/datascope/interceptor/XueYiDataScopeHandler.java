@@ -1,7 +1,7 @@
 package com.xueyi.common.datascope.interceptor;
 
 import com.baomidou.mybatisplus.extension.plugins.handler.DataPermissionHandler;
-import com.xueyi.common.core.constant.system.AuthorityConstants;
+import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.utils.core.ArrayUtil;
 import com.xueyi.common.core.utils.core.NumberUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
@@ -78,7 +78,7 @@ public class XueYiDataScopeHandler implements DataPermissionHandler {
         if (ObjectUtil.isNull(scope) || scope.isAdmin()) return where;
         Long userId = scope.getUserId();
         String scopeType = scope.getDataScope();
-        switch (AuthorityConstants.DataScope.getByCode(scopeType)) {
+        switch (SecurityConstants.DataScope.getByCode(scopeType)) {
             case ALL -> {
                 return where;
             }

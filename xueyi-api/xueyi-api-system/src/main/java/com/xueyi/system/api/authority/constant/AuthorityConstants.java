@@ -1,4 +1,4 @@
-package com.xueyi.common.core.constant.system;
+package com.xueyi.system.api.authority.constant;
 
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.utils.core.EnumUtil;
@@ -17,54 +17,6 @@ public class AuthorityConstants {
 
     /** 默认模块Id */
     public static final Long MODULE_DEFAULT_NODE = 1L;
-
-    /** 用户类型 */
-    @Getter
-    @AllArgsConstructor
-    public enum UserType {
-
-        NORMAL("01", "普通用户"),
-        ADMIN("00", "超管用户");
-
-        private final String code;
-        private final String info;
-
-    }
-
-    /** 租户类型 */
-    @Getter
-    @AllArgsConstructor
-    public enum TenantType {
-
-        NORMAL("N", "普通租户"),
-        ADMIN("Y", "租管租户");
-
-        private final String code;
-        private final String info;
-
-    }
-
-    /** 数据范围 */
-    @Getter
-    @AllArgsConstructor
-    public enum DataScope {
-
-        NONE("0", "无数据权限"),
-        ALL("1", "全部数据权限"),
-        CUSTOM("2", "自定义数据权限"),
-        DEPT("3", "本部门数据权限"),
-        DEPT_AND_CHILD("4", "本部门及以下数据权限"),
-        POST("5", "本岗位数据权限"),
-        SELF("6", "仅本人数据权限");
-
-        private final String code;
-        private final String info;
-
-        public static DataScope getByCode(String code) {
-            return EnumUtil.getByCode(DataScope.class, code);
-        }
-
-    }
 
     /** 页面类型 */
     @Getter

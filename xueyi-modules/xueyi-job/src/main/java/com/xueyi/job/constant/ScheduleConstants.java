@@ -1,4 +1,4 @@
-package com.xueyi.common.core.constant.job;
+package com.xueyi.job.constant;
 
 import com.xueyi.common.core.utils.core.EnumUtil;
 import lombok.AllArgsConstructor;

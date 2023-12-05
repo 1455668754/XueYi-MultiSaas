@@ -2,7 +2,7 @@ package com.xueyi.tenant.tenant.service.impl;
 
 import com.xueyi.common.cache.constant.CacheConstants;
 import com.xueyi.common.core.constant.basic.DictConstants;
-import com.xueyi.common.core.constant.system.AuthorityConstants;
+import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.result.AjaxResult;
@@ -127,7 +127,7 @@ public class TeTenantServiceImpl extends BaseServiceImpl<TeTenantQuery, TeTenant
             AjaxResult.warn("新增失败，请检查！");
         }
         tenantRegister.getUser().setPostIds(new Long[]{postR.getData().getId()});
-        tenantRegister.getUser().setUserType(AuthorityConstants.UserType.ADMIN.getCode());
+        tenantRegister.getUser().setUserType(SecurityConstants.UserType.ADMIN.getCode());
         tenantRegister.getUser().setPassword(SecurityUserUtils.encryptPassword(tenantRegister.getUser().getPassword()));
         R<SysUserDto> userR = userService.addInner(tenantRegister.getUser(), enterpriseId, sourceName);
         if (userR.isFail()) {
