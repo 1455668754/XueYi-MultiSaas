@@ -59,6 +59,7 @@
   import { basicProps } from './props';
   import { useDesign } from '@/hooks/web/useDesign';
   import { cloneDeep } from 'lodash-es';
+  import { TableActionType } from '@/components/Table';
 
   defineOptions({ name: 'BasicForm' });
 
@@ -120,7 +121,12 @@
   const getSchema = computed((): FormSchema[] => {
     const schemas: FormSchema[] = unref(schemaRef) || (unref(getProps).schemas as any);
     for (const schema of schemas) {
-      const { defaultValue, component, componentProps, isHandleDateDefaultValue = true } = schema;
+      const {
+        defaultValue,
+        component,
+        componentProps = {},
+        isHandleDateDefaultValue = true,
+      } = schema;
       // handle date type
       if (
         isHandleDateDefaultValue &&
@@ -128,7 +134,17 @@
         component &&
         dateItemType.includes(component)
       ) {
-        const valueFormat = componentProps ? componentProps['valueFormat'] : null;
+        const opt = {
+          schema,
+          tableAction: props.tableAction ?? ({} as TableActionType),
+          formModel,
+          formActionType: {} as FormActionType,
+        };
+        const valueFormat = componentProps
+          ? typeof componentProps === 'function'
+            ? componentProps(opt)['valueFormat']
+            : componentProps['valueFormat']
+          : null;
         if (!Array.isArray(defaultValue)) {
           schema.defaultValue = valueFormat
             ? dateUtil(defaultValue).format(valueFormat)
@@ -298,7 +314,6 @@
     emit('register', formActionType);
   });
 </script>
-
 <style lang="less">
   @prefix-cls: ~'@{namespace}-basic-form';
 
