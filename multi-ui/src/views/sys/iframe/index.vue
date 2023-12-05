@@ -10,15 +10,17 @@
     </Spin>
   </div>
 </template>
+
 <script lang="ts" setup>
   import type { CSSProperties } from 'vue';
-  import { computed, ref, unref } from 'vue';
+  import { computed, onMounted, onUnmounted, ref, unref } from 'vue';
   import { Spin } from 'ant-design-vue';
   import { useWindowSizeFn } from '@xueyi/hooks';
   import { propTypes } from '@/utils/propTypes';
   import { useDesign } from '@/hooks/web/useDesign';
   import { useLayoutHeight } from '@/layouts/default/content/useContentViewHeight';
 
+  const emit = defineEmits(['message']);
   defineProps({
     frameSrc: propTypes.string.def(''),
   });
@@ -54,7 +56,36 @@
     loading.value = false;
     calcHeight();
   }
+
+  const messageHandler = (e: MessageEvent) => {
+    emit('message', e.data);
+  };
+
+  const postMessage = (message: any, tragetOrigin: string, transfer?: Transferable[]) => {
+    const iframe = unref(frameRef);
+    if (!iframe) return;
+    iframe.contentWindow?.postMessage(message, tragetOrigin, transfer);
+  };
+
+  const reload = () => {
+    loading.value = true;
+    const iframe = frameRef.value;
+    if (!iframe) return;
+    iframe.contentWindow?.location.reload();
+    loading.value = false;
+  };
+
+  onMounted(() => {
+    window.addEventListener('message', messageHandler);
+  });
+
+  onUnmounted(() => {
+    window.removeEventListener('message', messageHandler);
+  });
+
+  defineExpose({ postMessage, reload });
 </script>
+
 <style lang="less" scoped>
   @prefix-cls: ~'@{namespace}-iframe-page';
 
