@@ -1,6 +1,6 @@
 import { defHttp } from '@/utils/http/axios';
 import { UploadIM } from '@/model/sys';
-import { UploadFileParams } from '/#/axios';
+import { UploadFileParams } from '#/axios';
 import { useGlobSetting } from '@/hooks/setting';
 import { AxiosProgressEvent } from 'axios';
 

@@ -6,7 +6,7 @@ import type {
   InternalAxiosRequestConfig,
 } from 'axios';
 import axios from 'axios';
-import type { RequestOptions, Result, UploadFileParams } from '/#/axios';
+import type { RequestOptions, Result, UploadFileParams } from '#/axios';
 import type { CreateAxiosOptions } from './axiosTransform';
 import qs from 'qs';
 import { AxiosCanceler } from './axiosCancel';

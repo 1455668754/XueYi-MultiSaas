@@ -6,7 +6,7 @@ import { useSortable } from '@/hooks/web/useSortable';
 import { useMultipleTabStore } from '@/store/modules/multipleTab';
 import { isNil } from '@/utils/core/ObjectUtil';
 import projectSetting from '@/settings/projectSetting';
-import { useI18n } from '/@/hooks/web/useI18n';
+import { useI18n } from '@/hooks/web/useI18n';
 
 const { t } = useI18n();
 

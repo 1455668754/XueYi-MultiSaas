@@ -1,7 +1,7 @@
 /**
  * Application configuration
  */
-import type { ProjectConfig } from '/#/config';
+import type { ProjectConfig } from '#/config';
 import { PROJ_CFG_KEY, ThemeEnum } from '@/enums';
 import projectSetting from '@/settings/projectSetting';
 import { updateDarkTheme } from '@/logics/theme/dark';

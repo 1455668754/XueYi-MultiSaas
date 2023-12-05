@@ -27,7 +27,7 @@ import ApiRadioGroup from './components/ApiRadioGroup.vue';
 import RadioButtonGroup from './components/RadioButtonGroup.vue';
 import ApiSelect from './components/ApiSelect.vue';
 import ApiTree from './components/ApiTree.vue';
-import { BasicUpload, ImageUpload } from '/@/components/Upload';
+import { BasicUpload, ImageUpload } from '@/components/Upload';
 import ApiTreeSelect from './components/ApiTreeSelect.vue';
 import ApiCascader from './components/ApiCascader.vue';
 import ApiTransfer from './components/ApiTransfer.vue';

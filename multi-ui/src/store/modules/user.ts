@@ -1,14 +1,14 @@
-import type { ErrorMessageMode } from '/#/axios';
+import type { ErrorMessageMode } from '#/axios';
 import { defineStore } from 'pinia';
 import { store } from '@/store';
 import {
+  DicCommonPrivateEnum,
   PageEnum,
   ROLES_KEY,
   TenantTypeEnum,
   TOKEN_KEY,
   USER_INFO_KEY,
   UserTypeEnum,
-  DicCommonPrivateEnum,
 } from '@/enums';
 import { getAuthCache, setAuthCache } from '@/utils/auth';
 import { useI18n } from '@/hooks/web/useI18n';
@@ -22,9 +22,9 @@ import { h } from 'vue';
 import {
   doLogout,
   getCodeImg,
+  getEnterpriseName,
   getUserInfo,
   oauthLoginApi,
-  getEnterpriseName,
 } from '@/api/sys/login.api';
 import { EnterpriseIM, UserIM } from '@/model/system/organize';
 import { GetUserIM, LoginPM } from '@/model/sys';

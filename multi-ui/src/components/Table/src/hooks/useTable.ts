@@ -1,6 +1,6 @@
 import type { BasicColumn, BasicTableProps, FetchParams, TableActionType } from '../types/table';
 import type { PaginationProps } from '../types/pagination';
-import type { DynamicProps } from '/#/utils';
+import type { DynamicProps } from '#/utils';
 import type { FormActionType } from '@/components/Form';
 import type { WatchStopHandle } from 'vue';
 import { onUnmounted, ref, toRaw, unref, watch } from 'vue';

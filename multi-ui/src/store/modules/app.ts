@@ -4,8 +4,8 @@ import type {
   MultiTabsSetting,
   ProjectConfig,
   TransitionSetting,
-} from '/#/config';
-import type { ApiAddress, BeforeMiniState } from '/#/store';
+} from '#/config';
+import type { ApiAddress, BeforeMiniState } from '#/store';
 
 import { defineStore } from 'pinia';
 import { store } from '@/store';
