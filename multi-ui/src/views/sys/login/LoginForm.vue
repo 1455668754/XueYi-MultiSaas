@@ -1,16 +1,19 @@
 <template>
   <LoginFormTitle v-show="getShow" class="enter-x" />
   <Form class="p-4 enter-x" :model="formData" :rules="getFormRules" ref="formRef" v-show="getShow">
-    <FormItem name="enterpriseName" class="enter-x"  v-if="formData.enterpriseName==''" >
+    <FormItem name="enterpriseName" class="enter-x"  v-if="formData.enterpriseUser!=''" >
+     
+      <Input   type="hidden" v-model:value="formData.enterpriseName"  />
+  
+    </FormItem>
+
+    <FormItem name="enterpriseName" class="enter-x"  v-else>
       <Input
         size="large"
         v-model:value="formData.enterpriseName"
         :placeholder="t('sys.login.enterpriseName')"
         class="fix-auto-fill"
       />
-    </FormItem>
-    <FormItem name="enterpriseName" class="enter-x"  v-else>
-      <Input   type="hidden" v-model:value="formData.enterpriseName"  />
     </FormItem>
     <FormItem name="userName" class="enter-x">
       <Input
@@ -153,6 +156,7 @@
     userName: localStorage.getItem(USER_NAME_SESSION_CACHE_KEY) || '',
     password: localStorage.getItem(PASSWORD_SESSION_CACHE_KEY) || '',
     code: '',
+    enterpriseUser:''
   });
 
   const captchaData = reactive({
@@ -215,7 +219,7 @@
   async function handleEnterpriseName() {
     const data =await userStore.getEnterpriseName();
     if (typeof data.enterpriseName === "string") 
-      formData.enterpriseName=data.enterpriseName;
+      formData.enterpriseUser=data.enterpriseName;
   }
 
   // 处理登录验证码
