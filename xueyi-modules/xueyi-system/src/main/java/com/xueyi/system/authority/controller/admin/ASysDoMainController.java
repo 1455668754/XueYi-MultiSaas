@@ -27,8 +27,7 @@ public class ASysDoMainController {
 
   @GetMapping
   @ApiAuth(isAnonymous = true)
-  public AjaxResult getDomainTenant(HttpServletRequest request) {
-    String url = request.getServerName();
+  public AjaxResult getDomainTenant(String url) {
     String name = null;
     if (StringUtils.isNotBlank(url)) {
       name = loginService.getDomaingetTenant(url);

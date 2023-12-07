@@ -26,9 +26,14 @@ export function getCodeImg() {
 /**
  * @description: get Enterprise Name api
  */
-export function getEnterpriseName() {
+export function getEnterpriseName(params: LoginPM) {
+ 
+
   return defHttp.get<LoginPM>(
-    { url: Api.GetEnterpriseName, timeout: 20000 },
+    { 
+      url: Api.GetEnterpriseName+"?url="+window.location.hostname, 
+      data: params,
+      timeout: 20000 },
     { errorMessageMode: 'none', withToken: false },
   );
 }
