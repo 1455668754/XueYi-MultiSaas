@@ -134,4 +134,19 @@ public class TeTenantServiceImpl extends BaseServiceImpl<TeTenantQuery, TeTenant
             AjaxResult.warn("新增失败，请检查！");
         }
     }
+
+    /**
+     * 校验租户URL是否已存在
+     * @param url  校验租户URL
+     * @return 结果 | true/false
+     */
+    @Override
+    public boolean checkDomainUnique(String url, Long id) {
+      TeTenantDto tenant = baseManager.checkDomain(url);
+        if (ObjectUtil.isNotNull(id)) {
+            if (tenant.getId().equals(id))
+                return false;
+        }
+        return ObjectUtil.isNotNull(tenant);
+    }
 }

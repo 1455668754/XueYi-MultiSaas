@@ -42,4 +42,10 @@ public interface ITeTenantService extends IBaseService<TeTenantQuery, TeTenantDt
      * @param tenantRegister 租户初始化对象
      */
     void organizeInit(TeTenantRegister tenantRegister);
+    /**
+     * 租户域名唯一校验
+     *
+     * @param url 租户绑定域名
+     */
+    boolean checkDomainUnique(String url,Long id);
 }

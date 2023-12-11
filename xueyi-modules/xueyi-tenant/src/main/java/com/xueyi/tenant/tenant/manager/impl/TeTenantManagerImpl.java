@@ -33,4 +33,21 @@ public class TeTenantManagerImpl extends BaseManagerImpl<TeTenantQuery, TeTenant
                         .last(SqlConstants.LIMIT_ONE));
         return baseConverter.mapperDto(tenant);
     }
+
+    /**
+     * 检查域名是否存在
+     *
+     * @param domain 待检测域名
+     */
+    @Override
+    public TeTenantDto checkDomain(String domain) {
+
+        TeTenantPo tenant = baseMapper.selectOne(
+                Wrappers.<TeTenantPo>query().lambda()
+                        .eq(TeTenantPo::getDoMain, domain)
+                        .last(SqlConstants.LIMIT_ONE));
+        return baseConverter.mapperDto(tenant);
+    }
+
+
 }

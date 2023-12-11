@@ -18,4 +18,10 @@ public interface ITeTenantManager extends IBaseManager<TeTenantQuery, TeTenantDt
      * @return 结果
      */
     TeTenantDto checkStrategyExist(Long strategyId);
+
+    /**
+     * 检查域名是否存在
+     * @param domain 待检测域名
+     */
+    TeTenantDto checkDomain(String domain);
 }
