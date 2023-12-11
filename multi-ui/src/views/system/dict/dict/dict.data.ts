@@ -363,6 +363,27 @@ export const dataFormSchema: FormSchema[] = [
     colProps: { span: 12 },
   },
   {
+    label: '附加数据1',
+    field: 'additionalA',
+    component: 'Input',
+    required: true,
+    colProps: { span: 12 },
+  },
+  {
+    label: '附加数据2',
+    field: 'additionalB',
+    component: 'Input',
+    required: true,
+    colProps: { span: 12 },
+  },
+  {
+    label: '附加数据3',
+    field: 'additionalC',
+    component: 'Input',
+    required: true,
+    colProps: { span: 12 },
+  },
+  {
     label: '样式属性',
     field: 'cssClass',
     component: 'Select',
