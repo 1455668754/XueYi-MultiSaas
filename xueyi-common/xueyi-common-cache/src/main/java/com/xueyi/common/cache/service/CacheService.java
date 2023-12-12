@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Supplier;
 
 /**
  * 缓存管理服务
@@ -29,10 +30,22 @@ public class CacheService {
      * @return 数据对象
      */
     public <T> T getCacheObject(CacheConstants.CacheType cacheType) {
-        String key = cacheType.getCacheKey();
+        return getCusCacheObject(cacheType.getCode(), cacheType.getIsTenant(), cacheType.getConsumer());
+    }
+
+    /**
+     * 获取指定缓存数据对象 | 自定义
+     *
+     * @param cacheCode 缓存编码
+     * @param isTenant  租户级缓存
+     * @param consumer  缓存更新方法
+     * @return 数据对象
+     */
+    public <T> T getCusCacheObject(String cacheCode, Boolean isTenant, Supplier<Object> consumer) {
+        String key = CacheConstants.CacheType.getCusCacheKey(cacheCode, isTenant);
         T object = redisService.getCacheObject(key);
         if (ObjectUtil.isNull(object)) {
-            refreshCache(cacheType);
+            refreshCusCache(consumer);
             return redisService.getCacheObject(key);
         }
         return object;
@@ -45,10 +58,22 @@ public class CacheService {
      * @return 数据对象
      */
     public <T> Set<T> getCacheSet(CacheConstants.CacheType cacheType) {
-        String key = cacheType.getCacheKey();
+        return getCusCacheSet(cacheType.getCode(), cacheType.getIsTenant(), cacheType.getConsumer());
+    }
+
+    /**
+     * 获取指定缓存数据对象 | 自定义
+     *
+     * @param cacheCode 缓存编码
+     * @param isTenant  租户级缓存
+     * @param consumer  缓存更新方法
+     * @return 数据对象
+     */
+    public <T> Set<T> getCusCacheSet(String cacheCode, Boolean isTenant, Supplier<Object> consumer) {
+        String key = CacheConstants.CacheType.getCusCacheKey(cacheCode, isTenant);
         Set<T> cacheSet = redisService.getCacheSet(key);
         if (ObjectUtil.isNull(cacheSet)) {
-            refreshCache(cacheType);
+            refreshCusCache(consumer);
             return redisService.getCacheSet(key);
         }
         return cacheSet;
@@ -61,10 +86,22 @@ public class CacheService {
      * @return 数据对象
      */
     public <T> List<T> getCacheList(CacheConstants.CacheType cacheType) {
-        String key = cacheType.getCacheKey();
+        return getCusCacheList(cacheType.getCode(), cacheType.getIsTenant(), cacheType.getConsumer());
+    }
+
+    /**
+     * 获取指定缓存数据对象 | 自定义
+     *
+     * @param cacheCode 缓存编码
+     * @param isTenant  租户级缓存
+     * @param consumer  缓存更新方法
+     * @return 数据对象
+     */
+    public <T> List<T> getCusCacheList(String cacheCode, Boolean isTenant, Supplier<Object> consumer) {
+        String key = CacheConstants.CacheType.getCusCacheKey(cacheCode, isTenant);
         List<T> cacheSet = redisService.getCacheList(key);
         if (ObjectUtil.isNull(cacheSet)) {
-            refreshCache(cacheType);
+            refreshCusCache(consumer);
             return redisService.getCacheList(key);
         }
         return cacheSet;
@@ -77,10 +114,22 @@ public class CacheService {
      * @return 数据对象
      */
     public <T> Map<String, T> getCacheMap(CacheConstants.CacheType cacheType) {
-        String key = cacheType.getCacheKey();
+        return getCusCacheMap(cacheType.getCode(), cacheType.getIsTenant(), cacheType.getConsumer());
+    }
+
+    /**
+     * 获取指定缓存数据对象 | 自定义
+     *
+     * @param cacheCode 缓存编码
+     * @param isTenant  租户级缓存
+     * @param consumer  缓存更新方法
+     * @return 数据对象
+     */
+    public <T> Map<String, T> getCusCacheMap(String cacheCode, Boolean isTenant, Supplier<Object> consumer) {
+        String key = CacheConstants.CacheType.getCusCacheKey(cacheCode, isTenant);
         Map<String, T> map = redisService.getCacheMap(key);
         if (MapUtil.isEmpty(map)) {
-            refreshCache(cacheType);
+            refreshCusCache(consumer);
             return redisService.getCacheMap(key);
         }
         return map;
@@ -94,10 +143,23 @@ public class CacheService {
      * @return 数据对象
      */
     public <T> T getCacheObject(CacheConstants.CacheType cacheType, String code) {
-        String key = cacheType.getCacheKey();
+        return getCusCacheObject(cacheType.getCode(), cacheType.getIsTenant(), cacheType.getConsumer(), code);
+    }
+
+    /**
+     * 获取指定缓存数据对象 | 自定义
+     *
+     * @param cacheCode 缓存编码
+     * @param isTenant  租户级缓存
+     * @param consumer  缓存更新方法
+     * @param code      缓存编码
+     * @return 数据对象
+     */
+    public <T> T getCusCacheObject(String cacheCode, Boolean isTenant, Supplier<Object> consumer, String code) {
+        String key = CacheConstants.CacheType.getCusCacheKey(cacheCode, isTenant);
         T object = redisService.getCacheMapValue(key, code);
         if (ObjectUtil.isNull(object)) {
-            refreshCache(cacheType);
+            refreshCusCache(consumer);
             return redisService.getCacheMapValue(key, code);
         }
         return object;
@@ -109,6 +171,15 @@ public class CacheService {
      * @param cacheType 缓存枚举
      */
     public void refreshCache(CacheConstants.CacheType cacheType) {
-        cacheType.getConsumer().get();
+        refreshCusCache(cacheType.getConsumer());
+    }
+
+    /**
+     * 更新指定类型的缓存对象 | 自定义
+     *
+     * @param consumer 缓存更新方法
+     */
+    public void refreshCusCache(Supplier<Object> consumer) {
+        consumer.get();
     }
 }

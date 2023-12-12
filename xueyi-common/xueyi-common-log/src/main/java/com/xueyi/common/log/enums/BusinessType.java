@@ -1,10 +1,15 @@
 package com.xueyi.common.log.enums;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 /**
  * 业务操作类型
  *
  * @author xueyi
  */
+@Getter
+@AllArgsConstructor
 public enum BusinessType {
 
     /** 其它 */
@@ -61,16 +66,4 @@ public enum BusinessType {
     private final String code;
     private final String info;
 
-    BusinessType(String code, String info) {
-        this.code = code;
-        this.info = info;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public String getInfo() {
-        return info;
-    }
 }

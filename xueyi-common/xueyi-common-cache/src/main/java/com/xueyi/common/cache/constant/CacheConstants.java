@@ -83,7 +83,7 @@ public class CacheConstants {
          * @return 缓存键值
          */
         public String getCacheKey() {
-            return getCacheKey(getIsTenant() ? SecurityContextHolder.getEnterpriseId() : null);
+            return getCusCacheKey(getCode(), getIsTenant());
         }
 
         /**
@@ -93,14 +93,47 @@ public class CacheConstants {
          * @return 缓存键值
          */
         public String getCacheKey(Long enterpriseId) {
+            return getCusCacheKey(getCode(), getIsTenant(), enterpriseId);
+        }
+
+        /**
+         * 获取缓存键值 | 自定义
+         *
+         * @param code 缓存编码
+         * @return 缓存键值
+         */
+        public static String getCusCacheKey(String code) {
+            return getCusCacheKey(code, Boolean.FALSE, null);
+        }
+
+        /**
+         * 获取缓存键值 | 自定义
+         *
+         * @param code     缓存编码
+         * @param isTenant 租户级缓存
+         * @return 缓存键值
+         */
+        public static String getCusCacheKey(String code, Boolean isTenant) {
+            return getCusCacheKey(code, isTenant, isTenant ? SecurityContextHolder.getEnterpriseId() : null);
+        }
+
+        /**
+         * 获取缓存键值 | 自定义
+         *
+         * @param code         缓存编码
+         * @param isTenant     租户级缓存
+         * @param enterpriseId 企业Id
+         * @return 缓存键值
+         */
+        public static String getCusCacheKey(String code, Boolean isTenant, Long enterpriseId) {
             String cacheKey;
-            if (getIsTenant()) {
+            if (isTenant) {
                 if (ObjectUtil.isNull(enterpriseId)) {
-                    throw new ServiceException(StrUtil.format("缓存键{}为企业级缓存，企业Id不能为空", getCode()));
+                    throw new ServiceException(StrUtil.format("缓存键{}为企业级缓存，企业Id不能为空", code));
                 }
-                cacheKey = StrUtil.format("{}:{}", getCode(), enterpriseId);
+                cacheKey = StrUtil.format("{}:{}", code, enterpriseId);
             } else {
-                cacheKey = getCode();
+                cacheKey = code;
             }
             return cacheKey;
         }

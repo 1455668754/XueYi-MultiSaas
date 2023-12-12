@@ -42,25 +42,47 @@ public class DictUtil {
      * @param type 参数类型
      * @return 参数数据
      */
-    @SuppressWarnings(value = {"unchecked"})
     public static <T> T getConfigCache(CacheConstants.ConfigType type) {
-        SysConfigDto config = getCacheService().getCacheObject(CacheConstants.CacheType.ROUTE_CONFIG_KEY, type.getCode());
+        return getCusConfigCache(type.getCode(), type.getClazz(), type.getDefaultValue());
+    }
+
+    /**
+     * 获取参数缓存
+     *
+     * @param code 参数编码
+     * @return 参数数据
+     */
+    public static <T> T getCusConfigCache(String code) {
+        return getCusConfigCache(code, String.class, StrUtil.EMPTY);
+    }
+
+    /**
+     * 获取参数缓存
+     *
+     * @param code         参数编码
+     * @param clazz        数据类型
+     * @param defaultValue 默认值
+     * @return 参数数据
+     */
+    @SuppressWarnings(value = {"unchecked"})
+    public static <T> T getCusConfigCache(String code, Class<?> clazz, Object defaultValue) {
+        SysConfigDto config = getCacheService().getCacheObject(CacheConstants.CacheType.ROUTE_CONFIG_KEY, code);
         if (ObjectUtil.isNull(config)) {
             return null;
         }
         String value;
         if (StrUtil.equals(DictConstants.DicCacheType.TENANT.getCode(), config.getCacheType())) {
-            value = getCacheService().getCacheObject(CacheConstants.CacheType.SYS_CONFIG_KEY, type.getCode());
+            value = getCacheService().getCacheObject(CacheConstants.CacheType.SYS_CONFIG_KEY, code);
             if (ObjectUtil.isNull(value)) {
                 SpringUtil.getBean(RemoteConfigService.class).syncCacheInner();
-                value = getCacheService().getCacheObject(CacheConstants.CacheType.SYS_CONFIG_KEY, type.getCode());
+                value = getCacheService().getCacheObject(CacheConstants.CacheType.SYS_CONFIG_KEY, code);
             }
         } else {
             SecurityContextHolder.setEnterpriseId(SecurityConstants.COMMON_TENANT_ID.toString());
-            value = getCacheService().getCacheObject(CacheConstants.CacheType.TE_CONFIG_KEY, type.getCode());
+            value = getCacheService().getCacheObject(CacheConstants.CacheType.TE_CONFIG_KEY, code);
             SecurityContextHolder.rollLastEnterpriseId();
         }
-        return (T) ConvertUtil.convert(type.getClazz(), value, type.getDefaultValue());
+        return (T) ConvertUtil.convert(clazz, value, defaultValue);
     }
 
     /**

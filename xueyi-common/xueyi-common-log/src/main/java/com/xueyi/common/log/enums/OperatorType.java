@@ -1,10 +1,15 @@
 package com.xueyi.common.log.enums;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 /**
  * 操作人类别
  *
  * @author xueyi
  */
+@Getter
+@AllArgsConstructor
 public enum OperatorType {
 
     /** 其它 */
@@ -19,16 +24,4 @@ public enum OperatorType {
     private final String code;
     private final String info;
 
-    OperatorType(String code, String info) {
-        this.code = code;
-        this.info = info;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public String getInfo() {
-        return info;
-    }
 }
