@@ -48,9 +48,5 @@
         </p>
     </form>
 </div>
-<footer>
-    <p>support by: xueyitt.cn</p>
-    <p>email: <a href="mailto:xueyitt@qq.com">xueyitt@qq.com</a>.</p>
-</footer>
 </body>
 </html>
