@@ -1,13 +1,13 @@
 package com.xueyi.common.security.handler;
 
 import com.xueyi.common.core.exception.ServiceException;
-import com.xueyi.common.security.model.ClientAuthenticatedPrincipal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.DefaultOAuth2AuthenticatedPrincipal;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
@@ -39,7 +39,8 @@ public class OpaqueTokenHandler implements OpaqueTokenIntrospector {
 
         // 客户端模式默认返回
         if (AuthorizationGrantType.CLIENT_CREDENTIALS.equals(oldAuthorization.getAuthorizationGrantType())) {
-            return new ClientAuthenticatedPrincipal(oldAuthorization.getAttributes(), AuthorityUtils.NO_AUTHORITIES, oldAuthorization.getPrincipalName());
+            return new DefaultOAuth2AuthenticatedPrincipal(oldAuthorization.getPrincipalName(),
+                    Objects.requireNonNull(oldAuthorization.getAccessToken().getClaims()), AuthorityUtils.NO_AUTHORITIES);
         }
 
         try {
