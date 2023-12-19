@@ -143,8 +143,8 @@ public class TeTenantServiceImpl extends BaseServiceImpl<TeTenantQuery, TeTenant
     @Override
     public boolean checkDomainUnique(String url, Long id) {
       TeTenantDto tenant = baseManager.checkDomain(url);
-        if (ObjectUtil.isNotNull(id)) {
-            if (tenant.getId().equals(id))
+        if (ObjectUtil.isNotNull(id)&&ObjectUtil.isNotNull(tenant)) {
+            if (id.equals(tenant.getId()))
                 return false;
         }
         return ObjectUtil.isNotNull(tenant);
