@@ -1,7 +1,6 @@
 package com.xueyi.common.web.entity.controller;
 
 import com.xueyi.common.core.constant.basic.BaseConstants;
-import com.xueyi.common.core.constant.basic.DictConstants;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.utils.poi.ExcelUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
@@ -119,23 +118,6 @@ public abstract class BaseController<Q extends BaseEntity, D extends BaseEntity,
         RHandleEmpty(idList);
         RHandle(BaseConstants.Operate.DELETE, idList);
         return toAjax(baseService.deleteByIds(idList));
-    }
-
-    /**
-     * 获取选择框列表
-     *
-     * @param operateType 操作类型 | 仅正常数据
-     */
-    public AjaxResult option(DictConstants.DicYesNo operateType) {
-        try {
-            Q query = getQClass().getDeclaredConstructor().newInstance();
-            if (operateType == DictConstants.DicYesNo.YES) {
-                query.setStatus(BaseConstants.Status.NORMAL.getCode());
-            }
-            return list(query);
-        } catch (Exception ignored) {
-        }
-        return error();
     }
 
     /**

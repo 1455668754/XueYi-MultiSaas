@@ -10,6 +10,8 @@ import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.authority.domain.query.SysMenuQuery;
 import com.xueyi.system.authority.service.ISysMenuService;
 
+import java.util.List;
+
 /**
  * 系统服务 | 权限模块 | 菜单管理 | 通用 业务处理
  *
@@ -37,6 +39,43 @@ public class BSysMenuController extends TreeController<SysMenuQuery, SysMenuDto,
         topMenu.setMenuType(AuthorityConstants.MenuType.DIR.getCode());
         topMenu.setModuleId(query.getModuleId());
         return topMenu;
+    }
+
+    /**
+     * 树型 树死循环逻辑校验 | 父节点不能为自己或自己的子节点
+     *
+     * @param dto 待修改数据对象
+     */
+    @Override
+    protected void TreeLoopHandle(SysMenuDto dto) {
+        SecurityContextHolder.setTenantIgnore();
+        super.TreeLoopHandle(dto);
+        SecurityContextHolder.clearTenantIgnore();
+    }
+
+    /**
+     * 树型 增加/修改 父子节点逻辑校验
+     *
+     * @param operate 操作类型
+     * @param dto     数据对象
+     */
+    @Override
+    protected void AETreeStatusHandle(BaseConstants.Operate operate, SysMenuDto dto) {
+        SecurityContextHolder.setTenantIgnore();
+        super.AETreeStatusHandle(operate, dto);
+        SecurityContextHolder.clearTenantIgnore();
+    }
+
+    /**
+     * 树型 删除 子节点存在与否校验
+     *
+     * @param idList 待删除Id集合
+     */
+    @Override
+    protected void RHandleTreeChild(List<Long> idList) {
+        SecurityContextHolder.setTenantIgnore();
+        super.RHandleTreeChild(idList);
+        SecurityContextHolder.clearTenantIgnore();
     }
 
     /**
