@@ -40,6 +40,9 @@ export const PASSWORD_SESSION_CACHE_KEY = 'PASSWORD__SESSION__KEY';
 // login rememberMe local session key
 export const REMEMBER_ME_SESSION_CACHE_KEY = 'REMEMBER_ME__SESSION__KEY';
 
+// table 列设置
+export const TABLE_SETTING_KEY = 'TABLE__SETTING__KEY__';
+
 export enum CacheTypeEnum {
   SESSION,
   LOCAL,
