@@ -124,6 +124,7 @@ export interface FormProps {
   submitFunc?: () => Promise<void>;
   transformDateFunc?: (date: any) => string;
   colon?: boolean;
+  watchEvent?: boolean;
 }
 
 export type RenderOpts = {
@@ -224,6 +225,11 @@ interface BaseFormSchema {
   dynamicReadonly?: boolean | ((renderCallbackParams: RenderCallbackParams) => boolean);
 
   dynamicRules?: (renderCallbackParams: RenderCallbackParams) => Rule[];
+
+  watchEventNames?: string[];
+
+  // 禁用事件监听触发reload
+  enableWatchEvent?: boolean;
 }
 
 export interface ComponentFormSchema extends BaseFormSchema {
