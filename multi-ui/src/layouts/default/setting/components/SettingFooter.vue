@@ -47,11 +47,11 @@
   const appStore = useAppStore();
 
   function handleCopy() {
-    copyText(JSON.stringify(unref(appStore.getProjectConfig), null, 2), null);
-
-    createSuccessModal({
-      title: t('layout.setting.operatingTitle'),
-      content: t('layout.setting.operatingContent'),
+    copyText(JSON.stringify(unref(appStore.getProjectConfig), null, 2), null).then(() => {
+      createSuccessModal({
+        title: t('layout.setting.operatingTitle'),
+        content: t('layout.setting.operatingContent'),
+      });
     });
   }
 
