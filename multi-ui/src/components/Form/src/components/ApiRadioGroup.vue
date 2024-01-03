@@ -2,7 +2,7 @@
  * @Description:It is troublesome to implement radio button group in the form. So it is extracted independently as a separate component
 -->
 <template>
-  <Radio.Group v-bind="attrs" v-model:value="state" button-style="solid">
+  <Radio.Group v-bind="attrs" v-model:value="state" button-style="solid" @change="handleChange">
     <template v-for="item in getOptions" :key="`${item.value}`">
       <Radio.Button
         v-if="props.isBtn"
@@ -20,13 +20,13 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, type PropType, ref, unref, watch, watchEffect } from 'vue';
+  import { computed, type PropType, ref, unref, watch } from 'vue';
   import { Radio } from 'ant-design-vue';
   import { isFunction } from '@/utils/core/ObjectUtil';
   import { useRuleFormItem } from '@/hooks/component/useFormItem';
   import { useAttrs } from '@xueyi/hooks';
   import { propTypes } from '@/utils/propTypes';
-  import { get, omit } from 'lodash-es';
+  import { get, isEqual, omit } from 'lodash-es';
 
   type OptionsItem = { label: string; value: string | number | boolean; disabled?: boolean };
 
@@ -55,11 +55,10 @@
     immediate: propTypes.bool.def(true),
   });
 
-  const emit = defineEmits(['options-change', 'change']);
+  const emit = defineEmits(['options-change', 'change', 'update:value']);
 
   const options = ref<OptionsItem[]>([]);
   const loading = ref(false);
-  const isFirstLoad = ref(true);
   const emitData = ref<any[]>([]);
   const attrs = useAttrs();
   // Embedded in the form, just use the hook binding to perform form verification
@@ -82,16 +81,13 @@
     }, [] as OptionsItem[]);
   });
 
-  watchEffect(() => {
-    props.immediate && fetch();
-  });
-
   watch(
     () => props.params,
-    () => {
-      !unref(isFirstLoad) && fetch();
+    (value, oldValue) => {
+      if (isEqual(value, oldValue)) return;
+      fetch();
     },
-    { deep: true },
+    { deep: true, immediate: props.immediate },
   );
 
   async function fetch() {
@@ -123,5 +119,10 @@
 
   function handleClick(...args) {
     emitData.value = args;
+  }
+
+  function handleChange(e) {
+    emit('change', e.target.value);
+    emit('update:value', e.target.value);
   }
 </script>
