@@ -338,10 +338,6 @@
           display: flex;
         }
 
-        .ant-form-item-control {
-          //margin-top: 4px;
-        }
-
         .suffix {
           display: inline-flex;
           align-items: center;
