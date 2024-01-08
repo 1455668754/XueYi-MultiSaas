@@ -51,7 +51,7 @@ export interface BeforeMiniState {
 
 export interface TableSetting {
   size: Nullable<SizeType>;
-  showIndexColumn: Nullable<boolean>;
+  showIndexColumn: Recordable<Nullable<boolean>>;
   columns: Recordable<Nullable<Array<ColumnOptionsType>>>;
-  showRowSelection: Nullable<boolean>;
+  showRowSelection: Recordable<Nullable<boolean>>;
 }
