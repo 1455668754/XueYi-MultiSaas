@@ -68,10 +68,11 @@ export default {
     settingFixedLeft: '固定到左侧',
     settingFixedRight: '固定到右侧',
     settingFullScreen: '全屏',
-
     index: '序号',
-
     total: '共 {total} 条数据',
+    selectionBarTips: '已选择{count}条记录',
+    selectionBarClear: '清空',
+    selectionBarEmpty: '未选中任何记录',
   },
   time: {
     before: '前',

@@ -49,7 +49,7 @@
     SizeType,
     TableActionType,
   } from './types/table';
-  import { InnerHandlers } from './types/table';
+  import { InnerHandlers, InnerMethods } from './types/table';
   import { computed, inject, ref, toRaw, unref, useAttrs, useSlots, watchEffect } from 'vue';
   import { Table } from 'ant-design-vue';
   import { BasicForm, useForm } from '@/components/Form';
@@ -222,7 +222,12 @@
     },
   };
 
-  const { getHeaderProps } = useTableHeader(getProps, slots, handlers);
+  const methods: InnerMethods = {
+    clearSelectedRowKeys,
+    getSelectRowKeys,
+  };
+
+  const { getHeaderProps } = useTableHeader(getProps, slots, handlers, methods);
 
   const { getFooterProps } = useTableFooter(getProps, getScrollRef, tableElRef, getDataSourceRef);
 

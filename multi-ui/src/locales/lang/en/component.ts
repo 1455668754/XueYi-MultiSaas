@@ -68,6 +68,9 @@ export default {
     settingFullScreen: 'Full Screen',
     index: 'Index',
     total: 'total of {total}',
+    selectionBarTips: '{count} records selected.',
+    selectionBarClear: 'Clear',
+    selectionBarEmpty: 'No records selected.',
   },
   time: {
     before: ' ago',

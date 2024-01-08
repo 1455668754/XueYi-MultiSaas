@@ -1,6 +1,6 @@
 import type { ComputedRef, Slots } from 'vue';
 import { computed, h, unref } from 'vue';
-import type { BasicTableProps, InnerHandlers } from '../types/table';
+import type { BasicTableProps, InnerHandlers, InnerMethods } from '../types/table';
 import TableHeader from '../components/TableHeader.vue';
 import { isString } from '@/utils/core/ObjectUtil';
 import { getSlot } from '@/utils/helper/tsxHelper';
@@ -9,9 +9,11 @@ export function useTableHeader(
   propsRef: ComputedRef<BasicTableProps>,
   slots: Slots,
   handlers: InnerHandlers,
+  methods: InnerMethods,
 ) {
   const getHeaderProps = computed((): Recordable => {
-    const { title, showTableSetting, titleHelpMessage, tableSetting } = unref(propsRef);
+    const { title, showTableSetting, titleHelpMessage, tableSetting, showSelectionBar } =
+      unref(propsRef);
     const hideTitle = !slots.tableTitle && !title && !slots.toolbar && !showTableSetting;
     if (hideTitle && !isString(title)) {
       return {};
@@ -29,6 +31,9 @@ export function useTableHeader(
                 showTableSetting,
                 tableSetting,
                 onColumnsChange: handlers.onColumnsChange,
+                clearSelectedRowKeys: methods.clearSelectedRowKeys,
+                count: methods.getSelectRowKeys().length,
+                showSelectionBar,
               } as Recordable,
               {
                 ...(slots.toolbar
