@@ -2,6 +2,7 @@
   "name": "@xueyi/types",
   "version": "3.0.1",
   "sideEffects": false,
+  "type": "module",
   "exports": {
     ".": {
       "default": "./src/index.ts"

@@ -25,6 +25,9 @@ export default defineApplicationConfig({
           // secure: false
         },
       },
+      warmup: {
+        clientFiles: ['./index.html', './src/{views,components}/*'],
+      },
     },
   },
 });

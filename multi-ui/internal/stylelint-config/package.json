@@ -2,6 +2,7 @@
   "name": "@xueyi/stylelint-config",
   "version": "3.0.1",
   "private": true,
+  "type": "module",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -21,7 +22,7 @@
     "stub": "pnpm unbuild --stub"
   },
   "devDependencies": {
-    "postcss": "^8.4.32",
+    "postcss": "^8.4.33",
     "postcss-html": "^1.5.0",
     "postcss-less": "^6.0.0",
     "postcss-scss": "^4.0.9",
@@ -31,7 +32,7 @@
     "stylelint-config-recommended-scss": "^14.0.0",
     "stylelint-config-recommended-vue": "^1.5.0",
     "stylelint-config-standard": "^36.0.0",
-    "stylelint-config-standard-scss": "^12.0.0",
+    "stylelint-config-standard-scss": "^13.0.0",
     "stylelint-order": "^6.0.4",
     "stylelint-prettier": "^5.0.0"
   }

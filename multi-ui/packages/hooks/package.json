@@ -2,6 +2,7 @@
   "name": "@xueyi/hooks",
   "version": "3.0.1",
   "sideEffects": false,
+  "type": "module",
   "exports": {
     ".": {
       "default": "./src/index.ts"
@@ -21,7 +22,7 @@
   "dependencies": {
     "@vueuse/core": "^10.7.1",
     "lodash-es": "^4.17.21",
-    "vue": "^3.4.3"
+    "vue": "^3.4.5"
   },
   "devDependencies": {
     "@xueyi/types": "workspace:*"
