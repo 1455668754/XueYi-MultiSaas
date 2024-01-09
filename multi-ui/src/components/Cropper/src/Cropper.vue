@@ -17,7 +17,7 @@
   import Cropper from 'cropperjs';
   import 'cropperjs/dist/cropper.css';
   import { useDesign } from '@/hooks/web/useDesign';
-  import { useDebounceFn } from '@vueuse/shared';
+  import { useDebounceFn } from '@vueuse/core';
   import { useAttrs } from '@xueyi/hooks';
 
   type Options = Cropper.Options;

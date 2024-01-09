@@ -98,6 +98,7 @@ export interface UseRequestPlugin<TData, TParams extends any[]> {
     TData,
     TParams
   >;
+
   onInit?: (options: UseRequestOptions<TData, TParams>) => Partial<FetchState<TData, TParams>>;
 }
 

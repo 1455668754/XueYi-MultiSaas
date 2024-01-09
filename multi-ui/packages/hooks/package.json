@@ -19,9 +19,9 @@
     "lint": "pnpm eslint ."
   },
   "dependencies": {
-    "@vueuse/core": "^10.2.1",
+    "@vueuse/core": "^10.7.1",
     "lodash-es": "^4.17.21",
-    "vue": "^3.3.4"
+    "vue": "^3.4.3"
   },
   "devDependencies": {
     "@xueyi/types": "workspace:*"
