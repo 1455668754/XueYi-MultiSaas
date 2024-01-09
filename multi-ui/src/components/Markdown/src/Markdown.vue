@@ -3,6 +3,7 @@
 </template>
 
 <script lang="ts" setup>
+  import './adapter.js';
   import type { Ref } from 'vue';
   import {
     computed,
