@@ -148,7 +148,7 @@
       open: unref(openRef),
     };
     attr['wrapClassName'] =
-      `${attr?.['wrapClassName'] || ''} ${unref(getWrapClassName)}` + 'vben-basic-modal-wrap';
+      `${attr?.['wrapClassName'] || ''} ${unref(getWrapClassName)}` + 'xueyi-basic-modal-wrap';
     if (unref(fullScreenRef)) {
       return omit(attr, ['height', 'title']);
     }
