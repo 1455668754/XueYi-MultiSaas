@@ -27,6 +27,7 @@
   import { useAttrs } from '@xueyi/hooks';
   import { propTypes } from '@/utils/propTypes';
   import { get, isEqual, omit } from 'lodash-es';
+  import type { Recordable } from '@xueyi/types';
 
   type OptionsItem = {
     label?: string;
@@ -39,7 +40,7 @@
 
   const props = defineProps({
     api: {
-      type: Function as PropType<(arg?: any) => Promise<OptionsItem[]>>,
+      type: Function as PropType<(arg?: any) => Promise<Recordable>>,
       default: null,
     },
     params: {

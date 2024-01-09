@@ -19,13 +19,14 @@
   import { get, omit } from 'lodash-es';
   import { propTypes } from '@/utils/propTypes';
   import { TransferDirection, TransferItem } from 'ant-design-vue/lib/transfer';
+  import type { Recordable } from '@xueyi/types';
 
   defineOptions({ name: 'ApiTransfer' });
 
   const props = defineProps({
     value: { type: Array as PropType<Array<string>> },
     api: {
-      type: Function as PropType<(arg) => Promise<TransferItem[]>>,
+      type: Function as PropType<(arg?: any) => Promise<Recordable>>,
       default: null,
     },
     params: { type: Object },
@@ -67,8 +68,8 @@
   });
   const getTargetKeys = computed<string[]>(() => {
     /* if (unref(_targetKeys).length > 0) {
-      return unref(_targetKeys);
-    } */
+  return unref(_targetKeys);
+} */
     if (Array.isArray(props.value)) {
       return props.value;
     }

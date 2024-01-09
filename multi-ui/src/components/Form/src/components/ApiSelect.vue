@@ -31,6 +31,7 @@
   import { LoadingOutlined } from '@ant-design/icons-vue';
   import { useI18n } from '@/hooks/web/useI18n';
   import { propTypes } from '@/utils/propTypes';
+  import type { Recordable } from '@xueyi/types';
 
   type OptionsItem = { label?: string; value?: string; disabled?: boolean; [name: string]: any };
 
@@ -40,7 +41,7 @@
     value: { type: [Array, Object, String, Number] as PropType<SelectValue> },
     numberToString: propTypes.bool,
     api: {
-      type: Function as PropType<(arg?: any) => Promise<OptionsItem[]>>,
+      type: Function as PropType<(arg?: any) => Promise<Recordable>>,
       default: null,
     },
     // api params

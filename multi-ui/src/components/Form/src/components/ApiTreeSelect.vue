@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { type Recordable } from '@xueyi/types';
+  import type { Recordable } from '@xueyi/types';
   import { computed, onMounted, type PropType, ref, unref, useAttrs, watch } from 'vue';
   import { TreeSelect } from 'ant-design-vue';
   import { isArray, isFunction } from '@/utils/core/ObjectUtil';
@@ -26,7 +26,7 @@
   defineOptions({ name: 'ApiTreeSelect' });
 
   const props = defineProps({
-    api: { type: Function as PropType<(arg?: any) => Promise<Recordable<any>>> },
+    api: { type: Function as PropType<(arg?: any) => Promise<Recordable>> },
     params: { type: Object },
     immediate: { type: Boolean, default: true },
     async: { type: Boolean, default: false },
