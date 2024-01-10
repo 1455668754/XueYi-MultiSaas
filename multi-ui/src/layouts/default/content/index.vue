@@ -1,8 +1,6 @@
 <template>
   <div :class="[prefixCls, getLayoutContentMode]" v-loading="getOpenPageLoading && getPageLoading">
-    <div :class="[prefixClsScroll]">
-      <PageLayout />
-    </div>
+    <PageLayout />
   </div>
 </template>
 
@@ -16,7 +14,6 @@
   defineOptions({ name: 'LayoutContent' });
 
   const { prefixCls } = useDesign('layout-content');
-  const { prefixCls: prefixClsScroll } = useDesign('layout-content-scroll');
   const { getOpenPageLoading } = useTransitionSetting();
   const { getLayoutContentMode, getPageLoading } = useRootSetting();
 
@@ -25,9 +22,11 @@
 
 <style lang="less">
   @prefix-cls: ~'@{namespace}-layout-content';
-  @prefix-cls-scroll: ~'@{namespace}-layout-content-scroll';
 
   .@{prefix-cls} {
+    display: flex;
+    position: relative;
+    flex-direction: column;
     flex-grow: 1;
     width: 100%;
     height: 0;
