@@ -9,7 +9,7 @@ const userCenter: AppRouteModule = {
   redirect: '/userCenter/index',
   meta: {
     hideChildrenInMenu: true,
-    icon: 'simple-icons:about-dot-me',
+    icon: 'simple-icons:aboutdotme',
     title: t('layout.header.userCenter'),
     orderNo: 100000,
     hideMenu: true,
@@ -21,7 +21,7 @@ const userCenter: AppRouteModule = {
       component: () => import('@/views/sys/userCenter/index.vue'),
       meta: {
         title: t('layout.header.userCenter'),
-        icon: 'simple-icons:about-dot-me',
+        icon: 'simple-icons:aboutdotme',
         hideMenu: true,
       },
     },
