@@ -1,7 +1,7 @@
 import { ${BusinessName}IM,#if($table.tree || $api.export) ${BusinessName}PM,#end#if(!$table.tree) ${BusinessName}PPM,#end#if($table.tree) ${BusinessName}LM#else ${BusinessName}LRM#end } from '@/model/${moduleName}/${authorityName}#if(!$isDependMode)/${businessName}.model#end';
 import { defHttp } from '@/utils/http/axios';
 #if($api.export)
-import { formatToDateTime } from '@/utils/dateUtil';
+import { formatToDateTime } from '@/utils/core/DateUtil';
 import dayjs from 'dayjs';
 #end
 
