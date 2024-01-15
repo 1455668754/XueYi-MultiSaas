@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
@@ -49,7 +50,7 @@ public class AuthServerConfig {
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
         OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer();
 
-        http.apply(authorizationServerConfigurer
+        http.with(authorizationServerConfigurer
                 // 个性化认证授权端点
                 .tokenEndpoint((tokenEndpoint) -> tokenEndpoint
                         // 注入自定义的授权认证Converter
@@ -67,8 +68,7 @@ public class AuthServerConfig {
                 .authorizationEndpoint(authorizationEndpoint -> authorizationEndpoint
                         // 授权码端点个性化confirm页面
                         .consentPage(SecurityConstants.CUSTOM_CONSENT_PAGE_URI)
-                )
-        );
+                ), Customizer.withDefaults());
 
         AntPathRequestMatcher[] requestMatchers = new AntPathRequestMatcher[]{
                 AntPathRequestMatcher.antMatcher("/token/**"), AntPathRequestMatcher.antMatcher("/actuator/**"),
@@ -79,12 +79,12 @@ public class AuthServerConfig {
                 // 自定义接口、端点暴露
                 .requestMatchers(requestMatchers).permitAll()
                 .anyRequest().authenticated()
-        ).apply(authorizationServerConfigurer
+        ).with(authorizationServerConfigurer
                 // redis存储token的实现
                 .authorizationService(authorizationService)
-                .authorizationServerSettings(AuthorizationServerSettings.builder().issuer(SecurityConstants.PROJECT_LICENSE).build()));
+                .authorizationServerSettings(AuthorizationServerSettings.builder().issuer(SecurityConstants.PROJECT_LICENSE).build()), Customizer.withDefaults());
         // 授权码登录的登录页个性化
-        http.apply(new FormIdentityLoginConfigurer());
+        http.with(new FormIdentityLoginConfigurer(), Customizer.withDefaults());
         DefaultSecurityFilterChain securityFilterChain = http.build();
 
         // 注入自定义授权模式实现
