@@ -181,7 +181,7 @@ public class MRouteUtils {
     private static String getComponent(SysMenuDto menu) {
         return menu.isEmbedded() || menu.isExternalLinks()
                 ? ComponentType.IFRAME.getCode()
-                : ObjectUtil.equals(AuthorityConstants.MENU_TOP_NODE, menu.getParentId())&&!menu.isMenu()
+                : ObjectUtil.equals(AuthorityConstants.MENU_TOP_NODE, menu.getParentId()) && !(menu.isMenu() || menu.isDetails())
                 ? ComponentType.LAYOUT.getCode()
                 : menu.getComponent();
     }
