@@ -21,7 +21,7 @@
 
 <script lang="ts" setup>
   import { type Recordable } from '@xueyi/types';
-  import { PropType, ref, unref, watch, watchEffect } from 'vue';
+  import { PropType, ref, unref, watch } from 'vue';
   import { Cascader, CascaderProps } from 'ant-design-vue';
   import { propTypes } from '@/utils/propTypes';
   import { isFunction } from '@/utils/core/ObjectUtil';
@@ -160,9 +160,15 @@
     }
   };
 
-  watchEffect(() => {
-    props.immediate && initialFetch();
-  });
+  watch(
+    () => props.immediate,
+    () => {
+      props.immediate && initialFetch();
+    },
+    {
+      immediate: true,
+    },
+  );
 
   watch(
     () => props.initFetchParams,
