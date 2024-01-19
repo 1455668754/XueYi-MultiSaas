@@ -85,6 +85,7 @@
     'ok',
     'register',
     'update:open',
+    'fullscreen',
   ]);
 
   const attrs = useAttrs();
@@ -120,7 +121,11 @@
     };
   });
 
-  const { handleFullScreen, getWrapClassName, fullScreenRef } = useFullScreen({
+  const {
+    handleFullScreen: handleFullScreenInner,
+    getWrapClassName,
+    fullScreenRef,
+  } = useFullScreen({
     modalWrapperRef,
     extHeightRef,
     wrapClassName: toRef(getMergeProps.value, 'wrapClassName'),
@@ -229,5 +234,11 @@
     if (!props.canFullscreen) return;
     e.stopPropagation();
     handleFullScreen(e);
+  }
+
+  // 事件传递
+  function handleFullScreen(e) {
+    handleFullScreenInner(e);
+    emit('fullscreen');
   }
 </script>
