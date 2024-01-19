@@ -9,6 +9,7 @@ export function useTableHeader(
   propsRef: ComputedRef<BasicTableProps>,
   slots: Slots,
   handlers: InnerHandlers,
+  //
   methods: InnerMethods,
 ) {
   const getHeaderProps = computed((): Recordable => {
@@ -31,6 +32,7 @@ export function useTableHeader(
                 showTableSetting,
                 tableSetting,
                 onColumnsChange: handlers.onColumnsChange,
+                //
                 clearSelectedRowKeys: methods.clearSelectedRowKeys,
                 count: methods.getSelectRowKeys().length,
                 showSelectionBar,

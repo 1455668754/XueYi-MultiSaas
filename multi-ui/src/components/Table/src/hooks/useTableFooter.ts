@@ -1,16 +1,12 @@
 import type { ComputedRef, Ref } from 'vue';
-import { computed, h, nextTick, unref, watchEffect } from 'vue';
 import type { BasicTableProps } from '../types/table';
+import { unref, computed, h, nextTick, watchEffect } from 'vue';
 import TableFooter from '../components/TableFooter.vue';
 import { useEventListener } from '@/hooks/event/useEventListener';
 
 export function useTableFooter(
   propsRef: ComputedRef<BasicTableProps>,
-  scrollRef: ComputedRef<{
-    x: string | number | true;
-    y: string | number | null;
-    scrollToFirstRowOnChange: boolean;
-  }>,
+  scrollRef: ComputedRef<BasicTableProps['scroll']>,
   tableElRef: Ref<ComponentRef>,
   getDataSourceRef: ComputedRef<Recordable>,
 ) {
@@ -52,6 +48,5 @@ export function useTableFooter(
       });
     });
   }
-
   return { getFooterProps };
 }

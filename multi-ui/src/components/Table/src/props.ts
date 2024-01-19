@@ -2,6 +2,7 @@ import type { PropType } from 'vue';
 import type { PaginationProps } from './types/pagination';
 import type {
   BasicColumn,
+  BasicTableProps,
   FetchSetting,
   SizeType,
   SorterResult,
@@ -13,6 +14,7 @@ import type { FormProps } from '@/components/Form';
 
 import { DEFAULT_FILTER_FN, DEFAULT_SIZE, DEFAULT_SORT_FN, FETCH_SETTING } from './const';
 import { propTypes } from '@/utils/propTypes';
+import type { Key } from 'ant-design-vue/lib/table/interface';
 
 export const basicProps = {
   clickToRowSelect: { type: Boolean, default: true },
@@ -119,7 +121,7 @@ export const basicProps = {
     default: null,
   },
   rowKey: {
-    type: [String, Function] as PropType<string | ((record: Recordable) => string)>,
+    type: [String, Function] as PropType<BasicTableProps['rowKey']>,
     default: '',
   },
   bordered: propTypes.bool,
@@ -132,17 +134,11 @@ export const basicProps = {
     type: Function as PropType<(record: TableCustomRecord<any>, index: number) => string>,
   },
   scroll: {
-    type: Object as PropType<{ x: number | string | true; y: number | string }>,
-    default: null,
+    type: Object as PropType<PropType<BasicTableProps['scroll']>>,
   },
   beforeEditSubmit: {
     type: Function as PropType<
-      (data: {
-        record: Recordable;
-        index: number;
-        key: string | number;
-        value: any;
-      }) => Promise<any>
+      (data: { record: Recordable; index: number; key: Key; value: any }) => Promise<any>
     >,
   },
   size: {

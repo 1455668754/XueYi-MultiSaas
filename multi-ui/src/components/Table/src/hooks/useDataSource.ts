@@ -1,5 +1,5 @@
 import type { BasicTableProps, FetchParams, SorterResult } from '../types/table';
-import type { PaginationProps } from '../types/pagination';
+import type { PaginationProps } from '@/components/Table';
 import {
   computed,
   ComputedRef,
@@ -16,6 +16,8 @@ import { buildUUID } from '@/utils/core/IdUtil';
 import { isBoolean, isFunction, isObject } from '@/utils/core/ObjectUtil';
 import { cloneDeep, get, merge } from 'lodash-es';
 import { FETCH_SETTING, PAGE_SIZE, ROW_KEY } from '../const';
+import { parseRowKeyValue } from '../helper';
+import type { Key } from 'ant-design-vue/lib/table/interface';
 
 interface ActionType {
   getPaginationInfo: ComputedRef<boolean | PaginationProps>;
@@ -139,7 +141,7 @@ export function useDataSource(
     return unref(dataSourceRef);
   });
 
-  async function updateTableData(index: number, key: string, value: any) {
+  async function updateTableData(index: number, key: Key, value: any) {
     const record = dataSourceRef.value[index];
     if (record) {
       dataSourceRef.value[index][key] = value;
@@ -147,11 +149,8 @@ export function useDataSource(
     return dataSourceRef.value[index];
   }
 
-  function updateTableDataRecord(
-    rowKey: string | number,
-    record: Recordable,
-  ): Recordable | undefined {
-    const row = findTableDataRecord(rowKey);
+  function updateTableDataRecord(keyValue: Key, record: Recordable): Recordable | undefined {
+    const row = findTableDataRecord(keyValue);
 
     if (row) {
       for (const field in row) {
@@ -161,34 +160,28 @@ export function useDataSource(
     }
   }
 
-  function deleteTableDataRecord(rowKey: string | number | string[] | number[]) {
+  function deleteTableDataRecord(keyValues: Key | Key[]) {
     if (!dataSourceRef.value || dataSourceRef.value.length == 0) return;
-    const rowKeyName = unref(getRowKey);
-    if (!rowKeyName) return;
-    const rowKeys = !Array.isArray(rowKey) ? [rowKey] : rowKey;
+    const delKeyValues = !Array.isArray(keyValues) ? [keyValues] : keyValues;
 
-    function deleteRow(data, key) {
-      const row: { index: number; data: [] } = findRow(data, key);
+    function deleteRow(data, keyValue) {
+      const row: { index: number; data: [] } = findRow(data, keyValue);
       if (row === null || row.index === -1) {
         return;
       }
       row.data.splice(row.index, 1);
 
-      function findRow(data, key) {
+      function findRow(data, keyValue) {
         if (data === null || data === undefined) {
           return null;
         }
         for (let i = 0; i < data.length; i++) {
           const row = data[i];
-          let targetKeyName: string = rowKeyName as string;
-          if (isFunction(rowKeyName)) {
-            targetKeyName = rowKeyName(row);
-          }
-          if (row[targetKeyName] === key) {
+          if (parseRowKeyValue(unref(getRowKey), row) === keyValue) {
             return { index: i, data };
           }
           if (row.children?.length > 0) {
-            const result = findRow(row.children, key);
+            const result = findRow(row.children, keyValue);
             if (result != null) {
               return result;
             }
@@ -198,9 +191,9 @@ export function useDataSource(
       }
     }
 
-    for (const key of rowKeys) {
-      deleteRow(dataSourceRef.value, key);
-      deleteRow(unref(propsRef).dataSource, key);
+    for (const keyValue of delKeyValues) {
+      deleteRow(dataSourceRef.value, keyValue);
+      deleteRow(unref(propsRef).dataSource, keyValue);
     }
     setPagination({
       total: unref(propsRef).dataSource?.length,
@@ -218,40 +211,22 @@ export function useDataSource(
     return unref(dataSourceRef);
   }
 
-  function findTableDataRecord(rowKey: string | number) {
+  function findTableDataRecord(keyValue: Key) {
     if (!dataSourceRef.value || dataSourceRef.value.length == 0) return;
-
-    const rowKeyName = unref(getRowKey);
-    if (!rowKeyName) return;
-
     const { childrenColumnName = 'children' } = unref(propsRef);
 
     const findRow = (array: any[]) => {
       let ret;
       array.some(function iter(r) {
-        if (typeof rowKeyName === 'function') {
-          if ((rowKeyName(r) as string) === rowKey) {
-            ret = r;
-            return true;
-          }
-        } else {
-          if (Reflect.has(r, rowKeyName) && r[rowKeyName] === rowKey) {
-            ret = r;
-            return true;
-          }
+        if (parseRowKeyValue(unref(getRowKey), r) === keyValue) {
+          ret = r;
+          return true;
         }
         return r[childrenColumnName] && r[childrenColumnName].some(iter);
       });
       return ret;
     };
 
-    // const row = dataSourceRef.value.find(r => {
-    //   if (typeof rowKeyName === 'function') {
-    //     return (rowKeyName(r) as string) === rowKey
-    //   } else {
-    //     return Reflect.has(r, rowKeyName) && r[rowKeyName] === rowKey
-    //   }
-    // })
     return findRow(dataSourceRef.value);
   }
 

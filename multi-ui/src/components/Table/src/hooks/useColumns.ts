@@ -1,5 +1,5 @@
 import type { BasicColumn, BasicTableProps, CellFormat, GetColumnsParams } from '../types/table';
-import type { PaginationProps } from '../types/pagination';
+import type { PaginationProps } from '@/components/Table';
 import type { ComputedRef } from 'vue';
 import { computed, reactive, ref, Ref, toRaw, unref, watch } from 'vue';
 import { renderEditCell } from '../components/editable';
