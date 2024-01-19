@@ -8,7 +8,7 @@ import { promiseTimeout, useDebounceFn } from '@vueuse/core';
 
 import {
   footerHeight as layoutFooterHeight,
-  layoutMultipleHeadePlaceholderTime,
+  layoutMultipleHeaderPlaceholderTime,
 } from '@/settings/designSetting';
 
 import { useRootSetting } from '@/hooks/setting/useRootSetting';
@@ -49,7 +49,7 @@ export function useTableScroll(
     () => [unref(getFullContent)],
     async () => {
       // 等待动画结束后200毫秒
-      await promiseTimeout(layoutMultipleHeadePlaceholderTime * 1000 + 200);
+      await promiseTimeout(layoutMultipleHeaderPlaceholderTime * 1000 + 200);
       debounceRedoHeight();
     },
     {
