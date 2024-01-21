@@ -24,7 +24,6 @@ export const tenantInitList = [
   { key: 'strategy', title: '策略源', current: 0 },
   { key: 'tenant', title: '租户信息', current: 1 },
   { key: 'organize', title: '租户数据', current: 2 },
-  { key: 'authority', title: '租户权限', current: 3 },
 ];
 
 /** 表格数据 */
@@ -358,7 +357,7 @@ export const formSchema: FormSchema[] = [
     field: 'doMain',
     component: 'Input',
     helpMessage: '租户绑定顶级域名或者二级域名',
-   
+
     colProps: { span: 12 },
   },
   {
