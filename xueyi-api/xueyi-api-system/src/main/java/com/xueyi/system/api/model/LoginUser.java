@@ -35,6 +35,7 @@ public class LoginUser extends BaseLoginUser<SysUserDto> {
         setUser(user);
         setUserId(user.getId());
         setUserName(user.getUserName());
+        setNickName(user.getNickName());
         setUserType(user.getUserType());
         setPassword(user.getPassword());
     }
