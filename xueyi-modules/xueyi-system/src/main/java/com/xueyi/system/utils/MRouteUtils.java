@@ -103,7 +103,6 @@ public class MRouteUtils {
         router.setPath(getRouterPath(menu));
         router.setName(menu.getName());
         router.setDisabled(StrUtil.equals(DictConstants.DicYesNo.YES.getCode(), menu.getIsDisabled()));
-        router.setParamPath(menu.getParamPath());
         router.setComponent(getComponent(menu));
     }
 
@@ -149,6 +148,7 @@ public class MRouteUtils {
             meta.setIsLink(true);
         }
         meta.setOrderNo(menu.getSort());
+        meta.setParams(menu.getParamPath());
         meta.setIgnoreRoute(StrUtil.equals(DictConstants.DicYesNo.YES.getCode(), menu.getIgnoreRoute()));
         meta.setHidePathForChildren(StrUtil.equals(DictConstants.DicShowHide.HIDE.getCode(), menu.getHidePathForChildren()));
         return meta;

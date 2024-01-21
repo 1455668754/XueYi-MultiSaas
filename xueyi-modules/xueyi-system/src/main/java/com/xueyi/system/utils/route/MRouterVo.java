@@ -32,9 +32,6 @@ public class MRouterVo {
     /** 菜单标签设置 */
     private MTagVo tag;
 
-    /** 路由参数：如 {"id": 1, "name": "xy"} */
-    private String paramPath;
-
     /** 其他元素 */
     private MMetaVo meta;
 

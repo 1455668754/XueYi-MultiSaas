@@ -44,7 +44,10 @@ public class MMetaVo {
     private Boolean hideChildrenInMenu;
 
     /** 是否为单级菜单 */
-    private Boolean single;  // 暂无
+    private Boolean single;
+
+    /** 路由参数：如 {"id": 1, "name": "xy"} */
+    private String params;
 
     /** 当前激活的菜单。用于配置详情页时左侧激活的菜单路径 */
     private String currentActiveMenu;
