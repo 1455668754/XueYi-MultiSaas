@@ -1,6 +1,9 @@
 package com.xueyi.common.core.utils.core;
 
+import cn.hutool.core.date.DatePattern;
+
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * LocalDateTime工具类
@@ -9,6 +12,12 @@ import java.time.LocalDate;
  */
 public class LocalDateTimeUtil extends cn.hutool.core.date.LocalDateTimeUtil {
 
+    /**
+     * 时间字符串转LocalDate
+     *
+     * @param time 时间字符串
+     * @return LocalDate
+     */
     public static LocalDate parseDate(String time) {
         if (StrUtil.isBlank(time)) {
             return null;
@@ -68,5 +77,18 @@ public class LocalDateTimeUtil extends cn.hutool.core.date.LocalDateTimeUtil {
             }
         }
         return date;
+    }
+
+    /**
+     * 时间字符串转LocalDateTime
+     *
+     * @param text 时间字符串
+     * @return LocalDateTime
+     */
+    public static LocalDateTime parseDateTime(String text) {
+        if (StrUtil.isNotEmpty(text) && text.length() <= 10)
+            return parse(text, DatePattern.NORM_DATE_PATTERN);
+        else
+            return parse(text, DatePattern.NORM_DATETIME_PATTERN);
     }
 }
