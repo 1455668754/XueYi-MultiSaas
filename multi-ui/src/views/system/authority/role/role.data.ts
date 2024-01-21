@@ -225,7 +225,6 @@ export const authFormSchema: FormSchema[] = [
     label: ' ',
     field: 'authIds',
     slot: 'auth',
-    component: 'Input',
     colProps: { span: 24 },
   },
 ];
@@ -272,7 +271,6 @@ export const organizeFormSchema: FormSchema[] = [
     label: ' ',
     field: 'organizeIds',
     slot: 'organize',
-    component: 'Input',
     show: ({ values }) => values.dataScope == DataScopeEnum.CUSTOM,
     colProps: { span: 24 },
   },

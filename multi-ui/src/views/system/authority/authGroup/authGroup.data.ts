@@ -157,7 +157,6 @@ export const authFormSchema: FormSchema[] = [
     label: ' ',
     field: 'authIds',
     slot: 'menu',
-    component: 'Input',
     colProps: { span: 24 },
   },
 ];
