@@ -103,7 +103,6 @@ export const formSchema: FormSchema[] = [
       treeNodeFilterProp: 'title',
       fieldNames: {
         label: 'name',
-        key: 'id',
         value: 'id',
       },
       getPopupContainer: () => document.body,

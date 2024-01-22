@@ -22,6 +22,7 @@ import { useUserStore } from '@/store/modules/user';
 import { dictConversion } from '@/utils/xueyi';
 import { isNotEmpty } from '@/utils/core/ObjectUtil';
 import { listTenantApi } from '@/api/tenant/tenant/tenant.api';
+import { SelectValue } from 'ant-design-vue/es/select';
 
 /** 字典查询 */
 export const dictMap = await dicDictList([
@@ -264,41 +265,43 @@ export const formSchema: FormSchema[] = [
         resultField: 'items',
         labelField: 'name',
         valueField: 'id',
-        onChange: async (e: string | undefined) => {
-          if (formModel.moduleId !== e) {
-            const treeData =
-              e === undefined
-                ? []
-                : await getMenuRouteListApi({
-                    id: formModel.id,
-                    moduleId: e,
-                    menuTypeLimit: MenuTypeEnum.DETAILS,
-                    exNodes: formModel.id !== undefined,
-                    defaultNode: true,
-                  });
-            formModel.parentId = searchTree(treeData, formModel.parentId);
-            const { updateSchema } = formActionType;
-            updateSchema({
-              field: 'parentId',
-              componentProps: { treeData },
-            });
-          }
+        onChange: (e: SelectValue) => {
+          (async () => {
+            if (formModel.moduleId !== e) {
+              const treeData =
+                e === undefined
+                  ? []
+                  : await getMenuRouteListApi({
+                      id: formModel.id,
+                      moduleId: e as string,
+                      menuTypeLimit: MenuTypeEnum.DETAILS,
+                      exNodes: formModel.id !== undefined,
+                      defaultNode: true,
+                    });
+              formModel.parentId = searchTree(treeData, formModel.parentId);
+              const { updateSchema } = formActionType;
+              updateSchema({
+                field: 'parentId',
+                componentProps: { treeData },
+              });
+            }
 
-          function searchTree(nodes, searchKey) {
-            for (let _i = 0; _i < nodes.length; _i++) {
-              if (nodes[_i].id === searchKey) {
-                return nodes[_i].id;
-              } else {
-                if (nodes[_i].children && nodes[_i].children.length > 0) {
-                  const res = searchTree(nodes[_i].children, searchKey);
-                  if (res) {
-                    return res;
+            function searchTree(nodes, searchKey) {
+              for (let _i = 0; _i < nodes.length; _i++) {
+                if (nodes[_i].id === searchKey) {
+                  return nodes[_i].id;
+                } else {
+                  if (nodes[_i].children && nodes[_i].children.length > 0) {
+                    const res = searchTree(nodes[_i].children, searchKey);
+                    if (res) {
+                      return res;
+                    }
                   }
                 }
               }
+              return undefined;
             }
-            return undefined;
-          }
+          })();
         },
       };
     },
@@ -315,7 +318,6 @@ export const formSchema: FormSchema[] = [
       treeNodeFilterProp: 'title',
       fieldNames: {
         label: 'title',
-        key: 'id',
         value: 'id',
       },
       getPopupContainer: () => document.body,

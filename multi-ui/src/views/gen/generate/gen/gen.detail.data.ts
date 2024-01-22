@@ -18,6 +18,7 @@ import { h } from 'vue';
 import { Input, Select, Switch } from 'ant-design-vue';
 import { DicCodeEnum, DicStatusEnum, DicYesNoEnum } from '@/enums';
 import { hasTreeNode } from '@/utils/core/treeUtil';
+import { SelectValue } from 'ant-design-vue/es/select';
 
 type CheckedType = boolean | string | number;
 
@@ -554,27 +555,29 @@ export const generateBaseSchema: FormSchema[] = [
         resultField: 'items',
         labelField: 'name',
         valueField: 'id',
-        onChange: async (e: string | undefined) => {
-          const treeData =
-            e === undefined
-              ? []
-              : await getMenuRouteListApi({
-                  moduleId: e,
-                  menuTypeLimit: MenuTypeEnum.DIR,
-                  defaultNode: true,
-                });
-          if (formModel.parentMenuId !== undefined && formModel.parentMenuId !== COMMON_MENU) {
-            if (!hasTreeNode(treeData, 'id', 'children', formModel.parentMenuId)) {
-              formModel.parentMenuId = undefined;
+        onChange: (e: SelectValue) => {
+          (async () => {
+            const treeData =
+              e === undefined
+                ? []
+                : await getMenuRouteListApi({
+                    moduleId: e as string,
+                    menuTypeLimit: MenuTypeEnum.DIR,
+                    defaultNode: true,
+                  });
+            if (formModel.parentMenuId !== undefined && formModel.parentMenuId !== COMMON_MENU) {
+              if (!hasTreeNode(treeData, 'id', 'children', formModel.parentMenuId)) {
+                formModel.parentMenuId = undefined;
+              }
             }
-          }
-          if (formActionType !== undefined) {
-            const { updateSchema } = formActionType;
-            updateSchema({
-              field: 'parentMenuId',
-              componentProps: { treeData },
-            });
-          }
+            if (formActionType !== undefined) {
+              const { updateSchema } = formActionType;
+              updateSchema({
+                field: 'parentMenuId',
+                componentProps: { treeData },
+              });
+            }
+          })();
         },
       };
     },
@@ -590,7 +593,6 @@ export const generateBaseSchema: FormSchema[] = [
       treeNodeFilterProp: 'title',
       fieldNames: {
         label: 'title',
-        key: 'id',
         value: 'id',
       },
       getPopupContainer: () => document.body,

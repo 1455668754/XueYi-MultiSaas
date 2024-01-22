@@ -147,7 +147,7 @@ export const formSchema: FormSchema[] = [
         treeNodeFilterProp: 'label',
         labelField: 'label',
         valueField: 'id',
-        onSelect: (value: string, node: any) => {
+        onSelect: (value, node) => {
           if (formModel !== undefined && isEqual(node?.type, OrganizeTypeEnum.DEPT)) {
             pull(formModel.postIds, value);
           }
