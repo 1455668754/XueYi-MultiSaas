@@ -169,7 +169,6 @@
           dynamicRules,
           required,
         } = props.schema;
-
         if (isFunction(dynamicRules)) {
           return dynamicRules(unref(getValues)) as ValidationRule[];
         }
@@ -180,7 +179,7 @@
         const joinLabel = Reflect.has(props.schema, 'rulesMessageJoinLabel')
           ? rulesMessageJoinLabel
           : globalRulesMessageJoinLabel;
-        const assertLabel = joinLabel ? label : '';
+        const assertLabel = joinLabel ? (isFunction(label) ? '' : label) : '';
         const defaultMsg = component
           ? createPlaceholderMessage(component) + assertLabel
           : assertLabel;
@@ -339,12 +338,13 @@
 
       function renderLabelHelpMessage() {
         const { label, helpMessage, helpComponentProps, subLabel } = props.schema;
+        const getLabel = isFunction(label) ? label(unref(getValues)) : label;
         const renderLabel = subLabel ? (
           <span>
-            {label} <span class="text-secondary">{subLabel}</span>
+            {getLabel} <span class="text-secondary">{subLabel}</span>
           </span>
         ) : (
-          label
+          getLabel
         );
         const getHelpMessage = isFunction(helpMessage)
           ? helpMessage(unref(getValues))
@@ -387,8 +387,8 @@
             return slot
               ? getSlot(slots, slot, unref(getValues), opts)
               : render
-              ? render(unref(getValues), opts)
-              : renderComponent();
+                ? render(unref(getValues), opts)
+                : renderComponent();
           };
 
           const showSuffix = !!suffix;
@@ -439,8 +439,8 @@
           return colSlot
             ? getSlot(slots, colSlot, values, opts)
             : renderColContent
-            ? renderColContent(values, opts)
-            : renderItem();
+              ? renderColContent(values, opts)
+              : renderItem();
         };
 
         return (
