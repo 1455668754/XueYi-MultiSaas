@@ -162,8 +162,9 @@ interface BaseFormSchema<T extends ComponentType = any> {
         tableAction: TableActionType;
         formActionType: FormActionType;
         formModel: Recordable;
-      }) => ComponentProps[T])
-    | ComponentProps[T];
+      }) => ComponentProps[T] | any)
+    | ComponentProps[T]
+    | any;
   // Required
   required?: boolean | ((renderCallbackParams: RenderCallbackParams) => boolean);
 
