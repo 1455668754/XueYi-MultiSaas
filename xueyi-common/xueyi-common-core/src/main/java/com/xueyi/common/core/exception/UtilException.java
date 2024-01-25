@@ -1,5 +1,7 @@
 package com.xueyi.common.core.exception;
 
+import com.xueyi.common.core.utils.core.StrUtil;
+
 import java.io.Serial;
 
 /**
@@ -20,7 +22,11 @@ public class UtilException extends RuntimeException {
         super(message);
     }
 
-    public UtilException(String message, Throwable throwable) {
+    public UtilException(String message, Object... params) {
+        super(StrUtil.format(message, params));
+    }
+
+    public UtilException(Throwable throwable, String message) {
         super(message, throwable);
     }
 }
