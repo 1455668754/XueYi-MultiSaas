@@ -39,15 +39,15 @@ public class SysConfigManagerImpl extends BaseManagerImpl<SysConfigQuery, SysCon
     /**
      * 校验参数编码是否唯一
      *
-     * @param Id   参数Id
+     * @param id   参数Id
      * @param code 参数编码
      * @return 参数对象
      */
     @Override
-    public SysConfigDto checkConfigCodeUnique(Long Id, String code) {
+    public SysConfigDto checkConfigCodeUnique(Long id, String code) {
         SysConfigPo config = baseMapper.selectOne(
                 Wrappers.<SysConfigPo>lambdaQuery()
-                        .ne(SysConfigPo::getId, Id)
+                        .ne(SysConfigPo::getId, id)
                         .eq(SysConfigPo::getCode, code)
                         .eq(SysConfigPo::getTenantId, TenantConstants.COMMON_TENANT_ID)
                         .last(SqlConstants.LIMIT_ONE));
@@ -57,14 +57,14 @@ public class SysConfigManagerImpl extends BaseManagerImpl<SysConfigQuery, SysCon
     /**
      * 校验是否为内置参数
      *
-     * @param Id 参数Id
+     * @param id 参数Id
      * @return 参数对象
      */
     @Override
-    public SysConfigDto checkIsBuiltIn(Long Id) {
+    public SysConfigDto checkIsBuiltIn(Long id) {
         SysConfigPo config = baseMapper.selectOne(
                 Wrappers.<SysConfigPo>lambdaQuery()
-                        .eq(SysConfigPo::getId, Id)
+                        .eq(SysConfigPo::getId, id)
                         .eq(SysConfigPo::getType, BaseConstants.Whether.YES.getCode())
                         .last(SqlConstants.LIMIT_ONE));
         return baseConverter.mapperDto(config);

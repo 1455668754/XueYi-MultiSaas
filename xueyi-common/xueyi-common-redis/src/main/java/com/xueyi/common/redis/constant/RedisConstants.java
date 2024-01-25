@@ -22,7 +22,8 @@ public class RedisConstants {
         SYS_CORRELATE_KEY("system:correlate:{}.{}", "数据关联工具"),
         SYS_CORRELATE_IMPL_KEY("system:correlate:service:{}", "数据关联工具"),
         DICT_KEY("system:dict:{}", "字典缓存"),
-        CONFIG_KEY("system:config:{}", "参数缓存");
+        CONFIG_KEY("system:config:{}", "参数缓存"),
+        IM_EX_KEY("system:im_ex:{}", "导入导出配置缓存"),;
 
         private final String code;
         private final String info;

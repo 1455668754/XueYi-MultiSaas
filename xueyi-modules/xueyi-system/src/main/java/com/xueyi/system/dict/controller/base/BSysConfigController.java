@@ -37,7 +37,7 @@ public class BSysConfigController extends BaseController<SysConfigQuery, SysConf
             warn("请传入编码后再查询字典");
         }
         Map<String, Object> configMap = new HashMap<>();
-        configMap.put(code, DictUtil.getConfigCache(CacheConstants.ConfigType.getByCode(code)));
+        configMap.put(code, getConfigCache(code));
         return AjaxResult.success(configMap);
     }
 
@@ -45,11 +45,11 @@ public class BSysConfigController extends BaseController<SysConfigQuery, SysConf
      * 根据参数类型查询参数数据信息
      */
     public AjaxResult getDictListByCodeList(List<String> codeList) {
-        if (cn.hutool.core.collection.CollUtil.isEmpty(codeList)) {
+        if (CollUtil.isEmpty(codeList)) {
             warn("请传入编码后再查询字典");
         }
         Map<String, Object> configMap = new HashMap<>();
-        codeList.forEach(code -> configMap.put(code, DictUtil.getConfigCache(CacheConstants.ConfigType.getByCode(code))));
+        codeList.forEach(code -> configMap.put(code, getConfigCache(code)));
         return AjaxResult.success(configMap);
     }
 
@@ -60,7 +60,7 @@ public class BSysConfigController extends BaseController<SysConfigQuery, SysConf
      * @return 参数
      */
     public AjaxResult getValueByCode(String code) {
-        Object obj = DictUtil.getConfigCache(CacheConstants.ConfigType.getByCode(code));
+        Object obj = getConfigCache(code);
         return success(obj);
     }
 
@@ -96,5 +96,16 @@ public class BSysConfigController extends BaseController<SysConfigQuery, SysConf
                 warn(StrUtil.format("成功{}除内置参数外的所有参数！", operate.getInfo()));
             }
         }
+    }
+
+    /**
+     * 获取参数缓存信息
+     *
+     * @param key 参数缓存键
+     * @return 参数缓存信息
+     */
+    private Object getConfigCache(String key) {
+        CacheConstants.ConfigType configType = CacheConstants.ConfigType.getByCodeElseNull(key);
+        return ObjectUtil.isNotNull(configType) ? DictUtil.getConfigCache(configType) : DictUtil.getCusConfigCache(key);
     }
 }

@@ -48,7 +48,7 @@ public class ISysConfigController extends BSysConfigController {
     @InnerAuth(isAnonymous = true)
     @GetMapping("/common/refresh")
     @Log(title = "参数管理", businessType = BusinessType.REFRESH)
-    public R<Boolean> refreshTeCacheInner() {
+    public R<Boolean> refreshCommonCacheInner() {
         SecurityContextHolder.setEnterpriseId(SecurityConstants.COMMON_TENANT_ID.toString());
         return super.refreshCacheInner();
     }

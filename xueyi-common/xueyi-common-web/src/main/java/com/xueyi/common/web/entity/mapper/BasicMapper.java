@@ -5,6 +5,7 @@ import com.xueyi.common.core.utils.core.ArrayUtil;
 import com.xueyi.common.core.web.entity.base.BasisEntity;
 import com.xueyi.common.web.annotation.AutoInject;
 import com.xueyi.common.web.correlate.domain.SqlField;
+import com.xueyi.common.web.correlate.utils.SqlHandleUtil;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public interface BasicMapper<P extends BasisEntity> extends com.baomidou.mybatis
         if (ArrayUtil.isNotEmpty(field)) {
             return selectList(
                     Wrappers.<P>query().lambda()
-                            .func(i -> com.xueyi.common.web.correlate.utils.SqlHandleUtil.fieldCondition(i, field)));
+                            .func(i -> SqlHandleUtil.fieldCondition(i, field)));
         }
         return new ArrayList<>();
     }

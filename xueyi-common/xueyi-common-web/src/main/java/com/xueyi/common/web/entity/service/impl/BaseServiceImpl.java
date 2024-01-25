@@ -8,6 +8,7 @@ import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.redis.constant.RedisConstants;
 import com.xueyi.common.web.correlate.contant.CorrelateConstants;
+import com.xueyi.common.web.correlate.domain.SqlField;
 import com.xueyi.common.web.correlate.service.CorrelateService;
 import com.xueyi.common.web.entity.manager.IBaseManager;
 import com.xueyi.common.web.entity.service.IBaseService;
@@ -59,7 +60,7 @@ public class BaseServiceImpl<Q extends BaseEntity, D extends BaseEntity, C exten
      * @return 数据对象集合
      */
     @Override
-    public List<D> selectListByField(com.xueyi.common.web.correlate.domain.SqlField... field) {
+    public List<D> selectListByField(SqlField... field) {
         List<D> dtoList = baseManager.selectListByField(field);
         return subCorrelates(dtoList);
     }

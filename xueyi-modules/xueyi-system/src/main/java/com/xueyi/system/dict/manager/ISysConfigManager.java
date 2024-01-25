@@ -22,18 +22,18 @@ public interface ISysConfigManager extends IBaseManager<SysConfigQuery, SysConfi
     /**
      * 校验参数编码是否唯一
      *
-     * @param Id   参数Id
+     * @param id   参数Id
      * @param code 参数编码
      * @return 参数对象
      */
-    SysConfigDto checkConfigCodeUnique(Long Id, String code);
+    SysConfigDto checkConfigCodeUnique(Long id, String code);
 
     /**
      * 校验是否为内置参数
      *
-     * @param Id 参数Id
+     * @param id 参数Id
      * @return 参数对象
      */
-    SysConfigDto checkIsBuiltIn(Long Id);
+    SysConfigDto checkIsBuiltIn(Long id);
 
 }

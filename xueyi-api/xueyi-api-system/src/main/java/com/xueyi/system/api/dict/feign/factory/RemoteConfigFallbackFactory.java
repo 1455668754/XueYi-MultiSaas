@@ -31,7 +31,7 @@ public class RemoteConfigFallbackFactory implements FallbackFactory<RemoteConfig
             }
 
             @Override
-            public R<Boolean> refreshTeCacheInner() {
+            public R<Boolean> refreshCommonCacheInner() {
                 return R.fail("刷新参数缓存失败:" + throwable.getMessage());
             }
         };

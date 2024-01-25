@@ -765,3 +765,32 @@ values (1, 'app',       null, 'app', 'server', 'app,refresh_token', null, null, 
        (3, 'daemon',    null, 'daemon', 'server', 'password,refresh_token', null, null, null, null, null, 'true', 1, '0'),
        (4, 'xueyi',     null, 'xueyi', 'server', 'password,app,refresh_token,authorization_code,client_credentials', 'https://xueyitt.cn', null, null, null, null, 'true', 1, '0'),
        (5, 'gen',       null, 'gen', 'server', 'password,refresh_token', null, null, null, null, null, 'true', 1, '0');
+
+-- ----------------------------
+-- 18、导入导出配置信息表
+-- ----------------------------
+drop table if exists sys_im_ex;
+create table sys_im_ex (
+  id                        bigint              not null                                comment '配置Id',
+  code                      varchar(100)        not null                                comment '配置编码',
+  name                      varchar(100)        not null                                comment '配置名称',
+  import_config             text                                                        comment '导入配置',
+  export_config             text                                                        comment '导出配置',
+  data_type		            char(1)	            not null	                            comment '数据类型（0默认 1只读）',
+  cache_type		        char(1)	            not null	                            comment '缓存类型（0租户 1全局）',
+  sort                      int unsigned        default 0                               comment '显示顺序',
+  remark                    varchar(200)                                                comment '备注',
+  create_by                 bigint                                                      comment '创建者',
+  create_time               datetime            default current_timestamp               comment '创建时间',
+  update_by                 bigint                                                      comment '更新者',
+  update_time               datetime            on update current_timestamp             comment '更新时间',
+  del_flag		            tinyint             not null default 0                      comment '删除标志（0正常 1删除）',
+  tenant_id		            bigint	            not null                                comment '租户Id',
+  primary key (id)
+) engine = innodb comment = '导入导出配置信息表';
+
+INSERT INTO sys_im_ex (id, code, name, import_config, export_config, data_type, cache_type, sort, remark, create_by, create_time, update_by, update_time, del_flag, tenant_id)
+VALUES (1, 'IE0001', '导入导出配置demo',
+        '{	"sheetName": "数据表",	"fieldList": [		{			"name": "资产编号",			"sort": 1,			"field": "assetCode"		},		{			"name": "财务编码",			"sort": 2,			"field": "financeCode"		},		{			"name": "设备名称",			"sort": 3,			"field": "assetName"		},		{			"name": "使用部门",			"sort": 4,			"field": "deptName"		},		{			"name": "使用年限",			"sort": 5,			"field": "assetLife"		},		{			"name": "建筑面积或工程量",			"sort": 6,			"field": "cusKey9"		},		{			"name": "施工单位",			"sort": 7,			"field": "cusKey3"		},		{			"name": "出厂年月",			"sort": 8,			"field": "manufactureTime"		},		{			"name": "结构形式",			"sort": 9,			"field": "cusKey11"		},		{			"name": "建设地点",			"sort": 10,			"field": "cusKey8"		},		{			"name": "立卡年月",			"sort": 11,			"field": "tentCardTime"		},		{			"name": "开工日期",			"sort": 12,			"field": "cusKey10"		},		{			"name": "竣工日期",			"sort": 13,			"field": "cusKey5"		},		{			"name": "原值(元)",			"sort": 14,			"field": "currentPrice"		},		{			"name": "当前管理状态",			"sort": 15,			"field": "status"		},		{			"name": "外形尺寸",			"sort": 16,			"field": "cusKey7"		},		{			"name": "随机附件",			"sort": 17,			"field": "cusKey12"		},		{			"name": "备注",			"sort": 18,			"field": "remark"		},		{			"name": "财务账上编号",			"sort": 19,			"field": "cusKey13"		},		{			"name": "报废日期",			"sort": 20,			"field": "realityScrapTime"		}	]}',
+        '{	"sheetName": "数据表",	"fieldList": [		{			"name": "变更前价值",			"sort": 1,			"field": "beforePrice"		},		{			"name": "变更价值",			"sort": 1,			"field": "modifyPrice"		},		{			"name": "变更后价值",			"sort": 1,			"field": "afterPrice"		},		{			"field": "assetInfo",			"children": [				{					"name": "资产编号",					"sort": 1,					"field": "assetCode"				}			]		}	]}',
+        '3', '1', 0, null, null, '2024-01-23 21:04:08', null, '2024-01-25 11:02:49', 0, 0);

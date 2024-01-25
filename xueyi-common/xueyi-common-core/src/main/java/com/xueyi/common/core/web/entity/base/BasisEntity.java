@@ -51,6 +51,10 @@ public class BasisEntity implements Serializable {
     @TableField(exist = false)
     protected Map<String, Object> params;
 
+    /** 导出编码 */
+    @TableField(exist = false)
+    protected String exCode;
+
     @JsonIgnore
     public String getIdStr() {
         return ObjectUtil.isNotNull(id) ? id.toString() : null;

@@ -32,17 +32,17 @@ public interface ISysConfigService extends IBaseService<SysConfigQuery, SysConfi
     /**
      * 校验参数编码是否唯一
      *
-     * @param Id         参数Id
+     * @param id         参数Id
      * @param configCode 参数编码
      * @return 结果 | true/false 唯一/不唯一
      */
-    boolean checkConfigCodeUnique(Long Id, String configCode);
+    boolean checkConfigCodeUnique(Long id, String configCode);
 
     /**
      * 校验是否为内置参数
      *
-     * @param Id 参数Id
+     * @param id 参数Id
      * @return 结果 | true/false 是/否
      */
-    boolean checkIsBuiltIn(Long Id);
+    boolean checkIsBuiltIn(Long id);
 }

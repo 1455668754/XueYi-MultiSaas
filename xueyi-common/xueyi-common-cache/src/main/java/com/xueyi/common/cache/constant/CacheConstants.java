@@ -9,6 +9,7 @@ import com.xueyi.common.core.utils.core.SpringUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.system.api.dict.feign.RemoteConfigService;
 import com.xueyi.system.api.dict.feign.RemoteDictService;
+import com.xueyi.system.api.dict.feign.RemoteImExService;
 import com.xueyi.tenant.api.source.feign.RemoteSourceService;
 import com.xueyi.tenant.api.source.feign.RemoteStrategyService;
 import com.xueyi.tenant.api.tenant.feign.RemoteTenantService;
@@ -52,8 +53,8 @@ public class CacheConstants {
         private final Class<?> clazz;
         private final Object defaultValue;
 
-        public static ConfigType getByCode(String code) {
-            return EnumUtil.getByCode(ConfigType.class, code);
+        public static ConfigType getByCodeElseNull(String code) {
+            return EnumUtil.getByCodeElseNull(ConfigType.class, code);
         }
     }
 
@@ -65,9 +66,12 @@ public class CacheConstants {
         ROUTE_DICT_KEY("system:dict:route", false, "字典路由", () -> SpringUtil.getBean(RemoteDictService.class).refreshCommonCacheInner()),
         SYS_DICT_KEY("system:dict:tenant", true, "租户字典", () -> SpringUtil.getBean(RemoteDictService.class).refreshCacheInner()),
         TE_DICT_KEY("system:dict:tenant", true, "通用字典", () -> SpringUtil.getBean(RemoteDictService.class).refreshCommonCacheInner()),
-        ROUTE_CONFIG_KEY("system:config:route", false, "参数路由", () -> SpringUtil.getBean(RemoteConfigService.class).refreshTeCacheInner()),
+        ROUTE_CONFIG_KEY("system:config:route", false, "参数路由", () -> SpringUtil.getBean(RemoteConfigService.class).refreshCommonCacheInner()),
         SYS_CONFIG_KEY("system:config:tenant", true, "租户参数", () -> SpringUtil.getBean(RemoteConfigService.class).refreshCacheInner()),
-        TE_CONFIG_KEY("system:config:tenant", true, "通用参数", () -> SpringUtil.getBean(RemoteDictService.class).refreshCommonCacheInner()),
+        TE_CONFIG_KEY("system:config:tenant", true, "通用参数", () -> SpringUtil.getBean(RemoteConfigService.class).refreshCommonCacheInner()),
+        ROUTE_IM_EX_KEY("system:im_ex:route", false, "导入导出配置路由", () -> SpringUtil.getBean(RemoteImExService.class).refreshCommonCacheInner()),
+        SYS_IM_EX_KEY("system:im_ex:tenant", true, "租户导入导出配置", () -> SpringUtil.getBean(RemoteImExService.class).refreshCacheInner()),
+        TE_IM_EX_KEY("system:im_ex:tenant", true, "通用导入导出配置", () -> SpringUtil.getBean(RemoteImExService.class).refreshCommonCacheInner()),
         TE_STRATEGY_KEY("system:strategy", false, "源策略组", () -> SpringUtil.getBean(RemoteStrategyService.class).refreshCacheInner()),
         TE_SOURCE_KEY("system:source", false, "数据源", () -> SpringUtil.getBean(RemoteSourceService.class).refreshCacheInner()),
         TE_TENANT_KEY("system:tenant", false, "租户", () -> SpringUtil.getBean(RemoteTenantService.class).refreshCacheInner());

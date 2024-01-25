@@ -1,7 +1,6 @@
 package com.xueyi.common.web.entity.controller.handle;
 
 import com.xueyi.common.core.constant.basic.BaseConstants;
-import com.xueyi.common.core.exception.UtilException;
 import com.xueyi.common.core.utils.core.ArrayUtil;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.NumberUtil;
@@ -10,6 +9,7 @@ import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.entity.base.TreeEntity;
 import com.xueyi.common.web.entity.controller.BaseController;
 import com.xueyi.common.web.entity.service.ITreeService;
+import lombok.SneakyThrows;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -93,16 +93,13 @@ public abstract class TreeHandleController<Q extends TreeEntity<D>, D extends Tr
      * @param query 数据查询对象
      * @return Top节点对象
      */
+    @SneakyThrows
     protected D TopNodeBuilder(Q query) {
-        try {
-            D dto = getDClass().getDeclaredConstructor().newInstance();
-            dto.setName(StrUtil.isNotEmpty(query.getTopNodeName()) ? query.getTopNodeName() : "顶级" + getNodeName());
-            dto.setLevel(NumberUtil.Zero);
-            dto.setId(BaseConstants.TOP_ID);
-            dto.setParentId(BaseConstants.TOP_ID);
-            return dto;
-        } catch (Exception e) {
-            throw new UtilException(e);
-        }
+        D dto = getDClass().getDeclaredConstructor().newInstance();
+        dto.setName(StrUtil.isNotEmpty(query.getTopNodeName()) ? query.getTopNodeName() : "顶级" + getNodeName());
+        dto.setLevel(NumberUtil.Zero);
+        dto.setId(BaseConstants.TOP_ID);
+        dto.setParentId(BaseConstants.TOP_ID);
+        return dto;
     }
 }
