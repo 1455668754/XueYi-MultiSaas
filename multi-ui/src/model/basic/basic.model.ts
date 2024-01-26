@@ -17,6 +17,8 @@ export interface BaseEntity {
   updateTime?: string;
   sort?: number;
   remark?: string;
+  /** 导入导出配置编码 */
+  exCode?: string;
   params?: {};
 }
 
