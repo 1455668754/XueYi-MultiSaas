@@ -5,16 +5,7 @@ import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.xueyi.common.core.exception.UtilException;
 import com.xueyi.common.core.utils.DateUtil;
-import com.xueyi.common.core.utils.core.ArrayUtil;
-import com.xueyi.common.core.utils.core.ClassUtil;
-import com.xueyi.common.core.utils.core.CollUtil;
-import com.xueyi.common.core.utils.core.ConvertUtil;
-import com.xueyi.common.core.utils.core.EnumUtil;
-import com.xueyi.common.core.utils.core.MapUtil;
-import com.xueyi.common.core.utils.core.NumberUtil;
-import com.xueyi.common.core.utils.core.ObjectUtil;
-import com.xueyi.common.core.utils.core.ReflectUtil;
-import com.xueyi.common.core.utils.core.StrUtil;
+import com.xueyi.common.core.utils.core.*;
 import com.xueyi.common.core.utils.file.FileTypeUtil;
 import com.xueyi.common.core.utils.file.ImageUtil;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,25 +17,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RegExUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.ss.usermodel.BorderStyle;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.ClientAnchor;
-import org.apache.poi.ss.usermodel.DataValidation;
-import org.apache.poi.ss.usermodel.DataValidationConstraint;
-import org.apache.poi.ss.usermodel.DataValidationHelper;
-import org.apache.poi.ss.usermodel.Drawing;
-import org.apache.poi.ss.usermodel.FillPatternType;
-import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.apache.poi.ss.usermodel.IndexedColors;
-import org.apache.poi.ss.usermodel.Name;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.VerticalAlignment;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellRangeAddressList;
 import org.apache.poi.util.IOUtils;
@@ -115,7 +88,7 @@ public class XExcelUtil {
             list = importExcel(StrUtil.EMPTY, is);
         } catch (Exception e) {
             log.error("导入Excel异常{}", e.getMessage());
-            throw new UtilException(e.getMessage());
+            throw new UtilException(e);
         } finally {
             IOUtils.closeQuietly(is);
         }
@@ -411,7 +384,7 @@ public class XExcelUtil {
                         fieldInfo.getFields().add(field);
                         if (CollUtil.isNotEmpty(fieldInfo.getChildren())) {
                             fieldInfo.getChildren().forEach(item -> item.setFields(new ArrayList<>(fieldInfo.getFields())));
-                            if (ClassUtil.isNotNormalClass(field.getType())) {
+                            if (!(ClassUtil.isNormalClass(field.getType()) && ClassUtil.isNotSimpleType(field.getType()))) {
                                 throw new UtilException("字段{}配置存在子字段，但对应的属性非对象类型", fieldInfo.getField());
                             }
                             upLevelFieldList.addAll(upgradeLevel(fieldInfo.getChildren(), field.getType()));
@@ -1124,9 +1097,9 @@ public class XExcelUtil {
                     val = ConvertUtil.toBigDecimal(val);
                 } else if (Date.class == fieldType || LocalDate.class == fieldType || LocalDateTime.class == fieldType) {
                     if (val instanceof String str) {
-                        val = DateUtil.parseDate(val);
-                    } else if (val instanceof Double) {
-                        val = org.apache.poi.ss.usermodel.DateUtil.getJavaDate((Double) val);
+                        val = DateUtil.parseDate(str);
+                    } else if (val instanceof Double number) {
+                        val = org.apache.poi.ss.usermodel.DateUtil.getJavaDate(number);
                     }
                     if (ObjectUtil.isNotNull(val)) {
                         if (LocalDate.class == fieldType) {
@@ -1138,7 +1111,7 @@ public class XExcelUtil {
                 } else if (Boolean.TYPE == fieldType || Boolean.class == fieldType) {
                     val = ConvertUtil.toBool(val, false);
                 }
-                if (ClassUtil.isNormalClass(fieldType)) {
+                if (ClassUtil.isNormalClass(fieldType) && ClassUtil.isNotSimpleType(fieldType)) {
                     Object subEntity = ReflectUtil.getFieldValue(entity, field);
                     if (ObjectUtil.isNull(subEntity)) {
                         subEntity = fieldType.getDeclaredConstructor().newInstance();
@@ -1308,7 +1281,7 @@ public class XExcelUtil {
                      * @param json excel配置JSON
                      */
                     public ModelInfo(JSONObject json) {
-                        Field[] fields = FieldInfo.class.getDeclaredFields();
+                        Field[] fields = ModelInfo.class.getDeclaredFields();
                         for (Field field : fields) {
                             String fieldName = field.getName();
                             try {
