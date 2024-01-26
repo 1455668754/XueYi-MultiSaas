@@ -67,6 +67,7 @@
   import { warn } from '@/utils/log/LogUtil';
   import FileList from './FileList.vue';
   import { useI18n } from '@/hooks/web/useI18n';
+  import { ResultEnum } from '@/enums';
 
   const props = defineProps({
     ...basicProps,
@@ -189,14 +190,23 @@
         },
       );
       const { data } = ret;
-      item.status = UploadResultStatus.SUCCESS;
-      item.response = data;
-      return {
-        success: true,
-        error: null,
-      };
+      if (data?.code === ResultEnum.SUCCESS) {
+        item.status = UploadResultStatus.SUCCESS;
+        item.response = data;
+        createMessage.success('导入成功！');
+        return {
+          success: true,
+          error: null,
+        };
+      } else {
+        item.status = UploadResultStatus.ERROR;
+        createMessage.error(data?.msg);
+        return {
+          success: false,
+          error: data?.msg,
+        };
+      }
     } catch (e) {
-      console.log(e);
       item.status = UploadResultStatus.ERROR;
       return {
         success: false,
@@ -208,7 +218,7 @@
   // 点击开始上传
   async function handleStartUpload() {
     const { maxNumber } = props;
-    if ((fileListRef.value.length + props.previewFileList?.length ?? 0) > maxNumber) {
+    if ((fileListRef.value?.length || 0) + (props.previewFileList?.length || 0) > maxNumber) {
       return createMessage.warning(t('component.upload.maxNumber', [maxNumber]));
     }
     try {
