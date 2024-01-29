@@ -282,12 +282,14 @@
         const on = {
           [eventKey]: (...args: Nullable<Recordable<any>>[]) => {
             const [e] = args;
-            if (propsData[eventKey]) {
-              propsData[eventKey](...args);
-            }
+
             const target = e ? e.target : null;
             const value = target ? (isCheck ? target.checked : target.value) : e;
             props.setFormModel(field, value, props.schema);
+
+            if (propsData[eventKey]) {
+              propsData[eventKey](...args);
+            }
           },
         };
         const Comp = componentMap.get(component) as ReturnType<typeof defineComponent>;

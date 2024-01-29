@@ -34,6 +34,12 @@
   </div>
 </template>
 <script lang="ts" setup>
+  import { useContentHeight } from '@/hooks/web/useContentHeight';
+  import { useDesign } from '@/hooks/web/useDesign';
+  import { propTypes } from '@/utils/propTypes';
+  import { PageHeader } from 'ant-design-vue';
+  import { omit } from 'lodash-es';
+
   import {
     computed,
     CSSProperties,
@@ -47,13 +53,6 @@
   } from 'vue';
 
   import PageFooter from './PageFooter.vue';
-
-  import { useDesign } from '@/hooks/web/useDesign';
-  import { propTypes } from '@/utils/propTypes';
-  import { omit } from 'lodash-es';
-  import { PageHeader } from 'ant-design-vue';
-  import { useContentHeight } from '@/hooks/web/useContentHeight';
-  import { useLayoutHeight } from '@/layouts/default/content/useContentViewHeight';
   import { PageWrapperFixedHeightKey } from '@/enums';
 
   defineOptions({
@@ -116,7 +115,6 @@
     ];
   });
 
-  const { headerHeightRef } = useLayoutHeight();
   const getHeaderStyle = computed((): CSSProperties => {
     const { headerSticky } = props;
     if (!headerSticky) {
@@ -125,7 +123,8 @@
 
     return {
       position: 'sticky',
-      top: `${unref(headerHeightRef)}px`,
+      top: 0,
+      zIndex: 99,
       ...props.headerStyle,
     };
   });
