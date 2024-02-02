@@ -9,8 +9,6 @@ import com.xueyi.system.api.authority.domain.query.SysRoleQuery;
 import com.xueyi.system.authority.domain.correlate.SysRoleCorrelate;
 import com.xueyi.system.authority.manager.ISysRoleManager;
 import com.xueyi.system.authority.service.ISysRoleService;
-import com.xueyi.system.organize.service.ISysOrganizeService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -26,9 +24,6 @@ import static com.xueyi.common.core.constant.basic.SecurityConstants.CREATE_BY;
  */
 @Service
 public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleQuery, SysRoleDto, SysRoleCorrelate, ISysRoleManager> implements ISysRoleService {
-
-    @Autowired
-    private ISysOrganizeService organizeService;
 
     /**
      * 默认方法关联配置定义

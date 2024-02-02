@@ -167,12 +167,10 @@ public class SysLoginServiceImpl implements ISysLoginService {
       perms.add(PERMISSION_ADMIN);
     } else {
       // 菜单组合权限表示集合
-      perms.addAll(
-          menuList.stream()
-              .filter(item -> BaseConstants.Status.isNormal(item.getStatus()))
-              .map(SysMenuDto::getPerms)
-              .filter(StrUtil::isNotBlank)
-              .collect(Collectors.toSet()));
+      Set<String> menuPerms = menuList.stream().filter(item -> BaseConstants.Status.isNormal(item.getStatus()))
+              .map(SysMenuDto::getPerms).filter(StrUtil::isNotBlank)
+              .flatMap(item -> StrUtil.split(item, StrUtil.COMMA).stream()).map(StrUtil::cleanBlank).collect(Collectors.toSet());
+      perms.addAll(menuPerms);
     }
     return perms;
   }
