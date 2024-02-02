@@ -24,7 +24,7 @@
   import { Card, Image, Tag } from 'ant-design-vue';
   import { useMessage } from '@/hooks/web/useMessage';
   import { usePermission } from '@/hooks/web/usePermission';
-  import { MODULE_CACHE } from '@/enums/system/authority';
+  import { FrameTypeEnum, MODULE_CACHE } from '@/enums/system/authority';
   import { ModuleIM, ModuleLM } from '@/model/system/authority';
   import { getModuleList } from '@/api/sys/menu.api';
   import { isEqual } from 'lodash-es';
@@ -41,21 +41,29 @@
   onMounted(async () => (route.value = await getModuleList()));
 
   function handleReset(data: ModuleIM) {
-    if (isEqual(data.id, usePermissionStore().getModuleId)) {
-      createMessage.success('当前正处于[' + data.name + ']，无需切换！');
+    if (data?.type === FrameTypeEnum.EXTERNAL_LINKS) {
+      if (data?.path) {
+        window.open(data?.path);
+      } else {
+        createMessage.success('未指定跳转地址，跳转失败！');
+      }
     } else {
-      createConfirm({
-        iconType: 'warning',
-        title: '提示',
-        content: '确定要跳转到模块：【' + data.name + '】， 并重新加载其资源吗？',
-        onOk: () => {
-          usePermissionStore().setModuleId(data.id);
-          sessionStorage.setItem(MODULE_CACHE, data.id.toString());
-          moduleId.value = data.id as string;
-          createMessage.success('已成功切换至' + data.name + '！');
-          refreshMenu();
-        },
-      });
+      if (isEqual(data.id, usePermissionStore().getModuleId)) {
+        createMessage.success('当前正处于[' + data.name + ']，无需切换！');
+      } else {
+        createConfirm({
+          iconType: 'warning',
+          title: '提示',
+          content: '确定要跳转到模块：【' + data.name + '】， 并重新加载其资源吗？',
+          onOk: () => {
+            usePermissionStore().setModuleId(data.id);
+            sessionStorage.setItem(MODULE_CACHE, data.id.toString());
+            moduleId.value = data.id as string;
+            createMessage.success('已成功切换至' + data.name + '！');
+            refreshMenu();
+          },
+        });
+      }
     }
   }
 </script>
