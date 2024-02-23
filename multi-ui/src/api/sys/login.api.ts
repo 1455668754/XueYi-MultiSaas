@@ -27,13 +27,12 @@ export function getCodeImg() {
  * @description: get Enterprise Name api
  */
 export function getEnterpriseName(params: LoginPM) {
- 
-
   return defHttp.get<LoginPM>(
-    { 
-      url: Api.GetEnterpriseName+"?url="+window.location.hostname, 
+    {
+      url: Api.GetEnterpriseName + '?url=' + window.location.hostname,
       data: params,
-      timeout: 20000 },
+      timeout: 20000,
+    },
     { errorMessageMode: 'none', withToken: false },
   );
 }
