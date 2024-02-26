@@ -1,6 +1,5 @@
 package com.xueyi.system.authority.controller.admin;
 
-import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.web.model.SysEnterprise;
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.security.annotation.AdminAuth;
@@ -43,7 +42,7 @@ public class ASysAdminLoginController extends BasisController {
         if (StringUtils.isNotBlank(url)) {
             SysEnterpriseDto enterpriseInfo = loginService.getDomainTenant(url);
             Optional.ofNullable(enterpriseInfo).map(SysEnterprise::getDomainName)
-                    .ifPresent(domainName -> map.put(SecurityConstants.LoginParam.ENTERPRISE_NAME.getCode(), domainName));
+                    .ifPresent(domainName -> map.put("name", domainName));
         }
         return success(map);
     }
