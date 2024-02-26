@@ -4,10 +4,11 @@ import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.core.utils.core.ReUtil;
 import com.xueyi.common.core.utils.core.SpringUtil;
+import com.xueyi.common.security.annotation.AdminAuth;
 import com.xueyi.common.security.annotation.ApiAuth;
+import com.xueyi.common.security.annotation.ExternalAuth;
 import com.xueyi.common.security.annotation.InnerAuth;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -33,6 +34,7 @@ import java.util.regex.Pattern;
  *
  * @author xueyi
  */
+@Data
 @Slf4j
 @ConfigurationProperties(prefix = "security.oauth2.ignore.whites")
 public class PermitAllUrlProperties implements InitializingBean {
@@ -42,13 +44,9 @@ public class PermitAllUrlProperties implements InitializingBean {
     private static final String[] DEFAULT_IGNORE_URLS = new String[]{"/actuator/**", "/error", "/v3/api-docs"};
 
     /** 常规全部 */
-    @Getter
-    @Setter
     private List<String> routine = new ArrayList<>();
 
     /** 自定义 */
-    @Getter
-    @Setter
     private MultiValueMap<RequestMethod, String> custom = new LinkedMultiValueMap<>();
 
     @Override
@@ -59,30 +57,38 @@ public class PermitAllUrlProperties implements InitializingBean {
 
         map.keySet().forEach(info -> {
             HandlerMethod handlerMethod = map.get(info);
-            // 获取类上边的注解
-            InnerAuth controller = AnnotationUtils.findAnnotation(handlerMethod.getBeanType(), InnerAuth.class);
-            initialize(controller, info);
-            // 获取方法上边的注解
-            InnerAuth method = AnnotationUtils.findAnnotation(handlerMethod.getMethod(), InnerAuth.class);
-            initialize(method, info);
+            // 内部认证
+            Optional.ofNullable(AnnotationUtils.findAnnotation(handlerMethod.getBeanType(), InnerAuth.class))
+                    .filter(ObjectUtil::isNotNull).filter(InnerAuth::isAnonymous)
+                    .ifPresent(inner -> anonymousFilter(info));
+            Optional.ofNullable(AnnotationUtils.findAnnotation(handlerMethod.getMethod(), InnerAuth.class))
+                    .filter(ObjectUtil::isNotNull).filter(InnerAuth::isAnonymous)
+                    .ifPresent(inner -> anonymousFilter(info));
 
-            // 获取类上边的注解
-            ApiAuth apiController = AnnotationUtils.findAnnotation(handlerMethod.getBeanType(), ApiAuth.class);
-            initialize(apiController, info);
-            // 获取方法上边的注解
-            ApiAuth apiMethod = AnnotationUtils.findAnnotation(handlerMethod.getMethod(), ApiAuth.class);
-            initialize(apiMethod, info);
+            // 外系统端认证
+            Optional.ofNullable(AnnotationUtils.findAnnotation(handlerMethod.getBeanType(), ExternalAuth.class))
+                    .filter(ObjectUtil::isNotNull).filter(ExternalAuth::isAnonymous)
+                    .ifPresent(inner -> anonymousFilter(info));
+            Optional.ofNullable(AnnotationUtils.findAnnotation(handlerMethod.getMethod(), ExternalAuth.class))
+                    .filter(ObjectUtil::isNotNull).filter(ExternalAuth::isAnonymous)
+                    .ifPresent(inner -> anonymousFilter(info));
+
+            // 对外Api认证
+            Optional.ofNullable(AnnotationUtils.findAnnotation(handlerMethod.getBeanType(), ApiAuth.class))
+                    .filter(ObjectUtil::isNotNull).filter(ApiAuth::isAnonymous)
+                    .ifPresent(inner -> anonymousFilter(info));
+            Optional.ofNullable(AnnotationUtils.findAnnotation(handlerMethod.getMethod(), ApiAuth.class))
+                    .filter(ObjectUtil::isNotNull).filter(ApiAuth::isAnonymous)
+                    .ifPresent(inner -> anonymousFilter(info));
+
+            // 管理端认证
+            Optional.ofNullable(AnnotationUtils.findAnnotation(handlerMethod.getBeanType(), AdminAuth.class))
+                    .filter(ObjectUtil::isNotNull).filter(AdminAuth::isAnonymous)
+                    .ifPresent(inner -> anonymousFilter(info));
+            Optional.ofNullable(AnnotationUtils.findAnnotation(handlerMethod.getMethod(), AdminAuth.class))
+                    .filter(ObjectUtil::isNotNull).filter(AdminAuth::isAnonymous)
+                    .ifPresent(inner -> anonymousFilter(info));
         });
-    }
-
-    private void initialize(InnerAuth innerAuth, RequestMappingInfo info) {
-        Optional.ofNullable(innerAuth).filter(ObjectUtil::isNotNull).filter(InnerAuth::isAnonymous)
-                .ifPresent(inner -> anonymousFilter(info));
-    }
-
-    private void initialize(ApiAuth apiAuth, RequestMappingInfo info) {
-        Optional.ofNullable(apiAuth).filter(ObjectUtil::isNotNull).filter(ApiAuth::isAnonymous)
-                .ifPresent(api -> anonymousFilter(info));
     }
 
     private void anonymousFilter(RequestMappingInfo info) {

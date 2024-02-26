@@ -14,16 +14,21 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
+/**
+ * 自定义注入注解
+ *
+ * @author xueyi
+ */
 @Inherited
-// 表示通过aop框架暴露该代理对象,AopContext能够访问
-@EnableAspectJAutoProxy(exposeProxy = true)
-// 指定要扫描的Mapper类的包的路径
-@MapperScan("com.xueyi.**.mapper")
+@Documented
 // 开启线程异步执行
 @EnableAsync
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+// 指定要扫描的Mapper类的包的路径
+@MapperScan("com.xueyi.**.mapper")
+// 表示通过aop框架暴露该代理对象,AopContext能够访问
+@EnableAspectJAutoProxy(exposeProxy = true)
 // 自动加载类
 @Import({ApplicationConfig.class, JacksonConfig.class})
 public @interface EnableCustomConfig {

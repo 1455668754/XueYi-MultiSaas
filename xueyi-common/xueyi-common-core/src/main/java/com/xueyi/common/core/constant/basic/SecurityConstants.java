@@ -157,7 +157,8 @@ public class SecurityConstants {
 
         ADMIN("admin", "后台账户"),
         MEMBER("member", "会员账户"),
-        PLATFORM("platform", "平台账户");
+        PLATFORM("platform", "平台账户"),
+        EXTERNAL("external", "外系统账户");
 
         private final String code;
         private final String info;

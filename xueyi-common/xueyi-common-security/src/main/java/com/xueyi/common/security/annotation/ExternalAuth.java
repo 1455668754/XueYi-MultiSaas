@@ -7,14 +7,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 管理端认证注解
+ * 外系统端认证注解
  *
  * @author xueyi
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD})
-public @interface AdminAuth {
+public @interface ExternalAuth {
 
     /** 是否匿名认证 */
     boolean isAnonymous() default false;

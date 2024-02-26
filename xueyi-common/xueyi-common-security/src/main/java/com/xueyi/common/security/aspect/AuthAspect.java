@@ -8,6 +8,7 @@ import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.utils.servlet.ServletUtil;
 import com.xueyi.common.security.annotation.AdminAuth;
 import com.xueyi.common.security.annotation.ApiAuth;
+import com.xueyi.common.security.annotation.ExternalAuth;
 import com.xueyi.common.security.annotation.InnerAuth;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
@@ -49,15 +50,17 @@ public class AuthAspect implements Ordered {
             throw new InnerAuthException("没有内部访问权限，不允许访问");
         }
 
-        // 用户信息验证
-        if (ObjectUtil.isNotNull(innerAuth) && innerAuth.isUser()) {
-            String enterpriseId = request.getHeader(SecurityConstants.BaseSecurity.ENTERPRISE_ID.getCode());
-            String userId = request.getHeader(SecurityConstants.BaseSecurity.USER_ID.getCode());
-            String sourceName = request.getHeader(SecurityConstants.BaseSecurity.SOURCE_NAME.getCode());
-            String accountType = request.getHeader(SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode());
-            if ((StrUtil.hasBlank(enterpriseId, userId, sourceName, accountType))) {
-                log.warn("请求地址'{}'，没有设置用户信息", request.getRequestURI());
-                throw new InnerAuthException("没有设置用户信息，不允许访问");
+        if (!innerAuth.isAnonymous()) {
+            // 用户信息验证
+            if (ObjectUtil.isNotNull(innerAuth) && innerAuth.isUser()) {
+                String enterpriseId = request.getHeader(SecurityConstants.BaseSecurity.ENTERPRISE_ID.getCode());
+                String userId = request.getHeader(SecurityConstants.BaseSecurity.USER_ID.getCode());
+                String sourceName = request.getHeader(SecurityConstants.BaseSecurity.SOURCE_NAME.getCode());
+                String accountType = request.getHeader(SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode());
+                if ((StrUtil.hasBlank(enterpriseId, userId, sourceName, accountType))) {
+                    log.warn("请求地址'{}'，没有设置用户信息", request.getRequestURI());
+                    throw new InnerAuthException("没有设置用户信息，不允许访问");
+                }
             }
         }
         return point.proceed();
@@ -69,12 +72,50 @@ public class AuthAspect implements Ordered {
     @SneakyThrows
     @Around("@within(adminAuth) || @annotation(adminAuth)")
     public Object innerAround(ProceedingJoinPoint point, AdminAuth adminAuth) {
+        if (ObjectUtil.isNull(adminAuth)) {
+            MethodSignature signature = (MethodSignature) point.getSignature();
+            adminAuth = AnnotationUtil.getAnnotation(signature.getMethod().getDeclaringClass(), AdminAuth.class);
+        }
         HttpServletRequest request = ServletUtil.getRequest();
         Assert.notNull(request, "request cannot be null");
-        String accountType = request.getHeader(SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode());
-        if (StrUtil.notEquals(SecurityConstants.AccountType.ADMIN.getCode(), accountType)) {
-            log.warn("请求地址'{}'，没有管理端访问权限", request.getRequestURI());
-            throw new InnerAuthException("没有管理端访问权限，不允许访问");
+        if (!adminAuth.isAnonymous()) {
+            String accountType = request.getHeader(SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode());
+            if (StrUtil.notEquals(SecurityConstants.AccountType.ADMIN.getCode(), accountType)) {
+                log.warn("请求地址'{}'，没有管理端访问权限", request.getRequestURI());
+                throw new InnerAuthException("没有管理端访问权限，不允许访问");
+            }
+            // 用户信息验证
+            if (ObjectUtil.isNotNull(adminAuth) && adminAuth.isUser()) {
+                String enterpriseId = request.getHeader(SecurityConstants.BaseSecurity.ENTERPRISE_ID.getCode());
+                String userId = request.getHeader(SecurityConstants.BaseSecurity.USER_ID.getCode());
+                String sourceName = request.getHeader(SecurityConstants.BaseSecurity.SOURCE_NAME.getCode());
+                if ((StrUtil.hasBlank(enterpriseId, userId, sourceName, accountType))) {
+                    log.warn("请求地址'{}'，没有设置用户信息", request.getRequestURI());
+                    throw new InnerAuthException("没有设置用户信息，不允许访问");
+                }
+            }
+        }
+        return point.proceed();
+    }
+
+    /**
+     * 外系统端认证校验
+     */
+    @SneakyThrows
+    @Around("@within(externalAuth) || @annotation(externalAuth)")
+    public Object innerAround(ProceedingJoinPoint point, ExternalAuth externalAuth) {
+        if (ObjectUtil.isNull(externalAuth)) {
+            MethodSignature signature = (MethodSignature) point.getSignature();
+            externalAuth = AnnotationUtil.getAnnotation(signature.getMethod().getDeclaringClass(), ExternalAuth.class);
+        }
+        HttpServletRequest request = ServletUtil.getRequest();
+        Assert.notNull(request, "request cannot be null");
+        if (!externalAuth.isAnonymous()) {
+            String accountType = request.getHeader(SecurityConstants.BaseSecurity.ACCOUNT_TYPE.getCode());
+            if (StrUtil.notEquals(SecurityConstants.AccountType.EXTERNAL.getCode(), accountType)) {
+                log.warn("请求地址'{}'，没有外系统端访问权限", request.getRequestURI());
+                throw new InnerAuthException("没有外系统端访问权限，不允许访问");
+            }
         }
         return point.proceed();
     }
@@ -85,6 +126,10 @@ public class AuthAspect implements Ordered {
     @SneakyThrows
     @Around("@within(apiAuth) || @annotation(apiAuth)")
     public Object innerAround(ProceedingJoinPoint point, ApiAuth apiAuth) {
+        if (ObjectUtil.isNull(apiAuth)) {
+            MethodSignature signature = (MethodSignature) point.getSignature();
+            apiAuth = AnnotationUtil.getAnnotation(signature.getMethod().getDeclaringClass(), ApiAuth.class);
+        }
         HttpServletRequest request = ServletUtil.getRequest();
         Assert.notNull(request, "request cannot be null");
         return point.proceed();
