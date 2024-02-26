@@ -21,7 +21,7 @@ import com.xueyi.tenant.api.tenant.domain.query.TeTenantQuery;
 import com.xueyi.tenant.source.service.ITeStrategyService;
 import com.xueyi.tenant.tenant.domain.correlate.TeTenantCorrelate;
 import com.xueyi.tenant.tenant.domain.dto.TeTenantRegister;
-import com.xueyi.tenant.tenant.manager.impl.TeTenantManagerImpl;
+import com.xueyi.tenant.tenant.manager.ITeTenantManager;
 import com.xueyi.tenant.tenant.service.ITeTenantService;
 import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ import static com.xueyi.common.core.constant.basic.BaseConstants.TOP_ID;
  * @author xueyi
  */
 @Service
-public class TeTenantServiceImpl extends BaseServiceImpl<TeTenantQuery, TeTenantDto, TeTenantCorrelate, TeTenantManagerImpl> implements ITeTenantService {
+public class TeTenantServiceImpl extends BaseServiceImpl<TeTenantQuery, TeTenantDto, TeTenantCorrelate, ITeTenantManager> implements ITeTenantService {
 
     @Lazy
     @Autowired
@@ -136,18 +136,17 @@ public class TeTenantServiceImpl extends BaseServiceImpl<TeTenantQuery, TeTenant
     }
 
     /**
-     * 校验租户URL是否已存在
+     * 校验租户关联域名是否已存在
      *
-     * @param url 校验租户URL
+     * @param id         租户Id
+     * @param domainName 企业自定义域名
      * @return 结果 | true/false
      */
     @Override
-    public boolean checkDomainUnique(String url, Long id) {
-        TeTenantDto tenant = baseManager.checkDomain(url);
-        if (ObjectUtil.isNotNull(id) && ObjectUtil.isNotNull(tenant)) {
-            if (id.equals(tenant.getId()))
-                return false;
+    public Boolean checkDomainUnique(Long id, String domainName) {
+        if (StrUtil.isBlank(domainName)) {
+            return Boolean.FALSE;
         }
-        return ObjectUtil.isNotNull(tenant);
+        return ObjectUtil.isNotNull(baseManager.checkDomainName(id, domainName));
     }
 }

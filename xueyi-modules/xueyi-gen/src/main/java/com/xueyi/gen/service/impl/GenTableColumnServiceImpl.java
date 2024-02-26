@@ -6,7 +6,7 @@ import com.xueyi.common.web.entity.service.impl.BaseServiceImpl;
 import com.xueyi.gen.domain.correlate.GenTableColumnCorrelate;
 import com.xueyi.gen.domain.dto.GenTableColumnDto;
 import com.xueyi.gen.domain.query.GenTableColumnQuery;
-import com.xueyi.gen.manager.impl.GenTableColumnManagerImpl;
+import com.xueyi.gen.manager.IGenTableColumnManager;
 import com.xueyi.gen.service.IGenTableColumnService;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +18,7 @@ import java.util.List;
  * @author xueyi
  */
 @Service
-public class GenTableColumnServiceImpl extends BaseServiceImpl<GenTableColumnQuery, GenTableColumnDto, GenTableColumnCorrelate, GenTableColumnManagerImpl> implements IGenTableColumnService {
+public class GenTableColumnServiceImpl extends BaseServiceImpl<GenTableColumnQuery, GenTableColumnDto, GenTableColumnCorrelate, IGenTableColumnManager> implements IGenTableColumnService {
 
     /**
      * 根据表名称查询数据库表列信息

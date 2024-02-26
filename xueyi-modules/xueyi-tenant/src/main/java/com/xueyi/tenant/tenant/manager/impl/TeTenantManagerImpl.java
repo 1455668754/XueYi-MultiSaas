@@ -2,6 +2,7 @@ package com.xueyi.tenant.tenant.manager.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xueyi.common.core.constant.basic.SqlConstants;
+import com.xueyi.common.core.utils.core.ObjectUtil;
 import com.xueyi.common.web.entity.manager.impl.BaseManagerImpl;
 import com.xueyi.tenant.api.tenant.domain.dto.TeTenantDto;
 import com.xueyi.tenant.api.tenant.domain.po.TeTenantPo;
@@ -35,16 +36,18 @@ public class TeTenantManagerImpl extends BaseManagerImpl<TeTenantQuery, TeTenant
     }
 
     /**
-     * 检查域名是否存在
+     * 校验租户关联域名是否已存在
      *
+     * @param id         租户Id
      * @param domainName 企业自定义域名
      * @return 租户信息对象
      */
     @Override
-    public TeTenantDto checkDomain(String domainName) {
+    public TeTenantDto checkDomainName(Long id, String domainName) {
         TeTenantPo tenant = baseMapper.selectOne(
-                Wrappers.<TeTenantPo>query().lambda()
+                Wrappers.<TeTenantPo>lambdaQuery()
                         .eq(TeTenantPo::getDomainName, domainName)
+                        .ne(ObjectUtil.isNotNull(id), TeTenantPo::getId, id)
                         .last(SqlConstants.LIMIT_ONE));
         return baseConverter.mapperDto(tenant);
     }
