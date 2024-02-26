@@ -1,13 +1,7 @@
 <template>
   <LoginFormTitle v-show="getShow" class="enter-x" />
   <Form class="p-4 enter-x" :model="formData" :rules="getFormRules" ref="formRef" v-show="getShow">
-    <FormItem name="enterpriseName" class="enter-x"  v-if="formData.enterpriseUser!=''" >
-     
-      <Input   type="hidden" v-model:value="formData.enterpriseName"  />
-  
-    </FormItem>
-
-    <FormItem name="enterpriseName" class="enter-x"  v-else>
+    <FormItem name="enterpriseName" class="enter-x" v-show="!hasDomainName">
       <Input
         size="large"
         v-model:value="formData.enterpriseName"
@@ -112,7 +106,6 @@
 
 <script lang="ts" setup>
   import { computed, onMounted, reactive, ref, unref } from 'vue';
-
   import { Button, Checkbox, Col, Divider, Form, Image, Input, Row } from 'ant-design-vue';
   import {
     AlipayCircleFilled,
@@ -125,6 +118,7 @@
   import { onKeyStroke } from '@vueuse/core';
   import { useMessage } from '@/hooks/web/useMessage';
   import { useUserStore } from '@/store/modules/user';
+  import { getEnterpriseNameByDomainName } from '@/api/sys/login.api';
   import { LoginStateEnum, useFormRules, useFormValid, useLoginState } from './useLogin';
   import { useDesign } from '@/hooks/web/useDesign';
   import { useI18n } from '@/hooks/web/useI18n';
@@ -143,12 +137,13 @@
   const { notification, createErrorModal } = useMessage();
   const { prefixCls } = useDesign('login');
   const userStore = useUserStore();
-  
+
   const { setLoginState, getLoginState } = useLoginState();
   const { getFormRules } = useFormRules();
 
   const formRef = ref();
   const loading = ref(false);
+  const hasDomainName = ref<boolean>(false);
   const rememberMe = ref(localStorage.getItem(REMEMBER_ME_SESSION_CACHE_KEY) === 'true' || false);
 
   const formData = reactive({
@@ -156,7 +151,6 @@
     userName: localStorage.getItem(USER_NAME_SESSION_CACHE_KEY) || '',
     password: localStorage.getItem(PASSWORD_SESSION_CACHE_KEY) || '',
     code: '',
-    enterpriseUser:''
   });
 
   const captchaData = reactive({
@@ -216,10 +210,13 @@
     }
   }
 
-  async function handleEnterpriseName() {
-    const data =await userStore.getEnterpriseName();
-    if (typeof data.enterpriseName === "string") 
-      formData.enterpriseUser=data.enterpriseName;
+  // 获取域名对应企业名称
+  async function handleDomainName() {
+    const data = await getEnterpriseNameByDomainName();
+    if (data?.name) {
+      formData.enterpriseName = data.name;
+      hasDomainName.value = true;
+    }
   }
 
   // 处理登录验证码
@@ -232,7 +229,7 @@
 
   onMounted(() => {
     // 初始执行一次验证码获取
-    handleEnterpriseName();
+    handleDomainName();
     handleCodeImage();
   });
 </script>

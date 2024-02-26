@@ -20,8 +20,8 @@ import static com.baomidou.mybatisplus.annotation.SqlCondition.LIKE;
  * @author xueyi
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @TableName("te_tenant")
+@EqualsAndHashCode(callSuper = true)
 public class TeTenantPo extends BaseEntity {
 
   @Serial private static final long serialVersionUID = 1L;
@@ -61,7 +61,7 @@ public class TeTenantPo extends BaseEntity {
   /** 企业自定义域名 */
   @Xss(message = "企业自定义域名不能包含脚本字符")
   @Size(max = 30, message = "企业自定义域名长度不能超过30个字符")
-  protected String doMain;
+  protected String domainName;
 
   /** 默认租户（Y是 N否） */
   @TableField(updateStrategy = FieldStrategy.NEVER)

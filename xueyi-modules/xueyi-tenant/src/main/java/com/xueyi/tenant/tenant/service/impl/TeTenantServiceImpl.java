@@ -137,13 +137,14 @@ public class TeTenantServiceImpl extends BaseServiceImpl<TeTenantQuery, TeTenant
 
     /**
      * 校验租户URL是否已存在
-     * @param url  校验租户URL
+     *
+     * @param url 校验租户URL
      * @return 结果 | true/false
      */
     @Override
     public boolean checkDomainUnique(String url, Long id) {
-      TeTenantDto tenant = baseManager.checkDomain(url);
-        if (ObjectUtil.isNotNull(id)&&ObjectUtil.isNotNull(tenant)) {
+        TeTenantDto tenant = baseManager.checkDomain(url);
+        if (ObjectUtil.isNotNull(id) && ObjectUtil.isNotNull(tenant)) {
             if (id.equals(tenant.getId()))
                 return false;
         }

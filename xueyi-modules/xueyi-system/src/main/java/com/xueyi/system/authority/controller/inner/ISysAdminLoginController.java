@@ -1,6 +1,5 @@
 package com.xueyi.system.authority.controller.inner;
 
-import com.mysql.cj.util.StringUtils;
 import com.xueyi.common.cache.utils.SourceUtil;
 import com.xueyi.common.core.constant.basic.BaseConstants;
 import com.xueyi.common.core.context.SecurityContextHolder;
@@ -40,6 +39,7 @@ import java.util.stream.Collectors;
  *
  * @author xueyi
  */
+@InnerAuth
 @RestController
 @RequestMapping("/inner/login/admin")
 public class ISysAdminLoginController extends BasisController {
@@ -53,8 +53,8 @@ public class ISysAdminLoginController extends BasisController {
     /**
      * 获取登录信息
      */
-    @InnerAuth(isAnonymous = true)
     @GetMapping
+    @InnerAuth(isAnonymous = true)
     public R<LoginUser> getLoginInfoInner(@RequestParam String enterpriseName, @RequestParam String userName, @RequestParam String password) {
         SysEnterpriseDto enterprise = loginService.loginByEnterpriseName(enterpriseName);
         // 不存在直接返回空数据 | 与网络调用错误区分
@@ -116,6 +116,4 @@ public class ISysAdminLoginController extends BasisController {
         loginUser.setRouteURL(routeMap);
         return R.ok(loginUser);
     }
-
-
 }

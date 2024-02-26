@@ -6,7 +6,6 @@ import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
 import com.xueyi.system.api.model.DataScope;
 import com.xueyi.system.api.organize.domain.dto.SysEnterpriseDto;
 import com.xueyi.system.api.organize.domain.dto.SysUserDto;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.util.List;
 import java.util.Map;
@@ -96,10 +95,10 @@ public interface ISysLoginService {
     Map<String, String> getMenuRouteMap(List<SysMenuDto> menuList);
 
     /**
-     * 获取租户名称 | 通过顶级域名或者二级域名获取租户名称
-     * @param domain
-     * @return
+     * 通过域名获取租户信息
+     *
+     * @param domainName 访问域名
+     * @return 企业信息对象
      */
-
-    String getDomaingetTenant(String domain);
+    SysEnterpriseDto getDomainTenant(String domainName);
 }

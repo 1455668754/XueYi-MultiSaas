@@ -30,11 +30,12 @@ public class BTeTenantController extends BaseController<TeTenantQuery, TeTenantD
      */
     @Override
     protected void AEHandle(BaseConstants.Operate operate, TeTenantDto tenant) {
-        if(baseService.checkDomainUnique(tenant.getDoMain(),tenant.getId())){
+        if (baseService.checkDomainUnique(tenant.getDomainName(), tenant.getId())) {
             warn(StrUtil.format("{}{}绑定域名失败，域名已存在", operate.getInfo(), getNodeName()));
         }
-        if (baseService.checkNameUnique(tenant.getId(), tenant.getName()))
+        if (baseService.checkNameUnique(tenant.getId(), tenant.getName())) {
             warn(StrUtil.format("{}{}{}失败，{}名称已存在", operate.getInfo(), getNodeName(), tenant.getName(), getNodeName()));
+        }
     }
 
     /**

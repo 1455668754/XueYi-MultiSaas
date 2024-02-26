@@ -21,7 +21,9 @@ public interface ITeTenantManager extends IBaseManager<TeTenantQuery, TeTenantDt
 
     /**
      * 检查域名是否存在
-     * @param domain 待检测域名
+     *
+     * @param domainName 企业自定义域名
+     * @return 租户信息对象
      */
-    TeTenantDto checkDomain(String domain);
+    TeTenantDto checkDomain(String domainName);
 }

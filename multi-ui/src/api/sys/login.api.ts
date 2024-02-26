@@ -2,6 +2,7 @@ import { CodeImgIM, GetEnterpriseIM, GetUserIM, LoginIM, LoginPM } from '@/model
 import { defHttp } from '@/utils/http/axios';
 import { ErrorMessageMode } from '#/axios';
 import { ContentTypeEnum } from '@/enums';
+import { EnterpriseIM } from '@/model/system/organize';
 
 enum Api {
   GetCodeImg = '/code',
@@ -10,7 +11,7 @@ enum Api {
   Logout = '/auth/logout',
   GetUserInfo = '/system/admin/user/getInfo',
   GetEnterpriseInfo = '/system/admin/enterprise/getInfo',
-  GetEnterpriseName = '/system/domain',
+  GetDomainName = '/system/admin/login/admin/getEnterpriseByDomainName',
 }
 
 /**
@@ -24,18 +25,16 @@ export function getCodeImg() {
 }
 
 /**
- * @description: get Enterprise Name api
+ * @description: get enterpriseName By domainName api
  */
-export function getEnterpriseName(params: LoginPM) {
-  return defHttp.get<LoginPM>(
+export const getEnterpriseNameByDomainName = () =>
+  defHttp.get<EnterpriseIM>(
     {
-      url: Api.GetEnterpriseName + '?url=' + window.location.hostname,
-      data: params,
-      timeout: 20000,
+      url: Api.GetDomainName,
+      params: { url: window.location.hostname },
     },
     { errorMessageMode: 'none', withToken: false },
   );
-}
 
 /**
  * @description: user oauth2 login api
