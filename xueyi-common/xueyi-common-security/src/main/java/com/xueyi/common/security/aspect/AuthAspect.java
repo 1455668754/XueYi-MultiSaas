@@ -1,6 +1,5 @@
 package com.xueyi.common.security.aspect;
 
-import cn.hutool.core.annotation.AnnotationUtil;
 import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.exception.InnerAuthException;
 import com.xueyi.common.core.utils.core.ObjectUtil;
@@ -14,12 +13,17 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 
 /**
  * 服务调用验证处理
@@ -31,16 +35,17 @@ import org.springframework.util.Assert;
 @Component
 public class AuthAspect implements Ordered {
 
+    @Pointcut(value = "@within(com.xueyi.common.security.annotation.InnerAuth) || @annotation(com.xueyi.common.security.annotation.InnerAuth)")
+    public void innerAuthCut() {
+    }
+
     /**
      * 内部认证校验
      */
     @SneakyThrows
-    @Around("@within(innerAuth) || @annotation(innerAuth)")
-    public Object innerAround(ProceedingJoinPoint point, InnerAuth innerAuth) {
-        if (ObjectUtil.isNull(innerAuth)) {
-            MethodSignature signature = (MethodSignature) point.getSignature();
-            innerAuth = AnnotationUtil.getAnnotation(signature.getMethod().getDeclaringClass(), InnerAuth.class);
-        }
+    @Around(value = "innerAuthCut()")
+    public Object innerAuthAround(ProceedingJoinPoint point) {
+        InnerAuth innerAuth = getAnnotation(point, InnerAuth.class);
         HttpServletRequest request = ServletUtil.getRequest();
         Assert.notNull(request, "request cannot be null");
         String source = request.getHeader(SecurityConstants.FROM_SOURCE);
@@ -66,16 +71,17 @@ public class AuthAspect implements Ordered {
         return point.proceed();
     }
 
+    @Pointcut(value = "@within(com.xueyi.common.security.annotation.AdminAuth) || @annotation(com.xueyi.common.security.annotation.AdminAuth)")
+    public void adminAuthCut() {
+    }
+
     /**
      * 管理端认证校验
      */
     @SneakyThrows
-    @Around("@within(adminAuth) || @annotation(adminAuth)")
-    public Object innerAround(ProceedingJoinPoint point, AdminAuth adminAuth) {
-        if (ObjectUtil.isNull(adminAuth)) {
-            MethodSignature signature = (MethodSignature) point.getSignature();
-            adminAuth = AnnotationUtil.getAnnotation(signature.getMethod().getDeclaringClass(), AdminAuth.class);
-        }
+    @Around("adminAuthCut()")
+    public Object adminAuthAround(ProceedingJoinPoint point) {
+        AdminAuth adminAuth = getAnnotation(point, AdminAuth.class);
         HttpServletRequest request = ServletUtil.getRequest();
         Assert.notNull(request, "request cannot be null");
         if (!adminAuth.isAnonymous()) {
@@ -98,16 +104,17 @@ public class AuthAspect implements Ordered {
         return point.proceed();
     }
 
+    @Pointcut(value = "@within(com.xueyi.common.security.annotation.ExternalAuth) || @annotation(com.xueyi.common.security.annotation.ExternalAuth)")
+    public void externalAuthCut() {
+    }
+
     /**
      * 外系统端认证校验
      */
     @SneakyThrows
-    @Around("@within(externalAuth) || @annotation(externalAuth)")
-    public Object innerAround(ProceedingJoinPoint point, ExternalAuth externalAuth) {
-        if (ObjectUtil.isNull(externalAuth)) {
-            MethodSignature signature = (MethodSignature) point.getSignature();
-            externalAuth = AnnotationUtil.getAnnotation(signature.getMethod().getDeclaringClass(), ExternalAuth.class);
-        }
+    @Around("externalAuthCut()")
+    public Object externalAuthAround(ProceedingJoinPoint point) {
+        ExternalAuth externalAuth = getAnnotation(point, ExternalAuth.class);
         HttpServletRequest request = ServletUtil.getRequest();
         Assert.notNull(request, "request cannot be null");
         if (!externalAuth.isAnonymous()) {
@@ -120,19 +127,43 @@ public class AuthAspect implements Ordered {
         return point.proceed();
     }
 
+    @Pointcut(value = "@within(com.xueyi.common.security.annotation.ApiAuth) || @annotation(com.xueyi.common.security.annotation.ApiAuth)")
+    public void apiAuthCut() {
+    }
+
     /**
      * Api端认证校验
      */
     @SneakyThrows
-    @Around("@within(apiAuth) || @annotation(apiAuth)")
-    public Object innerAround(ProceedingJoinPoint point, ApiAuth apiAuth) {
-        if (ObjectUtil.isNull(apiAuth)) {
-            MethodSignature signature = (MethodSignature) point.getSignature();
-            apiAuth = AnnotationUtil.getAnnotation(signature.getMethod().getDeclaringClass(), ApiAuth.class);
-        }
+    @Around("apiAuthCut()")
+    public Object apiAuthAround(ProceedingJoinPoint point) {
+        ApiAuth apiAuth = getAnnotation(point, ApiAuth.class);
         HttpServletRequest request = ServletUtil.getRequest();
         Assert.notNull(request, "request cannot be null");
         return point.proceed();
+    }
+
+    /**
+     * 通过连接点对象获取其方法或类上的注解
+     *
+     * @param point     连接点
+     * @param authClass 注解类型
+     * @return 注解
+     */
+    private <T extends Annotation> T getAnnotation(ProceedingJoinPoint point, Class<T> authClass) {
+        T auth = null;
+        Signature signature = point.getSignature();
+        MethodSignature methodSignature = (MethodSignature) signature;
+        Method method = methodSignature.getMethod();
+        if (ObjectUtil.isNotNull(method)) {
+            if (method.isAnnotationPresent(authClass)) {
+                auth = method.getAnnotation(authClass);
+            }
+            if (ObjectUtil.isNull(auth) && method.getDeclaringClass().isAnnotationPresent(authClass)) {
+                auth = method.getDeclaringClass().getAnnotation(authClass);
+            }
+        }
+        return auth;
     }
 
     /**
