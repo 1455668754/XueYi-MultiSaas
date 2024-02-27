@@ -10,7 +10,7 @@ import {
   USER_INFO_KEY,
   UserTypeEnum,
 } from '@/enums';
-import { clearAuthCache, getAuthCache, setAuthCache } from '@/utils/auth';
+import { getAuthCache, setAuthCache } from '@/utils/auth';
 import { useI18n } from '@/hooks/web/useI18n';
 import { useMessage } from '@/hooks/web/useMessage';
 import { router } from '@/router';
@@ -133,15 +133,14 @@ export const useUserStore = defineStore({
       return !(isCommon === DicCommonPrivateEnum.COMMON && this.isNotLessor);
     },
     resetState() {
-      this.enterpriseInfo = null;
-      this.userInfo = null;
-      this.token = '';
-      this.expires_in = 0;
-      this.roleList = [];
-      this.permCodeList = [];
-      this.routePathMap = null;
-      this.sessionTimeout = false;
-      clearAuthCache();
+      this.setToken(undefined);
+      this.setSessionTimeout(false);
+      this.setEnterpriseInfo(null);
+      this.setUserInfo(null);
+      this.setPermCodeList([]);
+      this.setRoleList([]);
+      this.setRoutePathMap(null);
+      this.setExpiresIn(0);
     },
     getRoutePath(name: string, param?: string) {
       if (this.routePathMap == null) {
