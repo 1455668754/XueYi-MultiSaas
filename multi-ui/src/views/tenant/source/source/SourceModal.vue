@@ -19,6 +19,7 @@
   } from '@/api/tenant/source/source.api';
   import { BasicModal, useModalInner } from '@/components/Modal';
   import { BasicForm, useForm } from '@/components/Form';
+  import { SourceIM } from '@/model/tenant/source';
 
   const emit = defineEmits(['success', 'register']);
 
@@ -50,7 +51,7 @@
   /** 提交按钮 */
   async function handleSubmit() {
     try {
-      const values = await validate();
+      const values: SourceIM = await validate();
       setModalProps({ confirmLoading: true });
       unref(isUpdate)
         ? await editSourceApi(values).then(() => {
@@ -69,7 +70,7 @@
 
   /** 连接测试按钮 */
   async function connection() {
-    const values = await validate();
+    const values: SourceIM = await validate();
     await connectionSourceApi(values).then(() => createMessage.success('数据源连接成功！'));
   }
 </script>

@@ -62,7 +62,6 @@
     try {
       setModalProps({ confirmLoading: true, destroyOnClose: true });
       const values = await getForm().validate();
-      console.error(values);
       await importDBGenApi(state.dbNames, values?.sourceName).then(() => {
         closeModal();
         createMessage.success('导入成功！');

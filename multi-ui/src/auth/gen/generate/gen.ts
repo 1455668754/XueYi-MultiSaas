@@ -2,10 +2,6 @@
 export enum GenAuth {
   /** 代码生成 | 代码生成管理 | 列表 */
   LIST = 'FE:gen:generate:gen:list',
-  /** 代码生成 | 代码生成管理 | 详情 */
-  SINGLE = 'FE:gen:generate:gen:single',
-  /** 代码生成 | 代码生成管理 | 新增 */
-  ADD = 'FE:gen:generate:gen:add',
   /** 代码生成 | 代码生成管理 | 修改 */
   EDIT = 'FE:gen:generate:gen:edit',
   /** 代码生成 | 代码生成管理 | 删除 */

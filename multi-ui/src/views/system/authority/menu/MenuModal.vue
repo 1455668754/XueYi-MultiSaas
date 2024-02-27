@@ -23,6 +23,7 @@
   import { BasicModal, useModalInner } from '@/components/Modal';
   import { BasicForm, useForm } from '@/components/Form';
   import { COMMON_MODULE, MenuTypeEnum } from '@/enums/system/authority';
+  import { MenuIM } from '@/model/system/authority';
 
   const emit = defineEmits(['success', 'register']);
 
@@ -58,7 +59,7 @@
   /** 提交按钮 */
   async function handleSubmit() {
     try {
-      const values = await validate();
+      const values: MenuIM = await validate();
       setModalProps({ confirmLoading: true });
       unref(isUpdate)
         ? await editMenuApi(initialize(values)).then(() => {

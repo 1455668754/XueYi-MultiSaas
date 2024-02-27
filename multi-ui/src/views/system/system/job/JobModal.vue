@@ -17,6 +17,7 @@
   import { addJobApi, editJobApi, getJobApi } from '@/api/system/system/job.api';
   import { BasicForm, useForm } from '@/components/Form';
   import { BasicModal, useModalInner } from '@/components/Modal';
+  import { JobIM } from '@/model/system/system';
 
   const emit = defineEmits(['success', 'register']);
   const { createMessage } = useMessage();
@@ -45,7 +46,7 @@
   /** 提交按钮 */
   async function handleSubmit() {
     try {
-      const values = await validate();
+      const values: JobIM = await validate();
       setModalProps({ confirmLoading: true });
       unref(isUpdate)
         ? await editJobApi(values).then(() => {

@@ -17,6 +17,7 @@
   import { addNoticeApi, editNoticeApi, getNoticeApi } from '@/api/system/notice/notice.api';
   import { BasicModal, useModalInner } from '@/components/Modal';
   import { BasicForm, useForm } from '@/components/Form';
+  import { NoticeIM } from '@/model/system/notice';
 
   const emit = defineEmits(['success', 'register']);
   const { createMessage } = useMessage();
@@ -45,7 +46,7 @@
   /** 提交按钮 */
   async function handleSubmit() {
     try {
-      const values = await validate();
+      const values: NoticeIM = await validate();
       setModalProps({ confirmLoading: true });
       unref(isUpdate)
         ? await editNoticeApi(values).then(() => {

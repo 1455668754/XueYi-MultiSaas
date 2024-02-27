@@ -199,8 +199,6 @@ export const formSchema: FormSchema[] = [
     defaultValue: DicCacheTypeEnum.OVERALL,
     componentProps: {
       options: dict.DicDictCacheTypeOptions,
-      showSearch: true,
-      optionFilterProp: 'label',
     },
     dynamicDisabled: ({ values }) => isNotEmpty(values.id),
     required: true,
@@ -237,8 +235,6 @@ export const formSchema: FormSchema[] = [
     defaultValue: DicDataTypeEnum.DEFAULT,
     componentProps: {
       options: dict.DicDictDataTypeOptions,
-      showSearch: true,
-      optionFilterProp: 'label',
     },
     dynamicDisabled: ({ values }) => isNotEmpty(values.tenantId),
     required: true,

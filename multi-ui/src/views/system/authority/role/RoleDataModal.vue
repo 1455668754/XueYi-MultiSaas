@@ -78,7 +78,7 @@
   /** 提交按钮 */
   async function handleSubmit() {
     try {
-      const values = (await validate()) as RoleIM;
+      const values: RoleIM = await validate();
       setModalProps({ confirmLoading: true });
       values.organizeIds = undefined;
       if (values.dataScope === DataScopeEnum.CUSTOM) {

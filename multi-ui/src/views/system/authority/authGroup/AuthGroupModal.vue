@@ -41,6 +41,7 @@
   import { getTreeNodes } from '@/utils/core/treeUtil';
   import { concat, difference, intersection } from 'lodash-es';
   import { authScopeCommonApi } from '@/api/system/authority/auth.api';
+  import { AuthGroupIM } from '@/model/system/authority';
 
   const emit = defineEmits(['success', 'register']);
   const { createMessage } = useMessage();
@@ -106,7 +107,7 @@
   /** 提交按钮 */
   async function handleSubmit() {
     try {
-      const values = await validate();
+      const values: AuthGroupIM = await validate();
       setModalProps({ confirmLoading: true });
       const { moduleIds, menuIds } = getAuthNodes();
       values.moduleIds = moduleIds;

@@ -27,6 +27,7 @@
   import { authFormSchema } from './role.data';
   import { concat, difference, intersection } from 'lodash-es';
   import { getTreeNodes } from '@/utils/core/treeUtil';
+  import { RoleIM } from '@/model/system/authority';
 
   const emit = defineEmits(['success', 'register']);
 
@@ -79,7 +80,7 @@
   /** 提交按钮 */
   async function handleSubmit() {
     try {
-      const values = await validate();
+      const values: RoleIM = await validate();
       setModalProps({ confirmLoading: true });
       const { moduleIds, menuIds } = getAuthNodes();
       values.authIds = undefined;

@@ -15,6 +15,7 @@
   } from '@/api/tenant/source/strategy.api';
   import { BasicModal, useModalInner } from '@/components/Modal';
   import { BasicForm, useForm } from '@/components/Form';
+  import { StrategyIM } from '@/model/tenant/source';
 
   const emit = defineEmits(['success', 'register']);
 
@@ -46,7 +47,7 @@
   /** 提交按钮 */
   async function handleSubmit() {
     try {
-      const values = await validate();
+      const values: StrategyIM = await validate();
       setModalProps({ confirmLoading: true });
       unref(isUpdate)
         ? await editStrategyApi(values).then(() => {

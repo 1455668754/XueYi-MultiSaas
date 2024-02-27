@@ -11,6 +11,7 @@
   import { editRoleApi, getRoleApi } from '@/api/system/authority/role.api';
   import { BasicModal, useModalInner } from '@/components/Modal';
   import { BasicForm, useForm } from '@/components/Form';
+  import { RoleIM } from '@/model/system/authority';
 
   const emit = defineEmits(['success', 'register']);
 
@@ -37,7 +38,7 @@
   /** 提交按钮 */
   async function handleSubmit() {
     try {
-      const values = await validate();
+      const values: RoleIM = await validate();
       setModalProps({ confirmLoading: true });
       await editRoleApi(values).then(() => {
         closeModal();

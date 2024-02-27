@@ -11,6 +11,7 @@
   import { addConfigApi, editConfigApi, getConfigApi } from '@/api/system/dict/config.api';
   import { BasicModal, useModalInner } from '@/components/Modal';
   import { BasicForm, useForm } from '@/components/Form';
+  import { ConfigIM } from '@/model/system/dict';
 
   const emit = defineEmits(['success', 'register']);
 
@@ -41,7 +42,7 @@
   /** 提交按钮 */
   async function handleSubmit() {
     try {
-      const values = await validate();
+      const values: ConfigIM = await validate();
       setModalProps({ confirmLoading: true });
       unref(isUpdate)
         ? await editConfigApi(values).then(() => {

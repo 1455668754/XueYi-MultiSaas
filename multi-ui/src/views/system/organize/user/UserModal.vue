@@ -11,6 +11,7 @@
   import { addUserApi, editUserApi, getUserApi } from '@/api/system/organize/user.api';
   import { BasicModal, useModalInner } from '@/components/Modal';
   import { BasicForm, useForm } from '@/components/Form';
+  import { UserIM } from '@/model/system/organize';
 
   const emit = defineEmits(['success', 'register']);
 
@@ -40,7 +41,7 @@
   /** 提交按钮 */
   async function handleSubmit() {
     try {
-      const values = await validate();
+      const values: UserIM = await validate();
       setModalProps({ confirmLoading: true });
       unref(isUpdate)
         ? await editUserApi(values).then(() => {

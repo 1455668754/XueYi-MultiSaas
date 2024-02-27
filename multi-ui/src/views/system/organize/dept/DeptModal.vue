@@ -11,6 +11,7 @@
   import { addDeptApi, editDeptApi, getDeptApi, listDeptApi } from '@/api/system/organize/dept.api';
   import { BasicModal, useModalInner } from '@/components/Modal';
   import { BasicForm, useForm } from '@/components/Form';
+  import { DeptIM } from '@/model/system/organize';
 
   const emit = defineEmits(['success', 'register']);
 
@@ -46,7 +47,7 @@
   /** 提交按钮 */
   async function handleSubmit() {
     try {
-      const values = await validate();
+      const values: DeptIM = await validate();
       setModalProps({ confirmLoading: true });
       unref(isUpdate)
         ? await editDeptApi(values).then(() => {

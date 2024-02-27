@@ -11,6 +11,7 @@
   import { addModuleApi, editModuleApi, getModuleApi } from '@/api/system/authority/module.api';
   import { BasicModal, useModalInner } from '@/components/Modal';
   import { BasicForm, useForm } from '@/components/Form';
+  import { ModuleIM } from '@/model/system/authority';
 
   const emit = defineEmits(['success', 'register']);
 
@@ -43,7 +44,7 @@
   /** 提交按钮 */
   async function handleSubmit() {
     try {
-      const values = await validate();
+      const values: ModuleIM = await validate();
       setModalProps({ confirmLoading: true });
       unref(isUpdate)
         ? await editModuleApi(values).then(() => {

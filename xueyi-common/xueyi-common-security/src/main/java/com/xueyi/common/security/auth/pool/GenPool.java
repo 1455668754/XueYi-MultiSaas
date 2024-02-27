@@ -11,8 +11,6 @@ public interface GenPool {
     String GEN_GENERATE_LIST = "RD:gen:generate:gen:list";
     /** 代码生成 | 代码生成管理 | 详情 */
     String GEN_GENERATE_SINGLE = "RD:gen:generate:gen:single";
-    /** 代码生成 | 代码生成管理 | 新增 */
-    String GEN_GENERATE_ADD = "RD:gen:generate:gen:add";
     /** 代码生成 | 代码生成管理 | 修改 */
     String GEN_GENERATE_EDIT = "RD:gen:generate:gen:edit";
     /** 代码生成 | 代码生成管理 | 删除 */

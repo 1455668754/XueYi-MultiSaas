@@ -11,6 +11,7 @@
   import { editTenantApi, getTenantApi } from '@/api/tenant/tenant/tenant.api';
   import { BasicModal, useModalInner } from '@/components/Modal';
   import { BasicForm, useForm } from '@/components/Form';
+  import { TenantIM } from '@/model/tenant/tenant';
 
   const emit = defineEmits(['success', 'register']);
 
@@ -37,7 +38,7 @@
   /** 提交按钮 */
   async function handleSubmit() {
     try {
-      const values = await validate();
+      const values: TenantIM = await validate();
       setModalProps({ confirmLoading: true });
       await editTenantApi(values).then(() => {
         closeModal();
