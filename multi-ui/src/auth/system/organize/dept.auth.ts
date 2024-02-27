@@ -1,17 +1,17 @@
 /** 部门权限标识 */
 export enum DeptAuth {
-  // 查看部门列表
-  LIST = 'organize:dept:list',
-  // 查询部门详情
-  SINGLE = 'organize:dept:single',
-  // 新增部门
-  ADD = 'organize:dept:add',
-  // 修改部门
-  EDIT = 'organize:dept:edit',
-  // 修改部门状态
-  EDIT_STATUS = 'organize:dept:es',
-  // 部门角色分配
-  AUTH = 'organize:dept:auth',
-  // 删除部门
-  DELETE = 'organize:dept:delete',
+  /** 系统服务 | 组织模块 | 部门管理 | 列表 */
+  LIST = 'FE:system:organize:dept:list',
+  /** 系统服务 | 组织模块 | 部门管理 | 详情 */
+  SINGLE = 'FE:system:organize:dept:single',
+  /** 系统服务 | 组织模块 | 部门管理 | 新增 */
+  ADD = 'FE:system:organize:dept:add',
+  /** 系统服务 | 组织模块 | 部门管理 | 修改 */
+  EDIT = 'FE:system:organize:dept:edit',
+  /** 系统服务 | 组织模块 | 部门管理 | 权限 */
+  AUTH = 'FE:system:organize:dept:auth',
+  /** 系统服务 | 组织模块 | 部门管理 | 状态修改 */
+  ES = 'FE:system:organize:dept:es',
+  /** 系统服务 | 组织模块 | 部门管理 | 删除 */
+  DEL = 'FE:system:organize:dept:del',
 }

@@ -1,15 +1,15 @@
 /** 模块权限标识 */
 export enum ModuleAuth {
-  // 查看模块列表
-  LIST = 'authority:module:list',
-  // 查询模块详情
-  SINGLE = 'authority:module:single',
-  // 新增模块
-  ADD = 'authority:module:add',
-  // 修改模块
-  EDIT = 'authority:module:edit',
-  // 修改模块状态
-  EDIT_STATUS = 'authority:module:es',
-  // 删除模块
-  DELETE = 'authority:module:delete',
+  /** 系统服务 | 权限模块 | 模块管理 | 列表 */
+  LIST = 'FE:system:authority:module:list',
+  /** 系统服务 | 权限模块 | 模块管理 | 详情 */
+  SINGLE = 'FE:system:authority:module:single',
+  /** 系统服务 | 权限模块 | 模块管理 | 新增 */
+  ADD = 'FE:system:authority:module:add',
+  /** 系统服务 | 权限模块 | 模块管理 | 修改 */
+  EDIT = 'FE:system:authority:module:edit',
+  /** 系统服务 | 权限模块 | 模块管理 | 状态修改 */
+  ES = 'FE:system:authority:module:es',
+  /** 系统服务 | 权限模块 | 模块管理 | 删除 */
+  DEL = 'FE:system:authority:module:del',
 }

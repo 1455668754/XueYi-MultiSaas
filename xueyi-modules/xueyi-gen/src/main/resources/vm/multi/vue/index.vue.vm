@@ -16,7 +16,7 @@
 #if($api.batchRemove)
         <a-button
           :preIcon="IconEnum.DELETE"
-          v-auth="${BusinessName}Auth.DELETE"
+          v-auth="${BusinessName}Auth.DEL"
           @click="handleDelete"
           type="primary"
           color="error"
@@ -76,7 +76,7 @@
             {
               icon: IconEnum.DELETE,
               tooltip: '删除',
-              auth: ${BusinessName}Auth.DELETE,
+              auth: ${BusinessName}Auth.DEL,
               color: 'error',
               onClick: handleDelete.bind(null, record),
             },

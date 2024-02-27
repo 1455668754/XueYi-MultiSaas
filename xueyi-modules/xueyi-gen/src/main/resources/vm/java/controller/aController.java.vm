@@ -41,7 +41,7 @@ public class A${ClassName}Controller extends B${ClassName}Controller {
 #if($isDependMode)
     @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_CACHE)")
 #else
-    @PreAuthorize("@ss.hasAuthority('${authorityName}:${businessName}:cache')")
+    @PreAuthorize("@ss.hasAuthority('RD:${authorityName}:${businessName}:cache')")
 #end
     @Log(title = "${functionName}管理", businessType = BusinessType.REFRESH)
     @GetMapping("/refresh")
@@ -59,7 +59,7 @@ public class A${ClassName}Controller extends B${ClassName}Controller {
 #if($isDependMode)
     @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_LIST)")
 #else
-    @PreAuthorize("@ss.hasAuthority('${authorityName}:${businessName}:list')")
+    @PreAuthorize("@ss.hasAuthority('RD:${authorityName}:${businessName}:list')")
 #end
     public AjaxResult list(${ClassName}Query ${classNameNoPrefix}) {
         return super.list(${classNameNoPrefix});
@@ -75,7 +75,7 @@ public class A${ClassName}Controller extends B${ClassName}Controller {
 #if($isDependMode)
     @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_SINGLE)")
 #else
-    @PreAuthorize("@ss.hasAuthority('${authorityName}:${businessName}:single')")
+    @PreAuthorize("@ss.hasAuthority('RD:${authorityName}:${businessName}:single')")
 #end
     public AjaxResult getInfo(@PathVariable Serializable id) {
         return super.getInfo(id);
@@ -91,7 +91,7 @@ public class A${ClassName}Controller extends B${ClassName}Controller {
 #if($isDependMode)
     @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_EXPORT)")
 #else
-    @PreAuthorize("@ss.hasAuthority('${authorityName}:${businessName}:export')")
+    @PreAuthorize("@ss.hasAuthority('RD:${authorityName}:${businessName}:export')")
 #end
     @Log(title = "${functionName}管理", businessType = BusinessType.EXPORT)
     public void export(HttpServletResponse response, ${ClassName}Query ${classNameNoPrefix}) {
@@ -108,7 +108,7 @@ public class A${ClassName}Controller extends B${ClassName}Controller {
 #if($isDependMode)
     @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_ADD)")
 #else
-    @PreAuthorize("@ss.hasAuthority('${authorityName}:${businessName}:add')")
+    @PreAuthorize("@ss.hasAuthority('RD:${authorityName}:${businessName}:add')")
 #end
     @Log(title = "${functionName}管理", businessType = BusinessType.INSERT)
     public AjaxResult add(@Validated({V_A.class}) @RequestBody ${ClassName}Dto ${classNameNoPrefix}) {
@@ -125,7 +125,7 @@ public class A${ClassName}Controller extends B${ClassName}Controller {
 #if($isDependMode)
     @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_EDIT)")
 #else
-    @PreAuthorize("@ss.hasAuthority('${authorityName}:${businessName}:edit')")
+    @PreAuthorize("@ss.hasAuthority('RD:${authorityName}:${businessName}:edit')")
 #end
     @Log(title = "${functionName}管理", businessType = BusinessType.UPDATE)
     public AjaxResult edit(@Validated({V_E.class}) @RequestBody ${ClassName}Dto ${classNameNoPrefix}) {
@@ -142,7 +142,7 @@ public class A${ClassName}Controller extends B${ClassName}Controller {
 #if($isDependMode)
     @PreAuthorize("@ss.hasAnyAuthority(@Auth.${ClASS_NAME}_EDIT, @Auth.${ClASS_NAME}_ES)")
 #else
-    @PreAuthorize("@ss.hasAnyAuthority('${authorityName}:${businessName}:edit', '${authorityName}:${businessName}:es')")
+    @PreAuthorize("@ss.hasAnyAuthority('RD:${authorityName}:${businessName}:edit', 'RD:${authorityName}:${businessName}:es')")
 #end
     @Log(title = "${functionName}管理", businessType = BusinessType.UPDATE_STATUS)
     public AjaxResult editStatus(@RequestBody ${ClassName}Dto ${classNameNoPrefix}) {
@@ -159,7 +159,7 @@ public class A${ClassName}Controller extends B${ClassName}Controller {
 #if($isDependMode)
     @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_DEL)")
 #else
-    @PreAuthorize("@ss.hasAuthority('${authorityName}:${businessName}:delete')")
+    @PreAuthorize("@ss.hasAuthority('RD:${authorityName}:${businessName}:del')")
 #end
     @Log(title = "${functionName}管理", businessType = BusinessType.DELETE)
     public AjaxResult batchRemove(@PathVariable List<Long> idList) {
@@ -170,40 +170,40 @@ public class A${ClassName}Controller extends B${ClassName}Controller {
 
     interface Auth {
 #if($api.list)
-        /** ${functionName}管理 - 列表 */
-        String ${ClASS_NAME}_LIST = "${authorityName}:${businessName}:list";
+        /** ${functionName}管理 | 列表 */
+        String ${ClASS_NAME}_LIST = "RD:${authorityName}:${businessName}:list";
 #end
 #if($api.getInfo)
-        /** ${functionName}管理 - 详情 */
-        String ${ClASS_NAME}_SINGLE = "${authorityName}:${businessName}:single";
+        /** ${functionName}管理 | 详情 */
+        String ${ClASS_NAME}_SINGLE = "RD:${authorityName}:${businessName}:single";
 #end
 #if($api.add)
-        /** ${functionName}管理 - 新增 */
-        String ${ClASS_NAME}_ADD = "${authorityName}:${businessName}:add";
+        /** ${functionName}管理 | 新增 */
+        String ${ClASS_NAME}_ADD = "RD:${authorityName}:${businessName}:add";
 #end
 #if($api.edit)
-        /** ${functionName}管理 - 修改 */
-        String ${ClASS_NAME}_EDIT = "${authorityName}:${businessName}:edit";
+        /** ${functionName}管理 | 修改 */
+        String ${ClASS_NAME}_EDIT = "RD:${authorityName}:${businessName}:edit";
 #end
 #if($api.editStatus)
-        /** ${functionName}管理 - 修改状态 */
-        String ${ClASS_NAME}_ES = "${authorityName}:${businessName}:es";
+        /** ${functionName}管理 | 状态修改 */
+        String ${ClASS_NAME}_ES = "RD:${authorityName}:${businessName}:es";
 #end
 #if($api.batchRemove)
-        /** ${functionName}管理 - 删除 */
-        String ${ClASS_NAME}_DEL = "${authorityName}:${businessName}:delete";
+        /** ${functionName}管理 | 删除 */
+        String ${ClASS_NAME}_DEL = "RD:${authorityName}:${businessName}:del";
 #end
 #if($api.import)
-        /** ${functionName}管理 - 导入 */
-        String ${ClASS_NAME}_IMPORT = "${authorityName}:${businessName}:import";
+        /** ${functionName}管理 | 导入 */
+        String ${ClASS_NAME}_IMPORT = "RD:${authorityName}:${businessName}:import";
 #end
 #if($api.export)
-        /** ${functionName}管理 - 导出 */
-        String ${ClASS_NAME}_EXPORT = "${authorityName}:${businessName}:export";
+        /** ${functionName}管理 | 导出 */
+        String ${ClASS_NAME}_EXPORT = "RD:${authorityName}:${businessName}:export";
 #end
 #if($api.cache)
-        /** ${functionName}管理 - 缓存 */
-        String ${ClASS_NAME}_CACHE = "${authorityName}:${businessName}:cache";
+        /** ${functionName}管理 | 缓存 */
+        String ${ClASS_NAME}_CACHE = "RD:${authorityName}:${businessName}:cache";
 #end
     }
 #end

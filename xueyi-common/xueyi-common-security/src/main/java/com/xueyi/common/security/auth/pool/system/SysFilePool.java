@@ -16,7 +16,7 @@ public interface SysFilePool {
     /** 系统服务 | 素材模块 | 文件管理 - 修改 */
     String SYS_FILE_EDIT = "file:file:edit";
     /** 系统服务 | 素材模块 | 文件管理 - 删除 */
-    String SYS_FILE_DEL = "file:file:delete";
+    String SYS_FILE_DEL = "file:file:del";
 
     /** 系统服务 | 素材模块 | 文件分类管理 - 列表 */
     String SYS_FILE_FOLDER_LIST = "file:folder:list";
@@ -27,5 +27,5 @@ public interface SysFilePool {
     /** 系统服务 | 素材模块 | 文件分类管理 - 修改 */
     String SYS_FILE_FOLDER_EDIT = "file:folder:edit";
     /** 系统服务 | 素材模块 | 文件分类管理 - 删除 */
-    String SYS_FILE_FOLDER_DEL = "file:folder:delete";
+    String SYS_FILE_FOLDER_DEL = "file:folder:del";
 }

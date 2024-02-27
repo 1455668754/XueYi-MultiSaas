@@ -1,15 +1,15 @@
 /** 数据源权限标识 */
 export enum SourceAuth {
-  // 查看数据源列表
-  LIST = 'tenant:source:list',
-  // 查询数据源详情
-  SINGLE = 'tenant:source:single',
-  // 新增数据源
-  ADD = 'tenant:source:add',
-  // 修改数据源
-  EDIT = 'tenant:source:edit',
-  // 修改数据源状态
-  EDIT_STATUS = 'tenant:source:es',
-  // 删除数据源
-  DELETE = 'tenant:source:delete',
+  /** 租户服务 | 策略模块 | 数据源管理 | 列表 */
+  LIST = 'FE:tenant:source:source:list',
+  /** 租户服务 | 策略模块 | 数据源管理 | 详情 */
+  SINGLE = 'FE:tenant:source:source:single',
+  /** 租户服务 | 策略模块 | 数据源管理 | 新增 */
+  ADD = 'FE:tenant:source:source:add',
+  /** 租户服务 | 策略模块 | 数据源管理 | 修改 */
+  EDIT = 'FE:tenant:source:source:edit',
+  /** 租户服务 | 策略模块 | 数据源管理 | 状态修改 */
+  ES = 'FE:tenant:source:source:es',
+  /** 租户服务 | 策略模块 | 数据源管理 | 删除 */
+  DEL = 'FE:tenant:source:source:del',
 }

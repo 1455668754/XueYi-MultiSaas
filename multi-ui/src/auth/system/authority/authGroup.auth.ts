@@ -1,15 +1,15 @@
 /** 权限组权限标识 */
 export enum AuthGroupAuth {
-  // 查看权限组列表
-  LIST = 'authority:authGroup:list',
-  // 查询权限组详情
-  SINGLE = 'authority:authGroup:single',
-  // 新增权限组
-  ADD = 'authority:authGroup:add',
-  // 修改权限组
-  EDIT = 'authority:authGroup:edit',
-  // 修改权限组状态
-  EDIT_STATUS = 'authority:authGroup:es',
-  // 删除权限组
-  DELETE = 'authority:authGroup:delete',
+  /** 系统服务 | 权限模块 | 租户权限组管理 | 列表 */
+  LIST = 'FE:system:authority:authGroup:list',
+  /** 系统服务 | 权限模块 | 租户权限组管理 | 详情 */
+  SINGLE = 'FE:system:authority:authGroup:single',
+  /** 系统服务 | 权限模块 | 租户权限组管理 | 新增 */
+  ADD = 'FE:system:authority:authGroup:add',
+  /** 系统服务 | 权限模块 | 租户权限组管理 | 修改 */
+  EDIT = 'FE:system:authority:authGroup:edit',
+  /** 系统服务 | 权限模块 | 租户权限组管理 | 状态修改 */
+  ES = 'FE:system:authority:authGroup:es',
+  /** 系统服务 | 权限模块 | 租户权限组管理 | 删除 */
+  DEL = 'FE:system:authority:authGroup:del',
 }

@@ -1,15 +1,15 @@
 /** 数据源策略权限标识 */
 export enum StrategyAuth {
-  // 查看数据源策略列表
-  LIST = 'tenant:strategy:list',
-  // 查询数据源策略详情
-  SINGLE = 'tenant:strategy:single',
-  // 新增数据源策略
-  ADD = 'tenant:strategy:add',
-  // 修改数据源策略
-  EDIT = 'tenant:strategy:edit',
-  // 修改数据源策略状态
-  EDIT_STATUS = 'tenant:strategy:es',
-  // 删除数据源策略
-  DELETE = 'tenant:strategy:delete',
+  /** 租户服务 | 策略模块 | 数据源策略管理 | 列表 */
+  LIST = 'FE:tenant:source:strategy:list',
+  /** 租户服务 | 策略模块 | 数据源策略管理 | 详情 */
+  SINGLE = 'FE:tenant:source:strategy:single',
+  /** 租户服务 | 策略模块 | 数据源策略管理 | 新增 */
+  ADD = 'FE:tenant:source:strategy:add',
+  /** 租户服务 | 策略模块 | 数据源策略管理 | 修改 */
+  EDIT = 'FE:tenant:source:strategy:edit',
+  /** 租户服务 | 策略模块 | 数据源策略管理 | 状态修改 */
+  ES = 'FE:tenant:source:strategy:es',
+  /** 租户服务 | 策略模块 | 数据源策略管理 | 删除 */
+  DEL = 'FE:tenant:source:strategy:del',
 }

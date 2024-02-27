@@ -13,7 +13,7 @@
         </a-button>
         <a-button
           :preIcon="IconEnum.DELETE"
-          v-auth="AuthGroupAuth.DELETE"
+          v-auth="AuthGroupAuth.DEL"
           @click="handleDelete"
           v-if="isLessor"
           type="primary"
@@ -42,7 +42,7 @@
             {
               icon: IconEnum.DELETE,
               tooltip: '删除',
-              auth: AuthGroupAuth.DELETE,
+              auth: AuthGroupAuth.DEL,
               color: 'error',
               ifShow: () => isLessor,
               onClick: handleDelete.bind(null, record),

@@ -1,13 +1,13 @@
 /** 通知公告权限标识 */
 export enum NoticeAuth {
-  // 查询通知公告列表
-  LIST = 'system:notice:list',
-  // 查看通知公告详情
-  SINGLE = 'system:notice:single',
-  // 新增通知公告
-  ADD = 'system:notice:add',
-  // 修改通知公告
-  EDIT = 'system:notice:edit',
-  // 删除通知公告
-  DELETE = 'system:notice:delete',
+  /** 系统服务 | 消息模块 | 通知公告管理 | 列表 */
+  LIST = 'FE:system:notice:notice:list',
+  /** 系统服务 | 消息模块 | 通知公告管理 | 详情 */
+  SINGLE = 'FE:system:notice:notice:single',
+  /** 系统服务 | 消息模块 | 通知公告管理 | 新增 */
+  ADD = 'FE:system:notice:notice:add',
+  /** 系统服务 | 消息模块 | 通知公告管理 | 修改 */
+  EDIT = 'FE:system:notice:notice:edit',
+  /** 系统服务 | 消息模块 | 通知公告管理 | 删除 */
+  DEL = 'FE:system:notice:notice:del',
 }

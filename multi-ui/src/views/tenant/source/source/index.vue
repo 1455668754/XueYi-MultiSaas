@@ -12,7 +12,7 @@
         </a-button>
         <a-button
           :preIcon="IconEnum.DELETE"
-          v-auth="SourceAuth.DELETE"
+          v-auth="SourceAuth.DEL"
           @click="handleDelete"
           type="primary"
           color="error"
@@ -39,7 +39,7 @@
               icon: IconEnum.DELETE,
               tooltip: '删除',
               color: 'error',
-              auth: SourceAuth.DELETE,
+              auth: SourceAuth.DEL,
               onClick: handleDelete.bind(null, record),
             },
           ]"

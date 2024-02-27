@@ -4,7 +4,7 @@
       <template #toolbar>
         <a-button
           :preIcon="IconEnum.DELETE"
-          v-auth="OnlineAuth.DELETE"
+          v-auth="OnlineAuth.FORCE_LOGOUT"
           @click="handleDelete"
           type="primary"
           color="error"

@@ -1,15 +1,15 @@
 /** 参数权限标识 */
 export enum ConfigAuth {
-  // 查看参数列表
-  LIST = 'dict:config:list',
-  // 查询参数详情
-  SINGLE = 'dict:config:single',
-  // 新增参数
-  ADD = 'dict:config:add',
-  // 修改参数
-  EDIT = 'dict:config:edit',
-  // 修改参数状态
-  EDIT_STATUS = 'dict:config:es',
-  // 删除参数
-  DELETE = 'dict:config:delete',
+  /** 系统服务 | 字典模块 | 参数管理 | 列表 */
+  LIST = 'FE:system:dict:config:list',
+  /** 系统服务 | 字典模块 | 参数管理 | 详情 */
+  SINGLE = 'FE:system:dict:config:single',
+  /** 系统服务 | 字典模块 | 参数管理 | 新增 */
+  ADD = 'FE:system:dict:config:add',
+  /** 系统服务 | 字典模块 | 参数管理 | 修改 */
+  EDIT = 'FE:system:dict:config:edit',
+  /** 系统服务 | 字典模块 | 参数管理 | 状态修改 */
+  ES = 'FE:system:dict:config:es',
+  /** 系统服务 | 字典模块 | 参数管理 | 删除 */
+  DEL = 'FE:system:dict:config:del',
 }

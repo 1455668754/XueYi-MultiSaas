@@ -4,7 +4,7 @@
       <template #toolbar>
         <a-button
           :preIcon="IconEnum.DELETE"
-          v-auth="OperateLogAuth.DELETE"
+          v-auth="OperateLogAuth.DEL"
           @click="handleDelete"
           type="primary"
           color="error"
@@ -13,7 +13,7 @@
         </a-button>
         <a-button
           :preIcon="IconEnum.DELETE"
-          v-auth="OperateLogAuth.DELETE"
+          v-auth="OperateLogAuth.DEL"
           @click="handleClean"
           type="primary"
           color="warning"
@@ -33,7 +33,7 @@
             {
               icon: IconEnum.DELETE,
               tooltip: '删除',
-              auth: OperateLogAuth.DELETE,
+              auth: OperateLogAuth.DEL,
               color: 'error',
               onClick: handleDelete.bind(null, record),
             },

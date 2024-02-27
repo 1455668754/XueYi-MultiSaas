@@ -4,7 +4,7 @@
       <template #toolbar>
         <a-button
           :preIcon="IconEnum.DELETE"
-          v-auth="JobAuth.DELETE"
+          v-auth="JobAuth.DEL"
           @click="handleClean"
           type="primary"
           color="error"

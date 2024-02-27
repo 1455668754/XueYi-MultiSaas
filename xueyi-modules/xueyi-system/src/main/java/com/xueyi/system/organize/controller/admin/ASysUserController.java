@@ -164,7 +164,7 @@ public class ASysUserController extends BSysUserController {
      * 重置密码
      */
     @PutMapping("/resetPwd")
-    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_USER_RESET_PASSWORD)")
+    @PreAuthorize("@ss.hasAuthority(@Auth.SYS_USER_RES_PWD)")
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
     public AjaxResult resetPassword(@RequestBody SysUserDto user) {
         adminValidated(user.getId());

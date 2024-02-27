@@ -30,7 +30,7 @@ public class ASysJobLogController extends BSysJobLogController {
      */
     @Override
     @GetMapping("/list")
-    @PreAuthorize("@ss.hasAuthority(@Auth.SCHEDULE_JOB_LIST)")
+    @PreAuthorize("@ss.hasAuthority(@Auth.SCHEDULE_JOB_LOG)")
     public AjaxResult list(SysJobLogQuery jobLog) {
         return super.list(jobLog);
     }
@@ -40,7 +40,7 @@ public class ASysJobLogController extends BSysJobLogController {
      */
     @Override
     @GetMapping(value = "/{id}")
-    @PreAuthorize("@ss.hasAuthority(@Auth.SCHEDULE_JOB_SINGLE)")
+    @PreAuthorize("@ss.hasAuthority(@Auth.SCHEDULE_JOB_LOG)")
     public AjaxResult getInfo(@PathVariable Serializable id) {
         return super.getInfo(id);
     }

@@ -1,23 +1,23 @@
 /** 用户权限标识 */
 export enum UserAuth {
-  // 查看用户列表
-  LIST = 'organize:user:list',
-  // 查询用户详情
-  SINGLE = 'organize:user:single',
-  // 新增用户
-  ADD = 'organize:user:add',
-  // 修改用户
-  EDIT = 'organize:user:edit',
-  // 修改用户状态
-  EDIT_STATUS = 'organize:user:es',
-  // 删除用户
-  DELETE = 'organize:user:delete',
-  // 用户角色分配
-  AUTH = 'organize:user:auth',
-  // 用户密码重置
-  RES_PWD = 'organize:user:rp',
-  // 用户导入
-  IMPORT = 'organize:user:import',
-  // 用户导出
-  EXPORT = 'organize:user:export',
+  /** 系统服务 | 组织模块 | 用户管理 | 列表 */
+  LIST = 'FE:system:organize:user:list',
+  /** 系统服务 | 组织模块 | 用户管理 | 详情 */
+  SINGLE = 'FE:system:organize:user:single',
+  /** 系统服务 | 组织模块 | 用户管理 | 新增 */
+  ADD = 'FE:system:organize:user:add',
+  /** 系统服务 | 组织模块 | 用户管理 | 修改 */
+  EDIT = 'FE:system:organize:user:edit',
+  /** 系统服务 | 组织模块 | 用户管理 | 权限 */
+  AUTH = 'FE:system:organize:user:auth',
+  /** 系统服务 | 组织模块 | 用户管理 | 状态修改 */
+  ES = 'FE:system:organize:user:es',
+  /** 系统服务 | 组织模块 | 用户管理 | 密码修改 */
+  RES_PWD = 'FE:system:organize:user:rp',
+  /** 系统服务 | 组织模块 | 用户管理 | 删除 */
+  DEL = 'FE:system:organize:user:del',
+  /** 系统服务 | 组织模块 | 用户管理 | 导入 */
+  IMPORT = 'FE:system:organize:user:import',
+  /** 系统服务 | 组织模块 | 用户管理 | 导出 */
+  EXPORT = 'FE:system:organize:user:export',
 }
