@@ -10,7 +10,7 @@ import {
   USER_INFO_KEY,
   UserTypeEnum,
 } from '@/enums';
-import { getAuthCache, setAuthCache } from '@/utils/auth';
+import { clearAuthCache, getAuthCache, setAuthCache } from '@/utils/auth';
 import { useI18n } from '@/hooks/web/useI18n';
 import { useMessage } from '@/hooks/web/useMessage';
 import { router } from '@/router';
@@ -141,6 +141,7 @@ export const useUserStore = defineStore({
       this.permCodeList = [];
       this.routePathMap = null;
       this.sessionTimeout = false;
+      clearAuthCache();
     },
     getRoutePath(name: string, param?: string) {
       if (this.routePathMap == null) {
