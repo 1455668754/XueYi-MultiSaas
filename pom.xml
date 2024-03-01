@@ -6,17 +6,19 @@
 
     <groupId>com.xueyi</groupId>
     <artifactId>xueyi</artifactId>
-    <version>3.0.2</version>
+    <version>${revision}</version>
 
     <name>xueyi</name>
     <url>https://xueyitt.cn</url>
     <description>雪忆管理系统</description>
 
     <properties>
-        <xueyi.version>3.0.2</xueyi.version>
+        <revision>${xueyi.version}</revision>
+        <xueyi.version>3.0.3</xueyi.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven-compiler-plugin.version>3.12.1</maven-compiler-plugin.version>
+        <flatten-maven-plugin.version>1.6.0</flatten-maven-plugin.version>
         <java.version>17</java.version>
         <spring-boot.version>3.2.3</spring-boot.version>
         <spring-cloud.version>2023.0.0</spring-cloud.version>
@@ -399,6 +401,32 @@
             </resource>
         </resources>
         <plugins>
+            <!-- 统一vision版本 -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>${flatten-maven-plugin.version}</version>
+                <configuration>
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                    <updatePomFile>true</updatePomFile>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
