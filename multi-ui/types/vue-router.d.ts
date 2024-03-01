@@ -23,7 +23,7 @@ declare module 'vue-router' {
     img?: string;
     frameSrc?: string;
     // custom param
-    params: string;
+    params?: string;
     // current page transition
     transitionName?: string;
     // Whether the route has been dynamically added

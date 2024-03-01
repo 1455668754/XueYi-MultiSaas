@@ -5,6 +5,7 @@ import com.xueyi.common.core.constant.basic.SecurityConstants;
 import com.xueyi.common.core.utils.TreeUtil;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.StrUtil;
+import com.xueyi.common.core.utils.ip.IpUtil;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.authority.domain.dto.SysModuleDto;
 import com.xueyi.system.api.authority.domain.dto.SysRoleDto;
@@ -23,17 +24,15 @@ import com.xueyi.system.organize.service.ISysOrganizeService;
 import com.xueyi.system.organize.service.ISysPostService;
 import com.xueyi.system.organize.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Service;
 
+import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static com.xueyi.common.core.constant.basic.SecurityConstants.*;
@@ -64,12 +63,6 @@ public class SysLoginServiceImpl implements ISysLoginService {
 
     @Autowired
     ISysMenuService menuService;
-
-    /**
-     * 获取租户名称 | 通过顶级域名或者二级域名获取租户名称
-     */
-    @Value("spring.domain")
-    String sysDomain;
 
     @Autowired
     private ISysOrganizeService organizeService;
@@ -301,24 +294,27 @@ public class SysLoginServiceImpl implements ISysLoginService {
      */
     @Override
     public SysEnterpriseDto getDomainTenant(String domainName) {
-        String[] domainArr = domainName.split("\\.");
-        int length = domainArr.length;
-        if (length > 2) {
+        if (StrUtil.isNotBlank(domainName)) {
             String doMainQuery;
-            if ("127.0.0.1".equals(domainName) || "localhost".equals(domainName) || sysDomain.equals(domainName)) {
+            if ("127.0.0.1".equals(domainName) || "localhost".equals(domainName)) {
                 return null;
             }
-            String ipPattern = "^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}$";
-            Pattern ipPatternObj = Pattern.compile(ipPattern);
-            Matcher matcher = ipPatternObj.matcher(domainName);
-            if (matcher.find()) {
-                return null;
-            }
-            //如果是系统默认域名且二级域名不是www则直接返回二级域名否则直接返回传入域名
-            if (domainName.contains(sysDomain) && "www".equals(domainArr[1])) {
-                doMainQuery = domainArr[1];
-            } else {
+            // 校验是否为IP地址
+            if (IpUtil.isIP(domainName)) {
                 doMainQuery = domainName;
+            } else {
+                try {
+                    // 校验是否为有效域名
+                    InetAddress.getByName(domainName);
+                    // 如果是系统默认域名且二级域名不是www则直接返回二级域名否则直接返回传入域名
+                    if (StrUtil.startWith(domainName, "www.", Boolean.FALSE)) {
+                        doMainQuery = StrUtil.removePrefix(domainName, "www.");
+                    } else {
+                        doMainQuery = domainName;
+                    }
+                } catch (Exception e) {
+                    return null;
+                }
             }
             SysEnterpriseQuery enterpriseQuery = new SysEnterpriseQuery();
             enterpriseQuery.setDomainName(doMainQuery);
@@ -329,7 +325,6 @@ public class SysLoginServiceImpl implements ISysLoginService {
         }
         return null;
     }
-
 
     /**
      * 构建路由路径集合
@@ -361,28 +356,21 @@ public class SysLoginServiceImpl implements ISysLoginService {
      */
     private void recursionFn(SysMenuDto menu, Map<String, String> routeMap) {
         if (CollUtil.isNotEmpty(menu.getChildren())) {
-            menu.getChildren()
-                    .forEach(
-                            sonChild -> {
-                                sonChild.setFullPath(menu.getFullPath() + StrUtil.SLASH + sonChild.getPath());
-                                if (!sonChild.isDetails()) routeMap.put(sonChild.getName(), sonChild.getFullPath());
-                                if (CollUtil.isNotEmpty(sonChild.getChildren())) {
-                                    sonChild
-                                            .getChildren()
-                                            .forEach(
-                                                    grandsonChild -> {
-                                                        if (grandsonChild.isDetails()) {
-                                                            String detailsSuffix = grandsonChild.getDetailsSuffix();
-                                                            grandsonChild.setFullPath(
-                                                                    StrUtil.isNotEmpty(detailsSuffix)
-                                                                            ? menu.getFullPath() + StrUtil.SLASH + detailsSuffix
-                                                                            : menu.getFullPath());
-                                                            routeMap.put(grandsonChild.getName(), grandsonChild.getFullPath());
-                                                        }
-                                                    });
-                                    recursionFn(sonChild, routeMap);
-                                }
-                            });
+            menu.getChildren().forEach(sonChild -> {
+                sonChild.setFullPath(menu.getFullPath() + StrUtil.SLASH + sonChild.getPath());
+                if (!sonChild.isDetails())
+                    routeMap.put(sonChild.getName(), sonChild.getFullPath());
+                if (CollUtil.isNotEmpty(sonChild.getChildren())) {
+                    sonChild.getChildren().forEach(grandsonChild -> {
+                        if (grandsonChild.isDetails()) {
+                            String detailsSuffix = grandsonChild.getDetailsSuffix();
+                            grandsonChild.setFullPath(StrUtil.isNotEmpty(detailsSuffix) ? menu.getFullPath() + StrUtil.SLASH + detailsSuffix : menu.getFullPath());
+                            routeMap.put(grandsonChild.getName(), grandsonChild.getFullPath());
+                        }
+                    });
+                    recursionFn(sonChild, routeMap);
+                }
+            });
         }
     }
 }
