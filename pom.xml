@@ -16,7 +16,6 @@
         <revision>${xueyi.version}</revision>
         <xueyi.version>3.0.3</xueyi.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven-compiler-plugin.version>3.12.1</maven-compiler-plugin.version>
         <flatten-maven-plugin.version>1.6.0</flatten-maven-plugin.version>
         <java.version>17</java.version>
@@ -107,6 +106,12 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
                 <version>${mybatis-plus.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.github.jsqlparser</groupId>
+                        <artifactId>jsqlparser</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <!-- Dynamic DataSource -->
@@ -142,6 +147,13 @@
                         <artifactId>jsqlparser</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+
+            <!-- Mybatis-Plus && PageHelper版本冲突临时解决方案 -->
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>sqlparser4.5</artifactId>
+                <version>${pagehelper.version}</version>
             </dependency>
 
             <!-- lombok -->
@@ -434,6 +446,8 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <parameters>true</parameters>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.mapstruct</groupId>

@@ -77,6 +77,12 @@
             <artifactId>pagehelper</artifactId>
         </dependency>
 
+        <!-- Mybatis-Plus && PageHelper版本冲突临时解决方案 -->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>sqlparser4.5</artifactId>
+        </dependency>
+
         <!-- Hibernate Validator -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
