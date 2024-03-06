@@ -161,9 +161,15 @@ public abstract class AuthenticationBaseProvider<T extends AuthenticationBaseTok
             Authentication usernamePasswordAuthentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 
             // @formatter:off
-            DefaultOAuth2TokenContext.Builder tokenContextBuilder = DefaultOAuth2TokenContext.builder().registeredClient(registeredClient).principal(usernamePasswordAuthentication).authorizationServerContext(AuthorizationServerContextHolder.getContext()).authorizedScopes(authorizedScopes).authorizationGrantType(AuthorizationGrantType.PASSWORD).authorizationGrant(baseAuthentication);
+            DefaultOAuth2TokenContext.Builder tokenContextBuilder = DefaultOAuth2TokenContext.builder().registeredClient(registeredClient)
+                    .principal(usernamePasswordAuthentication).authorizationServerContext(AuthorizationServerContextHolder.getContext())
+                    .authorizedScopes(authorizedScopes).authorizationGrantType(new AuthorizationGrantType(baseAuthentication.getGrantType().getCode()))
+                    .authorizationGrant(baseAuthentication);
             // @formatter:on
-            OAuth2Authorization.Builder authorizationBuilder = OAuth2Authorization.withRegisteredClient(registeredClient).principalName(usernamePasswordAuthentication.getName()).authorizationGrantType(AuthorizationGrantType.PASSWORD).authorizedScopes(authorizedScopes);
+            OAuth2Authorization.Builder authorizationBuilder = OAuth2Authorization.withRegisteredClient(registeredClient)
+                    .principalName(usernamePasswordAuthentication.getName())
+                    .authorizationGrantType(new AuthorizationGrantType(baseAuthentication.getGrantType().getCode()))
+                    .authorizedScopes(authorizedScopes);
 
             // ----- Access token -----
             OAuth2TokenContext tokenContext = tokenContextBuilder.tokenType(OAuth2TokenType.ACCESS_TOKEN).build();
