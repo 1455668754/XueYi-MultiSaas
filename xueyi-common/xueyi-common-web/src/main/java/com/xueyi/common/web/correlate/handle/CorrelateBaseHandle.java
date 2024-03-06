@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -197,10 +198,9 @@ public sealed class CorrelateBaseHandle permits CorrelateDirectHandle, Correlate
                 }
                 if (CollUtil.isNotEmpty(dtoList)) {
                     Map<Object, S> subMap = subList.stream().collect(Collectors.toMap(item -> getFieldObj(item, slaveField), Function.identity()));
-                    dtoList.forEach(item -> {
-                        S subInfo = getMapObj(subMap, getFieldObj(item, mainField));
-                        setField(item, subField, ObjectUtil.isNotNull(subKeyField) ? getFieldObj(subInfo, subKeyField) : subInfo);
-                    });
+                    dtoList.forEach(item -> Optional.ofNullable(getMapObj(subMap, getFieldObj(item, mainField)))
+                            .ifPresent(subInfo -> setField(item, subField, ObjectUtil.isNotNull(subKeyField)
+                                    ? getFieldObj(subInfo, subKeyField) : subInfo)));
                 }
             }
             case LIST -> {
