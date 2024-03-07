@@ -92,7 +92,6 @@
     clickToRowSelect: true,
     showIndexColumn: true,
     columns: typeColumns,
-    isCanResizeParent: true,
     formConfig: {
       labelWidth: 120,
       schemas: typeSearchFormSchema,

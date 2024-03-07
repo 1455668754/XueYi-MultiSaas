@@ -41,7 +41,7 @@ export const typeColumns: BasicColumn[] = [
   {
     title: '字典名称',
     dataIndex: 'name',
-    width: 200,
+    width: 400,
   },
   {
     title: '字典类型',
@@ -117,7 +117,7 @@ export const dataColumns: BasicColumn[] = [
   {
     title: '备注',
     dataIndex: 'remark',
-    width: 220,
+    width: 400,
   },
   {
     title: '创建时间',

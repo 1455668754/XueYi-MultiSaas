@@ -86,7 +86,6 @@
     showIndexColumn: true,
     columns: dataColumns,
     immediate: false,
-    isCanResizeParent: true,
     formConfig: {
       labelWidth: 120,
       schemas: dataSearchFormSchema,
