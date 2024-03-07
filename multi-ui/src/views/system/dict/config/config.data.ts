@@ -37,17 +37,17 @@ export const columns: BasicColumn[] = [
   {
     title: '参数名称',
     dataIndex: 'name',
-    width: 220,
+    width: 400,
   },
   {
     title: '参数编码',
     dataIndex: 'code',
-    width: 220,
+    width: 300,
   },
   {
     title: '参数键值',
     dataIndex: 'value',
-    width: 220,
+    width: 300,
   },
   {
     title: '数据类型',
@@ -85,7 +85,7 @@ export const columns: BasicColumn[] = [
   {
     title: '系统内置',
     dataIndex: 'type',
-    width: 220,
+    width: 80,
     customRender: ({ record }) => {
       const data = record as ConfigIM;
       return dictConversion(dict.DicYesNoOptions, data.type);
