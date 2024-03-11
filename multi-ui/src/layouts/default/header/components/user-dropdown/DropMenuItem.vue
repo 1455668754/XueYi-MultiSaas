@@ -13,15 +13,11 @@
   import Icon from '@/components/Icon/Icon.vue';
   import { propTypes } from '@/utils/propTypes';
 
-  defineOptions({ name: 'DropdownMenuItem' });
-
-  const props = defineProps({
-    // eslint-disable-next-line
-    key: propTypes.string,
+  defineProps({
     text: propTypes.string,
     icon: propTypes.string,
   });
 
   const instance = getCurrentInstance();
-  const itemKey = computed(() => props.key || instance?.vnode?.props?.key);
+  const itemKey = computed(() => instance?.vnode?.props?.key);
 </script>
