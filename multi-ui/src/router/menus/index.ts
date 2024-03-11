@@ -3,7 +3,7 @@ import type { Menu, MenuModule } from '@/router/types';
 import { usePermissionStore } from '@/store/modules/permission';
 import { getAllParentPath, transformMenuModule } from '@/router/helper/menuHelper';
 
-const modules = import.meta.glob('./modules/**/*.ts', { eager: true });
+const modules = import.meta.glob('../routes/modules/**/*.ts', { eager: true });
 
 const menuModules: MenuModule[] = [];
 
