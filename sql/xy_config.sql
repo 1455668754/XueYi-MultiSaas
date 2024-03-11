@@ -38,7 +38,7 @@ CREATE TABLE `config_info`
 
 INSERT INTO config_info
 VALUES (1, 'application-dev.yml', 'DEFAULT_GROUP',
-        'spring:\n  domain: #默认域名\n  mvc:\n    pathmatch:\n      matching-strategy: ant_path_matcher\n  # feign 配置\n  cloud:\n    openfeign:\n      okhttp:\n        enabled: true\n      httpclient:\n        enabled: false\n      client:\n        config:\n          default:\n            connectTimeout: 10000\n            readTimeout: 10000\n      compression:\n        request:\n          enabled: true\n        response:\n          enabled: true\nfeign:\n  sentinel:\n    enabled: true\n\n# 暴露监控端点\nmanagement:\n  endpoints:\n    web:\n      exposure:\n        include: \' *\'\n',
+        'spring:\n  mvc:\n    pathmatch:\n      matching-strategy: ant_path_matcher\n  # feign 配置\n  cloud:\n    openfeign:\n      okhttp:\n        enabled: true\n      httpclient:\n        enabled: false\n      client:\n        config:\n          default:\n            connectTimeout: 10000\n            readTimeout: 10000\n      compression:\n        request:\n          enabled: true\n        response:\n          enabled: true\nfeign:\n  sentinel:\n    enabled: true\n\n# 暴露监控端点\nmanagement:\n  endpoints:\n    web:\n      exposure:\n        include: \' *\'\n',
         'a97ef3d0e371342767973a41e589dc82', '2022-02-01 16:11:30', '2023-01-17 07:27:33', 'nacos', '192.168.2.244', '',
         '', '通用配置', 'null', 'null', 'yaml', '', NULL),
        (2, 'application-secret-dev.yml', 'DEFAULT_GROUP',
