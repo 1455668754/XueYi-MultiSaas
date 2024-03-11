@@ -46,7 +46,7 @@ public class BSysPostController extends BaseController<SysPostQuery, SysPostDto,
             case ADD, EDIT -> {
                 if (baseService.checkNameUnique(post.getId(), post.getName()))
                     warn(StrUtil.format("{}{}{}失败，岗位名称已存在", operate.getInfo(), getNodeName(), post.getName()));
-                if (BaseConstants.Status.DISABLE == deptService.checkStatus(post.getId()))
+                if (BaseConstants.Status.DISABLE == deptService.checkStatus(post.getDeptId()))
                     post.setStatus(BaseConstants.Status.DISABLE.getCode());
             }
         }
