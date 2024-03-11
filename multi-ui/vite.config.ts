@@ -25,6 +25,8 @@ export default defineApplicationConfig({
           // secure: false
         },
       },
+      // 项目启动后，自动打开
+      open: true,
       warmup: {
         clientFiles: ['./index.html', './src/{views,components}/*'],
       },

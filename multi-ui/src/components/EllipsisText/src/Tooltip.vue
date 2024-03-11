@@ -1,7 +1,7 @@
 <script setup lang="ts">
-  import { ref } from 'vue';
   import type { CSSProperties } from 'vue';
-  import { rafTimeout, cancelRaf } from './_utils';
+  import { ref } from 'vue';
+  import { cancelRaf, rafTimeout } from './_utils';
 
   interface Props {
     maxWidth?: number; // 提示框内容最大宽度，单位px
@@ -12,6 +12,7 @@
     backgroundColor?: string; // 提示框背景颜色，优先级高于 overlayStyle
     overlayStyle?: CSSProperties; // 提示框内容区域样式
   }
+
   withDefaults(defineProps<Props>(), {
     maxWidth: 120,
     content: '暂无内容',
@@ -34,13 +35,16 @@
     top.value = tooltipHeight + 4;
     left.value = (tooltipWidth - contentWidth) / 2;
   }
+
   const emit = defineEmits(['openChange']);
+
   function onShow() {
     getPosition();
     cancelRaf(hideTimer.value);
     visible.value = true;
     emit('openChange', visible.value);
   }
+
   function onHide(): void {
     hideTimer.value = rafTimeout(() => {
       visible.value = false;
@@ -121,6 +125,7 @@
         pointer-events: none;
 
         &::before {
+          content: ''; // 解决提示框箭头颜色未生效问题
           position: absolute;
           bottom: 0;
           inset-inline-start: 0;
