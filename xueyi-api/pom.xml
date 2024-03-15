@@ -13,6 +13,7 @@
         <module>xueyi-api-tenant</module>
         <module>xueyi-api-file</module>
         <module>xueyi-api-job</module>
+        <module>xueyi-api-bom</module>
     </modules>
 
     <artifactId>xueyi-api</artifactId>

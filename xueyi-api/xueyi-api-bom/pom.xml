@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+        <groupId>com.xueyi</groupId>
+    <artifactId>xueyi-api-bom</artifactId>
+        <version>${revision}</version>
+    <packaging>pom</packaging>
+    <modelVersion>4.0.0</modelVersion>
+
+    <description>
+        xueyi-api-bomAPI模块依赖配置
+    </description>
+
+    <properties>
+        <revision>${xueyi.version}</revision>
+        <xueyi.version>3.0.3</xueyi.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <!-- 系统接口 -->
+            <dependency>
+                <groupId>com.xueyi</groupId>
+                <artifactId>xueyi-api-system</artifactId>
+                <version>${xueyi.version}</version>
+            </dependency>
+
+            <!-- 租管接口 -->
+            <dependency>
+                <groupId>com.xueyi</groupId>
+                <artifactId>xueyi-api-tenant</artifactId>
+                <version>${xueyi.version}</version>
+            </dependency>
+
+            <!-- 文件接口 -->
+            <dependency>
+                <groupId>com.xueyi</groupId>
+                <artifactId>xueyi-api-file</artifactId>
+                <version>${xueyi.version}</version>
+            </dependency>
+
+            <!-- 定时任务接口 -->
+            <dependency>
+                <groupId>com.xueyi</groupId>
+                <artifactId>xueyi-api-job</artifactId>
+                <version>${xueyi.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+</project>

@@ -9,6 +9,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <modules>
+        <module>xueyi-common-bom</module>
         <module>xueyi-common-log</module>
         <module>xueyi-common-web</module>
         <module>xueyi-common-core</module>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <groupId>com.xueyi</groupId>
+    <artifactId>xueyi-common-bom</artifactId>
+    <version>${revision}</version>
+    <packaging>pom</packaging>
+    <modelVersion>4.0.0</modelVersion>
+
+    <description>
+        xueyi-common-bom通用模块依赖配置
+    </description>
+
+    <properties>
+        <revision>${xueyi.version}</revision>
+        <xueyi.version>3.0.3</xueyi.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <!-- 核心模块 -->
+            <dependency>
+                <groupId>com.xueyi</groupId>
+                <artifactId>xueyi-common-core</artifactId>
+                <version>${xueyi.version}</version>
+            </dependency>
+
+            <!-- 通信模块 -->
+            <dependency>
+                <groupId>com.xueyi</groupId>
+                <artifactId>xueyi-common-web</artifactId>
+                <version>${xueyi.version}</version>
+            </dependency>
+
+            <!-- 接口模块 -->
+            <dependency>
+                <groupId>com.xueyi</groupId>
+                <artifactId>xueyi-common-swagger</artifactId>
+                <version>${xueyi.version}</version>
+            </dependency>
+
+            <!-- 安全模块 -->
+            <dependency>
+                <groupId>com.xueyi</groupId>
+                <artifactId>xueyi-common-security</artifactId>
+                <version>${xueyi.version}</version>
+            </dependency>
+
+            <!-- 权限范围 -->
+            <dependency>
+                <groupId>com.xueyi</groupId>
+                <artifactId>xueyi-common-datascope</artifactId>
+                <version>${xueyi.version}</version>
+            </dependency>
+
+            <!-- 多数据源 -->
+            <dependency>
+                <groupId>com.xueyi</groupId>
+                <artifactId>xueyi-common-datasource</artifactId>
+                <version>${xueyi.version}</version>
+            </dependency>
+
+            <!-- 通用开发依赖 - Data -->
+            <dependency>
+                <groupId>com.xueyi</groupId>
+                <artifactId>xueyi-common-dependency-data</artifactId>
+                <version>${xueyi.version}</version>
+            </dependency>
+
+            <!-- 通用开发依赖 - Nacos -->
+            <dependency>
+                <groupId>com.xueyi</groupId>
+                <artifactId>xueyi-common-dependency-nacos</artifactId>
+                <version>${xueyi.version}</version>
+            </dependency>
+
+            <!-- 日志记录 -->
+            <dependency>
+                <groupId>com.xueyi</groupId>
+                <artifactId>xueyi-common-log</artifactId>
+                <version>${xueyi.version}</version>
+            </dependency>
+
+            <!-- 缓存管理 -->
+            <dependency>
+                <groupId>com.xueyi</groupId>
+                <artifactId>xueyi-common-cache</artifactId>
+                <version>${xueyi.version}</version>
+            </dependency>
+
+            <!-- 缓存服务 -->
+            <dependency>
+                <groupId>com.xueyi</groupId>
+                <artifactId>xueyi-common-redis</artifactId>
+                <version>${xueyi.version}</version>
+            </dependency>
+
+            <!-- 分布式事务 -->
+            <dependency>
+                <groupId>com.xueyi</groupId>
+                <artifactId>xueyi-common-seata</artifactId>
+                <version>${xueyi.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+</project>
