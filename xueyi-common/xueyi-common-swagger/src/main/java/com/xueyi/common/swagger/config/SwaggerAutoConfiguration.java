@@ -13,6 +13,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
+import java.util.Optional;
+
 /**
  * Swagger文档配置
  *
@@ -32,25 +34,25 @@ public class SwaggerAutoConfiguration {
 
     private Info apiInfo(SwaggerProperties swaggerProperties) {
         return new Info()
-                .title(swaggerProperties.getInfo().getTitle())
-                .description(swaggerProperties.getInfo().getDescription())
+                .title(Optional.ofNullable(swaggerProperties).map(SwaggerProperties::getInfo).map(SwaggerProperties.InfoProperties::getTitle).orElse(null))
+                .description(Optional.ofNullable(swaggerProperties).map(SwaggerProperties::getInfo).map(SwaggerProperties.InfoProperties::getDescription).orElse(null))
                 .license(license(swaggerProperties))
                 .contact(contact(swaggerProperties))
-                .termsOfService(swaggerProperties.getInfo().getTermsOfService())
-                .version(swaggerProperties.getInfo().getVersion());
+                .termsOfService(Optional.ofNullable(swaggerProperties).map(SwaggerProperties::getInfo).map(SwaggerProperties.InfoProperties::getTermsOfService).orElse(null))
+                .version(Optional.ofNullable(swaggerProperties).map(SwaggerProperties::getInfo).map(SwaggerProperties.InfoProperties::getVersion).orElse(null));
     }
 
     private License license(SwaggerProperties swaggerProperties) {
         return new License()
-                .name(swaggerProperties.getInfo().getLicense().getName())
-                .url(swaggerProperties.getInfo().getLicense().getUrl());
+                .name(Optional.ofNullable(swaggerProperties).map(SwaggerProperties::getInfo).map(SwaggerProperties.InfoProperties::getLicense).map(SwaggerProperties.License::getName).orElse(null))
+                .url(Optional.ofNullable(swaggerProperties).map(SwaggerProperties::getInfo).map(SwaggerProperties.InfoProperties::getLicense).map(SwaggerProperties.License::getUrl).orElse(null));
     }
 
     private Contact contact(SwaggerProperties swaggerProperties) {
         return new Contact()
-                .name(swaggerProperties.getInfo().getContact().getName())
-                .url(swaggerProperties.getInfo().getContact().getName())
-                .email(swaggerProperties.getInfo().getContact().getEmail());
+                .name(Optional.ofNullable(swaggerProperties).map(SwaggerProperties::getInfo).map(SwaggerProperties.InfoProperties::getContact).map(SwaggerProperties.Contact::getName).orElse(null))
+                .url(Optional.ofNullable(swaggerProperties).map(SwaggerProperties::getInfo).map(SwaggerProperties.InfoProperties::getContact).map(SwaggerProperties.Contact::getUrl).orElse(null))
+                .email(Optional.ofNullable(swaggerProperties).map(SwaggerProperties::getInfo).map(SwaggerProperties.InfoProperties::getContact).map(SwaggerProperties.Contact::getEmail).orElse(null));
     }
 
     /**
