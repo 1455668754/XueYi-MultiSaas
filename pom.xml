@@ -26,7 +26,8 @@
         <spring-boot-admin.version>3.2.2</spring-boot-admin.version>
         <mybatis-plus.version>3.5.5</mybatis-plus.version>
         <pagehelper.version>6.1.0</pagehelper.version>
-        <spring-doc.version>2.2.0</spring-doc.version>
+        <knife-springdoc.version>4.4.0</knife-springdoc.version>
+        <spring-doc.version>2.3.0</spring-doc.version>
         <tobato.version>1.27.2</tobato.version>
         <kaptcha.version>2.3.3</kaptcha.version>
         <dynamic-ds.version>4.3.0</dynamic-ds.version>
@@ -172,9 +173,9 @@
 
             <!-- Swagger Webmvc 依赖配置 -->
             <dependency>
-                <groupId>org.springdoc</groupId>
-                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-                <version>${spring-doc.version}</version>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
+                <version>${knife-springdoc.version}</version>
             </dependency>
 
             <!-- Swagger Webflux 依赖配置 -->
