@@ -103,6 +103,20 @@
                 <version>${xueyi.version}</version>
             </dependency>
 
+            <!-- 邮件模块 -->
+            <dependency>
+                <groupId>com.xueyi</groupId>
+                <artifactId>xueyi-common-mail</artifactId>
+                <version>${xueyi.version}</version>
+            </dependency>
+
+            <!-- 短信模块 -->
+            <dependency>
+                <groupId>com.xueyi</groupId>
+                <artifactId>xueyi-common-sms</artifactId>
+                <version>${xueyi.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 </project>
