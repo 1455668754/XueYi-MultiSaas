@@ -41,7 +41,8 @@ public class PermitAllUrlProperties implements InitializingBean {
 
     private static final Pattern PATTERN = Pattern.compile("\\{(.*?)\\}");
 
-    private static final String[] DEFAULT_IGNORE_URLS = new String[]{"/actuator/**", "/error", "/v3/api-docs"};
+    private static final String[] DEFAULT_IGNORE_URLS = new String[]{"/actuator/**",
+            "/error", "/v3/api-docs", "/v3/api-docs/*", "/doc.html", "/webjars/**"};
 
     /** 常规全部 */
     private List<String> routine = new ArrayList<>();
