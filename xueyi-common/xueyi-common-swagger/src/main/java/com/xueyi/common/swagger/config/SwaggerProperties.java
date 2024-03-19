@@ -38,7 +38,7 @@ public class SwaggerProperties {
         private String version;
 
         /** 服务条款URL **/
-        private String termsOfService = "";
+        private String termsOfService;
 
     }
 
@@ -46,13 +46,13 @@ public class SwaggerProperties {
     public static class Contact {
 
         /** 联系人 **/
-        private String name = "";
+        private String name;
 
         /** 联系人url **/
-        private String url = "";
+        private String url;
 
         /** 联系人email **/
-        private String email = "";
+        private String email;
 
     }
 
@@ -60,10 +60,10 @@ public class SwaggerProperties {
     public static class License {
 
         /** 联系人 **/
-        private String name = "";
+        private String name;
 
         /** 联系人url **/
-        private String url = "";
+        private String url;
 
     }
 }
