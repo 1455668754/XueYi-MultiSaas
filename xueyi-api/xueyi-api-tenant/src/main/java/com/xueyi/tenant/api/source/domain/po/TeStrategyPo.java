@@ -23,6 +23,7 @@ public class TeStrategyPo extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /** 数据源Id */
+    @TableField(updateStrategy = FieldStrategy.NEVER)
     protected Long sourceId;
 
     /** 数据源编码 */

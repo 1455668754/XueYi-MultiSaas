@@ -9,6 +9,8 @@ import { TenantIM } from '@/model/tenant/tenant';
 import { listSourceApi } from '@/api/tenant/source/source.api';
 import { h } from 'vue';
 import { Tag } from 'ant-design-vue';
+import {isNotEmpty} from "@/utils/core/ObjectUtil";
+
 
 /** 字典查询 */
 export const dictMap = await dicDictList([DicCodeEnum.SYS_YES_NO, 'sys_normal_disable']);
@@ -131,6 +133,7 @@ export const formSchema: FormSchema[] = [
       valueField: 'id',
     },
     required: true,
+    dynamicDisabled: ({ values }) => isNotEmpty(values.id),
     colProps: { span: 12 },
   },
   {
