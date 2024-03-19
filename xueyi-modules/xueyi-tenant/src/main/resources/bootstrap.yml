@@ -10,11 +10,16 @@ nacos:
   username: @nacos.username@
   password: @nacos.password@
 
+# 应用名称配置
+application:
+  title: 租户服务
+  name: xueyi-tenant
+
 # Spring
 spring:
   application:
     # 应用名称
-    name: xueyi-tenant
+    name: ${application.name}
   profiles:
     # 环境配置
     active: @profiles.active@

@@ -10,11 +10,16 @@ nacos:
   username: @nacos.username@
   password: @nacos.password@
 
+# 应用名称配置
+application:
+  title: 网关服务
+  name: xueyi-gateway
+
 # Spring
 spring:
   application:
     # 应用名称
-    name: xueyi-gateway
+    name: ${application.name}
   profiles:
     # 环境配置
     active: @profiles.active@

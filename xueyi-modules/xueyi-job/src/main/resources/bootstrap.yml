@@ -10,11 +10,16 @@ nacos:
   username: @nacos.username@
   password: @nacos.password@
 
+# 应用名称配置
+application:
+  title: 定时任务服务
+  name: xueyi-job
+
 # Spring
 spring:
   application:
     # 应用名称
-    name: xueyi-job
+    name: ${application.name}
   profiles:
     # 环境配置
     active: @profiles.active@
