@@ -38,7 +38,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -68,36 +67,6 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeQuery, Sy
     public CacheConstants.CacheType getCacheKey() {
         return CacheConstants.CacheType.SYS_DICT_KEY;
     }
-
-    /** 缓存标识命名定义 */
-    protected CacheConstants.CacheType getCacheRouteKey() {
-        return CacheConstants.CacheType.ROUTE_DICT_KEY;
-    }
-
-    /** 缓存键取值逻辑定义 | Function */
-    @Override
-    public Function<? super SysDictTypeDto, String> cacheKeyFun() {
-        return SysDictTypeDto::getCode;
-    }
-
-    /** 缓存值取值逻辑定义 | Function */
-    @Override
-    public Function<? super SysDictTypeDto, Object> cacheValueFun() {
-        return SysDictTypeDto::getSubList;
-    }
-
-    /** 缓存键取值逻辑定义 | Supplier */
-    @Override
-    public Supplier<Serializable> cacheKeySupplier(SysDictTypeDto dto) {
-        return dto::getCode;
-    }
-
-    /** 缓存值取值逻辑定义 | Supplier */
-    @Override
-    public Supplier<Object> cacheValueSupplier(SysDictTypeDto dto) {
-        return dto::getSubList;
-    }
-
 
     /**
      * 查询数据对象列表 | 数据权限 | 附加数据
@@ -322,38 +291,24 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeQuery, Sy
     /**
      * 缓存更新
      *
-     * @param operate      服务层 - 操作类型
-     * @param operateCache 缓存操作类型
-     * @param dto          数据对象
-     * @param dtoList      数据对象集合
+     * @param operate       服务层 - 操作类型
+     * @param operateCache  缓存操作类型
+     * @param dto           数据对象
+     * @param dtoList       数据对象集合
+     * @param cacheKey      缓存编码
+     * @param isTenant      租户级缓存
+     * @param cacheKeyFun   缓存键定义方法
+     * @param cacheValueFun 缓存值定义方法
      */
     @Override
-    public void refreshCache(OperateConstants.ServiceType operate, RedisConstants.OperateType operateCache, SysDictTypeDto dto, Collection<SysDictTypeDto> dtoList) {
-        Long enterpriseId = SecurityUtils.getEnterpriseId();
-        super.refreshCache(operate, operateCache, dto, dtoList);
-        if (ObjectUtil.equals(SecurityConstants.COMMON_TENANT_ID, enterpriseId)) {
-            String cacheKey = getCacheRouteKey().getCacheKey();
-            switch (operateCache) {
-                case REFRESH_ALL -> {
-                    redisService.deleteObject(cacheKey);
-                    List<SysDictTypeDto> dictList = dtoList.stream().peek(item -> item.setSubList(null)).toList();
-                    redisService.refreshMapCache(cacheKey, dictList, SysDictTypeDto::getCode, Function.identity());
-                }
-                case REFRESH -> {
-                    if (operate.isSingle()) {
-                        redisService.refreshMapValueCache(cacheKey, dto::getCode, dto::getSubList);
-                    } else if (operate.isBatch()) {
-                        dtoList.forEach(item -> redisService.refreshMapValueCache(cacheKey, item::getCode, item::getSubList));
-                    }
-                }
-                case REMOVE -> {
-                    if (operate.isSingle()) {
-                        redisService.removeMapValueCache(cacheKey, dto.getCode());
-                    } else if (operate.isBatch()) {
-                        redisService.removeMapValueCache(cacheKey, dtoList.stream().map(SysDictTypeDto::getCode).toArray(String[]::new));
-                    }
-                }
-            }
+    public void refreshCache(OperateConstants.ServiceType operate, RedisConstants.OperateType operateCache, SysDictTypeDto dto, Collection<SysDictTypeDto> dtoList,
+                             String cacheKey, Boolean isTenant, Function<? super SysDictTypeDto, String> cacheKeyFun, Function<? super SysDictTypeDto, Object> cacheValueFun) {
+        // 默认缓存管理方法
+        super.refreshCache(operate, operateCache, dto, dtoList, cacheKey, isTenant, SysDictTypeDto::getCode, SysDictTypeDto::getSubList);
+        // 路由缓存管理方法
+        if (SecurityUtils.isCommonTenant()) {
+            CacheConstants.CacheType routeCacheKey = CacheConstants.CacheType.ROUTE_DICT_KEY;
+            super.refreshCache(operate, operateCache, dto, dtoList, routeCacheKey.getCacheKey(), routeCacheKey.getIsTenant(), SysDictTypeDto::getCode, Function.identity());
         }
     }
 }

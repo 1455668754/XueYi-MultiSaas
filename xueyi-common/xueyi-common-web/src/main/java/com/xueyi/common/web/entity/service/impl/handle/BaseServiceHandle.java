@@ -1,7 +1,9 @@
 package com.xueyi.common.web.entity.service.impl.handle;
 
+import com.xueyi.common.cache.constant.CacheConstants;
 import com.xueyi.common.core.constant.basic.OperateConstants;
 import com.xueyi.common.core.utils.core.ObjectUtil;
+import com.xueyi.common.core.utils.core.StrUtil;
 import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.redis.constant.RedisConstants;
 import com.xueyi.common.redis.service.RedisService;
@@ -15,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -37,18 +40,24 @@ public class BaseServiceHandle<Q extends BaseEntity, D extends BaseEntity, C ext
     /**
      * 缓存更新
      *
-     * @param operate      服务层 - 操作类型
-     * @param operateCache 缓存操作类型
-     * @param dto          数据对象
-     * @param dtoList      数据对象集合
+     * @param operate       服务层 - 操作类型
+     * @param operateCache  缓存操作类型
+     * @param dto           数据对象
+     * @param dtoList       数据对象集合
+     * @param cacheKey      缓存编码
+     * @param isTenant      租户级缓存
+     * @param cacheKeyFun   缓存键定义方法
+     * @param cacheValueFun 缓存值定义方法
      */
     @Override
-    public void refreshCache(OperateConstants.ServiceType operate, RedisConstants.OperateType operateCache, D dto, Collection<D> dtoList) {
+    public void refreshCache(OperateConstants.ServiceType operate, RedisConstants.OperateType operateCache, D dto, Collection<D> dtoList,
+                             String cacheKey, Boolean isTenant, Function<? super D, String> cacheKeyFun, Function<? super D, Object> cacheValueFun) {
         // 校验是否启动缓存管理
-        if (ObjectUtil.isNull(getCacheKey())) {
+        if (StrUtil.isBlank(cacheKey)) {
             return;
         }
-        String cacheKey = getCacheKey().getCacheKey();
+        String cacheKeyName = CacheConstants.CacheType.getCusCacheKey(cacheKey, isTenant);
+        // 是否存在缓存字段二次组装
         if (operate.isSingle()) {
             subCorrelates(dto, getBasicCorrelate(CorrelateConstants.ServiceType.CACHE_REFRESH));
         } else if (operate.isBatch()) {
@@ -56,25 +65,20 @@ public class BaseServiceHandle<Q extends BaseEntity, D extends BaseEntity, C ext
         }
         switch (operateCache) {
             case REFRESH_ALL -> {
-                redisService.deleteObject(cacheKey);
-                redisService.refreshMapCache(cacheKey, dtoList, cacheKeyFun(), cacheValueFun());
+                redisService.deleteObject(cacheKeyName);
+                redisService.refreshMapCache(cacheKeyName, dtoList, cacheKeyFun, cacheValueFun);
             }
             case REFRESH -> {
-                if (operate.isSingle()) {
-                    redisService.refreshMapValueCache(cacheKey, cacheKeySupplier(dto), cacheValueSupplier(dto));
-                } else if (operate.isBatch()) {
-                    dtoList.forEach(item -> redisService.refreshMapValueCache(cacheKey, cacheKeySupplier(item), cacheValueSupplier(item)));
-                }
+                Collection<D> list = operate.isBatch() ? dtoList : new ArrayList<>() {{
+                    add(dto);
+                }};
+                redisService.refreshMapCache(cacheKeyName, list, cacheKeyFun, cacheValueFun);
             }
             case REMOVE -> {
-                if (operate.isSingle()) {
-                    List<D> list = new ArrayList<>() {{
-                        add(dto);
-                    }};
-                    redisService.removeMapValueCache(cacheKey, list.stream().map(cacheKeyFun()).toArray(String[]::new));
-                } else if (operate.isBatch()) {
-                    redisService.removeMapValueCache(cacheKey, dtoList.stream().map(cacheKeyFun()).toArray(String[]::new));
-                }
+                Collection<D> list = operate.isBatch() ? dtoList : new ArrayList<>() {{
+                    add(dto);
+                }};
+                redisService.refreshMapCache(cacheKeyName, list, cacheKeyFun);
             }
         }
     }

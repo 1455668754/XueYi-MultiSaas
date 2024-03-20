@@ -1,7 +1,6 @@
 package com.xueyi.common.redis.service;
 
 import com.xueyi.common.core.exception.UtilException;
-import com.xueyi.common.core.utils.core.ArrayUtil;
 import com.xueyi.common.core.utils.core.CollUtil;
 import com.xueyi.common.core.utils.core.MapUtil;
 import com.xueyi.common.core.utils.core.NumberUtil;
@@ -15,7 +14,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +21,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -166,6 +163,16 @@ public class RedisService {
     }
 
     /**
+     * 缓存基本的对象，Integer、String、实体类等 | 默认八小时
+     *
+     * @param key   Redis键
+     * @param value 缓存的值
+     */
+    public <T> void setExpireCacheObject(final String key, final T value) {
+        setCacheObject(key, value, (long) NumberUtil.Eight, TimeUnit.HOURS);
+    }
+
+    /**
      * 缓存基本的对象，Integer、String、实体类等
      *
      * @param key      Redis键
@@ -264,10 +271,23 @@ public class RedisService {
     }
 
     /**
+     * 缓存List数据 | 默认八小时
+     *
+     * @param key      Redis键
+     * @param dataList 待缓存的List数据
+     * @return 缓存的对象
+     */
+    public <T> long setExpireCacheList(final String key, final List<T> dataList) {
+        return setCacheList(key, dataList, NumberUtil.Eight, TimeUnit.HOURS);
+    }
+
+    /**
      * 缓存List数据
      *
      * @param key      Redis键
      * @param dataList 待缓存的List数据
+     * @param timeout  超时时间
+     * @param unit     时间单位
      * @return 缓存的对象
      */
     public <T> long setCacheList(final String key, final List<T> dataList, final long timeout, final TimeUnit unit) {
@@ -323,6 +343,16 @@ public class RedisService {
         if (dataMap != null) {
             redisTemplate.opsForHash().putAll(key, dataMap);
         }
+    }
+
+    /**
+     * 缓存Map | 默认八小时
+     *
+     * @param key     Redis键
+     * @param dataMap map
+     */
+    public <T> void setExpireCacheMap(final String key, final Map<String, T> dataMap) {
+        setCacheMap(key, dataMap, NumberUtil.Eight, TimeUnit.HOURS);
     }
 
     /**
@@ -423,11 +453,22 @@ public class RedisService {
      * @param dataList  数据集合
      */
     public <T> void refreshListCache(String optionKey, List<T> dataList) {
-        setCacheList(optionKey, dataList, NumberUtil.Nine, TimeUnit.HOURS);
+        setExpireCacheList(optionKey, dataList);
     }
 
     /**
-     * 全量更新MAP缓存字典
+     * 删除MAP缓存字典指定键数据
+     *
+     * @param mapKey    缓存键值
+     * @param cacheList 缓存数据集合
+     * @param keyGet    键名
+     */
+    public <T> void refreshMapCache(String mapKey, Collection<T> cacheList, Function<? super T, String> keyGet) {
+        refreshMapCache(mapKey, cacheList, keyGet, null);
+    }
+
+    /**
+     * 更新MAP缓存字典
      *
      * @param mapKey    缓存键值
      * @param cacheList 缓存数据集合
@@ -435,50 +476,35 @@ public class RedisService {
      * @param valueGet  值名
      */
     public <T, K> void refreshMapCache(String mapKey, Collection<T> cacheList, Function<? super T, String> keyGet, Function<? super T, K> valueGet) {
-        Map<String, K> resultMap = new HashMap<>();
-        if (CollUtil.isNotEmpty(cacheList)) {
-            resultMap = cacheList.stream()
-                    .filter(item -> {
-                        if (StrUtil.isEmpty(keyGet.apply(item))) {
+        // 新增/修改操作
+        if (ObjectUtil.isNotNull(valueGet)) {
+            Map<String, K> resultMap = new HashMap<>();
+            if (CollUtil.isNotEmpty(cacheList)) {
+                resultMap = cacheList.stream()
+                        .filter(item -> {
+                            if (StrUtil.isEmpty(keyGet.apply(item))) {
+                                throw new UtilException("cache key cannot be empty");
+                            }
+                            return ObjectUtil.isNotNull(valueGet.apply(item));
+                        }).collect(Collectors.toMap(keyGet, valueGet, (v1, v2) -> v1));
+            }
+            if (MapUtil.isNotEmpty(resultMap)) {
+                setExpireCacheMap(mapKey, resultMap);
+            }
+        }
+        // 删除操作
+        else {
+            Set<String> keys = cacheList.stream()
+                    .map(item -> {
+                        String key = keyGet.apply(item);
+                        if (StrUtil.isEmpty(key)) {
                             throw new UtilException("cache key cannot be empty");
                         }
-                        return ObjectUtil.isNotNull(valueGet.apply(item));
-                    }).collect(Collectors.toMap(keyGet, valueGet));
-        }
-        if (MapUtil.isNotEmpty(resultMap)) {
-            setCacheMap(mapKey, resultMap, NumberUtil.Nine, TimeUnit.HOURS);
-        } else {
-            deleteObject(mapKey);
-        }
-    }
-
-    /**
-     * 更新MAP缓存字典
-     *
-     * @param mapKey   缓存键值
-     * @param keyGet   键名
-     * @param valueGet 值名
-     */
-    public <T> void refreshMapValueCache(String mapKey, Supplier<Serializable> keyGet, Supplier<T> valueGet) {
-        if (ObjectUtil.isNotNull(valueGet.get())) {
-            setCacheMapValue(mapKey, keyGet.get().toString(), valueGet.get());
-        } else {
-            deleteCacheMapValue(mapKey, keyGet.get().toString());
-        }
-        if (hasKey(mapKey)) {
-            expire(mapKey, NumberUtil.Nine, TimeUnit.HOURS);
-        }
-    }
-
-    /**
-     * 删除MAP缓存字典指定键数据
-     *
-     * @param mapKey 缓存键值
-     * @param keys   键名
-     */
-    public void removeMapValueCache(String mapKey, Serializable... keys) {
-        if (ArrayUtil.isNotEmpty(keys)) {
-            deleteCacheMapValue(mapKey, keys);
+                        return key;
+                    }).collect(Collectors.toSet());
+            if (CollUtil.isNotEmpty(keys)) {
+                deleteCacheMapValue(mapKey, keys.toArray());
+            }
         }
     }
 }

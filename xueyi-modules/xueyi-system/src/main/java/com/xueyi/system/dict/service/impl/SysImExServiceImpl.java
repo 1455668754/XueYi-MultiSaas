@@ -29,7 +29,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -44,23 +43,6 @@ public class SysImExServiceImpl extends BaseServiceImpl<SysImExQuery, SysImExDto
     @Override
     public CacheConstants.CacheType getCacheKey() {
         return CacheConstants.CacheType.SYS_IM_EX_KEY;
-    }
-
-    /** 缓存标识命名定义 */
-    protected CacheConstants.CacheType getCacheRouteKey() {
-        return CacheConstants.CacheType.ROUTE_IM_EX_KEY;
-    }
-
-    /** 缓存键取值逻辑定义 | Function */
-    @Override
-    public Function<? super SysImExDto, String> cacheKeyFun() {
-        return SysImExDto::getCode;
-    }
-
-    /** 缓存键取值逻辑定义 | Supplier */
-    @Override
-    public Supplier<Serializable> cacheKeySupplier(SysImExDto dto) {
-        return dto::getCode;
     }
 
     /**
@@ -94,12 +76,12 @@ public class SysImExServiceImpl extends BaseServiceImpl<SysImExQuery, SysImExDto
      */
     @Override
     public SysImExDto selectByCode(String code) {
-        SysImExDto config = baseManager.selectByCode(code);
-        if (ObjectUtil.isNull(config)) {
+        SysImExDto imEx = baseManager.selectByCode(code);
+        if (ObjectUtil.isNull(imEx)) {
             syncCache();
-            config = baseManager.selectByCode(code);
+            imEx = baseManager.selectByCode(code);
         }
-        return config;
+        return imEx;
     }
 
     /**
@@ -112,20 +94,20 @@ public class SysImExServiceImpl extends BaseServiceImpl<SysImExQuery, SysImExDto
         SecurityContextHolder.setEnterpriseId(SecurityConstants.COMMON_TENANT_ID.toString());
         List<SysImExDto> commonTypeList = baseManager.selectList(null);
         SecurityContextHolder.setEnterpriseId(enterpriseId.toString());
-        Map<String, SysImExDto> enterpriseConfigMap = enterpriseTypeList.stream().collect(Collectors.toMap(SysImExDto::getCode, Function.identity()));
-        List<SysImExDto> addConfigList = new ArrayList<>();
+        Map<String, SysImExDto> enterpriseImExMap = enterpriseTypeList.stream().collect(Collectors.toMap(SysImExDto::getCode, Function.identity()));
+        List<SysImExDto> addImExList = new ArrayList<>();
         commonTypeList.forEach(config -> {
             if (StrUtil.equals(DictConstants.DicCacheType.OVERALL.getCode(), config.getCacheType())) {
                 return;
             }
-            SysImExDto enterpriseType = enterpriseConfigMap.get(config.getCode());
+            SysImExDto enterpriseType = enterpriseImExMap.get(config.getCode());
             if (ObjectUtil.isNull(enterpriseType)) {
-                addConfigList.add(config);
+                addImExList.add(config);
             }
         });
-        if (CollUtil.isNotEmpty(addConfigList)) {
-            addConfigList.forEach(item -> item.setId(null));
-            baseManager.insertBatch(addConfigList);
+        if (CollUtil.isNotEmpty(addImExList)) {
+            addImExList.forEach(SysImExDto::initId);
+            baseManager.insertBatch(addImExList);
         }
         return Boolean.TRUE;
     }
@@ -258,37 +240,24 @@ public class SysImExServiceImpl extends BaseServiceImpl<SysImExQuery, SysImExDto
     /**
      * 缓存更新
      *
-     * @param operate      服务层 - 操作类型
-     * @param operateCache 缓存操作类型
-     * @param dto          数据对象
-     * @param dtoList      数据对象集合
+     * @param operate       服务层 - 操作类型
+     * @param operateCache  缓存操作类型
+     * @param dto           数据对象
+     * @param dtoList       数据对象集合
+     * @param cacheKey      缓存编码
+     * @param isTenant      租户级缓存
+     * @param cacheKeyFun   缓存键定义方法
+     * @param cacheValueFun 缓存值定义方法
      */
     @Override
-    public void refreshCache(OperateConstants.ServiceType operate, RedisConstants.OperateType operateCache, SysImExDto dto, Collection<SysImExDto> dtoList) {
-        Long enterpriseId = SecurityUtils.getEnterpriseId();
-        super.refreshCache(operate, operateCache, dto, dtoList);
-        if (ObjectUtil.equals(SecurityConstants.COMMON_TENANT_ID, enterpriseId)) {
-            String cacheKey = getCacheRouteKey().getCacheKey();
-            switch (operateCache) {
-                case REFRESH_ALL -> {
-                    redisService.deleteObject(cacheKey);
-                    redisService.refreshMapCache(cacheKey, dtoList, SysImExDto::getCode, Function.identity());
-                }
-                case REFRESH -> {
-                    if (operate.isSingle()) {
-                        redisService.refreshMapValueCache(cacheKey, dto::getCode, () -> dto);
-                    } else if (operate.isBatch()) {
-                        dtoList.forEach(item -> redisService.refreshMapValueCache(cacheKey, item::getCode, () -> dto));
-                    }
-                }
-                case REMOVE -> {
-                    if (operate.isSingle()) {
-                        redisService.removeMapValueCache(cacheKey, dto.getCode());
-                    } else if (operate.isBatch()) {
-                        redisService.removeMapValueCache(cacheKey, dtoList.stream().map(SysImExDto::getCode).toArray(String[]::new));
-                    }
-                }
-            }
+    public void refreshCache(OperateConstants.ServiceType operate, RedisConstants.OperateType operateCache, SysImExDto dto, Collection<SysImExDto> dtoList,
+                             String cacheKey, Boolean isTenant, Function<? super SysImExDto, String> cacheKeyFun, Function<? super SysImExDto, Object> cacheValueFun) {
+        // 默认缓存管理方法
+        super.refreshCache(operate, operateCache, dto, dtoList, cacheKey, isTenant, SysImExDto::getCode, cacheValueFun);
+        // 路由缓存管理方法
+        if (SecurityUtils.isCommonTenant()) {
+            CacheConstants.CacheType routeCacheKey = CacheConstants.CacheType.ROUTE_IM_EX_KEY;
+            super.refreshCache(operate, operateCache, dto, dtoList, routeCacheKey.getCacheKey(), routeCacheKey.getIsTenant(), SysImExDto::getCode, Function.identity());
         }
     }
 }

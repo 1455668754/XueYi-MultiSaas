@@ -29,7 +29,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -44,35 +43,6 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigQuery, SysCon
     @Override
     public CacheConstants.CacheType getCacheKey() {
         return CacheConstants.CacheType.SYS_CONFIG_KEY;
-    }
-
-    /** 缓存标识命名定义 */
-    protected CacheConstants.CacheType getCacheRouteKey() {
-        return CacheConstants.CacheType.ROUTE_CONFIG_KEY;
-    }
-
-    /** 缓存键取值逻辑定义 | Function */
-    @Override
-    public Function<? super SysConfigDto, String> cacheKeyFun() {
-        return SysConfigDto::getCode;
-    }
-
-    /** 缓存值取值逻辑定义 | Function */
-    @Override
-    public Function<? super SysConfigDto, Object> cacheValueFun() {
-        return SysConfigDto::getValue;
-    }
-
-    /** 缓存键取值逻辑定义 | Supplier */
-    @Override
-    public Supplier<Serializable> cacheKeySupplier(SysConfigDto dto) {
-        return dto::getCode;
-    }
-
-    /** 缓存值取值逻辑定义 | Supplier */
-    @Override
-    public Supplier<Object> cacheValueSupplier(SysConfigDto dto) {
-        return dto::getValue;
     }
 
     /**
@@ -136,7 +106,7 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigQuery, SysCon
             }
         });
         if (CollUtil.isNotEmpty(addConfigList)) {
-            addConfigList.forEach(item -> item.setId(null));
+            addConfigList.forEach(SysConfigDto::initId);
             baseManager.insertBatch(addConfigList);
         }
         return Boolean.TRUE;
@@ -281,37 +251,24 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigQuery, SysCon
     /**
      * 缓存更新
      *
-     * @param operate      服务层 - 操作类型
-     * @param operateCache 缓存操作类型
-     * @param dto          数据对象
-     * @param dtoList      数据对象集合
+     * @param operate       服务层 - 操作类型
+     * @param operateCache  缓存操作类型
+     * @param dto           数据对象
+     * @param dtoList       数据对象集合
+     * @param cacheKey      缓存编码
+     * @param isTenant      租户级缓存
+     * @param cacheKeyFun   缓存键定义方法
+     * @param cacheValueFun 缓存值定义方法
      */
     @Override
-    public void refreshCache(OperateConstants.ServiceType operate, RedisConstants.OperateType operateCache, SysConfigDto dto, Collection<SysConfigDto> dtoList) {
-        Long enterpriseId = SecurityUtils.getEnterpriseId();
-        super.refreshCache(operate, operateCache, dto, dtoList);
-        if (ObjectUtil.equals(SecurityConstants.COMMON_TENANT_ID, enterpriseId)) {
-            String cacheKey = getCacheRouteKey().getCacheKey();
-            switch (operateCache) {
-                case REFRESH_ALL -> {
-                    redisService.deleteObject(cacheKey);
-                    redisService.refreshMapCache(cacheKey, dtoList, SysConfigDto::getCode, Function.identity());
-                }
-                case REFRESH -> {
-                    if (operate.isSingle()) {
-                        redisService.refreshMapValueCache(cacheKey, dto::getCode, dto::getValue);
-                    } else if (operate.isBatch()) {
-                        dtoList.forEach(item -> redisService.refreshMapValueCache(cacheKey, item::getCode, item::getValue));
-                    }
-                }
-                case REMOVE -> {
-                    if (operate.isSingle()) {
-                        redisService.removeMapValueCache(cacheKey, dto.getCode());
-                    } else if (operate.isBatch()) {
-                        redisService.removeMapValueCache(cacheKey, dtoList.stream().map(SysConfigDto::getCode).toArray(String[]::new));
-                    }
-                }
-            }
+    public void refreshCache(OperateConstants.ServiceType operate, RedisConstants.OperateType operateCache, SysConfigDto dto, Collection<SysConfigDto> dtoList,
+                             String cacheKey, Boolean isTenant, Function<? super SysConfigDto, String> cacheKeyFun, Function<? super SysConfigDto, Object> cacheValueFun) {
+        // 默认缓存管理方法
+        super.refreshCache(operate, operateCache, dto, dtoList, cacheKey, isTenant, SysConfigDto::getCode, SysConfigDto::getValue);
+        // 路由缓存管理方法
+        if (SecurityUtils.isCommonTenant()) {
+            CacheConstants.CacheType routeCacheKey = CacheConstants.CacheType.ROUTE_CONFIG_KEY;
+            super.refreshCache(operate, operateCache, dto, dtoList, routeCacheKey.getCacheKey(), routeCacheKey.getIsTenant(), SysConfigDto::getCode, Function.identity());
         }
     }
 }
