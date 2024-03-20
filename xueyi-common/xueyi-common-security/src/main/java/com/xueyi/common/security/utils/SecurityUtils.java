@@ -224,6 +224,13 @@ public class SecurityUtils {
     }
 
     /**
+     * 是否为公共租户
+     */
+    public static boolean isCommonTenant() {
+        return ObjectUtil.equals(SecurityConstants.COMMON_TENANT_ID, getEnterpriseId());
+    }
+
+    /**
      * 是否为空租户信息
      */
     public static boolean isEmptyTenant() {
