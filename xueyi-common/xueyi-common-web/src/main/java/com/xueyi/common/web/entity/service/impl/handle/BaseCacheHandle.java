@@ -6,6 +6,7 @@ import com.xueyi.common.core.web.entity.base.BaseEntity;
 import com.xueyi.common.redis.constant.RedisConstants;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.function.Function;
 
 /**
@@ -52,7 +53,8 @@ public interface BaseCacheHandle<D extends BaseEntity> {
      * @param dtoList      数据对象集合
      */
     default void refreshCache(OperateConstants.ServiceType operate, RedisConstants.OperateType operateCache, D dto, Collection<D> dtoList) {
-        refreshCache(operate, operateCache, dto, dtoList, getCacheKey().getCode(), getCacheKey().getIsTenant(), D::getIdStr, Function.identity());
+        refreshCache(operate, operateCache, dto, dtoList, Optional.ofNullable(getCacheKey()).map(CacheConstants.CacheType::getCode).orElse(null),
+                Optional.ofNullable(getCacheKey()).map(CacheConstants.CacheType::getIsTenant).orElse(null), D::getIdStr, Function.identity());
     }
 
     /**
