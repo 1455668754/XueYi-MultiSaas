@@ -80,9 +80,7 @@ public class DictUtil {
                 value = getCacheService().getCacheObject(CacheConstants.CacheType.SYS_CONFIG_KEY, code);
             }
         } else {
-            SecurityContextHolder.setEnterpriseId(SecurityConstants.COMMON_TENANT_ID.toString());
-            value = getCacheService().getCacheObject(CacheConstants.CacheType.TE_CONFIG_KEY, code);
-            SecurityContextHolder.rollLastEnterpriseId();
+            value = SecurityContextHolder.setEnterpriseIdFun(SecurityConstants.COMMON_TENANT_ID.toString(), () -> getCacheService().getCacheObject(CacheConstants.CacheType.TE_CONFIG_KEY, code));
         }
         return (T) ConvertUtil.convert(clazz, value, defaultValue);
     }
@@ -118,9 +116,7 @@ public class DictUtil {
                 dictList = getCacheService().getCacheObject(CacheConstants.CacheType.SYS_DICT_KEY, code);
             }
         } else {
-            SecurityContextHolder.setEnterpriseId(SecurityConstants.COMMON_TENANT_ID.toString());
-            dictList = getCacheService().getCacheObject(CacheConstants.CacheType.TE_DICT_KEY, code);
-            SecurityContextHolder.rollLastEnterpriseId();
+            dictList = SecurityContextHolder.setEnterpriseIdFun(SecurityConstants.COMMON_TENANT_ID.toString(), () -> getCacheService().getCacheObject(CacheConstants.CacheType.TE_DICT_KEY, code));
         }
         return dictList;
     }
@@ -144,9 +140,7 @@ public class DictUtil {
                 value = getCacheService().getCacheObject(CacheConstants.CacheType.SYS_IM_EX_KEY, exCode);
             }
         } else {
-            SecurityContextHolder.setEnterpriseId(SecurityConstants.COMMON_TENANT_ID.toString());
-            value = getCacheService().getCacheObject(CacheConstants.CacheType.TE_IM_EX_KEY, exCode);
-            SecurityContextHolder.rollLastEnterpriseId();
+            value = SecurityContextHolder.setEnterpriseIdFun(SecurityConstants.COMMON_TENANT_ID.toString(), () -> getCacheService().getCacheObject(CacheConstants.CacheType.TE_IM_EX_KEY, exCode));
         }
         return value;
     }
