@@ -134,10 +134,10 @@ public class SysImExServiceImpl extends BaseServiceImpl<SysImExQuery, SysImExDto
      */
     @Override
     protected SysImExDto startHandle(OperateConstants.ServiceType operate, SysImExDto newDto, Serializable id) {
-        SecurityContextHolder.setTenantIgnore();
-        SysImExDto originDto = super.startHandle(operate, newDto, id);
-        subCorrelates(originDto, SysImExCorrelate.EN_INFO_SELECT);
-        SecurityContextHolder.clearTenantIgnore();
+        SysImExDto originDto = SecurityContextHolder.setTenantIgnoreFun(() -> {
+            SysImExDto info = super.startHandle(operate, newDto, id);
+            return subCorrelates(info, SysImExCorrelate.EN_INFO_SELECT);
+        });
         switch (operate) {
             case ADD -> {
                 if (StrUtil.equals(DictConstants.DicCacheType.TENANT.getCode(), newDto.getCacheType()) || StrUtil.equals(DictConstants.DicCacheType.OVERALL.getCode(), newDto.getCacheType())) {

@@ -51,9 +51,7 @@ public class SysDictDataServiceImpl extends BaseServiceImpl<SysDictDataQuery, Sy
      */
     @Override
     protected SysDictDataDto startHandle(OperateConstants.ServiceType operate, SysDictDataDto newDto, Serializable id) {
-        SecurityContextHolder.setTenantIgnore();
-        SysDictDataDto originDto = super.startHandle(operate, newDto, id);
-        SecurityContextHolder.clearTenantIgnore();
+        SysDictDataDto originDto = SecurityContextHolder.setTenantIgnoreFun(() -> super.startHandle(operate, newDto, id));
         switch (operate) {
             case ADD, EDIT, EDIT_STATUS -> {
                 if (ObjectUtil.isNotNull(newDto.getDictTypeId())) {
@@ -165,10 +163,10 @@ public class SysDictDataServiceImpl extends BaseServiceImpl<SysDictDataQuery, Sy
                              String cacheKey, Boolean isTenant, Function<? super SysDictDataDto, String> cacheKeyFun, Function<? super SysDictDataDto, Object> cacheValueFun) {
         switch (operateCache) {
             case REFRESH, REMOVE -> {
-                Collection<SysDictDataDto> list = operate.isBatch() ? dtoList : new ArrayList<>(){{
+                Collection<SysDictDataDto> list = operate.isBatch() ? dtoList : new ArrayList<>() {{
                     add(dto);
                 }};
-                List<String> enterpriseCaches = list.stream(). map(SysDictDataDto::getTenantId).collect(Collectors.toSet())
+                List<String> enterpriseCaches = list.stream().map(SysDictDataDto::getTenantId).collect(Collectors.toSet())
                         .stream().map(item -> CacheConstants.CacheType.getCusCacheKey(cacheKey, Boolean.TRUE, item)).toList();
                 redisService.deleteObject(enterpriseCaches);
             }

@@ -86,10 +86,7 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
      */
     @Override
     public List<GenTableDto> selectDbTableList(GenTableQuery table) {
-        SecurityContextHolder.setSourceName(StrUtil.isNotBlank(table.getSourceName()) ? table.getSourceName() : TenantConstants.Source.MASTER.getCode());
-        List<GenTableDto> list = baseManager.selectDbTableList(table);
-        SecurityContextHolder.rollLastSourceName();
-        return list;
+        return SecurityContextHolder.setSourceNameFun(StrUtil.isNotBlank(table.getSourceName()) ? table.getSourceName() : TenantConstants.Source.MASTER.getCode(), () -> baseManager.selectDbTableList(table));
     }
 
     /**
@@ -101,10 +98,7 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
      */
     @Override
     public List<GenTableDto> selectDbTableListByNames(String[] tableNames, String sourceName) {
-        SecurityContextHolder.setSourceName(StrUtil.isNotBlank(sourceName) ? sourceName : TenantConstants.Source.MASTER.getCode());
-        List<GenTableDto> list = baseManager.selectDbTableListByNames(tableNames);
-        SecurityContextHolder.rollLastSourceName();
-        return list;
+        return SecurityContextHolder.setSourceNameFun(StrUtil.isNotBlank(sourceName) ? sourceName : TenantConstants.Source.MASTER.getCode(), () -> baseManager.selectDbTableListByNames(tableNames));
     }
 
     /**

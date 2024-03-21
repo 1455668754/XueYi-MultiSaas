@@ -9,6 +9,7 @@ import com.xueyi.common.core.utils.core.StrUtil;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
 
 /**
  * 获取当前线程变量中的 企业Id | 企业账号 | 租户类型 | 用户id | 用户账号 | 用户昵称 | 用户类型 | Token等信息
@@ -52,6 +53,62 @@ public class SecurityContextHolder {
         String lastEnterpriseId = get(SecurityConstants.BaseSecurity.LAST_ENTERPRISE_ID.getCode());
         if (StrUtil.isNotBlank(lastEnterpriseId)) {
             setEnterpriseId(lastEnterpriseId);
+        }
+    }
+
+    /**
+     * 指定租户方法执行 | Supplier
+     *
+     * @param enterpriseId 租户Id
+     * @param supplier     SupplierFun
+     * @return 返回结果
+     */
+    public static <T> T setEnterpriseIdFun(String enterpriseId, Supplier<T> supplier) {
+        return setEnterpriseIdFun(enterpriseId, supplier, Boolean.TRUE);
+    }
+
+    /**
+     * 指定租户方法执行 | Runnable
+     *
+     * @param enterpriseId 租户Id
+     * @param supplier     SupplierFun
+     * @param isExecute    是否执行控制
+     */
+    public static <T> T setEnterpriseIdFun(String enterpriseId, Supplier<T> supplier, Boolean isExecute) {
+        if (isExecute) {
+            setEnterpriseId(enterpriseId);
+        }
+        T info = supplier.get();
+        if (isExecute) {
+            rollLastEnterpriseId();
+        }
+        return info;
+    }
+
+    /**
+     * 指定租户方法执行 | Runnable
+     *
+     * @param enterpriseId 租户Id
+     * @param runnable     RunnableFun
+     */
+    public static void setEnterpriseIdFun(String enterpriseId, Runnable runnable) {
+        setEnterpriseIdFun(enterpriseId, runnable, Boolean.TRUE);
+    }
+
+    /**
+     * 指定租户方法执行 | Runnable
+     *
+     * @param enterpriseId 租户Id
+     * @param runnable     RunnableFun
+     * @param isExecute    是否执行控制
+     */
+    public static void setEnterpriseIdFun(String enterpriseId, Runnable runnable, Boolean isExecute) {
+        if (isExecute) {
+            setEnterpriseId(enterpriseId);
+        }
+        runnable.run();
+        if (isExecute) {
+            rollLastEnterpriseId();
         }
     }
 
@@ -189,6 +246,63 @@ public class SecurityContextHolder {
     }
 
     /**
+     * 指定租户策略源方法执行 | Supplier
+     *
+     * @param sourceName 策略源名称
+     * @param supplier   SupplierFun
+     * @return 返回结果
+     */
+    public static <T> T setSourceNameFun(String sourceName, Supplier<T> supplier) {
+        return setSourceNameFun(sourceName, supplier, Boolean.TRUE);
+    }
+
+    /**
+     * 指定租户策略源方法执行 | Supplier
+     *
+     * @param sourceName 策略源名称
+     * @param supplier   SupplierFun
+     * @param isExecute  是否执行控制
+     * @return 返回结果
+     */
+    public static <T> T setSourceNameFun(String sourceName, Supplier<T> supplier, Boolean isExecute) {
+        if (isExecute) {
+            setSourceName(sourceName);
+        }
+        T info = supplier.get();
+        if (isExecute) {
+            rollLastSourceName();
+        }
+        return info;
+    }
+
+    /**
+     * 指定租户策略源方法执行 | Runnable
+     *
+     * @param sourceName 策略源名称
+     * @param runnable   RunnableFun
+     */
+    public static void setSourceNameFun(String sourceName, Runnable runnable) {
+        setSourceNameFun(sourceName, runnable, Boolean.TRUE);
+    }
+
+    /**
+     * 指定租户策略源方法执行 | Runnable
+     *
+     * @param sourceName 策略源名称
+     * @param runnable   RunnableFun
+     * @param isExecute  是否执行控制
+     */
+    public static void setSourceNameFun(String sourceName, Runnable runnable, Boolean isExecute) {
+        if (isExecute) {
+            setSourceName(sourceName);
+        }
+        runnable.run();
+        if (isExecute) {
+            rollLastSourceName();
+        }
+    }
+
+    /**
      * 获取账户类型
      */
     public static String getAccountType() {
@@ -244,6 +358,59 @@ public class SecurityContextHolder {
      */
     public static void clearTenantIgnore() {
         set(SecurityConstants.BaseSecurity.TENANT_IGNORE.getCode(), DictConstants.DicYesNo.NO.getCode());
+    }
+
+    /**
+     * 指定租户忽略控制方法执行 | Supplier
+     *
+     * @param supplier SupplierFun
+     * @return 返回结果
+     */
+    public static <T> T setTenantIgnoreFun(Supplier<T> supplier) {
+        return setTenantIgnoreFun(supplier, Boolean.TRUE);
+    }
+
+    /**
+     * 指定租户忽略控制方法执行 | Supplier
+     *
+     * @param supplier  SupplierFun
+     * @param isExecute 是否执行控制
+     * @return 返回结果
+     */
+    public static <T> T setTenantIgnoreFun(Supplier<T> supplier, Boolean isExecute) {
+        if (isExecute) {
+            setTenantIgnore();
+        }
+        T info = supplier.get();
+        if (isExecute) {
+            clearTenantIgnore();
+        }
+        return info;
+    }
+
+    /**
+     * 指定租户忽略控制方法执行 | Runnable
+     *
+     * @param runnable RunnableFun
+     */
+    public static void setTenantIgnoreFun(Runnable runnable) {
+        setTenantIgnoreFun(runnable, Boolean.TRUE);
+    }
+
+    /**
+     * 指定租户忽略控制方法执行 | Runnable
+     *
+     * @param runnable  RunnableFun
+     * @param isExecute 是否执行控制
+     */
+    public static void setTenantIgnoreFun(Runnable runnable, Boolean isExecute) {
+        if (isExecute) {
+            setTenantIgnore();
+        }
+        runnable.run();
+        if (isExecute) {
+            clearTenantIgnore();
+        }
     }
 
     public static void set(String key, Object value) {

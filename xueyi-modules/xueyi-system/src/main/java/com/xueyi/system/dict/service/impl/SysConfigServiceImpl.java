@@ -145,10 +145,10 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigQuery, SysCon
      */
     @Override
     protected SysConfigDto startHandle(OperateConstants.ServiceType operate, SysConfigDto newDto, Serializable id) {
-        SecurityContextHolder.setTenantIgnore();
-        SysConfigDto originDto = super.startHandle(operate, newDto, id);
-        subCorrelates(originDto, SysConfigCorrelate.EN_INFO_SELECT);
-        SecurityContextHolder.clearTenantIgnore();
+        SysConfigDto originDto = SecurityContextHolder.setTenantIgnoreFun(() -> {
+            SysConfigDto info = super.startHandle(operate, newDto, id);
+            return subCorrelates(info, SysConfigCorrelate.EN_INFO_SELECT);
+        });
         switch (operate) {
             case ADD -> {
                 if (StrUtil.equals(DictConstants.DicCacheType.TENANT.getCode(), newDto.getCacheType()) || StrUtil.equals(DictConstants.DicCacheType.OVERALL.getCode(), newDto.getCacheType())) {

@@ -62,16 +62,12 @@ public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuQuery, SysMenuDto
 //    @DataScope(userAlias = CREATE_BY, mapperScope = {"SysMenuMapper"})
     public List<SysMenuDto> selectListScope(SysMenuQuery menu) {
         boolean isAdminTenant = SecurityUserUtils.isAdminTenant();
-        if (isAdminTenant) {
-            SecurityContextHolder.setTenantIgnore();
-        }
-        List<SysMenuDto> menuList = super.selectListScope(menu);
-        subCorrelates(menuList, SysMenuCorrelate.EN_INFO_SELECT);
-        subCorrelates(menuList, SysMenuCorrelate.INFO_LIST);
-        if (isAdminTenant) {
-            SecurityContextHolder.clearTenantIgnore();
-        }
-        return menuList;
+        return SecurityContextHolder.setTenantIgnoreFun(() -> {
+            List<SysMenuDto> list = super.selectListScope(menu);
+            subCorrelates(list, SysMenuCorrelate.EN_INFO_SELECT);
+            subCorrelates(list, SysMenuCorrelate.INFO_LIST);
+            return list;
+        }, isAdminTenant);
     }
 
     /**
@@ -83,16 +79,12 @@ public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuQuery, SysMenuDto
     @Override
     public SysMenuDto selectInfoById(Serializable id) {
         boolean isAdminTenant = SecurityUserUtils.isAdminTenant();
-        if (isAdminTenant) {
-            SecurityContextHolder.setTenantIgnore();
-        }
-        SysMenuDto menu = selectById(id);
-        subCorrelates(menu, SysMenuCorrelate.EN_INFO_SELECT);
-        subCorrelates(menu, SysMenuCorrelate.INFO_LIST);
-        if (isAdminTenant) {
-            SecurityContextHolder.clearTenantIgnore();
-        }
-        return menu;
+        return SecurityContextHolder.setTenantIgnoreFun(() -> {
+            SysMenuDto menu = selectById(id);
+            subCorrelates(menu, SysMenuCorrelate.EN_INFO_SELECT);
+            subCorrelates(menu, SysMenuCorrelate.INFO_LIST);
+            return menu;
+        }, isAdminTenant);
     }
 
     /**
@@ -158,10 +150,7 @@ public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuQuery, SysMenuDto
      */
     @Override
     protected SysMenuDto startHandle(OperateConstants.ServiceType operate, SysMenuDto newDto, Serializable id) {
-        SecurityContextHolder.setTenantIgnore();
-        SysMenuDto originDto = super.startHandle(operate, newDto, id);
-        SecurityContextHolder.clearTenantIgnore();
-
+        SysMenuDto originDto = SecurityContextHolder.setTenantIgnoreFun(() -> super.startHandle(operate, newDto, id));
         switch (operate) {
             case ADD -> {
                 if (newDto.isCommon()) {
@@ -193,9 +182,7 @@ public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuQuery, SysMenuDto
         switch (operate) {
             case ADD, EDIT -> {
                 if (newDto.isCommon()) {
-                    SecurityContextHolder.setTenantIgnore();
-                    SysModuleDto module = moduleService.selectById(newDto.getModuleId());
-                    SecurityContextHolder.clearTenantIgnore();
+                    SysModuleDto module = SecurityContextHolder.setTenantIgnoreFun(() -> moduleService.selectById(newDto.getModuleId()));
                     if (ObjectUtil.isNull(module)) {
                         throw new ServiceException("数据不存在！");
                     }
@@ -204,9 +191,7 @@ public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuQuery, SysMenuDto
                     }
 
                     if (ObjectUtil.notEqual(BaseConstants.TOP_ID, newDto.getParentId())) {
-                        SecurityContextHolder.setTenantIgnore();
-                        SysMenuDto parentMenu = baseManager.selectById(newDto.getParentId());
-                        SecurityContextHolder.clearTenantIgnore();
+                        SysMenuDto parentMenu = SecurityContextHolder.setTenantIgnoreFun(() -> baseManager.selectById(newDto.getParentId()));
                         if (ObjectUtil.isNull(parentMenu)) {
                             throw new ServiceException("数据不存在！");
                         }
@@ -270,10 +255,7 @@ public class SysMenuServiceImpl extends TreeServiceImpl<SysMenuQuery, SysMenuDto
      */
     @Override
     protected List<SysMenuDto> startBatchHandle(OperateConstants.ServiceType operate, Collection<SysMenuDto> newList, Collection<? extends Serializable> idList) {
-        SecurityContextHolder.setTenantIgnore();
-        List<SysMenuDto> originList = super.startBatchHandle(operate, newList, idList);
-        SecurityContextHolder.clearTenantIgnore();
-
+        List<SysMenuDto> originList = SecurityContextHolder.setTenantIgnoreFun(() -> super.startBatchHandle(operate, newList, idList));
         if (operate == OperateConstants.ServiceType.BATCH_DELETE) {
             boolean isAdminTenant = SecurityUserUtils.isAdminTenant();
             Long enterpriseId = SecurityUserUtils.getEnterpriseId();

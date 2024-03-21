@@ -48,9 +48,7 @@ public class BSysMenuController extends TreeController<SysMenuQuery, SysMenuDto,
      */
     @Override
     protected void TreeLoopHandle(SysMenuDto dto) {
-        SecurityContextHolder.setTenantIgnore();
-        super.TreeLoopHandle(dto);
-        SecurityContextHolder.clearTenantIgnore();
+        SecurityContextHolder.setTenantIgnoreFun(() -> super.TreeLoopHandle(dto));
     }
 
     /**
@@ -61,9 +59,7 @@ public class BSysMenuController extends TreeController<SysMenuQuery, SysMenuDto,
      */
     @Override
     protected void AETreeStatusHandle(BaseConstants.Operate operate, SysMenuDto dto) {
-        SecurityContextHolder.setTenantIgnore();
-        super.AETreeStatusHandle(operate, dto);
-        SecurityContextHolder.clearTenantIgnore();
+        SecurityContextHolder.setTenantIgnoreFun(() -> super.AETreeStatusHandle(operate, dto));
     }
 
     /**
@@ -73,9 +69,7 @@ public class BSysMenuController extends TreeController<SysMenuQuery, SysMenuDto,
      */
     @Override
     protected void RHandleTreeChild(List<Long> idList) {
-        SecurityContextHolder.setTenantIgnore();
-        super.RHandleTreeChild(idList);
-        SecurityContextHolder.clearTenantIgnore();
+        SecurityContextHolder.setTenantIgnoreFun(() -> super.RHandleTreeChild(idList));
     }
 
     /**
@@ -83,13 +77,10 @@ public class BSysMenuController extends TreeController<SysMenuQuery, SysMenuDto,
      */
     @Override
     protected void AEHandle(BaseConstants.Operate operate, SysMenuDto menu) {
-        SecurityContextHolder.setTenantIgnore();
-        boolean isNotUnique = baseService.checkNameUnique(menu.getId(), menu.getParentId(), menu.getName());
-        SecurityContextHolder.clearTenantIgnore();
+        Boolean isNotUnique = SecurityContextHolder.setTenantIgnoreFun(() -> baseService.checkNameUnique(menu.getId(), menu.getParentId(), menu.getName()));
         if (isNotUnique) {
             warn(StrUtil.format("{}{}{}失败，{}名称已存在！", operate.getInfo(), getNodeName(), menu.getTitle(), getNodeName()));
         }
-
         if (menu.isCommon() && SecurityUserUtils.isNotAdminTenant()) {
             warn(StrUtil.format("{}{}{}失败，无操作权限！", operate.getInfo(), getNodeName(), menu.getTitle()));
         }

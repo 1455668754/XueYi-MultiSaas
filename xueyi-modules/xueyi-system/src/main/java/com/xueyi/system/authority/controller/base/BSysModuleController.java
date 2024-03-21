@@ -27,9 +27,7 @@ public class BSysModuleController extends BaseController<SysModuleQuery, SysModu
      */
     @Override
     protected void AEHandle(BaseConstants.Operate operate, SysModuleDto module) {
-        SecurityContextHolder.setTenantIgnore();
-        boolean isNotUnique = baseService.checkNameUnique(module.getId(), module.getName());
-        SecurityContextHolder.clearTenantIgnore();
+        Boolean isNotUnique = SecurityContextHolder.setTenantIgnoreFun(() -> baseService.checkNameUnique(module.getId(), module.getName()));
         if (isNotUnique) {
             warn(StrUtil.format("{}{}{}失败，{}名称已存在！", operate.getInfo(), getNodeName(), module.getName(), getNodeName()));
         }

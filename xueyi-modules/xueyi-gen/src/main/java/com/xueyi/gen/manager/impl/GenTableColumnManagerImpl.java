@@ -45,13 +45,6 @@ public class GenTableColumnManagerImpl extends BaseManagerImpl<GenTableColumnQue
     @Isolate
     @Override
     public List<GenTableColumnDto> selectDbTableColumnsByName(String tableName, String sourceName) {
-        if (StrUtil.isNotBlank(sourceName)) {
-            SecurityContextHolder.setSourceName(sourceName);
-        }
-        List<GenTableColumnDto> list = baseMapper.selectDbTableColumnsByName(tableName);
-        if (StrUtil.isNotBlank(sourceName)) {
-            SecurityContextHolder.rollLastSourceName();
-        }
-        return list;
+        return SecurityContextHolder.setSourceNameFun(sourceName, () -> baseMapper.selectDbTableColumnsByName(tableName), StrUtil.isNotBlank(sourceName));
     }
 }

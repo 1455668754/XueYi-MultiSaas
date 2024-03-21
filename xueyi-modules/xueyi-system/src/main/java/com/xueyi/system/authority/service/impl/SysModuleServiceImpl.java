@@ -53,14 +53,7 @@ public class SysModuleServiceImpl extends BaseServiceImpl<SysModuleQuery, SysMod
 //    @DataScope(userAlias = CREATE_BY, mapperScope = {"SysModuleMapper"})
     public List<SysModuleDto> selectListScope(SysModuleQuery module) {
         boolean isAdminTenant = SecurityUserUtils.isAdminTenant();
-        if (isAdminTenant) {
-            SecurityContextHolder.setTenantIgnore();
-        }
-        List<SysModuleDto> moduleList = subCorrelates(super.selectListScope(module), SysModuleCorrelate.EN_INFO_SELECT);
-        if (isAdminTenant) {
-            SecurityContextHolder.clearTenantIgnore();
-        }
-        return moduleList;
+        return SecurityContextHolder.setTenantIgnoreFun(() -> subCorrelates(super.selectListScope(module), SysModuleCorrelate.EN_INFO_SELECT), isAdminTenant);
     }
 
     /**
@@ -72,14 +65,7 @@ public class SysModuleServiceImpl extends BaseServiceImpl<SysModuleQuery, SysMod
     @Override
     public SysModuleDto selectInfoById(Serializable id) {
         boolean isAdminTenant = SecurityUserUtils.isAdminTenant();
-        if (isAdminTenant) {
-            SecurityContextHolder.setTenantIgnore();
-        }
-        SysModuleDto module = subCorrelates(selectById(id), SysModuleCorrelate.EN_INFO_SELECT);
-        if (isAdminTenant) {
-            SecurityContextHolder.clearTenantIgnore();
-        }
-        return module;
+        return SecurityContextHolder.setTenantIgnoreFun(() -> subCorrelates(selectById(id), SysModuleCorrelate.EN_INFO_SELECT), isAdminTenant);
     }
 
     /**
@@ -105,10 +91,7 @@ public class SysModuleServiceImpl extends BaseServiceImpl<SysModuleQuery, SysMod
      */
     @Override
     protected SysModuleDto startHandle(OperateConstants.ServiceType operate, SysModuleDto newDto, Serializable id) {
-        SecurityContextHolder.setTenantIgnore();
-        SysModuleDto originDto = super.startHandle(operate, newDto, id);
-        SecurityContextHolder.clearTenantIgnore();
-
+        SysModuleDto originDto = SecurityContextHolder.setTenantIgnoreFun(() -> super.startHandle(operate, newDto, id));
         switch (operate) {
             case ADD -> {
                 if (newDto.isCommon()) {
@@ -188,10 +171,7 @@ public class SysModuleServiceImpl extends BaseServiceImpl<SysModuleQuery, SysMod
      */
     @Override
     protected List<SysModuleDto> startBatchHandle(OperateConstants.ServiceType operate, Collection<SysModuleDto> newList, Collection<? extends Serializable> idList) {
-        SecurityContextHolder.setTenantIgnore();
-        List<SysModuleDto> originList = super.startBatchHandle(operate, newList, idList);
-        SecurityContextHolder.clearTenantIgnore();
-
+        List<SysModuleDto> originList = SecurityContextHolder.setTenantIgnoreFun(() -> super.startBatchHandle(operate, newList, idList));
         if (operate == OperateConstants.ServiceType.BATCH_DELETE) {
             boolean isAdminTenant = SecurityUserUtils.isAdminTenant();
             Long enterpriseId = SecurityUserUtils.getEnterpriseId();

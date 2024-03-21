@@ -185,10 +185,10 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeQuery, Sy
      */
     @Override
     protected SysDictTypeDto startHandle(OperateConstants.ServiceType operate, SysDictTypeDto newDto, Serializable id) {
-        SecurityContextHolder.setTenantIgnore();
-        SysDictTypeDto originDto = super.startHandle(operate, newDto, id);
-        subCorrelates(originDto, SysDictTypeCorrelate.EN_INFO_SELECT);
-        SecurityContextHolder.clearTenantIgnore();
+        SysDictTypeDto originDto = SecurityContextHolder.setTenantIgnoreFun(() -> {
+            SysDictTypeDto info = super.startHandle(operate, newDto, id);
+            return subCorrelates(info, SysDictTypeCorrelate.EN_INFO_SELECT);
+        });
         switch (operate) {
             case ADD -> {
                 if (StrUtil.equals(DictConstants.DicCacheType.TENANT.getCode(), newDto.getCacheType()) || StrUtil.equals(DictConstants.DicCacheType.OVERALL.getCode(), newDto.getCacheType())) {
