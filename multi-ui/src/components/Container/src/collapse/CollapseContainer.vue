@@ -14,7 +14,7 @@
     /**
      *  Can it be expanded
      */
-    canExpan: { type: Boolean, default: true },
+    canExpand: { type: Boolean, default: true },
     /**
      * Warm reminder on the right side of the title
      */
@@ -69,7 +69,7 @@
           />
 
           <div class="p-2">
-            <CollapseTransition enable={props.canExpan}>
+            <CollapseTransition enable={props.canExpand}>
               {props.loading ? (
                 <Skeleton active={props.loading} />
               ) : (

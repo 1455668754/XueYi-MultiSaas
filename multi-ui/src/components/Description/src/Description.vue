@@ -175,7 +175,7 @@
         const { title } = unref(getMergeProps);
 
         return (
-          <CollapseContainer title={title} canExpan={canExpand} helpMessage={helpMessage}>
+          <CollapseContainer title={title} canExpand={canExpand} helpMessage={helpMessage}>
             {{
               default: () => content,
               action: () => getSlot(slots, 'action'),
