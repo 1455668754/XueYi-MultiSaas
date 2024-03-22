@@ -27,6 +27,7 @@
         <mybatis-plus.version>3.5.5</mybatis-plus.version>
         <pagehelper.version>6.1.0</pagehelper.version>
         <knife-springdoc.version>4.4.0</knife-springdoc.version>
+        <redisson.version>3.27.2</redisson.version>
         <tobato.version>1.27.2</tobato.version>
         <kaptcha.version>2.3.3</kaptcha.version>
         <dynamic-ds.version>4.3.0</dynamic-ds.version>
@@ -92,6 +93,13 @@
                 <version>${spring-boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <!-- Redisson -->
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-boot-starter</artifactId>
+                <version>${redisson.version}</version>
             </dependency>
 
             <!-- FastDFS 分布式文件系统 -->
