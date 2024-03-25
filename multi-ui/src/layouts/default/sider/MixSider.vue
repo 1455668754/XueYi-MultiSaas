@@ -43,7 +43,7 @@
             :icon="item.icon || (item.meta && item.meta.icon)"
           />
           <p :class="`${prefixCls}-module__name`">
-            {{ t(item?.meta?.title || item.name) }}
+            {{ t(item.name) }}
           </p>
         </li>
       </ul>
