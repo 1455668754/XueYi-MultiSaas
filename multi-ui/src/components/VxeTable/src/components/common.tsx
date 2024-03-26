@@ -1,13 +1,13 @@
-import {ComponentOptions, h} from 'vue';
+import { ComponentOptions, h } from 'vue';
 import {
   FormItemContentRenderParams,
   FormItemRenderOptions,
   VxeGlobalRendererHandles,
 } from 'vxe-table';
 import XEUtils from 'xe-utils';
-import {componentMap} from '../componentMap';
-import {ComponentType} from '../componentType';
-import {createPlaceholderMessage} from '../helper';
+import { componentMap } from '../componentMap';
+import { ComponentType } from '../componentType';
+import { createPlaceholderMessage, sanitizeInputWhitespace } from '../helper';
 
 /**
  * @description: 获取组件
@@ -78,9 +78,13 @@ function getClickEvent() {
 }
 /**
  * @description: 获取方法
- * @param {}
  * @return {*}
  * @author: *
+ * @param renderOpts
+ * @param params
+ * @param inputFunc
+ * @param changeFunc
+ * @param clickFunc
  */
 export function createEvents(
   renderOpts: VxeGlobalRendererHandles.RenderOptions,
@@ -102,13 +106,13 @@ export function createEvents(
     };
   });
   if (inputFunc) {
-    ons[getOnName(modelEvent)] = function (targetEvnt: any) {
-      inputFunc(targetEvnt);
+    ons[getOnName(modelEvent)] = function (targetEvent: any) {
+      inputFunc(targetEvent);
       if (events && events[modelEvent]) {
-        events[modelEvent](params, targetEvnt);
+        events[modelEvent](params, targetEvent);
       }
       if (isSameEvent && changeFunc) {
-        changeFunc(targetEvnt);
+        changeFunc(targetEvent);
       }
     };
   }
@@ -323,7 +327,7 @@ export function createFormItemRender(
           params,
           (value: any) => {
             // 处理 model 值双向绑定
-            XEUtils.set(data, property, value);
+            XEUtils.set(data, property, sanitizeInputWhitespace(name as ComponentType, value));
           },
           () => {
             // 处理 change 事件相关逻辑
