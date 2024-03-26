@@ -23,7 +23,8 @@ public class RedisConstants {
         SYS_CORRELATE_IMPL_KEY("system:correlate:service:{}", "数据关联工具"),
         DICT_KEY("system:dict:{}", "字典缓存"),
         CONFIG_KEY("system:config:{}", "参数缓存"),
-        IM_EX_KEY("system:im_ex:{}", "导入导出配置缓存"),;
+        IM_EX_KEY("system:im_ex:{}", "导入导出配置缓存"),
+        SNOWFLAKE_CREATOR_KEY("core:snowflake:creatorId", "核心|雪花生成|标识排序值");
 
         private final String code;
         private final String info;

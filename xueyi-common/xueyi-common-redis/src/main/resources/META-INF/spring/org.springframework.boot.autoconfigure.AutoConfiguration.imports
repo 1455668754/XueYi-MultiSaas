@@ -1,3 +1,4 @@
 com.xueyi.common.redis.configure.RedisConfig
 com.xueyi.common.redis.service.RedisService
 com.xueyi.common.redis.service.RedissonService
+com.xueyi.common.redis.handler.SnowflakeCreatorHandler
