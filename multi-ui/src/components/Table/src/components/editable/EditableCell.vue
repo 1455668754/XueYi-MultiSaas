@@ -65,6 +65,19 @@
         return ['Checkbox', 'Switch'].includes(component);
       });
 
+      const getDisable = computed(() => {
+        const { editDynamicDisabled } = props.column;
+        let disabled = false;
+        if (isBoolean(editDynamicDisabled)) {
+          disabled = editDynamicDisabled;
+        }
+        if (isFunction(editDynamicDisabled)) {
+          const { record } = props;
+          disabled = editDynamicDisabled({ record, currentValue: currentValueRef.value });
+        }
+        return disabled;
+      });
+
       const getComponentProps = computed(() => {
         const isCheckValue = unref(getIsCheckComp);
         let compProps = props.column?.editComponentProps ?? ({} as any);
@@ -119,18 +132,6 @@
         set(record, dataKey, value);
       }
 
-      const getDisable = computed(() => {
-        const { editDynamicDisabled } = props.column;
-        let disabled = false;
-        if (isBoolean(editDynamicDisabled)) {
-          disabled = editDynamicDisabled;
-        }
-        if (isFunction(editDynamicDisabled)) {
-          const { record } = props;
-          disabled = editDynamicDisabled({ record, currentValue: currentValueRef.value });
-        }
-        return disabled;
-      });
       const getValues = computed(() => {
         const { editValueMap } = props.column;
 
@@ -151,6 +152,11 @@
         return option?.label ?? value;
       });
 
+      const getRowEditable = computed(() => {
+        const { editable } = props.record || {};
+        return !!editable;
+      });
+
       const getWrapperStyle = computed((): CSSProperties => {
         if (unref(getIsCheckComp) || unref(getRowEditable)) {
           return {};
@@ -163,11 +169,6 @@
       const getWrapperClass = computed(() => {
         const { align = 'center' } = props.column;
         return `edit-cell-align-${align}`;
-      });
-
-      const getRowEditable = computed(() => {
-        const { editable } = props.record || {};
-        return !!editable;
       });
 
       watchEffect(() => {
@@ -193,7 +194,7 @@
         });
       }
 
-      async function handleChange(e: any) {
+      async function handleChange(e: any, ...rest: any[]) {
         const component = unref(getComponent);
         if (!e) {
           currentValueRef.value = e;
@@ -207,7 +208,7 @@
           currentValueRef.value = e;
         }
         const onChange = unref(getComponentProps)?.onChangeTemp;
-        if (onChange && isFunction(onChange)) onChange(...arguments);
+        if (onChange && isFunction(onChange)) onChange(e, ...rest);
 
         table.emit?.('edit-change', {
           column: props.column,

@@ -1,6 +1,6 @@
 import type { ComputedRef, Ref } from 'vue';
+import { computed, nextTick, ref, toRaw, unref } from 'vue';
 import type { BasicTableProps } from '../types/table';
-import { computed, unref, ref, toRaw, nextTick } from 'vue';
 import { ROW_KEY } from '../const';
 import { parseRowKeyValue } from '../helper';
 import type { Key } from 'ant-design-vue/lib/table/interface';
@@ -105,7 +105,7 @@ export function useTableExpand(
   }
 
   // 监听展开事件，用于支持手风琴展开效果
-  function handleTableExpand(expanded, record) {
+  function handleTableExpand(expanded: boolean, record: Recordable) {
     // 手风琴开关
     // isTreeTable 或 expandRowByClick 时支持
     // 展开操作

@@ -1,6 +1,6 @@
 import type { PaginationProps } from '@/components/Table';
 import type { BasicTableProps } from '../types/table';
-import { computed, ComputedRef, ref, unref, watch } from 'vue';
+import { computed, ComputedRef, h, ref, unref, watch } from 'vue';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons-vue';
 import { isBoolean } from '@/utils/core/ObjectUtil';
 import { PAGE_SIZE, PAGE_SIZE_OPTIONS } from '../const';
@@ -14,9 +14,9 @@ interface ItemRender {
 
 function itemRender({ page, type, originalElement }: ItemRender) {
   if (type === 'prev') {
-    return page === 0 ? null : <LeftOutlined />;
+    return page === 0 ? null : h(LeftOutlined);
   } else if (type === 'next') {
-    return page === 1 ? null : <RightOutlined />;
+    return page === 1 ? null : h(RightOutlined);
   }
   return originalElement;
 }

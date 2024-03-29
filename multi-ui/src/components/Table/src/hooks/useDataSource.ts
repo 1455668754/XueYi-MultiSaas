@@ -212,7 +212,7 @@ export function useDataSource(
   }
 
   function findTableDataRecord(keyValue: Key) {
-    if (!dataSourceRef.value || dataSourceRef.value.length == 0) return;
+    if (!dataSourceRef.value || dataSourceRef.value.length === 0) return;
     const { childrenColumnName = 'children' } = unref(propsRef);
 
     const findRow = (array: any[]) => {
