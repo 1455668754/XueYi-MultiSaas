@@ -40,7 +40,7 @@
 
   const props = defineProps({
     api: {
-      type: Function as PropType<(arg?: any) => Promise<Recordable>>,
+      type: Function as PropType<(arg?: any) => Promise<OptionsItem[] | Recordable>>,
       default: null,
     },
     params: {
