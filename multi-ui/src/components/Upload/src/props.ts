@@ -3,6 +3,8 @@ import { FileBasicColumn } from './types/typing';
 import type { Options } from 'sortablejs';
 import { Merge } from '@/utils/types';
 import { fileUploadApi } from '@/api/sys/upload.api';
+import { propTypes } from '@/utils/propTypes';
+import { BasicColumn } from '@/components/Table';
 
 type SortableOptions = Merge<
   Omit<Options, 'onEnd'>,
@@ -11,6 +13,19 @@ type SortableOptions = Merge<
     // ...可扩展
   }
 >;
+
+export const previewType = {
+  previewColumns: {
+    type: Array as PropType<BasicColumn[] | FileBasicColumn[]>,
+    default: [],
+    required: false,
+  },
+  beforePreviewData: {
+    type: Function as PropType<(arg: string[]) => Recordable<any>>,
+    default: null,
+    required: false,
+  },
+};
 
 type ListType = 'text' | 'picture' | 'picture-card';
 
@@ -67,6 +82,8 @@ export const basicProps = {
     type: Object as PropType<SortableOptions>,
     default: () => ({}),
   },
+  // support xxx.xxx.xx
+  resultField: propTypes.string.def(''),
 };
 
 export const uploadContainerProps = {
@@ -83,6 +100,7 @@ export const uploadContainerProps = {
     type: Boolean as PropType<boolean>,
     default: false,
   },
+  ...previewType,
 };
 
 export const previewProps = {
@@ -90,11 +108,12 @@ export const previewProps = {
     type: Array as PropType<string[]>,
     default: () => [],
   },
+  ...previewType,
 };
 
 export const fileListProps = {
   columns: {
-    type: Array as PropType<FileBasicColumn[]>,
+    type: Array as PropType<BasicColumn[] | FileBasicColumn[]>,
     default: null,
   },
   actionColumn: {

@@ -68,6 +68,7 @@
   import FileList from './FileList.vue';
   import { useI18n } from '@/hooks/web/useI18n';
   import { ResultEnum } from '@/enums';
+  import { get } from 'lodash-es';
 
   const props = defineProps({
     ...basicProps,
@@ -120,8 +121,8 @@
     return isUploadingRef.value
       ? t('component.upload.uploading')
       : someError
-      ? t('component.upload.reUploadFailed')
-      : t('component.upload.startUpload');
+        ? t('component.upload.reUploadFailed')
+        : t('component.upload.startUpload');
   });
 
   // 上传前校验
@@ -193,6 +194,14 @@
       if (data?.code === ResultEnum.SUCCESS) {
         item.status = UploadResultStatus.SUCCESS;
         item.response = data;
+        if (props.resultField) {
+          // 适配预览组件而进行封装
+          item.response = {
+            code: 0,
+            message: 'upload Success!',
+            url: get(ret, props.resultField),
+          };
+        }
         createMessage.success('导入成功！');
         return {
           success: true,
