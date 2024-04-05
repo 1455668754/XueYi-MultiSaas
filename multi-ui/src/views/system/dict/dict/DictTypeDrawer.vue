@@ -1,28 +1,36 @@
 <template>
-  <BasicModal
+  <BasicDrawer
     v-bind="$attrs"
-    :width="700"
-    @register="registerModal"
     :title="getTitle"
+    @register="registerDrawer"
+    width="40%"
+    showFooter
     @ok="handleSubmit"
   >
     <BasicForm @register="registerForm" />
-  </BasicModal>
+    <DataIndex v-if="isUpdate" ref="dataRef" />
+  </BasicDrawer>
 </template>
 
 <script setup lang="ts">
   import { computed, ref, unref } from 'vue';
+  import { BasicDrawer, useDrawerInner } from '@/components/Drawer';
   import { useMessage } from '@/hooks/web/useMessage';
   import { addDictTypeApi, editDictTypeApi, getDictTypeApi } from '@/api/system/dict/dictType.api';
-  import { BasicModal, useModalInner } from '@/components/Modal';
   import { BasicForm, useForm } from '@/components/Form';
   import { typeFormSchema } from './dict.data';
   import { DictTypeIM } from '@/model/system/dict';
+  import DataIndex from './DataIndex.vue';
 
   const emit = defineEmits(['success', 'register']);
 
   const { createMessage } = useMessage();
   const isUpdate = ref(true);
+  const dataRef = ref<{
+    onChangeDictInfo: Function;
+  }>({
+    onChangeDictInfo: () => {},
+  });
 
   const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
     labelWidth: 100,
@@ -30,16 +38,18 @@
     showActionButtonGroup: false,
   });
 
-  const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
-    resetFields();
-    setModalProps({ confirmLoading: false });
+  const [registerDrawer, { setDrawerProps, closeDrawer }] = useDrawerInner(async (data) => {
+    await resetFields();
+    setDrawerProps({ loading: true, confirmLoading: false });
     isUpdate.value = !!data?.isUpdate;
 
     if (unref(isUpdate)) {
       const dictType = await getDictTypeApi(data.record.id);
       dictType.tenantId = dictType?.enterpriseInfo?.id;
-      setFieldsValue({ ...dictType });
+      dataRef.value.onChangeDictInfo(dictType);
+      await setFieldsValue({ ...dictType });
     }
+    setDrawerProps({ loading: false });
   });
 
   /** 标题初始化 */
@@ -49,19 +59,19 @@
   async function handleSubmit() {
     try {
       const values: DictTypeIM = await validate();
-      setModalProps({ confirmLoading: true });
+      setDrawerProps({ confirmLoading: true });
       unref(isUpdate)
         ? await editDictTypeApi(values).then(() => {
-            closeModal();
+            closeDrawer();
             createMessage.success('编辑字典类型成功！');
           })
         : await addDictTypeApi(values).then(() => {
-            closeModal();
+            closeDrawer();
             createMessage.success('新增字典类型成功！');
           });
       emit('success');
     } finally {
-      setModalProps({ confirmLoading: false });
+      setDrawerProps({ confirmLoading: false });
     }
   }
 </script>

@@ -277,17 +277,6 @@ export const typeFormSchema: FormSchema[] = [
     colProps: { span: 12 },
   },
   {
-    label: '状态',
-    field: 'status',
-    component: 'RadioButtonGroup',
-    defaultValue: DicStatusEnum.NORMAL,
-    componentProps: {
-      options: dict.DicNormalDisableOptions,
-    },
-    required: true,
-    colProps: { span: 12 },
-  },
-  {
     label: '数据类型',
     field: 'dataType',
     component: 'RadioButtonGroup',
@@ -298,6 +287,17 @@ export const typeFormSchema: FormSchema[] = [
     dynamicDisabled: ({ values }) => isNotEmpty(values.tenantId),
     required: true,
     colProps: { span: 24 },
+  },
+  {
+    label: '状态',
+    field: 'status',
+    component: 'RadioButtonGroup',
+    defaultValue: DicStatusEnum.NORMAL,
+    componentProps: {
+      options: dict.DicNormalDisableOptions,
+    },
+    required: true,
+    colProps: { span: 12 },
   },
   {
     label: '显示顺序',

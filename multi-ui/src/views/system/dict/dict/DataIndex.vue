@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full">
+  <div>
     <BasicTable ref="tableRef" @register="registerTable">
       <template #toolbar>
         <a-button
@@ -67,20 +67,18 @@
   const state = reactive<{
     ids: string[];
     idNames: string;
-    title: string;
     dictTypeInfo?: DictTypeIM;
     hasDict: boolean;
   }>({
     ids: [],
     idNames: '',
-    title: '字典明细列表',
     hasDict: false,
   });
-  const [registerTable, { reload, setProps }] = useTable({
-    title: state.title,
+  const [registerTable, { reload }] = useTable({
+    title: '字典明细',
     api: listDictDataApi,
     striped: false,
-    useSearchForm: true,
+    useSearchForm: false,
     rowKey: 'id',
     bordered: true,
     showIndexColumn: true,
@@ -155,8 +153,6 @@
   }
 
   function onChangeDictInfo(dict?: DictTypeIM) {
-    state.title = '字典【' + dict?.name + '】的明细列表';
-    setProps({ title: state.title });
     state.hasDict = !!dict;
     if (dict) {
       dict.tenantId = dict?.enterpriseInfo?.id || COMMON_TENANT_ID;
