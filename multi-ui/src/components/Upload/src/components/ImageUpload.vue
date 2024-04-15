@@ -35,7 +35,7 @@
   import { useI18n } from '@/hooks/web/useI18n';
   import { useUploadType } from '../hooks/useUpload';
   import { uploadContainerProps } from '../props';
-  import { isImgTypeByName } from '../helper';
+  import { checkFileType } from '../helper';
   import { get, omit } from 'lodash-es';
   import { UploadResultStatus } from '@/components/Upload/src/types/typing';
 
@@ -139,8 +139,7 @@
 
   const beforeUpload = (file: File) => {
     const { maxSize, accept } = props;
-    const { name } = file;
-    const isAct = isImgTypeByName(name);
+    const isAct = checkFileType(file, accept);
     if (!isAct) {
       createMessage.error(t('component.upload.acceptUpload', [accept]));
       isActMsg.value = false;
