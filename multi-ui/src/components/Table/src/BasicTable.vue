@@ -51,7 +51,7 @@
     TableActionType,
   } from './types/table';
   import { InnerHandlers, InnerMethods } from './types/table';
-  import { computed, inject, ref, toRaw, unref, useAttrs, useSlots, watchEffect } from 'vue';
+  import { computed, inject, ref, toRaw, unref, useAttrs, useSlots, watch } from 'vue';
   import { Table } from 'ant-design-vue';
   import { BasicForm, useForm } from '@/components/Form';
   import { PageWrapperFixedHeightKey } from '@/enums';
@@ -71,10 +71,10 @@
   import { useTableFooter } from './hooks/useTableFooter';
   import { useTableForm } from './hooks/useTableForm';
   import { useDesign } from '@/hooks/web/useDesign';
-  import { omit } from 'lodash-es';
+  import { debounce, omit } from 'lodash-es';
+  import { useElementSize } from '@vueuse/core';
   import { basicProps } from './props';
   import { isFunction } from '@/utils/core/ObjectUtil';
-  import { warn } from '@/utils/log/LogUtil';
 
   defineOptions({ name: 'BasicTable' });
 
@@ -109,6 +109,7 @@
   const formRef = ref(null);
   const innerPropsRef = ref<Partial<BasicTableProps>>();
 
+  const { height } = useElementSize(wrapRef);
   const { prefixCls } = useDesign('basic-table');
   const [registerForm, formActions] = useForm();
 
@@ -117,13 +118,6 @@
   });
 
   const isFixedHeightPage = inject(PageWrapperFixedHeightKey, false);
-  watchEffect(() => {
-    unref(isFixedHeightPage) &&
-      props.canResize &&
-      warn(
-        "'canResize' of BasicTable may not work in PageWrapper with 'fixedHeight' (especially in hot updates)",
-      );
-  });
 
   const { getLoading, setLoading } = useLoading(getProps);
   const { getPaginationInfo, getPagination, setPagination, setShowPagination, getShowPagination } =
@@ -197,6 +191,8 @@
     wrapRef,
     formRef,
   );
+
+  const debounceRedoHeight = debounce(redoHeight, 50);
 
   const { scrollTo } = useTableScrollTo(tableElRef, getDataSourceRef);
 
@@ -277,6 +273,10 @@
       return true;
     }
     return !!unref(getDataSourceRef).length;
+  });
+
+  watch(height, () => {
+    unref(isFixedHeightPage) && props.canResize && debounceRedoHeight();
   });
 
   function setProps(props: Partial<BasicTableProps>) {
