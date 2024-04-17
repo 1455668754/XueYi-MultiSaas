@@ -33,7 +33,7 @@
         <dynamic-ds.version>4.3.0</dynamic-ds.version>
         <commons.io.version>2.13.0</commons.io.version>
         <velocity.version>2.3</velocity.version>
-        <fastjson2.version>2.0.47</fastjson2.version>
+        <fastjson2.version>2.0.49</fastjson2.version>
         <minio.version>8.5.1</minio.version>
         <poi.version>5.2.3</poi.version>
         <hutool.version>5.8.27</hutool.version>
