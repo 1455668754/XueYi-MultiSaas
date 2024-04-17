@@ -23,7 +23,7 @@
         <spring-cloud.version>2023.0.0</spring-cloud.version>
         <spring-cloud-alibaba.version>2023.0.0.0-RC1</spring-cloud-alibaba.version>
         <spring.authorization.version>1.2.3</spring.authorization.version>
-        <spring-boot-admin.version>3.2.2</spring-boot-admin.version>
+        <spring-boot-admin.version>3.2.3</spring-boot-admin.version>
         <mybatis-plus.version>3.5.5</mybatis-plus.version>
         <pagehelper.version>6.1.0</pagehelper.version>
         <knife-springdoc.version>4.4.0</knife-springdoc.version>
