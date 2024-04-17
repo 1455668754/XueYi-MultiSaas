@@ -26,7 +26,7 @@
         <spring-boot-admin.version>3.2.3</spring-boot-admin.version>
         <mybatis-plus.version>3.5.5</mybatis-plus.version>
         <pagehelper.version>6.1.0</pagehelper.version>
-        <knife-springdoc.version>4.4.0</knife-springdoc.version>
+        <knife-springdoc.version>4.5.0</knife-springdoc.version>
         <redisson.version>3.27.2</redisson.version>
         <tobato.version>1.27.2</tobato.version>
         <kaptcha.version>2.3.3</kaptcha.version>
