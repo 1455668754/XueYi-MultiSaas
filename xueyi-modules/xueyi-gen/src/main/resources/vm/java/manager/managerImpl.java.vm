@@ -1,21 +1,21 @@
-package ${packageName}.manager.impl;
+package ${rdPackageName}.manager.impl;
 
-#if($table.base)
-#set($Entity="Base")
-#elseif($table.tree)
-#set($Entity="Tree")
-#end
-import ${packageName}.domain.po.${ClassName}Po;
-import ${packageName}.domain.dto.${ClassName}Dto;
-import ${packageName}.domain.query.${ClassName}Query;
-import ${packageName}.domain.model.${ClassName}Converter;
-import ${packageName}.mapper.${ClassName}Mapper;
+    #if($table.base)
+        #set($Entity="Base")
+    #elseif($table.tree)
+        #set($Entity="Tree")
+    #end
+import ${rdPackageName}.domain.po.${ClassName}Po;
+import ${rdPackageName}.domain.dto.${ClassName}Dto;
+import ${rdPackageName}.domain.query.${ClassName}Query;
+import ${rdPackageName}.domain.model.${ClassName}Converter;
+import ${rdPackageName}.mapper.${ClassName}Mapper;
 import com.xueyi.common.web.entity.manager.impl.${Entity}ManagerImpl;
-import ${packageName}.manager.I${ClassName}Manager;
+import ${rdPackageName}.manager.I${ClassName}Manager;
 import org.springframework.stereotype.Component;
 
 /**
- * ${functionName}管理 数据封装层处理
+ * ${moduleFunctionName}管理 数据封装层处理
  *
  * @author ${author}
  */

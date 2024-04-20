@@ -6,12 +6,12 @@
 
 <script setup lang="ts">
   import { computed, ref, unref } from 'vue';
-  import { formSchema } from './${businessName}.data';
+  import { formSchema } from './data';
   import { useMessage } from '@/hooks/web/useMessage';
-  import {#if($table.tree) list${BusinessName}Api,#end get${BusinessName}Api, add${BusinessName}Api, edit${BusinessName}Api } from '@/api/${moduleName}/${authorityName}/${businessName}.api';
+  import {#if($table.tree) list${BusinessName}Api,#end get${BusinessName}Api, add${BusinessName}Api, edit${BusinessName}Api } from '@/api/${fePackageName}/${businessName}.api';
   import { BasicModal, useModalInner } from '@/components/Modal';
   import { BasicForm, useForm } from '@/components/Form';
-  import { ${BusinessName}IM } from '@/model/${moduleName}/${authorityName}#if(!$isDependMode)/${businessName}.model#end';
+  import { ${ClassName}IM } from '@/model/${fePackageName}#if(!$isDependMode)/${businessName}.model#end';
 
   const emit = defineEmits(['success', 'register']);
   const { createMessage } = useMessage();
@@ -48,7 +48,7 @@
   /** 提交按钮 */
   async function handleSubmit() {
     try {
-      const values: ${BusinessName}IM = await validate();
+      const values: ${ClassName}IM = await validate();
       setModalProps({ confirmLoading: true });
       unref(isUpdate)
         ? await edit${BusinessName}Api(values).then(() => {

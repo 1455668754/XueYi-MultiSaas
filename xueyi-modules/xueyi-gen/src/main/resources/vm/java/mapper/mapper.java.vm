@@ -1,18 +1,18 @@
-package ${packageName}.mapper;
+package ${rdPackageName}.mapper;
 
-#if($table.base)
-#set($Entity="Base")
-#elseif($table.tree)
-#set($Entity="Tree")
-#end
-import ${packageName}.domain.query.${ClassName}Query;
-import ${packageName}.domain.dto.${ClassName}Dto;
-import ${packageName}.domain.po.${ClassName}Po;
+    #if($table.base)
+        #set($Entity="Base")
+    #elseif($table.tree)
+        #set($Entity="Tree")
+    #end
+import ${rdPackageName}.domain.query.${ClassName}Query;
+import ${rdPackageName}.domain.dto.${ClassName}Dto;
+import ${rdPackageName}.domain.po.${ClassName}Po;
 import com.xueyi.common.web.entity.mapper.${Entity}Mapper;
 import com.xueyi.common.datasource.annotation.${sourceMode};
 
 /**
- * ${functionName}管理 数据层
+ * ${moduleFunctionName}管理 数据层
  *
  * @author ${author}
  */

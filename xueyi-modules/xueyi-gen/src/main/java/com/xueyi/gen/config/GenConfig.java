@@ -27,26 +27,53 @@ public class GenConfig {
     /** 自动去除表前缀，默认是false */
     @Getter
     public static Boolean autoRemovePre;
-
+    /** 表更替配置 */
+    @Getter
+    public static List<RemoveItem> removeLists;
     /** 数据库映射 */
     @Getter
     private static DataBase dataBase;
-
     /** 字段配置 */
     @Getter
     private static Operate operate;
-
     /** 基类配置 */
     @Getter
     private static Entity entity;
-
     /** 表前缀（与remove-lists对应） */
     @Getter
     private static String[] dictTypeRemove = {};
 
-    /** 表更替配置 */
-    @Getter
-    public static List<RemoveItem> removeLists;
+    public void setAuthor(String author) {
+        GenConfig.author = author;
+    }
+
+    public void setUiPath(String uiPath) {
+        GenConfig.uiPath = uiPath;
+    }
+
+    public void setAutoRemovePre(boolean autoRemovePre) {
+        GenConfig.autoRemovePre = autoRemovePre;
+    }
+
+    public void setDataBase(DataBase dataBase) {
+        GenConfig.dataBase = dataBase;
+    }
+
+    public void setOperate(Operate operate) {
+        GenConfig.operate = operate;
+    }
+
+    public void setEntity(Entity entity) {
+        GenConfig.entity = entity;
+    }
+
+    public void setDictTypeRemove(String[] dictTypeRemove) {
+        GenConfig.dictTypeRemove = dictTypeRemove;
+    }
+
+    public void setRemoveLists(List<RemoveItem> removeLists) {
+        GenConfig.removeLists = removeLists;
+    }
 
     /** 字段配置 */
     @Data
@@ -142,46 +169,14 @@ public class GenConfig {
         /** 表前缀(类名不会包含表前缀) */
         private String prefix;
 
-        /** 生成包路径 */
-        private String packageName;
+        /** 生成后端包路径 */
+        private String rdPackageName;
+
+        /** 生成前端包路径 */
+        private String fePackageName;
 
         /** 生成后端包地址 */
         private String backPackageRoute;
 
-        /** 生成前端包路径 */
-        private String frontPackageName;
-
-    }
-
-    public void setAuthor(String author) {
-        GenConfig.author = author;
-    }
-
-    public void setUiPath(String uiPath) {
-        GenConfig.uiPath = uiPath;
-    }
-
-    public void setAutoRemovePre(boolean autoRemovePre) {
-        GenConfig.autoRemovePre = autoRemovePre;
-    }
-
-    public void setDataBase(DataBase dataBase) {
-        GenConfig.dataBase = dataBase;
-    }
-
-    public void setOperate(Operate operate) {
-        GenConfig.operate = operate;
-    }
-
-    public void setEntity(Entity entity) {
-        GenConfig.entity = entity;
-    }
-
-    public void setDictTypeRemove(String[] dictTypeRemove) {
-        GenConfig.dictTypeRemove = dictTypeRemove;
-    }
-
-    public void setRemoveLists(List<RemoveItem> removeLists) {
-        GenConfig.removeLists = removeLists;
     }
 }

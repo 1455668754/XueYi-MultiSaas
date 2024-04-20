@@ -1,13 +1,13 @@
-package ${packageName}.domain.dto;
+package ${rdPackageName}.domain.dto;
 
-import ${packageName}.domain.po.${ClassName}Po;
+import ${rdPackageName}.domain.po.${ClassName}Po;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
 
 /**
- * ${functionName} 数据传输对象
+ * ${moduleFunctionName} 数据传输对象
  *
  * @author ${author}
  */

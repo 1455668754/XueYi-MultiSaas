@@ -1,4 +1,4 @@
-import { ${BusinessName}IM,#if($table.tree || $api.export) ${BusinessName}PM,#end#if(!$table.tree) ${BusinessName}PPM,#end#if($table.tree) ${BusinessName}LM#else ${BusinessName}LRM#end } from '@/model/${moduleName}/${authorityName}#if(!$isDependMode)/${businessName}.model#end';
+import { ${ClassName}IM,#if($table.tree || $api.export) ${ClassName}PM,#end#if(!$table.tree) ${ClassName}PPM,#end#if($table.tree) ${ClassName}LM#else ${ClassName}LRM#end } from '@/model/${fePackageName}#if(!$isDependMode)/${businessName}.model#end';
 import { defHttp } from '@/utils/http/axios';
 #if($api.export)
 import { formatToDateTime } from '@/utils/core/DateUtil';
@@ -44,25 +44,25 @@ enum Api {
 #if($api.list)
 
 /** 查询${functionName}列表 */
-export const list${BusinessName}Api = (params?: #if($table.tree)${BusinessName}PM#else${BusinessName}PPM#end) =>
-  defHttp.get<#if($table.tree)${BusinessName}LM#else${BusinessName}LRM#end>({ url: Api.LIST, params });
+export const list${BusinessName}Api = (params?: #if($table.tree)${ClassName}PM#else${ClassName}PPM#end) =>
+  defHttp.get<#if($table.tree)${ClassName}LM#else${ClassName}LRM#end>({ url: Api.LIST, params });
 #end
 #if($api.getInfo)
 
 /** 查询${functionName}详细 */
 export const get${BusinessName}Api = (${IdName}: ${IdType}) =>
-  defHttp.get<${BusinessName}IM>({ url: Api.GET, params: ${IdName} });
+  defHttp.get<${ClassName}IM>({ url: Api.GET, params: ${IdName} });
 #end
 #if($api.add)
 
 /** 新增${functionName} */
-export const add${BusinessName}Api = (params: ${BusinessName}IM) =>
+export const add${BusinessName}Api = (params: ${ClassName}IM) =>
   defHttp.post({ url: Api.ADD, params });
 #end
 #if($api.edit)
 
 /** 修改${functionName} */
-export const edit${BusinessName}Api = (params: ${BusinessName}IM) =>
+export const edit${BusinessName}Api = (params: ${ClassName}IM) =>
   defHttp.put({ url: Api.EDIT, params });
 #end
 #if($api.editStatus)
@@ -91,7 +91,7 @@ export const del${BusinessName}Api = (${IdName}s: ${IdType} | ${IdType}[]) =>
 #if($api.export)
 
 /** 导出${functionName} */
-export const export${BusinessName}Api = async (params?: ${BusinessName}PM) =>
+export const export${BusinessName}Api = async (params?: ${ClassName}PM) =>
   defHttp.export<any>(
     { url: Api.EXPORT, params: params },
     '${functionName}_' + formatToDateTime(dayjs()) + '.xlsx',
@@ -100,5 +100,5 @@ export const export${BusinessName}Api = async (params?: ${BusinessName}PM) =>
 #if($api.cache)
 
 /** 刷新${functionName}缓存 */
-export const refresh${BusinessName}Api = () => defHttp.get({ url: Api.REFRESH });
+export const refresh${BusinessName}Api = () => defHttp.get({url: Api.REFRESH});
 #end

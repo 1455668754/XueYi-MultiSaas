@@ -1,39 +1,39 @@
-/** ${functionName}权限标识 */
+/** ${moduleFunctionName}权限标识 */
 export enum ${BusinessName}Auth {
 #if($api.list)
-  /** ${functionName} | 列表 */
-  LIST = 'FE:${authorityName}:${businessName}:list',
+  /** ${moduleFunctionName} | 列表 */
+  LIST = 'FE:${authorityName}:list',
 #end
 #if($api.getInfo)
-  /** ${functionName} | 详情 */
-  SINGLE = 'FE:${authorityName}:${businessName}:single',
+  /** ${moduleFunctionName} | 详情 */
+  SINGLE = 'FE:${authorityName}:single',
 #end
 #if($api.add)
-  /** ${functionName} | 新增 */
-  ADD = 'FE:${authorityName}:${businessName}:add',
+  /** ${moduleFunctionName} | 新增 */
+  ADD = 'FE:${authorityName}:add',
 #end
 #if($api.edit)
-  /** ${functionName} | 修改 */
-  EDIT = 'FE:${authorityName}:${businessName}:edit',
+  /** ${moduleFunctionName} | 修改 */
+  EDIT = 'FE:${authorityName}:edit',
 #end
 #if($api.editStatus)
-  /** ${functionName} | 状态修改 */
-  ES = 'FE:${authorityName}:${businessName}:es',
+  /** ${moduleFunctionName} | 状态修改 */
+  ES = 'FE:${authorityName}:es',
 #end
 #if($api.batchRemove)
-  /** ${functionName} | 删除 */
-  DEL = 'FE:${authorityName}:${businessName}:del',
+  /** ${moduleFunctionName} | 删除 */
+  DEL = 'FE:${authorityName}:del',
 #end
 #if($api.import)
-  /** ${functionName} | 导入 */
-  IMPORT = 'FE:${authorityName}:${businessName}:import',
+  /** ${moduleFunctionName} | 导入 */
+  IMPORT = 'FE:${authorityName}:import',
 #end
 #if($api.export)
-  /** ${functionName} | 导出 */
-  EXPORT = 'FE:${authorityName}:${businessName}:export',
+  /** ${moduleFunctionName} | 导出 */
+  EXPORT = 'FE:${authorityName}:export',
 #end
 #if($api.cache)
-  /** ${functionName} | 缓存刷新 */
-  CACHE = 'FE:${authorityName}:${businessName}:cache',
+  /** ${moduleFunctionName} | 缓存刷新 */
+  CACHE = 'FE:${authorityName}:cache',
 #end
 }

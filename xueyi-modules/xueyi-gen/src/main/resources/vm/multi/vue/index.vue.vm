@@ -103,28 +103,28 @@
 #if($api.batchRemove)
   import { reactive } from 'vue';
 #end
-  import { list${BusinessName}Api#if($api.batchRemove), del${BusinessName}Api#end#if($api.export), export${BusinessName}Api#end#if($api.cache), refresh${BusinessName}Api#end } from '@/api/${moduleName}/${authorityName}/${businessName}.api';
+  import { list${BusinessName}Api#if($api.batchRemove), del${BusinessName}Api#end#if($api.export), export${BusinessName}Api#end#if($api.cache), refresh${BusinessName}Api#end } from '@/api/${fePackageName}/${businessName}.api';
 #if($api.add || $api.edit)
   import { useModal } from '@/components/Modal';
-  import ${BusinessName}Modal from './${BusinessName}Modal.vue';
+  import ${BusinessName}Modal from './Modal.vue';
 #end
 #if($api.batchRemove || $api.cache)
   import { useMessage } from '@/hooks/web/useMessage';
 #end
 #if($api.getInfo || $api.edit || $api.batchRemove || $api.export || $api.cache)
-  import { IconEnum } from '@/enums/basic';
+  import { IconEnum } from '@/enums';
 #end
   import { BasicTable, TableAction, useTable } from '@/components/Table';
 #if($api.getInfo || $api.add || $api.edit || $api.batchRemove || $api.export || $api.cache)
-  import { ${BusinessName}Auth } from '@/auth/${moduleName}/${authorityName}#if(!$isDependMode)/${businessName}.auth#end';
+  import { ${BusinessName}Auth } from '@/auth/${fePackageName}#if(!$isDependMode)/${businessName}.auth#end';
 #end
-  import { columns, searchFormSchema } from './${businessName}.data';
+  import { columns, searchFormSchema } from './data';
 #if($api.getInfo)
-  import { ${BusinessName}DetailGo } from '@/enums/${moduleName}/${authorityName}#if(!$isDependMode)/${businessName}.enum#end';
+  import { ${BusinessName}DetailGo } from '@/enums/${fePackageName}#if(!$isDependMode)/${businessName}.enum#end';
   import { useUserStore } from '@/store/modules/user';
 #end
 #if($api.export)
-  import { ${BusinessName}PM } from '@/model/${moduleName}/${authorityName}#if(!$isDependMode)/${businessName}.model#end';
+  import { ${ClassName}PM } from '@/model/${fePackageName}#if(!$isDependMode)/${businessName}.model#end';
 #end
 
 #if($api.batchRemove || $api.cache)
@@ -238,7 +238,7 @@
 
   /** 导出按钮 */
   function handleExport() {
-    const value = getForm().getFieldsValue() as ${BusinessName}PM;
+    const value = getForm().getFieldsValue() as ${ClassName}PM;
     export${BusinessName}Api(value);
   }
 #end

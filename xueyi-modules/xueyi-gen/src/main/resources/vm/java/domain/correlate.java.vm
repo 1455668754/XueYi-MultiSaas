@@ -1,4 +1,4 @@
-package ${packageName}.domain.correlate;
+package ${rdPackageName}.domain.correlate;
 
 import com.xueyi.common.web.correlate.domain.BaseCorrelate;
 import com.xueyi.common.web.correlate.service.CorrelateService;
@@ -8,7 +8,9 @@ import lombok.Getter;
 import java.util.List;
 
 /**
- * ${functionName} 关联映射
+ * ${moduleFunctionName} 关联映射
+ *
+ * @author ${author}
  */
 @Getter
 @AllArgsConstructor

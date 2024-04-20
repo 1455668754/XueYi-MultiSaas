@@ -4,13 +4,13 @@
 #set($genericsPM = "")
 #elseif($table.tree)
 #set($Entity="Tree")
-#set($genericsIM = "<"+${BusinessName}+"IM>")
-#set($genericsPM = "<"+${BusinessName}+"PM>")
+#set($genericsIM = "<"+${ClassName}+"IM>")
+#set($genericsPM = "<"+${ClassName}+"PM>")
 #end
-import { BasicFetchResult, BasicPageParams, ${Entity}Entity } from '@/model/basic';
+import { BasicFetchResult, BasicPageParams, ${Entity}Entity } from '@/model';
 
 /** ${businessName} info model */
-export interface ${BusinessName}IM extends ${Entity}Entity${genericsIM} {
+export interface ${ClassName}IM extends ${Entity}Entity${genericsIM} {
 #foreach ($column in $columns)
 #set($hide = true)
 #foreach($item in $frontHideField)
@@ -34,10 +34,10 @@ export interface ${BusinessName}IM extends ${Entity}Entity${genericsIM} {
 }
 
 /** ${businessName} list model */
-export type ${BusinessName}LM = ${BusinessName}IM[];
+export type ${ClassName}LM = ${ClassName}IM[];
 
 /** ${businessName} param model */
-export interface ${BusinessName}PM extends ${Entity}Entity${genericsPM} {
+export interface ${ClassName}PM extends ${Entity}Entity${genericsPM} {
 #foreach ($column in $columns)
 #set($hide = true)
 #foreach($item in $frontHideField)
@@ -61,7 +61,7 @@ export interface ${BusinessName}PM extends ${Entity}Entity${genericsPM} {
 }
 
 /** ${businessName} page param model */
-export type ${BusinessName}PPM = BasicPageParams & ${BusinessName}PM;
+export type ${ClassName}PPM = BasicPageParams & ${ClassName}PM;
 
 /** ${businessName} list result model */
-export type ${BusinessName}LRM = BasicFetchResult<${BusinessName}IM>;
+export type ${ClassName}LRM = BasicFetchResult<${ClassName}IM>;

@@ -1,16 +1,16 @@
-package ${packageName}.manager;
+package ${rdPackageName}.manager;
 
-#if($table.base)
-#set($Entity="Base")
-#elseif($table.tree)
-#set($Entity="Tree")
-#end
-import ${packageName}.domain.dto.${ClassName}Dto;
-import ${packageName}.domain.query.${ClassName}Query;
+    #if($table.base)
+        #set($Entity="Base")
+    #elseif($table.tree)
+        #set($Entity="Tree")
+    #end
+import ${rdPackageName}.domain.dto.${ClassName}Dto;
+import ${rdPackageName}.domain.query.${ClassName}Query;
 import com.xueyi.common.web.entity.manager.I${Entity}Manager;
 
 /**
- * ${functionName}管理 数据封装层
+ * ${moduleFunctionName}管理 数据封装层
  *
  * @author ${author}
  */

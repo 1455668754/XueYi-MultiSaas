@@ -1,26 +1,26 @@
-package ${packageName}.domain.merge;
+package ${rdPackageName}.domain.merge;
 
-#set($Entity="BasisEntity")
-#set($entityUrl="entity")
-#set($baseUrl="base")
-#if($isTenant)
-#set($Entity = "T" + $Entity)
-#set($entityUrl="tenant")
-#end
-#set($tableIdShow=true)
-#foreach ($column in $columns)
-#if($column.isPo)
-#if($column.isPk || $column.isDivideTable)
-#if($tableIdShow)
-import com.baomidou.mybatisplus.annotation.*;
-#set($tableIdShow=false)
-#end
-#end
-#end
-#end
-#if($tableIdShow)
-import com.baomidou.mybatisplus.annotation.TableName;
-#end
+    #set($Entity="BasisEntity")
+    #set($entityUrl="entity")
+    #set($baseUrl="base")
+    #if($isTenant)
+        #set($Entity = "T" + $Entity)
+        #set($entityUrl="tenant")
+    #end
+    #set($tableIdShow=true)
+    #foreach ($column in $columns)
+        #if($column.isPo)
+            #if($column.isPk || $column.isDivideTable)
+                #if($tableIdShow)
+                import com.baomidou.mybatisplus.annotation.*;
+                    #set($tableIdShow=false)
+                #end
+            #end
+        #end
+    #end
+    #if($tableIdShow)
+    import com.baomidou.mybatisplus.annotation.TableName;
+    #end
 import com.xueyi.common.core.web.${entityUrl}.${baseUrl}.${Entity};
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -29,7 +29,7 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- * ${functionName} 持久化对象
+ * ${moduleFunctionName} 持久化对象
  *
  * @author ${author}
  */
@@ -39,28 +39,28 @@ import java.io.Serial;
 @TableName("${tableName}")
 public class ${ClassName} extends ${Entity} {
 
-    @Serial
-    private static final long serialVersionUID = 1L;
+@Serial
+private static final long serialVersionUID = 1L;
 
-#foreach ($column in $columns)
-#if($column.isPo)
-    /** ${column.comment} */
-#if($column.isPk)
-#set($tableField='@TableId')
-#if($column.isDivideTable)
-#set($tableField=$tableField + '("' + $column.name + '")')
-#end
-#else
-#set($tableField="")
-#if($column.isDivideTable)
-#set($tableField='@TableField("' + $column.name + '")')
-#end
-#end
-#if(${tableField.length()} > 0)
-    ${tableField}
-#end
-    protected $column.javaType $column.javaField;
+    #foreach ($column in $columns)
+        #if($column.isPo)
+        /** ${column.comment} */
+            #if($column.isPk)
+                #set($tableField='@TableId')
+                #if($column.isDivideTable)
+                    #set($tableField=$tableField + '("' + $column.name + '")')
+                #end
+            #else
+                #set($tableField="")
+                #if($column.isDivideTable)
+                    #set($tableField='@TableField("' + $column.name + '")')
+                #end
+            #end
+            #if(${tableField.length()} > 0)
+                ${tableField}
+            #end
+        protected $column.javaType $column.javaField;
 
-#end
-#end
+        #end
+    #end
 }

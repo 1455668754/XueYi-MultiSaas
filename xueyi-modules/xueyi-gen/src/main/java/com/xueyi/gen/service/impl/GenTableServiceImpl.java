@@ -25,9 +25,9 @@ import com.xueyi.gen.domain.query.GenTableQuery;
 import com.xueyi.gen.manager.IGenTableManager;
 import com.xueyi.gen.service.IGenTableColumnService;
 import com.xueyi.gen.service.IGenTableService;
-import com.xueyi.gen.util.GenUtils;
+import com.xueyi.gen.util.GenUtil;
 import com.xueyi.gen.util.VelocityInitializer;
-import com.xueyi.gen.util.VelocityUtils;
+import com.xueyi.gen.util.VelocityUtil;
 import com.xueyi.system.api.authority.domain.dto.SysMenuDto;
 import com.xueyi.system.api.authority.feign.RemoteMenuService;
 import lombok.extern.slf4j.Slf4j;
@@ -113,13 +113,13 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
     public void importGenTable(List<GenTableDto> tableList, String sourceName) {
         try {
             tableList.forEach(table -> {
-                GenUtils.initTable(table);
+                GenUtil.initTable(table);
                 int row = baseManager.insert(table);
                 if (row > 0) {
                     List<GenTableColumnDto> columnList = subService.selectDbTableColumnsByName(table.getName(), sourceName);
-                    columnList.forEach(column -> GenUtils.initColumnField(column, table));
+                    columnList.forEach(column -> GenUtil.initColumnField(column, table));
                     subService.insertBatch(columnList);
-                    GenUtils.initTableOptions(columnList, table);
+                    GenUtil.initTableOptions(columnList, table);
                     baseManager.update(table);
                 }
             });
@@ -138,7 +138,7 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
     public int update(GenTableDto table) {
         int row = baseManager.update(table);
         if (row > 0) {
-            GenUtils.updateCheckColumn(table);
+            GenUtil.updateCheckColumn(table);
         }
         table.getSubList().forEach(column -> subService.update(column));
         return row;
@@ -158,11 +158,11 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
 
         VelocityInitializer.initVelocity();
 
-        VelocityContext context = VelocityUtils.prepareContext(table);
+        VelocityContext context = VelocityUtil.prepareContext(table);
 
         // 获取模板列表
         JSONObject data;
-        List<String> templates = VelocityUtils.getTemplateList(table.getTplCategory());
+        List<String> templates = VelocityUtil.getTemplateList(table.getTplCategory());
         for (String template : templates) {
             // 渲染模板
             StringWriter sw = new StringWriter();
@@ -205,17 +205,17 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
         GenTableDto table = initTable(id);
 
         VelocityInitializer.initVelocity();
-        VelocityContext context = VelocityUtils.prepareContext(table);
+        VelocityContext context = VelocityUtil.prepareContext(table);
 
         // 获取模板列表
-        List<String> templates = VelocityUtils.getTemplateList(table.getTplCategory());
+        List<String> templates = VelocityUtil.getTemplateList(table.getTplCategory());
         for (String template : templates) {
             // 渲染模板
             StringWriter sw = new StringWriter();
             Template tpl = Velocity.getTemplate(template, HttpConstants.Character.UTF8.getCode());
             tpl.merge(context, sw);
             try {
-                String path = VelocityUtils.getFileName(template, table, Boolean.FALSE);
+                String path = VelocityUtil.getFileName(template, table, Boolean.FALSE);
                 FileUtils.writeStringToFile(new File(path), sw.toString(), CharsetUtil.UTF_8);
             } catch (IOException e) {
                 AjaxResult.warn(StrUtil.format("渲染模板失败，表名：{}", table.getName()));
@@ -251,17 +251,17 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTableQuery, GenTable
         GenTableDto table = initTable(id);
 
         VelocityInitializer.initVelocity();
-        VelocityContext context = VelocityUtils.prepareContext(table);
+        VelocityContext context = VelocityUtil.prepareContext(table);
 
         // 获取模板列表
-        List<String> templates = VelocityUtils.getTemplateList(table.getTplCategory());
+        List<String> templates = VelocityUtil.getTemplateList(table.getTplCategory());
         for (String template : templates) {
             // 渲染模板
             StringWriter sw = new StringWriter();
             Template tpl = Velocity.getTemplate(template, HttpConstants.Character.UTF8.getCode());
             tpl.merge(context, sw);
             try {
-                String fileUrl = VelocityUtils.getFileName(template, table, Boolean.TRUE);
+                String fileUrl = VelocityUtil.getFileName(template, table, Boolean.TRUE);
                 // 添加到zip
                 zip.putNextEntry(new ZipEntry(fileUrl));
                 IOUtils.write(sw.toString(), zip, HttpConstants.Character.UTF8.getCode());

@@ -34,7 +34,7 @@ import { dicDictList } from '@/api/sys/dict.api';
 import { dictConversion } from '@/utils/xueyi';
 #end
 #if($hasEmpty == true)
-import { isEmpty } from '@/utils/is';
+import { isEmpty } from '@/utils/ObjectUtil';
 #end
 #set($InputNumber = false)
 #set($tinymce = false)
@@ -56,7 +56,7 @@ import { isEmpty } from '@/utils/is';
 import { h } from 'vue';
 #end
 #if($InputNumber)
-import { DicSortEnum } from '@/enums/basic';
+import { DicSortEnum } from '@/enums';
 #end
 #if($tinymce)
 import { Tinymce } from '@/components/Tinymce';
@@ -66,7 +66,7 @@ import { MarkDown } from '@/components/Markdown';
 #end
 #foreach ($column in $columns)
 #if($column.dictType && $column.dictName)
-import { ${BusinessName}IM } from '@/model/${moduleName}/${authorityName}#if(!$isDependMode)/${businessName}.model#end';
+import { ${ClassName}IM } from '@/model/${fePackageName}#if(!$isDependMode)/${businessName}.model#end';
 #break
 #end
 #end
@@ -110,7 +110,7 @@ export const columns: BasicColumn[] = [
 #end
 #if($column.dictType && $column.dictName)
     customRender: ({ record }) => {
-      const data = record as ${BusinessName}IM;
+      const data = record as ${ClassName}IM;
       return dictConversion(dict.${column.dictName}, data.${column.javaField});
     },
 #end

@@ -10,7 +10,9 @@ import lombok.EqualsAndHashCode;
 import java.io.Serial;
 
 import static com.baomidou.mybatisplus.annotation.SqlCondition.LIKE;
-import static com.xueyi.common.core.constant.basic.EntityConstants.*;
+import static com.xueyi.common.core.constant.basic.EntityConstants.DEL_FLAG;
+import static com.xueyi.common.core.constant.basic.EntityConstants.SORT;
+import static com.xueyi.common.core.constant.basic.EntityConstants.STATUS;
 
 
 /**
@@ -41,9 +43,13 @@ public class GenTablePo extends BaseEntity {
     /** 使用的模板（base单表操作 tree树表操作） */
     protected String tplCategory;
 
-    /** 生成包路径 */
-    @NotBlank(message = "生成包路径不能为空")
-    protected String packageName;
+    /** 生成后端包路径 */
+    @NotBlank(message = "生成后端包路径不能为空")
+    protected String rdPackageName;
+
+    /** 生成权限名 */
+    @NotBlank(message = "生成前端包路径不能为空")
+    protected String fePackageName;
 
     /** 生成模块路径 */
     @NotBlank(message = "生成模块路径不能为空")
@@ -53,8 +59,8 @@ public class GenTablePo extends BaseEntity {
     @NotBlank(message = "生成业务名不能为空")
     protected String businessName;
 
-    /** 生成权限名 */
-    @NotBlank(message = "生成权限名不能为空")
+    /** 生成权限标识 */
+    @NotBlank(message = "生成权限标识不能为空")
     protected String authorityName;
 
     /** 生成功能名 */

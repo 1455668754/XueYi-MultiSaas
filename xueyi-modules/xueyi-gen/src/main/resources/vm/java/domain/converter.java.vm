@@ -1,22 +1,24 @@
-package ${packageName}.domain.model;
+package ${rdPackageName}.domain.model;
 
-#if($table.base)
-#set($Entity="BaseConverter")
-#elseif($table.tree)
-#set($Entity="TreeConverter")
-#end
+    #if($table.base)
+        #set($Entity="BaseConverter")
+    #elseif($table.tree)
+        #set($Entity="TreeConverter")
+    #end
 import com.xueyi.common.core.web.entity.model.${Entity};
-import ${packageName}.domain.dto.${ClassName}Dto;
-import ${packageName}.domain.po.${ClassName}Po;
-import ${packageName}.domain.query.${ClassName}Query;
+import ${rdPackageName}.domain.dto.${ClassName}Dto;
+import ${rdPackageName}.domain.po.${ClassName}Po;
+import ${rdPackageName}.domain.query.${ClassName}Query;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 
 /**
- * ${functionName} 对象映射器
+ * ${moduleFunctionName} 对象映射器
  *
  * @author ${author}
  */
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
-public interface ${ClassName}Converter extends ${Entity}<${ClassName}Query, ${ClassName}Dto, ${ClassName}Po> {
+public interface ${ClassName}Converter extends
+
+    ${Entity}<${ClassName}Query, ${ClassName}Dto, ${ClassName}Po> {
 }

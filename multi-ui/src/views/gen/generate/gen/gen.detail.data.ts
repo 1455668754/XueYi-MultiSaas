@@ -427,11 +427,33 @@ export const generateFormSchema: FormSchema[] = [
     colProps: { span: 12 },
   },
   {
-    label: '生成包路径',
-    field: 'packageName',
+    label: '生成后端包路径',
+    field: 'rdPackageName',
     component: 'Input',
     required: true,
     helpMessage: ['生成在哪个java包下，例如 com.xueyi.system'],
+    colProps: { span: 12 },
+  },
+  {
+    label: '生成前端包路径',
+    field: 'fePackageName',
+    component: 'Input',
+    required: true,
+    helpMessage: ({ values }) => {
+      const fePackageName = (values?.fePackageName || '').replace('.', '/');
+      return [
+        '生成在对应包哪个目录层级下，例如 system/organize',
+        `以当前路径${values?.fePackageName}为例，最终生成路径为：`,
+        `api：src/api/${fePackageName}/${values?.businessName}.api.ts`,
+        `auth：src/api/${fePackageName}/${values?.businessName}.auth.ts`,
+        `enums：src/api/${fePackageName}/${values?.businessName}.enum.ts`,
+        `model：src/api/${fePackageName}/${values?.businessName}.model.ts`,
+        `viewIndex：src/api/${fePackageName}/${values?.businessName}/index.ts`,
+        `viewData：src/api/${fePackageName}/${values?.businessName}/data.ts`,
+        `viewModal：src/api/${fePackageName}/${values?.businessName}/Modal.ts`,
+        `viewDetail：src/api/${fePackageName}/${values?.businessName}/Detail.ts`,
+      ];
+    },
     colProps: { span: 12 },
   },
   {
@@ -443,14 +465,18 @@ export const generateFormSchema: FormSchema[] = [
     colProps: { span: 12 },
   },
   {
-    label: '生成权限名',
+    label: '生成权限标识',
     field: 'authorityName',
     component: 'Input',
     required: true,
-    helpMessage: [
-      '权限标识，例如 organize',
-      '最终生成的功能权限标识为： 生成权限名:生成业务名:功能名，如：organize:module:add',
-    ],
+    helpMessage: ({ values }) => {
+      return [
+        '权限标识，例如 system:organize，最终权限标识为：FE/RD:权限标识:功能名:操作名',
+        `以当前权限标识${values?.authorityName}为例，生成列表查询权限，权限标识为：`,
+        `前端：FE:${values?.authorityName}:list`,
+        `后端：RD:${values?.authorityName}:list`,
+      ];
+    },
     colProps: { span: 12 },
   },
   {
@@ -479,9 +505,6 @@ export const generateFormSchema: FormSchema[] = [
     defaultValue: GenModeEnum.DEFAULT,
     componentProps: {
       options: dict.DicGenerationMode,
-      resultField: 'items',
-      labelField: 'name',
-      valueField: 'id',
     },
     helpMessage: ['默认路径生成到当前项目目录下，也可以自定义生成路径'],
     colProps: { span: 12 },

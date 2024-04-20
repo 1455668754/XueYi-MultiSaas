@@ -1,4 +1,4 @@
-package ${packageName}.controller.admin;
+package ${rdPackageName}.controller.admin;
 
 import com.xueyi.common.core.web.result.AjaxResult;
 import com.xueyi.common.core.web.validate.V_A;
@@ -6,9 +6,9 @@ import com.xueyi.common.core.web.validate.V_E;
 import com.xueyi.common.log.annotation.Log;
 import com.xueyi.common.log.enums.BusinessType;
 import org.springframework.security.access.prepost.PreAuthorize;
-import ${packageName}.controller.base.B${ClassName}Controller;
-import ${packageName}.domain.dto.${ClassName}Dto;
-import ${packageName}.domain.query.${ClassName}Query;
+import ${rdPackageName}.controller.base.B${ClassName}Controller;
+import ${rdPackageName}.domain.dto.${ClassName}Dto;
+import ${rdPackageName}.domain.query.${ClassName}Query;
 import com.xueyi.common.security.annotation.AdminAuth;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +24,7 @@ import java.util.List;
 #end
 
 /**
- * ${functionName}管理 | 管理端 业务处理
+ * ${moduleFunctionName}管理 | 管理端 业务处理
  *
  * @author ${author}
  */
@@ -32,179 +32,179 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin/${businessName}")
 public class A${ClassName}Controller extends B${ClassName}Controller {
-#if($api.cache)
+    #if($api.cache)
 
-    /**
-     * 刷新${functionName}缓存
-     */
-    @Override
-#if($isDependMode)
-    @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_CACHE)")
-#else
-    @PreAuthorize("@ss.hasAuthority('RD:${authorityName}:${businessName}:cache')")
-#end
-    @Log(title = "${functionName}管理", businessType = BusinessType.REFRESH)
-    @GetMapping("/refresh")
-    public AjaxResult refreshCache() {
-        return super.refreshCache();
-    }
-#end
-#if($api.list)
+        /**
+         * 刷新${functionName}缓存
+         */
+        @Override
+            #if($isDependMode)
+            @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_CACHE)")
+            #else
+            @PreAuthorize("@ss.hasAuthority('RD:${authorityName}:${businessName}:cache')")
+            #end
+        @Log(title = "${functionName}管理", businessType = BusinessType.REFRESH)
+        @GetMapping("/refresh")
+        public AjaxResult refreshCache() {
+            return super.refreshCache();
+        }
+    #end
+    #if($api.list)
 
-    /**
-     * 查询${functionName}列表
-     */
-    @Override
-    @GetMapping("/list")
-#if($isDependMode)
-    @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_LIST)")
-#else
-    @PreAuthorize("@ss.hasAuthority('RD:${authorityName}:${businessName}:list')")
-#end
-    public AjaxResult list(${ClassName}Query ${classNameNoPrefix}) {
-        return super.list(${classNameNoPrefix});
-    }
-#end
-#if($api.getInfo)
+        /**
+         * 查询${functionName}列表
+         */
+        @Override
+        @GetMapping("/list")
+            #if($isDependMode)
+            @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_LIST)")
+            #else
+            @PreAuthorize("@ss.hasAuthority('RD:${authorityName}:${businessName}:list')")
+            #end
+        public AjaxResult list(${ClassName}Query ${classNameNoPrefix}) {
+            return super.list(${classNameNoPrefix});
+        }
+    #end
+    #if($api.getInfo)
 
-    /**
-     * 查询${functionName}详细
-     */
-    @Override
-    @GetMapping(value = "/{id}")
-#if($isDependMode)
-    @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_SINGLE)")
-#else
-    @PreAuthorize("@ss.hasAuthority('RD:${authorityName}:${businessName}:single')")
-#end
-    public AjaxResult getInfo(@PathVariable Serializable id) {
-        return super.getInfo(id);
-    }
-#end
-#if($api.export)
+        /**
+         * 查询${functionName}详细
+         */
+        @Override
+        @GetMapping(value = "/{id}")
+            #if($isDependMode)
+            @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_SINGLE)")
+            #else
+            @PreAuthorize("@ss.hasAuthority('RD:${authorityName}:${businessName}:single')")
+            #end
+        public AjaxResult getInfo(@PathVariable Serializable id) {
+            return super.getInfo(id);
+        }
+    #end
+    #if($api.export)
 
-    /**
-     * ${functionName}导出
-     */
-    @Override
-    @PostMapping("/export")
-#if($isDependMode)
-    @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_EXPORT)")
-#else
-    @PreAuthorize("@ss.hasAuthority('RD:${authorityName}:${businessName}:export')")
-#end
-    @Log(title = "${functionName}管理", businessType = BusinessType.EXPORT)
-    public void export(HttpServletResponse response, ${ClassName}Query ${classNameNoPrefix}) {
-        super.export(response, ${classNameNoPrefix});
-    }
-#end
-#if($api.add)
+        /**
+         * ${functionName}导出
+         */
+        @Override
+        @PostMapping("/export")
+            #if($isDependMode)
+            @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_EXPORT)")
+            #else
+            @PreAuthorize("@ss.hasAuthority('RD:${authorityName}:${businessName}:export')")
+            #end
+        @Log(title = "${functionName}管理", businessType = BusinessType.EXPORT)
+        public void export(HttpServletResponse response, ${ClassName}Query ${classNameNoPrefix}) {
+            super.export(response, ${classNameNoPrefix});
+        }
+    #end
+    #if($api.add)
 
-    /**
-     * ${functionName}新增
-     */
-    @Override
-    @PostMapping
-#if($isDependMode)
-    @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_ADD)")
-#else
-    @PreAuthorize("@ss.hasAuthority('RD:${authorityName}:${businessName}:add')")
-#end
-    @Log(title = "${functionName}管理", businessType = BusinessType.INSERT)
-    public AjaxResult add(@Validated({V_A.class}) @RequestBody ${ClassName}Dto ${classNameNoPrefix}) {
-        return super.add(${classNameNoPrefix});
-    }
-#end
-#if($api.edit)
+        /**
+         * ${functionName}新增
+         */
+        @Override
+        @PostMapping
+            #if($isDependMode)
+            @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_ADD)")
+            #else
+            @PreAuthorize("@ss.hasAuthority('RD:${authorityName}:${businessName}:add')")
+            #end
+        @Log(title = "${functionName}管理", businessType = BusinessType.INSERT)
+        public AjaxResult add(@Validated({V_A.class}) @RequestBody ${ClassName}Dto ${classNameNoPrefix}) {
+            return super.add(${classNameNoPrefix});
+        }
+    #end
+    #if($api.edit)
 
-    /**
-     * ${functionName}修改
-     */
-    @Override
-    @PutMapping
-#if($isDependMode)
-    @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_EDIT)")
-#else
-    @PreAuthorize("@ss.hasAuthority('RD:${authorityName}:${businessName}:edit')")
-#end
-    @Log(title = "${functionName}管理", businessType = BusinessType.UPDATE)
-    public AjaxResult edit(@Validated({V_E.class}) @RequestBody ${ClassName}Dto ${classNameNoPrefix}) {
-        return super.edit(${classNameNoPrefix});
-    }
-#end
-#if($api.editStatus)
+        /**
+         * ${functionName}修改
+         */
+        @Override
+        @PutMapping
+            #if($isDependMode)
+            @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_EDIT)")
+            #else
+            @PreAuthorize("@ss.hasAuthority('RD:${authorityName}:${businessName}:edit')")
+            #end
+        @Log(title = "${functionName}管理", businessType = BusinessType.UPDATE)
+        public AjaxResult edit(@Validated({V_E.class}) @RequestBody ${ClassName}Dto ${classNameNoPrefix}) {
+            return super.edit(${classNameNoPrefix});
+        }
+    #end
+    #if($api.editStatus)
 
-    /**
-     * ${functionName}修改状态
-     */
-    @Override
-    @PutMapping("/status")
-#if($isDependMode)
-    @PreAuthorize("@ss.hasAnyAuthority(@Auth.${ClASS_NAME}_EDIT, @Auth.${ClASS_NAME}_ES)")
-#else
-    @PreAuthorize("@ss.hasAnyAuthority('RD:${authorityName}:${businessName}:edit', 'RD:${authorityName}:${businessName}:es')")
-#end
-    @Log(title = "${functionName}管理", businessType = BusinessType.UPDATE_STATUS)
-    public AjaxResult editStatus(@RequestBody ${ClassName}Dto ${classNameNoPrefix}) {
-        return super.editStatus(${classNameNoPrefix});
-    }
-#end
-#if($api.batchRemove)
+        /**
+         * ${functionName}修改状态
+         */
+        @Override
+        @PutMapping("/status")
+            #if($isDependMode)
+            @PreAuthorize("@ss.hasAnyAuthority(@Auth.${ClASS_NAME}_EDIT, @Auth.${ClASS_NAME}_ES)")
+            #else
+            @PreAuthorize("@ss.hasAnyAuthority('RD:${authorityName}:${businessName}:edit', 'RD:${authorityName}:${businessName}:es')")
+            #end
+        @Log(title = "${functionName}管理", businessType = BusinessType.UPDATE_STATUS)
+        public AjaxResult editStatus(@RequestBody ${ClassName}Dto ${classNameNoPrefix}) {
+            return super.editStatus(${classNameNoPrefix});
+        }
+    #end
+    #if($api.batchRemove)
 
-    /**
-     * ${functionName}批量删除
-     */
-    @Override
-    @DeleteMapping("/batch/{idList}")
-#if($isDependMode)
-    @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_DEL)")
-#else
-    @PreAuthorize("@ss.hasAuthority('RD:${authorityName}:${businessName}:del')")
-#end
-    @Log(title = "${functionName}管理", businessType = BusinessType.DELETE)
-    public AjaxResult batchRemove(@PathVariable List<Long> idList) {
-        return super.batchRemove(idList);
-    }
-#end
-#if($isDependMode)
+        /**
+         * ${functionName}批量删除
+         */
+        @Override
+        @DeleteMapping("/batch/{idList}")
+            #if($isDependMode)
+            @PreAuthorize("@ss.hasAuthority(@Auth.${ClASS_NAME}_DEL)")
+            #else
+            @PreAuthorize("@ss.hasAuthority('RD:${authorityName}:${businessName}:del')")
+            #end
+        @Log(title = "${functionName}管理", businessType = BusinessType.DELETE)
+        public AjaxResult batchRemove(@PathVariable List<Long> idList) {
+            return super.batchRemove(idList);
+        }
+    #end
+    #if($isDependMode)
 
-    interface Auth {
-#if($api.list)
-        /** ${functionName}管理 | 列表 */
-        String ${ClASS_NAME}_LIST = "RD:${authorityName}:${businessName}:list";
-#end
-#if($api.getInfo)
-        /** ${functionName}管理 | 详情 */
-        String ${ClASS_NAME}_SINGLE = "RD:${authorityName}:${businessName}:single";
-#end
-#if($api.add)
-        /** ${functionName}管理 | 新增 */
-        String ${ClASS_NAME}_ADD = "RD:${authorityName}:${businessName}:add";
-#end
-#if($api.edit)
-        /** ${functionName}管理 | 修改 */
-        String ${ClASS_NAME}_EDIT = "RD:${authorityName}:${businessName}:edit";
-#end
-#if($api.editStatus)
-        /** ${functionName}管理 | 状态修改 */
-        String ${ClASS_NAME}_ES = "RD:${authorityName}:${businessName}:es";
-#end
-#if($api.batchRemove)
-        /** ${functionName}管理 | 删除 */
-        String ${ClASS_NAME}_DEL = "RD:${authorityName}:${businessName}:del";
-#end
-#if($api.import)
-        /** ${functionName}管理 | 导入 */
-        String ${ClASS_NAME}_IMPORT = "RD:${authorityName}:${businessName}:import";
-#end
-#if($api.export)
-        /** ${functionName}管理 | 导出 */
-        String ${ClASS_NAME}_EXPORT = "RD:${authorityName}:${businessName}:export";
-#end
-#if($api.cache)
-        /** ${functionName}管理 | 缓存 */
-        String ${ClASS_NAME}_CACHE = "RD:${authorityName}:${businessName}:cache";
-#end
-    }
-#end
+        interface Auth {
+            #if($api.list)
+                /** ${moduleFunctionName}管理 | 列表 */
+                String ${ClASS_NAME}_LIST = "RD:${authorityName}:list";
+            #end
+            #if($api.getInfo)
+                /** ${moduleFunctionName}管理 | 详情 */
+                String ${ClASS_NAME}_SINGLE = "RD:${authorityName}:single";
+            #end
+            #if($api.add)
+                /** ${moduleFunctionName}管理 | 新增 */
+                String ${ClASS_NAME}_ADD = "RD:${authorityName}:add";
+            #end
+            #if($api.edit)
+                /** ${moduleFunctionName}管理 | 修改 */
+                String ${ClASS_NAME}_EDIT = "RD:${authorityName}:edit";
+            #end
+            #if($api.editStatus)
+                /** ${moduleFunctionName}管理 | 状态修改 */
+                String ${ClASS_NAME}_ES = "RD:${authorityName}:es";
+            #end
+            #if($api.batchRemove)
+                /** ${moduleFunctionName}管理 | 删除 */
+                String ${ClASS_NAME}_DEL = "RD:${authorityName}:del";
+            #end
+            #if($api.import)
+                /** ${moduleFunctionName}管理 | 导入 */
+                String ${ClASS_NAME}_IMPORT = "RD:${authorityName}:import";
+            #end
+            #if($api.export)
+                /** ${moduleFunctionName}管理 | 导出 */
+                String ${ClASS_NAME}_EXPORT = "RD:${authorityName}:export";
+            #end
+            #if($api.cache)
+                /** ${moduleFunctionName}管理 | 缓存 */
+                String ${ClASS_NAME}_CACHE = "RD:${authorityName}:cache";
+            #end
+        }
+    #end
 }

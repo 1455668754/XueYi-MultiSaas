@@ -1,18 +1,18 @@
-package ${packageName}.controller.inner;
+package ${rdPackageName}.controller.inner;
 
-#if($api.cache)
-import com.xueyi.common.core.web.result.R;
-import com.xueyi.common.log.annotation.Log;
-import com.xueyi.common.log.enums.BusinessType;
-import org.springframework.web.bind.annotation.GetMapping;
-#end
+    #if($api.cache)
+    import com.xueyi.common.core.web.result.R;
+    import com.xueyi.common.log.annotation.Log;
+    import com.xueyi.common.log.enums.BusinessType;
+    import org.springframework.web.bind.annotation.GetMapping;
+    #end
 import com.xueyi.common.security.annotation.InnerAuth;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ${packageName}.controller.base.B${ClassName}Controller;
+import ${rdPackageName}.controller.base.B${ClassName}Controller;
 
 /**
- * ${functionName}管理 | 内部调用 业务处理
+ * ${moduleFunctionName}管理 | 内部调用 业务处理
  *
  * @author ${author}
  */
@@ -20,16 +20,16 @@ import ${packageName}.controller.base.B${ClassName}Controller;
 @RestController
 @RequestMapping("/inner/${businessName}")
 public class I${ClassName}Controller extends B${ClassName}Controller {
-#if($api.cache)
+    #if($api.cache)
 
-    /**
-     * 刷新${functionName}缓存 | 内部调用
-     */
-    @Override
-    @GetMapping("/refresh")
-    @Log(title = "${functionName}管理", businessType = BusinessType.REFRESH)
-    public R<Boolean> refreshCacheInner() {
-        return super.refreshCacheInner();
-    }
-#end
+        /**
+         * 刷新${functionName}缓存 | 内部调用
+         */
+        @Override
+        @GetMapping("/refresh")
+        @Log(title = "${functionName}管理", businessType = BusinessType.REFRESH)
+        public R<Boolean> refreshCacheInner() {
+            return super.refreshCacheInner();
+        }
+    #end
 }

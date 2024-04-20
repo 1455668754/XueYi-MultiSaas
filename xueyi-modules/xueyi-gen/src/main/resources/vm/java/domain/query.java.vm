@@ -1,13 +1,13 @@
-package ${packageName}.domain.query;
+package ${rdPackageName}.domain.query;
 
-import ${packageName}.domain.po.${ClassName}Po;
+import ${rdPackageName}.domain.po.${ClassName}Po;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
 
 /**
- * ${functionName} 数据查询对象
+ * ${moduleFunctionName} 数据查询对象
  *
  * @author ${author}
  */

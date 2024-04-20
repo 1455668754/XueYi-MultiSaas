@@ -1,11 +1,11 @@
-package ${packageName}.mapper.merge;
+package ${rdPackageName}.mapper.merge;
 
 import com.xueyi.common.datasource.annotation.${sourceMode};
 import com.xueyi.common.web.entity.mapper.BasicMapper;
-import ${packageName}.domain.merge.${ClassName};
+import ${rdPackageName}.domain.merge .${ClassName};
 
 /**
- * ${functionName} 数据层
+ * ${moduleFunctionName} 数据层
  *
  * @author ${author}
  */

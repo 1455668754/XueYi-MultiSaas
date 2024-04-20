@@ -1,47 +1,47 @@
-package ${packageName}.domain.po;
+package ${rdPackageName}.domain.po;
 
 #foreach ($import in $importList)
 import ${import};
 #end
 #if($table.base)
-#set($Entity="BaseEntity")
-#set($generics = "")
+    #set($Entity="BaseEntity")
+    #set($generics = "")
 #elseif($table.tree)
-#set($Entity="TreeEntity")
-#set($generics="<"+${ClassName}+"Dto>")
+    #set($Entity="TreeEntity")
+    #set($generics="<"+${ClassName}+"Dto>")
 #end
 #set($entityUrl="entity")
 #set($baseUrl="base")
 #if($isTenant)
-#set($Entity = "T" + $Entity)
-#set($entityUrl="tenant")
+    #set($Entity = "T" + $Entity)
+    #set($entityUrl="tenant")
 #end
 import com.xueyi.common.core.web.${entityUrl}.${baseUrl}.${Entity};
-import ${packageName}.domain.dto.${ClassName}Dto;
+import ${rdPackageName}.domain.dto.${ClassName}Dto;
 #set($tableIdShow=true)
 #set($excelShow=true)
 #set($jsonFormatShow=true)
 #foreach ($column in $columns)
-#if($column.isPo)
-#if($column.isPk || $column.isDivideTable)
-#if($tableIdShow)
-import com.baomidou.mybatisplus.annotation.*;
-#set($tableIdShow=false)
-#end
-#end
-#if($column.isImport || $column.isExport)
-#if($excelShow)
-import com.xueyi.common.core.annotation.Excel;
-#set($excelShow=false)
-#end
-#end
-#if($column.javaType == 'LocalDateTime')
-#if($jsonFormatShow)
-import com.fasterxml.jackson.annotation.JsonFormat;
-#set($jsonFormatShow=false)
-#end
-#end
-#end
+    #if($column.isPo)
+        #if($column.isPk || $column.isDivideTable)
+            #if($tableIdShow)
+            import com.baomidou.mybatisplus.annotation.*;
+                #set($tableIdShow=false)
+            #end
+        #end
+        #if($column.isImport || $column.isExport)
+            #if($excelShow)
+            import com.xueyi.common.core.annotation.Excel;
+                #set($excelShow=false)
+            #end
+        #end
+        #if($column.javaType == 'LocalDateTime')
+            #if($jsonFormatShow)
+            import com.fasterxml.jackson.annotation.JsonFormat;
+                #set($jsonFormatShow=false)
+            #end
+        #end
+    #end
 #end
 #if($tableIdShow)
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -57,20 +57,20 @@ import static com.xueyi.common.core.constant.basic.EntityConstants.*;
 #end
 #set($times = 0)
 #foreach($field in $excludeProperty)
-#if($times == 0)
-#set($excludeField="excludeProperty = { "+${field})
-#else
-#set($excludeField= $excludeField + ", "+${field})
-#end
-#if(!$excludeTimes)
-import static com.xueyi.common.core.constant.basic.EntityConstants.${field};
-#end
-#set($times = $times + 1)
+    #if($times == 0)
+        #set($excludeField="excludeProperty = { "+${field})
+    #else
+        #set($excludeField= $excludeField + ", "+${field})
+    #end
+    #if(!$excludeTimes)
+    import static com.xueyi.common.core.constant.basic.EntityConstants.${field};
+    #end
+    #set($times = $times + 1)
 #end
 #set($excludeField= $excludeField + " }")
 
 /**
- * ${functionName} 持久化对象
+ * ${moduleFunctionName} 持久化对象
  *
  * @author ${author}
  */
@@ -82,47 +82,48 @@ public class ${ClassName}Po extends ${Entity}${generics} {
     @Serial
     private static final long serialVersionUID = 1L;
 
-#foreach ($column in $columns)
-#if($column.isPo)
-    /** ${column.comment} */
-#if($column.javaType == 'LocalDateTime')
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-#end
-#if($column.isImport || $column.isExport)
-#set($parentheseIndex=$column.comment.indexOf("（"))
-#if($parentheseIndex != -1)
-#set($excelStr='@Excel(name = "' + $column.comment.substring(0, $parentheseIndex) + '", readConverterExp = "' + $column.readConverterExp() + '"')
-#else
-#set($excelStr='@Excel(name = "' + $column.comment + '"')
-#end
-#if($column.javaType == 'LocalDateTime')
-#set($excelStr=$excelStr + ', width = 30, dateFormat = ' + $dMark+ 'yyyy-MM-dd' + $dMark)
-#end
-#if($column.isImport && $column.isExport)
-#elseif($column.isImport)
-#set($excelStr=$excelStr + ", type = Excel.Type.IMPORT")
-#elseif($column.isExport)
-#set($excelStr=$excelStr + ", type = Excel.Type.EXPORT")
-#end
-#set($excelStr=$excelStr + ')')
-    ${excelStr}
-#end
-#if($column.isPk)
-#set($tableField='@TableId')
-#if($column.isDivideTable)
-#set($tableField=$tableField + '("' + $column.name + '")')
-#end
-#else
-#set($tableField="")
-#if($column.isDivideTable)
-#set($tableField='@TableField("' + $column.name + '")')
-#end
-#end
-#if(${tableField.length()} > 0)
-    ${tableField}
-#end
-    protected $column.javaType $column.javaField;
+    #foreach ($column in $columns)
+        #if($column.isPo)
+            /** ${column.comment} */
+            #if($column.javaType == 'LocalDateTime')
+            @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+            #end
+            #if($column.isImport || $column.isExport)
+                #set($parentheseIndex=$column.comment.indexOf("（"))
+                #if($parentheseIndex != -1)
+                    #set($excelStr='@Excel(name = "' + $column.comment.substring(0, $parentheseIndex) +
+                        '", readConverterExp = "' + $column.readConverterExp() + '"')
+                #else
+                    #set($excelStr='@Excel(name = "' + $column.comment + '"')
+                #end
+                #if($column.javaType == 'LocalDateTime')
+                    #set($excelStr=$excelStr + ', width = 30, dateFormat = ' + $dMark+ 'yyyy-MM-dd' + $dMark)
+                #end
+                #if($column.isImport && $column.isExport)
+                #elseif($column.isImport)
+                    #set($excelStr=$excelStr + ", type = Excel.Type.IMPORT")
+                #elseif($column.isExport)
+                    #set($excelStr=$excelStr + ", type = Excel.Type.EXPORT")
+                #end
+                #set($excelStr=$excelStr + ')')
+                ${excelStr}
+            #end
+            #if($column.isPk)
+                #set($tableField='@TableId')
+                #if($column.isDivideTable)
+                    #set($tableField=$tableField + '("' + $column.name + '")')
+                #end
+            #else
+                #set($tableField="")
+                #if($column.isDivideTable)
+                    #set($tableField='@TableField("' + $column.name + '")')
+                #end
+            #end
+            #if(${tableField.length()} > 0)
+                ${tableField}
+            #end
+        protected $column.javaType $column.javaField;
 
-#end
-#end
+        #end
+    #end
 }

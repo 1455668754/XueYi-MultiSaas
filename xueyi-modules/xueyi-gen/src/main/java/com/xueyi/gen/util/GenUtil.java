@@ -23,7 +23,7 @@ import java.util.List;
  *
  * @author xueyi
  */
-public class GenUtils {
+public class GenUtil {
 
     /**
      * 初始化表信息
@@ -34,6 +34,7 @@ public class GenUtils {
         genTable.setTplCategory(GenConstants.TemplateType.BASE.getCode());
         genTable.setBusinessName(getBusinessName(genTable.getName()));
         genTable.setFunctionName(replaceText(genTable.getComment()));
+        genTable.setAuthorityName(getAuthorityName(genTable));
         genTable.setFunctionAuthor(GenConfig.getAuthor());
         if (StrUtil.isNotBlank(GenConfig.getUiPath()))
             genTable.setUiPath(GenConfig.getUiPath());
@@ -227,9 +228,10 @@ public class GenUtils {
             for (GenConfig.RemoveItem removeItem : GenConfig.getRemoveLists()) {
                 if (StrUtil.equals(StrUtil.sub(genTable.getName(), NumberUtil.Zero, removeItem.getPrefix().length()), removeItem.getPrefix())) {
                     genTable.setPrefix(StrUtil.convertToCamelCase(removeItem.getPrefix()));
-                    genTable.setPackageName(removeItem.getPackageName());
-                    genTable.setModuleName(getModuleName(removeItem.getPackageName()));
-                    genTable.setAuthorityName(genTable.getModuleName());
+                    genTable.setRdPackageName(removeItem.getRdPackageName());
+                    genTable.setModuleName(getModuleName(removeItem.getRdPackageName()));
+                    String fePackageName = StrUtil.isNotBlank(removeItem.getFePackageName()) ? removeItem.getFePackageName() : genTable.getModuleName();
+                    genTable.setFePackageName(fePackageName);
                     genTable.setGenPath(StrUtil.isNotBlank(removeItem.getBackPackageRoute()) ? (System.getProperty("user.dir") + StrUtil.replace(removeItem.getBackPackageRoute(), StrUtil.SLASH, File.separator) + File.separator + "src" + File.separator) : (System.getProperty("user.dir") + File.separator + "src" + File.separator));
                     genTable.setUiPath(StrUtil.isNotBlank(GenConfig.getUiPath()) ? (System.getProperty("user.dir") + StrUtil.replace(GenConfig.getUiPath(), StrUtil.SLASH, File.separator) + File.separator) : (System.getProperty("user.dir") + File.separator));
                     return;
@@ -248,6 +250,16 @@ public class GenUtils {
         int lastIndex = packageName.lastIndexOf(StrUtil.DOT);
         int nameLength = packageName.length();
         return StrUtil.sub(packageName, lastIndex + NumberUtil.One, nameLength);
+    }
+
+    /**
+     * 获取权限标识
+     *
+     * @param genTable 业务表对象
+     * @return 权限标识
+     */
+    public static String getAuthorityName(GenTableDto genTable) {
+        return StrUtil.format("{}:{}", genTable.getModuleName(), genTable.getBusinessName());
     }
 
     /**

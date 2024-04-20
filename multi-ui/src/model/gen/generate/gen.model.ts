@@ -2,25 +2,43 @@ import { BaseEntity, BasicFetchResult, BasicPageParams, SubBaseEntity } from '@/
 
 /** genTable item model */
 export interface GenTableIM extends SubBaseEntity<GenTableColumnIM> {
+  /** Id */
   id: string;
+  /** 名称 */
   name: string;
+  /** 表描述 */
   comment: string;
+  /** 实体类名称(首字母大写) */
+  className: string;
+  /** 实体类名称前缀(首字母大写) */
+  prefix: string;
+  /** 使用的模板（base单表操作 tree树表操作） */
+  tplCategory: string;
+  /** 生成后端包路径 */
+  rdPackageName: string;
+  /** 生成权限名 */
+  fePackageName: string;
+  /** 生成模块路径 */
+  moduleName: string;
+  /** 生成业务名 */
+  businessName: string;
+  /** 生成权限标识 */
+  authorityName: string;
+  /** 生成功能名 */
+  functionName: string;
+  /** 生成作者 */
+  functionAuthor: string;
+  /** 生成路径类型（0默认路径 1自定义路径） */
+  genType: string;
+  /** 后端生成路径（不填默认项目路径） */
+  genPath: string;
+  /** 前端生成路径（不填默认项目路径） */
+  uiPath: string;
+  /** 其它生成选项 */
+  options: string;
   type: string;
   subTableName: string;
   subTableFkName: string;
-  className: string;
-  prefix: string;
-  tplCategory: string;
-  packageName: string;
-  moduleName: string;
-  authorityName: string;
-  businessName: string;
-  functionName: string;
-  functionAuthor: string;
-  genType: string;
-  genPath: string;
-  uiPath: string;
-  options: string;
 }
 
 /** genTable list model */
@@ -28,25 +46,12 @@ export type GenTableLM = GenTableIM[];
 
 /** genTable param model */
 export interface GenTablePM extends SubBaseEntity<GenTableColumnIM> {
+  /** Id */
   id?: string;
+  /** 名称 */
   name?: string;
-  comment?: string;
-  type?: string;
-  subTableName?: string;
-  subTableFkName?: string;
-  className?: string;
-  prefix?: string;
+  /** 使用的模板（base单表操作 tree树表操作） */
   tplCategory?: string;
-  packageName?: string;
-  moduleName?: string;
-  authorityName?: string;
-  businessName?: string;
-  functionName?: string;
-  functionAuthor?: string;
-  genType?: string;
-  genPath?: string;
-  uiPath?: string;
-  options?: string;
 }
 
 /** genTable page param model */

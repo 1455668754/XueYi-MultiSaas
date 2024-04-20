@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
  *
  * @author xueyi
  */
-public class VelocityUtils {
+public class VelocityUtil {
 
     /** 主目录 */
     private static final String PROJECT_PATH = "main/java";
@@ -51,12 +51,15 @@ public class VelocityUtils {
      * @return 模板列表
      */
     public static VelocityContext prepareContext(GenTableDto genTable) {
-        if (StrUtil.hasEmpty(genTable.getPackageName(), genTable.getModuleName(), genTable.getBusinessName(), genTable.getAuthorityName()))
+        if (StrUtil.hasEmpty(genTable.getRdPackageName(), genTable.getFePackageName(), genTable.getModuleName(), genTable.getBusinessName(), genTable.getAuthorityName()))
             throw new ServiceException("请先编辑完善信息！");
         String businessName = genTable.getBusinessName();
-        String packageName = genTable.getPackageName();
+        String rdPackageName = genTable.getRdPackageName();
+        // 前端包路径
+        String fePackageName = StrUtil.replace(genTable.getFePackageName(), StrUtil.DOT, StrUtil.SLASH);
         String tplCategory = genTable.getTplCategory();
-        String functionName = genTable.getFunctionName();
+        String moduleFunctionName = StrUtil.isNotEmpty(genTable.getFunctionName()) ? genTable.getFunctionName() : "【请填写功能名称】";
+        String functionName = getFunctionName(moduleFunctionName);
         JSONObject optionsObj = JSON.parseObject(genTable.getOptions());
         Map<String, Set<String>> domainMap = getCoverMap(genTable);
         initTableField(genTable);
@@ -66,8 +69,9 @@ public class VelocityUtils {
         // 数据库表名
         velocityContext.put("tableName", genTable.getName());
         // 生成功能名
-        velocityContext.put("functionName", StrUtil.isNotEmpty(functionName) ? functionName : "【请填写功能名称】");
-
+        velocityContext.put("functionName", functionName);
+        // 生成模块功能名
+        velocityContext.put("moduleFunctionName", moduleFunctionName);
         // 实体类名称(首字母大写)
         velocityContext.put("ClassName", genTable.getClassName());
         // 实体类名称(首字母小写)
@@ -75,7 +79,7 @@ public class VelocityUtils {
         // 实体类名称(全大写 | _划分)
         velocityContext.put("ClASS_NAME", (StrUtil.toUnderlineCase(genTable.getClassName())).toUpperCase());
         //  判断genTable.getPrefix()是否为空
-         String  prefix=StrUtil.isEmpty(genTable.getPrefix())?StrUtil.EMPTY:genTable.getPrefix();
+        String prefix = StrUtil.isEmpty(genTable.getPrefix()) ? StrUtil.EMPTY : genTable.getPrefix();
         // 实体类名称(首字母大写 | 无前缀)
         velocityContext.put("ClassNameNoPrefix", genTable.getClassName().replaceFirst(prefix, StrUtil.EMPTY));
         // 实体类名称(首字母小写 | 无前缀)
@@ -90,10 +94,10 @@ public class VelocityUtils {
         velocityContext.put("businessName", businessName);
         // 生成业务名(字母全大写)
         velocityContext.put("BUSINESSName", StrUtil.upperCase(businessName));
-        // 生成包路径前缀
-        velocityContext.put("basePackage", getPackagePrefix(packageName));
-        // 生成包路径
-        velocityContext.put("packageName", packageName);
+        // 生成后端包路径
+        velocityContext.put("rdPackageName", rdPackageName);
+        // 生成前端包路径
+        velocityContext.put("fePackageName", fePackageName);
         // 作者
         velocityContext.put("author", genTable.getFunctionAuthor());
         // 主键字段
@@ -262,23 +266,18 @@ public class VelocityUtils {
      * @param isZip    生成到ZIP
      */
     public static String getFileName(String template, GenTableDto table, Boolean isZip) {
-        // 包路径
-        String packageName = table.getPackageName();
-        // 模块名
-        String moduleName = table.getModuleName();
-        // 权限名
-        String authorityName = table.getAuthorityName();
+        // 后端包路径
+        String rdPackageName = table.getRdPackageName();
+        // 前端包路径
+        String fePackageName = StrUtil.replace(table.getFePackageName(), StrUtil.DOT, StrUtil.SLASH);
         // 大写类名
         String className = table.getClassName();
         // 业务名称
         String businessName = table.getBusinessName();
 
-        // 业务名称(首字母大写)
-        String BusinessName = StrUtil.capitalize(table.getBusinessName());
-
         JSONObject optionsObj = JSON.parseObject(table.getOptions());
         // 获取依赖缩写模式
-        Boolean isDependMode = getDependMode(optionsObj);
+        boolean isDependMode = getDependMode(optionsObj);
 
         String realGenPath, realUiPath;
         if (isZip) {
@@ -292,7 +291,7 @@ public class VelocityUtils {
             realUiPath = table.getUiPath();
         }
 
-        String javaPath = PROJECT_PATH + StrUtil.SLASH + StrUtil.replace(packageName, StrUtil.DOT, StrUtil.SLASH);
+        String javaPath = PROJECT_PATH + StrUtil.SLASH + StrUtil.replace(rdPackageName, StrUtil.DOT, StrUtil.SLASH);
         String uiPath = "multi-ui";
 
         if (template.contains("query.java.vm")) {
@@ -332,41 +331,40 @@ public class VelocityUtils {
         if (template.contains("api.ts.vm")) {
             String prefixPath = StrUtil.format("{}{}/src/api", realUiPath, uiPath);
             String suffixFile = ".api";
-            return StrUtil.format("{}/{}/{}/{}{}.ts", prefixPath, moduleName, authorityName, businessName, suffixFile);
+            return StrUtil.format("{}/{}/{}{}.ts", prefixPath, fePackageName, businessName, suffixFile);
         } else if (template.contains("infoModel.ts.vm")) {
             String prefixPath = StrUtil.format("{}{}/src/model", realUiPath, uiPath);
             String suffixFile = ".model";
             if (!isZip && isDependMode) {
-                initIndexFile(prefixPath, suffixFile, moduleName, authorityName, businessName);
+                initIndexFile(prefixPath, suffixFile, fePackageName, businessName);
             }
-            return StrUtil.format("{}/{}/{}/{}{}.ts", prefixPath, moduleName, authorityName, businessName, suffixFile);
+            return StrUtil.format("{}/{}/{}{}.ts", prefixPath, fePackageName, businessName, suffixFile);
         } else if (template.contains("auth.ts.vm")) {
             String prefixPath = StrUtil.format("{}{}/src/auth", realUiPath, uiPath);
             String suffixFile = ".auth";
             if (!isZip && isDependMode) {
-                initIndexFile(prefixPath, suffixFile, moduleName, authorityName, businessName);
+                initIndexFile(prefixPath, suffixFile, fePackageName, businessName);
             }
-            return StrUtil.format("{}/{}/{}/{}{}.ts", prefixPath, moduleName, authorityName, businessName, suffixFile);
+            return StrUtil.format("{}/{}/{}{}.ts", prefixPath, fePackageName, businessName, suffixFile);
         } else if (template.contains("enum.ts.vm")) {
             String prefixPath = StrUtil.format("{}{}/src/enums", realUiPath, uiPath);
             String suffixFile = ".enum";
             if (!isZip && isDependMode) {
-                initIndexFile(prefixPath, suffixFile, moduleName, authorityName, businessName);
+                initIndexFile(prefixPath, suffixFile, fePackageName, businessName);
             }
-            return StrUtil.format("{}/{}/{}/{}{}.ts", prefixPath, moduleName, authorityName, businessName, suffixFile);
+            return StrUtil.format("{}/{}/{}{}.ts", prefixPath, fePackageName, businessName, suffixFile);
         } else if (template.contains("data.ts.vm")) {
             String prefixPath = StrUtil.format("{}{}/src/views", realUiPath, uiPath);
-            String suffixFile = ".data";
-            return StrUtil.format("{}/{}/{}/{}/{}{}.ts", prefixPath, moduleName, authorityName, businessName, businessName, suffixFile);
+            return StrUtil.format("{}/{}/{}/data.ts", prefixPath, fePackageName, businessName);
         } else if (template.contains("index.vue.vm")) {
             String prefixPath = StrUtil.format("{}{}/src/views", realUiPath, uiPath);
-            return StrUtil.format("{}/{}/{}/{}/index.vue", prefixPath, moduleName, authorityName, businessName);
+            return StrUtil.format("{}/{}/{}/index.vue", prefixPath, fePackageName, businessName);
         } else if (template.contains("detail.vue.vm")) {
             String prefixPath = StrUtil.format("{}{}/src/views", realUiPath, uiPath);
-            return StrUtil.format("{}/{}/{}/{}/{}Detail.vue", prefixPath, moduleName, authorityName, businessName, BusinessName);
+            return StrUtil.format("{}/{}/{}/Detail.vue", prefixPath, fePackageName, businessName);
         } else if (template.contains("modal.vue.vm")) {
             String prefixPath = StrUtil.format("{}{}/src/views", realUiPath, uiPath);
-            return StrUtil.format("{}/{}/{}/{}/{}Modal.vue", prefixPath, moduleName, authorityName, businessName, BusinessName);
+            return StrUtil.format("{}/{}/{}/Modal.vue", prefixPath, fePackageName, businessName);
         }
         throw new ServiceException("未知文件无法生成！");
     }
@@ -377,9 +375,10 @@ public class VelocityUtils {
      * @param packageName 包名称
      * @return 包前缀名称
      */
-    public static String getPackagePrefix(String packageName) {
-        int lastIndex = packageName.lastIndexOf(StrUtil.DOT);
-        return StrUtil.sub(packageName, 0, lastIndex);
+    public static String getFunctionName(String packageName) {
+        int lastIndex = packageName.lastIndexOf("|");
+        String str = lastIndex > 0 ? StrUtil.subSuf(packageName, lastIndex + 1) : packageName;
+        return StrUtil.cleanBlank(str);
     }
 
     /**
@@ -642,13 +641,13 @@ public class VelocityUtils {
      *
      * @param prefixPath    路径前缀
      * @param suffixFile    文件后缀
-     * @param moduleName    生成模块路径
-     * @param authorityName 生成权限名
+     * @param fePackageName 生成前端路径
      * @param businessName  生成业务名
      */
-    public static void initIndexFile(String prefixPath, String suffixFile, String moduleName, String authorityName, String businessName) {
+    public static void initIndexFile(String prefixPath, String suffixFile, String fePackageName, String businessName) {
         if (StrUtil.isBlank(prefixPath)) return;
-        outIndexFile(prefixPath + File.separator + moduleName + File.separator + authorityName + File.separator + "index.ts", StrUtil.format("export * from './{}{}'", businessName, suffixFile));
+        String url = StrUtil.replace(fePackageName, StrUtil.SLASH, File.separator);
+        outIndexFile(prefixPath + File.separator + url + File.separator + "index.ts", StrUtil.format("export * from './{}{}'", businessName, suffixFile));
     }
 
     /**
